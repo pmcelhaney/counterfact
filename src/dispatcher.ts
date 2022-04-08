@@ -28,6 +28,12 @@ export class Dispatcher {
       remainingParts -= 1;
     }
 
+    if (remainingParts === 0) {
+      return {
+        body: `${method} method for endpoint at "${path}" does not exist`,
+      };
+    }
+
     return await this.server.endpoint(
       method,
       currentPath
