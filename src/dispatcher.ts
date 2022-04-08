@@ -13,7 +13,25 @@ export class Dispatcher {
     method,
     path,
   }: Readonly<CounterfactRequest>): CounterfactResponse {
-    const endpoint = this.server.endpoint(method, path);
-    return endpoint();
+    const parts = path.split("/");
+
+    let remainingParts = parts.length;
+
+    while (remainingParts > 0) {
+      const currentPath = parts.slice(0, remainingParts).join("/");
+
+      if (this.server.exists(method, currentPath)) {
+        return this.server.endpoint(
+          method,
+          currentPath
+        )({ path: parts.slice(remainingParts).join("/") });
+      }
+
+      remainingParts -= 1;
+    }
+
+    return {
+      body: "not found",
+    };
   }
 }
