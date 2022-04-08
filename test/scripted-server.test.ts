@@ -1,12 +1,12 @@
 import { ScriptedServer } from "../src/scripted-server";
 
 describe("a scripted server", () => {
-  it("knows if a hanlder exists for a request method at a path", () => {
+  it("knows if a hanlder exists for a request method at a path", async () => {
     const server = new ScriptedServer();
 
     server.add("/hello", {
-      GET() {
-        return { body: "hello" };
+      async GET() {
+        return await Promise.resolve({ body: "hello" });
       },
     });
 
@@ -17,32 +17,37 @@ describe("a scripted server", () => {
 
   it.todo("returns debug information if path does not exist");
 
-  it("returns a function matching the URL and request method", () => {
+  it("returns a function matching the URL and request method", async () => {
     const server = new ScriptedServer();
 
     server.add("/a", {
-      GET() {
-        return { body: "GET a" };
+      async GET() {
+        return await Promise.resolve({ body: "GET a" });
       },
 
-      POST() {
-        return { body: "POST a" };
+      async POST() {
+        return await Promise.resolve({ body: "POST a" });
       },
     });
 
     server.add("/b", {
-      GET() {
-        return { body: "GET b" };
+      async GET() {
+        return await Promise.resolve({ body: "GET b" });
       },
 
-      POST() {
-        return { body: "POST b" };
+      async POST() {
+        return await Promise.resolve({ body: "POST b" });
       },
     });
 
-    expect(server.endpoint("GET", "/a")().body).toBe("GET a");
-    expect(server.endpoint("GET", "/b")().body).toBe("GET b");
-    expect(server.endpoint("POST", "/a")().body).toBe("POST a");
-    expect(server.endpoint("POST", "/b")().body).toBe("POST b");
+    const getA = await server.endpoint("GET", "/a")({ path: "" });
+    const getB = await server.endpoint("GET", "/b")({ path: "" });
+    const postA = await server.endpoint("POST", "/a")({ path: "" });
+    const postB = await server.endpoint("POST", "/b")({ path: "" });
+
+    expect(getA.body).toBe("GET a");
+    expect(getB.body).toBe("GET b");
+    expect(postA.body).toBe("POST a");
+    expect(postB.body).toBe("POST b");
   });
 });

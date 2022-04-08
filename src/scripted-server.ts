@@ -10,7 +10,9 @@ interface Script {
 }
 
 export class ScriptedServer implements Server {
-  private scripts: { [key: string]: Script | undefined } = {};
+  private scripts: {
+    [key: string]: Script | undefined;
+  } = {};
 
   public add(path: string, script: Readonly<Script>) {
     this.scripts[path] = script;
@@ -23,9 +25,11 @@ export class ScriptedServer implements Server {
   public endpoint(method: RequestMethod, path: string): Endpoint {
     const script = this.scripts[path];
     const lambda = script?.[method];
-    if (lambda) {
-      return lambda;
+    if (!lambda) {
+      throw new Error(
+        `${method} method for endpoint at "${path}" does not exist`
+      );
     }
-    return () => ({ body: `not found (${method} ${path}}` });
+    return lambda;
   }
 }
