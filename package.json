@@ -1,0 +1,8 @@
+{
+  "name": "counterfact",
+  "version": "0.0.1",
+  "description": "a library for building a fake REST API for testing",
+  "main": "index.js",
+  "author": "Patrick McElhaney <pmcelhaney@gmail.com>",
+  "license": "MIT"
+}
