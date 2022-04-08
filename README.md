@@ -22,6 +22,8 @@ Then set up a system whereby we can populate the store by selecting one or more 
 
 Then publish the npm package so we can start using it.
 
+Then add a CI/CD pipeline.
+
 Then improve the error handling / logging.
 
 Then maybe a record mode that automatically generates migration scripts.
