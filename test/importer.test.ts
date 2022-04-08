@@ -1,26 +1,10 @@
-class Importer {
-  constructor() {
-    this.paths = {};
-  }
-
-  add(path, get) {
-    this.paths[path] = get;
-  }
-
-  exists(path) {
-    return path in this.paths;
-  }
-
-  get(path) {
-    return this.paths[path].GET;
-  }
-}
+import { Importer } from "../src/importer";
 
 describe("importer", () => {
   it("knows if a path exists", () => {
     const importer = new Importer();
 
-    importer.add("/hello");
+    importer.add("/hello", {});
 
     expect(importer.exists("/hello")).toBe(true);
     expect(importer.exists("/goodbye")).toBe(false);
@@ -35,6 +19,6 @@ describe("importer", () => {
       },
     });
 
-    expect(importer.get("/hello")().body).toBe("hello");
+    expect(importer.get("/hello")?.().body).toBe("hello");
   });
 });

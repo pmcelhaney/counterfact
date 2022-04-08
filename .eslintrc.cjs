@@ -1,22 +1,21 @@
 "use strict";
 
 module.exports = {
-  extends: ["hardcore"],
-
-  env: {
-    node: true,
-    es2022: true,
-  },
+  extends: ["hardcore", "hardcore/ts", "hardcore/node"],
 
   parserOptions: {
-    ecmaVersion: "latest",
-    sourceType: "module",
+    project: "./tsconfig.json",
+  },
+
+  rules: {
+    "import/prefer-default-export": "off",
+    "@typescript-eslint/naming-convention": "off",
   },
 
   overrides: [
     {
       files: ["*.cjs"],
-      extends: ["hardcore"],
+      extends: ["hardcore", "hardcore/node"],
 
       rules: {
         "import/no-commonjs": "off",
@@ -28,8 +27,9 @@ module.exports = {
     },
 
     {
-      files: ["*.test.js"],
-      extends: ["hardcore/jest"],
+      files: ["*.test.ts"],
+
+      extends: ["hardcore", "hardcore/ts", "hardcore/node", "hardcore/jest"],
 
       rules: {
         "import/unambiguous": "off",
@@ -39,6 +39,8 @@ module.exports = {
           "error",
           { capIsNewExceptionPattern: "GET|PUT|POST|DELETE" },
         ],
+
+        "@typescript-eslint/naming-convention": "off",
       },
     },
   ],
