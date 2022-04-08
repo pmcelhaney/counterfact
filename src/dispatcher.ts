@@ -9,29 +9,30 @@ export class Dispatcher {
     this.server = server;
   }
 
-  public request({
+  public async request({
     method,
     path,
-  }: Readonly<CounterfactRequest>): CounterfactResponse {
+  }: Readonly<CounterfactRequest>): Promise<CounterfactResponse> {
     const parts = path.split("/");
 
     let remainingParts = parts.length;
+    let currentPath = "";
 
     while (remainingParts > 0) {
-      const currentPath = parts.slice(0, remainingParts).join("/");
+      currentPath = parts.slice(0, remainingParts).join("/");
 
       if (this.server.exists(method, currentPath)) {
-        return this.server.endpoint(
-          method,
-          currentPath
-        )({ path: parts.slice(remainingParts).join("/") });
+        break;
       }
 
       remainingParts -= 1;
     }
 
-    return {
-      body: "not found",
-    };
+    return await this.server.endpoint(
+      method,
+      currentPath
+    )({
+      path: parts.slice(remainingParts).join("/"),
+    });
   }
 }

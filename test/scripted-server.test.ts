@@ -1,7 +1,7 @@
 import { ScriptedServer } from "../src/scripted-server";
 
 describe("a scripted server", () => {
-  it("knows if a hanlder exists for a request method at a path", async () => {
+  it("knows if a handler exists for a request method at a path", () => {
     const server = new ScriptedServer();
 
     server.add("/hello", {

@@ -4,4 +4,4 @@ import type { InternalRequest } from "./internal-request";
 // eslint-disable-next-line etc/prefer-interface
 export type Endpoint = (
   req: Readonly<InternalRequest>
-) => Promise<CounterfactResponse>;
+) => CounterfactResponse | Promise<CounterfactResponse>;
