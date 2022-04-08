@@ -16,8 +16,8 @@ export class ScriptedServer implements Server {
     this.scripts[path] = script;
   }
 
-  public exists(path: string) {
-    return path in this.scripts;
+  public exists(method: RequestMethod, path: string): boolean {
+    return Boolean(this.scripts[path]?.[method]);
   }
 
   public endpoint(method: RequestMethod, path: string): Endpoint {

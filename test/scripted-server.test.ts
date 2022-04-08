@@ -1,14 +1,21 @@
 import { ScriptedServer } from "../src/scripted-server";
 
 describe("a scripted server", () => {
-  it("knows if a path exists", () => {
+  it("knows if a hanlder exists for a request method at a path", () => {
     const server = new ScriptedServer();
 
-    server.add("/hello", {});
+    server.add("/hello", {
+      GET() {
+        return { body: "hello" };
+      },
+    });
 
-    expect(server.exists("/hello")).toBe(true);
-    expect(server.exists("/goodbye")).toBe(false);
+    expect(server.exists("GET", "/hello")).toBe(true);
+    expect(server.exists("POST", "/hello")).toBe(false);
+    expect(server.exists("GET", "/goodbye")).toBe(false);
   });
+
+  it.todo("returns debug information if path does not exist");
 
   it("returns a function matching the URL and request method", () => {
     const server = new ScriptedServer();
