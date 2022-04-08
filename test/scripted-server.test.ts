@@ -10,15 +10,32 @@ describe("a scripted server", () => {
     expect(server.exists("/goodbye")).toBe(false);
   });
 
-  it("looks up a get method", () => {
+  it("returns a function matching the URL and request method", () => {
     const server = new ScriptedServer();
 
-    server.add("/hello", {
+    server.add("/a", {
       GET() {
-        return { body: "hello" };
+        return { body: "GET a" };
+      },
+
+      POST() {
+        return { body: "POST a" };
       },
     });
 
-    expect(server.get("/hello")?.().body).toBe("hello");
+    server.add("/b", {
+      GET() {
+        return { body: "GET b" };
+      },
+
+      POST() {
+        return { body: "POST b" };
+      },
+    });
+
+    expect(server.endpoint("GET", "/a")().body).toBe("GET a");
+    expect(server.endpoint("GET", "/b")().body).toBe("GET b");
+    expect(server.endpoint("POST", "/a")().body).toBe("POST a");
+    expect(server.endpoint("POST", "/b")().body).toBe("POST b");
   });
 });
