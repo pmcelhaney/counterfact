@@ -34,6 +34,11 @@ module.exports = {
       rules: {
         "import/unambiguous": "off",
         "jest/prefer-expect-assertions": "off",
+
+        "new-cap": [
+          "error",
+          { capIsNewExceptionPattern: "GET|PUT|POST|DELETE" },
+        ],
       },
     },
   ],
