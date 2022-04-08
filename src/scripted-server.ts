@@ -1,20 +1,15 @@
-interface Response {
-  body: string;
-}
-
-// eslint-disable-next-line etc/prefer-interface
-type Endpoint = () => Response;
+import type { Server } from "./server";
+import type { Endpoint } from "./endpoint";
+import type { RequestMethod } from "./request-method";
 
 interface Script {
-  GET?: () => Response;
-  POST?: () => Response;
-  PUT?: () => Response;
-  DELETE?: () => Response;
+  GET?: Endpoint;
+  POST?: Endpoint;
+  PUT?: Endpoint;
+  DELETE?: Endpoint;
 }
 
-type RequestMethod = "DELETE" | "GET" | "POST" | "PUT";
-
-export class ScriptedServer {
+export class ScriptedServer implements Server {
   private scripts: { [key: string]: Script | undefined } = {};
 
   public add(path: string, script: Readonly<Script>) {
@@ -31,6 +26,6 @@ export class ScriptedServer {
     if (lambda) {
       return lambda;
     }
-    return () => ({ body: "not found" });
+    return () => ({ body: `not found (${method} ${path}}` });
   }
 }
