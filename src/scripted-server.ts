@@ -5,7 +5,7 @@ interface Script {
   DELETE?: () => { body: string };
 }
 
-export class Importer {
+export class ScriptedServer {
   private scripts: { [key: string]: Script } = {};
 
   public add(path: string, script: Readonly<Script>) {
