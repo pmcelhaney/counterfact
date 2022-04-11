@@ -2,8 +2,10 @@
   "compilerOptions": {
     "strictNullChecks": true,
     "esModuleInterop": true,
-    "outDir": "dist"
+    "outDir": "dist",
+    "target": "ES2022",
+    "moduleResolution": "node"
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "test/**/*"],
   "exclude": ["node_modules"]
 }
