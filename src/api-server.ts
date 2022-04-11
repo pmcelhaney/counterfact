@@ -9,7 +9,7 @@ interface Script {
   DELETE?: Endpoint;
 }
 
-export class ScriptedServer implements Server {
+export class ApiServer implements Server {
   private scripts: {
     [key: string]: Script | undefined;
   } = {};

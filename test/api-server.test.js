@@ -1,8 +1,8 @@
-import { ScriptedServer } from "../src/scripted-server";
+import { ApiServer } from "../src/api-server";
 
 describe("a scripted server", () => {
   it("knows if a handler exists for a request method at a path", () => {
-    const server = new ScriptedServer();
+    const server = new ApiServer();
 
     server.add("/hello", {
       async GET() {
@@ -18,7 +18,7 @@ describe("a scripted server", () => {
   it.todo("returns debug information if path does not exist");
 
   it("returns a function matching the URL and request method", async () => {
-    const server = new ScriptedServer();
+    const server = new ApiServer();
 
     server.add("/a", {
       async GET() {

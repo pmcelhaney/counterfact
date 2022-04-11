@@ -1,9 +1,9 @@
 import { Dispatcher } from "../src/dispatcher";
-import { ScriptedServer } from "../src/scripted-server";
+import { ApiServer } from "../src/api-server";
 
 describe("a dispatcher", () => {
   it("dispatches a get request to a server and returns the response", async () => {
-    const server = new ScriptedServer();
+    const server = new ApiServer();
 
     server.add("/hello", {
       GET() {
@@ -24,7 +24,7 @@ describe("a dispatcher", () => {
   });
 
   it("goes up one level and keeps searching if it doesn't find an exact match", async () => {
-    const server = new ScriptedServer();
+    const server = new ApiServer();
 
     server.add("/a", {
       GET() {
@@ -53,7 +53,7 @@ describe("a dispatcher", () => {
   });
 
   it("passes the remainder of the path to the request", async () => {
-    const server = new ScriptedServer();
+    const server = new ApiServer();
 
     server.add("/a", {
       GET({ path }) {

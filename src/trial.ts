@@ -1,10 +1,10 @@
 import Koa from "koa";
 
-import { ScriptedServer } from "./scripted-server";
+import { ApiServer } from "./api-server";
 import { Dispatcher } from "./dispatcher";
 import { koaMiddleware } from "./koa-middleware";
 
-const server = new ScriptedServer();
+const server = new ApiServer();
 server.add("/hello", {
   async GET() {
     return await Promise.resolve({ body: "hello" });
