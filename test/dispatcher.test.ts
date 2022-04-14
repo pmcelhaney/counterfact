@@ -1,11 +1,11 @@
 import { Dispatcher } from "../src/dispatcher";
-import { ApiServer } from "../src/api-server";
+import { Registry } from "../src/registry";
 
 describe("a dispatcher", () => {
   it("dispatches a get request to a server and returns the response", async () => {
-    const server = new ApiServer();
+    const registry = new Registry();
 
-    server.add("/hello", {
+    registry.add("/hello", {
       GET() {
         return {
           body: "hello",
@@ -13,7 +13,7 @@ describe("a dispatcher", () => {
       },
     });
 
-    const dispatcher = new Dispatcher(server);
+    const dispatcher = new Dispatcher(registry);
 
     const response = await dispatcher.request({
       method: "GET",
@@ -24,7 +24,7 @@ describe("a dispatcher", () => {
   });
 
   it("goes up one level and keeps searching if it doesn't find an exact match", async () => {
-    const server = new ApiServer();
+    const server = new Registry();
 
     server.add("/a", {
       GET() {
@@ -53,7 +53,7 @@ describe("a dispatcher", () => {
   });
 
   it("passes the remainder of the path to the request", async () => {
-    const server = new ApiServer();
+    const server = new Registry();
 
     server.add("/a", {
       GET({ path }) {

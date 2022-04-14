@@ -1,17 +1,17 @@
 import Koa from "koa";
 
-import { ApiServer } from "./api-server";
+import { Registry } from "./registry";
 import { Dispatcher } from "./dispatcher";
 import { koaMiddleware } from "./koa-middleware";
 
-const server = new ApiServer();
-server.add("/hello", {
+const registry = new Registry();
+registry.add("/hello", {
   async GET() {
     return await Promise.resolve({ body: "hello" });
   },
 });
 
-const dispatcher = new Dispatcher(server);
+const dispatcher = new Dispatcher(registry);
 const middleware = koaMiddleware(dispatcher);
 
 const app = new Koa();

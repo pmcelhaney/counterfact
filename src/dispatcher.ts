@@ -1,12 +1,12 @@
-import type { Server } from "./server";
+import type { Registry } from "./registry";
 import type { CounterfactResponse } from "./counterfact-response";
 import type { CounterfactRequest } from "./counterfact-request";
 
 export class Dispatcher {
-  private readonly server: Server;
+  private readonly registry: Registry;
 
-  public constructor(server: Readonly<Server>) {
-    this.server = server;
+  public constructor(registry: Readonly<Registry>) {
+    this.registry = registry;
   }
 
   public async request({
@@ -21,7 +21,7 @@ export class Dispatcher {
     while (remainingParts > 0) {
       currentPath = parts.slice(0, remainingParts).join("/");
 
-      if (this.server.exists(method, currentPath)) {
+      if (this.registry.exists(method, currentPath)) {
         break;
       }
 
@@ -34,7 +34,7 @@ export class Dispatcher {
       };
     }
 
-    return await this.server.endpoint(
+    return await this.registry.endpoint(
       method,
       currentPath
     )({

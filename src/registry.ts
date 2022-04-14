@@ -1,4 +1,3 @@
-import type { Server } from "./server";
 import type { Endpoint } from "./endpoint";
 import type { RequestMethod } from "./request-method";
 
@@ -9,8 +8,8 @@ interface Script {
   DELETE?: Endpoint;
 }
 
-export class ApiServer implements Server {
-  private scripts: {
+export class Registry {
+  public scripts: {
     [key: string]: Script | undefined;
   } = {};
 
