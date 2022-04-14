@@ -4,7 +4,8 @@
     "esModuleInterop": true,
     "outDir": "dist",
     "target": "ES2022",
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "module": "ES2022"
   },
   "include": ["src/**/*", "test/**/*"],
   "exclude": ["node_modules"]
