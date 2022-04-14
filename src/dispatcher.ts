@@ -3,7 +3,7 @@ import type { CounterfactResponse } from "./counterfact-response";
 import type { CounterfactRequest } from "./counterfact-request";
 
 export class Dispatcher {
-  private readonly registry: Registry;
+  private readonly registry: Readonly<Registry>;
 
   public constructor(registry: Readonly<Registry>) {
     this.registry = registry;

@@ -1,29 +1,23 @@
 import type { Endpoint } from "./endpoint";
+import type { EndpointModule } from "./endpoint-module";
 import type { RequestMethod } from "./request-method";
 
-interface Script {
-  GET?: Endpoint;
-  POST?: Endpoint;
-  PUT?: Endpoint;
-  DELETE?: Endpoint;
-}
-
 export class Registry {
-  public scripts: {
-    [key: string]: Script | undefined;
+  private modules: {
+    [key: string]: EndpointModule | undefined;
   } = {};
 
-  public add(path: string, script: Readonly<Script>) {
-    this.scripts[path] = script;
+  public add(path: string, script: Readonly<EndpointModule>) {
+    this.modules[path] = script;
   }
 
   public exists(method: RequestMethod, path: string): boolean {
-    return Boolean(this.scripts[path]?.[method]);
+    return Boolean(this.modules[path]?.[method]);
   }
 
   public endpoint(method: RequestMethod, path: string): Endpoint {
-    const script = this.scripts[path];
-    const lambda = script?.[method];
+    const module = this.modules[path];
+    const lambda = module?.[method];
     if (!lambda) {
       throw new Error(
         `${method} method for endpoint at "${path}" does not exist`

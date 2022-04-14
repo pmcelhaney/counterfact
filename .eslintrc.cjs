@@ -11,6 +11,8 @@ module.exports = {
   rules: {
     "import/prefer-default-export": "off",
     "@typescript-eslint/naming-convention": "off",
+
+    "max-len": ["warn", { ignorePattern: "eslint|it\\(|describe\\(" }],
   },
 
   overrides: [
