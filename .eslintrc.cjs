@@ -42,6 +42,8 @@ module.exports = {
         ],
 
         "@typescript-eslint/naming-convention": "off",
+
+        "max-len": ["warn", { ignorePattern: "eslint|it\\(|describe\\(" }],
       },
     },
   ],
