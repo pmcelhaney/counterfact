@@ -6,7 +6,7 @@ If you're nosy and don't mind a whole lot of incompleteness:
 
 ```sh
 yarn
-yarn tsc
+yarn build
 node dist/trial.js
 ```
 

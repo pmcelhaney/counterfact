@@ -7,6 +7,6 @@
     "moduleResolution": "node",
     "module": "ES2022"
   },
-  "include": ["src/**/*", "test/**/*"],
+  "include": ["src/**/*"],
   "exclude": ["node_modules"]
 }

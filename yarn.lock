@@ -993,6 +993,20 @@
   dependencies:
     "@cspotcode/source-map-consumer" "0.8.0"
 
+"@digitak/grubber@^3.1.1":
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/@digitak/grubber/-/grubber-3.1.1.tgz#13c02833f5ed0c342cb1f9cfec1fd104fb9f943e"
+  integrity sha512-xHpmj3Erk5AA/nKpOJzap23TJSV0MFRTgtciG8XZg0GP0CUwms0g02SQQaKEPCe2mvKVlqfzad3xV4DiHlq2jA==
+
+"@digitak/tsc-esm@^3.1.2":
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/@digitak/tsc-esm/-/tsc-esm-3.1.2.tgz#4bc000bd08848b47badba6075e22bf8b3e86e2d0"
+  integrity sha512-9pey4YgsWA5dmE/KFahIvNukRItibNBryzqKnHr72JRBOk4WP1ZFQWzYJA3DzlPgLEzlcR+j4McXZJFl+2NVCA==
+  dependencies:
+    "@digitak/grubber" "^3.1.1"
+    fast-glob "^3.2.5"
+    relaxed-json "^1.0.3"
+
 "@ember-data/rfc395-data@^0.0.4":
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/@ember-data/rfc395-data/-/rfc395-data-0.0.4.tgz#ecb86efdf5d7733a76ff14ea651a1b0ed1f8a843"
@@ -3272,7 +3286,7 @@ capital-case@^1.0.4:
     tslib "^2.0.3"
     upper-case-first "^2.0.2"
 
-chalk@^2.0.0:
+chalk@^2.0.0, chalk@^2.4.2:
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/chalk/-/chalk-2.4.2.tgz#cd42541677a54333cf541a49108c1432b44c9424"
   integrity sha512-Mti+f9lpJNcwF4tWV8/OrTTtF1gZi+f8FqlyAdouralcFWFQWF2+NgCHShjkCb+IFBLq9buZwE1xckQU4peSuQ==
@@ -3449,6 +3463,11 @@ combined-stream@^1.0.8:
   integrity sha512-FQN4MRfuJeHf7cBbBMJFXhKSDq+2kAArBlmRBvcvFE5BB1HZKXtSFASDhdlz9zOYwxh8lDdnvmMOe/+5cdoEdg==
   dependencies:
     delayed-stream "~1.0.0"
+
+commander@^2.6.0:
+  version "2.20.3"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-2.20.3.tgz#fd485e84c03eb4881c20722ba48035e8531aeb33"
+  integrity sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==
 
 comment-parser@^1.1.2:
   version "1.3.1"
@@ -4612,7 +4631,7 @@ fast-diff@^1.1.2:
   resolved "https://registry.yarnpkg.com/fast-diff/-/fast-diff-1.2.0.tgz#73ee11982d86caaf7959828d519cfe927fac5f03"
   integrity sha512-xJuoT5+L99XlZ8twedaRf6Ax2TgQVxvgZOYoPKqZufmJib0tL2tegPBOZb1pVNgIhlqDlA0eO0c3wBvQcmzx4w==
 
-fast-glob@^3.1.1, fast-glob@^3.2.11, fast-glob@^3.2.2, fast-glob@^3.2.7, fast-glob@^3.2.9:
+fast-glob@^3.1.1, fast-glob@^3.2.11, fast-glob@^3.2.2, fast-glob@^3.2.5, fast-glob@^3.2.7, fast-glob@^3.2.9:
   version "3.2.11"
   resolved "https://registry.yarnpkg.com/fast-glob/-/fast-glob-3.2.11.tgz#a1172ad95ceb8a16e20caa5c5e56480e5129c1d9"
   integrity sha512-xrO3+1bxSo3ZVHAnqzyuewYT6aMFHRAd4Kcs92MAonjwQZLsK9d0SF1IyQ3k5PoirxTW0Oe/RqFgMQ6TcNE5Ew==
@@ -7737,6 +7756,14 @@ regjsparser@^0.8.2:
   integrity sha512-J3LABycON/VNEu3abOviqGHuB/LOtOQj8SKmfP9anY5GfAVw/SPjwzSjxGjbZXIxbGfqTHtJw58C2Li/WkStmA==
   dependencies:
     jsesc "~0.5.0"
+
+relaxed-json@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/relaxed-json/-/relaxed-json-1.0.3.tgz#eb2101ae0ee60e82267d95ed0ddf19a3604b8c1e"
+  integrity sha512-b7wGPo7o2KE/g7SqkJDDbav6zmrEeP4TK2VpITU72J/M949TLe/23y/ZHJo+pskcGM52xIfFoT9hydwmgr1AEg==
+  dependencies:
+    chalk "^2.4.2"
+    commander "^2.6.0"
 
 remark-lint-blockquote-indentation@^3.0.0:
   version "3.1.1"
