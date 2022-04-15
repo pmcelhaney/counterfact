@@ -28,10 +28,10 @@ describe("a module loader", () => {
       const loader = new Loader(basePath, registry);
       await loader.load();
 
-      expect(registry.exists("GET", "hello")).toBe(true);
-      expect(registry.exists("POST", "hello")).toBe(false);
-      expect(registry.exists("GET", "goodbye")).toBe(false);
-      expect(registry.exists("GET", "a/b/c")).toBe(true);
+      expect(registry.exists("GET", "/hello")).toBe(true);
+      expect(registry.exists("POST", "/hello")).toBe(false);
+      expect(registry.exists("GET", "/goodbye")).toBe(false);
+      expect(registry.exists("GET", "/a/b/c")).toBe(true);
     });
   });
 

@@ -31,7 +31,7 @@ export class Loader {
       )) as EndpointModule;
 
       this.registry.add(
-        path.join(directory, path.parse(file.name).name),
+        `/${path.join(directory, path.parse(file.name).name)}`,
         endpoint
       );
     });

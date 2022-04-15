@@ -7,7 +7,7 @@ export class Registry {
     [key: string]: EndpointModule | undefined;
   } = {};
 
-  public get modulesList(): string[] {
+  public get modulesList(): readonly string[] {
     return Object.keys(this.modules);
   }
 
