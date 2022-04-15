@@ -1,41 +1,28 @@
-import fs from "node:fs/promises";
-import os from "node:os";
-import path from "node:path";
-
 import { Loader } from "../src/loader";
 import { Registry } from "../src/registry";
 
+import { withTemporaryFiles } from "./lib/with-temporary-files";
+
 describe("a module loader", () => {
   it("finds a file and adds it to the registry", async () => {
-    let basePath = "";
+    const files = {
+      "hello.mjs": `
+      export function GET() {
+          return {
+              body: "hello"
+          };
+      }
+      `,
+      "a/b/c.mjs": `
+        export function GET() {
+            return {
+                body: "GET from a/b/c"
+            }; 
+        }
+      `,
+    };
 
-    try {
-      basePath = await fs.mkdtemp(path.join(os.tmpdir(), "counterfact-"));
-
-      await fs.writeFile(
-        path.join(basePath, "hello.mjs"),
-        `
-          export function GET() {
-              return {
-                  body: "hello"
-              };
-          }
-      `
-      );
-
-      await fs.mkdir(path.join(basePath, "a"));
-      await fs.mkdir(path.join(basePath, "a/b"));
-      await fs.writeFile(
-        path.join(basePath, "a/b/c.mjs"),
-        `
-          export function GET() {
-              return {
-                  body: "GET from a/b/c"
-              }; 
-          }
-      `
-      );
-
+    await withTemporaryFiles(files, async (basePath) => {
       const registry = new Registry();
 
       const loader = new Loader(basePath, registry);
@@ -45,11 +32,7 @@ describe("a module loader", () => {
       expect(registry.exists("POST", "hello")).toBe(false);
       expect(registry.exists("GET", "goodbye")).toBe(false);
       expect(registry.exists("GET", "a/b/c")).toBe(true);
-    } finally {
-      await fs.rm(basePath, {
-        recursive: true,
-      });
-    }
+    });
   });
 
   it.todo("updates the registry when a file is changed");
