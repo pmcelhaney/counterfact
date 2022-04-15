@@ -1,3 +1,5 @@
+import { once } from "node:events";
+
 import { ModuleLoader } from "../src/module-loader";
 import { Registry } from "../src/registry";
 
@@ -39,5 +41,26 @@ describe("a module loader", () => {
 
   it.todo("updates the registry when a file is deleted");
 
-  it.todo("updates the registry when a file is added");
+  it("updates the registry when a file is added", async () => {
+    await withTemporaryFiles({}, async (basePath, { add }) => {
+      const registry = new Registry();
+
+      const loader = new ModuleLoader(basePath, registry);
+      await loader.load();
+      await loader.watch();
+
+      expect(registry.exists("GET", "/late/addition")).toBe(false);
+
+      void add(
+        "late/addition.mjs",
+        'export function GET() { return { body: "I\'m here now!" }; }'
+      );
+
+      await once(loader, "add");
+
+      expect(registry.exists("GET", "/late/addition")).toBe(true);
+
+      await loader.stopWatching();
+    });
+  });
 });

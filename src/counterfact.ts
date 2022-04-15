@@ -8,5 +8,6 @@ export async function counterfact(basePath: string) {
   const dispatcher = new Dispatcher(registry);
   const loader = new ModuleLoader(basePath, registry);
   await loader.load();
+  await loader.watch();
   return { koaMiddleware: koaMiddleware(dispatcher), registry };
 }

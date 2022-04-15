@@ -12,9 +12,21 @@ async function ensureDirectoryExists(filePath: string) {
   }
 }
 
+function createAddFunction(basePath: string) {
+  return async function add(filePath: string, content: string) {
+    const fullPath = path.join(basePath, filePath);
+
+    await ensureDirectoryExists(fullPath);
+    await fs.writeFile(fullPath, content);
+  };
+}
+
 export async function withTemporaryFiles(
   files: Readonly<{ [path: string]: string }>,
-  ...callbacks: readonly ((directory: string) => Promise<void>)[]
+  ...callbacks: readonly ((
+    directory: string,
+    { add }: Readonly<{ add: (path: string, content: string) => Promise<void> }>
+  ) => Promise<void>)[]
 ): Promise<void> {
   const temporaryDirectory = await fs.mkdtemp(path.join(os.tmpdir(), "wtf-"));
 
@@ -30,7 +42,9 @@ export async function withTemporaryFiles(
 
     for (const callback of callbacks) {
       // eslint-disable-next-line no-await-in-loop, node/callback-return
-      await callback(temporaryDirectory);
+      await callback(temporaryDirectory, {
+        add: createAddFunction(temporaryDirectory),
+      });
     }
   } finally {
     await fs.rm(temporaryDirectory, {
