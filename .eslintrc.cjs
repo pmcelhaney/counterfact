@@ -9,6 +9,7 @@ module.exports = {
   },
 
   rules: {
+    "putout/putout": "off",
     "import/prefer-default-export": "off",
     "@typescript-eslint/naming-convention": "off",
 
@@ -35,6 +36,7 @@ module.exports = {
       extends: ["hardcore", "hardcore/ts", "hardcore/node", "hardcore/jest"],
 
       rules: {
+        "putout/putout": "off",
         "import/unambiguous": "off",
         "jest/prefer-expect-assertions": "off",
 

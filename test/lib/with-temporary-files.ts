@@ -3,35 +3,37 @@ import { constants as fsConstants } from "node:fs";
 import os from "node:os";
 import path from "node:path";
 
+async function ensureDirectoryExists(filePath: string) {
+  const directory = path.dirname(filePath);
+  try {
+    await fs.access(directory, fsConstants.W_OK);
+  } catch {
+    await fs.mkdir(directory, { recursive: true });
+  }
+}
+
 export async function withTemporaryFiles(
   files: Readonly<{ [path: string]: string }>,
-  callback: (directory: string) => Promise<void>
+  ...callbacks: readonly ((directory: string) => Promise<void>)[]
 ): Promise<void> {
-  let directory = "";
+  const temporaryDirectory = await fs.mkdtemp(path.join(os.tmpdir(), "wtf-"));
 
   try {
-    directory = await fs.mkdtemp(path.join(os.tmpdir(), "counterfact-"));
-
     const writes = Object.entries(files).map(async (entry) => {
       const [filename, contents] = entry;
-      const filePath = path.join(directory, filename);
-
-      const foo = path.dirname(filePath);
-
-      try {
-        await fs.access(foo, fsConstants.W_OK);
-      } catch {
-        await fs.mkdir(foo, { recursive: true });
-      }
-
+      const filePath = path.join(temporaryDirectory, filename);
+      await ensureDirectoryExists(filePath);
       await fs.writeFile(filePath, contents);
     });
+
     await Promise.all(writes);
 
-    // eslint-disable-next-line node/callback-return
-    await callback(directory);
+    for (const callback of callbacks) {
+      // eslint-disable-next-line no-await-in-loop, node/callback-return
+      await callback(temporaryDirectory);
+    }
   } finally {
-    await fs.rm(directory, {
+    await fs.rm(temporaryDirectory, {
       recursive: true,
     });
   }
