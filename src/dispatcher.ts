@@ -42,8 +42,10 @@ export class Dispatcher {
       path: parts.slice(remainingParts).join("/"),
 
       reduce: (reducer) => {
-        this.registry.state = reducer(this.registry.state);
+        this.registry.store = reducer(this.registry.store);
       },
+
+      store: this.registry.store,
     });
   }
 }

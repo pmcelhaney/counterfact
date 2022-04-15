@@ -7,10 +7,10 @@ export class Registry {
     [key: string]: EndpointModule | undefined;
   } = {};
 
-  public state: { [key: string]: unknown };
+  public store: { [key: string]: unknown };
 
-  public constructor(state = {}) {
-    this.state = state;
+  public constructor(store = {}) {
+    this.store = store;
   }
 
   public get modulesList(): readonly string[] {

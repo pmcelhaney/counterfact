@@ -73,14 +73,14 @@ describe("a dispatcher", () => {
     expect(response.body).toBe("the rest of the path is 'b/c/d'");
   });
 
-  it("passes a reducer function that can be used to read / update the state", async () => {
+  it("passes a reducer function that can be used to read / update the store", async () => {
     const registry = new Registry({ value: 0 });
 
     registry.add("/increment", {
       GET({ reduce, path }) {
         const amountToIncrement = Number.parseInt(path, 10);
-        reduce((state) => ({
-          value: (state as { value: number }).value + amountToIncrement,
+        reduce((store) => ({
+          value: (store as { value: number }).value + amountToIncrement,
         }));
         return { body: "incremented" };
       },
@@ -92,13 +92,41 @@ describe("a dispatcher", () => {
       path: "/increment/1",
     });
 
-    expect(registry.state.value).toBe(1);
+    expect(registry.store.value).toBe(1);
 
     await dispatcher.request({
       method: "GET",
       path: "/increment/2",
     });
 
-    expect(registry.state.value).toBe(3);
+    expect(registry.store.value).toBe(3);
+  });
+
+  it("allows the store to be mutated directly", async () => {
+    const registry = new Registry({ value: 0 });
+
+    registry.add("/increment", {
+      GET({ store, path }) {
+        const amountToIncrement = Number.parseInt(path, 10);
+        // eslint-disable-next-line @typescript-eslint/restrict-plus-operands, @typescript-eslint/no-unsafe-member-access, no-param-reassign
+        store.value += amountToIncrement;
+        return { body: "incremented" };
+      },
+    });
+
+    const dispatcher = new Dispatcher(registry);
+    await dispatcher.request({
+      method: "GET",
+      path: "/increment/1",
+    });
+
+    expect(registry.store.value).toBe(1);
+
+    await dispatcher.request({
+      method: "GET",
+      path: "/increment/2",
+    });
+
+    expect(registry.store.value).toBe(3);
   });
 });

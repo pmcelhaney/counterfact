@@ -4,5 +4,6 @@ interface State {
 
 export interface InternalRequest {
   path: string;
-  reduce: (reducer: (state: Readonly<State>) => State) => void;
+  reduce: (reducer: (store: Readonly<State>) => State) => void;
+  store: any;
 }
