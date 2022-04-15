@@ -7,6 +7,10 @@ export class Registry {
     [key: string]: EndpointModule | undefined;
   } = {};
 
+  public get modulesList(): string[] {
+    return Object.keys(this.modules);
+  }
+
   public add(path: string, script: Readonly<EndpointModule>) {
     this.modules[path] = script;
   }

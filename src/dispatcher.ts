@@ -30,7 +30,7 @@ export class Dispatcher {
 
     if (remainingParts === 0) {
       return {
-        body: `${method} method for endpoint at "${path}" does not exist`,
+        body: `${method} method for endpoint at "${path}" not found`,
       };
     }
 
