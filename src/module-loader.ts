@@ -4,7 +4,7 @@ import path from "node:path";
 import type { Registry } from "./registry";
 import type { EndpointModule } from "./endpoint-module";
 
-export class Loader {
+export class ModuleLoader {
   private readonly basePath: string;
 
   private readonly registry: Readonly<Registry>;

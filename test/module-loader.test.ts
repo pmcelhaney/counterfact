@@ -1,4 +1,4 @@
-import { Loader } from "../src/loader";
+import { ModuleLoader } from "../src/module-loader";
 import { Registry } from "../src/registry";
 
 import { withTemporaryFiles } from "./lib/with-temporary-files";
@@ -25,7 +25,7 @@ describe("a module loader", () => {
     await withTemporaryFiles(files, async (basePath) => {
       const registry = new Registry();
 
-      const loader = new Loader(basePath, registry);
+      const loader = new ModuleLoader(basePath, registry);
       await loader.load();
 
       expect(registry.exists("GET", "/hello")).toBe(true);

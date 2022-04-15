@@ -24,9 +24,9 @@ describe("a dispatcher", () => {
   });
 
   it("goes up one level and keeps searching if it doesn't find an exact match", async () => {
-    const server = new Registry();
+    const registry = new Registry();
 
-    server.add("/a", {
+    registry.add("/a", {
       GET() {
         return {
           body: "found a match at /a",
@@ -34,7 +34,7 @@ describe("a dispatcher", () => {
       },
     });
 
-    server.add("/a/b", {
+    registry.add("/a/b", {
       GET() {
         return {
           body: "found a match at /a/b",
@@ -42,7 +42,7 @@ describe("a dispatcher", () => {
       },
     });
 
-    const dispatcher = new Dispatcher(server);
+    const dispatcher = new Dispatcher(registry);
 
     const response = await dispatcher.request({
       method: "GET",
@@ -53,9 +53,9 @@ describe("a dispatcher", () => {
   });
 
   it("passes the remainder of the path to the request", async () => {
-    const server = new Registry();
+    const registry = new Registry();
 
-    server.add("/a", {
+    registry.add("/a", {
       GET({ path }) {
         return {
           body: `the rest of the path is '${path}'`,
@@ -63,7 +63,7 @@ describe("a dispatcher", () => {
       },
     });
 
-    const dispatcher = new Dispatcher(server);
+    const dispatcher = new Dispatcher(registry);
 
     const response = await dispatcher.request({
       method: "GET",
