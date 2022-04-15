@@ -7,9 +7,10 @@ import type { EndpointModule } from "./endpoint-module";
 export class ModuleLoader {
   private readonly basePath: string;
 
-  private readonly registry: Readonly<Registry>;
+  private readonly registry: Registry;
 
-  public constructor(basePath: string, registry: Readonly<Registry>) {
+  // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
+  public constructor(basePath: string, registry: Registry) {
     this.basePath = basePath;
     this.registry = registry;
   }

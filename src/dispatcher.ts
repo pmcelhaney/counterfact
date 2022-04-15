@@ -3,9 +3,10 @@ import type { CounterfactResponse } from "./counterfact-response";
 import type { CounterfactRequest } from "./counterfact-request";
 
 export class Dispatcher {
-  private readonly registry: Readonly<Registry>;
+  private readonly registry: Registry;
 
-  public constructor(registry: Readonly<Registry>) {
+  // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
+  public constructor(registry: Registry) {
     this.registry = registry;
   }
 
@@ -39,6 +40,10 @@ export class Dispatcher {
       currentPath
     )({
       path: parts.slice(remainingParts).join("/"),
+
+      reduce: (reducer) => {
+        this.registry.state = reducer(this.registry.state);
+      },
     });
   }
 }

@@ -1,5 +1,9 @@
 import { Registry } from "../src/registry";
 
+function reduce(foo: unknown) {
+  return foo;
+}
+
 describe("a scripted server", () => {
   it("knows if a handler exists for a request method at a path", () => {
     const registry = new Registry();
@@ -40,10 +44,10 @@ describe("a scripted server", () => {
       },
     });
 
-    const getA = await registry.endpoint("GET", "/a")({ path: "" });
-    const getB = await registry.endpoint("GET", "/b")({ path: "" });
-    const postA = await registry.endpoint("POST", "/a")({ path: "" });
-    const postB = await registry.endpoint("POST", "/b")({ path: "" });
+    const getA = await registry.endpoint("GET", "/a")({ path: "", reduce });
+    const getB = await registry.endpoint("GET", "/b")({ path: "", reduce });
+    const postA = await registry.endpoint("POST", "/a")({ path: "", reduce });
+    const postB = await registry.endpoint("POST", "/b")({ path: "", reduce });
 
     expect(getA.body).toBe("GET a");
     expect(getB.body).toBe("GET b");
