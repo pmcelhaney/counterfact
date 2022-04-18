@@ -36,6 +36,7 @@ export async function withTemporaryFiles(
     const writes = Object.entries(files).map(async (entry) => {
       const [filename, contents] = entry;
       const filePath = path.join(temporaryDirectory, filename);
+
       await ensureDirectoryExists(filePath);
       await fs.writeFile(filePath, contents);
     });

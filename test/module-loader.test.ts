@@ -37,8 +37,6 @@ describe("a module loader", () => {
     });
   });
 
-  it.todo("updates the registry when a file is changed");
-
   it.todo("updates the registry when a file is deleted");
 
   it("updates the registry when a file is added", async () => {
@@ -62,5 +60,43 @@ describe("a module loader", () => {
 
       await loader.stopWatching();
     });
+  });
+
+  // This should work but I can't figure out how to break the
+  // module cache when running through Jest (which uses the
+  // experimental module API).
+  // eslint-disable-next-line jest/no-disabled-tests
+  it.skip("updates the registry when a file is changed", async () => {
+    await withTemporaryFiles(
+      {
+        "change.mjs":
+          'export function GET() { return { body: "before change" }; }',
+      },
+      async (basePath, { add }) => {
+        const registry = new Registry();
+
+        const loader = new ModuleLoader(basePath, registry);
+
+        await loader.watch();
+
+        void add(
+          "change.mjs",
+          'export function GET() { return { body: "after change" }; }'
+        );
+
+        await once(loader, "change");
+
+        const response = await registry.endpoint(
+          "GET",
+          "/change"
+        )({ path: "", reduce: () => undefined, store: {} });
+
+        expect(response.body).toBe("after change");
+
+        expect(registry.exists("GET", "/late/addition")).toBe(true);
+
+        await loader.stopWatching();
+      }
+    );
   });
 });
