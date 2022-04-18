@@ -21,11 +21,26 @@ function createAddFunction(basePath: string) {
   };
 }
 
+function createRemoveFunction(basePath: string) {
+  return async function remove(filePath: string) {
+    const fullPath = path.join(basePath, filePath);
+
+    await ensureDirectoryExists(fullPath);
+    await fs.rm(fullPath);
+  };
+}
+
 export async function withTemporaryFiles(
   files: Readonly<{ [path: string]: string }>,
   ...callbacks: readonly ((
     directory: string,
-    { add }: Readonly<{ add: (path: string, content: string) => Promise<void> }>
+    {
+      add,
+      remove,
+    }: Readonly<{
+      add: (path: string, content: string) => Promise<void>;
+      remove: (path: string) => Promise<void>;
+    }>
   ) => Promise<void>)[]
 ): Promise<void> {
   const temporaryDirectory = `${await fs.mkdtemp(
@@ -47,6 +62,7 @@ export async function withTemporaryFiles(
       // eslint-disable-next-line no-await-in-loop, node/callback-return
       await callback(temporaryDirectory, {
         add: createAddFunction(temporaryDirectory),
+        remove: createRemoveFunction(temporaryDirectory),
       });
     }
   } finally {

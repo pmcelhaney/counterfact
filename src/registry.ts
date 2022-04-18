@@ -21,6 +21,11 @@ export class Registry {
     this.modules[path] = script;
   }
 
+  public remove(path: string) {
+    // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+    delete this.modules[path];
+  }
+
   public exists(method: RequestMethod, path: string): boolean {
     return Boolean(this.modules[path]?.[method]);
   }

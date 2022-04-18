@@ -37,8 +37,6 @@ describe("a module loader", () => {
     });
   });
 
-  it.todo("updates the registry when a file is deleted");
-
   it("updates the registry when a file is added", async () => {
     await withTemporaryFiles({}, async (basePath, { add }) => {
       const registry = new Registry();
@@ -60,6 +58,32 @@ describe("a module loader", () => {
 
       await loader.stopWatching();
     });
+  });
+
+  it("updates the registry when a file is deleted", async () => {
+    await withTemporaryFiles(
+      {
+        "delete-me.mjs":
+          'export function GET() { return { body: "Goodbye" }; }',
+      },
+      async (basePath, { remove }) => {
+        const registry = new Registry();
+
+        const loader = new ModuleLoader(basePath, registry);
+        await loader.load();
+        await loader.watch();
+
+        expect(registry.exists("GET", "/delete-me")).toBe(true);
+
+        void remove("delete-me.mjs");
+
+        await once(loader, "remove");
+
+        expect(registry.exists("GET", "/delete-me")).toBe(false);
+
+        await loader.stopWatching();
+      }
+    );
   });
 
   // This should work but I can't figure out how to break the

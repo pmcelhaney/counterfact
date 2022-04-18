@@ -31,19 +31,22 @@ export class ModuleLoader extends EventEmitter {
     this.watcher = chokidar
       .watch(`${this.basePath}/**/*`)
       .on("all", (event, pathName) => {
-        if (event !== "add" && event !== "change") {
+        if (!["add", "change", "unlink"].includes(event)) {
           return;
+        }
+
+        const parts = path.parse(pathName.replace(this.basePath, ""));
+        const url = `/${path.join(parts.dir, parts.name)}`;
+
+        if (event === "unlink") {
+          this.registry.remove(url);
+          this.emit("remove", pathName);
         }
 
         import(`${pathName}?cacheBust=${Date.now()}`)
           // eslint-disable-next-line promise/prefer-await-to-then
           .then((endpoint) => {
-            const parts = path.parse(pathName.replace(this.basePath, ""));
-
-            this.registry.add(
-              `/${path.join(parts.dir, parts.name)}`,
-              endpoint as Readonly<EndpointModule>
-            );
+            this.registry.add(url, endpoint as Readonly<EndpointModule>);
 
             this.emit(event, pathName);
             return "ok";
