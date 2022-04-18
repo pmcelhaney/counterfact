@@ -28,7 +28,9 @@ export async function withTemporaryFiles(
     { add }: Readonly<{ add: (path: string, content: string) => Promise<void> }>
   ) => Promise<void>)[]
 ): Promise<void> {
-  const temporaryDirectory = await fs.mkdtemp(path.join(os.tmpdir(), "wtf-"));
+  const temporaryDirectory = `${await fs.mkdtemp(
+    path.join(os.tmpdir(), "wtf-")
+  )}/`;
 
   try {
     const writes = Object.entries(files).map(async (entry) => {

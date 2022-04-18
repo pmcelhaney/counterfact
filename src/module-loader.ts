@@ -39,8 +39,9 @@ export class ModuleLoader extends EventEmitter {
           // eslint-disable-next-line promise/prefer-await-to-then
           .then((endpoint) => {
             const parts = path.parse(pathName.replace(this.basePath, ""));
+
             this.registry.add(
-              path.join(parts.dir, parts.name),
+              `/${path.join(parts.dir, parts.name)}`,
               endpoint as Readonly<EndpointModule>
             );
 
