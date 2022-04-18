@@ -4,6 +4,8 @@ export interface Context {
   request: {
     path: string;
     method: RequestMethod;
+
+    body?: any;
   };
   status?: number;
   body?: string;
