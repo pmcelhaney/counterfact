@@ -13,6 +13,7 @@ export class Dispatcher {
   public async request({
     method,
     path,
+    body,
   }: Readonly<CounterfactRequest>): Promise<CounterfactResponse> {
     const parts = path.split("/");
 
@@ -46,6 +47,8 @@ export class Dispatcher {
       },
 
       store: this.registry.store,
+
+      body,
     });
   }
 }

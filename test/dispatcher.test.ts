@@ -18,6 +18,7 @@ describe("a dispatcher", () => {
     const response = await dispatcher.request({
       method: "GET",
       path: "/hello",
+      body: "",
     });
 
     expect(response.body).toBe("hello");
@@ -47,6 +48,7 @@ describe("a dispatcher", () => {
     const response = await dispatcher.request({
       method: "GET",
       path: "/a/b/c/d",
+      body: "",
     });
 
     expect(response.body).toBe("found a match at /a/b");
@@ -68,9 +70,36 @@ describe("a dispatcher", () => {
     const response = await dispatcher.request({
       method: "GET",
       path: "/a/b/c/d",
+      body: "",
     });
 
     expect(response.body).toBe("the rest of the path is 'b/c/d'");
+  });
+
+  it("passes the request body", async () => {
+    const registry = new Registry();
+
+    registry.add("/a", {
+      GET({ body }) {
+        return {
+          body: `Hello ${body.name} of ${body.place}!`,
+        };
+      },
+    });
+
+    const dispatcher = new Dispatcher(registry);
+
+    const response = await dispatcher.request({
+      method: "GET",
+      path: "/a/b/c/d",
+
+      body: {
+        name: "Catherine",
+        place: "Aragon",
+      },
+    });
+
+    expect(response.body).toBe("Hello Catherine of Aragon!");
   });
 
   it("passes a reducer function that can be used to read / update the store", async () => {
@@ -90,6 +119,7 @@ describe("a dispatcher", () => {
     await dispatcher.request({
       method: "GET",
       path: "/increment/1",
+      body: "",
     });
 
     expect(registry.store.value).toBe(1);
@@ -97,6 +127,7 @@ describe("a dispatcher", () => {
     await dispatcher.request({
       method: "GET",
       path: "/increment/2",
+      body: "",
     });
 
     expect(registry.store.value).toBe(3);
@@ -118,6 +149,7 @@ describe("a dispatcher", () => {
     await dispatcher.request({
       method: "GET",
       path: "/increment/1",
+      body: "",
     });
 
     expect(registry.store.value).toBe(1);
@@ -125,6 +157,7 @@ describe("a dispatcher", () => {
     await dispatcher.request({
       method: "GET",
       path: "/increment/2",
+      body: "",
     });
 
     expect(registry.store.value).toBe(3);
