@@ -8,10 +8,10 @@ If you're nosy and don't mind a whole lot of incompleteness:
 yarn
 yarn test
 yarn build
-node dist/trial.js
+node demo/index.js
 ```
 
-Then open http://localhost:3000/hello and prepare to be underwhelmed.
+Then open http://localhost:3100/hello/world and prepare to be underwhelmed. (See [./demo/README.md](./demo/README.md) for more.)
 
 ## Features
 
@@ -37,7 +37,7 @@ Then open http://localhost:3000/hello and prepare to be underwhelmed.
 - [x] Solid unit test coverage
 - [ ] CI/CD pipeline
 - [ ] Documentation
-- [ ] Demo
+- [x] Demo
 - [ ] Publish to npm
 
 As of Friday, April 15, 2022, all of the "hard" stuff is done (bleeding edge Node + Jest + TypeScript and most of hot reloading) and what remains is mostly drudgery. I'm aiming to finish hot reloading and put together a demo by EOD Monday (and hopefully more check some more boxes).
