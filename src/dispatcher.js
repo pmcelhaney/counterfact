@@ -5,7 +5,7 @@ export class Dispatcher {
     this.registry = registry;
   }
 
-  async request({ method, path, body }) {
+  async request({ method, path, body, query }) {
     const parts = path.split("/");
 
     let remainingParts = parts.length;
@@ -39,6 +39,7 @@ export class Dispatcher {
 
       store: this.registry.store,
       body,
+      query,
     });
   }
 }

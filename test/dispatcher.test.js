@@ -69,6 +69,7 @@ describe("a dispatcher", () => {
 
     expect(response.body).toBe("the rest of the path is 'b/c/d'");
   });
+
   it("passes the request body", async () => {
     const registry = new Registry();
 
@@ -93,6 +94,31 @@ describe("a dispatcher", () => {
 
     expect(response.body).toBe("Hello Catherine of Aragon!");
   });
+
+  it("passes the query params", async () => {
+    const registry = new Registry();
+
+    registry.add("/a", {
+      GET({ query }) {
+        return {
+          body: `Searching for stores near ${query.zip}!`,
+        };
+      },
+    });
+
+    const dispatcher = new Dispatcher(registry);
+    const response = await dispatcher.request({
+      method: "GET",
+      path: "/a/b/c/d",
+
+      query: {
+        zip: "90210",
+      },
+    });
+
+    expect(response.body).toBe("Searching for stores near 90210!");
+  });
+
   it("passes a reducer function that can be used to read / update the store", async () => {
     const registry = new Registry({ value: 0 });
 
