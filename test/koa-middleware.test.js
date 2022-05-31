@@ -21,6 +21,7 @@ describe("koa middleware", () => {
     };
 
     await middleware(ctx);
+
     expect(ctx.status).toBe(200);
     expect(ctx.body).toBe("Hello, Homer!");
   });

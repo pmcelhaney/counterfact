@@ -22,6 +22,7 @@ describe("a dispatcher", () => {
 
     expect(response.body).toBe("hello");
   });
+
   it("goes up one level and keeps searching if it doesn't find an exact match", async () => {
     const registry = new Registry();
 
@@ -49,6 +50,7 @@ describe("a dispatcher", () => {
 
     expect(response.body).toBe("found a match at /a/b");
   });
+
   it("passes the remainder of the path to the request", async () => {
     const registry = new Registry();
 
@@ -141,14 +143,18 @@ describe("a dispatcher", () => {
       path: "/increment/1",
       body: "",
     });
+
     expect(registry.store.value).toBe(1);
+
     await dispatcher.request({
       method: "GET",
       path: "/increment/2",
       body: "",
     });
+
     expect(registry.store.value).toBe(3);
   });
+
   it("allows the store to be mutated directly", async () => {
     const registry = new Registry({ value: 0 });
 
@@ -170,12 +176,15 @@ describe("a dispatcher", () => {
       path: "/increment/1",
       body: "",
     });
+
     expect(registry.store.value).toBe(1);
+
     await dispatcher.request({
       method: "GET",
       path: "/increment/2",
       body: "",
     });
+
     expect(registry.store.value).toBe(3);
   });
 });

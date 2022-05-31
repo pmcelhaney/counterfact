@@ -4,7 +4,6 @@ module.exports = {
   extends: ["hardcore", "hardcore/ts", "hardcore/node"],
 
   parserOptions: {
-    project: "./tsconfig-eslint.json",
     sourceType: "module",
   },
 
@@ -31,7 +30,7 @@ module.exports = {
     },
 
     {
-      files: ["*.test.ts"],
+      files: ["*.test.js"],
 
       extends: ["hardcore", "hardcore/ts", "hardcore/node", "hardcore/jest"],
 

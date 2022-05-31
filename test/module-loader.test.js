@@ -29,12 +29,14 @@ describe("a module loader", () => {
       const loader = new ModuleLoader(basePath, registry);
 
       await loader.load();
+
       expect(registry.exists("GET", "/hello")).toBe(true);
       expect(registry.exists("POST", "/hello")).toBe(false);
       expect(registry.exists("GET", "/goodbye")).toBe(false);
       expect(registry.exists("GET", "/a/b/c")).toBe(true);
     });
   });
+
   it("updates the registry when a file is added", async () => {
     await withTemporaryFiles({}, async (basePath, { add }) => {
       const registry = new Registry();
@@ -42,16 +44,21 @@ describe("a module loader", () => {
 
       await loader.load();
       await loader.watch();
+
       expect(registry.exists("GET", "/late/addition")).toBe(false);
+
       void add(
         "late/addition.mjs",
         'export function GET() { return { body: "I\'m here now!" }; }'
       );
       await once(loader, "add");
+
       expect(registry.exists("GET", "/late/addition")).toBe(true);
+
       await loader.stopWatching();
     });
   });
+
   it("updates the registry when a file is deleted", async () => {
     await withTemporaryFiles(
       {
@@ -64,10 +71,14 @@ describe("a module loader", () => {
 
         await loader.load();
         await loader.watch();
+
         expect(registry.exists("GET", "/delete-me")).toBe(true);
+
         void remove("delete-me.mjs");
         await once(loader, "remove");
+
         expect(registry.exists("GET", "/delete-me")).toBe(false);
+
         await loader.stopWatching();
       }
     );
@@ -101,6 +112,7 @@ describe("a module loader", () => {
 
         expect(response.body).toBe("after change");
         expect(registry.exists("GET", "/late/addition")).toBe(true);
+
         await loader.stopWatching();
       }
     );

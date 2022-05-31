@@ -9,11 +9,14 @@ describe("a scripted server", () => {
         return await Promise.resolve({ body: "hello" });
       },
     });
+
     expect(registry.exists("GET", "/hello")).toBe(true);
     expect(registry.exists("POST", "/hello")).toBe(false);
     expect(registry.exists("GET", "/goodbye")).toBe(false);
   });
+
   it.todo("returns debug information if path does not exist");
+
   it("returns a function matching the URL and request method", async () => {
     const registry = new Registry();
 
