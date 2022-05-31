@@ -6,10 +6,10 @@ import { ModuleLoader } from "./module-loader.js";
 export async function counterfact(basePath) {
   const registry = new Registry();
   const dispatcher = new Dispatcher(registry);
-  const loader = new ModuleLoader(basePath, registry);
+  const moduleLoader = new ModuleLoader(basePath, registry);
 
-  await loader.load();
-  await loader.watch();
+  await moduleLoader.load();
+  await moduleLoader.watch();
 
-  return { koaMiddleware: koaMiddleware(dispatcher), registry };
+  return { koaMiddleware: koaMiddleware(dispatcher), registry, moduleLoader };
 }

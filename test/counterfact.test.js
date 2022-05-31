@@ -23,7 +23,7 @@ describe("integration test", () => {
     };
 
     await withTemporaryFiles(files, async (basePath) => {
-      const { koaMiddleware } = await counterfact(basePath);
+      const { koaMiddleware, moduleLoader } = await counterfact(basePath);
 
       app.use(koaMiddleware);
 
@@ -32,6 +32,8 @@ describe("integration test", () => {
 
       expect(getResponse.text).toBe("GET /hello");
       expect(postResponse.text).toBe("POST /hello/world");
+
+      await moduleLoader.stopWatching();
     });
   });
 });
