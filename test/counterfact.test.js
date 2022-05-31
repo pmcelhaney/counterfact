@@ -1,16 +1,15 @@
 import supertest from "supertest";
 import Koa from "koa";
 
-import { counterfact } from "../src/counterfact";
+import { counterfact } from "../src/counterfact.js";
 
-import { withTemporaryFiles } from "./lib/with-temporary-files";
+import { withTemporaryFiles } from "./lib/with-temporary-files.js";
 
 describe("integration test", () => {
   it("finds a path", async () => {
     const app = new Koa();
     const server = app.listen();
     const request = supertest(server);
-
     const files = {
       "hello.mjs": `
         export async function GET() {
@@ -26,6 +25,7 @@ describe("integration test", () => {
 
     await withTemporaryFiles(files, async (basePath) => {
       const { koaMiddleware } = await counterfact(basePath);
+
       app.use(koaMiddleware);
 
       const getResponse = await request.get("/hello/world");

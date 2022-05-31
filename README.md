@@ -7,7 +7,6 @@ If you're nosy and don't mind a whole lot of incompleteness:
 ```sh
 yarn
 yarn test
-yarn build
 node demo/index.js
 ```
 

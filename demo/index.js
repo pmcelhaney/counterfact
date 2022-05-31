@@ -2,7 +2,7 @@ import { fileURLToPath } from "node:url";
 
 import Koa from "koa";
 
-import { counterfact } from "../dist/counterfact.js";
+import { counterfact } from "../src/counterfact.js";
 
 const PORT = 3100;
 

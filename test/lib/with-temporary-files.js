@@ -3,8 +3,9 @@ import { constants as fsConstants } from "node:fs";
 import os from "node:os";
 import path from "node:path";
 
-async function ensureDirectoryExists(filePath: string) {
+async function ensureDirectoryExists(filePath) {
   const directory = path.dirname(filePath);
+
   try {
     await fs.access(directory, fsConstants.W_OK);
   } catch {
@@ -12,8 +13,8 @@ async function ensureDirectoryExists(filePath: string) {
   }
 }
 
-function createAddFunction(basePath: string) {
-  return async function add(filePath: string, content: string) {
+function createAddFunction(basePath) {
+  return async function add(filePath, content) {
     const fullPath = path.join(basePath, filePath);
 
     await ensureDirectoryExists(fullPath);
@@ -21,8 +22,8 @@ function createAddFunction(basePath: string) {
   };
 }
 
-function createRemoveFunction(basePath: string) {
-  return async function remove(filePath: string) {
+function createRemoveFunction(basePath) {
+  return async function remove(filePath) {
     const fullPath = path.join(basePath, filePath);
 
     await ensureDirectoryExists(fullPath);
@@ -30,19 +31,7 @@ function createRemoveFunction(basePath: string) {
   };
 }
 
-export async function withTemporaryFiles(
-  files: Readonly<{ [path: string]: string }>,
-  ...callbacks: readonly ((
-    directory: string,
-    {
-      add,
-      remove,
-    }: Readonly<{
-      add: (path: string, content: string) => Promise<void>;
-      remove: (path: string) => Promise<void>;
-    }>
-  ) => Promise<void>)[]
-): Promise<void> {
+export async function withTemporaryFiles(files, ...callbacks) {
   const temporaryDirectory = `${await fs.mkdtemp(
     path.join(os.tmpdir(), "wtf-")
   )}/`;

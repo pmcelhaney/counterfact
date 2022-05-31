@@ -1,20 +1,11 @@
-import type { Registry } from "./registry";
-import type { CounterfactResponse } from "./counterfact-response";
-import type { CounterfactRequest } from "./counterfact-request";
-
 export class Dispatcher {
-  private readonly registry: Registry;
+  registry;
 
-  // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
-  public constructor(registry: Registry) {
+  constructor(registry) {
     this.registry = registry;
   }
 
-  public async request({
-    method,
-    path,
-    body,
-  }: Readonly<CounterfactRequest>): Promise<CounterfactResponse> {
+  async request({ method, path, body }) {
     const parts = path.split("/");
 
     let remainingParts = parts.length;
@@ -47,7 +38,6 @@ export class Dispatcher {
       },
 
       store: this.registry.store,
-
       body,
     });
   }

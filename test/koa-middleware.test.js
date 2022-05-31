@@ -1,11 +1,11 @@
-import { Registry } from "../src/registry";
-import { Dispatcher } from "../src/dispatcher";
-import { koaMiddleware } from "../src/koa-middleware";
-import type { Context } from "../src/koa";
+import { Registry } from "../src/registry.js";
+import { Dispatcher } from "../src/dispatcher.js";
+import { koaMiddleware } from "../src/koa-middleware.js";
 
 describe("koa middleware", () => {
   it("passes the request to the dispatcher and returns the response", async () => {
     const registry = new Registry();
+
     registry.add("/hello", {
       async GET({ body }) {
         return await Promise.resolve({
@@ -16,12 +16,11 @@ describe("koa middleware", () => {
 
     const dispatcher = new Dispatcher(registry);
     const middleware = koaMiddleware(dispatcher);
-
-    const ctx: Context = {
+    const ctx = {
       request: { path: "/hello", method: "GET", body: { name: "Homer" } },
     };
-    await middleware(ctx);
 
+    await middleware(ctx);
     expect(ctx.status).toBe(200);
     expect(ctx.body).toBe("Hello, Homer!");
   });

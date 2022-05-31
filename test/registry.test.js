@@ -1,4 +1,4 @@
-import { Registry } from "../src/registry";
+import { Registry } from "../src/registry.js";
 
 describe("a scripted server", () => {
   it("knows if a handler exists for a request method at a path", () => {
@@ -9,14 +9,11 @@ describe("a scripted server", () => {
         return await Promise.resolve({ body: "hello" });
       },
     });
-
     expect(registry.exists("GET", "/hello")).toBe(true);
     expect(registry.exists("POST", "/hello")).toBe(false);
     expect(registry.exists("GET", "/goodbye")).toBe(false);
   });
-
   it.todo("returns debug information if path does not exist");
-
   it("returns a function matching the URL and request method", async () => {
     const registry = new Registry();
 
@@ -29,7 +26,6 @@ describe("a scripted server", () => {
         return await Promise.resolve({ body: "POST a" });
       },
     });
-
     registry.add("/b", {
       async GET() {
         return await Promise.resolve({ body: "GET b" });
@@ -43,13 +39,12 @@ describe("a scripted server", () => {
     const props = {
       path: "",
 
-      reduce(foo: unknown) {
+      reduce(foo) {
         return foo;
       },
 
       store: {},
     };
-
     const getA = await registry.endpoint("GET", "/a")(props);
     const getB = await registry.endpoint("GET", "/b")(props);
     const postA = await registry.endpoint("POST", "/a")(props);
