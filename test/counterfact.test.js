@@ -8,8 +8,7 @@ import { withTemporaryFiles } from "./lib/with-temporary-files.js";
 describe("integration test", () => {
   it("finds a path", async () => {
     const app = new Koa();
-    const server = app.listen();
-    const request = supertest(server);
+    const request = supertest(app.callback());
     const files = {
       "hello.mjs": `
         export async function GET() {
@@ -34,6 +33,5 @@ describe("integration test", () => {
       expect(getResponse.text).toBe("GET /hello");
       expect(postResponse.text).toBe("POST /hello/world");
     });
-    server.close();
   });
 });
