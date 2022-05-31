@@ -1,4 +1,4 @@
-export function GET({ path, store }) {
+export function GET({ path, store, query }) {
   store.visits ??= {};
   store.visits[path] ??= 0;
   store.visits[path] += 1;
@@ -8,6 +8,6 @@ export function GET({ path, store }) {
   }
 
   return {
-    body: `Hello, ${path}!`,
+    body: `${query.greeting ?? "Hello"}, ${path}!`,
   };
 }
