@@ -5,6 +5,8 @@ export class Registry {
 
   store;
 
+  paths = [];
+
   constructor(store = {}) {
     this.store = store;
   }
@@ -17,18 +19,21 @@ export class Registry {
     this.modules[url] = script;
 
     function addToTree(tree, path) {
+      const nodeName = path[0];
+
       if (path.length === 1) {
         return {
           ...tree,
-          [path[0]]: { ...tree[path[0]], script },
+          [nodeName]: { ...tree[nodeName], script },
         };
       }
 
       return {
         ...tree,
 
-        [path[0]]: {
-          children: addToTree(tree[path[0]]?.children ?? {}, path.slice(1)),
+        [nodeName]: {
+          ...tree[nodeName],
+          children: addToTree(tree[nodeName]?.children ?? {}, path.slice(1)),
         },
       };
     }
@@ -44,16 +49,34 @@ export class Registry {
     return Boolean(this.modules[path]?.[method]);
   }
 
-  endpoint(method, path) {
-    const module = this.modules[path];
-    const lambda = module?.[method];
+  endpoint(method, url) {
+    function findHandler(tree, path, fallback) {
+      const node = tree[path[0]];
 
-    if (!lambda) {
-      throw new Error(
-        `${method} method for endpoint at "${path}" does not exist`
-      );
+      const handler = node?.script?.[method] ?? fallback;
+
+      if (path.length === 0) {
+        return handler;
+      }
+
+      if (node?.children) {
+        return findHandler(node.children, path.slice(1), handler);
+      }
+
+      return handler;
     }
 
-    return lambda;
+    function notFoundFallback() {
+      return {
+        status: 404,
+        body: `${method} method for endpoint at "${url}" does not exist`,
+      };
+    }
+
+    return findHandler(
+      this.moduleTree,
+      url.split("/").slice(1),
+      notFoundFallback
+    );
   }
 }

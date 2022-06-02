@@ -72,25 +72,29 @@ describe("a scripted server", () => {
   it("builds a module tree", () => {
     const registry = new Registry();
 
-    registry.add("/foo", { GET: "GET foo" });
-    registry.add("/bar", { GET: "GET bar" });
-    registry.add("/foo/bar/baz", { GET: "GET foo/bar/baz" });
-    registry.add("/foo/bar/bop", { GET: "GET foo/bar/bop" });
+    registry.add("/bar", { GET: "GET /bar" });
+    registry.add("/foo/bar/baz", { GET: "GET /foo/bar/baz" });
+    registry.add("/foo/bar/bop", { GET: "GET /foo/bar/bop" });
+    registry.add("/foo", { GET: "GET /foo" });
 
     expect(registry.moduleTree).toStrictEqual({
       foo: {
+        script: {
+          GET: "GET /foo",
+        },
+
         children: {
           bar: {
             children: {
               baz: {
                 script: {
-                  GET: "GET foo/bar/baz",
+                  GET: "GET /foo/bar/baz",
                 },
               },
 
               bop: {
                 script: {
-                  GET: "GET foo/bar/bop",
+                  GET: "GET /foo/bar/bop",
                 },
               },
             },
@@ -100,18 +104,18 @@ describe("a scripted server", () => {
 
       bar: {
         script: {
-          GET: "GET bar",
+          GET: "GET /bar",
         },
       },
     });
   });
 
-  it.skip("handles dynamic routes", async () => {
+  it("handles dynamic routes", async () => {
     const registry = new Registry();
 
-    registry.add("/user/[userid]", {
+    registry.add("/user/[user_id]", {
       GET() {
-        return { body: "GET userid" };
+        return { body: "GET user_id" };
       },
     });
 
@@ -124,8 +128,8 @@ describe("a scripted server", () => {
 
       store: {},
     };
-    const response = await registry.endpoint("GET", "/user/123")(context);
+    const response = await registry.endpoint("GET", "/user/[user_id]")(context);
 
-    expect(response).toBe("GET userid");
+    expect(response).toStrictEqual({ body: "GET user_id" });
   });
 });

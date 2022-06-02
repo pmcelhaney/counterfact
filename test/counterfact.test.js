@@ -13,7 +13,7 @@ describe("integration test", () => {
       "hello.mjs": `
         export async function GET() {
           return await Promise.resolve({ body: "GET /hello" });
-        }
+        } 
       `,
       "hello/world.mjs": `
         export async function POST() {
