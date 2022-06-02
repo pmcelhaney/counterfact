@@ -6,7 +6,9 @@ describe("a scripted server", () => {
 
     registry.add("/hello", {
       async GET() {
-        return await Promise.resolve({ body: "hello" });
+        await Promise.resolve("noop");
+
+        return { body: "hello" };
       },
     });
 
@@ -22,20 +24,28 @@ describe("a scripted server", () => {
 
     registry.add("/a", {
       async GET() {
-        return await Promise.resolve({ body: "GET a" });
+        await Promise.resolve("noop");
+
+        return { body: "GET a" };
       },
 
       async POST() {
-        return await Promise.resolve({ body: "POST a" });
+        await Promise.resolve("noop");
+
+        return { body: "POST a" };
       },
     });
     registry.add("/b", {
       async GET() {
-        return await Promise.resolve({ body: "GET b" });
+        await Promise.resolve("noop");
+
+        return { body: "GET b" };
       },
 
       async POST() {
-        return await Promise.resolve({ body: "POST b" });
+        await Promise.resolve("noop");
+
+        return { body: "POST b" };
       },
     });
 
