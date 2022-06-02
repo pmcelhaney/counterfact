@@ -1,6 +1,8 @@
 export class Registry {
   modules = {};
 
+  moduleTree = {};
+
   store;
 
   constructor(store = {}) {
@@ -13,6 +15,7 @@ export class Registry {
 
   add(path, script) {
     this.modules[path] = script;
+    this.moduleTree[path.slice(1)] = {};
   }
 
   remove(path) {

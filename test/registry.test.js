@@ -68,4 +68,39 @@ describe("a scripted server", () => {
     expect(postA.body).toBe("POST a");
     expect(postB.body).toBe("POST b");
   });
+
+  it("creates a module tree", () => {
+    const registry = new Registry();
+
+    registry.add("/foo", {});
+    registry.add("/bar", {});
+
+    expect(registry.moduleTree).toStrictEqual({
+      foo: {},
+      bar: {},
+    });
+  });
+
+  it.skip("handles dynamic routes", async () => {
+    const registry = new Registry();
+
+    registry.add("/user/[userid]", {
+      GET() {
+        return { body: "GET userid" };
+      },
+    });
+
+    const context = {
+      path: "",
+
+      reduce(foo) {
+        return foo;
+      },
+
+      store: {},
+    };
+    const response = await registry.endpoint("GET", "/user/123")(context);
+
+    expect(response).toBe("GET userid");
+  });
 });
