@@ -114,8 +114,8 @@ describe("a scripted server", () => {
     const registry = new Registry();
 
     registry.add("/user/[user_id]", {
-      GET() {
-        return { body: "GET user_id" };
+      GET({ pathParameters = {} }) {
+        return { body: `user ${pathParameters.user_id}` };
       },
     });
 
@@ -128,8 +128,8 @@ describe("a scripted server", () => {
 
       store: {},
     };
-    const response = await registry.endpoint("GET", "/user/[user_id]")(context);
+    const response = await registry.endpoint("GET", "/user/123")(context);
 
-    expect(response).toStrictEqual({ body: "GET user_id" });
+    expect(response).toStrictEqual({ body: "user 123" });
   });
 });

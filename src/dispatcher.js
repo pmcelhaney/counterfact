@@ -31,7 +31,7 @@ export class Dispatcher {
       method,
       currentPath
     )({
-      path: parts.slice(remainingParts).join("/"),
+      path: String(parts.slice(remainingParts).join("/")),
 
       reduce: (reducer) => {
         this.registry.store = reducer(this.registry.store);

@@ -50,7 +50,10 @@ export class Registry {
   }
 
   endpoint(method, url) {
-    function findHandler(tree, path, fallback) {
+    function findHandler(tree, staticPath, fallback) {
+      const path = tree[staticPath[0]]
+        ? staticPath
+        : ["[user_id]", ...staticPath.slice(1)];
       const node = tree[path[0]];
 
       const handler = node?.script?.[method] ?? fallback;
@@ -63,7 +66,8 @@ export class Registry {
         return findHandler(node.children, path.slice(1), handler);
       }
 
-      return handler;
+      return (context) =>
+        handler({ ...context, pathParameters: { user_id: 123 } });
     }
 
     function notFoundFallback() {
