@@ -78,33 +78,35 @@ describe("a scripted server", () => {
     registry.add("/foo", { GET: "GET /foo" });
 
     expect(registry.moduleTree).toStrictEqual({
-      foo: {
-        script: {
-          GET: "GET /foo",
-        },
+      children: {
+        foo: {
+          script: {
+            GET: "GET /foo",
+          },
 
-        children: {
-          bar: {
-            children: {
-              baz: {
-                script: {
-                  GET: "GET /foo/bar/baz",
+          children: {
+            bar: {
+              children: {
+                baz: {
+                  script: {
+                    GET: "GET /foo/bar/baz",
+                  },
                 },
-              },
 
-              bop: {
-                script: {
-                  GET: "GET /foo/bar/bop",
+                bop: {
+                  script: {
+                    GET: "GET /foo/bar/bop",
+                  },
                 },
               },
             },
           },
         },
-      },
 
-      bar: {
-        script: {
-          GET: "GET /bar",
+        bar: {
+          script: {
+            GET: "GET /bar",
+          },
         },
       },
     });

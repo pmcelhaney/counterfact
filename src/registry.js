@@ -1,7 +1,9 @@
 export class Registry {
   modules = {};
 
-  moduleTree = {};
+  moduleTree = {
+    children: {},
+  };
 
   store;
 
@@ -18,7 +20,7 @@ export class Registry {
   add(url, script) {
     this.modules[url] = script;
 
-    function addToTree(tree, path) {
+    function addToTree(path, tree) {
       const [nodeName] = path;
 
       const dynamicPathName =
@@ -43,12 +45,15 @@ export class Registry {
 
         [nodeName]: {
           ...tree[nodeName],
-          children: addToTree(tree[nodeName]?.children ?? {}, path.slice(1)),
+          children: addToTree(path.slice(1), tree[nodeName]?.children ?? {}),
         },
       };
     }
 
-    this.moduleTree = addToTree(this.moduleTree, url.split("/").slice(1));
+    this.moduleTree.children = addToTree(
+      url.split("/").slice(1),
+      this.moduleTree.children
+    );
   }
 
   remove(path) {
@@ -93,7 +98,7 @@ export class Registry {
     }
 
     return findHandler(
-      { children: this.moduleTree },
+      this.moduleTree,
       url.split("/").slice(1),
       notFoundFallback
     );
