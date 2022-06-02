@@ -20,7 +20,7 @@ export class Registry {
   add(url, script) {
     this.modules[url] = script;
 
-    function decorateTree(path, tree) {
+    function addModuleToTreeAtPath(module, tree, path) {
       const [nodeName] = path;
 
       const dynamicPathVariableName =
@@ -49,15 +49,20 @@ export class Registry {
         children: {
           ...tree.children,
 
-          [nodeName]: decorateTree(
-            path.slice(1),
-            tree?.children?.[nodeName] ?? {}
+          [nodeName]: addModuleToTreeAtPath(
+            module,
+            tree?.children?.[nodeName] ?? {},
+            path.slice(1)
           ),
         },
       };
     }
 
-    this.moduleTree = decorateTree(url.split("/").slice(1), this.moduleTree);
+    this.moduleTree = addModuleToTreeAtPath(
+      script,
+      this.moduleTree,
+      url.split("/").slice(1)
+    );
   }
 
   remove(path) {
