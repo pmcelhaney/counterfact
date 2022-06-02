@@ -13,9 +13,27 @@ export class Registry {
     return Object.keys(this.modules);
   }
 
-  add(path, script) {
-    this.modules[path] = script;
-    this.moduleTree[path.slice(1)] = {};
+  add(url, script) {
+    this.modules[url] = script;
+
+    function addToTree(tree, path) {
+      if (path.length === 1) {
+        return {
+          ...tree,
+          [path[0]]: { ...tree[path[0]], script },
+        };
+      }
+
+      return {
+        ...tree,
+
+        [path[0]]: {
+          children: addToTree(tree[path[0]]?.children ?? {}, path.slice(1)),
+        },
+      };
+    }
+
+    this.moduleTree = addToTree(this.moduleTree, url.split("/").slice(1));
   }
 
   remove(path) {

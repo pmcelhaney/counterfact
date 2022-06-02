@@ -69,15 +69,40 @@ describe("a scripted server", () => {
     expect(postB.body).toBe("POST b");
   });
 
-  it("creates a module tree", () => {
+  it("builds a module tree", () => {
     const registry = new Registry();
 
-    registry.add("/foo", {});
-    registry.add("/bar", {});
+    registry.add("/foo", { GET: "GET foo" });
+    registry.add("/bar", { GET: "GET bar" });
+    registry.add("/foo/bar/baz", { GET: "GET foo/bar/baz" });
+    registry.add("/foo/bar/bop", { GET: "GET foo/bar/bop" });
 
     expect(registry.moduleTree).toStrictEqual({
-      foo: {},
-      bar: {},
+      foo: {
+        children: {
+          bar: {
+            children: {
+              baz: {
+                script: {
+                  GET: "GET foo/bar/baz",
+                },
+              },
+
+              bop: {
+                script: {
+                  GET: "GET foo/bar/bop",
+                },
+              },
+            },
+          },
+        },
+      },
+
+      bar: {
+        script: {
+          GET: "GET bar",
+        },
+      },
     });
   });
 
