@@ -19,11 +19,21 @@ export class Registry {
     this.modules[url] = script;
 
     function addToTree(tree, path) {
-      const nodeName = path[0];
+      const [nodeName] = path;
+
+      const dynamicPathName =
+        nodeName.startsWith("[") && nodeName.endsWith("]")
+          ? nodeName.slice(1, -1)
+          : undefined;
+
+      if (dynamicPathName) {
+        tree.dynamicPathName = dynamicPathName;
+      }
 
       if (path.length === 1) {
         return {
           ...tree,
+
           [nodeName]: { ...tree[nodeName], script },
         };
       }
@@ -50,12 +60,12 @@ export class Registry {
   }
 
   endpoint(method, url) {
-    function findHandler(tree, path, fallback) {
-      const nodeName = tree[path[0]] ? path[0] : "[user_id]";
-      const node = tree[nodeName];
+    function findHandler(parentNode, path, fallback) {
+      const nodeName = parentNode.children[path[0]] ? path[0] : "[user_id]";
+      const node = parentNode.children[nodeName];
 
+      // probably extract this to findBestMatchHandler(node, method, fallback)
       const matchingHandler = node?.script?.[method];
-
       const handler = matchingHandler
         ? (context) =>
             matchingHandler({
@@ -69,7 +79,7 @@ export class Registry {
       }
 
       if (node?.children) {
-        return findHandler(node.children, path.slice(1), handler);
+        return findHandler(node, path.slice(1), handler);
       }
 
       return handler;
@@ -83,9 +93,15 @@ export class Registry {
     }
 
     return findHandler(
-      this.moduleTree,
+      { children: this.moduleTree },
       url.split("/").slice(1),
       notFoundFallback
     );
   }
 }
+
+//
+// When recursing, we need to recurse on a node, not children,
+// so that we can set and get the dynamic path name (wildcardName).
+
+// That means this.moduleTree should be a node with children.
