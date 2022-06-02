@@ -23,13 +23,13 @@ export class Registry {
     function decorateTree(path, tree) {
       const [nodeName] = path;
 
-      const dynamicPathName =
+      const dynamicPathVariableName =
         nodeName.startsWith("[") && nodeName.endsWith("]")
           ? nodeName.slice(1, -1)
           : undefined;
 
-      if (dynamicPathName) {
-        tree.dynamicPathName = dynamicPathName;
+      if (dynamicPathVariableName) {
+        tree.dynamicPathVariableName = dynamicPathVariableName;
       }
 
       if (path.length === 1) {
@@ -72,7 +72,7 @@ export class Registry {
     function findHandler(parentNode, path, fallback) {
       const nodeName = parentNode.children[path[0]]
         ? path[0]
-        : `[${parentNode.dynamicPathName}]`;
+        : `[${parentNode.dynamicPathVariableName}]`;
       const node = parentNode.children[nodeName];
 
       // probably extract this to findBestMatchHandler(node, method, fallback)
@@ -81,7 +81,7 @@ export class Registry {
         ? (context) =>
             matchingHandler({
               ...context,
-              pathParameters: { [nodeName.slice(1, -1)]: 123 },
+              pathParameters: { [nodeName.slice(1, -1)]: path[0] },
             })
         : fallback;
 
