@@ -20,6 +20,8 @@ export class Registry {
   add(url, script) {
     this.modules[url] = script;
 
+    // const this.tree = withNode(this.tree, url.split('/').slice(1), node => {...node, module})
+
     function addModuleToTreeAtPath(module, tree, path) {
       const [nodeName] = path;
 
