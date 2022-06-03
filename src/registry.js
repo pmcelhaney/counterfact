@@ -1,3 +1,5 @@
+import { deepestAcceptableNodeInPath } from "./tree-functions.js";
+
 export class Registry {
   modules = {};
 
@@ -20,7 +22,7 @@ export class Registry {
   add(url, script) {
     this.modules[url] = script;
 
-    // const this.tree = withNode(this.tree, url.split('/').slice(1), node => {...node, module})
+    // const this.tree = withNode(this.tree, url.split('/').slice, node => {...node, module})
 
     function addModuleToTreeAtPath(module, tree, path) {
       const [nodeName] = path;
@@ -115,5 +117,16 @@ export class Registry {
       url.split("/").slice(1),
       notFoundFallback
     );
+  }
+
+  endpoint2(method, url) {
+    const targetNode = deepestAcceptableNodeInPath({
+      tree: this.moduleTree,
+      path: url.split("/").slice(1),
+      isAcceptable: (node) => node.script?.[method],
+      findChild: (tree, nodeName) => tree.children?.[nodeName],
+    });
+
+    return targetNode.script?.[method];
   }
 }

@@ -134,4 +134,28 @@ describe("a scripted server", () => {
 
     expect(response).toStrictEqual({ body: "user 123" });
   });
+
+  it("handles static routes (v2)", async () => {
+    const registry = new Registry();
+
+    registry.add("/user/profile", {
+      GET() {
+        return { body: "user profile" };
+      },
+    });
+
+    const context = {
+      path: "",
+
+      reduce(foo) {
+        return foo;
+      },
+
+      store: {},
+    };
+
+    const response = await registry.endpoint2("GET", "/user/profile")(context);
+
+    expect(response).toStrictEqual({ body: "user profile" });
+  });
 });

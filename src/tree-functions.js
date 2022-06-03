@@ -5,21 +5,19 @@ export function deepestAcceptableNodeInPath({
   findChild,
 }) {
   if (path.length === 0) {
-    return tree;
+    return isAcceptable(tree) ? tree : undefined;
   }
 
   const [head, ...tail] = path;
 
   const child = findChild(tree, head);
 
-  if (child !== undefined && isAcceptable(child)) {
-    return deepestAcceptableNodeInPath({
+  return (
+    deepestAcceptableNodeInPath({
       tree: child,
       path: tail,
       isAcceptable,
       findChild,
-    });
-  }
-
-  return tree;
+    }) ?? tree
+  );
 }

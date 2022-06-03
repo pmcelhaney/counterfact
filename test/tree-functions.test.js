@@ -144,4 +144,35 @@ describe("traces the path to the last matching node", () => {
       }).value
     ).toBe("beta");
   });
+
+  it("when the node is acceptable but intermediate nodes are not", () => {
+    const tree = {
+      children: {
+        alpha: {
+          value: "alpha",
+
+          children: {
+            beta: {
+              value: "beta",
+
+              children: {
+                gamma: {
+                  value: "gamma",
+                },
+              },
+            },
+          },
+        },
+      },
+    };
+
+    expect(
+      deepestAcceptableNodeInPath({
+        tree,
+        path: ["alpha", "beta", "gamma"],
+        isAcceptable: (node) => node.value === "gamma",
+        findChild: (node, name) => node.children[name],
+      }).value
+    ).toBe("gamma");
+  });
 });
