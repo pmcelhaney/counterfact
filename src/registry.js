@@ -15,10 +15,10 @@ export class Registry {
     return Object.keys(this.modules);
   }
 
-  add(path, module) {
-    this.modules[path] = module;
+  add(url, module) {
+    this.modules[url] = module;
 
-    const segments = path.split("/").slice(1);
+    const segments = url.split("/").slice(1);
 
     this.moduleTree = this.addModuleToTree(this.moduleTree, segments, module);
   }
@@ -56,21 +56,21 @@ export class Registry {
     };
   }
 
-  remove(path) {
-    delete this.modules[path];
+  remove(url) {
+    delete this.modules[url];
   }
 
-  exists(method, path) {
-    return Boolean(this.modules[path]?.[method]);
+  exists(method, url) {
+    return Boolean(this.modules[url]?.[method]);
   }
 
-  endpoint(method, path) {
-    const module = this.modules[path];
-    const lambda = module?.[method];
+  endpoint(httpRequestMethod, url) {
+    const module = this.modules[url];
+    const lambda = module?.[httpRequestMethod];
 
     if (!lambda) {
       throw new Error(
-        `${method} method for endpoint at "${path}" does not exist`
+        `${httpRequestMethod} method for endpoint at "${url}" does not exist`
       );
     }
 
