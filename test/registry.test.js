@@ -68,4 +68,20 @@ describe("a scripted server", () => {
     expect(postA.body).toBe("POST a");
     expect(postB.body).toBe("POST b");
   });
+
+  it("constructs a tree of the registered modules", () => {
+    const registry = new Registry();
+
+    registry.add("/nc", "North Carolina");
+    registry.add("/nc/charlotte/south-park", "South Park");
+    registry.add("/nc/charlotte", "Charlotte, NC");
+
+    const { nc } = registry.moduleTree.children;
+    const { charlotte } = nc.children;
+    const southPark = charlotte.children["south-park"];
+
+    expect(nc.module).toBe("North Carolina");
+    expect(charlotte.module).toBe("Charlotte, NC");
+    expect(southPark.module).toBe("South Park");
+  });
 });
