@@ -1,5 +1,5 @@
-function addModuleToTree(tree, segments, module) {
-  const [head, ...tail] = segments;
+function addNodeToTree(tree, edges, node) {
+  const [head, ...tail] = edges;
 
   if (tail.length === 0) {
     return {
@@ -10,7 +10,7 @@ function addModuleToTree(tree, segments, module) {
 
         [head]: {
           ...tree?.children?.[head],
-          module,
+          ...node,
         },
       },
     };
@@ -22,7 +22,7 @@ function addModuleToTree(tree, segments, module) {
     children: {
       ...tree?.children,
 
-      [head]: addModuleToTree(tree?.children?.[head] ?? {}, tail, module),
+      [head]: addNodeToTree(tree?.children?.[head] ?? {}, tail, node),
     },
   };
 }
@@ -47,9 +47,9 @@ export class Registry {
   add(url, module) {
     this.modules[url] = module;
 
-    const segments = url.split("/").slice(1);
-
-    this.moduleTree = addModuleToTree(this.moduleTree, segments, module);
+    this.moduleTree = addNodeToTree(this.moduleTree, url.split("/").slice(1), {
+      module,
+    });
   }
 
   remove(url) {
