@@ -1,3 +1,32 @@
+function addModuleToTree(tree, segments, module) {
+  const [head, ...tail] = segments;
+
+  if (tail.length === 0) {
+    return {
+      ...tree,
+
+      children: {
+        ...tree.children,
+
+        [head]: {
+          ...tree?.children?.[head],
+          module,
+        },
+      },
+    };
+  }
+
+  return {
+    ...tree,
+
+    children: {
+      ...tree?.children,
+
+      [head]: addModuleToTree(tree?.children?.[head] ?? {}, tail, module),
+    },
+  };
+}
+
 export class Registry {
   modules = {};
 
@@ -20,40 +49,7 @@ export class Registry {
 
     const segments = url.split("/").slice(1);
 
-    this.moduleTree = this.addModuleToTree(this.moduleTree, segments, module);
-  }
-
-  addModuleToTree(tree, segments, module) {
-    const [head, ...tail] = segments;
-
-    if (tail.length === 0) {
-      return {
-        ...tree,
-
-        children: {
-          ...tree.children,
-
-          [head]: {
-            ...tree?.children?.[head],
-            module,
-          },
-        },
-      };
-    }
-
-    return {
-      ...tree,
-
-      children: {
-        ...tree?.children,
-
-        [head]: this.addModuleToTree(
-          tree?.children?.[head] ?? {},
-          tail,
-          module
-        ),
-      },
-    };
+    this.moduleTree = addModuleToTree(this.moduleTree, segments, module);
   }
 
   remove(url) {
