@@ -7,10 +7,10 @@ describe("koa middleware", () => {
     const registry = new Registry();
 
     registry.add("/hello", {
-      async GET({ body }) {
-        return await Promise.resolve({
+      GET({ body }) {
+        return {
           body: `Hello, ${body.name}!`,
-        });
+        };
       },
     });
 
