@@ -33,6 +33,6 @@ jobs:
       - name: Install Packages
         run: yarn install --frozen-lockfile
       - name: ESlint
-        run: yarn eslint -f github .
+        run: yarn eslint -f github . 
       - name: Unit tests
         run: yarn test --reporters=github-actions

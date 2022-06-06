@@ -47,7 +47,7 @@ describe("a module loader", () => {
 
       expect(registry.exists("GET", "/late/addition")).toBe(false);
 
-      void add(
+      add(
         "late/addition.mjs",
         'export function GET() { return { body: "I\'m here now!" }; }'
       );
@@ -74,7 +74,7 @@ describe("a module loader", () => {
 
         expect(registry.exists("GET", "/delete-me")).toBe(true);
 
-        void remove("delete-me.mjs");
+        remove("delete-me.mjs");
         await once(loader, "remove");
 
         expect(registry.exists("GET", "/delete-me")).toBe(false);
@@ -88,6 +88,7 @@ describe("a module loader", () => {
   // module cache when running through Jest (which uses the
   // experimental module API).
 
+  // eslint-disable-next-line jest/no-disabled-tests
   it.skip("updates the registry when a file is changed", async () => {
     await withTemporaryFiles(
       {
@@ -99,7 +100,7 @@ describe("a module loader", () => {
         const loader = new ModuleLoader(basePath, registry);
 
         await loader.watch();
-        void add(
+        add(
           "change.mjs",
           'export function GET() { return { body: "after change" }; }'
         );
