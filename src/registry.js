@@ -31,15 +31,25 @@ export class Registry {
 
   remove(url) {
     delete this.modules[url];
+    delete this.nodeForUrl(url).module;
   }
 
   exists(method, url) {
     return Boolean(this.modules[url]?.[method]);
   }
 
+  nodeForUrl(url) {
+    let node = this.moduleTree;
+
+    for (const segment of url.split("/").slice(1)) {
+      node = node.children[segment];
+    }
+
+    return node;
+  }
+
   endpoint(httpRequestMethod, url) {
-    const module = this.modules[url];
-    const lambda = module?.[httpRequestMethod];
+    const lambda = this.nodeForUrl(url)?.module?.[httpRequestMethod];
 
     if (!lambda) {
       throw new Error(
