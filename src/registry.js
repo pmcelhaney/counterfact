@@ -31,25 +31,37 @@ export class Registry {
 
   remove(url) {
     delete this.modules[url];
-    delete this.nodeForUrl(url).module;
   }
 
   exists(method, url) {
     return Boolean(this.modules[url]?.[method]);
   }
 
-  nodeForUrl(url) {
+  handler(url) {
     let node = this.moduleTree;
 
+    const pathParameters = {};
+
     for (const segment of url.split("/").slice(1)) {
-      node = node.children[segment];
+      if (node.children[segment]) {
+        node = node.children[segment];
+      } else {
+        const dynamicSegment = Object.keys(node.children).find(
+          (ds) => ds.startsWith("[") && ds.endsWith("]")
+        );
+
+        pathParameters[dynamicSegment.slice(1, -1)] = segment;
+
+        node = node.children[dynamicSegment];
+      }
     }
 
-    return node;
+    return { module: node.module, pathParameters };
   }
 
   endpoint(httpRequestMethod, url) {
-    const lambda = this.nodeForUrl(url)?.module?.[httpRequestMethod];
+    const handler = this.handler(url);
+    const lambda = handler?.module?.[httpRequestMethod];
 
     if (!lambda) {
       throw new Error(
@@ -57,6 +69,7 @@ export class Registry {
       );
     }
 
-    return lambda;
+    return ({ ...context }) =>
+      lambda({ ...context, pathParameters: handler.pathParameters });
   }
 }

@@ -84,4 +84,18 @@ describe("a scripted server", () => {
     expect(charlotte.module).toBe("Charlotte, NC");
     expect(southPark.module).toBe("South Park");
   });
+
+  it("handles a dynamic path", () => {
+    const registry = new Registry();
+
+    registry.add("/hello/[name]", {
+      GET({ pathParameters }) {
+        return { body: `hello, ${pathParameters.name}` };
+      },
+    });
+
+    expect(registry.endpoint("GET", "/hello/world")({})).toStrictEqual({
+      body: "hello, world",
+    });
+  });
 });
