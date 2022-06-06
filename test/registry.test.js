@@ -89,9 +89,9 @@ describe("a scripted server", () => {
     const registry = new Registry();
 
     registry.add("/[organization]/users/[username]/friends/[page]", {
-      GET({ pathParameters }) {
+      GET({ path }) {
         return {
-          body: `page ${pathParameters.page} of ${pathParameters.username}'s friends in ${pathParameters.organization}`,
+          body: `page ${path.page} of ${path.username}'s friends in ${path.organization}`,
         };
       },
     });

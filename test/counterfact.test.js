@@ -27,7 +27,7 @@ describe("integration test", () => {
 
       app.use(koaMiddleware);
 
-      const getResponse = await request.get("/hello/world");
+      const getResponse = await request.get("/hello");
       const postResponse = await request.post("/hello/world");
 
       expect(getResponse.text).toBe("GET /hello");

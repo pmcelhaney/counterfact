@@ -40,7 +40,7 @@ export class Registry {
   handler(url) {
     let node = this.moduleTree;
 
-    const pathParameters = {};
+    const path = {};
 
     for (const segment of url.split("/").slice(1)) {
       if (node.children[segment]) {
@@ -50,13 +50,13 @@ export class Registry {
           (ds) => ds.startsWith("[") && ds.endsWith("]")
         );
 
-        pathParameters[dynamicSegment.slice(1, -1)] = segment;
+        path[dynamicSegment.slice(1, -1)] = segment;
 
         node = node.children[dynamicSegment];
       }
     }
 
-    return { module: node.module, pathParameters };
+    return { module: node.module, path };
   }
 
   endpoint(httpRequestMethod, url) {
@@ -69,7 +69,6 @@ export class Registry {
       );
     }
 
-    return ({ ...context }) =>
-      lambda({ ...context, pathParameters: handler.pathParameters });
+    return ({ ...context }) => lambda({ ...context, path: handler.path });
   }
 }
