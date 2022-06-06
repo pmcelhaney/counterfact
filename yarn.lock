@@ -3296,7 +3296,7 @@ eslint-etc@^5.1.0:
     tsutils "^3.17.1"
     tsutils-etc "^1.4.1"
 
-eslint-formatter-github-annotations@^0.1.0:
+eslint-formatter-github-annotations@0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/eslint-formatter-github-annotations/-/eslint-formatter-github-annotations-0.1.0.tgz#345e6f18fe3b9b9540d6e356da2343bba965e67a"
   integrity sha512-MqaI6+NO0P9G77/7EGxJ4Ek/7DByTXIFJGY+jlZHNsZpNuzobYKjZibJhCQ7ZHLJ//JzZ2Rw07NPyQpTcaMmEw==
