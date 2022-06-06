@@ -10,20 +10,20 @@
     "node": ">=16.9.0"
   },
   "scripts": {
-    "test": "yarn node --experimental-vm-modules $(yarn bin jest)"
+    "test": "yarn node --experimental-vm-modules $(yarn bin jest)",
+    "release": "npx changeset publish"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.22.0",
     "eslint": "8.17.0",
     "eslint-config-hardcore": "24.5.0",
     "eslint-formatter-github-annotations": "0.1.0",
     "jest": "28.1.0",
     "koa": "2.13.4",
     "nodemon": "2.0.16",
-    "supertest": "6.2.3",
-    "typescript": "4.7.3"
+    "supertest": "6.2.3"
   },
   "dependencies": {
-    "@changesets/cli": "^2.22.0",
     "chokidar": "^3.5.3"
   }
 }
