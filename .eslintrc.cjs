@@ -59,6 +59,22 @@ module.exports = {
             ignoreTemplateLiterals: true,
           },
         ],
+
+        "node/no-unpublished-import": "off",
+      },
+    },
+
+    {
+      files: ["demo/**/*.js"],
+      extends: ["hardcore", "hardcore/node"],
+
+      rules: {
+        "import/no-extraneous-dependencies": "off",
+        "import/no-unused-modules": "off",
+        "import/prefer-default-export": "off",
+        "no-param-reassign": "off",
+        "no-console": "off",
+        "node/no-unpublished-import": "off",
       },
     },
   ],

@@ -9,7 +9,9 @@ export function koaMiddleware(dispatcher) {
       query,
     });
 
+    /* eslint-disable require-atomic-updates */
     ctx.body = response.body;
     ctx.status = 200;
+    /* eslint-enable require-atomic-updates */
   };
 }
