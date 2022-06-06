@@ -23,6 +23,7 @@
     "typescript": "4.7.3"
   },
   "dependencies": {
+    "@changesets/cli": "^2.22.0",
     "chokidar": "^3.5.3"
   }
 }
