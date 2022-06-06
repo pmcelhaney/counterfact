@@ -16,8 +16,6 @@ export class Registry {
   }
 
   add(url, module) {
-    this.modules[url] = module;
-
     let node = this.moduleTree;
 
     for (const segment of url.split("/").slice(1)) {
@@ -30,11 +28,23 @@ export class Registry {
   }
 
   remove(url) {
-    delete this.modules[url];
+    let node = this.moduleTree;
+
+    for (const segment of url.split("/").slice(1)) {
+      node = node?.children?.[segment];
+
+      if (!node) {
+        return false;
+      }
+    }
+
+    delete node.module;
+
+    return true;
   }
 
   exists(method, url) {
-    return Boolean(this.modules[url]?.[method]);
+    return Boolean(this.handler(url)?.module?.[method]);
   }
 
   handler(url) {
@@ -50,9 +60,11 @@ export class Registry {
           (ds) => ds.startsWith("[") && ds.endsWith("]")
         );
 
-        path[dynamicSegment.slice(1, -1)] = segment;
+        if (dynamicSegment) {
+          path[dynamicSegment.slice(1, -1)] = segment;
 
-        node = node.children[dynamicSegment];
+          node = node.children[dynamicSegment];
+        }
       }
     }
 
