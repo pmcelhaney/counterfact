@@ -88,14 +88,18 @@ describe("a scripted server", () => {
   it("handles a dynamic path", () => {
     const registry = new Registry();
 
-    registry.add("/hello/[name]", {
+    registry.add("/[organization]/users/[username]/friends/[page]", {
       GET({ pathParameters }) {
-        return { body: `hello, ${pathParameters.name}` };
+        return {
+          body: `page ${pathParameters.page} of ${pathParameters.username}'s friends in ${pathParameters.organization}`,
+        };
       },
     });
 
-    expect(registry.endpoint("GET", "/hello/world")({})).toStrictEqual({
-      body: "hello, world",
+    expect(
+      registry.endpoint("GET", "/acme/users/alice/friends/2")({})
+    ).toStrictEqual({
+      body: "page 2 of alice's friends in acme",
     });
   });
 });
