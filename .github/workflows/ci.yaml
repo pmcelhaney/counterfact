@@ -36,3 +36,11 @@ jobs:
         run: yarn eslint -f github-annotations . 
       - name: Unit tests
         run: yarn test --reporters=github-actions
+      - name: Create Release Pull Request or Publish to npm
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          publish: yarn release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
