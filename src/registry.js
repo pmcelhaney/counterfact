@@ -1,32 +1,3 @@
-function addOrAugmentNode(tree, edges, node) {
-  const [head, ...tail] = edges;
-
-  if (tail.length === 0) {
-    return {
-      ...tree,
-
-      children: {
-        ...tree.children,
-
-        [head]: {
-          ...tree?.children?.[head],
-          ...node,
-        },
-      },
-    };
-  }
-
-  return {
-    ...tree,
-
-    children: {
-      ...tree?.children,
-
-      [head]: addOrAugmentNode(tree?.children?.[head] ?? {}, tail, node),
-    },
-  };
-}
-
 export class Registry {
   modules = {};
 
@@ -47,13 +18,15 @@ export class Registry {
   add(url, module) {
     this.modules[url] = module;
 
-    this.moduleTree = addOrAugmentNode(
-      this.moduleTree,
-      url.split("/").slice(1),
-      {
-        module,
-      }
-    );
+    let node = this.moduleTree;
+
+    for (const segment of url.split("/").slice(1)) {
+      node.children ??= {};
+      node.children[segment] ??= {};
+      node = node.children[segment];
+    }
+
+    node.module = module;
   }
 
   remove(url) {
