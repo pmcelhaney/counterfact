@@ -15,4 +15,9 @@ const { koaMiddleware } = await counterfact(
 app.use(koaMiddleware);
 
 app.listen(PORT);
-console.log(`Open http://localhost:${PORT}/hello/world`);
+console.log("Try these URLs:");
+console.log(`http://localhost:${PORT}/hello/world`);
+console.log(`http://localhost:${PORT}/hello/friends`);
+console.log(`http://localhost:${PORT}/hello/kitty`);
+console.log(`http://localhost:${PORT}/hello/world?greeting=Hi`);
+console.log(`http://localhost:${PORT}/count`);
