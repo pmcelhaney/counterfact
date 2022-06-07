@@ -11,6 +11,7 @@
   },
   "scripts": {
     "test": "yarn node --experimental-vm-modules $(yarn bin jest)",
+    "test:mutants": "stryker run stryker.config.json",
     "release": "npx changeset publish"
   },
   "devDependencies": {
