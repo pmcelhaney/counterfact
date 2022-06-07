@@ -2,11 +2,11 @@
 
 This demo illustrates some of the basic features of Counterfact.
 
-`index.js` starts an Apollo server and loads Counterfact's middleware pointed to route definitions at `./routes`.
+`index.js` starts a Koa server and loads Counterfact's middleware pointed to route definitions at `./routes`.
 
 Under `./routes` you will find a few endpoints definitions:
 
-`hello.js` defines `/hello/:friend` and says hello to your friends.
+`hello.js` defines `/hello/:name` and says hello to your friends.
 
 `hello/kitty.js` defines `/hello/kitty`, overriding the behavior defined in `hello.js`.
 
