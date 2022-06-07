@@ -20,6 +20,11 @@ describe("integration test", () => {
           return await Promise.resolve({ body: "POST /hello/world" });
         }
       `,
+      "teapot.mjs": `
+      export async function POST() {
+        return await Promise.resolve({ status: 418, body: "I am a teapot." });
+      }
+    `,
     };
 
     await withTemporaryFiles(files, async (basePath) => {
@@ -29,9 +34,11 @@ describe("integration test", () => {
 
       const getResponse = await request.get("/hello");
       const postResponse = await request.post("/hello/world");
+      const teapotResponse = await request.post("/teapot");
 
       expect(getResponse.text).toBe("GET /hello");
       expect(postResponse.text).toBe("POST /hello/world");
+      expect(teapotResponse.statusCode).toBe(418);
 
       await moduleLoader.stopWatching();
     });
