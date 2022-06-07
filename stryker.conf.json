@@ -10,5 +10,9 @@
   ],
   "testRunner": "jest",
   "testRunnerNodeArgs": ["--experimental-vm-modules"],
-  "coverageAnalysis": "perTest"
+  "coverageAnalysis": "perTest",
+  "dashboard": {
+    "project": "github.com/pmcelhaney/counterfact",
+    "version": "main"
+  }
 }
