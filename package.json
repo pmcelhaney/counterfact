@@ -3,9 +3,19 @@
   "version": "0.0.1",
   "description": "a library for building a fake REST API for testing",
   "type": "module",
-  "main": "index.js",
-  "author": "Patrick McElhaney <pmcelhaney@gmail.com>",
+  "main": "./src/counterfact.js",
+  "exports": "./src/counterfact.js",
+  "author": "Patrick McElhaney <pmcelhaney@gmail.com> (https://patrickmcelhaney.com)",
   "license": "MIT",
+  "repository": "github:pmcelhaney/counterfact",
+  "bugs": "https://github.com/pmcelhaney/counterfact/issues",
+  "keywords": [
+    "counterfact",
+    "fake",
+    "rest",
+    "api",
+    "testing"
+  ],
   "engines": {
     "node": ">=16.9.0"
   },
