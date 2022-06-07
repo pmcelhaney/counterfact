@@ -11,10 +11,6 @@ export class Registry {
     this.store = store;
   }
 
-  get modulesList() {
-    return Object.keys(this.modules);
-  }
-
   add(url, module) {
     let node = this.moduleTree;
 
