@@ -65,7 +65,7 @@ export function REQUEST_METHOD({parts, of, the, request}) {
 import { fileURLToPath } from "node:url";
 
 import Koa from "koa";
-import counterfact from "counterfact";
+import { counterfact } from "counterfact";
 
 const PORT = 3100;
 
