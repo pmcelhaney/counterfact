@@ -1,5 +1,14 @@
 # Counterfact
 
+<!--
+To make this work we had to trick Stryker into thinking it was running on Travis CI
+As of this writing it's not getting updated automatically.
+
+TRAVIS=true STRYKER_DASHBOARD_API_KEY=XXXXXXX yarn stryker run
+
+https://github.com/stryker-mutator/stryker-js/issues/744
+-->
+
 [![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fpmcelhaney%2Fcounterfact%2Fmain)](https://dashboard.stryker-mutator.io/reports/github.com/pmcelhaney/counterfact/main)
 
 ## This is a work in progress.
