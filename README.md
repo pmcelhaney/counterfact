@@ -92,10 +92,11 @@ To mock an API at `/hello/world`, create a file called `./routes/hello/world.js`
 
 Inside that file, output a function that handles a GET request.
 
-```sh
+```js
   export function GET() {
     return {
-      body: "hello world"
+      status: 200, // optional HTTP status code (200 is the default)
+      body: "hello world" // HTTP response body
     }
   }
 ```
