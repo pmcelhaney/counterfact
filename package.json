@@ -11,16 +11,20 @@
   },
   "scripts": {
     "test": "yarn node --experimental-vm-modules $(yarn bin jest)",
+    "test:mutants": "stryker run stryker.config.json",
     "release": "npx changeset publish"
   },
   "devDependencies": {
     "@changesets/cli": "2.22.0",
+    "@stryker-mutator/core": "^6.0.2",
+    "@stryker-mutator/jest-runner": "^6.0.2",
     "eslint": "8.17.0",
     "eslint-config-hardcore": "24.5.0",
     "eslint-formatter-github-annotations": "0.1.0",
     "jest": "28.1.1",
     "koa": "2.13.4",
     "nodemon": "2.0.16",
+    "stryker-cli": "^1.0.2",
     "supertest": "6.2.3"
   },
   "dependencies": {
