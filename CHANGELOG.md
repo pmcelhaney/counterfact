@@ -1,5 +1,11 @@
 # counterfact
 
+## 0.1.1
+
+### Patch Changes
+
+- 4c2bad8: build: add npm token to the release workflow
+
 ## 0.1.0
 
 ### Minor Changes
