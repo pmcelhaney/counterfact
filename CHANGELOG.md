@@ -5,7 +5,7 @@
 ### Minor Changes
 
 - 719d932: support for HTTP response code
-- a5cd8d4: - Filled out missing properties in package.json.
+- a5cd8d4: Filled out missing properties in package.json.
   - Deleted the original index.js file that does nothing.
   - This is the first release that's actually usable.
 
