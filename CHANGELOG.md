@@ -1,5 +1,11 @@
 # counterfact
 
+## 0.1.2
+
+### Patch Changes
+
+- 3829a83: fix changeset access configuration (https://github.com/changesets/changesets/issues/503)
+
 ## 0.1.1
 
 ### Patch Changes
