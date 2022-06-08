@@ -3,9 +3,19 @@
   "version": "0.0.1",
   "description": "a library for building a fake REST API for testing",
   "type": "module",
-  "main": "index.js",
-  "author": "Patrick McElhaney <pmcelhaney@gmail.com>",
+  "main": "./src/counterfact.js",
+  "exports": "./src/counterfact.js",
+  "author": "Patrick McElhaney <pmcelhaney@gmail.com> (https://patrickmcelhaney.com)",
   "license": "MIT",
+  "repository": "github:pmcelhaney/counterfact",
+  "bugs": "https://github.com/pmcelhaney/counterfact/issues",
+  "keywords": [
+    "counterfact",
+    "fake",
+    "rest",
+    "api",
+    "testing"
+  ],
   "engines": {
     "node": ">=16.9.0"
   },
@@ -16,15 +26,15 @@
   },
   "devDependencies": {
     "@changesets/cli": "2.22.0",
-    "@stryker-mutator/core": "^6.0.2",
-    "@stryker-mutator/jest-runner": "^6.0.2",
+    "@stryker-mutator/core": "6.0.2",
+    "@stryker-mutator/jest-runner": "6.0.2",
     "eslint": "8.17.0",
     "eslint-config-hardcore": "24.5.0",
     "eslint-formatter-github-annotations": "0.1.0",
     "jest": "28.1.1",
     "koa": "2.13.4",
     "nodemon": "2.0.16",
-    "stryker-cli": "^1.0.2",
+    "stryker-cli": "1.0.2",
     "supertest": "6.2.3"
   },
   "dependencies": {

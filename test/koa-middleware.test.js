@@ -7,7 +7,7 @@ describe("koa middleware", () => {
     const registry = new Registry();
 
     registry.add("/hello", {
-      GET({ body }) {
+      POST({ body }) {
         return {
           body: `Hello, ${body.name}!`,
         };
@@ -17,12 +17,34 @@ describe("koa middleware", () => {
     const dispatcher = new Dispatcher(registry);
     const middleware = koaMiddleware(dispatcher);
     const ctx = {
-      request: { path: "/hello", method: "GET", body: { name: "Homer" } },
+      request: { path: "/hello", method: "POST", body: { name: "Homer" } },
     };
 
     await middleware(ctx);
 
     expect(ctx.status).toBe(200);
     expect(ctx.body).toBe("Hello, Homer!");
+  });
+
+  it("passes the status code", async () => {
+    const registry = new Registry();
+
+    registry.add("/not-modified", {
+      GET() {
+        return {
+          status: 304,
+        };
+      },
+    });
+
+    const dispatcher = new Dispatcher(registry);
+    const middleware = koaMiddleware(dispatcher);
+    const ctx = {
+      request: { path: "/not-modified", method: "GET" },
+    };
+
+    await middleware(ctx);
+
+    expect(ctx.status).toBe(304);
   });
 });

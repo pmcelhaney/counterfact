@@ -72,6 +72,27 @@ describe("a dispatcher", () => {
     expect(response.body).toBe("Searching for stores near 90210!");
   });
 
+  it("passes status code in the response", async () => {
+    const registry = new Registry();
+
+    registry.add("/stuff", {
+      PUT() {
+        return {
+          status: 201,
+          body: "ok",
+        };
+      },
+    });
+
+    const dispatcher = new Dispatcher(registry);
+    const response = await dispatcher.request({
+      method: "PUT",
+      path: "/stuff",
+    });
+
+    expect(response.status).toBe(201);
+  });
+
   it("passes a reducer function that can be used to read / update the store", async () => {
     const registry = new Registry({ value: 0 });
 

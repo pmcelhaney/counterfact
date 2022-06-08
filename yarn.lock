@@ -2152,7 +2152,7 @@
     mutation-testing-report-schema "1.7.10"
     tslib "~2.3.0"
 
-"@stryker-mutator/core@^6.0.2":
+"@stryker-mutator/core@6.0.2":
   version "6.0.2"
   resolved "https://registry.yarnpkg.com/@stryker-mutator/core/-/core-6.0.2.tgz#d1ed6d76535c2ddd5fcd7d9cdc1a154b2e72f74b"
   integrity sha512-ovRz7vOwjYUGZDCgADDPy5M+eK+l+ZQHseaZfYQv+MxPiXRQQuSxPm3ikeK5Hqds2UDLbzJ1i9XYc51hHqRVOQ==
@@ -2203,7 +2203,7 @@
     angular-html-parser "~1.8.0"
     weapon-regex "~0.6.0"
 
-"@stryker-mutator/jest-runner@^6.0.2":
+"@stryker-mutator/jest-runner@6.0.2":
   version "6.0.2"
   resolved "https://registry.yarnpkg.com/@stryker-mutator/jest-runner/-/jest-runner-6.0.2.tgz#71d06326ad56893654e4b4af4cb998f2fc9ac8d5"
   integrity sha512-fHa/2izIuqUZDW343/PYa5sXlZUpjZ53kqfUbwXJGxCVKiYrYlWGxAa/LfdBT2mRaPKL9Ji76F2n+53mDuu7rA==
@@ -8702,7 +8702,7 @@ strip-json-comments@~2.0.1:
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
   integrity sha1-PFMZQukIwml8DsNEhYwobHygpgo=
 
-stryker-cli@^1.0.2:
+stryker-cli@1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/stryker-cli/-/stryker-cli-1.0.2.tgz#1980ca81085ae2bc4737ca476f32eead97cdb7b1"
   integrity sha512-HUrpmscQpATia2VQkM9rjUBqQ3tblWJ7nomI0Zs6zx5tDaHZ980ZQswGcBZ4hYTfU1Nct2RUi0wzRhe0rsc4Pg==
