@@ -162,3 +162,31 @@ describe("a dispatcher", () => {
     expect(registry.store.value).toBe(3);
   });
 });
+
+describe("given a in invalid path", () => {
+  it("returns a 404 when the route is not found", async () => {
+    const registry = new Registry();
+
+    registry.add("/your/[side]/[bodyPart]/in/and/your/left/foot/out", {
+      PUT() {
+        return {
+          status: 201,
+          body: "ok",
+        };
+      },
+    });
+
+    const response = new Dispatcher(registry).request({
+      method: "PUT",
+      path: "/your/left/foot/in/and/your/right/foot/out",
+    });
+
+    expect(response.status).toBe(404);
+
+    expect(response.body).toBe(
+      "Could not find a PUT method at " +
+        "/your/left/foot/in/and/your/right/foot/out\n" +
+        "Got as far as /your/[side]/[bodyPart]/in/and/your"
+    );
+  });
+});
