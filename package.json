@@ -22,7 +22,9 @@
   "scripts": {
     "test": "yarn node --experimental-vm-modules $(yarn bin jest)",
     "test:mutants": "stryker run stryker.config.json",
-    "release": "npx changeset publish"
+    "release": "npx changeset publish",
+    "prepare": "husky install",
+    "lint": "eslint ."
   },
   "devDependencies": {
     "@changesets/cli": "2.22.0",
@@ -33,6 +35,7 @@
     "eslint-formatter-github-annotations": "0.1.0",
     "jest": "28.1.1",
     "koa": "2.13.4",
+    "husky": "8.0.1",
     "nodemon": "2.0.16",
     "stryker-cli": "1.0.2",
     "supertest": "6.2.3"
