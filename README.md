@@ -1,25 +1,6 @@
 # Counterfact
 
-<!--
-To make this work we had to trick Stryker into thinking it was running on Travis CI
-As of this writing it's not getting updated automatically.
-
-TRAVIS=true STRYKER_DASHBOARD_API_KEY=XXXXXXX yarn stryker run
-
-https://github.com/stryker-mutator/stryker-js/issues/744
--->
-
 [![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fpmcelhaney%2Fcounterfact%2Fmain)](https://dashboard.stryker-mutator.io/reports/github.com/pmcelhaney/counterfact/main)
-
-## This is a work in progress.
-
-If you're nosy and don't mind a whole lot of incompleteness:
-
-```sh
-yarn
-yarn test
-node demo/index.js
-```
 
 ## Why?
 
@@ -43,19 +24,7 @@ yarn add -D counterfact
 
 ## Usage
 
-### TL;DR
-
-```js
-// ./path/to/some-route.js
-export function REQUEST_METHOD({parts, of, the, request}) {
-  return {
-    parts,
-    of,
-    the,
-    response
-  };
-}
-```
+See the [demo](./demo/README.md) directory for an example.
 
 ### Using the Koa plugin
 
@@ -93,12 +62,12 @@ To mock an API at `/hello/world`, create a file called `./routes/hello/world.js`
 Inside that file, output a function that handles a GET request.
 
 ```js
-  export function GET() {
-    return {
-      status: 200, // optional HTTP status code (200 is the default)
-      body: "hello world" // HTTP response body
-    }
-  }
+export function GET() {
+  return {
+    status: 200, // optional HTTP status code (200 is the default)
+    body: "hello world", // HTTP response body
+  };
+}
 ```
 
 Now when you run your server and call "GET /hello/world" you should get a 200 response with "hello world" in the body.
@@ -108,21 +77,21 @@ Now when you run your server and call "GET /hello/world" you should get a 200 re
 The get function has one parameter, a context object that contains metadata about the request. We can use that to read a the query string from `/hello/world?greeting=Hi`
 
 ```js
-  export function GET(context) {
-    return {
-      body: "${context.query.greeting} world"
-    }
-  }
+export function GET(context) {
+  return {
+    body: "${context.query.greeting} world",
+  };
+}
 ```
 
 In practice, tend to use destructuring syntax, which is the closest thing we have in JavaScript to named arguments.
 
 ```js
-  export function GET({ query }) {
-    return {
-      body: "${query.greeting} world"
-    }
-  }
+export function GET({ query }) {
+  return {
+    body: "${query.greeting} world",
+  };
+}
 ```
 
 ### Dynamic routes
@@ -130,11 +99,11 @@ In practice, tend to use destructuring syntax, which is the closest thing we hav
 Create another file called `./routes/hello/[name].js`. This file will match `/hello/universe`, `/hello/friends`, and `/hello/whatever-you-want-here`.
 
 ```js
-  export function GET({ greeting, path }) {
-    return {
-      body: "${query.greeting}, ${path.name}!"
-    }
-  }
+export function GET({ greeting, path }) {
+  return {
+    body: "${query.greeting}, ${path.name}!",
+  };
+}
 ```
 
 The `path` object is analogous to the `query` object, holding values in the dynamic parts of the path.
@@ -150,16 +119,15 @@ State management is handled through a plain old JavaScript object called `store`
 There are no rules around how you manipulate the store. Yes, you read that right.
 
 ```js
-  export function GET({ greeting, path, store }) {
+export function GET({ greeting, path, store }) {
+  store.visits ??= {};
+  store.visits[path.name] ??= 0;
+  store.visits[path.name] += 1;
 
-    store.visits ??= {};
-    store.visits[path.name] ??= 0;
-    store.visits[path.name] += 1;
-
-    return {
-      body: "${query.greeting}, ${path.name}!"
-    }
-  }
+  return {
+    body: "${query.greeting}, ${path.name}!",
+  };
+}
 ```
 
 ### Request Methods
@@ -198,18 +166,18 @@ So far we've only covered `GET` requests. What about `POST`, `PUT`, `PATCH` and 
 If you need to do work asynchronously, return a promise or use async / await.
 
 ```js
-  export function PUT({body}) {
-    return doSomeStuffWith(body).then(() => {
-      body: "Successfully did an async PUT"
-    });
-  }
+export function PUT({ body }) {
+  return doSomeStuffWith(body).then(() => {
+    body: "Successfully did an async PUT";
+  });
+}
 
-  export async function DELETE() {
-    await deleteMe();
-    return {
-      body: "Took a while, but now it's deleted."
-    };
-  }
+export async function DELETE() {
+  await deleteMe();
+  return {
+    body: "Took a while, but now it's deleted.",
+  };
+}
 ```
 
 ### Coming soon
