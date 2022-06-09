@@ -164,7 +164,7 @@ describe("a dispatcher", () => {
 });
 
 describe("given a in invalid path", () => {
-  it("returns a 404 when the route is not found", async () => {
+  it("returns a 404 when the route is not found", () => {
     const registry = new Registry();
 
     registry.add("/your/[side]/[bodyPart]/in/and/your/left/foot/out", {
