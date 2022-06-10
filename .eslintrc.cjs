@@ -1,6 +1,8 @@
 "use strict";
 
 module.exports = {
+  ignorePatterns: ["/node_modules/", "/coverage/", "/reports/"],
+
   extends: ["hardcore", "hardcore/ts", "hardcore/node"],
 
   parserOptions: {
