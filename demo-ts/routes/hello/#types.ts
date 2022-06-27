@@ -1,12 +1,14 @@
 import type { Store } from '../../types/Store';
 
-type GetRequest = {
+export type Get_name = (request: {
     store: Store;
-    query: { [name: string]: string };
-    path: { [name: string]: string };
-}
+    query: { greeting: string };
+    path: { name: string };
+}) => { body: string, status?: number };
 
-export type Get_name = (request: GetRequest) => { body: string, status?: number };
-
-export type Get_kitty = (request: GetRequest) => { body: string, status?: number };
+export type Get_kitty = (request: {
+    store: Store;
+    query: { greeting: string };
+    path: { name: string };
+}) => { body: string, status?: number };
 
