@@ -34,6 +34,10 @@ export class ModuleLoader extends EventEmitter {
         const parts = path.parse(pathName.replace(this.basePath, ""));
         const url = `/${path.join(parts.dir, parts.name)}`;
 
+        if (parts.name.includes("#")) {
+          return;
+        }
+
         if (event === "unlink") {
           this.registry.remove(url);
           this.emit("remove", pathName);
@@ -64,6 +68,10 @@ export class ModuleLoader extends EventEmitter {
       withFileTypes: true,
     });
     const imports = files.flatMap(async (file) => {
+      if (file.name.includes("#")) {
+        return;
+      }
+
       if (file.isDirectory()) {
         await this.load(path.join(directory, file.name));
 
