@@ -25,7 +25,7 @@ export class ModuleLoader extends EventEmitter {
     }
 
     this.watcher = chokidar
-      .watch(`${this.basePath}/**/*`)
+      .watch(`${this.basePath}/**/*.{js,mjs,ts,mts}`)
       .on("all", (event, pathName) => {
         if (!["add", "change", "unlink"].includes(event)) {
           return;
@@ -69,6 +69,12 @@ export class ModuleLoader extends EventEmitter {
     });
     const imports = files.flatMap(async (file) => {
       if (file.name.includes("#")) {
+        return;
+      }
+
+      const extension = file.name.split(".").at(-1);
+
+      if (!["js", "mjs", "ts", "mts"].includes(extension)) {
         return;
       }
 
