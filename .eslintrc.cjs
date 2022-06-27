@@ -77,5 +77,43 @@ module.exports = {
         "node/no-unpublished-import": "off",
       },
     },
+
+    {
+      files: ["*.cjs"],
+      extends: ["hardcore", "hardcore/node"],
+
+      rules: {
+        "import/no-commonjs": "off",
+      },
+
+      parserOptions: {
+        sourceType: "script",
+      },
+    },
+
+    {
+      files: ["demo-ts/**/*.ts"],
+      extends: ["hardcore", "hardcore/node", "hardcore/ts"],
+
+      parserOptions: {
+        sourceType: "module",
+        project: "./demo-ts/tsconfig.json",
+      },
+
+      rules: {
+        "import/prefer-default-export": "off",
+        "import/no-unused-modules": "off",
+        "func-style": "off",
+        camelcase: "off",
+        "@typescript-eslint/naming-convention": "off",
+        "no-magic-numbers": "off",
+        "no-param-reassign": "off",
+        "import/group-exports": "off",
+        "max-len": "off",
+        "etc/prefer-interface": "off",
+        "@typescript-eslint/prefer-readonly-parameter-types": "off",
+        "eslint-comments/no-unused-disable": "off",
+      },
+    },
   ],
 };

@@ -72,6 +72,7 @@ export class ModuleLoader extends EventEmitter {
         return;
       }
 
+      // eslint-disable-next-line no-magic-numbers
       const extension = file.name.split(".").at(-1);
 
       if (!["js", "mjs", "ts", "mts"].includes(extension)) {
