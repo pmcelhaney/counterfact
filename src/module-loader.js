@@ -20,10 +20,6 @@ export class ModuleLoader extends EventEmitter {
   }
 
   async watch() {
-    if (this.watcher) {
-      throw new Error("already watching");
-    }
-
     this.watcher = chokidar
       .watch(`${this.basePath}/**/*.{js,mjs,ts,mts}`)
       .on("all", (event, pathName) => {
@@ -53,7 +49,7 @@ export class ModuleLoader extends EventEmitter {
           })
           // eslint-disable-next-line promise/prefer-await-to-then
           .catch((error) => {
-            throw new Error(String(error));
+            throw error;
           });
       });
     await once(this.watcher, "ready");
@@ -75,13 +71,13 @@ export class ModuleLoader extends EventEmitter {
       // eslint-disable-next-line no-magic-numbers
       const extension = file.name.split(".").at(-1);
 
-      if (!["js", "mjs", "ts", "mts"].includes(extension)) {
-        return;
-      }
-
       if (file.isDirectory()) {
         await this.load(path.join(directory, file.name));
 
+        return;
+      }
+
+      if (!["js", "mjs", "ts", "mts"].includes(extension)) {
         return;
       }
 
