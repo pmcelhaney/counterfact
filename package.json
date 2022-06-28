@@ -28,8 +28,8 @@
   },
   "devDependencies": {
     "@changesets/cli": "2.23.0",
-    "@stryker-mutator/core": "6.0.2",
-    "@stryker-mutator/jest-runner": "6.0.2",
+    "@stryker-mutator/core": "6.1.2",
+    "@stryker-mutator/jest-runner": "6.1.2",
     "@types/koa": "2.13.4",
     "eslint": "8.17.0",
     "eslint-config-hardcore": "24.5.0",
