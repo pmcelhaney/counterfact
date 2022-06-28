@@ -22,6 +22,14 @@ function createAddFunction(basePath) {
   };
 }
 
+function createAddDirectoryFunction(basePath) {
+  return async function addDirectory(filePath) {
+    const fullPath = path.join(basePath, filePath);
+
+    await fs.mkdir(fullPath, { recursive: true });
+  };
+}
+
 function createRemoveFunction(basePath) {
   return async function remove(filePath) {
     const fullPath = path.join(basePath, filePath);
@@ -52,6 +60,7 @@ export async function withTemporaryFiles(files, ...callbacks) {
       await callback(temporaryDirectory, {
         add: createAddFunction(temporaryDirectory),
         remove: createRemoveFunction(temporaryDirectory),
+        addDirectory: createAddDirectoryFunction(temporaryDirectory),
       });
     }
   } finally {

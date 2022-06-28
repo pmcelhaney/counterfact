@@ -84,6 +84,34 @@ describe("a module loader", () => {
     );
   });
 
+  it("ignores files with the wrong file extension", async () => {
+    const contents = 'export function GET() { return { body: "hello" }; }';
+
+    const files = {
+      "module.mjs": contents,
+      "README.md": contents,
+      "#types.mjs": contents,
+    };
+
+    await withTemporaryFiles(files, async (basePath, { add }) => {
+      const registry = new Registry();
+      const loader = new ModuleLoader(basePath, registry);
+
+      await loader.load();
+      await loader.watch();
+
+      await add("other.txt", "should not be loaded");
+      await add("#other.mjs", "should not be loaded");
+
+      expect(registry.exists("GET", "/module")).toBe(true);
+      expect(registry.exists("GET", "/README")).toBe(false);
+      expect(registry.exists("GET", "/other")).toBe(false);
+      expect(registry.exists("GET", "/types")).toBe(false);
+
+      await loader.stopWatching();
+    });
+  });
+
   // This should work but I can't figure out how to break the
   // module cache when running through Jest (which uses the
   // experimental module API).

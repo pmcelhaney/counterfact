@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "module": "es2022",
+    "target": "es2022",
+    "strictNullChecks": true,
+    "allowSyntheticDefaultImports": true
+  }
+}

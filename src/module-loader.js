@@ -20,12 +20,8 @@ export class ModuleLoader extends EventEmitter {
   }
 
   async watch() {
-    if (this.watcher) {
-      throw new Error("already watching");
-    }
-
     this.watcher = chokidar
-      .watch(`${this.basePath}/**/*`)
+      .watch(`${this.basePath}/**/*.{js,mjs,ts,mts}`)
       .on("all", (event, pathName) => {
         if (!["add", "change", "unlink"].includes(event)) {
           return;
@@ -33,6 +29,10 @@ export class ModuleLoader extends EventEmitter {
 
         const parts = path.parse(pathName.replace(this.basePath, ""));
         const url = `/${path.join(parts.dir, parts.name)}`;
+
+        if (parts.name.includes("#")) {
+          return;
+        }
 
         if (event === "unlink") {
           this.registry.remove(url);
@@ -49,7 +49,7 @@ export class ModuleLoader extends EventEmitter {
           })
           // eslint-disable-next-line promise/prefer-await-to-then
           .catch((error) => {
-            throw new Error(String(error));
+            throw error;
           });
       });
     await once(this.watcher, "ready");
@@ -64,9 +64,20 @@ export class ModuleLoader extends EventEmitter {
       withFileTypes: true,
     });
     const imports = files.flatMap(async (file) => {
+      if (file.name.includes("#")) {
+        return;
+      }
+
+      // eslint-disable-next-line no-magic-numbers
+      const extension = file.name.split(".").at(-1);
+
       if (file.isDirectory()) {
         await this.load(path.join(directory, file.name));
 
+        return;
+      }
+
+      if (!["js", "mjs", "ts", "mts"].includes(extension)) {
         return;
       }
 
