@@ -484,8 +484,10 @@ cookies@~0.8.0:
     depd "~2.0.0"
     keygrip "~1.1.0"
 
-counterfact@../:
-  version "0.1.2"
+counterfact@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/counterfact/-/counterfact-0.2.0.tgz#b38bb43c115ee97dee7291e07e9ad7d99f862a7c"
+  integrity sha512-2uzemQm3RdreG0THUe1jJBRgYU7AWuwCvpHCN3AHTPauRAAGkMUzY5IPEfX/zX4M+6tS2cdLgYhZ61naGgSvjQ==
   dependencies:
     chokidar "^3.5.3"
 

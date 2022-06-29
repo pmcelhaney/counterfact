@@ -1,3 +1,6 @@
+/* eslint-disable node/no-missing-import */
+/* eslint-disable node/file-extension-in-import */
+/* eslint-disable import/no-unresolved */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable node/no-unsupported-features/node-builtins */
@@ -9,7 +12,7 @@ import { fileURLToPath } from "node:url";
 import Koa from "koa";
 import { counterfact } from "counterfact";
 
-import { context } from "./context/context";
+import { context } from "./context/context.js";
 
 const PORT = 3100;
 
