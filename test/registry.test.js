@@ -88,7 +88,7 @@ describe("a scripted server", () => {
   it("handles a dynamic path", () => {
     const registry = new Registry();
 
-    registry.add("/[organization]/users/[username]/friends/[page]", {
+    registry.add("/{organization}/users/{username}/friends/{page}", {
       GET({ path }) {
         return {
           body: `page ${path.page} of ${path.username}'s friends in ${path.organization}`,

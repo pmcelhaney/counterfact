@@ -57,7 +57,7 @@ export class Registry {
         matchedParts.push(segment);
       } else {
         const dynamicSegment = Object.keys(node.children).find(
-          (ds) => ds.startsWith("[") && ds.endsWith("]")
+          (ds) => ds.startsWith("{") && ds.endsWith("}")
         );
 
         if (dynamicSegment) {
