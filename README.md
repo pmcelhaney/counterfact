@@ -40,8 +40,11 @@ const PORT = 3100;
 
 const app = new Koa();
 
+const initialContext = {};
+
 const { koaMiddleware } = await counterfact(
-  fileURLToPath(new URL("routes/", import.meta.url))
+  fileURLToPath(new URL("routes/", import.meta.url)),
+  initialContext
 );
 
 app.use(koaMiddleware);
@@ -114,7 +117,7 @@ This feature was [inspired by Next.js](https://nextjs.org/docs/routing/dynamic-r
 
 ### State
 
-State management is handled through a plain old JavaScript object called `context`. The context is initialized as an empty object (`{}`). You can read and write its keys however you like. Changes will persist from one request to another as long as the server is running.
+State management is handled through a plain old JavaScript object called `context`, which is passed as the second argument to the `counterfact()` function (default value = `{}`). You can modify the context object however you like. Changes will persist from one request to another as long as the server is running.
 
 There are no rules around how you manipulate the context. Yes, you read that right.
 
