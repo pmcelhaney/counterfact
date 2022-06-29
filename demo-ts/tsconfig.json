@@ -5,5 +5,8 @@
     "target": "es2022",
     "strictNullChecks": true,
     "allowSyntheticDefaultImports": true
+  },
+  "ts-node": {
+    "esm": true
   }
 }
