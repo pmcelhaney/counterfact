@@ -8,7 +8,7 @@ paths:
     get:
       description: outputs the number of time each URL was visited
       responses:
-        '200':
+        default:
           description: Successful response
           content:
             application/json:
@@ -19,7 +19,7 @@ paths:
     get:
       description: HTML with a hello kitty image
       responses:
-        '200':
+        default:
           description: Successful response
           content:
             application/json:
@@ -39,7 +39,7 @@ paths:
           description: says hello to the name
       description: says hello to someone
       responses:
-        '200':
+        default:
           description: Successful response
           content:
             application/json:

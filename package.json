@@ -34,14 +34,15 @@
     "eslint": "8.18.0",
     "eslint-config-hardcore": "24.5.0",
     "eslint-formatter-github-annotations": "0.1.0",
+    "husky": "8.0.1",
     "jest": "28.1.2",
     "koa": "2.13.4",
-    "husky": "8.0.1",
     "nodemon": "2.0.18",
     "stryker-cli": "1.0.2",
     "supertest": "6.2.3"
   },
   "dependencies": {
-    "chokidar": "^3.5.3"
+    "chokidar": "^3.5.3",
+    "yaml": "^2.1.1"
   }
 }
