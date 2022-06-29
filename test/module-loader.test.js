@@ -137,7 +137,7 @@ describe("a module loader", () => {
         const response = await registry.endpoint(
           "GET",
           "/change"
-        )({ path: "", reduce: () => undefined, store: {} });
+        )({ path: "", reduce: () => undefined, context: {} });
 
         expect(response.body).toBe("after change");
         expect(registry.exists("GET", "/late/addition")).toBe(true);

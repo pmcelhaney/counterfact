@@ -40,8 +40,11 @@ const PORT = 3100;
 
 const app = new Koa();
 
+const initialContext = {};
+
 const { koaMiddleware } = await counterfact(
-  fileURLToPath(new URL("routes/", import.meta.url))
+  fileURLToPath(new URL("routes/", import.meta.url)),
+  initialContext
 );
 
 app.use(koaMiddleware);
@@ -114,15 +117,15 @@ This feature was [inspired by Next.js](https://nextjs.org/docs/routing/dynamic-r
 
 ### State
 
-State management is handled through a plain old JavaScript object called `store`. The store is initialized as an empty object (`{}`). You can read and write its keys however you like. Changes will persist from one request to another as long as the server is running.
+State management is handled through a plain old JavaScript object called `context`, which is passed as the second argument to the `counterfact()` function (default value = `{}`). You can modify the context object however you like. Changes will persist from one request to another as long as the server is running.
 
-There are no rules around how you manipulate the store. Yes, you read that right.
+There are no rules around how you manipulate the context. Yes, you read that right.
 
 ```js
-export function GET({ greeting, path, store }) {
-  store.visits ??= {};
-  store.visits[path.name] ??= 0;
-  store.visits[path.name] += 1;
+export function GET({ greeting, path, context }) {
+  context.visits ??= {};
+  context.visits[path.name] ??= 0;
+  context.visits[path.name] += 1;
 
   return {
     body: "${query.greeting}, ${path.name}!",
@@ -135,23 +138,23 @@ export function GET({ greeting, path, store }) {
 So far we've only covered `GET` requests. What about `POST`, `PUT`, `PATCH` and `DELETE`? All HTTP request methods are supported. It's a matter exporting functions with the corresponding names.
 
 ```js
-  export function GET({ path, store }) {
+  export function GET({ path, context }) {
 
-    store.friends ??= {};
-    store.friends[path.name] ??= {
+    context.friends ??= {};
+    context.friends[path.name] ??= {
       appearance: "lovely"
     };
 
     return {
-      body: "Hello, ${path.name}. You look ${store.friends[name].appearance} today!"
+      body: "Hello, ${path.name}. You look ${context.friends[name].appearance} today!"
     }
   }
 
-  export function POST(path, store, body) {
+  export function POST(path, context, body) {
 
-    store.friends ??= {};
-    store.friends[path.name] ??= {};
-    store.friends[appearance] = body.appearance;
+    context.friends ??= {};
+    context.friends[path.name] ??= {};
+    context.friends[appearance] = body.appearance;
 
     return {
       body: {

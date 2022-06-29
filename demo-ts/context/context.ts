@@ -5,8 +5,8 @@ interface Visits {
 }
 
 export class Context {
-  public visits: Visits = {};
+  public visits?: Visits = {};
 }
 
 // Counterfact will load this object and use it as the initial state.
-export const store = new Context();
+export const context = new Context();

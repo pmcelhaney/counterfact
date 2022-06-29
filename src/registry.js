@@ -5,10 +5,10 @@ export class Registry {
     children: {},
   };
 
-  store;
+  context;
 
-  constructor(store = {}) {
-    this.store = store;
+  constructor(context = {}) {
+    this.context = context;
   }
 
   add(url, module) {

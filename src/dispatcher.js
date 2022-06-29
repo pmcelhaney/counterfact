@@ -13,10 +13,10 @@ export class Dispatcher {
       // path: parts.slice(remainingParts).join("/"),
 
       reduce: (reducer) => {
-        this.registry.store = reducer(this.registry.store);
+        this.registry.context = reducer(this.registry.context);
       },
 
-      store: this.registry.store,
+      context: this.registry.context,
       body,
       query,
     });
