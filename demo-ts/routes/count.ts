@@ -1,6 +1,6 @@
-import type { Get_count } from "./#types";
+import type { HTTP_GET } from "./count.types";
 
-export const GET: Get_count = ({ context }) => {
+export const GET: HTTP_GET = ({ context }) => {
   if (context.visits === undefined) {
     return {
       body: "You have not visited anyone yet.",

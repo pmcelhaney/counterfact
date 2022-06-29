@@ -1,6 +1,6 @@
-import type { Get_name } from "./#types";
+import type { HTTP_GET } from "./{name}.types";
 
-export const GET: Get_name = ({ path, context, query }) => {
+export const GET: HTTP_GET = ({ path, context, query }) => {
   context.visits ??= {};
   context.visits[path.name] ??= 0;
   context.visits[path.name] += 1;

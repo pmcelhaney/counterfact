@@ -1,10 +1,10 @@
 /* eslint-disable no-console, node/no-unpublished-import */
 import { fileURLToPath } from "node:url";
 
-// eslint-disable-next-line import/no-extraneous-dependencies
 import Koa from "koa";
 
-import { counterfact } from "../src/counterfact";
+// eslint-disable-next-line import/extensions, node/file-extension-in-import
+import { counterfact } from "../src/counterfact.js";
 
 const PORT = 3100;
 
