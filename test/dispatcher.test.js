@@ -100,8 +100,8 @@ describe("a dispatcher", () => {
       GET({ reduce, path }) {
         const amountToIncrement = Number.parseInt(path.value, 10);
 
-        reduce((store) => ({
-          value: store.value + amountToIncrement,
+        reduce((context) => ({
+          value: context.value + amountToIncrement,
         }));
 
         return { body: "incremented" };
@@ -116,7 +116,7 @@ describe("a dispatcher", () => {
       body: "",
     });
 
-    expect(registry.store.value).toBe(1);
+    expect(registry.context.value).toBe(1);
 
     await dispatcher.request({
       method: "GET",
@@ -124,18 +124,17 @@ describe("a dispatcher", () => {
       body: "",
     });
 
-    expect(registry.store.value).toBe(3);
+    expect(registry.context.value).toBe(3);
   });
 
   it("allows the store to be mutated directly", async () => {
     const registry = new Registry({ value: 0 });
 
     registry.add("/increment/{value}", {
-      GET({ store, path }) {
+      GET({ context, path }) {
         const amountToIncrement = Number.parseInt(path.value, 10);
 
-        // eslint-disable-next-line no-param-reassign
-        store.value += amountToIncrement;
+        context.value += amountToIncrement;
 
         return { body: "incremented" };
       },
@@ -151,7 +150,7 @@ describe("a dispatcher", () => {
 
     expect(result.body).toBe("incremented");
 
-    expect(registry.store.value).toBe(1);
+    expect(registry.context.value).toBe(1);
 
     await dispatcher.request({
       method: "GET",
@@ -159,7 +158,7 @@ describe("a dispatcher", () => {
       body: "",
     });
 
-    expect(registry.store.value).toBe(3);
+    expect(registry.context.value).toBe(3);
   });
 });
 

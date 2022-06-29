@@ -1,7 +1,7 @@
 import type { HttpResponseStatusCode } from "../types/Http";
-import type { Store } from "../context/Store";
+import type { Context } from "../context/context";
 
-export type Get_count = (request: { store: Store }) => {
+export type Get_count = (request: { context: Context }) => {
   body: string;
   status?: HttpResponseStatusCode;
 };

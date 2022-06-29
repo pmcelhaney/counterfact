@@ -1,16 +1,16 @@
-import type { Store } from "../../context/Store";
+import type { Context } from "../../context/context";
 import type { HttpResponseStatusCode } from "../../types/Http";
 import type { Greeting } from "../../types/Greeting";
 import type { HtmlImgTag } from "../../types/HtmlImgTag";
 
 export type Get_name = (request: {
-  store: Store;
+  context: Context;
   query: { greeting?: string };
   path: { name: string };
 }) => { body: Greeting; status?: HttpResponseStatusCode };
 
 export type Get_kitty = (request: {
-  store: Store;
+  context: Context;
   query: { greeting?: string };
   path: { name: string };
 }) => { body: HtmlImgTag; status?: HttpResponseStatusCode };

@@ -56,7 +56,7 @@ describe("a scripted server", () => {
         return foo;
       },
 
-      store: {},
+      context: {},
     };
     const getA = await registry.endpoint("GET", "/a")(props);
     const getB = await registry.endpoint("GET", "/b")(props);
