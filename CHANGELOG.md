@@ -1,5 +1,17 @@
 # counterfact
 
+## 0.2.0
+
+### Minor Changes
+
+- 741e4fe: change path parameters from [this] to {this} for consistency with OpenAPI
+- f237c38: proof of concept specifying routes with TypeScript and ts-node
+
+### Patch Changes
+
+- 420cd52: return a 404 with a helpful error message when a handler for a route does not exist
+- c11a475: allow the intial context (nee "store") to be passed as the second argument to `counterfact()`
+
 ## 0.1.2
 
 ### Patch Changes
