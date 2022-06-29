@@ -4,17 +4,20 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable no-console */
 
-import { fileURLToPath } from "url";
+import { fileURLToPath } from "node:url";
 
 import Koa from "koa";
 import { counterfact } from "counterfact";
+
+import { context } from "./context/context";
 
 const PORT = 3100;
 
 const app = new Koa();
 
 const { koaMiddleware } = await counterfact(
-  fileURLToPath(new URL("paths/", import.meta.url))
+  fileURLToPath(new URL("paths/", import.meta.url)),
+  context
 );
 
 app.use(koaMiddleware);

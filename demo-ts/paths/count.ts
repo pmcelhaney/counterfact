@@ -1,7 +1,7 @@
 import type { HTTP_GET } from "./count.types";
 
 export const GET: HTTP_GET = ({ context }) => {
-  if (context.visits === undefined) {
+  if (Object.keys(context.visits).length === 0) {
     return {
       body: "You have not visited anyone yet.",
     };
