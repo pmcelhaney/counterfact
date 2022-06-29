@@ -1,0 +1,23 @@
+{
+  "name": "demo-ts",
+  "type": "module",
+  "version": "0.0.1",
+  "private": true,
+  "description": "This demo illustrates some of the basic features of Counterfact, with TypeScript.",
+  "main": "index.js",
+  "dependencies": {
+    "counterfact": "../",
+    "koa": "^2.13.4"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.0",
+    "i": "^0.3.7",
+    "npm": "^8.13.1"
+  },
+  "scripts": {
+    "start": "ts-node index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

@@ -1,17 +1,20 @@
-/* eslint-disable no-console, node/no-unpublished-import */
-import { fileURLToPath } from "node:url";
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable node/no-unsupported-features/node-builtins */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable no-console */
+
+import { fileURLToPath } from "url";
 
 import Koa from "koa";
-
-// eslint-disable-next-line import/extensions, node/file-extension-in-import
-import { counterfact } from "../src/counterfact.js";
+import { counterfact } from "counterfact";
 
 const PORT = 3100;
 
 const app = new Koa();
 
 const { koaMiddleware } = await counterfact(
-  fileURLToPath(new URL("routes/", import.meta.url))
+  fileURLToPath(new URL("paths/", import.meta.url))
 );
 
 app.use(koaMiddleware);
