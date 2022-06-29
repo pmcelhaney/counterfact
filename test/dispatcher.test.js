@@ -96,7 +96,7 @@ describe("a dispatcher", () => {
   it("passes a reducer function that can be used to read / update the store", async () => {
     const registry = new Registry({ value: 0 });
 
-    registry.add("/increment/[value]", {
+    registry.add("/increment/{value}", {
       GET({ reduce, path }) {
         const amountToIncrement = Number.parseInt(path.value, 10);
 
@@ -130,7 +130,7 @@ describe("a dispatcher", () => {
   it("allows the store to be mutated directly", async () => {
     const registry = new Registry({ value: 0 });
 
-    registry.add("/increment/[value]", {
+    registry.add("/increment/{value}", {
       GET({ store, path }) {
         const amountToIncrement = Number.parseInt(path.value, 10);
 
@@ -167,7 +167,7 @@ describe("given a in invalid path", () => {
   it("returns a 404 when the route is not found", () => {
     const registry = new Registry();
 
-    registry.add("/your/[side]/[bodyPart]/in/and/your/left/foot/out", {
+    registry.add("/your/{side}/{bodyPart}/in/and/your/left/foot/out", {
       PUT() {
         return {
           status: 201,
@@ -186,7 +186,7 @@ describe("given a in invalid path", () => {
     expect(response.body).toBe(
       "Could not find a PUT method at " +
         "/your/left/foot/in/and/your/right/foot/out\n" +
-        "Got as far as /your/[side]/[bodyPart]/in/and/your"
+        "Got as far as /your/{side}/{bodyPart}/in/and/your"
     );
   });
 });
