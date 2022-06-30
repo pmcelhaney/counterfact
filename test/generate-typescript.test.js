@@ -18,7 +18,7 @@ describe("typescript generator", () => {
   it("creates TypeScript from an openapi.yaml file", async () => {
     const files = {
       "openapi.yaml": `
-        openapi: 3.0.0
+        openapi: 3.0.0 
         info:
           title: Integration test example
           description: Example for integration test
@@ -87,13 +87,20 @@ describe("typescript generator", () => {
         `${temporaryDirectory}paths`
       );
 
-      await expect(read("paths/hello.types.ts")).resolves.toBe(unindent` 
-         export type HTTP_GET = ({ query } : { query: { filter: string, compact?: boolean } }) => { status: 200, body: string } | { body: string } | { contentType: "application/json", body: number };
-         export type HTTP_POST = () => { body: number };
+      await expect(read("paths/hello.types.ts")).resolves.toBe(unindent`  
+        export type Response = string;
+        export type Response1 = string;
+        export type Response2 = number;
+        export type Response3 = number;
+
+        export type HTTP_GET = ({ query } : { query: { filter: string, compact?: boolean } }) => { status: 200, body: Response } | { body: Response1 } | { contentType: "application/json", body: Response2 };
+        export type HTTP_POST = () => { body: Response3 };
       `);
 
       await expect(read("paths/hello/{name}.types.ts")).resolves.toBe(unindent`
-         export type HTTP_GET = ({ path } : { path: { name: string } }) => { body: string };
+        export type Response = string;
+
+        export type HTTP_GET = ({ path } : { path: { name: string } }) => { body: Response };
    `);
     });
   });

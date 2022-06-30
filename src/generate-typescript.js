@@ -2,8 +2,30 @@ import fs from "node:fs/promises";
 import { join } from "node:path";
 
 import yaml from "yaml";
+import { compile } from "json-schema-to-typescript";
 
 class TypeBuilder {
+  schemas = {};
+
+  schemaNameIndex = {};
+
+  typeFromSchema(name, schema) {
+    if (this.schemaNameIndex[name] === undefined) {
+      this.schemas[name] = schema;
+      this.schemaNameIndex[name] = 1;
+
+      return name;
+    }
+
+    const index = this.schemaNameIndex[name];
+    const alternateName = `${name}${index}`;
+
+    this.schemas[`${name}${index}`] = schema;
+    this.schemaNameIndex[name] += 1;
+
+    return alternateName;
+  }
+
   responseType(operation) {
     return Object.entries(operation.responses)
       .flatMap(([statusCode, response]) =>
@@ -18,7 +40,9 @@ class TypeBuilder {
             properties.push(`contentType: "${contentType}"`);
           }
 
-          properties.push(`body: ${content.schema.type}`);
+          properties.push(
+            `body: ${this.typeFromSchema("Response", content.schema)}`
+          );
 
           return `{ ${properties.join(", ")} }`;
         })
@@ -67,7 +91,7 @@ class TypeBuilder {
   typeDeclarationForRequestMethod(method, operation) {
     return `export type HTTP_${method} = (${this.requestType(
       operation
-    )}) => ${this.responseType(operation)};`;
+    )}) => ${this.responseType(operation)};\n`;
   }
 
   typeDeclarationsForOperations(operations) {
@@ -93,14 +117,27 @@ export async function generateTypeScript(pathToOpenApiSpec, targetPath) {
   await fs.mkdir(targetPath, { recursive: true });
 
   const api = yaml.parse(await fs.readFile(pathToOpenApiSpec, "utf8"));
-  const writes = Object.entries(api.paths).flatMap(([path, operations]) => {
-    const builder = new TypeBuilder();
+  const writes = Object.entries(api.paths).flatMap(
+    async ([path, operations]) => {
+      const builder = new TypeBuilder();
 
-    return writeFileIncludingDirectories(
-      join(targetPath, `${path}.types.ts`),
-      `${builder.typeDeclarationsForOperations(operations).join("\n")}\n`
-    );
-  });
+      const typeDeclarations =
+        builder.typeDeclarationsForOperations(operations);
+
+      const internalTypes = await Promise.all(
+        Object.entries(builder.schemas).map(([name, schema]) =>
+          compile(schema, name, { bannerComment: "" })
+        )
+      );
+
+      const content = [...internalTypes, "\n", ...typeDeclarations].join("");
+
+      return writeFileIncludingDirectories(
+        join(targetPath, `${path}.types.ts`),
+        content
+      );
+    }
+  );
 
   await Promise.all(writes);
 }
