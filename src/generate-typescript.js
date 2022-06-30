@@ -78,9 +78,30 @@ function parametersType(parameters) {
 }
 
 function requestType(operation) {
-  return operation.parameters
-    ? `{ query } : { query: ${parametersType(operation.parameters)} }`
-    : "";
+  const parameterTypes = ["query", "path"];
+
+  const properties = [];
+
+  const keys = [];
+
+  parameterTypes.forEach((parameterType) => {
+    const matchingParameters = (operation.parameters ?? []).filter(
+      (parameter) => parameter.in === parameterType
+    );
+
+    if (matchingParameters.length > 0) {
+      keys.push(parameterType);
+      properties.push(
+        `${parameterType}: ${parametersType(matchingParameters)}`
+      );
+    }
+  });
+
+  if (keys.length === 0) {
+    return "";
+  }
+
+  return `{ ${keys.join(", ")} } : { ${properties.join(", ")} }`;
 }
 
 function typeDeclarationForRequestMethod(method, operation) {
@@ -115,7 +136,6 @@ export async function generateTypeScript(pathToOpenApiSpec, targetPath) {
   await fs.mkdir(targetPath, { recursive: true });
 
   const api = yaml.parse(await fs.readFile(pathToOpenApiSpec, "utf8"));
-
   const writes = Object.entries(api.paths).flatMap(([path, operations]) =>
     writeFileIncludingDirectories(
       join(targetPath, `${path}.types.ts`),

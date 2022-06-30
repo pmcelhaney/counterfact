@@ -68,11 +68,18 @@ describe("typescript generator", () => {
                           type: number
           hello/{name}:
             get:
+              parameters:
+              - in: path
+                name: name
+                required: true
+                schema:
+                  type: string
+                description: a path parameter
               responses:
-                default: 
-                    content:
-                      "*/*":
-                        schema:
+                default:
+                    content:  
+                      "*/*":  
+                        schema:  
                           type: string
       `,
     };
@@ -83,10 +90,14 @@ describe("typescript generator", () => {
         `${temporaryDirectory}paths`
       );
 
-      await expect(read("paths/hello.types.ts")).resolves.toBe(unindent`
+      await expect(read("paths/hello.types.ts")).resolves.toBe(unindent` 
          export type HTTP_GET = ({ query } : { query: { filter: string, compact?: boolean } }) => { status: 200, body: string } | { body: string } | { contentType: "application/json", body: number };
          export type HTTP_POST = () => { body: number };
       `);
+
+      await expect(read("paths/hello/{name}.types.ts")).resolves.toBe(unindent`
+         export type HTTP_GET = ({ path } : { path: { name: string } }) => { body: string };
+   `);
     });
   });
 
