@@ -26,7 +26,7 @@ describe("typescript generator", () => {
         paths:
           /hello: 
             get:
-              parameters:
+              parameters: 
               - in: query
                 name: filter
                 required: true

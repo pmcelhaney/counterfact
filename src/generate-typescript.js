@@ -1,79 +1,80 @@
-/* eslint-disable import/group-exports */
 import fs from "node:fs/promises";
 import { join } from "node:path";
 
 import yaml from "yaml";
 
-function responseType(operation) {
-  return Object.entries(operation.responses)
-    .flatMap(([statusCode, response]) =>
-      Object.entries(response.content).map(([contentType, content]) => {
-        const properties = [];
+class TypeBuilder {
+  responseType(operation) {
+    return Object.entries(operation.responses)
+      .flatMap(([statusCode, response]) =>
+        Object.entries(response.content).map(([contentType, content]) => {
+          const properties = [];
 
-        if (statusCode !== "default") {
-          properties.push(`status: ${statusCode}`);
-        }
+          if (statusCode !== "default") {
+            properties.push(`status: ${statusCode}`);
+          }
 
-        if (contentType !== "*/*") {
-          properties.push(`contentType: "${contentType}"`);
-        }
+          if (contentType !== "*/*") {
+            properties.push(`contentType: "${contentType}"`);
+          }
 
-        properties.push(`body: ${content.schema.type}`);
+          properties.push(`body: ${content.schema.type}`);
 
-        return `{ ${properties.join(", ")} }`;
-      })
-    )
-    .join(" | ");
-}
-
-function parametersType(parameters) {
-  return `{ ${parameters
-    .map(
-      (parameter) =>
-        `${parameter.name}${parameter.required ? "" : "?"}: ${
-          parameter.schema.type
-        }`
-    )
-    .join(", ")} }`;
-}
-
-function requestType(operation) {
-  const parameterTypes = ["query", "path"];
-
-  const properties = [];
-
-  const keys = [];
-
-  parameterTypes.forEach((parameterType) => {
-    const matchingParameters = (operation.parameters ?? []).filter(
-      (parameter) => parameter.in === parameterType
-    );
-
-    if (matchingParameters.length > 0) {
-      keys.push(parameterType);
-      properties.push(
-        `${parameterType}: ${parametersType(matchingParameters)}`
-      );
-    }
-  });
-
-  if (keys.length === 0) {
-    return "";
+          return `{ ${properties.join(", ")} }`;
+        })
+      )
+      .join(" | ");
   }
 
-  return `{ ${keys.join(", ")} } : { ${properties.join(", ")} }`;
-}
+  parametersType(parameters) {
+    return `{ ${parameters
+      .map(
+        (parameter) =>
+          `${parameter.name}${parameter.required ? "" : "?"}: ${
+            parameter.schema.type
+          }`
+      )
+      .join(", ")} }`;
+  }
 
-function typeDeclarationForRequestMethod(method, operation) {
-  return `export type HTTP_${method} = (${requestType(
-    operation
-  )}) => ${responseType(operation)};`;
-}
+  requestType(operation) {
+    const parameterTypes = ["query", "path"];
 
-function typeDeclarationsForOperations(operations) {
-  return Object.entries(operations).flatMap(([method, operation]) =>
-    typeDeclarationForRequestMethod(method.toUpperCase(), operation)
-  );
+    const properties = [];
+
+    const keys = [];
+
+    parameterTypes.forEach((parameterType) => {
+      const matchingParameters = (operation.parameters ?? []).filter(
+        (parameter) => parameter.in === parameterType
+      );
+
+      if (matchingParameters.length > 0) {
+        keys.push(parameterType);
+        properties.push(
+          `${parameterType}: ${this.parametersType(matchingParameters)}`
+        );
+      }
+    });
+
+    if (keys.length === 0) {
+      return "";
+    }
+
+    return `{ ${keys.join(", ")} } : { ${properties.join(", ")} }`;
+  }
+
+  typeDeclarationForRequestMethod(method, operation) {
+    return `export type HTTP_${method} = (${this.requestType(
+      operation
+    )}) => ${this.responseType(operation)};`;
+  }
+
+  typeDeclarationsForOperations(operations) {
+    return Object.entries(operations).flatMap(([method, operation]) =>
+      this.typeDeclarationForRequestMethod(method.toUpperCase(), operation)
+    );
+  }
 }
 
 async function writeFileIncludingDirectories(path, content) {
@@ -88,20 +89,18 @@ async function writeFileIncludingDirectories(path, content) {
   return fs.writeFile(path, content);
 }
 
-export function generatePaths(paths) {
-  return Object.entries(paths).flatMap(generatePath);
-}
-
 export async function generateTypeScript(pathToOpenApiSpec, targetPath) {
   await fs.mkdir(targetPath, { recursive: true });
 
   const api = yaml.parse(await fs.readFile(pathToOpenApiSpec, "utf8"));
-  const writes = Object.entries(api.paths).flatMap(([path, operations]) =>
-    writeFileIncludingDirectories(
+  const writes = Object.entries(api.paths).flatMap(([path, operations]) => {
+    const builder = new TypeBuilder();
+
+    return writeFileIncludingDirectories(
       join(targetPath, `${path}.types.ts`),
-      `${typeDeclarationsForOperations(operations).join("\n")}\n`
-    )
-  );
+      `${builder.typeDeclarationsForOperations(operations).join("\n")}\n`
+    );
+  });
 
   await Promise.all(writes);
 }
