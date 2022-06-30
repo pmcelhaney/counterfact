@@ -39,6 +39,14 @@ function createRemoveFunction(basePath) {
   };
 }
 
+function createReadFunction(basePath) {
+  return function read(filePath) {
+    const fullPath = path.join(basePath, filePath);
+
+    return fs.readFile(fullPath, "utf8");
+  };
+}
+
 export async function withTemporaryFiles(files, ...callbacks) {
   const temporaryDirectory = `${await fs.mkdtemp(
     path.join(os.tmpdir(), "wtf-")
@@ -61,6 +69,7 @@ export async function withTemporaryFiles(files, ...callbacks) {
         add: createAddFunction(temporaryDirectory),
         remove: createRemoveFunction(temporaryDirectory),
         addDirectory: createAddDirectoryFunction(temporaryDirectory),
+        read: createReadFunction(temporaryDirectory),
       });
     }
   } finally {

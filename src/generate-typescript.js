@@ -1,3 +1,9 @@
+/* eslint-disable import/group-exports */
+import fs from "node:fs/promises";
+import { join } from "node:path";
+
+import yaml from "yaml";
+
 function getTypeName(content) {
   if (content?.schema?.$ref) {
     return content.schema.$ref.replace(/^#\/components\/schemas\//u, "");
@@ -40,4 +46,16 @@ function generatePath([url, path]) {
 
 export function generatePaths(paths) {
   return Object.entries(paths).flatMap(generatePath);
+}
+
+export async function generateTypeScript(pathToOpenApiSpec, targetPath) {
+  await fs.mkdir(targetPath, { recursive: true });
+
+  const api = yaml.parse(await fs.readFile(pathToOpenApiSpec, "utf8"));
+
+  const writes = Object.entries(api.paths).map(([path, operations]) =>
+    fs.writeFile(join(targetPath, `${path}.types.ts`), operations)
+  );
+
+  await Promise.all(writes);
 }
