@@ -44,13 +44,13 @@ function generatePath([url, path]) {
   );
 }
 
-function typeDeclarationForRequestMethod(method) {
-  return `export type HTTP_${method} = () => {};`;
+function typeDeclarationForRequestMethod(method, operation) {
+  return `export type HTTP_${method} = () => { body: ${operation.responses.default.content["*/*"].schema} };`;
 }
 
 function typeDeclarationsForOperations(operations) {
-  return Object.entries(operations).flatMap(([method]) =>
-    typeDeclarationForRequestMethod(method.toUpperCase())
+  return Object.entries(operations).flatMap(([method, operation]) =>
+    typeDeclarationForRequestMethod(method.toUpperCase(), operation)
   );
 }
 
