@@ -13,9 +13,23 @@ describe("typescript generator", () => {
         info:
           title: Integration test example
           description: Example for integration test
-          version: 0.0.1
+          version: 0.0.1 
         paths:
-          /hello: todo
+          /hello: 
+            get:
+              responses:
+                200:
+                  description: Hello world
+                  content:
+                    text/plain:
+                      schema: string
+            post:
+              responses:
+                200:
+                  description: Hello world
+                  content:
+                    text/plain:
+                      schema: string
       `,
     };
 
@@ -25,7 +39,9 @@ describe("typescript generator", () => {
         `${temporaryDirectory}paths`
       );
 
-      await expect(read("paths/hello.types.ts")).resolves.toBe("todo");
+      await expect(read("paths/hello.types.ts")).resolves.toBe(
+        "export type HTTP_GET = () => {};\nexport type HTTP_POST = () => {};\n"
+      );
     });
   });
 
