@@ -44,8 +44,20 @@ function generatePath([url, path]) {
   );
 }
 
+function responseType(operation) {
+  return Object.entries(operation.responses)
+    .flatMap(([statusCode, response]) => {
+      if (statusCode === "default") {
+        return `{ body: ${response.content["*/*"].schema} }`;
+      }
+
+      return `{ status: ${statusCode}, body: ${response.content["*/*"].schema} }`;
+    })
+    .join(" | ");
+}
+
 function typeDeclarationForRequestMethod(method, operation) {
-  return `export type HTTP_${method} = () => { body: ${operation.responses.default.content["*/*"].schema} };`;
+  return `export type HTTP_${method} = () => ${responseType(operation)};`;
 }
 
 function typeDeclarationsForOperations(operations) {

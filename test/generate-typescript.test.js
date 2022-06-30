@@ -30,8 +30,13 @@ describe("typescript generator", () => {
           /hello: 
             get:
               responses:
+                200:
+                  description: 200 for GET
+                  content:
+                    "*/*":
+                      schema: string
                 default:
-                  description: Hello world
+                  description: default for GET
                   content:
                     "*/*":
                       schema: string
@@ -52,7 +57,7 @@ describe("typescript generator", () => {
       );
 
       await expect(read("paths/hello.types.ts")).resolves.toBe(unindent`
-         export type HTTP_GET = () => { body: string };
+         export type HTTP_GET = () => { status: 200, body: string } | { body: string };
          export type HTTP_POST = () => { body: number };
       `);
     });
