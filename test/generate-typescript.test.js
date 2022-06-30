@@ -5,6 +5,18 @@ import {
 
 import { withTemporaryFiles } from "./lib/with-temporary-files.js";
 
+function unindent([inputString]) {
+  const middleLines = `\n${inputString.split("\n").slice(1, -1).join("\n")}\n`;
+
+  const indent = middleLines
+    .match(/\n\s+/gu)
+    .reduce((currentLine, nextLine) =>
+      currentLine.length <= nextLine.length ? currentLine : nextLine
+    );
+
+  return middleLines.replaceAll(indent, "\n").slice(1);
+}
+
 describe("typescript generator", () => {
   it("creates TypeScript from an openapi.yaml file", async () => {
     const files = {
@@ -39,9 +51,10 @@ describe("typescript generator", () => {
         `${temporaryDirectory}paths`
       );
 
-      await expect(read("paths/hello.types.ts")).resolves.toBe(
-        "export type HTTP_GET = () => {};\nexport type HTTP_POST = () => {};\n"
-      );
+      await expect(read("paths/hello.types.ts")).resolves.toBe(unindent`
+         export type HTTP_GET = () => {};
+         export type HTTP_POST = () => {};
+      `);
     });
   });
 
