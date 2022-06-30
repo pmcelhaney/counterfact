@@ -68,7 +68,12 @@ function responseType(operation) {
 
 function parametersType(parameters) {
   return `{ ${parameters
-    .map((parameter) => `${parameter.name}: ${parameter.schema.type}`)
+    .map(
+      (parameter) =>
+        `${parameter.name}${parameter.required ? "" : "?"}: ${
+          parameter.schema.type
+        }`
+    )
     .join(", ")} }`;
 }
 

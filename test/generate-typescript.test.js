@@ -32,10 +32,16 @@ describe("typescript generator", () => {
               parameters:
               - in: query
                 name: filter
-                required: false
+                required: true
                 schema:
                   type: string
                 description: a query string parameter
+              - in: query
+                name: compact
+                required: false
+                schema:
+                  type: boolean
+                description: an optional query string parameter
               responses:
                 200:
                   description: 200 for GET
@@ -70,7 +76,7 @@ describe("typescript generator", () => {
       );
 
       await expect(read("paths/hello.types.ts")).resolves.toBe(unindent`
-         export type HTTP_GET = ({ query } : { query: { filter: string } }) => { status: 200, body: string } | { body: string } | { contentType: "application/json", body: number };
+         export type HTTP_GET = ({ query } : { query: { filter: string, compact?: boolean } }) => { status: 200, body: string } | { body: string } | { contentType: "application/json", body: number };
          export type HTTP_POST = () => { body: number };
       `);
     });
