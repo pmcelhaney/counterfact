@@ -95,6 +95,18 @@ function typeDeclarationsForOperations(operations) {
   );
 }
 
+async function writeFileIncludingDirectories(path, content) {
+  const partsOfPath = path.split("/");
+
+  const directory = partsOfPath.slice(0, -1).join("/");
+
+  if (directory !== "") {
+    await fs.mkdir(partsOfPath.slice(0, -1).join("/"), { recursive: true });
+  }
+
+  return fs.writeFile(path, content);
+}
+
 export function generatePaths(paths) {
   return Object.entries(paths).flatMap(generatePath);
 }
@@ -105,7 +117,7 @@ export async function generateTypeScript(pathToOpenApiSpec, targetPath) {
   const api = yaml.parse(await fs.readFile(pathToOpenApiSpec, "utf8"));
 
   const writes = Object.entries(api.paths).flatMap(([path, operations]) =>
-    fs.writeFile(
+    writeFileIncludingDirectories(
       join(targetPath, `${path}.types.ts`),
       `${typeDeclarationsForOperations(operations).join("\n")}\n`
     )

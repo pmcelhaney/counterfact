@@ -66,6 +66,14 @@ describe("typescript generator", () => {
                       "*/*":
                         schema:  
                           type: number
+          hello/{name}:
+            get:
+              responses:
+                default: 
+                    content:
+                      "*/*":
+                        schema:
+                          type: string
       `,
     };
 
