@@ -44,6 +44,16 @@ function generatePath([url, path]) {
   );
 }
 
+function typeDeclarationForRequestMethod(method) {
+  return `export type HTTP_${method} = () => {};`;
+}
+
+function typeDeclarationsForOperations(operations) {
+  return Object.entries(operations).flatMap(([method]) =>
+    typeDeclarationForRequestMethod(method.toUpperCase())
+  );
+}
+
 export function generatePaths(paths) {
   return Object.entries(paths).flatMap(generatePath);
 }
@@ -53,16 +63,12 @@ export async function generateTypeScript(pathToOpenApiSpec, targetPath) {
 
   const api = yaml.parse(await fs.readFile(pathToOpenApiSpec, "utf8"));
 
-  const writes = Object.entries(api.paths).flatMap(([path, operations]) => {
-    const typeDeclarations = Object.entries(operations).flatMap(
-      ([method]) => `export type HTTP_${method.toUpperCase()} = () => {};`
-    );
-
-    return fs.writeFile(
+  const writes = Object.entries(api.paths).flatMap(([path, operations]) =>
+    fs.writeFile(
       join(targetPath, `${path}.types.ts`),
-      `${typeDeclarations.join("\n")}\n`
-    );
-  });
+      `${typeDeclarationsForOperations(operations).join("\n")}\n`
+    )
+  );
 
   await Promise.all(writes);
 }
