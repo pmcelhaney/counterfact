@@ -40,6 +40,8 @@ describe("typescript generator", () => {
                   content:
                     "*/*":
                       schema: string
+                    "application/json":
+                      schema: number
             post:
               responses:
                 default:
@@ -57,7 +59,7 @@ describe("typescript generator", () => {
       );
 
       await expect(read("paths/hello.types.ts")).resolves.toBe(unindent`
-         export type HTTP_GET = () => { status: 200, body: string } | { body: string };
+         export type HTTP_GET = () => { status: 200, body: string } | { body: string } | { contentType: "application/json", body: number };
          export type HTTP_POST = () => { body: number };
       `);
     });

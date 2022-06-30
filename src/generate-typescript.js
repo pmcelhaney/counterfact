@@ -46,13 +46,23 @@ function generatePath([url, path]) {
 
 function responseType(operation) {
   return Object.entries(operation.responses)
-    .flatMap(([statusCode, response]) => {
-      if (statusCode === "default") {
-        return `{ body: ${response.content["*/*"].schema} }`;
-      }
+    .flatMap(([statusCode, response]) =>
+      Object.entries(response.content).map(([contentType, content]) => {
+        const properties = [];
 
-      return `{ status: ${statusCode}, body: ${response.content["*/*"].schema} }`;
-    })
+        if (statusCode !== "default") {
+          properties.push(`status: ${statusCode}`);
+        }
+
+        if (contentType !== "*/*") {
+          properties.push(`contentType: "${contentType}"`);
+        }
+
+        properties.push(`body: ${content.schema}`);
+
+        return `{ ${properties.join(", ")} }`;
+      })
+    )
     .join(" | ");
 }
 
