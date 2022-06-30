@@ -58,7 +58,7 @@ function responseType(operation) {
           properties.push(`contentType: "${contentType}"`);
         }
 
-        properties.push(`body: ${content.schema}`);
+        properties.push(`body: ${content.schema.type}`);
 
         return `{ ${properties.join(", ")} }`;
       })
@@ -66,8 +66,22 @@ function responseType(operation) {
     .join(" | ");
 }
 
+function parametersType(parameters) {
+  return `{ ${parameters
+    .map((parameter) => `${parameter.name}: ${parameter.schema.type}`)
+    .join(", ")} }`;
+}
+
+function requestType(operation) {
+  return operation.parameters
+    ? `{ query } : { query: ${parametersType(operation.parameters)} }`
+    : "";
+}
+
 function typeDeclarationForRequestMethod(method, operation) {
-  return `export type HTTP_${method} = () => ${responseType(operation)};`;
+  return `export type HTTP_${method} = (${requestType(
+    operation
+  )}) => ${responseType(operation)};`;
 }
 
 function typeDeclarationsForOperations(operations) {

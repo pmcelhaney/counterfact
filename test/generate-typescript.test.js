@@ -29,26 +29,37 @@ describe("typescript generator", () => {
         paths:
           /hello: 
             get:
+              parameters:
+              - in: query
+                name: filter
+                required: false
+                schema:
+                  type: string
+                description: a query string parameter
               responses:
                 200:
                   description: 200 for GET
                   content:
                     "*/*":
-                      schema: string
+                      schema: 
+                        type: string
                 default:
                   description: default for GET
                   content:
                     "*/*":
-                      schema: string
+                      schema: 
+                        type: string
                     "application/json":
-                      schema: number
+                      schema: 
+                        type: number
             post:
               responses:
                 default:
                     description: Hello world
                     content:
                       "*/*":
-                        schema: number
+                        schema:  
+                          type: number
       `,
     };
 
@@ -59,7 +70,7 @@ describe("typescript generator", () => {
       );
 
       await expect(read("paths/hello.types.ts")).resolves.toBe(unindent`
-         export type HTTP_GET = () => { status: 200, body: string } | { body: string } | { contentType: "application/json", body: number };
+         export type HTTP_GET = ({ query } : { query: { filter: string } }) => { status: 200, body: string } | { body: string } | { contentType: "application/json", body: number };
          export type HTTP_POST = () => { body: number };
       `);
     });
