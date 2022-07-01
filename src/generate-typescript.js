@@ -4,18 +4,22 @@ import { join } from "node:path";
 import yaml from "yaml";
 
 class TypeBuilder {
+  constructor(api) {
+    this.api = api;
+  }
+
   referencedTypes = new Map();
 
   identifierIndexes = new Map();
 
-  typeFromSchema(name, schema) {
+  typeFromSchema(schema) {
     if (schema.$ref) {
       return this.referencedType(schema.$ref);
     }
 
     if (schema.type === "object") {
       return `{ ${Object.entries(schema.properties)
-        .map(([key, value]) => `${key}: ${this.typeFromSchema(key, value)}`)
+        .map(([key, value]) => `${key}: ${this.typeFromSchema(value)}`)
         .join(", ")} }`;
     }
 
@@ -66,9 +70,7 @@ class TypeBuilder {
             properties.push(`contentType: "${contentType}"`);
           }
 
-          properties.push(
-            `body: ${this.typeFromSchema("Response", content.schema)}`
-          );
+          properties.push(`body: ${this.typeFromSchema(content.schema)}`);
 
           return `{ ${properties.join(", ")} }`;
         })
@@ -80,9 +82,9 @@ class TypeBuilder {
     return `{ ${parameters
       .map(
         (parameter) =>
-          `${parameter.name}${parameter.required ? "" : "?"}: ${
-            parameter.schema.type
-          }`
+          `${parameter.name}${
+            parameter.required ? "" : "?"
+          }: ${this.typeFromSchema(parameter.schema)}`
       )
       .join(", ")} }`;
   }
@@ -125,6 +127,18 @@ class TypeBuilder {
       this.typeDeclarationForRequestMethod(method.toUpperCase(), operation)
     );
   }
+
+  typeFromUrl(url) {
+    const branches = url.split("/").slice(1);
+
+    let node = this.api;
+
+    for (const branch of branches) {
+      node = node[branch];
+    }
+
+    return this.typeFromSchema(node);
+  }
 }
 
 async function writeFileIncludingDirectories(path, content) {
@@ -144,13 +158,14 @@ export async function generateTypeScript(pathToOpenApiSpec, targetPath) {
 
   const api = yaml.parse(await fs.readFile(pathToOpenApiSpec, "utf8"));
   const writes = Object.entries(api.paths).flatMap(([path, operations]) => {
-    const builder = new TypeBuilder();
+    const builder = new TypeBuilder(api);
 
     const typeDeclarations = builder.typeDeclarationsForOperations(operations);
 
     const internalTypes = Array.from(
       builder.referencedTypes,
-      ([url, identifier]) => `type ${identifier} = ${url};\n`
+      ([url, identifier]) =>
+        `type ${identifier} = ${builder.typeFromUrl(url)};\n`
     );
 
     const content = [...internalTypes, ...typeDeclarations].join("");

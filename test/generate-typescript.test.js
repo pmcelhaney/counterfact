@@ -102,7 +102,15 @@ describe("typescript generator", () => {
                               $ref: '#/components/schemas/Person' 
                             clashingReference:
                               $ref: '#/components/schemas/other/Person'            
-        `,
+        components:
+          schemas:
+            Person:
+              type: string
+            other:
+              Person: 
+                type: boolean
+
+                              `,
     };
 
     await withTemporaryFiles(files, async (temporaryDirectory, { read }) => {
@@ -121,8 +129,8 @@ describe("typescript generator", () => {
       `);
 
       await expect(read("paths/complex-types.types.ts")).resolves.toBe(unindent`
-        type Person = #/components/schemas/Person;
-        type Person2 = #/components/schemas/other/Person;
+        type Person = string;
+        type Person2 = boolean;
         export type HTTP_GET = ({ path } : { path: { name: string } }) => { body: { name: string, age: number, reference: Person, clashingReference: Person2 } };
       `);
     });
