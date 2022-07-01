@@ -13,6 +13,10 @@ class TypeBuilder {
   identifierIndexes = new Map();
 
   typeFromSchema(schema) {
+    if (schema === undefined) {
+      throw new Error("schema is undefined");
+    }
+
     if (schema.$ref) {
       return this.referencedType(schema.$ref);
     }
@@ -72,6 +76,12 @@ class TypeBuilder {
 
           if (contentType !== "*/*") {
             properties.push(`contentType: "${contentType}"`);
+          }
+
+          if (!content.schema) {
+            throw new Error(
+              `missing schema property in ${JSON.stringify(content)}`
+            );
           }
 
           properties.push(`body: ${this.typeFromSchema(content.schema)}`);

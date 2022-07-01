@@ -12,6 +12,9 @@ paths:
           description: Successful response
           content:
             application/json:
+              schema: 
+                type: 
+                  string
               examples:
                 no visits:
                   value: You have not visited anyone yet
@@ -23,6 +26,9 @@ paths:
           description: Successful response
           content:
             application/json:
+              schema: 
+                type: 
+                  string
               examples:
                 hello kitty:
                   value: >-
@@ -43,6 +49,9 @@ paths:
           description: Successful response
           content:
             application/json:
+              schema: 
+                type: 
+                  string
               examples:
                 hello-world:
                   value: Hello, world
