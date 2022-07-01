@@ -100,15 +100,17 @@ describe("typescript generator", () => {
                             age: 
                               type: number
                             reference:
-                              $ref: '#/components/schemas/Person' 
+                              $ref: '#/components/schemas/Hobbies' 
                             clashingReference:
-                              $ref: '#/components/schemas/other/Person'            
+                              $ref: '#/components/schemas/other/Hobbies'            
         components:
           schemas:
-            Person:
-              type: string
+            Hobbies:
+              type: array
+              items:
+                type: string
             other:
-              Person: 
+              Hobbies: 
                 type: boolean
 
                               `,
@@ -130,9 +132,9 @@ describe("typescript generator", () => {
       `);
 
       await expect(read("paths/complex-types.types.ts")).resolves.toBe(unindent`
-        type Person = string;
-        type Person2 = boolean;
-        export type HTTP_GET = ({ path } : { path: { name: string } }) => { body: { name: string, age: number, reference: Person, clashingReference: Person2 } };
+        type Hobbies = Array<string>;
+        type Hobbies2 = boolean;
+        export type HTTP_GET = ({ path } : { path: { name: string } }) => { body: { name: string, age: number, reference: Hobbies, clashingReference: Hobbies2 } };
       `);
     });
   });

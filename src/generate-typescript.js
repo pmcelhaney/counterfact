@@ -23,6 +23,10 @@ class TypeBuilder {
         .join(", ")} }`;
     }
 
+    if (schema.type === "array") {
+      return `Array<${this.typeFromSchema(schema.items)}>`;
+    }
+
     return schema.type;
   }
 
