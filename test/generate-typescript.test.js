@@ -17,7 +17,8 @@ function unindent([inputString]) {
 describe("typescript generator", () => {
   it("creates TypeScript from an openapi.yaml file", async () => {
     const files = {
-      "openapi.yaml": `
+      // eslint-disable-next-line no-inline-comments
+      "openapi.yaml": /* yaml */ `
         openapi: 3.0.0 
         info:
           title: Integration test example
