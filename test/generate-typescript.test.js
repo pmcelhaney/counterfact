@@ -78,7 +78,27 @@ describe("typescript generator", () => {
                       "*/*":  
                         schema:  
                           type: string
-      `,
+          complex-types:
+            get:
+              parameters:
+              - in: path
+                name: name
+                required: true
+                schema:
+                  type: string
+                description: a path parameter
+              responses:
+                default:
+                    content:  
+                      "*/*":  
+                        schema:  
+                          type: object
+                          properties:
+                            name: 
+                              type: string
+                            age: 
+                              type: number          
+        `,
     };
 
     await withTemporaryFiles(files, async (temporaryDirectory, { read }) => {
@@ -94,7 +114,11 @@ describe("typescript generator", () => {
 
       await expect(read("paths/hello/{name}.types.ts")).resolves.toBe(unindent`
         export type HTTP_GET = ({ path } : { path: { name: string } }) => { body: string };
-   `);
+      `);
+
+      await expect(read("paths/complex-types.types.ts")).resolves.toBe(unindent`
+        export type HTTP_GET = ({ path } : { path: { name: string } }) => { body: { name: string, age: number } };
+      `);
     });
   });
 });
