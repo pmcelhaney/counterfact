@@ -97,7 +97,11 @@ describe("typescript generator", () => {
                             name: 
                               type: string
                             age: 
-                              type: number          
+                              type: number
+                            reference:
+                              $ref: '#/components/schemas/Person' 
+                            clashingReference:
+                              $ref: '#/components/schemas/other/Person'            
         `,
     };
 
@@ -117,7 +121,9 @@ describe("typescript generator", () => {
       `);
 
       await expect(read("paths/complex-types.types.ts")).resolves.toBe(unindent`
-        export type HTTP_GET = ({ path } : { path: { name: string } }) => { body: { name: string, age: number } };
+        type Person = #/components/schemas/Person;
+        type Person2 = #/components/schemas/other/Person;
+        export type HTTP_GET = ({ path } : { path: { name: string } }) => { body: { name: string, age: number, reference: Person, clashingReference: Person2 } };
       `);
     });
   });

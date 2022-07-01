@@ -4,11 +4,15 @@ import { join } from "node:path";
 import yaml from "yaml";
 
 class TypeBuilder {
-  schemas = {};
+  referencedTypes = new Map();
 
-  schemaNameIndex = {};
+  identifierIndexes = new Map();
 
   typeFromSchema(name, schema) {
+    if (schema.$ref) {
+      return this.referencedType(schema.$ref);
+    }
+
     if (schema.type === "object") {
       return `{ ${Object.entries(schema.properties)
         .map(([key, value]) => `${key}: ${this.typeFromSchema(key, value)}`)
@@ -18,21 +22,34 @@ class TypeBuilder {
     return schema.type;
   }
 
-  referencedType(name, schema) {
-    if (this.schemaNameIndex[name] === undefined) {
-      this.schemas[name] = schema;
-      this.schemaNameIndex[name] = 1;
+  reserveUniqueIdentifierForUrl(url) {
+    const name = url.split("/").pop();
 
-      return name;
+    if (this.identifierIndexes.has(name)) {
+      const nextIndex = this.identifierIndexes.get(name) + 1;
+
+      this.identifierIndexes.set(name, nextIndex);
+
+      const uniqueName = `${name}${nextIndex}`;
+
+      this.referencedTypes.set(url, uniqueName);
+
+      return uniqueName;
     }
 
-    const index = this.schemaNameIndex[name];
-    const alternateName = `${name}${index}`;
+    this.referencedTypes.set(url, name);
 
-    this.schemas[`${name}${index}`] = schema;
-    this.schemaNameIndex[name] += 1;
+    this.identifierIndexes.set(name, 1);
 
-    return alternateName;
+    return name;
+  }
+
+  referencedType(url) {
+    if (this.referencedTypes.has(url)) {
+      return this.referencedTypes.get(url);
+    }
+
+    return this.reserveUniqueIdentifierForUrl(url);
   }
 
   responseType(operation) {
@@ -131,7 +148,10 @@ export async function generateTypeScript(pathToOpenApiSpec, targetPath) {
 
     const typeDeclarations = builder.typeDeclarationsForOperations(operations);
 
-    const internalTypes = [];
+    const internalTypes = Array.from(
+      builder.referencedTypes,
+      ([url, identifier]) => `type ${identifier} = ${url};\n`
+    );
 
     const content = [...internalTypes, ...typeDeclarations].join("");
 
