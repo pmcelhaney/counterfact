@@ -130,7 +130,7 @@ class TypeBuilder {
     return `{ ${keys.join(", ")} } : { ${properties.join(", ")} }`;
   }
 
-  typeDeclarationForRequestMethod(method, operation) {
+  typeDeclarationForOneOperation(method, operation) {
     return `export type HTTP_${method} = (${this.requestType(
       operation
     )}) => ${this.responseType(operation)};\n`;
@@ -138,14 +138,28 @@ class TypeBuilder {
 
   typeDeclarationsForOperations(operations) {
     return Object.entries(operations).flatMap(([method, operation]) =>
-      this.typeDeclarationForRequestMethod(method.toUpperCase(), operation)
+      this.typeDeclarationForOneOperation(method.toUpperCase(), operation)
     );
+  }
+
+  exportedFunctionArguments(operation) {
+    const parameterSources = ["query", "path"];
+
+    return parameterSources
+      .filter((source) =>
+        Object.keys(operation.parameters ?? []).some(
+          (parameter) => operation.parameters[parameter].in === source
+        )
+      )
+      .join(", ");
   }
 
   exportedFunctionsForOperations(operations) {
     return Object.entries(operations).flatMap(
       ([method, operation]) =>
-        `export const hello: HTTP_${method.toUpperCase()} = () => null;\n`
+        `export const hello: HTTP_${method.toUpperCase()} = ({ ${this.exportedFunctionArguments(
+          operation
+        )} }) => null;\n`
     );
   }
 

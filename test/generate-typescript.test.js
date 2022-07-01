@@ -140,9 +140,9 @@ describe("typescript generator", () => {
       await expect(read("paths/hello.ts")).resolves.toBe(unindent`
         import type HTTP_GET from "./hello.types.ts";
         import type HTTP_POST from "./hello.types.ts";
-        
-        export const hello: HTTP_GET = () => null;
-        export const hello: HTTP_POST = () => null;
+
+        export const hello: HTTP_GET = ({ query }) => null;
+        export const hello: HTTP_POST = ({  }) => null;
     `);
     });
   });
