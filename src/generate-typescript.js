@@ -142,6 +142,13 @@ class TypeBuilder {
     );
   }
 
+  exportedFunctionsForOperations(operations) {
+    return Object.entries(operations).flatMap(
+      ([method, operation]) =>
+        `export const hello: HTTP_${method.toUpperCase()} = () => null;\n`
+    );
+  }
+
   typeFromUrl(url) {
     const branches = url.split("/").slice(1);
 
@@ -182,12 +189,25 @@ export async function generateTypeScript(pathToOpenApiSpec, targetPath) {
         `type ${identifier} = ${builder.typeFromUrl(url)};\n`
     );
 
-    const content = [...internalTypes, ...typeDeclarations].join("");
+    const typesFileContent = [...internalTypes, ...typeDeclarations].join("");
 
-    return writeFileIncludingDirectories(
-      join(targetPath, `${path}.types.ts`),
-      content
+    const imports = Object.keys(operations).map(
+      (method) =>
+        `import type HTTP_${method.toUpperCase()} from ".${path}.types.ts";\n`
     );
+
+    const exports = builder.exportedFunctionsForOperations(operations);
+
+    return Promise.all([
+      writeFileIncludingDirectories(
+        join(targetPath, `${path}.types.ts`),
+        typesFileContent
+      ),
+      writeFileIncludingDirectories(
+        join(targetPath, `${path}.ts`),
+        [...imports, "\n", ...exports].join("")
+      ),
+    ]);
   });
 
   await Promise.all(writes);

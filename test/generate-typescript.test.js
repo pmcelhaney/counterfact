@@ -136,6 +136,14 @@ describe("typescript generator", () => {
         type Hobbies2 = boolean;
         export type HTTP_GET = ({ path } : { path: { name: string } }) => { body: { name: string, age: number, reference: Hobbies, clashingReference: Hobbies2 } };
       `);
+
+      await expect(read("paths/hello.ts")).resolves.toBe(unindent`
+        import type HTTP_GET from "./hello.types.ts";
+        import type HTTP_POST from "./hello.types.ts";
+        
+        export const hello: HTTP_GET = () => null;
+        export const hello: HTTP_POST = () => null;
+    `);
     });
   });
 });
