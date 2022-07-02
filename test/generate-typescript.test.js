@@ -41,19 +41,25 @@ describe("typescript generator", () => {
                   type: boolean
                 description: an optional query string parameter
               responses:
-                200:
+                200: 
                   description: 200 for GET
                   content:
                     "*/*":
                       schema: 
                         type: string
+                      examples:
+                        default:
+                          value: "Hello, world!"
+                        compact:
+                          value: "Hi, world!"
+
                 default:
-                  description: default for GET
+                  description: default for GET 
                   content:
                     "*/*":
                       schema: 
                         type: string
-                    "application/json":
+                    "application/json": 
                       schema: 
                         type: number
             post:
@@ -69,28 +75,28 @@ describe("typescript generator", () => {
               parameters:
               - in: path
                 name: name
-                required: true
-                schema:
+                required: true 
+                schema: 
                   type: string
                 description: a path parameter
               responses:
                 default:
-                    content:  
+                    content:   
                       "*/*":  
                         schema:  
-                          type: string
-          complex-types:
+                          type: string  
+          complex-types:  
             get:
-              parameters:
+              parameters: 
               - in: path
                 name: name
                 required: true
-                schema:
+                schema:  
                   type: string
                 description: a path parameter
               responses:
                 default:
-                    content:  
+                    content:    
                       "*/*":  
                         schema:  
                           type: object
@@ -140,9 +146,18 @@ describe("typescript generator", () => {
       await expect(read("paths/hello.ts")).resolves.toBe(unindent`
         import type HTTP_GET from "./hello.types.ts";
         import type HTTP_POST from "./hello.types.ts";
-
-        export const hello: HTTP_GET = ({ query }) => null;
-        export const hello: HTTP_POST = ({  }) => null;
+        export const GET: HTTP_GET = ({ query, tools }) => {
+          const example = tools.chooseOne(["default","compact"]);
+          if (tools.accepts("*/*") && example === "default") { return { status: 200, body: "Hello, world!" }; }
+          if (tools.accepts("*/*") && example === "compact") { return { status: 200, body: "Hi, world!" }; }
+          if (tools.accepts("*/*")) { return { status: default, body: tools.random({"type":"string"}) }; }
+          if (tools.accepts("application/json")) { return { status: default, body: tools.random({"type":"number"}) }; }
+          return null;
+        };
+        export const POST: HTTP_POST = ({ tools }) => {
+          if (tools.accepts("*/*")) { return { status: default, body: tools.random({"type":"number"}) }; }
+          return null;
+        };
     `);
     });
   });

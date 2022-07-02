@@ -151,15 +151,50 @@ class TypeBuilder {
           (parameter) => operation.parameters[parameter].in === source
         )
       )
+      .concat(["tools"])
       .join(", ");
+  }
+
+  exportedFunctionBody(operation) {
+    const exampleNames = new Set();
+
+    const returns = Object.entries(operation.responses).flatMap(
+      ([statusCode, response]) =>
+        Object.entries(response.content).flatMap(([contentType, content]) =>
+          Object.entries(
+            content.examples ?? { "": { value: content.schema.type } }
+          ).map(([exampleName, example]) => {
+            if (exampleName !== "") {
+              exampleNames.add(exampleName);
+            }
+
+            return exampleName === ""
+              ? `  if (tools.accepts("${contentType}")) { return { status: ${statusCode}, body: tools.random(${JSON.stringify(
+                  content.schema
+                )}) }; }\n`
+              : `  if (tools.accepts("${contentType}") && example === "${exampleName}") { return { status: ${statusCode}, body: ${JSON.stringify(
+                  example.value
+                )} }; }\n`;
+          })
+        )
+    );
+
+    const setExample =
+      exampleNames.size === 0
+        ? ""
+        : `  const example = tools.chooseOne(${JSON.stringify(
+            Array.from(exampleNames)
+          )});\n`;
+
+    return `{\n${setExample}${returns.join("")}  return null;\n}`;
   }
 
   exportedFunctionsForOperations(operations) {
     return Object.entries(operations).flatMap(
       ([method, operation]) =>
-        `export const hello: HTTP_${method.toUpperCase()} = ({ ${this.exportedFunctionArguments(
+        `export const ${method.toUpperCase()}: HTTP_${method.toUpperCase()} = ({ ${this.exportedFunctionArguments(
           operation
-        )} }) => null;\n`
+        )} }) => ${this.exportedFunctionBody(operation)};\n`
     );
   }
 
@@ -219,7 +254,7 @@ export async function generateTypeScript(pathToOpenApiSpec, targetPath) {
       ),
       writeFileIncludingDirectories(
         join(targetPath, `${path}.ts`),
-        [...imports, "\n", ...exports].join("")
+        [...imports, ...exports].join("")
       ),
     ]);
   });
