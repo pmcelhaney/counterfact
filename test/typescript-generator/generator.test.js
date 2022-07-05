@@ -1,4 +1,4 @@
-import { Generator } from "../src/generator.js";
+import { Generator } from "../../src/typescript-generator/generator.js";
 
 function uniqueNamer(name) {
   return function namer(takenNames) {
@@ -16,6 +16,23 @@ function uniqueNamer(name) {
 }
 
 describe("a typescript Generator", () => {
+  it("adds an export to a file path", () => {
+    const generator = new Generator();
+
+    const name = generator.export(
+      "person.ts",
+      uniqueNamer("Person"),
+      "#/components/schemas/Person",
+      () => "export class Person {}"
+    );
+
+    const exportEntry = generator.files.get("person.ts").exports.get("Person");
+
+    expect(name).toBe("Person");
+    expect(exportEntry.url).toBe("#/components/schemas/Person");
+    expect(exportEntry.print()).toBe("export class Person {}");
+  });
+
   it("uses a namer function to find a unique name for an export", () => {
     const generator = new Generator();
 
