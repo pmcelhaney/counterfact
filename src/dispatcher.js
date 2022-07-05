@@ -1,3 +1,5 @@
+import { Tools } from "./tools";
+
 export class Dispatcher {
   registry;
 
@@ -5,12 +7,12 @@ export class Dispatcher {
     this.registry = registry;
   }
 
-  request({ method, path, body, query }) {
+  request({ method, path, headers, body, query }) {
     return this.registry.endpoint(
       method,
       path
     )({
-      // path: parts.slice(remainingParts).join("/"),
+      tools: new Tools({ headers }),
 
       reduce: (reducer) => {
         this.registry.context = reducer(this.registry.context);
