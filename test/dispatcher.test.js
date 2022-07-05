@@ -72,6 +72,39 @@ describe("a dispatcher", () => {
     expect(response.body).toBe("Searching for stores near 90210!");
   });
 
+  it("passes a tools object", async () => {
+    const registry = new Registry();
+
+    registry.add("/a", {
+      GET({ tools }) {
+        return { body: tools.accepts("text/html") };
+      },
+    });
+
+    const dispatcher = new Dispatcher(registry);
+    const htmlResponse = await dispatcher.request({
+      method: "GET",
+      path: "/a",
+
+      headers: {
+        Accept: "text/html",
+      },
+    });
+
+    expect(htmlResponse.body).toBe(true);
+
+    const textResponse = await dispatcher.request({
+      method: "GET",
+      path: "/a",
+
+      headers: {
+        Accept: "text/plain",
+      },
+    });
+
+    expect(textResponse.body).toBe(false);
+  });
+
   it("passes status code in the response", async () => {
     const registry = new Registry();
 
