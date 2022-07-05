@@ -76,11 +76,8 @@ describe("a dispatcher", () => {
     const registry = new Registry();
 
     registry.add("/a", {
-      GET({ query, tools }) {
-        if (tools.accepts("text/html")) {
-          return { contentType: "text/html", body: "<p>Hello!</p>" };
-        }
-        return { contentType: "text/plain", body: "Hello!" };
+      GET({ tools }) {
+        return { body: tools.accepts("text/html") };
       },
     });
 
@@ -88,22 +85,24 @@ describe("a dispatcher", () => {
     const htmlResponse = await dispatcher.request({
       method: "GET",
       path: "/a",
+
       headers: {
         Accept: "text/html",
       },
     });
 
-    expect(htmlResponse.contentType).toBe("text/html");
+    expect(htmlResponse.body).toBe(true);
 
     const textResponse = await dispatcher.request({
       method: "GET",
       path: "/a",
+
       headers: {
         Accept: "text/plain",
       },
     });
 
-    expect(textResponse.body).toBe("Hello!");
+    expect(textResponse.body).toBe(false);
   });
 
   it("passes status code in the response", async () => {

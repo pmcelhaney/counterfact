@@ -9,6 +9,7 @@ export class Tools {
 
   accepts(contentType) {
     const acceptHeader = this.headers.Accept;
+
     if (!acceptHeader) {
       return true;
     }
@@ -17,6 +18,7 @@ export class Tools {
 
     return acceptTypes.some((acceptType) => {
       const [type, subtype] = acceptType.split("/");
+
       return (
         (type === "*" || type === contentType.split("/")[0]) &&
         (subtype === "*" || subtype === contentType.split("/")[1])

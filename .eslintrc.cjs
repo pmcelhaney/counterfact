@@ -59,7 +59,6 @@ module.exports = {
           {
             ignorePattern: "eslint|it\\(|describe\\(",
             ignoreTemplateLiterals: true,
-            length: 120,
           },
         ],
 

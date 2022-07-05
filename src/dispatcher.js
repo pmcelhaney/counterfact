@@ -1,4 +1,4 @@
-import { Tools } from "./tools";
+import { Tools } from "./tools.js";
 
 export class Dispatcher {
   registry;
