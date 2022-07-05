@@ -3,6 +3,13 @@ export class Line {
     this.source = source;
     this.url = url;
     this.printer = printer;
+
+    // Now here's where it gets fun. A printer might need to import an
+    // object. It will need to tell to call file.addImport() so it needs
+    // a reference to the file.
+    //
+    // The file will then tell the generator that it needs that file
+    // to exist.
   }
 
   async print() {

@@ -6,7 +6,7 @@ export class File {
     this.exports = new Map();
   }
 
-  addExport(namer, url, printer) {
+  addExport(url, printer, namer) {
     const name = namer(url, this.exports);
 
     const source = this.generator.getSource(url);

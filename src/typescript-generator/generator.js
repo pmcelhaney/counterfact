@@ -30,7 +30,7 @@ export class Generator {
 
     const file = this.files.get(filename);
 
-    return file.addExport(namer, url, printer);
+    return file.addExport(url, printer, namer);
   }
 
   addSource(path, data) {
