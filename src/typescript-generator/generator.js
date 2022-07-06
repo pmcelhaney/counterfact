@@ -1,5 +1,5 @@
 import { File } from "./file.js";
-import { YamlSource } from "./yaml-source.js";
+import { Requirement } from "./requirement.js";
 
 function defaultNamer(url, takenNames) {
   const name = url.split("/").pop();
@@ -50,7 +50,7 @@ export class Generator {
       return this.sources.get(url);
     }
 
-    const source = new YamlSource(url);
+    const source = new Requirement(url);
 
     this.sources.set(url, source);
 

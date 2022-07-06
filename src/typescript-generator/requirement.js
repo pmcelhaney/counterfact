@@ -1,4 +1,4 @@
-export class YamlSource {
+export class Requirement {
   constructor(path) {
     this.path = path;
   }
