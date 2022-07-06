@@ -1,5 +1,3 @@
-import { Statement } from "./statement.js";
-
 export class Script {
   constructor(generator) {
     this.generator = generator;
