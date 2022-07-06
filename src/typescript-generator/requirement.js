@@ -9,18 +9,12 @@ export class Requirement {
     return this.data !== undefined;
   }
 
-  async load() {
-    if (this.isLoaded) {
-      return this.data;
+  async read() {
+    if (!this.isLoaded) {
+      this.data = await this.specification.read(this.url);
     }
 
-    await Promise.resolve("todo -- load and parse YAML");
-
-    throw new Error("Loading a YAML file is not implemented yet.");
-  }
-
-  read() {
-    return this.load();
+    return this.data;
   }
 
   reference(relativeUrl) {
