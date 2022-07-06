@@ -1,6 +1,11 @@
 export class Requirement {
-  constructor(path) {
-    this.path = path;
+  constructor(url, data) {
+    this.url = url;
+
+    // deprecated
+    this.path = url;
+
+    this.data = data;
   }
 
   get isLoaded() {

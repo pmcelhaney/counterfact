@@ -3,7 +3,7 @@ export class Coder {
     this.spec = spec;
   }
 
-  write(script, requirement) {
+  write(requirement, script) {
     return "";
   }
 

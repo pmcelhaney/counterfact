@@ -1,4 +1,5 @@
 import { Coder } from "../../src/typescript-generator/coder.js";
+import { Requirement } from "../../src/typescript-generator/requirement.js";
 
 describe("a Coder", () => {
   it("finds a name that does not collide with a given set of names", () => {
@@ -13,34 +14,36 @@ describe("a Coder", () => {
 
   it("writes code synchronously given a requirement", () => {
     class JsonCoder extends Coder {
-      write(file, requirement) {
-        return JSON.stringify(requirement);
+      write(requirement) {
+        return JSON.stringify(requirement.data);
       }
     }
 
-    expect(new JsonCoder().write(undefined, { example: 1 })).toBe(
-      '{"example":1}'
-    );
+    const requirement = new Requirement("#/components/schemas/Person", {
+      name: "Alice",
+    });
+
+    expect(new JsonCoder().write(requirement)).toBe('{"name":"Alice"}');
   });
 
-  it("can pass another coder back to the file, ask the file to import the code which will be written by the coder", () => {
-    class JsonCoder extends Coder {
-      write(file, requirement) {
+  it("can reference an object that will be imported", () => {
+    class DelegatingCoder extends Coder {
+      write(requirement, script) {
         const accountCoder = new Coder();
 
-        return `{ name: "${requirement.name}", account: new ${file.import(
+        return `{ name: "${requirement.name}", account: new ${script.import(
           accountCoder
         )}() }`;
       }
     }
 
-    const file = {
+    const script = {
       import() {
         return "Account";
       },
     };
 
-    expect(new JsonCoder().write(file, { name: "example" })).toBe(
+    expect(new DelegatingCoder().write({ name: "example" }, script)).toBe(
       '{ name: "example", account: new Account() }'
     );
   });
