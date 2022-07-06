@@ -6,7 +6,9 @@ describe("a Coder", () => {
     const coder = new Coder(spec, "#/components/schemas/Person");
     const namespace = new Set(["Person", "Person2", "Person3"]);
 
-    expect(coder.name(namespace)).toBe("Person4");
+    expect(coder.name("#/components/schemas/Person", namespace)).toBe(
+      "Person4"
+    );
   });
 
   it("writes code synchronously given a requirement", () => {

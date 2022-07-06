@@ -1,15 +1,21 @@
 export class Coder {
-  constructor(spec, url) {
+  constructor(spec) {
     this.spec = spec;
-    this.url = url;
   }
 
-  write() {
+  write(script, requirement) {
     return "";
   }
 
-  name(namespace) {
-    const name = this.url.split("/").at(-1);
+  async implement(script, url) {
+    // read the requirement from the spec
+    const requirement = await this.spec.readRequirement(url);
+
+    return this.write(script, requirement);
+  }
+
+  name(url, namespace) {
+    const name = url.split("/").at(-1);
 
     let candidate = name;
 
