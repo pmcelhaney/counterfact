@@ -1,6 +1,6 @@
 import { Statement } from "./statement.js";
 
-export class File {
+export class Script {
   constructor(generator) {
     this.generator = generator;
     this.exports = new Map();

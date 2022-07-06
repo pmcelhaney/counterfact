@@ -1,4 +1,4 @@
-import { File } from "./file.js";
+import { Script } from "./script.js";
 import { Requirement } from "./requirement.js";
 
 function defaultNamer(url, takenNames) {
@@ -25,7 +25,7 @@ export class Generator {
   // eslint-disable-next-line max-params
   export(filename, url, printer, namer = defaultNamer) {
     if (!this.files.has(filename)) {
-      this.files.set(filename, new File(this));
+      this.files.set(filename, new Script(this));
     }
 
     const file = this.files.get(filename);

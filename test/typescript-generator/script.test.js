@@ -1,4 +1,4 @@
-import { File } from "../../src/typescript-generator/file.js";
+import { Script } from "../../src/typescript-generator/script.js";
 import { Coder } from "../../src/typescript-generator/coder.js";
 
 describe("a File", () => {
@@ -11,7 +11,7 @@ describe("a File", () => {
 
     const coder = new CoderThatWantsToImportAccount();
 
-    const file = new File();
+    const file = new Script();
 
     expect(file.import(coder)).toBe("Account");
   });
@@ -29,7 +29,7 @@ describe("a File", () => {
 
     const coder = new CoderThatWantsToImportAccount();
 
-    const file = new File();
+    const file = new Script();
 
     file.import(coder);
 
