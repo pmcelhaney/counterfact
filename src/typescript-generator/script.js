@@ -7,17 +7,7 @@ export class Script {
     this.imports = new Map();
   }
 
-  addExport(url, printer, namer) {
-    const name = namer(url, this.exports);
-
-    const source = this.generator.getSource(url);
-
-    this.exports.set(name, new Statement(source, url, printer));
-
-    return name;
-  }
-
-  addExport2(coder) {
+  export(coder) {
     const name = coder.name(this.exports);
 
     this.exports.set(name, coder);
