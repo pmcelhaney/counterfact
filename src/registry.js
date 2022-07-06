@@ -61,7 +61,6 @@ export class Registry {
         );
 
         if (dynamicSegment) {
-          // eslint-disable-next-line no-magic-numbers
           path[dynamicSegment.slice(1, -1)] = segment;
 
           node = node.children[dynamicSegment];

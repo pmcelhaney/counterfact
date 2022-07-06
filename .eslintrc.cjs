@@ -1,5 +1,27 @@
 "use strict";
 
+const rules = {
+  "putout/putout": "off",
+  "import/prefer-default-export": "off",
+  "@typescript-eslint/naming-convention": "off",
+
+  "max-len": [
+    "warn",
+    {
+      ignorePattern: "eslint|it\\(|describe\\(",
+      ignoreTemplateLiterals: true,
+      code: 120,
+    },
+  ],
+
+  "no-magic-numbers": [
+    "error",
+    {
+      ignore: [-1, 0, 1],
+    },
+  ],
+};
+
 module.exports = {
   ignorePatterns: ["/node_modules/", "/coverage/", "/reports/"],
 
@@ -9,19 +31,7 @@ module.exports = {
     sourceType: "module",
   },
 
-  rules: {
-    "putout/putout": "off",
-    "import/prefer-default-export": "off",
-    "@typescript-eslint/naming-convention": "off",
-
-    "max-len": [
-      "warn",
-      {
-        ignorePattern: "eslint|it\\(|describe\\(",
-        ignoreTemplateLiterals: true,
-      },
-    ],
-  },
+  rules,
 
   overrides: [
     {
@@ -43,7 +53,7 @@ module.exports = {
       extends: ["hardcore", "hardcore/ts", "hardcore/node", "hardcore/jest"],
 
       rules: {
-        "putout/putout": "off",
+        ...rules,
         "import/unambiguous": "off",
         "jest/prefer-expect-assertions": "off",
 
@@ -54,15 +64,9 @@ module.exports = {
 
         "@typescript-eslint/naming-convention": "off",
 
-        "max-len": [
-          "warn",
-          {
-            ignorePattern: "eslint|it\\(|describe\\(",
-            ignoreTemplateLiterals: true,
-          },
-        ],
-
         "node/no-unpublished-import": "off",
+
+        "no-magic-numbers": ["off"],
       },
     },
 
@@ -71,6 +75,7 @@ module.exports = {
       extends: ["hardcore", "hardcore/node"],
 
       rules: {
+        ...rules,
         "import/no-extraneous-dependencies": "off",
         "import/no-unused-modules": "off",
         "import/prefer-default-export": "off",
@@ -85,6 +90,7 @@ module.exports = {
       extends: ["hardcore", "hardcore/node"],
 
       rules: {
+        ...rules,
         "import/no-commonjs": "off",
       },
 
@@ -103,6 +109,7 @@ module.exports = {
       },
 
       rules: {
+        ...rules,
         "import/prefer-default-export": "off",
         "import/no-unused-modules": "off",
         "func-style": "off",
