@@ -3,7 +3,7 @@ export class Coder {
     this.requirement = requirement;
   }
 
-  get filePath() {
+  get scriptPath() {
     return "";
   }
 

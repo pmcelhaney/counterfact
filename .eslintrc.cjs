@@ -67,6 +67,7 @@ module.exports = {
         "node/no-unpublished-import": "off",
 
         "no-magic-numbers": ["off"],
+        "id-length": ["off"],
       },
     },
 

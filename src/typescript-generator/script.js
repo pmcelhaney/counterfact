@@ -1,6 +1,6 @@
 export class Script {
-  constructor(generator) {
-    this.generator = generator;
+  constructor(repository) {
+    this.repository = repository;
     this.exports = new Map();
     this.imports = new Map();
   }
@@ -16,7 +16,14 @@ export class Script {
   import(coder) {
     const name = coder.name(this.imports);
 
-    this.imports.set(name, { path: coder.filePath });
+    const scriptFromWhichToExport = this.repository.get(coder.scriptPath);
+
+    const exportedName = scriptFromWhichToExport.export(coder);
+
+    this.imports.set(name, {
+      script: scriptFromWhichToExport,
+      name: exportedName,
+    });
 
     return name;
   }

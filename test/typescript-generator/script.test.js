@@ -1,33 +1,39 @@
-import { Script } from "../../src/typescript-generator/script.js";
 import { Coder } from "../../src/typescript-generator/coder.js";
+import { Repository } from "../../src/typescript-generator/repository.js";
 
 describe("a Script", () => {
   it("responds to an import request with the name of the imported module", () => {
     const coder = new Coder({
       url: "openapi.yaml#/components/schemas/Account",
     });
-    const script = new Script();
+    const script = new Repository("/base/path").get("script.ts");
 
     expect(script.import(coder)).toBe("Account");
   });
 
-  it("registers an import", () => {
+  it("when asked to import, registers an export on the target script", () => {
+    const repository = new Repository("/base/path");
+
     class CoderThatWantsToImportAccount extends Coder {
       name() {
         return "Account";
       }
 
-      get filePath() {
-        return "path/to/export.ts";
+      get scriptPath() {
+        return "export-from-me.ts";
       }
     }
 
     const coder = new CoderThatWantsToImportAccount();
 
-    const script = new Script();
+    const importingScript = repository.get("import-to-me.ts");
+    const exportingScript = repository.get("export-from-me.ts");
 
-    script.import(coder);
+    importingScript.import(coder);
 
-    expect(script.imports.get("Account").path).toBe("path/to/export.ts");
+    expect(importingScript.imports.get("Account")).toStrictEqual({
+      script: exportingScript,
+      name: "Account",
+    });
   });
 });
