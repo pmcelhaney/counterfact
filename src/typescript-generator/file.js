@@ -1,4 +1,4 @@
-import { Line } from "./line.js";
+import { Statement } from "./statement.js";
 
 export class File {
   constructor(generator) {
@@ -11,7 +11,7 @@ export class File {
 
     const source = this.generator.getSource(url);
 
-    this.exports.set(name, new Line(source, url, printer));
+    this.exports.set(name, new Statement(source, url, printer));
 
     return name;
   }

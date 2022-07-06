@@ -1,4 +1,4 @@
-export class Line {
+export class Statement {
   constructor(source, url, printer) {
     this.source = source;
     this.url = url;
@@ -15,7 +15,7 @@ export class Line {
   async print() {
     const tree = await this.source.load();
 
-    const path = this.url.split("#")[1].split("/").slice(1);
+    const path = this.url.split("#").at(-1).split("/").slice(1);
 
     return this.printTree(tree, path);
   }

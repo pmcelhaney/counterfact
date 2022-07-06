@@ -1,6 +1,6 @@
-import { Line } from "../../src/typescript-generator/line.js";
+import { Statement } from "../../src/typescript-generator/statement.js";
 
-describe("a Line", () => {
+describe("a Statement", () => {
   it("prints the object at its URL with its printer", async () => {
     const spec = {
       components: {
@@ -28,11 +28,13 @@ describe("a Line", () => {
       },
     };
 
-    const line = new Line(source, "components/schemas/Person", (object) =>
-      JSON.stringify(object)
+    const statement = new Statement(
+      source,
+      "#/components/schemas/Person",
+      (object) => JSON.stringify(object)
     );
 
-    await expect(line.print(spec)).resolves.toBe(
+    await expect(statement.print()).resolves.toBe(
       '{"type":"object","properties":{"name":{"type":"string"},"age":{"type":"number"}}}'
     );
   });
