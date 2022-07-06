@@ -3,6 +3,10 @@ export class Coder {
     this.requirement = requirement;
   }
 
+  get id() {
+    return `${this.constructor.name}@${this.requirement.url}`;
+  }
+
   get scriptPath() {
     return "";
   }
