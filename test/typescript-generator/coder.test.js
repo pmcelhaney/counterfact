@@ -3,23 +3,20 @@ import { Requirement } from "../../src/typescript-generator/requirement.js";
 
 describe("a Coder", () => {
   it("finds a name that does not collide with a given set of names", () => {
-    const spec = {};
-    const coder = new Coder(spec, "#/components/schemas/Person");
+    const coder = new Coder({ url: "#/components/schemas/Person" });
     const namespace = new Set(["Person", "Person2", "Person3"]);
 
-    expect(coder.name("#/components/schemas/Person", namespace)).toBe(
-      "Person4"
-    );
+    expect(coder.name(namespace)).toBe("Person4");
   });
 
-  it("writes code synchronously given a requirement", () => {
+  it("writes code synchronously given a requirement that is loaded", () => {
     class JsonCoder extends Coder {
       write(requirement) {
         return JSON.stringify(requirement.data);
       }
     }
 
-    const requirement = new Requirement("#/components/schemas/Person", {
+    const requirement = new Requirement({}, "#/components/schemas/Person", {
       name: "Alice",
     });
 

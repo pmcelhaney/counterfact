@@ -16,7 +16,7 @@ export class Script {
   import(coder) {
     const name = coder.name(this.imports);
 
-    this.imports.set(name, coder.filePath);
+    this.imports.set(name, { path: coder.filePath });
 
     return name;
   }

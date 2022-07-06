@@ -1,19 +1,14 @@
 import { Script } from "../../src/typescript-generator/script.js";
 import { Coder } from "../../src/typescript-generator/coder.js";
 
-describe("a File", () => {
+describe("a Script", () => {
   it("responds to an import request with the name of the imported module", () => {
-    class CoderThatWantsToImportAccount extends Coder {
-      name() {
-        return "Account";
-      }
-    }
+    const coder = new Coder({
+      url: "openapi.yaml#/components/schemas/Account",
+    });
+    const script = new Script();
 
-    const coder = new CoderThatWantsToImportAccount();
-
-    const file = new Script();
-
-    expect(file.import(coder)).toBe("Account");
+    expect(script.import(coder)).toBe("Account");
   });
 
   it("registers an import", () => {
@@ -29,10 +24,10 @@ describe("a File", () => {
 
     const coder = new CoderThatWantsToImportAccount();
 
-    const file = new Script();
+    const script = new Script();
 
-    file.import(coder);
+    script.import(coder);
 
-    expect(file.imports.get("Account")).toBe("path/to/export.ts");
+    expect(script.imports.get("Account").path).toBe("path/to/export.ts");
   });
 });
