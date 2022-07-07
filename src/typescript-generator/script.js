@@ -3,6 +3,7 @@ export class Script {
     this.repository = repository;
     this.exports = new Map();
     this.imports = new Map();
+    this.cache = new Map();
   }
 
   export(coder) {
@@ -20,6 +21,10 @@ export class Script {
   }
 
   import(coder) {
+    if (this.cache.has(coder.id)) {
+      return this.cache.get(coder.id);
+    }
+
     const name = coder.name(this.imports);
 
     const scriptFromWhichToExport = this.repository.get(coder.scriptPath);
@@ -30,6 +35,8 @@ export class Script {
       script: scriptFromWhichToExport,
       name: exportedName,
     });
+
+    this.cache.set(coder.id, name);
 
     return name;
   }

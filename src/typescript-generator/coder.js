@@ -30,9 +30,9 @@ export class Coder {
       return this;
     }
 
-    const requirement = await this.requirement.dereference();
+    const requirement = await this.requirement.reference();
 
-    return new this(requirement);
+    return new this.constructor(requirement);
   }
 
   name(namespace) {

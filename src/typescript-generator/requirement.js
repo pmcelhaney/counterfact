@@ -1,5 +1,5 @@
 export class Requirement {
-  constructor(data, url, specification) {
+  constructor(data, url = "", specification = undefined) {
     this.data = data;
     this.url = url;
     this.specification = specification;
