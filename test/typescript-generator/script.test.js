@@ -60,4 +60,28 @@ describe("a Script", () => {
       name: "Account",
     });
   });
+
+  it("creates import statements", () => {
+    const repository = new Repository("/base/path");
+
+    class CoderThatWantsToImportAccount extends Coder {
+      name() {
+        return "Account";
+      }
+
+      get scriptPath() {
+        return "export-from-me.ts";
+      }
+    }
+
+    const coder = new CoderThatWantsToImportAccount({});
+
+    const script = repository.get("import-to-me.ts");
+
+    script.import(coder);
+
+    expect(script.importStatements()).toStrictEqual([
+      'import Account from "./export-from-me.ts";',
+    ]);
+  });
 });
