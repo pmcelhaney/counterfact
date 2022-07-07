@@ -11,8 +11,8 @@ describe("a Coder", () => {
 
   it("writes code synchronously given a requirement that is loaded", () => {
     class JsonCoder extends Coder {
-      write(requirement) {
-        return JSON.stringify(requirement.data);
+      write() {
+        return JSON.stringify(this.requirement.data);
       }
     }
 
@@ -20,17 +20,17 @@ describe("a Coder", () => {
       name: "Alice",
     });
 
-    expect(new JsonCoder().write(requirement)).toBe('{"name":"Alice"}');
+    expect(new JsonCoder(requirement).write()).toBe('{"name":"Alice"}');
   });
 
-  it("can reference an object that will be imported", () => {
+  it("references an object that will written by another coder instance and imported into the script", () => {
     class DelegatingCoder extends Coder {
-      write(requirement, script) {
+      write(script) {
         const accountCoder = new Coder();
 
-        return `{ name: "${requirement.name}", account: new ${script.import(
-          accountCoder
-        )}() }`;
+        return `{ name: "${
+          this.requirement.data.name
+        }", account: ${script.import(accountCoder)} }`;
       }
     }
 
@@ -40,8 +40,12 @@ describe("a Coder", () => {
       },
     };
 
-    expect(new DelegatingCoder().write({ name: "example" }, script)).toBe(
-      '{ name: "example", account: new Account() }'
+    const requirement = new Requirement({}, "openapi.yaml#/some/path", {
+      name: "example",
+    });
+
+    expect(new DelegatingCoder(requirement).write(script)).toBe(
+      '{ name: "example", account: Account }'
     );
   });
 });

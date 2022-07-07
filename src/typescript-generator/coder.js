@@ -11,17 +11,9 @@ export class Coder {
     return "";
   }
 
-  write(data, script) {
-    return "";
-  }
-
-  writeToScript(script) {
-    // hmm, I think the idea of references in YAML and exports need to be decoupled
-    // write(script) writes inline code and may call script.import(this, scriptPath)
-    // dereference() is asynchronous and returns a new coder (or the same coder if
-    // it doesn't have a $ref)
-    // if a coder wants to be in a specific file, it can check to see which file
-    // it's in and either call file.import() or write the code directly
+  write(script) {
+    // This method should be overridden by a subclass.
+    // The implementation below is a placeholder.
 
     if (this.requirement.isReference) {
       return script.import(
@@ -33,13 +25,7 @@ export class Coder {
     return `/* ${this.id} */`;
   }
 
-  async writeReferenceToScript(script) {
-    const delegateCoder = await this.coderForReferencedRequirement();
-
-    delegateCoder.writeToScript(script);
-  }
-
-  async dereference() {
+  async delegate() {
     if (!this.requirement.isReference) {
       return this;
     }
