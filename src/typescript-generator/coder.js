@@ -7,10 +7,6 @@ export class Coder {
     return `${this.constructor.name}@${this.requirement.url}`;
   }
 
-  get scriptPath() {
-    return "";
-  }
-
   write(script) {
     // This method should be overridden by a subclass.
     // The implementation below is a placeholder.

@@ -15,30 +15,27 @@ describe("integration Test", () => {
 
     const repository = new Repository();
     const index = repository.get("index.ts");
-    const start = await specification.requirementAt("openapi.yaml#/paths");
+    const requirement = await specification.requirementAt(
+      "openapi.yaml#/paths"
+    );
 
     class PathCoder extends Coder {
-      write(script) {
-        Object.keys(this.requirement.data).forEach((key) => {
-          script.import(this, `paths/${key}.ts`); // <-- need to use the second argument here and get rid of scriptPath()
-        });
-
-        return "/* some code */";
-      }
-
-      get scriptPath() {
-        return "paths.ts";
+      write() {
+        return "{}";
       }
     }
 
-    const coder = new PathCoder(start);
+    // requirement.eachItem([key, item]) => { ... })
+    Object.keys(requirement.data).forEach((key) => {
+      repository
+        .get(`paths${key}.ts`)
+        .export(new PathCoder(requirement.item(key)));
+    });
 
-    index.export(coder);
+    const account = repository.get("paths/accounts.ts");
 
-    await index.finished();
+    await account.finished();
 
-    expect(index.contents()).toBe(
-      'import paths from "./paths.ts";\n\nexport const paths = /* some code */;\n'
-    );
+    expect(account.contents()).toBe("\n\nexport const accounts = {};\n");
   });
 });

@@ -40,14 +40,16 @@ export class Script {
     return name;
   }
 
-  import(coder) {
-    if (this.cache.has(coder.id)) {
-      return this.cache.get(coder.id);
+  import(coder, path) {
+    const cacheKey = `${coder.id}@${path}`;
+
+    if (this.cache.has(cacheKey)) {
+      return this.cache.get(cacheKey);
     }
 
     const name = coder.name(this.imports);
 
-    const scriptFromWhichToExport = this.repository.get(coder.scriptPath);
+    const scriptFromWhichToExport = this.repository.get(path);
 
     const exportedName = scriptFromWhichToExport.export(coder);
 
@@ -56,7 +58,7 @@ export class Script {
       name: exportedName,
     });
 
-    this.cache.set(coder.id, name);
+    this.cache.set(cacheKey, name);
 
     return name;
   }

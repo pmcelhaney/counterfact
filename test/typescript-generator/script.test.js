@@ -32,10 +32,13 @@ describe("a Script", () => {
       url: "/different/url/ending/in/Account",
     });
 
-    expect(script.import(coder1)).toBe("Account");
-    expect(script.import(coder2)).toBe("Account");
-    expect(script.import(coder3)).toBe("Account2");
-    expect(script.import(coder4)).toBe("Account3");
+    const coder5 = new AccountTypeCoder(mockRequirement);
+
+    expect(script.import(coder1, "file.ts")).toBe("Account");
+    expect(script.import(coder2, "file.ts")).toBe("Account");
+    expect(script.import(coder3, "file.ts")).toBe("Account2");
+    expect(script.import(coder4, "file.ts")).toBe("Account3");
+    expect(script.import(coder5, "other.ts")).toBe("Account4");
   });
 
   it("when asked to import, registers an export on the target script", () => {
@@ -45,10 +48,6 @@ describe("a Script", () => {
       name() {
         return "Account";
       }
-
-      get scriptPath() {
-        return "export-from-me.ts";
-      }
     }
 
     const coder = new CoderThatWantsToImportAccount({});
@@ -56,7 +55,7 @@ describe("a Script", () => {
     const importingScript = repository.get("import-to-me.ts");
     const exportingScript = repository.get("export-from-me.ts");
 
-    importingScript.import(coder);
+    importingScript.import(coder, "export-from-me.ts");
 
     expect(importingScript.imports.get("Account")).toStrictEqual({
       script: exportingScript,
@@ -71,17 +70,13 @@ describe("a Script", () => {
       name() {
         return "Account";
       }
-
-      get scriptPath() {
-        return "export-from-me.ts";
-      }
     }
 
     const coder = new CoderThatWantsToImportAccount({});
 
     const script = repository.get("import-to-me.ts");
 
-    script.import(coder);
+    script.import(coder, "export-from-me.ts");
 
     expect(script.importStatements()).toStrictEqual([
       'import Account from "./export-from-me.ts";',
@@ -94,10 +89,6 @@ describe("a Script", () => {
     class CoderThatWantsToImportAccount extends Coder {
       name() {
         return "Account";
-      }
-
-      get scriptPath() {
-        return "export-from-me.ts";
       }
 
       write() {

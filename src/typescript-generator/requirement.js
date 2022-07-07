@@ -6,7 +6,7 @@ export class Requirement {
   }
 
   get isReference() {
-    return this.data.$ref !== undefined;
+    return this.data?.$ref !== undefined;
   }
 
   reference() {
