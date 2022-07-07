@@ -9,13 +9,16 @@ export class Script {
   export(coder) {
     const name = coder.name(this.exports);
 
-    // this.exports.set(name, {
-    //   id: coder.id,
-    //
-    //   code: (await coder.dereference()).write(this),
-    // });
+    this.exports.set(name, {
+      id: coder.id,
 
-    this.exports.set(name, coder);
+      code: coder
+        .delegate()
+        // eslint-disable-next-line promise/prefer-await-to-then
+        .then(
+          (availableCoder) => `export ${name} = ${availableCoder.write(this)};`
+        ),
+    });
 
     return name;
   }
