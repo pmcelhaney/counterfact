@@ -5,6 +5,10 @@ export class Requirement {
     this.data = data;
   }
 
+  // isLoaded can go away
+  // a requirement will be loaded at construction time
+  // if the requirement is a reference, this.reference() returns a promise with the referenced requirement
+
   get isLoaded() {
     return this.data !== undefined;
   }
@@ -17,13 +21,15 @@ export class Requirement {
     return this.data;
   }
 
-  reference(relativeUrl) {
-    return this.specification.requirementAt(relativeUrl, this.url);
+  reference() {
+    return this.specification.requirementAt(this.data.$ref, this.url);
   }
 
   item(name) {
-    const data = this.data === undefined ? undefined : this.data[name];
-
-    return new Requirement(this.specification, `${this.url}/${name}`, data);
+    return new Requirement(
+      this.specification,
+      `${this.url}/${name}`,
+      this.data[name]
+    );
   }
 }

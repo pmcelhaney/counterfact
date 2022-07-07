@@ -8,6 +8,12 @@ export class Script {
   export(coder) {
     const name = coder.name(this.exports);
 
+    // this.exports.set(name, {
+    //   id: coder.id,
+    //
+    //   code: (await coder.dereference()).write(this),
+    // });
+
     this.exports.set(name, coder);
 
     return name;
