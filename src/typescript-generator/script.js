@@ -84,4 +84,10 @@ export class Script {
   exportStatements() {
     return Array.from(this.exports.values(), (value) => value.code);
   }
+
+  contents() {
+    return `${this.importStatements().join(
+      "\n"
+    )}\n\n${this.exportStatements().join("\n")}\n`;
+  }
 }
