@@ -19,7 +19,7 @@ export class Script {
       .delegate()
       // eslint-disable-next-line promise/prefer-await-to-then
       .then((availableCoder) => {
-        exportStatement.code = `export ${name} = ${availableCoder.write(
+        exportStatement.code = `export const ${name} = ${availableCoder.write(
           this
         )};`;
 
@@ -62,13 +62,15 @@ export class Script {
   }
 
   isInProgress() {
-    return this.exports
-      .values()
-      .some((exportStatement) => !exportStatement.done);
+    return Array.from(this.exports.values()).some(
+      (exportStatement) => !exportStatement.done
+    );
   }
 
   finished() {
-    return Promise.all(this.exports.values().map((value) => value.promise));
+    return Promise.all(
+      Array.from(this.exports.values(), (value) => value.promise)
+    );
   }
 
   importStatements() {
@@ -77,5 +79,9 @@ export class Script {
       ([name, { script, name: exportedName }]) =>
         `import ${name} from "./${script.path}";`
     );
+  }
+
+  exportStatements() {
+    return Array.from(this.exports.values(), (value) => value.code);
   }
 }

@@ -84,4 +84,34 @@ describe("a Script", () => {
       'import Account from "./export-from-me.ts";',
     ]);
   });
+
+  it("creates export statements", async () => {
+    const repository = new Repository("/base/path");
+
+    class CoderThatWantsToImportAccount extends Coder {
+      name() {
+        return "Account";
+      }
+
+      get scriptPath() {
+        return "export-from-me.ts";
+      }
+
+      write() {
+        return "{ id: 123 }";
+      }
+    }
+
+    const coder = new CoderThatWantsToImportAccount({});
+
+    const script = repository.get("export-to-me.ts");
+
+    script.export(coder);
+
+    await script.finished();
+
+    expect(script.exportStatements()).toStrictEqual([
+      "export const Account = { id: 123 };",
+    ]);
+  });
 });
