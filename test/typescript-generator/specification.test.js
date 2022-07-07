@@ -24,8 +24,6 @@ describe("a Specification", () => {
     );
 
     const person = new Requirement(
-      specification,
-      "openapi.yaml#/components/schemas/Person",
       {
         type: "object",
 
@@ -33,7 +31,10 @@ describe("a Specification", () => {
           name: { type: "string" },
           phone: { type: "string" },
         },
-      }
+      },
+
+      "openapi.yaml#/components/schemas/Person",
+      specification
     );
 
     const requirement = await specification.requirementAt(

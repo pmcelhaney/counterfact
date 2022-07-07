@@ -16,7 +16,7 @@ describe("a Coder", () => {
       }
     }
 
-    const requirement = new Requirement({}, "#/components/schemas/Person", {
+    const requirement = new Requirement({
       name: "Alice",
     });
 
@@ -40,7 +40,7 @@ describe("a Coder", () => {
       },
     };
 
-    const requirement = new Requirement({}, "openapi.yaml#/some/path", {
+    const requirement = new Requirement({
       name: "example",
     });
 

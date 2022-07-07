@@ -4,9 +4,9 @@ describe("a Requirement", () => {
   it("item(name) - returns a new requirement", () => {
     const specification = {};
     const requirement = new Requirement(
-      specification,
+      { phone: { type: "string" }, address: { type: "Address" } },
       "openapi.yaml#/components/schemas/Person",
-      { phone: { type: "string" }, address: { type: "Address" } }
+      specification
     );
 
     const phone = requirement.item("phone");
@@ -14,5 +14,17 @@ describe("a Requirement", () => {
     expect(phone.specification).toBe(specification);
     expect(phone.url).toBe("openapi.yaml#/components/schemas/Person/phone");
     expect(phone.data).toStrictEqual({ type: "string" });
+  });
+
+  it("knows if it is a reference ($ref)", () => {
+    const yes = new Requirement({
+      $ref: "some.yaml#other/url",
+    });
+
+    const no = new Requirement({
+      type: "string",
+    });
+
+    expect([yes.isReference, no.isReference]).toStrictEqual([true, false]);
   });
 });

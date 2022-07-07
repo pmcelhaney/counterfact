@@ -1,8 +1,12 @@
 export class Requirement {
-  constructor(specification, url, data) {
-    this.specification = specification;
-    this.url = url;
+  constructor(data, url, specification) {
     this.data = data;
+    this.url = url;
+    this.specification = specification;
+  }
+
+  get isReference() {
+    return this.data.$ref !== undefined;
   }
 
   reference() {
@@ -14,9 +18,9 @@ export class Requirement {
 
     if (tail.length === 0) {
       return new Requirement(
-        this.specification,
+        data[head],
         `${this.url}/${basePath}${head}`,
-        data[head]
+        this.specification
       );
     }
 

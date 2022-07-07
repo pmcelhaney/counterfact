@@ -9,7 +9,7 @@ export class Specification {
     const [file, path] = url.split("#");
     const data = await this.loadFile(file);
 
-    const rootRequirement = new Requirement(this, `${file}#`, data);
+    const rootRequirement = new Requirement(data, `${file}#`, this);
 
     return rootRequirement.item(path.slice(1));
   }
