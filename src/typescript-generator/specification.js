@@ -11,9 +11,10 @@ export class Specification {
     this.cache = new Map();
   }
 
-  async requirementAt(url) {
+  async requirementAt(url, fromUrl = "") {
     const [file, path] = url.split("#");
-    const data = await this.loadFile(file);
+
+    const data = await this.loadFile(join(fromUrl.split("#").at(0), file));
 
     const rootRequirement = new Requirement(data, `${file}#`, this);
 

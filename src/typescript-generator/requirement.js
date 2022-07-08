@@ -64,7 +64,7 @@ export class Requirement {
     }
 
     for (const key of Object.keys(this.data)) {
-      yield [key, this.select(key)];
+      yield [key, this.select(this.escapeJsonPointer(key))];
     }
   }
 }

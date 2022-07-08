@@ -16,6 +16,27 @@ const requirement = await specification.requirementAt(
   `${path.basename(source)}#/paths`
 );
 
+class SchemaCoder extends Coder {
+  name() {
+    return this.requirement.data.$ref.split("/").at(-1);
+  }
+
+  write(script) {
+    if (script === undefined) {
+      throw new Error("script is undefined");
+    }
+
+    if (this.requirement.isReference) {
+      return script.import(
+        this,
+        `components/${this.requirement.data.$ref.split("/").at(-1)}.ts`
+      );
+    }
+
+    return String(JSON.stringify(this.requirement.data));
+  }
+}
+
 class OperationTypeCoder extends Coder {
   name() {
     return `HTTP_${this.requirement.url.split("/").at(-1).toUpperCase()}`;
@@ -31,15 +52,16 @@ class OperationCoder extends Coder {
     return this.requirement.url.split("/").at(-1).toUpperCase();
   }
 
-  write() {
+  write(script) {
     const responses = this.requirement.select("responses");
 
     const returns = responses.map(([statusCode, response]) => {
       if (statusCode === "default") {
-        return this.responseForStatusCode(response);
+        return this.responseForStatusCode(script, response);
       }
 
       return `if (statusCode = "${statusCode}") { ${this.responseForStatusCode(
+        script,
         response,
         statusCode
       )}}`;
@@ -59,10 +81,10 @@ class OperationCoder extends Coder {
     }`;
   }
 
-  responseForStatusCode(response, statusCode) {
+  responseForStatusCode(script, response, statusCode) {
     const returns = Array.from(
       response.select("content"),
-      ([contentType, response]) => {
+      ([contentType, responseForContentType]) => {
         const statusLine =
           statusCode === undefined ? "" : `status: "${statusCode}",`;
 
@@ -70,7 +92,9 @@ class OperationCoder extends Coder {
         return {
           ${statusLine}
           contentType: "${contentType}",
-          body: "...";
+          body: tools.randomFromSchema(${new SchemaCoder(
+            responseForContentType.select("schema")
+          ).write(script)});
         }
       }`;
       }
