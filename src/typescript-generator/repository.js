@@ -18,13 +18,24 @@ export class Repository {
   }
 
   async writeFiles() {
-    while (this.scripts.values().some((script) => script.isInProgress())) {
+    while (
+      Array.from(this.scripts.values()).some((script) => script.isInProgress())
+    ) {
       // eslint-disable-next-line no-await-in-loop
       await Promise.all(
-        this.scripts.values().map((script) => script.finished())
+        Array.from(this.scripts.values(), (script) => script.finished())
       );
     }
 
     // now everything is settled and we can write the files
+    await Array.from(this.scripts.entries()).forEach(async ([key, script]) => {
+      await script.finished();
+
+      console.log("~~~~~~~~~~~~~~~~~~~~~~");
+      console.log(`${key}:`);
+
+      console.log(script.contents());
+      console.log("~~~~~~~~~~~~~~~~~~~~~~");
+    });
   }
 }

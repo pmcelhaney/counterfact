@@ -1,4 +1,7 @@
+/* eslint-disable max-classes-per-file */
 import path from "node:path";
+import { write } from "node:fs";
+import { stringify } from "node:querystring";
 
 import { Repository } from "./repository.js";
 import { Specification } from "./specification.js";
@@ -15,13 +18,32 @@ const requirement = await specification.requirementAt(
   "openapi-example.yaml#/paths"
 );
 
+class OperationTypeCoder extends Coder {
+  write() {
+    return () => "{ body: string, contentType: number }";
+  }
+}
+
 class OperationCoder extends Coder {
   name() {
-    return `HTTP_${this.requirement.url.split("/").at(-1).toUpperCase()}`;
+    return this.requirement.url.split("/").at(-1).toUpperCase();
   }
 
-  write() {
-    return "() => {}";
+  write(script) {
+    const pathString = this.requirement.url
+      .split("/")
+      .at(-2)
+      .split("~1")
+      .at(-1);
+
+    const type = script.import(
+      new OperationTypeCoder(this.requirement),
+      `${pathString}.type.ts`
+    );
+
+    return `:${type} () => {
+      return {}
+    }`;
   }
 }
 
@@ -31,16 +53,6 @@ requirement.forEach(([key, pathDefinition]) => {
   });
 });
 
-await Array.from(repository.scripts.entries()).forEach(
-  async ([key, script]) => {
-    await script.finished();
-
-    console.log("~~~~~~~~~~~~~~~~~~~~~~");
-    console.log(`${key}:`);
-
-    console.log(script.contents());
-    console.log("~~~~~~~~~~~~~~~~~~~~~~");
-  }
-);
+await repository.writeFiles();
 
 export {};
