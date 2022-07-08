@@ -16,9 +16,11 @@ export class Requirement {
   select(path, data = this.data, basePath = "") {
     const [head, ...tail] = path.split("/");
 
+    const unescapedHead = head.replaceAll("~1", "/").replaceAll("~0", "~");
+
     if (tail.length === 0) {
       return new Requirement(
-        data[head],
+        data[unescapedHead],
         `${this.url}/${basePath}${head}`,
         this.specification
       );
@@ -37,7 +39,10 @@ export class Requirement {
 
   forEach(callback) {
     Object.keys(this.data).forEach((key) => {
-      callback([key, this.select(key)]);
+      callback([
+        key,
+        this.select(key.replaceAll("~", "~0").replaceAll("/", "~1")),
+      ]);
     });
   }
 }

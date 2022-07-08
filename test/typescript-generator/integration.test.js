@@ -8,8 +8,15 @@ describe("integration Test", () => {
 
     specification.cache.set("openapi.yaml", {
       paths: {
-        "/accounts": {},
-        "/accounts/{id}": {},
+        "/accounts": {
+          get: {},
+          post: {},
+        },
+
+        "/accounts/{id}": {
+          get: {},
+          put: {},
+        },
       },
     });
 
@@ -19,19 +26,27 @@ describe("integration Test", () => {
     );
 
     class PathCoder extends Coder {
+      name() {
+        return "HTTP_GET";
+      }
+
       write() {
         return "{}";
       }
     }
 
     requirement.forEach(([key, pathDefinition]) => {
-      repository.get(`paths${key}.ts`).export(new PathCoder(pathDefinition));
+      pathDefinition.forEach(([, operation]) => {
+        repository.get(`paths${key}.ts`).export(new PathCoder(operation));
+      });
     });
 
     const account = repository.get("paths/accounts.ts");
+    const accountId = repository.get("paths/accounts/{id}.ts");
 
     await account.finished();
 
-    expect(account.contents()).toBe("\n\nexport const accounts = {};\n");
+    expect(account.contents()).toBe("\n\nexport const HTTP_GET = {};\n");
+    expect(accountId.contents()).toBe("\n\nexport const HTTP_GET = {};\n");
   });
 });

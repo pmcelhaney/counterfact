@@ -16,6 +16,16 @@ describe("a Requirement", () => {
     expect(phone.data).toStrictEqual({ type: "string" });
   });
 
+  it("select(name) - escape special characters", () => {
+    const requirement = new Requirement({
+      "foo/bar": "slash",
+      "foo~bar": "tilde",
+    });
+
+    expect(requirement.select("foo~0bar").data).toBe("tilde");
+    expect(requirement.select("foo~1bar").data).toBe("slash");
+  });
+
   it("knows if it is a reference ($ref)", () => {
     const yes = new Requirement({
       $ref: "some.yaml#other/url",
@@ -32,10 +42,12 @@ describe("a Requirement", () => {
     const requirement = new Requirement({
       phone: { type: "string" },
       address: { type: "Address" },
+      "foo/bar~baz": { type: "SpecialChars" },
     });
 
     const phone = requirement.select("phone");
     const address = requirement.select("address");
+    const specialChars = requirement.select("foo~1bar~0baz");
 
     const result = [];
 
@@ -46,6 +58,7 @@ describe("a Requirement", () => {
     expect(result).toStrictEqual([
       ["phone", phone],
       ["address", address],
+      ["foo/bar~baz", specialChars],
     ]);
   });
 });
