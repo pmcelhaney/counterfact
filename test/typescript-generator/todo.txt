@@ -1,0 +1,11 @@
+- use json-pointer package
+- exportType()
+- importType()
+- import { exportName as localName }
+- implement Specification.loadFile() 
+- repository.writeFiles()
+- CLI
+- create all of the coders
+
+
+
