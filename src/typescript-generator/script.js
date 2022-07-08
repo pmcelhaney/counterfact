@@ -4,24 +4,25 @@ export class Script {
     this.exports = new Map();
     this.imports = new Map();
     this.cache = new Map();
+    this.typeCache = new Map();
     this.path = path;
   }
 
-  export(coder) {
+  export(coder, isType = false) {
     const name = coder.name(this.exports);
 
     const exportStatement = {
       id: coder.id,
       done: false,
+      isType,
     };
 
     exportStatement.promise = coder
       .delegate()
       // eslint-disable-next-line promise/prefer-await-to-then
       .then((availableCoder) => {
-        exportStatement.code = `export const ${name} = ${availableCoder.write(
-          this
-        )};`;
+        exportStatement.name = name;
+        exportStatement.code = availableCoder.write(this);
 
         return availableCoder;
       })
@@ -40,8 +41,8 @@ export class Script {
     return name;
   }
 
-  import(coder, path) {
-    const cacheKey = `${coder.id}@${path}`;
+  import(coder, path, isType = false) {
+    const cacheKey = `${coder.id}@${path}:${isType}`;
 
     if (this.cache.has(cacheKey)) {
       return this.cache.get(cacheKey);
@@ -56,11 +57,20 @@ export class Script {
     this.imports.set(name, {
       script: scriptFromWhichToExport,
       name: exportedName,
+      isType,
     });
 
     this.cache.set(cacheKey, name);
 
     return name;
+  }
+
+  importType(coder, path) {
+    return this.import(coder, path, true);
+  }
+
+  exportType(coder) {
+    return this.export(coder, true);
   }
 
   isInProgress() {
@@ -78,13 +88,17 @@ export class Script {
   importStatements() {
     return Array.from(
       this.imports,
-      ([name, { script, name: exportedName }]) =>
-        `import ${name} from "./${script.path}";`
+      ([name, { script, isType, name: exportedName }]) =>
+        `import${isType ? " type" : ""} ${name} from "./${script.path}";`
     );
   }
 
   exportStatements() {
-    return Array.from(this.exports.values(), (value) => value.code);
+    return Array.from(
+      this.exports.values(),
+      ({ name, isType, code }) =>
+        `export ${isType ? "type" : "const"} ${name} = ${code};`
+    );
   }
 
   contents() {

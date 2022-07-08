@@ -60,6 +60,7 @@ describe("a Script", () => {
     expect(importingScript.imports.get("Account")).toStrictEqual({
       script: exportingScript,
       name: "Account",
+      isType: false,
     });
   });
 
@@ -67,8 +68,8 @@ describe("a Script", () => {
     const repository = new Repository("/base/path");
 
     class CoderThatWantsToImportAccount extends Coder {
-      name() {
-        return "Account";
+      name(namespace) {
+        return `Account${namespace.size}`;
       }
     }
 
@@ -77,9 +78,11 @@ describe("a Script", () => {
     const script = repository.get("import-to-me.ts");
 
     script.import(coder, "export-from-me.ts");
+    script.importType(coder, "export-from-me.ts");
 
     expect(script.importStatements()).toStrictEqual([
-      'import Account from "./export-from-me.ts";',
+      'import Account0 from "./export-from-me.ts";',
+      'import type Account1 from "./export-from-me.ts";',
     ]);
   });
 
@@ -87,12 +90,12 @@ describe("a Script", () => {
     const repository = new Repository("/base/path");
 
     class CoderThatWantsToImportAccount extends Coder {
-      name() {
-        return "Account";
+      name(namespace) {
+        return `Account${namespace.size}`;
       }
 
       write() {
-        return "{ id: 123 }";
+        return "{ }";
       }
     }
 
@@ -101,11 +104,13 @@ describe("a Script", () => {
     const script = repository.get("export-to-me.ts");
 
     script.export(coder);
+    script.exportType(coder);
 
     await script.finished();
 
     expect(script.exportStatements()).toStrictEqual([
-      "export const Account = { id: 123 };",
+      "export const Account0 = { };",
+      "export type Account1 = { };",
     ]);
   });
 
