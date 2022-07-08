@@ -1,7 +1,13 @@
+import fs from "node:fs/promises";
+import { join } from "node:path";
+
+import yaml from "js-yaml";
+
 import { Requirement } from "./requirement.js";
 
 export class Specification {
-  constructor() {
+  constructor(basePath) {
+    this.basePath = basePath;
     this.cache = new Map();
   }
 
@@ -19,7 +25,12 @@ export class Specification {
       return this.cache.get(path);
     }
 
-    const data = await "TODO - load the YAML file";
+    if (!this.basePath) {
+      throw new Error("Specification was constructed without a base path");
+    }
+
+    const source = await fs.readFile(join(this.basePath, path), "utf8");
+    const data = await yaml.load(source);
 
     this.cache.set(path, data);
 

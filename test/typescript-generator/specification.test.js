@@ -1,7 +1,23 @@
+import { withTemporaryFiles } from "../lib/with-temporary-files.js";
 import { Requirement } from "../../src/typescript-generator/requirement.js";
 import { Specification } from "../../src/typescript-generator/specification.js";
 
 describe("a Specification", () => {
+  it("loads a file from disk", async () => {
+    await withTemporaryFiles(
+      { "openapi.yaml": "hello:\n  world" },
+      async (temporaryDirectory) => {
+        const specification = new Specification(temporaryDirectory);
+
+        await specification.loadFile("openapi.yaml");
+
+        expect(specification.cache.get("openapi.yaml")).toStrictEqual({
+          hello: "world",
+        });
+      }
+    );
+  });
+
   it("returns a requirement for a URL", async () => {
     const specification = new Specification();
 

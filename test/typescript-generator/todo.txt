@@ -1,8 +1,5 @@
-- exportType()
-- importType()
 - name collisions between imports and exports
 - import { exportName as localName }
-- implement Specification.loadFile() 
 - repository.writeFiles()
 - CLI
 - create all of the coders
