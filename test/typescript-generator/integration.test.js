@@ -25,19 +25,19 @@ describe("integration Test", () => {
       "openapi.yaml#/paths"
     );
 
-    class PathCoder extends Coder {
+    class OperationCoder extends Coder {
       name() {
-        return "HTTP_GET";
+        return `HTTP_${this.requirement.url.split("/").at(-1).toUpperCase()}`;
       }
 
       write() {
-        return "{}";
+        return "() => {}";
       }
     }
 
     requirement.forEach(([key, pathDefinition]) => {
       pathDefinition.forEach(([, operation]) => {
-        repository.get(`paths${key}.ts`).export(new PathCoder(operation));
+        repository.get(`paths${key}.ts`).export(new OperationCoder(operation));
       });
     });
 
@@ -46,7 +46,11 @@ describe("integration Test", () => {
 
     await account.finished();
 
-    expect(account.contents()).toBe("\n\nexport const HTTP_GET = {};\n");
-    expect(accountId.contents()).toBe("\n\nexport const HTTP_GET = {};\n");
+    expect(account.contents()).toBe(
+      "\n\nexport const HTTP_GET = () => {};\nexport const HTTP_POST = () => {};\n"
+    );
+    expect(accountId.contents()).toBe(
+      "\n\nexport const HTTP_GET = () => {};\nexport const HTTP_PUT = () => {};\n"
+    );
   });
 });

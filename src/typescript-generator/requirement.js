@@ -16,11 +16,9 @@ export class Requirement {
   select(path, data = this.data, basePath = "") {
     const [head, ...tail] = path.split("/");
 
-    const unescapedHead = head.replaceAll("~1", "/").replaceAll("~0", "~");
-
     if (tail.length === 0) {
       return new Requirement(
-        data[unescapedHead],
+        data[this.unescapeJsonPointer(head)],
         `${this.url}/${basePath}${head}`,
         this.specification
       );
@@ -39,10 +37,15 @@ export class Requirement {
 
   forEach(callback) {
     Object.keys(this.data).forEach((key) => {
-      callback([
-        key,
-        this.select(key.replaceAll("~", "~0").replaceAll("/", "~1")),
-      ]);
+      callback([key, this.select(this.escapeJsonPointer(key))]);
     });
+  }
+
+  escapeJsonPointer(string) {
+    return string.replaceAll("~", "~0").replaceAll("/", "~1");
+  }
+
+  unescapeJsonPointer(pointer) {
+    return pointer.replaceAll("~1", "/").replaceAll("~0", "~");
   }
 }
