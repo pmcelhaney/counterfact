@@ -29,6 +29,8 @@ export class Specification {
       throw new Error("Specification was constructed without a base path");
     }
 
+    console.log("reading", join(this.basePath, path));
+
     const source = await fs.readFile(join(this.basePath, path), "utf8");
     const data = await yaml.load(source);
 
