@@ -11,7 +11,7 @@ export class Specification {
 
     const rootRequirement = new Requirement(data, `${file}#`, this);
 
-    return rootRequirement.item(path.slice(1));
+    return rootRequirement.select(path.slice(1));
   }
 
   async loadFile(path) {

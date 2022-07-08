@@ -13,7 +13,7 @@ export class Requirement {
     return this.specification.requirementAt(this.data.$ref, this.url);
   }
 
-  item(path, data = this.data, basePath = "") {
+  select(path, data = this.data, basePath = "") {
     const [head, ...tail] = path.split("/");
 
     if (tail.length === 0) {
@@ -24,7 +24,7 @@ export class Requirement {
       );
     }
 
-    return this.item(tail.join("/"), data[head], `${basePath}${head}/`);
+    return this.select(tail.join("/"), data[head], `${basePath}${head}/`);
   }
 
   toJSON() {

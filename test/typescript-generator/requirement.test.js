@@ -1,7 +1,7 @@
 import { Requirement } from "../../src/typescript-generator/requirement.js";
 
 describe("a Requirement", () => {
-  it("item(name) - returns a new requirement", () => {
+  it("select(name) - returns a new requirement", () => {
     const specification = {};
     const requirement = new Requirement(
       { phone: { type: "string" }, address: { type: "Address" } },
@@ -9,7 +9,7 @@ describe("a Requirement", () => {
       specification
     );
 
-    const phone = requirement.item("phone");
+    const phone = requirement.select("phone");
 
     expect(phone.specification).toBe(specification);
     expect(phone.url).toBe("openapi.yaml#/components/schemas/Person/phone");

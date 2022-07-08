@@ -25,11 +25,11 @@ describe("integration Test", () => {
       }
     }
 
-    // requirement.eachItem([key, item]) => { ... })
+    // requirement.eachselect([key, item]) => { ... })
     Object.keys(requirement.data).forEach((key) => {
       repository
         .get(`paths${key}.ts`)
-        .export(new PathCoder(requirement.item(key)));
+        .export(new PathCoder(requirement.select(key)));
     });
 
     const account = repository.get("paths/accounts.ts");
