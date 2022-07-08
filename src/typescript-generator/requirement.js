@@ -34,4 +34,10 @@ export class Requirement {
       data: this.data,
     };
   }
+
+  forEach(callback) {
+    Object.keys(this.data).forEach((key) => {
+      callback([key, this.select(key)]);
+    });
+  }
 }

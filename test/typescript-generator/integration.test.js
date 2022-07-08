@@ -14,7 +14,6 @@ describe("integration Test", () => {
     });
 
     const repository = new Repository();
-    const index = repository.get("index.ts");
     const requirement = await specification.requirementAt(
       "openapi.yaml#/paths"
     );
@@ -25,11 +24,8 @@ describe("integration Test", () => {
       }
     }
 
-    // requirement.eachselect([key, item]) => { ... })
-    Object.keys(requirement.data).forEach((key) => {
-      repository
-        .get(`paths${key}.ts`)
-        .export(new PathCoder(requirement.select(key)));
+    requirement.forEach(([key, pathDefinition]) => {
+      repository.get(`paths${key}.ts`).export(new PathCoder(pathDefinition));
     });
 
     const account = repository.get("paths/accounts.ts");

@@ -27,4 +27,25 @@ describe("a Requirement", () => {
 
     expect([yes.isReference, no.isReference]).toStrictEqual([true, false]);
   });
+
+  it("provides a forEach() method", () => {
+    const requirement = new Requirement({
+      phone: { type: "string" },
+      address: { type: "Address" },
+    });
+
+    const phone = requirement.select("phone");
+    const address = requirement.select("address");
+
+    const result = [];
+
+    requirement.forEach((entry) => {
+      result.push(entry);
+    });
+
+    expect(result).toStrictEqual([
+      ["phone", phone],
+      ["address", address],
+    ]);
+  });
 });

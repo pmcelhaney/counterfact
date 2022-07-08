@@ -20,6 +20,8 @@ const rules = {
       ignore: [-1, 0, 1],
     },
   ],
+
+  "node/no-callback-literal": "off",
 };
 
 module.exports = {
