@@ -15,6 +15,7 @@ export class Script {
       id: coder.id,
       done: false,
       isType,
+      typeDeclaration: coder.typeDeclaration(this.exports, this),
     };
 
     exportStatement.promise = coder
@@ -52,7 +53,7 @@ export class Script {
 
     const scriptFromWhichToExport = this.repository.get(path);
 
-    const exportedName = scriptFromWhichToExport.export(coder);
+    const exportedName = scriptFromWhichToExport.export(coder, isType);
 
     this.imports.set(name, {
       script: scriptFromWhichToExport,
@@ -96,8 +97,13 @@ export class Script {
   exportStatements() {
     return Array.from(
       this.exports.values(),
-      ({ name, isType, code }) =>
-        `export ${isType ? "type" : "const"} ${name} = ${code};`
+      ({ name, isType, code, typeDeclaration }) => {
+        const keyword = isType ? "type" : "const";
+        const typeAnnotation =
+          typeDeclaration.length === 0 ? "" : `:${typeDeclaration}`;
+
+        return `export ${keyword} ${name}${typeAnnotation} = ${code};`;
+      }
     );
   }
 

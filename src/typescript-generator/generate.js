@@ -19,8 +19,12 @@ const requirement = await specification.requirementAt(
 );
 
 class OperationTypeCoder extends Coder {
+  name() {
+    return `HTTP_${this.requirement.url.split("/").at(-1).toUpperCase()}`;
+  }
+
   write() {
-    return () => "{ body: string, contentType: number }";
+    return "() => { body: string, contentType: number }";
   }
 }
 
@@ -30,20 +34,22 @@ class OperationCoder extends Coder {
   }
 
   write(script) {
+    return `() => {
+      return {}
+    }`;
+  }
+
+  typeDeclaration(namespace, script) {
     const pathString = this.requirement.url
       .split("/")
       .at(-2)
       .split("~1")
       .at(-1);
 
-    const type = script.import(
+    return script.importType(
       new OperationTypeCoder(this.requirement),
-      `${pathString}.type.ts`
+      `${pathString}.types.ts`
     );
-
-    return `:${type} () => {
-      return {}
-    }`;
   }
 }
 

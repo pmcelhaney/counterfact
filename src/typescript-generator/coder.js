@@ -45,4 +45,8 @@ export class Coder {
 
     return candidate;
   }
+
+  typeDeclaration(namespace) {
+    return "";
+  }
 }
