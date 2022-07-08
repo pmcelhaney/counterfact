@@ -1,7 +1,5 @@
 /* eslint-disable max-classes-per-file */
 import path from "node:path";
-import { write } from "node:fs";
-import { stringify } from "node:querystring";
 
 import { Repository } from "./repository.js";
 import { Specification } from "./specification.js";
@@ -15,7 +13,7 @@ const specification = new Specification(path.dirname(source));
 
 const repository = new Repository();
 const requirement = await specification.requirementAt(
-  "openapi-example.yaml#/paths"
+  `${path.basename(source)}#/paths`
 );
 
 class OperationTypeCoder extends Coder {
@@ -33,10 +31,52 @@ class OperationCoder extends Coder {
     return this.requirement.url.split("/").at(-1).toUpperCase();
   }
 
-  write(script) {
-    return `() => {
-      return {}
+  write() {
+    const responses = this.requirement.select("responses");
+
+    const returns = responses.map(([statusCode, response]) => {
+      if (statusCode === "default") {
+        return this.responseForStatusCode(response);
+      }
+
+      return `if (statusCode = "${statusCode}") { ${this.responseForStatusCode(
+        response,
+        statusCode
+      )}}`;
+    });
+
+    const statusCodes = Array.from(responses, ([statusCode]) => statusCode);
+
+    return `({ tools }) => {
+      const statusCode = tools.oneOf(${JSON.stringify(statusCodes)});
+
+      ${returns.join("\n")}
+
+      return {
+        statusCode: "415",
+        body: "HTTP 415: Unsupported Media Type",
+      }
     }`;
+  }
+
+  responseForStatusCode(response, statusCode) {
+    const returns = Array.from(
+      response.select("content"),
+      ([contentType, response]) => {
+        const statusLine =
+          statusCode === undefined ? "" : `status: "${statusCode}",`;
+
+        return `if (tools.accepts("${contentType}") { 
+        return {
+          ${statusLine}
+          contentType: "${contentType}",
+          body: "...";
+        }
+      }`;
+      }
+    );
+
+    return returns.join("\n");
   }
 
   typeDeclaration(namespace, script) {

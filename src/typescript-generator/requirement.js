@@ -41,11 +41,30 @@ export class Requirement {
     });
   }
 
+  map(callback) {
+    const result = [];
+
+    // eslint-disable-next-line array-callback-return
+    this.forEach((entry) => result.push(callback(entry)));
+
+    return result;
+  }
+
   escapeJsonPointer(string) {
     return string.replaceAll("~", "~0").replaceAll("/", "~1");
   }
 
   unescapeJsonPointer(pointer) {
     return pointer.replaceAll("~1", "/").replaceAll("~0", "~");
+  }
+
+  *[Symbol.iterator]() {
+    if (!this.data) {
+      return;
+    }
+
+    for (const key of Object.keys(this.data)) {
+      yield [key, this.select(key)];
+    }
   }
 }
