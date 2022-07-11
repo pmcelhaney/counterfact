@@ -36,19 +36,21 @@ export class OperationCoder extends Coder {
 
   responseForStatusCode(script, response, statusCode) {
     const returns = (response.select("content") || []).map(
-      ([contentType, responseForContentType]) => this.responseForContentType(
-        statusCode,
-        contentType,
-        responseForContentType,
-        script
-      )
+      ([contentType, responseForContentType]) =>
+        this.responseForContentType(
+          statusCode,
+          contentType,
+          responseForContentType,
+          script
+        )
     );
 
     return returns.join("\n");
   }
 
   responseForContentType(statusCode, contentType, response, script) {
-    const statusLine = statusCode === undefined ? "" : `status: "${statusCode}",`;
+    const statusLine =
+      statusCode === undefined ? "" : `status: "${statusCode}",`;
 
     const exampleKeys = Object.keys(response.select("examples")?.data ?? {});
     const examples = (response.select("examples") || []).map(
@@ -71,8 +73,8 @@ export class OperationCoder extends Coder {
         ${statusLine}
         contentType: "${contentType}",
         body: tools.randomFromSchema(${new SchemaCoder(
-      response.select("schema")
-    ).write(script)})
+          response.select("schema")
+        ).write(script)})
       };
     }`;
   }
