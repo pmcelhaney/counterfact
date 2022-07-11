@@ -57,14 +57,4 @@ export class Requirement {
   unescapeJsonPointer(pointer) {
     return pointer.replaceAll("~1", "/").replaceAll("~0", "~");
   }
-
-  *[Symbol.iterator]() {
-    if (!this.data) {
-      return;
-    }
-
-    for (const key of Object.keys(this.data)) {
-      yield [key, this.select(this.escapeJsonPointer(key))];
-    }
-  }
 }
