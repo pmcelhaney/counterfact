@@ -24,7 +24,11 @@ export class Requirement {
       );
     }
 
-    return this.select(tail.join("/"), data[head], `${basePath}${head}/`);
+    return this.select(
+      tail.join("/"),
+      data[this.unescapeJsonPointer(head)],
+      `${basePath}${head}/`
+    );
   }
 
   toJSON() {
