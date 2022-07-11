@@ -67,7 +67,7 @@ class OperationCoder extends Coder {
       )}}`;
     });
 
-    const statusCodes = Array.from(responses, ([statusCode]) => statusCode);
+    const statusCodes = responses.map(([statusCode]) => statusCode);
 
     return `({ tools }) => {
       const statusCode = tools.oneOf(${JSON.stringify(statusCodes)});
