@@ -17,14 +17,7 @@ export class Specification {
     const filePath = join(fromUrl.split("#").at(0), file);
     const data = await this.loadFile(filePath);
 
-    const rootRequirement = new Requirement(
-      data,
-      `${filePath}#`,
-      this,
-      `${source} at requirmentAt(url=${url}, fromUrl=${fromUrl}, joined=${join(
-        fromUrl.split("#").at(0)
-      )})`
-    );
+    const rootRequirement = new Requirement(data, `${filePath}#`, this);
 
     return rootRequirement.select(path.slice(1));
   }

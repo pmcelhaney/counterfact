@@ -6,11 +6,17 @@ export class SchemaCoder extends Coder {
   }
 
   objectSchema(script) {
-    return "Record<any, any>";
+    return `{${Object.keys(this.requirement.data.properties ?? {})
+      .map((name) => {
+        const property = this.requirement.select(`properties/${name}`);
+
+        return `${name}: ${new SchemaCoder(property).write(script)}`;
+      })
+      .join(",")}}`;
   }
 
-  arraySchema(script, type) {
-    return `Array<${new SchemaCoder(this.requirement.select("items"), 5).write(
+  arraySchema(script) {
+    return `Array<${new SchemaCoder(this.requirement.select("items")).write(
       script
     )}>`;
   }
