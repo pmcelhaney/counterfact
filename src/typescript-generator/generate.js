@@ -82,9 +82,9 @@ class OperationCoder extends Coder {
   }
 
   responseForStatusCode(script, response, statusCode) {
-    const returns = Array.from(
-      response.select("content"),
-      ([contentType, responseForContentType]) => {
+    const returns = response
+      .select("content")
+      .map(([contentType, responseForContentType]) => {
         const statusLine =
           statusCode === undefined ? "" : `status: "${statusCode}",`;
 
@@ -97,8 +97,7 @@ class OperationCoder extends Coder {
           ).write(script)})
         };
       }`;
-      }
-    );
+      });
 
     return returns.join("\n");
   }

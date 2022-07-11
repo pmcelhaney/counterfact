@@ -29,7 +29,7 @@ export class Script {
       })
       // eslint-disable-next-line promise/prefer-await-to-then
       .catch((error) => {
-        exportStatement.code = `/* error creating export "${name}" for ${this.path}: ${error.stack} */`;
+        exportStatement.code = `{/* error creating export "${name}" for ${this.path}: ${error.stack} */}`;
         exportStatement.error = error;
       })
       // eslint-disable-next-line promise/prefer-await-to-then
