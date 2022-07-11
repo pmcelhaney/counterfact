@@ -1,3 +1,5 @@
+import prettier from "prettier";
+
 import { Script } from "./script.js";
 
 export class Repository {
@@ -34,7 +36,7 @@ export class Repository {
       console.log("~~~~~~~~~~~~~~~~~~~~~~");
       console.log(`${key}:`);
 
-      console.log(script.contents());
+      console.log(prettier.format(script.contents(), { parser: "typescript" }));
       console.log("~~~~~~~~~~~~~~~~~~~~~~");
     });
   }

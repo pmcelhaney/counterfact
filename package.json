@@ -43,6 +43,7 @@
   },
   "dependencies": {
     "chokidar": "^3.5.3",
-    "js-yaml": "^4.1.0"
+    "js-yaml": "^4.1.0",
+    "prettier": "^2.7.1"
   }
 }

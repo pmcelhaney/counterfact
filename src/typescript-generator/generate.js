@@ -88,14 +88,14 @@ class OperationCoder extends Coder {
         const statusLine =
           statusCode === undefined ? "" : `status: "${statusCode}",`;
 
-        return `if (tools.accepts("${contentType}") { 
+        return `if (tools.accepts("${contentType}")) { 
         return {
           ${statusLine}
           contentType: "${contentType}",
           body: tools.randomFromSchema(${new SchemaCoder(
             responseForContentType.select("schema")
-          ).write(script)});
-        }
+          ).write(script)})
+        };
       }`;
       }
     );

@@ -1,6 +1,7 @@
 - name collisions between imports and exports
 - import { exportName as localName }
 - repository.writeFiles()
+- format with Prettier
 - CLI
 - create all of the coders
 
