@@ -1,5 +1,9 @@
 export class Requirement {
   constructor(data, url = "", specification = undefined) {
+    if (data === undefined) {
+      throw new Error("cannot create requirement without data");
+    }
+
     this.data = data;
     this.url = url;
     this.specification = specification;
@@ -16,19 +20,21 @@ export class Requirement {
   select(path, data = this.data, basePath = "") {
     const [head, ...tail] = path.split("/");
 
+    const branch = data[this.unescapeJsonPointer(head)];
+
+    if (!branch) {
+      return null;
+    }
+
     if (tail.length === 0) {
       return new Requirement(
-        data[this.unescapeJsonPointer(head)],
+        branch,
         `${this.url}/${basePath}${head}`,
         this.specification
       );
     }
 
-    return this.select(
-      tail.join("/"),
-      data[this.unescapeJsonPointer(head)],
-      `${basePath}${head}/`
-    );
+    return this.select(tail.join("/"), branch, `${basePath}${head}/`);
   }
 
   toJSON() {

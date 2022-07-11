@@ -1,5 +1,6 @@
 /* eslint-disable max-classes-per-file */
 import path from "node:path";
+import { stat } from "node:fs";
 
 import { Repository } from "./repository.js";
 import { Specification } from "./specification.js";
@@ -18,7 +19,7 @@ const requirement = await specification.requirementAt(
 
 class SchemaCoder extends Coder {
   name() {
-    return this.requirement.data.$ref.split("/").at(-1);
+    return `${this.requirement.data.$ref.split("/").at(-1)}Schema`;
   }
 
   write(script) {
@@ -60,11 +61,9 @@ class OperationCoder extends Coder {
         return this.responseForStatusCode(script, response);
       }
 
-      return `if (statusCode = "${statusCode}") { ${this.responseForStatusCode(
-        script,
-        response,
-        statusCode
-      )}}`;
+      return `if (statusCode === "${statusCode}") { 
+        ${this.responseForStatusCode(script, response, statusCode)}
+      }`;
     });
 
     const statusCodes = responses.map(([statusCode]) => statusCode);
@@ -82,16 +81,15 @@ class OperationCoder extends Coder {
   }
 
   responseForStatusCode(script, response, statusCode) {
-    const returns = response
-      .select("content")
-      .map(([contentType, responseForContentType]) =>
+    const returns = (response.select("content") || []).map(
+      ([contentType, responseForContentType]) =>
         this.responseForContentType(
           statusCode,
           contentType,
           responseForContentType,
           script
         )
-      );
+    );
 
     return returns.join("\n");
   }
@@ -100,7 +98,24 @@ class OperationCoder extends Coder {
     const statusLine =
       statusCode === undefined ? "" : `status: "${statusCode}",`;
 
+    const exampleKeys = Object.keys(response.select("examples")?.data ?? {});
+    const examples = (response.select("examples") || []).map(
+      ([name, example]) =>
+        `if (example === "${name}") { 
+          
+            return {
+              ${statusLine}
+              contentType: "${contentType}",
+              body: ${JSON.stringify(example.select("value").data)}
+            }
+        }`
+    );
+
     return `if (tools.accepts("${contentType}")) { 
+      const example = tools.oneOf(${JSON.stringify(exampleKeys)});
+
+      ${examples.join("\n")}
+
       return {
         ${statusLine}
         contentType: "${contentType}",
