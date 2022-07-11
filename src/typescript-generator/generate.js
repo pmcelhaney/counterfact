@@ -84,22 +84,31 @@ class OperationCoder extends Coder {
   responseForStatusCode(script, response, statusCode) {
     const returns = response
       .select("content")
-      .map(([contentType, responseForContentType]) => {
-        const statusLine =
-          statusCode === undefined ? "" : `status: "${statusCode}",`;
-
-        return `if (tools.accepts("${contentType}")) { 
-        return {
-          ${statusLine}
-          contentType: "${contentType}",
-          body: tools.randomFromSchema(${new SchemaCoder(
-            responseForContentType.select("schema")
-          ).write(script)})
-        };
-      }`;
-      });
+      .map(([contentType, responseForContentType]) =>
+        this.responseForContentType(
+          statusCode,
+          contentType,
+          responseForContentType,
+          script
+        )
+      );
 
     return returns.join("\n");
+  }
+
+  responseForContentType(statusCode, contentType, response, script) {
+    const statusLine =
+      statusCode === undefined ? "" : `status: "${statusCode}",`;
+
+    return `if (tools.accepts("${contentType}")) { 
+      return {
+        ${statusLine}
+        contentType: "${contentType}",
+        body: tools.randomFromSchema(${new SchemaCoder(
+          response.select("schema")
+        ).write(script)})
+      };
+    }`;
   }
 
   typeDeclaration(namespace, script) {
