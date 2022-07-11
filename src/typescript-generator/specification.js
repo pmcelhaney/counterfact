@@ -14,9 +14,17 @@ export class Specification {
   async requirementAt(url, fromUrl = "") {
     const [file, path] = url.split("#");
 
-    const data = await this.loadFile(join(fromUrl.split("#").at(0), file));
+    const filePath = join(fromUrl.split("#").at(0), file);
+    const data = await this.loadFile(filePath);
 
-    const rootRequirement = new Requirement(data, `${file}#`, this);
+    const rootRequirement = new Requirement(
+      data,
+      `${filePath}#`,
+      this,
+      `${source} at requirmentAt(url=${url}, fromUrl=${fromUrl}, joined=${join(
+        fromUrl.split("#").at(0)
+      )})`
+    );
 
     return rootRequirement.select(path.slice(1));
   }
