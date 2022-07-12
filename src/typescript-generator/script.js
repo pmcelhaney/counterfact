@@ -45,10 +45,6 @@ export class Script {
     return name;
   }
 
-  importExternal(name, path) {
-    this.externalImports.set(name, path);
-  }
-
   import(coder, path, isType = false) {
     const cacheKey = `${coder.id}@${path}:${isType}`;
 
@@ -77,6 +73,16 @@ export class Script {
     return this.import(coder, path, true);
   }
 
+  importExternal(name, modulePath, isType = false) {
+    this.externalImports.set(name, { modulePath, isType });
+
+    return name;
+  }
+
+  importExternalType(name, modulePath) {
+    return this.importExternal(name, modulePath, true);
+  }
+
   exportType(coder) {
     return this.export(coder, true);
   }
@@ -90,6 +96,14 @@ export class Script {
   finished() {
     return Promise.all(
       Array.from(this.exports.values(), (value) => value.promise)
+    );
+  }
+
+  externalImportsStatements() {
+    return Array.from(
+      this.externalImports,
+      ([name, { modulePath, isType }]) =>
+        `import${isType ? " type" : ""} { ${name} } from "${modulePath}";`
     );
   }
 
@@ -118,6 +132,10 @@ export class Script {
   }
 
   contents() {
-    return [...this.importStatements(), ...this.exportStatements()].join("\n");
+    return [
+      ...this.externalImportsStatements(),
+      ...this.importStatements(),
+      ...this.exportStatements(),
+    ].join("\n");
   }
 }

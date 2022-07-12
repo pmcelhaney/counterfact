@@ -55,8 +55,7 @@ export class Repository {
 
       await fs.writeFile(fullPath, contents);
 
-      console.log(`${path}:`);
-      console.log("~~~~~~~~~~~~~~~~~~~~~~");
+      console.log(`/* ${path} */`);
 
       console.log(contents);
       console.log("\n\n\n");

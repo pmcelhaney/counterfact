@@ -1,4 +1,5 @@
 import { Coder } from "./coder.js";
+import { ToolsCoder } from "./tools-coder.js";
 import { SchemaTypeCoder } from "./schema-type-coder.js";
 
 export class OperationTypeCoder extends Coder {
@@ -45,7 +46,10 @@ export class OperationTypeCoder extends Coder {
   }
 
   write(script) {
-    return `({ tools: any }) => ${this.responseTypes(
+    return `({ tools }: { tools: ${script.importType(
+      new ToolsCoder(),
+      "internal/tools.ts"
+    )}}) => ${this.responseTypes(
       script
     )} | { status: 415, contentType: "text/plain", body: string }`;
   }

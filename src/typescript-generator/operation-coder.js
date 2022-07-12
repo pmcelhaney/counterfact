@@ -3,6 +3,7 @@ import { join } from "node:path";
 import { Coder } from "./coder.js";
 import { SchemaCoder } from "./schema-coder.js";
 import { OperationTypeCoder } from "./operation-type-coder.js";
+import { SchemaTypeCoder } from "./schema-type-coder.js";
 
 export class OperationCoder extends Coder {
   name() {
@@ -66,17 +67,23 @@ export class OperationCoder extends Coder {
         }`
     );
 
+    const bodyType = new SchemaTypeCoder(response.select("schema")).write(
+      script
+    );
+
     return `if (tools.accepts("${contentType}")) { 
       const example = tools.oneOf(${JSON.stringify(exampleKeys)});
 
       ${examples.join("\n")}
+
+ 
 
       return {
         ${statusLine}
         contentType: "${contentType}",
         body: tools.randomFromSchema(${new SchemaCoder(
           response.select("schema")
-        ).write(script)})
+        ).write(script)}) as ${bodyType}
       };
     }`;
   }
