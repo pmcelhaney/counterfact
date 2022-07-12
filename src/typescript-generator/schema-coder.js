@@ -39,6 +39,6 @@ export class SchemaCoder extends Coder {
       return this.arraySchema(script);
     }
 
-    return type;
+    return `"${type}"`;
   }
 }
