@@ -496,12 +496,13 @@ cookies@~0.8.0:
     depd "~2.0.0"
     keygrip "~1.1.0"
 
-counterfact@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/counterfact/-/counterfact-0.3.0.tgz#ed5195d30dfc3281b85f419a5143a50cf402ed5e"
-  integrity sha512-RZozy2mWwEUXan9nXzLGgsNkZE2Bkp89+CIKLe/ip8wnetemq08tqqq1tlY9RRHoGkPb/jtFB16vGlxIzXxswQ==
+counterfact@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/counterfact/-/counterfact-0.4.0.tgz#7311348ae708ef509f36eb79b266ea8cf2de99e1"
+  integrity sha512-a7lUbTWWVhaWEY9ZVancv66xOF4XaThHpRO4nEuZow0bNHTynuru7hROAY4Oahn0neUPA6MZ9aMQ2pe2FeA/1Q==
   dependencies:
     chokidar "^3.5.3"
+    json-schema-faker "^0.5.0-rcv.44"
 
 debug@4, debug@^4.1.0, debug@^4.3.2, debug@^4.3.3:
   version "4.3.4"
