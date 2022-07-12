@@ -29,7 +29,7 @@ export class OperationCoder extends Coder {
       const statusCode = tools.oneOf(${JSON.stringify(statusCodes)});
 
       ${returns.join("\n")}
-
+ 
       return {
         status: 415,
         contentType: "text/plain",
