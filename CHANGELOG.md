@@ -1,5 +1,11 @@
 # counterfact
 
+## 0.3.0
+
+### Minor Changes
+
+- 406b907: Add a tools object that will be provided to the request
+
 ## 0.2.0
 
 ### Minor Changes
