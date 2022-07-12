@@ -1,3 +1,5 @@
+import JSONSchemaFaker from "json-schema-faker";
+
 export class Tools {
   constructor({ headers = {} } = {}) {
     this.headers = headers;
@@ -24,5 +26,9 @@ export class Tools {
         (subtype === "*" || subtype === contentType.split("/")[1])
       );
     });
+  }
+
+  randomFromSchema(schema) {
+    return JSONSchemaFaker.generate(schema);
   }
 }
