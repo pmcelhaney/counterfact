@@ -24,7 +24,9 @@
     "test:mutants": "stryker run stryker.config.json",
     "release": "npx changeset publish",
     "prepare": "husky install",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "generate-petstore": "node ./src/typescript-generator/generate.js ./petstore.yaml demo-ts && eslint --fix demo-ts",
+    "generate-example": "node ./src/typescript-generator/generate.js ./openapi-example.yaml demo-ts && eslint --fix demo-ts"
   },
   "devDependencies": {
     "@changesets/cli": "2.23.0",
