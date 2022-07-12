@@ -31,7 +31,7 @@ export class OperationTypeCoder extends Coder {
           : "null";
 
         return `{  
-            responseCode: ${
+            status: ${
               type.responseCode === "default"
                 ? "number | undefined"
                 : Number.parseInt(type.responseCode, 10)
@@ -45,6 +45,8 @@ export class OperationTypeCoder extends Coder {
   }
 
   write(script) {
-    return `() => ${this.responseTypes(script)}`;
+    return `({ tools: any }) => ${this.responseTypes(
+      script
+    )} | { status: 415, contentType: "text/plain", body: string }`;
   }
 }

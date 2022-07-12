@@ -30,7 +30,8 @@ export class OperationCoder extends Coder {
       ${returns.join("\n")}
 
       return {
-        statusCode: "415",
+        status: 415,
+        contentType: "text/plain",
         body: "HTTP 415: Unsupported Media Type",
       }
     }`;
@@ -51,8 +52,7 @@ export class OperationCoder extends Coder {
   }
 
   responseForContentType(statusCode, contentType, response, script) {
-    const statusLine =
-      statusCode === undefined ? "" : `status: "${statusCode}",`;
+    const statusLine = statusCode === undefined ? "" : `status: ${statusCode},`;
 
     const exampleKeys = Object.keys(response.select("examples")?.data ?? {});
     const examples = (response.select("examples") || []).map(
