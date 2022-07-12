@@ -35,10 +35,10 @@ export class OperationTypeCoder extends Coder {
           : undefined;
 
         const contentTypeLine = body
-          ? `contentType: "${type.contentType}",`
+          ? `contentType?: "${type.contentType}",`
           : "";
 
-        const bodyLine = body ? `body: ${body}` : "";
+        const bodyLine = body ? `body?: ${body}` : "";
 
         return `{  
             status: ${
