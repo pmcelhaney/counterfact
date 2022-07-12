@@ -6,7 +6,8 @@
   "description": "This demo illustrates some of the basic features of Counterfact, with TypeScript.",
   "main": "index.js",
   "dependencies": {
-    "counterfact": "^0.2.0",
+    "counterfact": "^0.3.0",
+    "json-schema-faker": "^0.5.0-rcv.44",
     "koa": "^2.13.4"
   },
   "devDependencies": {
