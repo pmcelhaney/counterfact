@@ -71,8 +71,13 @@ export class OperationCoder extends Coder {
       script
     );
 
+    const exampleSelector =
+      examples.length === 0
+        ? ""
+        : `const example = tools.oneOf(${JSON.stringify(exampleKeys)});`;
+
     return `if (tools.accepts("${contentType}")) { 
-      const example = tools.oneOf(${JSON.stringify(exampleKeys)});
+      ${exampleSelector}
 
       ${examples.join("\n")}
 
