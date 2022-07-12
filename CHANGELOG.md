@@ -4,10 +4,6 @@
 
 ### Minor Changes
 
-- 91be8d1: new tools object that will be used with generated code
-
-### Patch Changes
-
 - 406b907: Add a tools object that will be provided to the request
 
 ## 0.2.0
