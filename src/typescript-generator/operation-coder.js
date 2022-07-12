@@ -49,6 +49,12 @@ export class OperationCoder extends Coder {
         )
     );
 
+    if (returns.length === 0) {
+      return `return {
+        status: ${statusCode},
+      }`;
+    }
+
     return returns.join("\n");
   }
 
