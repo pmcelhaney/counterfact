@@ -1,3 +1,5 @@
+import path from "node:path";
+
 import { Coder } from "./coder.js";
 import { ToolsCoder } from "./tools-coder.js";
 import { SchemaTypeCoder } from "./schema-type-coder.js";
@@ -47,6 +49,11 @@ export class OperationTypeCoder extends Coder {
   }
 
   write(script) {
+    script.importExternalType(
+      "Context",
+      path.relative(path.dirname(script.path), "context/context.js")
+    );
+
     const parameters = this.requirement.select("parameters");
     const queryType =
       parameters === undefined
@@ -58,7 +65,7 @@ export class OperationTypeCoder extends Coder {
         ? "undefined"
         : new ParametersTypeCoder(parameters, "path").write(script);
 
-    return `({ query, path, tools }: { query: ${queryType}, path: ${pathType}, tools: ${script.importType(
+    return `({ query, path, context, tools }: { query: ${queryType}, path: ${pathType}, context: Context, tools: ${script.importType(
       new ToolsCoder(),
       "internal/tools.ts"
     )}}) => ${this.responseTypes(
