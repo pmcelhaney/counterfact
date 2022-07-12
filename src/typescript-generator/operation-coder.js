@@ -1,3 +1,5 @@
+import { join } from "node:path";
+
 import { Coder } from "./coder.js";
 import { SchemaCoder } from "./schema-coder.js";
 import { OperationTypeCoder } from "./operation-type-coder.js";
@@ -83,12 +85,11 @@ export class OperationCoder extends Coder {
     const pathString = this.requirement.url
       .split("/")
       .at(-2)
-      .split("~1")
-      .at(-1);
+      .replaceAll("~1", "/");
 
     return script.importType(
       new OperationTypeCoder(this.requirement),
-      `${pathString}.types.ts`
+      `${join("paths", pathString)}.types.ts`
     );
   }
 }
