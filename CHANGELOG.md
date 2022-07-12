@@ -1,5 +1,11 @@
 # counterfact
 
+## 0.4.0
+
+### Minor Changes
+
+- ab38cb2: add a tools.randomFromSchema(schema: JSONSchema) function
+
 ## 0.3.0
 
 ### Minor Changes
