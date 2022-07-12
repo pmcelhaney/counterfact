@@ -36,4 +36,10 @@ describe("tools", () => {
       expect(tools.accepts(contentType)).toBe(false);
     }
   );
+
+  it("randomFromSchema() returns a value (the implementation is in a third party library)", () => {
+    const tools = new Tools();
+
+    expect(typeof tools.randomFromSchema({ type: "integer" })).toBe("number");
+  });
 });
