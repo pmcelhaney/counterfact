@@ -22,6 +22,8 @@ const rules = {
   ],
 
   "node/no-callback-literal": "off",
+  "node/file-extension-in-import": "off",
+  "node/no-missing-import": "off",
 };
 
 module.exports = {
@@ -125,6 +127,20 @@ module.exports = {
         "etc/prefer-interface": "off",
         "@typescript-eslint/prefer-readonly-parameter-types": "off",
         "eslint-comments/no-unused-disable": "off",
+        "@typescript-eslint/no-magic-numbers": "off",
+      },
+
+      settings: {
+        "import/parsers": {
+          "@typescript-eslint/parser": [".ts", ".tsx"],
+        },
+
+        "import/resolver": {
+          typescript: {
+            alwaysTryTypes: true,
+            project: "tsconfig.json",
+          },
+        },
       },
     },
   ],

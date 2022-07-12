@@ -1,5 +1,3 @@
-/* eslint-disable node/no-missing-import */
-/* eslint-disable node/file-extension-in-import */
 /* eslint-disable import/no-unresolved */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */

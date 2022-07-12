@@ -13,8 +13,8 @@ export class SchemaCoder extends Coder {
         type: "object",
         required: ${JSON.stringify(required ?? [])},
         properties: { 
-          ${Object.entries(properties ?? {}).map(
-            ([name, property]) =>
+          ${Object.keys(properties ?? {}).map(
+            (name) =>
               `"${name}": ${new SchemaCoder(
                 this.requirement.select(`properties/${name}`)
               ).write(script)}`
