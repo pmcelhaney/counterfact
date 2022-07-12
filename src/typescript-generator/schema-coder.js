@@ -5,12 +5,50 @@ export class SchemaCoder extends Coder {
     return `${this.requirement.data.$ref.split("/").at(-1)}Schema`;
   }
 
+  objectSchema(script) {
+    const { required, properties } = this.requirement.data;
+
+    return `
+      {
+        type: "object",
+        required: ${JSON.stringify(required ?? [])},
+        properties: { 
+          ${Object.entries(properties ?? {}).map(
+            ([name, property]) =>
+              `"${name}": ${new SchemaCoder(
+                this.requirement.select(`properties/${name}`)
+              ).write(script)}`
+          )} 
+        }
+      }
+    `;
+  }
+
+  arraySchema(script) {
+    return `{
+        type: "array",     
+        items: ${new SchemaCoder(this.requirement.select("items")).write(
+          script
+        )}
+      }`;
+  }
+
   write(script) {
     if (this.requirement.isReference) {
       return script.import(
         this,
         `components/${this.requirement.data.$ref.split("/").at(-1)}.ts`
       );
+    }
+
+    const { type } = this.requirement.data;
+
+    if (type === "object") {
+      return this.objectSchema(script);
+    }
+
+    if (type === "array") {
+      return this.arraySchema(script);
     }
 
     return JSON.stringify(this.requirement.data);

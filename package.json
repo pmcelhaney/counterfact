@@ -42,6 +42,7 @@
     "supertest": "6.2.3"
   },
   "dependencies": {
+    "@types/json-schema": "^7.0.11",
     "chokidar": "^3.5.3",
     "js-yaml": "^4.1.0",
     "prettier": "^2.7.1"
