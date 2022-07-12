@@ -21,6 +21,6 @@ requirement.forEach(([key, pathDefinition]) => {
   });
 });
 
-await repository.writeFiles();
+await repository.writeFiles(destination);
 
 export {};
