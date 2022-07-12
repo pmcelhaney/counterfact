@@ -14,12 +14,12 @@ export class ToolsCoder extends Coder {
   }
 
   write(script) {
-    script.importExternal("JSONSchema6Type", "json-schema");
+    script.importExternal("JSONSchema6", "json-schema");
 
     return `
     {
         oneOf: (array: string[]) => string;
-        randomFromSchema: (schema: JSONSchema6Type ) => unknown;
+        randomFromSchema: (schema: JSONSchema6 ) => unknown;
         accepts: (contentType: string) => boolean;
     }`;
   }
