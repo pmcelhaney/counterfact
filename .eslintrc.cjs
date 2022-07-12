@@ -103,7 +103,7 @@ module.exports = {
     },
 
     {
-      files: ["demo-ts/**/*.ts"],
+      files: ["demo-ts/**/*.ts", "generated/**/*.ts"],
       extends: ["hardcore", "hardcore/node", "hardcore/ts"],
 
       parserOptions: {
