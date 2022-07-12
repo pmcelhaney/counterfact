@@ -25,7 +25,15 @@ export class OperationCoder extends Coder {
 
     const statusCodes = responses.map(([statusCode]) => statusCode);
 
-    return `({ tools }) => {
+    const parametersIn = this.requirement.data.parameters
+      ? `${Array.from(
+          new Set(
+            this.requirement.data.parameters.map((parameter) => parameter.in)
+          )
+        ).join(", ")}, `
+      : "";
+
+    return `({ ${parametersIn} tools, context }) => {
       const statusCode = tools.oneOf(${JSON.stringify(statusCodes)});
 
       ${returns.join("\n")}
