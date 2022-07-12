@@ -1,3 +1,5 @@
+import path from "node:path";
+
 export class Script {
   constructor(repository, path) {
     this.repository = repository;
@@ -90,7 +92,10 @@ export class Script {
     return Array.from(
       this.imports,
       ([name, { script, isType, name: exportedName }]) =>
-        `import${isType ? " type" : ""} ${name} from "./${script.path}";`
+        `import${isType ? " type" : ""} { ${name} } from "./${path.relative(
+          path.dirname(this.path),
+          script.path.replace(/\.ts$/u, ".js")
+        )}";`
     );
   }
 
