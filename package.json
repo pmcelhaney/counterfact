@@ -25,8 +25,8 @@
     "release": "npx changeset publish",
     "prepare": "husky install",
     "lint": "eslint .",
-    "generate-petstore": "node ./src/typescript-generator/generate.js ./petstore.yaml demo-ts && eslint --fix demo-ts",
-    "generate-example": "node ./src/typescript-generator/generate.js ./openapi-example.yaml demo-ts && eslint --fix demo-ts"
+    "generate-petstore": "node ./src/typescript-generator/generate.js ./petstore.yaml demo-ts && eslint --fix demo-ts --rule=\"import/namespace: 0,etc/no-deprecated:0,import/no-cycle:0,no-explicit-type-exports/no-explicit-type-exports:0,import/no-deprecated:0,import/no-self-import:0,import/default:0,import/no-named-as-default:0\"",
+    "generate-example": "node ./src/typescript-generator/generate.js ./openapi-example.yaml demo-ts && eslint --fix demo-ts --rule=\"import/namespace: 0,etc/no-deprecated:0,import/no-cycle:0,no-explicit-type-exports/no-explicit-type-exports:0,import/no-deprecated:0,import/no-self-import:0,import/default:0,import/no-named-as-default:0\""
   },
   "devDependencies": {
     "@changesets/cli": "2.23.0",
