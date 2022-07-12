@@ -81,8 +81,8 @@ describe("a Script", () => {
     script.importType(coder, "export-from-me.ts");
 
     expect(script.importStatements()).toStrictEqual([
-      'import Account0 from "./export-from-me.ts";',
-      'import type Account1 from "./export-from-me.ts";',
+      'import { Account0 } from "./export-from-me.js";',
+      'import type { Account1 } from "./export-from-me.js";',
     ]);
   });
 
@@ -121,14 +121,14 @@ describe("a Script", () => {
 
     jest
       .spyOn(script, "importStatements")
-      .mockImplementation(() => ["import foo from './foo.ts;"]);
+      .mockImplementation(() => ["import { foo } from './foo.js;"]);
 
     jest
       .spyOn(script, "exportStatements")
       .mockImplementation(() => ['export const bar = "Bar";']);
 
     expect(script.contents()).toBe(
-      'import foo from \'./foo.ts;\n\nexport const bar = "Bar";\n'
+      'import { foo } from \'./foo.js;\nexport const bar = "Bar";'
     );
   });
 });
