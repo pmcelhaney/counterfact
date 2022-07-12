@@ -103,12 +103,12 @@ module.exports = {
     },
 
     {
-      files: ["demo-ts/**/*.ts", "generated/**/*.ts"],
+      files: ["**/*.ts"],
       extends: ["hardcore", "hardcore/node", "hardcore/ts"],
 
       parserOptions: {
         sourceType: "module",
-        project: "./demo-ts/tsconfig.json",
+        project: "./tsconfig.json",
       },
 
       rules: {

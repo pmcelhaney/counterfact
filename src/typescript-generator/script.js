@@ -5,6 +5,7 @@ export class Script {
     this.repository = repository;
     this.exports = new Map();
     this.imports = new Map();
+    this.externalImports = new Map();
     this.cache = new Map();
     this.typeCache = new Map();
     this.path = path;
@@ -42,6 +43,10 @@ export class Script {
     this.exports.set(name, exportStatement);
 
     return name;
+  }
+
+  importExternal(name, path) {
+    this.externalImports.set(name, path);
   }
 
   import(coder, path, isType = false) {
@@ -113,8 +118,6 @@ export class Script {
   }
 
   contents() {
-    return `${this.importStatements().join(
-      "\n"
-    )}\n\n${this.exportStatements().join("\n")}\n`;
+    return [...this.importStatements(), ...this.exportStatements()].join("\n");
   }
 }
