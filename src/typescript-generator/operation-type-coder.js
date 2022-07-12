@@ -1,5 +1,5 @@
 import { Coder } from "./coder.js";
-import { SchemaCoder } from "./schema-coder.js";
+import { SchemaTypeCoder } from "./schema-type-coder.js";
 
 export class OperationTypeCoder extends Coder {
   name() {
@@ -26,7 +26,9 @@ export class OperationTypeCoder extends Coder {
           ?.select(type.contentType.replace("/", "~1"))
           ?.select("schema");
 
-        const body = schema ? new SchemaCoder(schema).write(script) : "null";
+        const body = schema
+          ? new SchemaTypeCoder(schema).write(script)
+          : "null";
 
         return `{  
             responseCode: ${
