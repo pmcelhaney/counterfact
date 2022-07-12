@@ -32,7 +32,13 @@ export class OperationTypeCoder extends Coder {
 
         const body = schema
           ? new SchemaTypeCoder(schema).write(script)
-          : "null";
+          : undefined;
+
+        const contentTypeLine = body
+          ? `contentType: "${type.contentType}",`
+          : "";
+
+        const bodyLine = body ? `body: ${body}` : "";
 
         return `{  
             status: ${
@@ -40,8 +46,8 @@ export class OperationTypeCoder extends Coder {
                 ? "number | undefined"
                 : Number.parseInt(type.responseCode, 10)
             }, 
-          contentType: "${type.contentType}", 
-          body: ${body} 
+          ${contentTypeLine}
+          ${bodyLine}
           
         }`;
       })
