@@ -10,6 +10,7 @@ import Koa from "koa";
 import { counterfact } from "counterfact";
 import { koaSwagger } from "koa2-swagger-ui";
 import serve from "koa-static";
+import bodyParser from "koa-bodyparser";
 
 import { context } from "./context/context.js";
 
@@ -28,6 +29,14 @@ app.use(
     },
   })
 );
+
+app.use(bodyParser());
+
+// app.use(async (ctx, next) => {
+//   console.log("body", ctx.request.body);
+//   await next();
+//   console.log("request", ctx);
+// });
 
 const { koaMiddleware } = await counterfact(
   fileURLToPath(new URL("paths/", import.meta.url)),
