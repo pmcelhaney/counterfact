@@ -12,7 +12,7 @@
   "devDependencies": {
     "@types/node": "^18.0.0",
     "i": "^0.3.7",
-    "npm": "^8.13.1"
+    "npm": "8.14.0"
   },
   "scripts": {
     "start": "ts-node index.ts",
