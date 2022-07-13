@@ -6,8 +6,12 @@ import { OperationTypeCoder } from "./operation-type-coder.js";
 import { SchemaTypeCoder } from "./schema-type-coder.js";
 
 export class OperationCoder extends Coder {
-  name() {
+  requestMethod() {
     return this.requirement.url.split("/").at(-1).toUpperCase();
+  }
+
+  name() {
+    return this.requestMethod();
   }
 
   write(script) {
@@ -33,7 +37,11 @@ export class OperationCoder extends Coder {
         )
       : [];
 
-    requestProperties.push("tools", "context");
+    if (this.requestMethod() !== "GET") {
+      requestProperties.push("body");
+    }
+
+    requestProperties.push("context", "tools");
 
     return `({ ${requestProperties.join(", ")} }) => {
       const statusCode = tools.oneOf(${JSON.stringify(statusCodes)});
