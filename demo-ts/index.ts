@@ -8,12 +8,26 @@ import { fileURLToPath } from "node:url";
 
 import Koa from "koa";
 import { counterfact } from "counterfact";
+import { koaSwagger } from "koa2-swagger-ui";
+import serve from "koa-static";
 
 import { context } from "./context/context.js";
 
 const PORT = 3100;
 
 const app = new Koa();
+
+app.use(serve("../"));
+
+app.use(
+  koaSwagger({
+    routePrefix: "/swagger", // host at /swagger instead of default /docs
+
+    swaggerOptions: {
+      url: "http://petstore.swagger.io/v2/swagger.json", // example path to json
+    },
+  })
+);
 
 const { koaMiddleware } = await counterfact(
   fileURLToPath(new URL("paths/", import.meta.url)),
