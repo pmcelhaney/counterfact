@@ -55,7 +55,10 @@ export class Repository {
 
       if (
         path.startsWith("paths") &&
-        (await fs.stat(fullPath).then((stat) => stat.isFile()))
+        (await fs
+          .stat(fullPath)
+          .then((stat) => stat.isFile())
+          .catch(() => false))
       ) {
         console.log("not overwriting", fullPath);
 
