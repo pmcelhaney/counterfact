@@ -55,10 +55,10 @@ export class Repository {
 
       await fs.writeFile(fullPath, contents);
 
-      console.log(`/* ${path} */`);
-
-      console.log(contents);
-      console.log("\n\n\n");
+      console.log("writing", fullPath);
+      // console.log(`/* ${path} */`);
+      // console.log(contents);
+      // console.log("\n\n\n");
     });
   }
 }
