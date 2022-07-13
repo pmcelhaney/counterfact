@@ -1,5 +1,16 @@
 import { Coder } from "./coder.js";
 
+function scrubSchema(schema) {
+  // remove properties that are not valid in JSON Schema 6 and not useful anyway
+
+  const cleaned = { ...schema };
+
+  delete cleaned.example;
+  delete cleaned.xml;
+
+  return cleaned;
+}
+
 export class SchemaCoder extends Coder {
   name() {
     return `${this.requirement.data.$ref.split("/").at(-1)}Schema`;
@@ -55,6 +66,6 @@ export class SchemaCoder extends Coder {
       return this.arraySchema(script);
     }
 
-    return JSON.stringify(this.requirement.data);
+    return JSON.stringify(scrubSchema(this.requirement.data));
   }
 }

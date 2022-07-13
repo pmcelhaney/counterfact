@@ -71,7 +71,12 @@ export class OperationTypeCoder extends Coder {
         ? "undefined"
         : new ParametersTypeCoder(parameters, "path").write(script);
 
-    return `({ query, path, context, tools }: { query: ${queryType}, path: ${pathType}, context: Context, tools: ${script.importType(
+    const headerType =
+      parameters === undefined
+        ? "undefined"
+        : new ParametersTypeCoder(parameters, "header").write(script);
+
+    return `({ query, path, header, context, tools }: { query: ${queryType}, path: ${pathType}, header: ${headerType}, context: Context, tools: ${script.importType(
       new ToolsCoder(),
       "internal/tools.ts"
     )}}) => ${this.responseTypes(
