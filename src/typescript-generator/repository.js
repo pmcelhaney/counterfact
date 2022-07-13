@@ -53,9 +53,19 @@ export class Repository {
 
       await ensureDirectoryExists(fullPath);
 
+      if (
+        path.startsWith("paths") &&
+        (await fs.stat(fullPath).then((stat) => stat.isFile()))
+      ) {
+        console.log("not overwriting", fullPath);
+
+        return;
+      }
+
       await fs.writeFile(fullPath, contents);
 
       console.log("writing", fullPath);
+
       // console.log(`/* ${path} */`);
       // console.log(contents);
       // console.log("\n\n\n");

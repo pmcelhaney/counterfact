@@ -125,7 +125,7 @@ export class OperationCoder extends Coder {
 
     return script.importType(
       new OperationTypeCoder(this.requirement),
-      `${join("paths", pathString)}.types.ts`
+      `${join("path-types", pathString)}.types.ts`
     );
   }
 }
