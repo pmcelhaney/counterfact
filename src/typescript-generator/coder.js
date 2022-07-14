@@ -11,7 +11,7 @@ export class Coder {
     return `${this.constructor.name}@${this.requirement.url}`;
   }
 
-  write(script) {
+  write() {
     // This method should be overridden by a subclass.
 
     return `/* ${this.id} */`;

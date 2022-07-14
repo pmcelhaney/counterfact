@@ -1,6 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { jest } from "@jest/globals";
-
 import { Coder } from "../../src/typescript-generator/coder.js";
 import { Repository } from "../../src/typescript-generator/repository.js";
 
@@ -137,13 +134,9 @@ describe("a Script", () => {
 
     const script = repository.get("script.ts");
 
-    jest
-      .spyOn(script, "importStatements")
-      .mockImplementation(() => ["import { foo } from './foo.js;"]);
+    script.importStatements = () => ["import { foo } from './foo.js;"];
 
-    jest
-      .spyOn(script, "exportStatements")
-      .mockImplementation(() => ['export const bar = "Bar";']);
+    script.exportStatements = () => ['export const bar = "Bar";'];
 
     expect(script.contents()).toBe(
       'import { foo } from \'./foo.js;\nexport const bar = "Bar";'

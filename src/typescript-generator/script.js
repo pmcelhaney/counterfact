@@ -1,4 +1,4 @@
-import path from "node:path";
+import nodePath from "node:path";
 
 export class Script {
   constructor(repository, path) {
@@ -22,7 +22,7 @@ export class Script {
   }
 
   export(coder, isType = false) {
-    const cacheKey = `${coder.id}@${path}:${isType}`;
+    const cacheKey = `${coder.id}@${nodePath}:${isType}`;
 
     if (this.cache.has(cacheKey)) {
       return this.cache.get(cacheKey);
@@ -63,10 +63,11 @@ export class Script {
     return name;
   }
 
+  // eslint-disable-next-line max-statements
   import(coder, isType = false) {
-    const path = coder.modulePath();
+    const modulePath = coder.modulePath();
 
-    const cacheKey = `${coder.id}@${path}:${isType}`;
+    const cacheKey = `${coder.id}@${modulePath}:${isType}`;
 
     if (this.cache.has(cacheKey)) {
       return this.cache.get(cacheKey);
@@ -76,15 +77,11 @@ export class Script {
 
     this.cache.set(cacheKey, name);
 
-    if (name.startsWith("ApiResponse")) {
-      console.log(cacheKey);
-    }
-
     if (name === "get") {
       throw new Error(`name not working, ${coder.names().next().value}`);
     }
 
-    const scriptFromWhichToExport = this.repository.get(path);
+    const scriptFromWhichToExport = this.repository.get(modulePath);
 
     const exportedName = scriptFromWhichToExport.export(coder, isType);
 
@@ -138,9 +135,9 @@ export class Script {
   importStatements() {
     return Array.from(
       this.imports,
-      ([name, { script, isType, name: exportedName }]) =>
-        `import${isType ? " type" : ""} { ${name} } from "./${path.relative(
-          path.dirname(this.path),
+      ([name, { script, isType }]) =>
+        `import${isType ? " type" : ""} { ${name} } from "./${nodePath.relative(
+          nodePath.dirname(this.path),
           script.path.replace(/\.ts$/u, ".js")
         )}";`
     );

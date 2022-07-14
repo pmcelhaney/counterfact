@@ -76,6 +76,7 @@ export class OperationCoder extends Coder {
     return returns.join("\n");
   }
 
+  // eslint-disable-next-line max-params
   responseForContentType(statusCode, contentType, response, script) {
     const statusLine = statusCode === undefined ? "" : `status: ${statusCode},`;
 

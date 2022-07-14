@@ -60,6 +60,7 @@ export class Repository {
           .then((stat) => stat.isFile())
           .catch(() => false))
       ) {
+        // eslint-disable-next-line no-console
         console.log("not overwriting", fullPath);
 
         return;
@@ -67,6 +68,7 @@ export class Repository {
 
       await fs.writeFile(fullPath, contents);
 
+      // eslint-disable-next-line no-console
       console.log("writing", fullPath);
 
       // console.log(`/* ${path} */`);

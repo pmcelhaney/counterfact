@@ -17,7 +17,7 @@ const rules = {
   "no-magic-numbers": [
     "error",
     {
-      ignore: [-1, 0, 1],
+      ignore: [-2, -1, 0, 1, 2],
     },
   ],
 
@@ -27,7 +27,7 @@ const rules = {
 };
 
 module.exports = {
-  ignorePatterns: ["/node_modules/", "/coverage/", "/reports/"],
+  ignorePatterns: ["/node_modules/", "/coverage/", "/reports/", "/demo-ts"],
 
   extends: ["hardcore", "hardcore/ts", "hardcore/node"],
 
