@@ -19,18 +19,19 @@ export class SchemaCoder extends Coder {
   objectSchema(script) {
     const { required, properties } = this.requirement.data;
 
+    const propertyLines = Object.keys(properties ?? {}).map((name) => {
+      const schemaCoder = new SchemaCoder(
+        this.requirement.select(`properties/${name}`)
+      );
+
+      return `"${name}": ${schemaCoder.write(script)}`;
+    });
+
     return `
       {
         type: "object",
         required: ${JSON.stringify(required ?? [])},
-        properties: { 
-          ${Object.keys(properties ?? {}).map(
-            (name) =>
-              `"${name}": ${new SchemaCoder(
-                this.requirement.select(`properties/${name}`)
-              ).write(script)}`
-          )} 
-        }
+        properties: { ${propertyLines.join(", ")} }
       }
     `;
   }
