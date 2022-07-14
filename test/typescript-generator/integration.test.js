@@ -26,8 +26,8 @@ describe("integration Test", () => {
     );
 
     class OperationCoder extends Coder {
-      name() {
-        return `HTTP_${this.requirement.url.split("/").at(-1).toUpperCase()}`;
+      *names() {
+        yield `HTTP_${this.requirement.url.split("/").at(-1).toUpperCase()}`;
       }
 
       write() {

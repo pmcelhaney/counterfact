@@ -1,5 +1,4 @@
 Do these first
-- refactor Coder / Script so Coder has a name() generator
 - refactor Script#import() and Coder so that we don't have to pass the path in to import()
 - refactor so that a script has a requirement and coder for each export, a coder does not have a requirement
 - document the architecture
@@ -12,5 +11,6 @@ The rest can become Github issues
 - convert to monorepo
 - unit tests
 - fix generated code so that it passes ESLint
+- consistently import node:path as nodePath 
 
 

@@ -1,8 +1,8 @@
 import { Coder } from "./coder.js";
 
 export class SchemaTypeCoder extends Coder {
-  name() {
-    return String(this.requirement.data.$ref.split("/").at(-1));
+  names() {
+    return super.names(this.requirement.data.$ref.split("/").at(-1));
   }
 
   objectSchema(script) {

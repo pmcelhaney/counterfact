@@ -8,8 +8,8 @@ export class ParametersTypeCoder extends Coder {
     this.placement = placement;
   }
 
-  name() {
-    return "parameters";
+  names() {
+    return super.names("parameters");
   }
 
   write(script) {

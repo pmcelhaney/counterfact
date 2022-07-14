@@ -4,6 +4,10 @@ export class Coder {
   }
 
   get id() {
+    if (this.requirement.isReference) {
+      return `${this.constructor.name}@${this.requirement.$ref}`;
+    }
+
     return `${this.constructor.name}@${this.requirement.url}`;
   }
 
@@ -31,22 +35,18 @@ export class Coder {
     return new this.constructor(requirement);
   }
 
-  name(namespace) {
-    const name = this.requirement.url.split("/").at(-1);
-
-    let candidate = name;
+  *names(name = this.requirement.url.split("/").at(-1)) {
+    yield name;
 
     let index = 1;
 
-    while (namespace.has(candidate)) {
+    while (true) {
       index += 1;
-      candidate = name + index;
+      yield name + index;
     }
-
-    return candidate;
   }
 
-  typeDeclaration(namespace) {
+  typeDeclaration() {
     return "";
   }
 }

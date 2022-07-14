@@ -12,8 +12,8 @@ function scrubSchema(schema) {
 }
 
 export class SchemaCoder extends Coder {
-  name() {
-    return `${this.requirement.data.$ref.split("/").at(-1)}Schema`;
+  names() {
+    return super.names(`${this.requirement.data.$ref.split("/").at(-1)}Schema`);
   }
 
   objectSchema(script) {

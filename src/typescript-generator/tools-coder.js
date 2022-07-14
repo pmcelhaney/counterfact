@@ -9,8 +9,8 @@ export class ToolsCoder extends Coder {
     return Promise.resolve(this);
   }
 
-  name() {
-    return "Tools";
+  names() {
+    return super.names("Tools");
   }
 
   write(script) {

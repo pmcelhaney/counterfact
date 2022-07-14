@@ -10,8 +10,8 @@ export class OperationCoder extends Coder {
     return this.requirement.url.split("/").at(-1).toUpperCase();
   }
 
-  name() {
-    return this.requestMethod();
+  names() {
+    return super.names(this.requestMethod());
   }
 
   write(script) {

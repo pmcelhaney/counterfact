@@ -3,11 +3,24 @@ import { Requirement } from "../../src/typescript-generator/requirement.js";
 import { Specification } from "../../src/typescript-generator/specification.js";
 
 describe("a Coder", () => {
-  it("finds a name that does not collide with a given set of names", () => {
+  it("generates a list of potential names", () => {
     const coder = new Coder({ url: "#/components/schemas/Person" });
-    const namespace = new Set(["Person", "Person2", "Person3"]);
 
-    expect(coder.name(namespace)).toBe("Person4");
+    const [one, two, three] = coder.names();
+
+    expect([one, two, three]).toStrictEqual(["Person", "Person2", "Person3"]);
+  });
+
+  it("generates a list of potential names given a starting point", () => {
+    const coder = new Coder({ url: "#/components/schemas/Person" });
+
+    const [one, two, three] = coder.names("FunkyPerson");
+
+    expect([one, two, three]).toStrictEqual([
+      "FunkyPerson",
+      "FunkyPerson2",
+      "FunkyPerson3",
+    ]);
   });
 
   it("writes code synchronously given a requirement that is loaded", () => {

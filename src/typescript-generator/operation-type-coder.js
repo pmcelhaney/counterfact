@@ -6,8 +6,10 @@ import { SchemaTypeCoder } from "./schema-type-coder.js";
 import { ParametersTypeCoder } from "./parameters-type-coder.js";
 
 export class OperationTypeCoder extends Coder {
-  name() {
-    return `HTTP_${this.requirement.url.split("/").at(-1).toUpperCase()}`;
+  names() {
+    return super.names(
+      `HTTP_${this.requirement.url.split("/").at(-1).toUpperCase()}`
+    );
   }
 
   responseTypes(script) {

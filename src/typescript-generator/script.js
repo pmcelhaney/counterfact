@@ -11,8 +11,26 @@ export class Script {
     this.path = path;
   }
 
+  firstUniqueName(coder) {
+    for (const name of coder.names()) {
+      if (!this.imports.has(name) && !this.exports.has(name)) {
+        return name;
+      }
+    }
+
+    throw new Error(`could not find a unique name for ${coder.id}`);
+  }
+
   export(coder, isType = false) {
-    const name = coder.name(this.exports);
+    const cacheKey = `${coder.id}@${path}:${isType}`;
+
+    if (this.cache.has(cacheKey)) {
+      return this.cache.get(cacheKey);
+    }
+
+    const name = this.firstUniqueName(coder);
+
+    this.cache.set(cacheKey, name);
 
     const exportStatement = {
       id: coder.id,
@@ -52,7 +70,17 @@ export class Script {
       return this.cache.get(cacheKey);
     }
 
-    const name = coder.name(this.imports);
+    const name = this.firstUniqueName(coder);
+
+    this.cache.set(cacheKey, name);
+
+    if (name.startsWith("ApiResponse")) {
+      console.log(cacheKey);
+    }
+
+    if (name === "get") {
+      throw new Error(`name not working, ${coder.names().next().value}`);
+    }
 
     const scriptFromWhichToExport = this.repository.get(path);
 
@@ -63,8 +91,6 @@ export class Script {
       name: exportedName,
       isType,
     });
-
-    this.cache.set(cacheKey, name);
 
     return name;
   }

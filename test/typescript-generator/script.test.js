@@ -45,8 +45,8 @@ describe("a Script", () => {
     const repository = new Repository("/base/path");
 
     class CoderThatWantsToImportAccount extends Coder {
-      name() {
-        return "Account";
+      *names() {
+        yield "Account";
       }
     }
 
@@ -68,8 +68,13 @@ describe("a Script", () => {
     const repository = new Repository("/base/path");
 
     class CoderThatWantsToImportAccount extends Coder {
-      name(namespace) {
-        return `Account${namespace.size}`;
+      *names() {
+        let index = 0;
+
+        while (true) {
+          yield `Account${index}`;
+          index += 1;
+        }
       }
     }
 
@@ -90,8 +95,13 @@ describe("a Script", () => {
     const repository = new Repository("/base/path");
 
     class CoderThatWantsToImportAccount extends Coder {
-      name(namespace) {
-        return `Account${namespace.size}`;
+      *names() {
+        let index = 0;
+
+        while (true) {
+          yield `Account${index}`;
+          index += 1;
+        }
       }
 
       write() {
