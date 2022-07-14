@@ -1,4 +1,4 @@
-import path from "node:path";
+import nodePath from "node:path";
 
 import { Coder } from "./coder.js";
 import { ToolsCoder } from "./tools-coder.js";
@@ -56,10 +56,19 @@ export class OperationTypeCoder extends Coder {
       .join(" | ");
   }
 
+  modulePath() {
+    const pathString = this.requirement.url
+      .split("/")
+      .at(-2)
+      .replaceAll("~1", "/");
+
+    return `${nodePath.join("path-types", pathString)}.types.ts`;
+  }
+
   write(script) {
     script.importExternalType(
       "Context",
-      path.relative(path.dirname(script.path), "context/context.js")
+      nodePath.relative(nodePath.dirname(script.path), "context/context.js")
     );
 
     const parameters = this.requirement.select("parameters");

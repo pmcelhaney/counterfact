@@ -48,12 +48,13 @@ export class SchemaCoder extends Coder {
     return script.importExternalType("JSONSchema6", "json-schema");
   }
 
+  modulePath() {
+    return `components/${this.requirement.data.$ref.split("/").at(-1)}.ts`;
+  }
+
   write(script) {
     if (this.requirement.isReference) {
-      return script.import(
-        this,
-        `components/${this.requirement.data.$ref.split("/").at(-1)}.ts`
-      );
+      return script.import(this);
     }
 
     const { type } = this.requirement.data;

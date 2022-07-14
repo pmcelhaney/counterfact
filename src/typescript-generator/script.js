@@ -63,7 +63,9 @@ export class Script {
     return name;
   }
 
-  import(coder, path, isType = false) {
+  import(coder, isType = false) {
+    const path = coder.modulePath();
+
     const cacheKey = `${coder.id}@${path}:${isType}`;
 
     if (this.cache.has(cacheKey)) {
@@ -95,8 +97,8 @@ export class Script {
     return name;
   }
 
-  importType(coder, path) {
-    return this.import(coder, path, true);
+  importType(coder) {
+    return this.import(coder, true);
   }
 
   importExternal(name, modulePath, isType = false) {

@@ -118,14 +118,17 @@ export class OperationCoder extends Coder {
   }
 
   typeDeclaration(namespace, script) {
+    const operationTypeCoder = new OperationTypeCoder(this.requirement);
+
+    return script.importType(operationTypeCoder);
+  }
+
+  modulePath() {
     const pathString = this.requirement.url
       .split("/")
       .at(-2)
       .replaceAll("~1", "/");
 
-    return script.importType(
-      new OperationTypeCoder(this.requirement),
-      `${join("path-types", pathString)}.types.ts`
-    );
+    return `${join("path", pathString)}.types.ts`;
   }
 }

@@ -1,7 +1,7 @@
 import { Coder } from "./coder.js";
 
 export class ToolsCoder extends Coder {
-  id() {
+  get id() {
     return "tools";
   }
 
@@ -22,5 +22,9 @@ export class ToolsCoder extends Coder {
         randomFromSchema: (schema: JSONSchema6 ) => unknown;
         accepts: (contentType: string) => boolean;
     }`;
+  }
+
+  modulePath() {
+    return "internal/tools.ts";
   }
 }

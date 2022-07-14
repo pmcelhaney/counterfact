@@ -21,12 +21,13 @@ export class SchemaTypeCoder extends Coder {
     )}>`;
   }
 
+  modulePath() {
+    return `components/${this.requirement.data.$ref.split("/").at(-1)}.ts`;
+  }
+
   write(script) {
     if (this.requirement.isReference) {
-      return script.importType(
-        this,
-        `components/${this.requirement.data.$ref.split("/").at(-1)}.ts`
-      );
+      return script.importType(this);
     }
 
     const { type } = this.requirement.data;

@@ -1,5 +1,4 @@
 Do these first
-- refactor Script#import() and Coder so that we don't have to pass the path in to import()
 - refactor so that a script has a requirement and coder for each export, a coder does not have a requirement
 - document the architecture
 

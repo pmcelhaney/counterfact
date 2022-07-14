@@ -13,14 +13,6 @@ export class Coder {
 
   write(script) {
     // This method should be overridden by a subclass.
-    // The implementation below is a placeholder.
-
-    if (this.requirement.isReference) {
-      return script.import(
-        this,
-        this.requirement.sourceFilePath.replace(".yaml", ".ts")
-      );
-    }
 
     return `/* ${this.id} */`;
   }
@@ -48,5 +40,9 @@ export class Coder {
 
   typeDeclaration() {
     return "";
+  }
+
+  modulePath() {
+    return "did-not-override-coder-modulePath.ts";
   }
 }

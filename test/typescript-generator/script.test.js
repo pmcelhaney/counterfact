@@ -34,11 +34,11 @@ describe("a Script", () => {
 
     const coder5 = new AccountTypeCoder(mockRequirement);
 
-    expect(script.import(coder1, "file.ts")).toBe("Account");
-    expect(script.import(coder2, "file.ts")).toBe("Account");
-    expect(script.import(coder3, "file.ts")).toBe("Account2");
-    expect(script.import(coder4, "file.ts")).toBe("Account3");
-    expect(script.import(coder5, "other.ts")).toBe("Account4");
+    expect(script.import(coder1)).toBe("Account");
+    expect(script.import(coder2)).toBe("Account");
+    expect(script.import(coder3)).toBe("Account2");
+    expect(script.import(coder4)).toBe("Account3");
+    expect(script.import(coder5)).toBe("Account2");
   });
 
   it("when asked to import, registers an export on the target script", () => {
@@ -48,6 +48,10 @@ describe("a Script", () => {
       *names() {
         yield "Account";
       }
+
+      modulePath() {
+        return "export-from-me.ts";
+      }
     }
 
     const coder = new CoderThatWantsToImportAccount({});
@@ -55,7 +59,7 @@ describe("a Script", () => {
     const importingScript = repository.get("import-to-me.ts");
     const exportingScript = repository.get("export-from-me.ts");
 
-    importingScript.import(coder, "export-from-me.ts");
+    importingScript.import(coder);
 
     expect(importingScript.imports.get("Account")).toStrictEqual({
       script: exportingScript,
@@ -76,14 +80,18 @@ describe("a Script", () => {
           index += 1;
         }
       }
+
+      modulePath() {
+        return "export-from-me.ts";
+      }
     }
 
     const coder = new CoderThatWantsToImportAccount({});
 
     const script = repository.get("import-to-me.ts");
 
-    script.import(coder, "export-from-me.ts");
-    script.importType(coder, "export-from-me.ts");
+    script.import(coder);
+    script.importType(coder);
 
     expect(script.importStatements()).toStrictEqual([
       'import { Account0 } from "./export-from-me.js";',
