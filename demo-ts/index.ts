@@ -1,6 +1,3 @@
-/* eslint-disable node/no-missing-import */
-/* eslint-disable node/file-extension-in-import */
-/* eslint-disable import/no-unresolved */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable node/no-unsupported-features/node-builtins */
@@ -11,12 +8,35 @@ import { fileURLToPath } from "node:url";
 
 import Koa from "koa";
 import { counterfact } from "counterfact";
+import { koaSwagger } from "koa2-swagger-ui";
+import serve from "koa-static";
+import bodyParser from "koa-bodyparser";
 
 import { context } from "./context/context.js";
 
 const PORT = 3100;
 
 const app = new Koa();
+
+app.use(serve("../"));
+
+app.use(
+  koaSwagger({
+    routePrefix: "/swagger", // host at /swagger instead of default /docs
+
+    swaggerOptions: {
+      url: "/petstore.yaml", // example path to json
+    },
+  })
+);
+
+app.use(bodyParser());
+
+// app.use(async (ctx, next) => {
+//   console.log("body", ctx.request.body);
+//   await next();
+//   console.log("request", ctx);
+// });
 
 const { koaMiddleware } = await counterfact(
   fileURLToPath(new URL("paths/", import.meta.url)),

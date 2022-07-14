@@ -1,0 +1,15 @@
+The rest can become Github issues
+
+- convert to TypeScript 
+- name collisions between imports and exports
+- import { exportName as localName }
+- CLI
+- convert to monorepo
+- unit tests
+- fix generated code so that it passes ESLint
+- consistently import node:path as nodePath 
+- refactor ugly stuff like `this.requirement.url.split("/").at(-1)`
+- make sure it works if the spec is in multiple files
+
+
+

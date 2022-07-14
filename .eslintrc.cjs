@@ -1,7 +1,33 @@
 "use strict";
 
+const rules = {
+  "putout/putout": "off",
+  "import/prefer-default-export": "off",
+  "@typescript-eslint/naming-convention": "off",
+
+  "max-len": [
+    "warn",
+    {
+      ignorePattern: "eslint|it\\(|describe\\(",
+      ignoreTemplateLiterals: true,
+      code: 120,
+    },
+  ],
+
+  "no-magic-numbers": [
+    "error",
+    {
+      ignore: [-2, -1, 0, 1, 2],
+    },
+  ],
+
+  "node/no-callback-literal": "off",
+  "node/file-extension-in-import": "off",
+  "node/no-missing-import": "off",
+};
+
 module.exports = {
-  ignorePatterns: ["/node_modules/", "/coverage/", "/reports/"],
+  ignorePatterns: ["/node_modules/", "/coverage/", "/reports/", "/demo-ts"],
 
   extends: ["hardcore", "hardcore/ts", "hardcore/node"],
 
@@ -9,19 +35,7 @@ module.exports = {
     sourceType: "module",
   },
 
-  rules: {
-    "putout/putout": "off",
-    "import/prefer-default-export": "off",
-    "@typescript-eslint/naming-convention": "off",
-
-    "max-len": [
-      "warn",
-      {
-        ignorePattern: "eslint|it\\(|describe\\(",
-        ignoreTemplateLiterals: true,
-      },
-    ],
-  },
+  rules,
 
   overrides: [
     {
@@ -43,7 +57,7 @@ module.exports = {
       extends: ["hardcore", "hardcore/ts", "hardcore/node", "hardcore/jest"],
 
       rules: {
-        "putout/putout": "off",
+        ...rules,
         "import/unambiguous": "off",
         "jest/prefer-expect-assertions": "off",
 
@@ -54,15 +68,10 @@ module.exports = {
 
         "@typescript-eslint/naming-convention": "off",
 
-        "max-len": [
-          "warn",
-          {
-            ignorePattern: "eslint|it\\(|describe\\(",
-            ignoreTemplateLiterals: true,
-          },
-        ],
-
         "node/no-unpublished-import": "off",
+
+        "no-magic-numbers": ["off"],
+        "id-length": ["off"],
       },
     },
 
@@ -71,6 +80,7 @@ module.exports = {
       extends: ["hardcore", "hardcore/node"],
 
       rules: {
+        ...rules,
         "import/no-extraneous-dependencies": "off",
         "import/no-unused-modules": "off",
         "import/prefer-default-export": "off",
@@ -85,6 +95,7 @@ module.exports = {
       extends: ["hardcore", "hardcore/node"],
 
       rules: {
+        ...rules,
         "import/no-commonjs": "off",
       },
 
@@ -94,15 +105,16 @@ module.exports = {
     },
 
     {
-      files: ["demo-ts/**/*.ts"],
+      files: ["**/*.ts"],
       extends: ["hardcore", "hardcore/node", "hardcore/ts"],
 
       parserOptions: {
         sourceType: "module",
-        project: "./demo-ts/tsconfig.json",
+        project: "./tsconfig.json",
       },
 
       rules: {
+        ...rules,
         "import/prefer-default-export": "off",
         "import/no-unused-modules": "off",
         "func-style": "off",
@@ -115,6 +127,20 @@ module.exports = {
         "etc/prefer-interface": "off",
         "@typescript-eslint/prefer-readonly-parameter-types": "off",
         "eslint-comments/no-unused-disable": "off",
+        "@typescript-eslint/no-magic-numbers": "off",
+      },
+
+      settings: {
+        "import/parsers": {
+          "@typescript-eslint/parser": [".ts", ".tsx"],
+        },
+
+        "import/resolver": {
+          typescript: {
+            alwaysTryTypes: true,
+            project: "tsconfig.json",
+          },
+        },
       },
     },
   ],

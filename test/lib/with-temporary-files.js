@@ -61,6 +61,10 @@ export async function withTemporaryFiles(files, ...callbacks) {
         add: createAddFunction(temporaryDirectory),
         remove: createRemoveFunction(temporaryDirectory),
         addDirectory: createAddDirectoryFunction(temporaryDirectory),
+
+        path(relativePath) {
+          return path.join(temporaryDirectory, relativePath);
+        },
       });
     }
   } finally {
