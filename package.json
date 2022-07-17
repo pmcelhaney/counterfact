@@ -40,7 +40,7 @@
     "eslint": "8.18.0",
     "eslint-config-hardcore": "24.5.0",
     "eslint-formatter-github-annotations": "0.1.0",
-    "eslint-import-resolver-typescript": "^3.2.5",
+    "eslint-import-resolver-typescript": "3.2.7",
     "eslint-plugin-import": "^2.26.0",
     "husky": "8.0.1",
     "jest": "28.1.2",
