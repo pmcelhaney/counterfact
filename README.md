@@ -260,11 +260,11 @@ Looking to get involved? You can begin by cloning the project and using one of t
 
 > **BETA**: We are working through using a devcontainer for development. If you have [Docker](https://docker.com) on your machine and would like to give it a go and give us some feedback, please clone the repo, and then follow the instructions on the following page in place of the Installation instructions below.
 >
-> - [Guide: Using a devcontainer](https://github.com/WH-HC-Dev/front-end/wiki/Guide:-Using-a-devcontainer)
+> - [Quick start: Open an existing folder in a container.](https://code.visualstudio.com/docs/remote/containers#_quick-start-open-an-existing-folder-in-a-container)
 
 ### Installation (Original Method)
 
-Installation will set up Git hooks and install all of the Node packages. If you're only working on Mobile code this isn't strictly necessary.
+Installation will set up Git hooks and install all of the Node packages.
 
 1. Make sure you have [Node 16](https://nodejs.org/en/) installed.
 2. Install yarn by running `npm install -g yarn`.
