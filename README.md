@@ -249,3 +249,23 @@ export async function DELETE() {
 ### Coming soon
 
 Headers, content-type, etc. are not supported yet but coming soon. Hopefully by now you can guess what those APIs are going to look like.
+
+-----
+
+## Development Setup
+
+Looking to get involved? You can begin by cloning the project and using one of the following setup options.
+
+### Installation (devcontainer)
+
+> **BETA**: We are working through using a devcontainer for development. If you have [Docker](https://docker.com) on your machine and would like to give it a go and give us some feedback, please clone the repo, and then follow the instructions on the following page in place of the Installation instructions below.
+>
+> - [Quick start: Open an existing folder in a container.](https://code.visualstudio.com/docs/remote/containers#_quick-start-open-an-existing-folder-in-a-container)
+
+### Installation (Original Method)
+
+Installation will set up Git hooks and install all of the Node packages.
+
+1. Make sure you have [Node 16](https://nodejs.org/en/) installed.
+2. Install yarn by running `npm install -g yarn`.
+3. Install the dependencies by running `yarn install`.
