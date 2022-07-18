@@ -2,6 +2,7 @@
   "editor.formatOnSave": true,
   "eslint.format.enable": true,
   "eslint.packageManager": "yarn",
+  "files.insertFinalNewline": true,
   "jest.nodeEnv": {
     "NODE_OPTIONS": "--experimental-vm-modules"
   },
