@@ -19,6 +19,11 @@
   "engines": {
     "node": ">=16.9.0"
   },
+
+  "bin": {
+    "counterfact": "./bin/counterfact.js"
+  },
+
   "scripts": {
     "test": "yarn node --experimental-vm-modules $(yarn bin jest)",
     "test:mutants": "stryker run stryker.config.json",

@@ -45,7 +45,7 @@ We can see the effects of the code changes _without restarting the server_.
 And then after running
 
 ```sh
-yarn generate /path/to/copy/of/petstore/with/some/changes.yaml
+npx counterfact generate /path/to/copy/of/petstore/with/some/changes.yaml ./my-petstore
 ```
 
 it regenerates the code except for the files that we changed. Of the files we changed, the IDE (via TypeScript and ESLint) tells us if the code needs to be modified to conform to the updated spec.
