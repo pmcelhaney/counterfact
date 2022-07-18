@@ -47,7 +47,7 @@
     "koa": "2.13.4",
     "nodemon": "2.0.19",
     "stryker-cli": "1.0.2",
-    "supertest": "6.2.3"
+    "supertest": "6.2.4"
   },
   "dependencies": {
     "@types/json-schema": "^7.0.11",
