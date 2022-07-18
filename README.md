@@ -1,5 +1,7 @@
 # Counterfact
 
+[![Coverage Status](https://coveralls.io/repos/github/pmcelhaney/counterfact/badge.svg)](https://coveralls.io/github/pmcelhaney/counterfact)
+
 [![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fpmcelhaney%2Fcounterfact%2Fmain)](https://dashboard.stryker-mutator.io/reports/github.com/pmcelhaney/counterfact/main)
 
 Counterfact is (will be) a tool that helps front end developers and back end developers collaborate by quickly building reference implementations of [OpenAPI](https://www.openapis.org/) specs.
@@ -250,7 +252,7 @@ export async function DELETE() {
 
 Headers, content-type, etc. are not supported yet but coming soon. Hopefully by now you can guess what those APIs are going to look like.
 
------
+---
 
 ## Development Setup
 
