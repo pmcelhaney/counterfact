@@ -1,5 +1,7 @@
 import JSONSchemaFaker from "json-schema-faker";
 
+JSONSchemaFaker.option("useExamplesValue", true);
+
 export class Tools {
   constructor({ headers = {} } = {}) {
     this.headers = headers;
