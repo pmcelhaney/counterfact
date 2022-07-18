@@ -269,6 +269,11 @@
   resolved "https://registry.yarnpkg.com/@types/http-errors/-/http-errors-1.8.2.tgz#7315b4c4c54f82d13fa61c228ec5c2ea5cc9e0e1"
   integrity sha512-EqX+YQxINb+MeXaIqYDASb6U6FCHbWjkj4a1CKDBks3d/QiB2+PqBLyO72vLDgAO1wUI4O+9gweRcQK11bTL/w==
 
+"@types/json-schema@^7.0.11":
+  version "7.0.11"
+  resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.11.tgz#d421b6c527a3037f7c84433fd2c4229e016863d3"
+  integrity sha512-wOuvG1SN4Us4rez+tylwwwCV1psiNVOkJeM3AUWUNWg/jDQY2+HE/444y5gc+jBmRqASOm2Oeh5c1axHobwRKQ==
+
 "@types/keygrip@*":
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/@types/keygrip/-/keygrip-1.0.2.tgz#513abfd256d7ad0bf1ee1873606317b33b1b2a72"
@@ -428,6 +433,11 @@ argparse@^1.0.7:
   integrity sha512-o5Roy6tNG4SL/FOkCAN6RzjiakZS25RLYFrcMttJqbdd8BWrnA+fGz57iN5Pb06pvBGvl5gQ0B48dJlslXvoTg==
   dependencies:
     sprintf-js "~1.0.2"
+
+argparse@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/argparse/-/argparse-2.0.1.tgz#246f50f3ca78a3240f6c997e8a9bd1eac49e4b38"
+  integrity sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q==
 
 asap@^2.0.0:
   version "2.0.6"
@@ -705,13 +715,16 @@ copy-to@^2.0.1:
   resolved "https://registry.yarnpkg.com/copy-to/-/copy-to-2.0.1.tgz#2680fbb8068a48d08656b6098092bdafc906f4a5"
   integrity sha512-3DdaFaU/Zf1AnpLiFDeNCD4TOWe3Zl2RZaTzUvWiIk5ERzcCodOE20Vqq4fzCbNoHURFHT4/us/Lfq+S2zyY4w==
 
-counterfact@^0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/counterfact/-/counterfact-0.4.0.tgz#7311348ae708ef509f36eb79b266ea8cf2de99e1"
-  integrity sha512-a7lUbTWWVhaWEY9ZVancv66xOF4XaThHpRO4nEuZow0bNHTynuru7hROAY4Oahn0neUPA6MZ9aMQ2pe2FeA/1Q==
+counterfact@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/counterfact/-/counterfact-0.5.0.tgz#dd03eda8c4dc84e200bf7fae7ec9d66ac7af16de"
+  integrity sha512-10ILrUHE6F7FW6AYqt76yTWGRPMkRs3R8qlrqTtRFmGzM2g6hxll3bX0b8LDRenZ7y5bJKYCL2D2y1J4vhTWjA==
   dependencies:
+    "@types/json-schema" "^7.0.11"
     chokidar "^3.5.3"
+    js-yaml "^4.1.0"
     json-schema-faker "^0.5.0-rcv.44"
+    prettier "^2.7.1"
 
 debug@4, debug@^4.1.0, debug@^4.1.1, debug@^4.3.2, debug@^4.3.3:
   version "4.3.4"
@@ -1237,6 +1250,13 @@ js-yaml@^3.12.1:
   dependencies:
     argparse "^1.0.7"
     esprima "^4.0.0"
+
+js-yaml@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-4.1.0.tgz#c1fb65f8f5017901cdd2c951864ba18458a10602"
+  integrity sha512-wpxZs9NoxZaJESJGIZTyDEaYpl0FKSA+FB9aJiyemKhMwkxQg63h4T1KJgUGHpTqPDNRcmmYLugrRjJlBtWvRA==
+  dependencies:
+    argparse "^2.0.1"
 
 json-parse-even-better-errors@^2.3.0, json-parse-even-better-errors@^2.3.1:
   version "2.3.1"
@@ -2016,6 +2036,11 @@ picomatch@^2.0.4, picomatch@^2.2.1:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/picomatch/-/picomatch-2.3.1.tgz#3ba3833733646d9d3e4995946c1365a67fb07a42"
   integrity sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==
+
+prettier@^2.7.1:
+  version "2.7.1"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.7.1.tgz#e235806850d057f97bb08368a4f7d899f7760c64"
+  integrity sha512-ujppO+MkdPqoVINuDFDRLClm7D78qbDt0/NR+wp5FqEZOoTNAjPHWj17QRhu7geIHJfcNhRk1XVQmF8Bp3ye+g==
 
 proc-log@^2.0.0, proc-log@^2.0.1:
   version "2.0.1"
