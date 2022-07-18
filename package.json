@@ -45,7 +45,7 @@
     "husky": "8.0.1",
     "jest": "28.1.2",
     "koa": "2.13.4",
-    "nodemon": "2.0.18",
+    "nodemon": "2.0.19",
     "stryker-cli": "1.0.2",
     "supertest": "6.2.3"
   },
