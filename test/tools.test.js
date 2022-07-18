@@ -42,4 +42,10 @@ describe("tools", () => {
 
     expect(typeof tools.randomFromSchema({ type: "integer" })).toBe("number");
   });
+
+  it("randomFromSchema() uses examples", () => {
+    const tools = new Tools();
+
+    expect(tools.randomFromSchema({ type: "integer", examples: [5] })).toBe(5);
+  });
 });
