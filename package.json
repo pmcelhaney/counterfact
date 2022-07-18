@@ -1,6 +1,6 @@
 {
   "name": "counterfact",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "a library for building a fake REST API for testing",
   "type": "module",
   "main": "./src/counterfact.js",
@@ -19,11 +19,9 @@
   "engines": {
     "node": ">=16.9.0"
   },
-
   "bin": {
     "counterfact": "./bin/counterfact.js"
   },
-
   "scripts": {
     "test": "yarn node --experimental-vm-modules $(yarn bin jest)",
     "test:mutants": "stryker run stryker.config.json",
@@ -60,6 +58,5 @@
     "js-yaml": "^4.1.0",
     "prettier": "^2.7.1",
     "json-schema-faker": "^0.5.0-rcv.44"
-
   }
 }
