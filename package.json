@@ -36,7 +36,7 @@
     "@changesets/cli": "2.23.0",
     "@stryker-mutator/core": "6.1.2",
     "@stryker-mutator/jest-runner": "6.1.2",
-    "@types/koa": "2.13.4",
+    "@types/koa": "2.13.5",
     "eslint": "8.20.0",
     "eslint-config-hardcore": "24.5.0",
     "eslint-formatter-github-annotations": "0.1.0",
