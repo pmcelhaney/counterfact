@@ -1,5 +1,24 @@
+
 {
-  "extends": [
-    "config:base"
+  "extends": ["config:base"],
+  "rangeStrategy": "update-lockfile",
+  "enabledManagers": ["npm", "github-actions"],
+  "packageRules": [
+    {
+      "matchManagers": ["npm"],
+      "description": "Automatically merge all updates",
+      "automerge": true,
+      "stabilityDays": 3,
+      "prCreation": "not-pending",
+      "ignoreDeps": ["jest", "jest-environment-jsdom"]
+    },
+    {
+      "matchManagers": ["github-actions"],
+      "addLabels": ["github_actions"],
+      "description": "Automatically merge all updates",
+      "automerge": true,
+      "stabilityDays": 3,
+      "prCreation": "not-pending"
+    }
   ]
 }
