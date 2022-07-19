@@ -48,6 +48,35 @@ describe("a dispatcher", () => {
     expect(response.body).toBe("Hello Catherine of Aragon!");
   });
 
+  it("passes the request headers", async () => {
+    const registry = new Registry();
+    const mockedJWT = "test token";
+
+    registry.add("/a", {
+      GET({ headers }) {
+        return {
+          headers,
+        };
+      },
+    });
+
+    const dispatcher = new Dispatcher(registry);
+
+    const authHeader = {
+      Authorization: `Bearer: ${mockedJWT}`,
+      "Cache-Control": "max-age=0",
+    };
+
+    const response = await dispatcher.request({
+      method: "GET",
+      path: "/a",
+
+      headers: authHeader,
+    });
+
+    expect(response.headers).toBe(authHeader);
+  });
+
   it("passes the query params", async () => {
     const registry = new Registry();
 

@@ -12,4 +12,6 @@ Under `./routes` you will find a few endpoints definitions:
 
 `count.js` defines `/count` and reports how many times you've visited the other URLs.
 
+`user.js` defines `/user` and sends back a decoded JWT. The token is read from the headers and decoded in the response body.
+
 Try adding more routes. You should be able to see the updates without restarting the server.

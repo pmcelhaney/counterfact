@@ -21,3 +21,4 @@ console.log(`http://localhost:${PORT}/hello/friends`);
 console.log(`http://localhost:${PORT}/hello/kitty`);
 console.log(`http://localhost:${PORT}/hello/world?greeting=Hi`);
 console.log(`http://localhost:${PORT}/count`);
+console.log(`http://localhost:${PORT}/user`);
