@@ -1,4 +1,4 @@
-import { join, dirname } from "node:path";
+import nodePath from "node:path";
 import fs from "node:fs/promises";
 import { constants as fsConstants } from "node:fs";
 
@@ -7,7 +7,7 @@ import prettier from "prettier";
 import { Script } from "./script.js";
 
 async function ensureDirectoryExists(filePath) {
-  const directory = dirname(filePath);
+  const directory = nodePath.dirname(filePath);
 
   try {
     await fs.access(directory, fsConstants.W_OK);
@@ -49,7 +49,7 @@ export class Repository {
         parser: "typescript",
       });
 
-      const fullPath = join(destination, path);
+      const fullPath = nodePath.join(destination, path);
 
       await ensureDirectoryExists(fullPath);
 
