@@ -50,27 +50,31 @@ describe("a dispatcher", () => {
 
   it("passes the request headers", async () => {
     const registry = new Registry();
-    const mockedJWT =
-      // eslint-disable-next-line max-len
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
+    const mockedJWT = "test token";
 
     registry.add("/a", {
       GET({ headers }) {
         return {
-          headers: `User token from the header: ${headers}`,
+          headers,
         };
       },
     });
 
     const dispatcher = new Dispatcher(registry);
+
+    const authHeader = {
+      Authorization: `Bearer: ${mockedJWT}`,
+      "Cache-Control": "max-age=0",
+    };
+
     const response = await dispatcher.request({
       method: "GET",
       path: "/a",
 
-      headers: mockedJWT,
+      headers: authHeader,
     });
 
-    expect(response.headers).toBe(`User token from the header: ${mockedJWT}`);
+    expect(response.headers).toBe(authHeader);
   });
 
   it("passes the query params", async () => {
