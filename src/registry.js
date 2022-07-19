@@ -61,7 +61,9 @@ export class Registry {
         );
 
         if (dynamicSegment) {
-          path[dynamicSegment.slice(1, -1)] = segment;
+          const variableName = dynamicSegment.slice(1, -1);
+
+          path[variableName] = segment;
 
           node = node.children[dynamicSegment];
 
