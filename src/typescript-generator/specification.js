@@ -1,4 +1,3 @@
-// import { join } from "node:path";
 import fs from "node:fs/promises";
 import nodePath from "node:path";
 

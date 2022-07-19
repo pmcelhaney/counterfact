@@ -1,4 +1,3 @@
-// import { join, dirname } from "node:path";
 import nodePath from "node:path";
 import fs from "node:fs/promises";
 import { constants as fsConstants } from "node:fs";
