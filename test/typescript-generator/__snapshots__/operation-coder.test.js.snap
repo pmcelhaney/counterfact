@@ -1,0 +1,76 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`an OperationCoder generates a complex get operation 1`] = `
+"({ path, query, context, tools }) => {
+  const statusCode = tools.oneOf([\\"200\\", \\"400\\", \\"default\\"]);
+
+  if (statusCode === \\"200\\") {
+    if (tools.accepts(\\"application/json\\")) {
+      const example = tools.oneOf([\\"first-example\\", \\"second-example\\"]);
+
+      if (example === \\"first-example\\") {
+        return {
+          status: 200,
+          contentType: \\"application/json\\",
+          body: \\"first\\",
+        };
+      }
+      if (example === \\"second-example\\") {
+        return {
+          status: 200,
+          contentType: \\"application/json\\",
+          body: \\"second\\",
+        };
+      }
+
+      return {
+        status: 200,
+        contentType: \\"application/json\\",
+        body: tools.randomFromSchema(schema) as Type,
+      };
+    }
+  }
+  if (statusCode === \\"400\\") {
+    if (tools.accepts(\\"application/json\\")) {
+      return {
+        status: 400,
+        contentType: \\"application/json\\",
+        body: tools.randomFromSchema(schema) as Type,
+      };
+    }
+  }
+  if (tools.accepts(\\"application/json\\")) {
+    return {
+      contentType: \\"application/json\\",
+      body: tools.randomFromSchema(schema) as Type,
+    };
+  }
+
+  return {
+    status: 415,
+    contentType: \\"text/plain\\",
+    body: \\"HTTP 415: Unsupported Media Type\\",
+  };
+};
+"
+`;
+
+exports[`an OperationCoder generates a simple post operation 1`] = `
+"({ body, context, tools }) => {
+  const statusCode = tools.oneOf([\\"default\\"]);
+
+  if (tools.accepts(\\"application/json\\")) {
+    return {
+      contentType: \\"application/json\\",
+      body: tools.randomFromSchema(schema) as Type,
+    };
+  }
+
+  return {
+    status: 415,
+    contentType: \\"text/plain\\",
+    body: \\"HTTP 415: Unsupported Media Type\\",
+  };
+};
+"
+`;

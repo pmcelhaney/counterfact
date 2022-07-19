@@ -57,21 +57,16 @@ export class OperationCoder extends Coder {
   }
 
   responseForStatusCode(script, response, statusCode) {
-    const returns = (response.select("content") || []).map(
-      ([contentType, responseForContentType]) =>
+    const returns = response
+      .select("content")
+      .map(([contentType, responseForContentType]) =>
         this.responseForContentType(
           statusCode,
           contentType,
           responseForContentType,
           script
         )
-    );
-
-    if (returns.length === 0) {
-      return `return {
-        status: ${statusCode},
-      }`;
-    }
+      );
 
     return returns.join("\n");
   }
