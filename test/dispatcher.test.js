@@ -48,6 +48,31 @@ describe("a dispatcher", () => {
     expect(response.body).toBe("Hello Catherine of Aragon!");
   });
 
+  it("passes the request headers", async () => {
+    const registry = new Registry();
+    const mockedJWT =
+      // eslint-disable-next-line max-len
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
+
+    registry.add("/a", {
+      GET({ headers }) {
+        return {
+          headers: `User token from the header: ${headers}`,
+        };
+      },
+    });
+
+    const dispatcher = new Dispatcher(registry);
+    const response = await dispatcher.request({
+      method: "GET",
+      path: "/a",
+
+      headers: mockedJWT,
+    });
+
+    expect(response.headers).toBe(`User token from the header: ${mockedJWT}`);
+  });
+
   it("passes the query params", async () => {
     const registry = new Registry();
 

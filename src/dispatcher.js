@@ -21,6 +21,7 @@ export class Dispatcher {
       context: this.registry.context,
       body,
       query,
+      headers,
     });
   }
 }
