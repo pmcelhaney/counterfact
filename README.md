@@ -1,16 +1,18 @@
 # Counterfact
 
+[![Coverage Status](https://coveralls.io/repos/github/pmcelhaney/counterfact/badge.svg)](https://coveralls.io/github/pmcelhaney/counterfact)
+
 [![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fpmcelhaney%2Fcounterfact%2Fmain)](https://dashboard.stryker-mutator.io/reports/github.com/pmcelhaney/counterfact/main)
 
-Counterfact is (will be) a tool that helps front end developers and back end developers collaborate by quickly building reference implementations of OpenAPI specs.
+Counterfact is (will be) a tool that helps front end developers and back end developers collaborate by quickly building reference implementations of [OpenAPI](https://www.openapis.org/) specs.
 
-Counterfact is _not_ for _production_.
+Counterfact is **not** for **production**.
 
-Counterfact is _great_ for _testing the UI_, both manual and automated testing. UI testing can be quite tedious and brittle in part because the _arrange_ part of Arrange, Act, Assert -- getting the server into a particular state -- is often slow, unpredictable, and complex. Counterfact bypasses the accidental complexity associated with arranging a real server's state, making tests that isolate the UI fast, repeatable, and easy to maintain.
+Counterfact is **great** for **testing the UI**, both manual and automated testing. UI testing can be quite tedious and brittle in part because the _arrange_ part of Arrange, Act, Assert -- getting the server into a particular state -- is often slow, unpredictable, and complex. Counterfact bypasses the accidental complexity associated with arranging a real server's state, making tests that isolate the UI fast, repeatable, and easy to maintain.
 
 It accomplishes that without over-isolating. You can run a full scenario: log in, make changes, log in with a different user, and see the effects of those changes. The server you're testing against is a _real_ server from the UI's perspective: it implements business logic and maintains state. It's only not real in the sense that it doesn't have to support 10,000 concurrent users, protect real data, go through a deployment pipeline, or maintain 99.99% uptime.
 
-Counterfact is _great_ for _communication between front end and back end teams_. OpenAPI does an excellent job defining the inputs and outputs of a RESTful service, but it can't tell us how a server is supposed to behave. Counterfact fills that gap. The feedback cycle is orders of magnitude faster than making changes to a real, scalable back end and then seeing how those changes affect the UI/UX.
+Counterfact is **great** for **communication between front end and back end teams**. OpenAPI does an excellent job defining the inputs and outputs of a RESTful service, but it can't tell us how a server is supposed to behave. Counterfact fills that gap. The feedback cycle is orders of magnitude faster than making changes to a real, scalable back end and then seeing how those changes affect the UI/UX.
 
 ## Road to 1.0
 
@@ -45,7 +47,7 @@ We can see the effects of the code changes _without restarting the server_.
 And then after running
 
 ```sh
-yarn generate /path/to/copy/of/petstore/with/some/changes.yaml
+npm run counterfact generate /path/to/copy/of/petstore/with/some/changes.yaml
 ```
 
 it regenerates the code except for the files that we changed. Of the files we changed, the IDE (via TypeScript and ESLint) tells us if the code needs to be modified to conform to the updated spec.
@@ -249,3 +251,23 @@ export async function DELETE() {
 ### Coming soon
 
 Headers, content-type, etc. are not supported yet but coming soon. Hopefully by now you can guess what those APIs are going to look like.
+
+---
+
+## Development Setup
+
+Looking to get involved? You can begin by cloning the project and using one of the following setup options.
+
+### Installation (devcontainer)
+
+> **BETA**: We are working through using a devcontainer for development. If you have [Docker](https://docker.com) on your machine and would like to give it a go and give us some feedback, please clone the repo, and then follow the instructions on the following page in place of the Installation instructions below.
+>
+> - [Quick start: Open an existing folder in a container.](https://code.visualstudio.com/docs/remote/containers#_quick-start-open-an-existing-folder-in-a-container)
+
+### Installation (Original Method)
+
+Installation will set up Git hooks and install all of the Node packages.
+
+1. Make sure you have [Node 16](https://nodejs.org/en/) installed.
+2. Install yarn by running `npm install -g yarn`.
+3. Install the dependencies by running `yarn install`.

@@ -1,6 +1,6 @@
 {
   "name": "counterfact",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "a library for building a fake REST API for testing",
   "type": "module",
   "main": "./src/counterfact.js",
@@ -19,6 +19,9 @@
   "engines": {
     "node": ">=16.9.0"
   },
+  "bin": {
+    "counterfact": "./bin/counterfact.js"
+  },
   "scripts": {
     "test": "yarn node --experimental-vm-modules $(yarn bin jest)",
     "test:mutants": "stryker run stryker.config.json",
@@ -33,28 +36,28 @@
     "generate:example:lint": "generate-example && yarn lint:quickfix"
   },
   "devDependencies": {
-    "@changesets/cli": "2.23.0",
+    "@changesets/cli": "2.23.2",
     "@stryker-mutator/core": "6.1.2",
     "@stryker-mutator/jest-runner": "6.1.2",
-    "@types/koa": "2.13.4",
-    "eslint": "8.18.0",
-    "eslint-config-hardcore": "24.5.0",
+    "@types/koa": "2.13.5",
+    "eslint": "8.20.0",
+    "eslint-config-hardcore": "24.8.1",
     "eslint-formatter-github-annotations": "0.1.0",
     "eslint-import-resolver-typescript": "^3.2.5",
     "eslint-plugin-import": "^2.26.0",
     "husky": "8.0.1",
     "jest": "28.1.2",
     "koa": "2.13.4",
-    "nodemon": "2.0.18",
+    "nodemon": "2.0.19",
     "stryker-cli": "1.0.2",
-    "supertest": "6.2.3"
+    "supertest": "6.2.4"
   },
   "dependencies": {
     "@types/json-schema": "^7.0.11",
     "chokidar": "^3.5.3",
     "js-yaml": "^4.1.0",
-    "json-schema-faker": "^0.5.0-rcv.44",
     "jsonwebtoken": "^8.5.1",
-    "prettier": "^2.7.1"
+    "prettier": "^2.7.1",
+    "json-schema-faker": "^0.5.0-rcv.44"
   }
 }

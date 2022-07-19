@@ -1,5 +1,12 @@
 # counterfact
 
+## 0.5.0
+
+### Minor Changes
+
+- 5e72a6c: CLI to generate TypeScript files
+- de5e92b: use example values (if present) when generating random data
+
 ## 0.4.0
 
 ### Minor Changes
