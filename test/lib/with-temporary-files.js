@@ -1,10 +1,10 @@
 import fs from "node:fs/promises";
 import { constants as fsConstants } from "node:fs";
 import os from "node:os";
-import path from "node:path";
+import nodePath from "node:path";
 
 async function ensureDirectoryExists(filePath) {
-  const directory = path.dirname(filePath);
+  const directory = nodePath.dirname(filePath);
 
   try {
     await fs.access(directory, fsConstants.W_OK);
@@ -15,7 +15,7 @@ async function ensureDirectoryExists(filePath) {
 
 function createAddFunction(basePath) {
   return async function add(filePath, content) {
-    const fullPath = path.join(basePath, filePath);
+    const fullPath = nodePath.join(basePath, filePath);
 
     await ensureDirectoryExists(fullPath);
     await fs.writeFile(fullPath, content);
@@ -24,7 +24,7 @@ function createAddFunction(basePath) {
 
 function createAddDirectoryFunction(basePath) {
   return async function addDirectory(filePath) {
-    const fullPath = path.join(basePath, filePath);
+    const fullPath = nodePath.join(basePath, filePath);
 
     await fs.mkdir(fullPath, { recursive: true });
   };
@@ -32,7 +32,7 @@ function createAddDirectoryFunction(basePath) {
 
 function createRemoveFunction(basePath) {
   return async function remove(filePath) {
-    const fullPath = path.join(basePath, filePath);
+    const fullPath = nodePath.join(basePath, filePath);
 
     await ensureDirectoryExists(fullPath);
     await fs.rm(fullPath);
@@ -41,13 +41,13 @@ function createRemoveFunction(basePath) {
 
 export async function withTemporaryFiles(files, ...callbacks) {
   const temporaryDirectory = `${await fs.mkdtemp(
-    path.join(os.tmpdir(), "wtf-")
+    nodePath.join(os.tmpdir(), "wtf-")
   )}/`;
 
   try {
     const writes = Object.entries(files).map(async (entry) => {
       const [filename, contents] = entry;
-      const filePath = path.join(temporaryDirectory, filename);
+      const filePath = nodePath.join(temporaryDirectory, filename);
 
       await ensureDirectoryExists(filePath);
       await fs.writeFile(filePath, contents);
@@ -63,7 +63,7 @@ export async function withTemporaryFiles(files, ...callbacks) {
         addDirectory: createAddDirectoryFunction(temporaryDirectory),
 
         path(relativePath) {
-          return path.join(temporaryDirectory, relativePath);
+          return nodePath.join(temporaryDirectory, relativePath);
         },
       });
     }

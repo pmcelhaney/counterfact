@@ -1,4 +1,5 @@
-import { join } from "node:path";
+// import { join } from "node:path";
+import nodePath from "node:path";
 
 import { Coder } from "./coder.js";
 import { SchemaCoder } from "./schema-coder.js";
@@ -130,6 +131,6 @@ export class OperationCoder extends Coder {
       .at(-2)
       .replaceAll("~1", "/");
 
-    return `${join("path", pathString)}.types.ts`;
+    return `${nodePath.join("path", pathString)}.types.ts`;
   }
 }

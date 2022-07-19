@@ -1,7 +1,7 @@
 /* eslint-disable node/no-unsupported-features/es-syntax */
 /* eslint-disable import/no-dynamic-require */
 import fs from "node:fs/promises";
-import path from "node:path";
+import nodePath from "node:path";
 import EventEmitter, { once } from "node:events";
 
 import chokidar from "chokidar";
@@ -27,8 +27,8 @@ export class ModuleLoader extends EventEmitter {
           return;
         }
 
-        const parts = path.parse(pathName.replace(this.basePath, ""));
-        const url = `/${path.join(parts.dir, parts.name)}`;
+        const parts = nodePath.parse(pathName.replace(this.basePath, ""));
+        const url = `/${nodePath.join(parts.dir, parts.name)}`;
 
         if (parts.name.includes("#")) {
           return;
@@ -60,7 +60,7 @@ export class ModuleLoader extends EventEmitter {
   }
 
   async load(directory = "") {
-    const files = await fs.readdir(path.join(this.basePath, directory), {
+    const files = await fs.readdir(nodePath.join(this.basePath, directory), {
       withFileTypes: true,
     });
     const imports = files.flatMap(async (file) => {
@@ -71,7 +71,7 @@ export class ModuleLoader extends EventEmitter {
       const extension = file.name.split(".").at(-1);
 
       if (file.isDirectory()) {
-        await this.load(path.join(directory, file.name));
+        await this.load(nodePath.join(directory, file.name));
 
         return;
       }
@@ -81,11 +81,11 @@ export class ModuleLoader extends EventEmitter {
       }
 
       const endpoint = await import(
-        path.join(this.basePath, directory, file.name)
+        nodePath.join(this.basePath, directory, file.name)
       );
 
       this.registry.add(
-        `/${path.join(directory, path.parse(file.name).name)}`,
+        `/${nodePath.join(directory, nodePath.parse(file.name).name)}`,
         endpoint
       );
     });
