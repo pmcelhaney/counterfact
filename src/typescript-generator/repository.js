@@ -33,7 +33,7 @@ export class Repository {
     return script;
   }
 
-  async writeFiles(destination) {
+  async finished() {
     while (
       Array.from(this.scripts.values()).some((script) => script.isInProgress())
     ) {
@@ -42,8 +42,11 @@ export class Repository {
         Array.from(this.scripts.values(), (script) => script.finished())
       );
     }
+  }
 
-    // now everything is settled and we can write the files
+  async writeFiles(destination) {
+    await this.finished();
+
     await Array.from(this.scripts.entries()).forEach(async ([path, script]) => {
       const contents = prettier.format(script.contents(), {
         parser: "typescript",

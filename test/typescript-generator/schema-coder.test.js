@@ -45,7 +45,7 @@ describe("a SchemaCoder", () => {
     type         | output
     ${"string"}  | ${'{"type":"string"}'}
     ${"number"}  | ${'{"type":"number"}'}
-    ${"integer"} | ${'{"type":"number"}'}
+    ${"integer"} | ${'{"type":"integer"}'}
   `("generates a type declaration for $type", ({ type, output }) => {
     const coder = new SchemaCoder(
       new Requirement({ type, xml: "should be ignored" })
@@ -72,7 +72,7 @@ describe("a SchemaCoder", () => {
     const expected = format(`const x = { 
       type: "object",
       required: [],
-      properties: { "name": {"type":"string"}, "age": {"type":"number"} }
+      properties: { "name": {"type":"string"}, "age": {"type":"integer"} }
     }`);
 
     expect(format(`const x = ${coder.write()}`)).toStrictEqual(expected);
