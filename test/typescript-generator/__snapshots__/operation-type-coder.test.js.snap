@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`an OperationTypeCoder generates a complex post operation 1`] = `
+"type TestType = ({
+  query,
+  path,
+  header,
+  body,
+  context,
+  tools,
+}: {
+  query: { name?: string };
+  path: { id?: string };
+  header: { name?: string };
+  body: Type;
+  context: Context;
+  tools: Type;
+}) =>
+  | {
+      status: 200;
+      contentType?: \\"application/json\\";
+      body?: Type;
+    }
+  | {
+      status: 400;
+      contentType?: \\"application/json\\";
+      body?: Type;
+    }
+  | {
+      status: number | undefined;
+      contentType?: \\"application/json\\";
+      body?: Type;
+    }
+  | { status: 415; contentType: \\"text/plain\\"; body: string };
+"
+`;
+
+exports[`an OperationTypeCoder generates a simple get operation 1`] = `
+"type TestType = ({
+  query,
+  path,
+  header,
+  body,
+  context,
+  tools,
+}: {
+  query: undefined;
+  path: undefined;
+  header: undefined;
+  body: undefined;
+  context: Context;
+  tools: Type;
+}) =>
+  | {
+      status: number | undefined;
+      contentType?: \\"application/json\\";
+      body?: Type;
+    }
+  | { status: 415; contentType: \\"text/plain\\"; body: string };
+"
+`;

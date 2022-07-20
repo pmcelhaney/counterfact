@@ -23,8 +23,7 @@ export class Requirement {
     const branch = data[this.unescapeJsonPointer(head)];
 
     if (!branch) {
-      // eslint-disable-next-line unicorn/no-null
-      return null;
+      return undefined;
     }
 
     if (tail.length === 0) {

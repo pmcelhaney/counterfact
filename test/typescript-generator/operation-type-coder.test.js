@@ -1,57 +1,76 @@
 /* eslint-disable jest/no-restricted-matchers */
 import prettier from "prettier";
 
-import { OperationCoder } from "../../src/typescript-generator/operation-coder.js";
+import { OperationTypeCoder } from "../../src/typescript-generator/operation-type-coder.js";
 import { Requirement } from "../../src/typescript-generator/requirement.js";
 
 function format(code) {
   return prettier.format(code, { parser: "typescript" });
 }
 
-describe("an OperationCoder", () => {
+const dummyScript = {
+  path: ".",
+
+  importExternalType() {
+    return "ExternalType";
+  },
+
+  importType() {
+    return "Type";
+  },
+
+  import() {
+    return "schema";
+  },
+};
+
+describe("an OperationTypeCoder", () => {
   it("generates a list of potential names", () => {
-    const coder = new OperationCoder(new Requirement({}, "#/paths/hello/get"));
+    const coder = new OperationTypeCoder(
+      new Requirement({}, "#/paths/hello/get")
+    );
 
     const [one, two, three] = coder.names();
 
-    expect([one, two, three]).toStrictEqual(["GET", "GET2", "GET3"]);
-  });
-
-  it("finds the request method in the URL", () => {
-    const get = new OperationCoder(new Requirement({}, "#/paths/hello/get"));
-    const put = new OperationCoder(new Requirement({}, "#/paths/hello/put"));
-
-    expect(get.requestMethod()).toBe("GET");
-    expect(put.requestMethod()).toBe("PUT");
+    expect([one, two, three]).toStrictEqual([
+      "HTTP_GET",
+      "HTTP_GET2",
+      "HTTP_GET3",
+    ]);
   });
 
   it("creates a type declaration", () => {
-    const coder = new OperationCoder(new Requirement({}, "#/paths/hello/get"));
+    const coder = new OperationTypeCoder(
+      new Requirement({}, "#/paths/hello/get")
+    );
 
-    const script = {
-      importType() {
-        return "HTTP_GET";
-      },
-    };
-
-    expect(coder.typeDeclaration(undefined, script)).toBe("HTTP_GET");
+    expect(coder.typeDeclaration(undefined, dummyScript)).toBe("");
   });
 
   it("returns the module path", () => {
-    const coder = new OperationCoder(
+    const coder = new OperationTypeCoder(
       new Requirement({}, "#/paths/hello~1world/get")
     );
 
-    expect(coder.modulePath()).toBe("path/hello/world.types.ts");
+    expect(coder.modulePath()).toBe("path-types/hello/world.types.ts");
   });
 
-  it("generates a complex get operation", () => {
+  it("generates a complex post operation", () => {
     const requirement = new Requirement(
       {
         parameters: [
           { name: "id", in: "path", schema: { type: "string" } },
           { name: "name", in: "query", schema: { type: "string" } },
+          { name: "name", in: "header", schema: { type: "string" } },
         ],
+
+        requestBody: {
+          content: {
+            "application/json": {
+              schema: { $ref: "#/components/schemas/Example" },
+            },
+          },
+        },
 
         responses: {
           200: {
@@ -89,27 +108,17 @@ describe("an OperationCoder", () => {
           },
         },
       },
-      "#/paths/hello/get"
+      "#/paths/hello/post"
     );
 
-    const coder = new OperationCoder(requirement);
+    const coder = new OperationTypeCoder(requirement);
 
     expect(
-      format(
-        coder.write({
-          importType() {
-            return "Type";
-          },
-
-          import() {
-            return "schema";
-          },
-        })
-      )
+      format(`type TestType = ${coder.write(dummyScript)}`)
     ).toMatchSnapshot();
   });
 
-  it("generates a simple post operation", () => {
+  it("generates a simple get operation", () => {
     const requirement = new Requirement(
       {
         responses: {
@@ -122,23 +131,13 @@ describe("an OperationCoder", () => {
           },
         },
       },
-      "#/paths/hello/post"
+      "#/paths/hello/get"
     );
 
-    const coder = new OperationCoder(requirement);
+    const coder = new OperationTypeCoder(requirement);
 
     expect(
-      format(
-        coder.write({
-          importType() {
-            return "Type";
-          },
-
-          import() {
-            return "schema";
-          },
-        })
-      )
+      format(`type TestType =${coder.write(dummyScript)}`)
     ).toMatchSnapshot();
   });
 });
