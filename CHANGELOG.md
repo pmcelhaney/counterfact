@@ -1,5 +1,17 @@
 # counterfact
 
+## 0.6.0
+
+### Minor Changes
+
+- 9161d80: Setup basic devcontainer.
+
+### Patch Changes
+
+- 6d01563: fixed the generate script in the main package (yarn generate wasn't doing anything)
+- 6f406c4: fixed an issue where the generated JSON schema was changing integer types to number
+- 6f406c4: fixed an issue where a response with no content was blowing up
+
 ## 0.5.0
 
 ### Minor Changes
