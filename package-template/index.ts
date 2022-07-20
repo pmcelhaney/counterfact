@@ -7,6 +7,7 @@
 // The above ESLint rules are turned off mainly because Counterfact itself is not written in TypeScript yet.
 
 import { fileURLToPath } from "node:url";
+import nodePath from "node:path";
 
 import Koa from "koa";
 import { counterfact } from "counterfact";
@@ -27,7 +28,7 @@ app.use(
     routePrefix: "/docs",
 
     swaggerOptions: {
-      url: "/petstore.yaml",
+      url: "/openapi/openapi.yaml",
     },
   })
 );
@@ -42,9 +43,13 @@ const { koaMiddleware } = await counterfact(
 app.use(koaMiddleware);
 
 app.listen(PORT);
-console.log("Try these URLs:");
-console.log(`http://localhost:${PORT}/hello/world`);
-console.log(`http://localhost:${PORT}/hello/friends`);
-console.log(`http://localhost:${PORT}/hello/kitty`);
-console.log(`http://localhost:${PORT}/hello/world?greeting=Hi`);
-console.log(`http://localhost:${PORT}/count`);
+console.log("Counterfact is running.");
+console.log(`See docs at http://localhost:${PORT}/docs`);
+console.log(
+  `A copy of the Open API spec is at ${nodePath.resolve(
+    "./openapi/openapi.yaml"
+  )}`
+);
+console.log(
+  `The code that implements the API is under ${nodePath.resolve("./paths/")}`
+);
