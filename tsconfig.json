@@ -6,7 +6,7 @@
     "strictNullChecks": true,
     "allowSyntheticDefaultImports": true
   },
-  "include": ["src", "demo-ts"],
+  "include": ["src", "demo-ts", "package-template"],
   "ts-node": {
     "esm": true
   }
