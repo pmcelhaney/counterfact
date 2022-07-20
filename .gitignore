@@ -4,3 +4,12 @@ dist
 coverage
 .stryker-tmp
 reports
+
+# In testing we may generate these files. We don't want to check them in.
+package-template/components
+package-template/internal
+package-template/openapi
+package-template/path-types
+package-template/paths
+package-template/package-lock.json
+package-template/yarn.lock
