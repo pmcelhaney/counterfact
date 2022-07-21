@@ -1,6 +1,6 @@
 import nodePath from "node:path";
 import fs from "node:fs/promises";
-import { constants as fsConstants } from "node:fs";
+import { constants as fsConstants, write } from "node:fs";
 
 import prettier from "prettier";
 
@@ -47,36 +47,35 @@ export class Repository {
   async writeFiles(destination) {
     await this.finished();
 
-    await Array.from(this.scripts.entries()).forEach(async ([path, script]) => {
-      const contents = prettier.format(script.contents(), {
-        parser: "typescript",
-      });
+    const writeFiles = Array.from(
+      this.scripts.entries(),
+      async ([path, script]) => {
+        const contents = prettier.format(script.contents(), {
+          parser: "typescript",
+        });
 
-      const fullPath = nodePath.join(destination, path);
+        const fullPath = nodePath.join(destination, path);
 
-      await ensureDirectoryExists(fullPath);
+        await ensureDirectoryExists(fullPath);
 
-      if (
-        path.startsWith("paths") &&
-        (await fs
-          .stat(fullPath)
-          .then((stat) => stat.isFile())
-          .catch(() => false))
-      ) {
-        // eslint-disable-next-line no-console
-        console.log("not overwriting", fullPath);
+        if (
+          path.startsWith("paths") &&
+          (await fs
+            .stat(fullPath)
+            .then((stat) => stat.isFile())
+            .catch(() => false))
+        ) {
+          process.stdout.write("not overwriting", fullPath);
 
-        return;
+          return;
+        }
+
+        await fs.writeFile(fullPath, contents);
+
+        process.stdout.write(`writing ${fullPath}\n`);
       }
+    );
 
-      await fs.writeFile(fullPath, contents);
-
-      // eslint-disable-next-line no-console
-      console.log("writing", fullPath);
-
-      // console.log(`/* ${path} */`);
-      // console.log(contents);
-      // console.log("\n\n\n");
-    });
+    await Promise.all(writeFiles);
   }
 }

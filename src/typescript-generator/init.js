@@ -10,6 +10,11 @@ const rootPath = nodePath.join(
 );
 
 export async function init(source, destination) {
+  // eslint-disable-next-line node/no-sync
+  if (fs.existsSync(destination)) {
+    throw new Error(`Destination already exists: ${destination}`);
+  }
+
   await fs.copy(nodePath.join(rootPath, "templates/typescript"), destination);
 
   const specification = await yaml.load(await fs.readFile(source, "utf8"));

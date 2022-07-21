@@ -43,15 +43,15 @@ const { koaMiddleware } = await counterfact(
 app.use(koaMiddleware);
 
 app.listen(PORT);
-console.log("Counterfact is running.");
-console.log(`See docs at http://localhost:${PORT}/docs`);
-console.log(
+process.stdout.write("Counterfact is running.\n");
+process.stdout.write(`See docs at http://localhost:${PORT}/docs\n`);
+process.stdout.write(
   `A copy of the Open API spec is at ${nodePath.resolve(
     "./openapi/openapi.yaml"
-  )}`
+  )}\n`
 );
-console.log(
+process.stdout.write(
   `The code that implements the API is under ${nodePath.resolve(
     "./counterfact/paths/"
-  )}`
+  )}\n`
 );
