@@ -6,6 +6,7 @@ import { init } from "../src/typescript-generator/init.js";
 
 const EXPECTED_ARGUMENT_COUNT = 5;
 
+// eslint-disable-next-line max-statements
 function main() {
   // eslint-disable-next-line prefer-destructuring
   const command = process.argv[2];
@@ -14,7 +15,7 @@ function main() {
     .slice(2)
     .map((pathString) => nodePath.join(process.cwd(), pathString));
 
-  if (process.argv.length === EXPECTED_ARGUMENT_COUNT) {
+  if (process.argv.length !== EXPECTED_ARGUMENT_COUNT) {
     if (command === "generate") {
       generate(source, destination);
 

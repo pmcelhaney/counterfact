@@ -13,7 +13,7 @@ import Koa from "koa";
 import { counterfact } from "counterfact";
 import { koaSwagger } from "koa2-swagger-ui";
 import serve from "koa-static";
-import bodyParser from "koa-bodyparser"; 
+import bodyParser from "koa-bodyparser";
 
 import { context } from "./context/context.js";
 
@@ -51,5 +51,7 @@ console.log(
   )}`
 );
 console.log(
-  `The code that implements the API is under ${nodePath.resolve("./counterfact/paths/")}`
+  `The code that implements the API is under ${nodePath.resolve(
+    "./counterfact/paths/"
+  )}`
 );
