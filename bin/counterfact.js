@@ -15,7 +15,7 @@ function main() {
     .slice(2)
     .map((pathString) => nodePath.join(process.cwd(), pathString));
 
-  if (process.argv.length !== EXPECTED_ARGUMENT_COUNT) {
+  if (process.argv.length === EXPECTED_ARGUMENT_COUNT) {
     if (command === "generate") {
       generate(source, destination);
 
