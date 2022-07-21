@@ -27,7 +27,13 @@ const rules = {
 };
 
 module.exports = {
-  ignorePatterns: ["/node_modules/", "/coverage/", "/reports/", "/demo-ts"],
+  ignorePatterns: [
+    "/node_modules/",
+    "/coverage/",
+    "/reports/",
+    "/demo-ts",
+    "/templates/",
+  ],
 
   extends: ["hardcore", "hardcore/ts", "hardcore/node"],
 
@@ -142,6 +148,24 @@ module.exports = {
           },
         },
       },
+    },
+
+    {
+      files: ["templates/**/*.ts"],
+
+      env: {
+        es2021: true,
+        node: true,
+      },
+
+      extends: ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+
+      parserOptions: {
+        ecmaVersion: "latest",
+        sourceType: "module",
+      },
+
+      rules: {},
     },
   ],
 };

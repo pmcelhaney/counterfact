@@ -31,13 +31,15 @@
     "lint:quickfix": "eslint --fix . eslint --fix demo-ts --rule=\"import/namespace: 0,etc/no-deprecated:0,import/no-cycle:0,no-explicit-type-exports/no-explicit-type-exports:0,import/no-deprecated:0,import/no-self-import:0,import/default:0,import/no-named-as-default:0\"",
     "generate": "./bin/counterfact.js generate",
     "generate:petstore": "yarn generate ./petstore.yaml demo-ts",
-    "generate:example": "yarn generate ./openapi-example.yaml demo-ts"
+    "generate:example": "yarn generate ./openapi-example.yaml demo-ts",
+    "counterfact": "./bin/counterfact.js"
   },
   "devDependencies": {
     "@changesets/cli": "2.23.2",
     "@stryker-mutator/core": "6.1.2",
     "@stryker-mutator/jest-runner": "6.1.2",
     "@types/koa": "2.13.5",
+    "@types/koa-static": "^4.0.2",
     "eslint": "8.20.0",
     "eslint-config-hardcore": "24.8.1",
     "eslint-formatter-github-annotations": "0.1.0",
@@ -53,9 +55,10 @@
   "dependencies": {
     "@types/json-schema": "^7.0.11",
     "chokidar": "^3.5.3",
+    "fs-extra": "^10.1.0",
     "js-yaml": "^4.1.0",
+    "json-schema-faker": "^0.5.0-rcv.44",
     "jsonwebtoken": "^8.5.1",
-    "prettier": "^2.7.1",
-    "json-schema-faker": "^0.5.0-rcv.44"
+    "prettier": "^2.7.1"
   }
 }
