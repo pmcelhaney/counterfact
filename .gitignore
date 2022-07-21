@@ -6,10 +6,10 @@ coverage
 reports
 
 # In testing we may generate these files. We don't want to check them in.
-package-template/components
-package-template/internal
-package-template/openapi
-package-template/path-types
-package-template/paths
-package-template/package-lock.json
-package-template/yarn.lock
+templates/typescript/counterfact/components
+templates/typescript/counterfact/internal
+templates/typescript/counterfact/openapi
+templates/typescript/counterfact/path-types
+templates/typescript/counterfact/paths
+templates/typescript/package-lock.json
+templates/typescript/yarn.lock

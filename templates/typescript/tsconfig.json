@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "module": "es2022",
+    "target": "es2022",
+    "strictNullChecks": true,
+    "allowSyntheticDefaultImports": true
+  },
+  "include": ["src", "demo-ts", "package-template"],
+  "ts-node": {
+    "esm": true
+  }
+}
