@@ -20,7 +20,7 @@
     "typescript": "^4.7.4"
   },
   "scripts": {
-    "start": "ts-node index.ts",
+    "start": "ts-node counterfact/server.ts",
     "lint": "eslint .",
     "test": "echo \"Error: no test specified\" && exit 1"
   }

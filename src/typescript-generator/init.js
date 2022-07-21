@@ -21,10 +21,10 @@ export async function init(source, destination) {
 
   specification.servers.unshift({ url: "/" });
 
-  await fs.mkdir(nodePath.join(destination, "openapi"));
+  await fs.mkdir(nodePath.join(destination, "counterfact", "openapi"));
 
   await fs.writeFile(
-    nodePath.join(destination, "openapi/openapi.yaml"),
+    nodePath.join(destination, "counterfact", "openapi", "openapi.yaml"),
     yaml.dump(specification)
   );
 }

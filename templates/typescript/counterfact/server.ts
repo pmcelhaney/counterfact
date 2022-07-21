@@ -2,7 +2,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable node/no-unsupported-features/node-builtins */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable no-console */
 
 // The above ESLint rules are turned off mainly because Counterfact itself is not written in TypeScript yet.
 
@@ -19,26 +18,25 @@ import { context } from "./context/context.js";
 
 const PORT = 3100;
 
+const PATHS_DIRECTORY = fileURLToPath(new URL("paths/", import.meta.url));
+
 const app = new Koa();
 
-app.use(serve("./"));
+app.use(serve(fileURLToPath(new URL("openapi", import.meta.url))));
 
 app.use(
   koaSwagger({
     routePrefix: "/docs",
 
     swaggerOptions: {
-      url: "/openapi/openapi.yaml",
+      url: "/openapi.yaml",
     },
   })
 );
 
 app.use(bodyParser());
 
-const { koaMiddleware } = await counterfact(
-  fileURLToPath(new URL("counterfact/paths/", import.meta.url)),
-  context
-);
+const { koaMiddleware } = await counterfact(PATHS_DIRECTORY, context);
 
 app.use(koaMiddleware);
 
@@ -46,12 +44,10 @@ app.listen(PORT);
 process.stdout.write("Counterfact is running.\n");
 process.stdout.write(`See docs at http://localhost:${PORT}/docs\n`);
 process.stdout.write(
-  `A copy of the Open API spec is at ${nodePath.resolve(
-    "./openapi/openapi.yaml"
+  `A copy of the Open API spec is at ${fileURLToPath(
+    new URL("openapi/openapi.yaml", import.meta.url)
   )}\n`
 );
 process.stdout.write(
-  `The code that implements the API is under ${nodePath.resolve(
-    "./counterfact/paths/"
-  )}\n`
+  `The code that implements the API is under ${PATHS_DIRECTORY}\n`
 );
