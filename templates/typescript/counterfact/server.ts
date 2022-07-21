@@ -1,13 +1,8 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable node/no-unsupported-features/node-builtins */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-
-// The above ESLint rules are turned off mainly because Counterfact itself is not written in TypeScript yet.
 
 import { fileURLToPath } from "node:url";
-import nodePath from "node:path";
 
+import type { Middleware } from "koa";
 import Koa from "koa";
 import { counterfact } from "counterfact";
 import { koaSwagger } from "koa2-swagger-ui";
@@ -36,7 +31,10 @@ app.use(
 
 app.use(bodyParser());
 
-const { koaMiddleware } = await counterfact(PATHS_DIRECTORY, context);
+// eslint-disable-next-line @typescript-eslint/no-unsafe-call
+const { koaMiddleware } = (await counterfact(PATHS_DIRECTORY, context)) as {
+  koaMiddleware: Middleware;
+};
 
 app.use(koaMiddleware);
 

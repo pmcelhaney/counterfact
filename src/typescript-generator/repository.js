@@ -1,6 +1,6 @@
 import nodePath from "node:path";
 import fs from "node:fs/promises";
-import { constants as fsConstants, write } from "node:fs";
+import { constants as fsConstants } from "node:fs";
 
 import prettier from "prettier";
 
