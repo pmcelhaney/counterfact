@@ -8,6 +8,7 @@ import { counterfact } from "counterfact";
 import { koaSwagger } from "koa2-swagger-ui";
 import serve from "koa-static";
 import bodyParser from "koa-bodyparser";
+import open from "open";
 
 import { context } from "./context/context.js";
 
@@ -17,7 +18,7 @@ const PATHS_DIRECTORY = fileURLToPath(new URL("paths/", import.meta.url));
 
 const app = new Koa();
 
-app.use(serve(fileURLToPath(new URL("openapi", import.meta.url))));
+app.use(serve(fileURLToPath(new URL("public", import.meta.url))));
 
 app.use(
   koaSwagger({
@@ -43,9 +44,13 @@ process.stdout.write("Counterfact is running.\n");
 process.stdout.write(`See docs at http://localhost:${PORT}/docs\n`);
 process.stdout.write(
   `A copy of the Open API spec is at ${fileURLToPath(
-    new URL("openapi/openapi.yaml", import.meta.url)
+    new URL("public/openapi.yaml", import.meta.url)
   )}\n`
 );
 process.stdout.write(
   `The code that implements the API is under ${PATHS_DIRECTORY}\n`
 );
+
+if (process.argv.includes("--open")) {
+  await open(`http://localhost:${PORT}/index.html`);
+}

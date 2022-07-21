@@ -39,7 +39,7 @@ async function main() {
       process.stdout.write("Next steps: \n");
       process.stdout.write(`  cd ${destination}\n`);
       process.stdout.write("  npm install\n");
-      process.stdout.write("  npm start --open\n");
+      process.stdout.write("  npm start -- --open\n");
 
       return;
     }
