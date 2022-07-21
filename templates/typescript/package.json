@@ -21,6 +21,7 @@
   },
   "scripts": {
     "start": "ts-node index.ts",
+    "lint": "eslint .",
     "test": "echo \"Error: no test specified\" && exit 1"
   }
 }
