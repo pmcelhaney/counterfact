@@ -6913,7 +6913,7 @@ if (statusCode === \\"404\\") {
         required: [],
         properties: {  }
       }
-    ) as {}
+    ) as {[key: string]: number}
       };
     }
       }
@@ -6947,7 +6947,7 @@ if (statusCode === \\"404\\") {
               "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: undefined, context: Context, tools: Tools}) => {  
             status: 200, 
           contentType?: \\"application/json\\",
-          body?: {}
+          body?: {[key: string]: number}
           
         } | { status: 415, contentType: \\"text/plain\\", body: string }",
               "done": true,
@@ -7030,7 +7030,7 @@ if (statusCode === \\"404\\") {
         "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: undefined, context: Context, tools: Tools}) => {  
             status: 200, 
           contentType?: \\"application/json\\",
-          body?: {}
+          body?: {[key: string]: number}
           
         } | { status: 415, contentType: \\"text/plain\\", body: string }",
         "done": true,
