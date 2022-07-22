@@ -41,7 +41,7 @@
     "@types/koa": "2.13.5",
     "@types/koa-static": "^4.0.2",
     "eslint": "8.20.0",
-    "eslint-config-hardcore": "24.8.1",
+    "eslint-config-hardcore": "24.9.0",
     "eslint-formatter-github-annotations": "0.1.0",
     "eslint-import-resolver-typescript": "^3.2.5",
     "eslint-plugin-import": "^2.26.0",
