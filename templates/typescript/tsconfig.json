@@ -6,7 +6,7 @@
     "strictNullChecks": true,
     "allowSyntheticDefaultImports": true
   },
-  "include": ["src", "demo-ts", "templates"],
+  "include": ["counterfact"],
   "ts-node": {
     "esm": true
   }

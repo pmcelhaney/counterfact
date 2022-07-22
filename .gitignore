@@ -4,3 +4,12 @@ dist
 coverage
 .stryker-tmp
 reports
+
+# In testing we may generate these files. We don't want to check them in.
+templates/typescript/counterfact/components
+templates/typescript/counterfact/internal
+templates/typescript/counterfact/openapi
+templates/typescript/counterfact/path-types
+templates/typescript/counterfact/paths
+templates/typescript/package-lock.json
+templates/typescript/yarn.lock

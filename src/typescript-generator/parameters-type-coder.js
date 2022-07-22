@@ -19,7 +19,7 @@ export class ParametersTypeCoder extends Coder {
       return "undefined";
     }
 
-    const typeDefintions = this.requirement.data
+    const typeDefinitions = this.requirement.data
       .filter((parameter) => parameter.in === this.placement)
       .map((parameter, index) => {
         const requirement = this.requirement.select(String(index));
@@ -33,11 +33,11 @@ export class ParametersTypeCoder extends Coder {
         ).write(script)}`;
       });
 
-    if (typeDefintions.length === 0) {
+    if (typeDefinitions.length === 0) {
       return "never";
     }
 
-    return `{${typeDefintions.join(", ")}}`;
+    return `{${typeDefinitions.join(", ")}}`;
   }
 
   modulePath() {

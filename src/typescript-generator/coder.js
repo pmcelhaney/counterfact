@@ -32,7 +32,9 @@ export class Coder {
 
     let index = 1;
 
-    while (true) {
+    const MAX_NAMES_TO_GENERATE_BEFORE_GIVING_UP = 100;
+
+    while (index < MAX_NAMES_TO_GENERATE_BEFORE_GIVING_UP) {
       index += 1;
       yield name + index;
     }

@@ -33,7 +33,7 @@ export class Repository {
     return script;
   }
 
-  async writeFiles(destination) {
+  async finished() {
     while (
       Array.from(this.scripts.values()).some((script) => script.isInProgress())
     ) {
@@ -42,38 +42,40 @@ export class Repository {
         Array.from(this.scripts.values(), (script) => script.finished())
       );
     }
+  }
 
-    // now everything is settled and we can write the files
-    await Array.from(this.scripts.entries()).forEach(async ([path, script]) => {
-      const contents = prettier.format(script.contents(), {
-        parser: "typescript",
-      });
+  async writeFiles(destination) {
+    await this.finished();
 
-      const fullPath = nodePath.join(destination, path);
+    const writeFiles = Array.from(
+      this.scripts.entries(),
+      async ([path, script]) => {
+        const contents = prettier.format(script.contents(), {
+          parser: "typescript",
+        });
 
-      await ensureDirectoryExists(fullPath);
+        const fullPath = nodePath.join(destination, path);
 
-      if (
-        path.startsWith("paths") &&
-        (await fs
-          .stat(fullPath)
-          .then((stat) => stat.isFile())
-          .catch(() => false))
-      ) {
-        // eslint-disable-next-line no-console
-        console.log("not overwriting", fullPath);
+        await ensureDirectoryExists(fullPath);
 
-        return;
+        if (
+          path.startsWith("paths") &&
+          (await fs
+            .stat(fullPath)
+            .then((stat) => stat.isFile())
+            .catch(() => false))
+        ) {
+          process.stdout.write("not overwriting", fullPath);
+
+          return;
+        }
+
+        await fs.writeFile(fullPath, contents);
+
+        process.stdout.write(`writing ${fullPath}\n`);
       }
+    );
 
-      await fs.writeFile(fullPath, contents);
-
-      // eslint-disable-next-line no-console
-      console.log("writing", fullPath);
-
-      // console.log(`/* ${path} */`);
-      // console.log(contents);
-      // console.log("\n\n\n");
-    });
+    await Promise.all(writeFiles);
   }
 }

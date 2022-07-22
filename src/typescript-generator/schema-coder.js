@@ -68,12 +68,6 @@ export class SchemaCoder extends Coder {
       return this.arraySchema(script);
     }
 
-    if (["integer", "number"].includes(type)) {
-      return JSON.stringify(
-        scrubSchema({ ...this.requirement.data, type: "number" })
-      );
-    }
-
     return JSON.stringify(scrubSchema(this.requirement.data));
   }
 }
