@@ -5,14 +5,42 @@ export class SchemaTypeCoder extends Coder {
     return super.names(this.requirement.data.$ref.split("/").at(-1));
   }
 
-  objectSchema(script) {
-    return `{${Object.keys(this.requirement.data.properties ?? {})
-      .map((name) => {
-        const property = this.requirement.select(`properties/${name}`);
+  additionalPropertiesType(script) {
+    const { properties, additionalProperties } = this.requirement.data;
 
-        return `${name}: ${new SchemaTypeCoder(property).write(script)}`;
-      })
-      .join(",")}}`;
+    if (!additionalProperties.type) {
+      return "unknown";
+    }
+
+    if (
+      Object.values(properties ?? {}).some(
+        (property) => property.type !== additionalProperties.type
+      )
+    ) {
+      return "unknown";
+    }
+
+    const requirement = this.requirement.select("additionalProperties");
+
+    return new SchemaTypeCoder(requirement).write(script);
+  }
+
+  objectSchema(script) {
+    const { data } = this.requirement;
+
+    const properties = Object.keys(data.properties ?? {}).map((name) => {
+      const property = this.requirement.select(`properties/${name}`);
+
+      return `${name}: ${new SchemaTypeCoder(property).write(script)}`;
+    });
+
+    if (data.additionalProperties) {
+      properties.push(
+        `[key: string]: ${this.additionalPropertiesType(script)}`
+      );
+    }
+
+    return `{${properties.join(",")}}`;
   }
 
   arraySchema(script) {

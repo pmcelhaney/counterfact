@@ -74,6 +74,103 @@ describe("a SchemaTypeCoder", () => {
     expect(format(`const x = ${coder.write()}`)).toStrictEqual(expected);
   });
 
+  it("generates a type declaration for an object with additionalProperties", () => {
+    const coder = new SchemaTypeCoder(
+      new Requirement({
+        type: "object",
+
+        properties: {
+          name: { type: "string" },
+          age: { type: "integer" },
+        },
+
+        additionalProperties: { type: "string" },
+
+        xml: "should be ignored",
+      })
+    );
+
+    const expected = format(
+      "type x = { name: string, age: number, [key: string]: unknown };"
+    );
+
+    expect(format(`type x = ${coder.write()}`)).toStrictEqual(expected);
+  });
+
+  it("generates a type declaration for an object with additionalProperties: true", () => {
+    const coder = new SchemaTypeCoder(
+      new Requirement({
+        type: "object",
+
+        properties: {
+          name: { type: "string" },
+          age: { type: "integer" },
+        },
+
+        additionalProperties: true,
+      })
+    );
+
+    const expected = format(
+      "type x = { name: string, age: number, [key: string]: unknown };"
+    );
+
+    expect(format(`type x = ${coder.write()}`)).toStrictEqual(expected);
+  });
+
+  it("generates a type declaration for an object with additionalProperties: false", () => {
+    const coder = new SchemaTypeCoder(
+      new Requirement({
+        type: "object",
+
+        properties: {
+          name: { type: "string" },
+          age: { type: "integer" },
+        },
+
+        additionalProperties: false,
+      })
+    );
+
+    const expected = format("type x = { name: string, age: number };");
+
+    expect(format(`type x = ${coder.write()}`)).toStrictEqual(expected);
+  });
+
+  it("generates a type declaration for an object with additionalProperties and no properties", () => {
+    const coder = new SchemaTypeCoder(
+      new Requirement({
+        type: "object",
+
+        properties: {
+          name: { type: "string" },
+          nickname: { type: "string" },
+        },
+
+        additionalProperties: { type: "string" },
+      })
+    );
+
+    const expected = format(
+      "type x = { name: string, nickname: string, [key: string]: string };"
+    );
+
+    expect(format(`type x = ${coder.write()}`)).toStrictEqual(expected);
+  });
+
+  it("generates a type declaration for an object with additionalProperties all of the same type", () => {
+    const coder = new SchemaTypeCoder(
+      new Requirement({
+        type: "object",
+        additionalProperties: { type: "string" },
+      })
+    );
+
+    const expected = format("type x = { [key: string]: string };");
+
+    expect(format(`type x = ${coder.write()}`)).toStrictEqual(expected);
+  });
+
   it("generates a type declaration for an array", () => {
     const coder = new SchemaTypeCoder(
       new Requirement({
@@ -83,9 +180,9 @@ describe("a SchemaTypeCoder", () => {
       })
     );
 
-    const expected = format("const x = Array<string>;");
+    const expected = format("type x = Array<string>;");
 
-    expect(format(`const x = ${coder.write()}`)).toStrictEqual(expected);
+    expect(format(`type x = ${coder.write()}`)).toStrictEqual(expected);
   });
 
   it("has type JSONSchema6", () => {
