@@ -141,6 +141,27 @@ describe("a SchemaTypeCoder", () => {
     const coder = new SchemaTypeCoder(
       new Requirement({
         type: "object",
+
+        properties: {
+          name: { type: "string" },
+          nickname: { type: "string" },
+        },
+
+        additionalProperties: { type: "string" },
+      })
+    );
+
+    const expected = format(
+      "type x = { name: string, nickname: string, [key: string]: string };"
+    );
+
+    expect(format(`type x = ${coder.write()}`)).toStrictEqual(expected);
+  });
+
+  it("generates a type declaration for an object with additionalProperties all of the same type", () => {
+    const coder = new SchemaTypeCoder(
+      new Requirement({
+        type: "object",
         additionalProperties: { type: "string" },
       })
     );

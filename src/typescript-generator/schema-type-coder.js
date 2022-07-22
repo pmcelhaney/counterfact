@@ -13,7 +13,7 @@ export class SchemaTypeCoder extends Coder {
     }
 
     if (
-      Object.keys(properties ?? {}).some(
+      Object.values(properties ?? {}).some(
         (property) => property.type !== additionalProperties.type
       )
     ) {
