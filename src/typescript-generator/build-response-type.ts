@@ -5,7 +5,10 @@ type Except<Base, Condition> = Pick<
   }[keyof Base]
 >;
 
+type StatusCodes = `${number}_${string}`;
+
 interface CounterfactResponse {
+  status?: StatusCodes;
   contentType: string;
   body?: unknown;
   headers?: { [key: string]: number | string };
@@ -16,6 +19,7 @@ type Anything = any;
 
 interface AnyResponseWithContentType<ContentType> {
   contentType: ContentType;
+  status: Anything;
   body: Anything;
   headers: Anything;
 }
@@ -105,6 +109,7 @@ export type BuildResponseType<
   [StatusCode in keyof ResponsesForStatusCode]: BuildResponseTypeForStatusCode<
     ResponsesForStatusCode[StatusCode]["content"] & {
       headers: ResponsesForStatusCode[StatusCode]["headers"];
+      status: StatusCode;
     }
   >;
 };
