@@ -1,4 +1,4 @@
-type Except<Base, Condition> = Pick<
+type OmitByValue<Base, Condition> = Pick<
   Base,
   {
     [Key in keyof Base]: [Base[Key]] extends [Condition] ? never : Key;
@@ -75,7 +75,7 @@ type BuildResponseTypeForStatusCode<
   RemainingResponses extends AllResponses = AllResponses
 > = [RemainingResponses] extends [never]
   ? AllResponses
-  : Except<
+  : OmitByValue<
       {
         match: MatchFunction<AllResponses, RemainingResponses>;
         json: MaybeShortcutFunction<
@@ -97,6 +97,26 @@ type BuildResponseTypeForStatusCode<
       never
     >;
 
+// FlattResponse isn't quite right but close enough for now. It should return something that looks like:
+// { status1, contentType1, headers1, body1 } | { status2, contentType2, headers2, body2 } | { status3, contentType3, headers3, body3 }
+// It currently returns:
+// { contentType1,  body1 } | { contentType2,  body2 } | { contentType3, headers3 } & { headers1 | headers2 | headers3 , status1 | status2 | status3 }
+
+type FlattenResponses<
+  Responses extends {
+    [contentType: string]: {
+      headers: number | { [name: string]: string };
+      content: {
+        contentType: string;
+        body: unknown;
+      };
+    };
+  }
+> = Responses[keyof Responses]["content"] & {
+  headers: Responses[keyof Responses]["headers"];
+  status: StatusCodes;
+};
+
 // eslint-disable-next-line import/exports-last
 export type BuildResponseType<
   ResponsesForStatusCode extends {
@@ -114,6 +134,9 @@ export type BuildResponseType<
   >;
 };
 
+/* ************************************************************************ */
+/* ************************************************************************ */
+/* ************************************************************************ */
 // This goes in the generated path-types/**/*.types.ts file
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 type Responses = {
@@ -149,7 +172,11 @@ export type HTTP_GET = ({
 }: {
   response: BuildResponseType<Responses>;
   context: { found: () => boolean; message: () => "Hello World" };
-}) => Responses[keyof Responses]["content"];
+}) => FlattenResponses<Responses>;
+
+/* ************************************************************************ */
+/* ************************************************************************ */
+/* ************************************************************************ */
 
 // How it's used in the paths/**/*.ts file
 export const GET: HTTP_GET = ({ response, context }) => {
