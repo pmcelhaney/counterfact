@@ -11,6 +11,15 @@ interface CounterfactResponse {
   headers?: { [key: string]: number | string };
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Anything = any;
+
+interface AnyResponseWithContentType<ContentType> {
+  contentType: ContentType;
+  body: Anything;
+  headers: Anything;
+}
+
 type MatchFunction<
   AllResponses extends CounterfactResponse,
   RemainingResponses extends AllResponses = AllResponses
@@ -18,19 +27,19 @@ type MatchFunction<
   contentType: ContentType,
   body: Extract<
     RemainingResponses,
-    { contentType: ContentType; body: any; headers: any }
+    AnyResponseWithContentType<ContentType>
   >["body"],
   headers?: Extract<
     RemainingResponses,
-    { contentType: ContentType; body: any; headers: any }
+    AnyResponseWithContentType<ContentType>
   >["headers"]
 ) => BuildResponseTypeForStatusCode<
   AllResponses,
-  Exclude<
-    RemainingResponses,
-    { contentType: ContentType; body: any; headers: any }
-  >
+  Exclude<RemainingResponses, AnyResponseWithContentType<ContentType>>
 >;
+
+type IfResponsesHaveContentType<Responses, ContentType, Result> =
+  AnyResponseWithContentType<ContentType> extends Responses ? Result : never;
 
 type ShortcutFunction<
   AllResponses extends CounterfactResponse,
@@ -40,24 +49,22 @@ type ShortcutFunction<
   body: Extract<RemainingResponses, { contentType: ContentType }>["body"],
   headers?: Extract<
     RemainingResponses,
-    { contentType: ContentType; body: any; headers: any }
+    AnyResponseWithContentType<ContentType>
   >["headers"]
 ) => BuildResponseTypeForStatusCode<
   AllResponses,
-  Exclude<RemainingResponses, { contentType: ContentType; body: any }>
+  Exclude<RemainingResponses, AnyResponseWithContentType<ContentType>>
 >;
 
 type MaybeShortcutFunction<
   AllResponses extends CounterfactResponse,
   RemainingResponses extends AllResponses,
   ContentType extends RemainingResponses["contentType"] = AllResponses["contentType"]
-> = {
-  contentType: ContentType;
-  body: any;
-  headers: any;
-} extends RemainingResponses
-  ? ShortcutFunction<AllResponses, RemainingResponses, ContentType>
-  : never;
+> = IfResponsesHaveContentType<
+  RemainingResponses,
+  ContentType,
+  ShortcutFunction<AllResponses, RemainingResponses, ContentType>
+>;
 
 type BuildResponseTypeForStatusCode<
   AllResponses extends CounterfactResponse,
@@ -149,7 +156,7 @@ export const GET: HTTP_GET = ({
 }) => {
   if (!context.found()) {
     return response["404_NOT_FOUND"]
-      .match("text/plain", "not found")
+      .match("text/plain", "not found", { "x-404-header": "bar" })
       .match("text/html", "<h1>not found</h1>")
       .match("application/json", { message: "not found" });
   }
