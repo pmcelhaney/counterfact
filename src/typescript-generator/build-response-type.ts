@@ -5,7 +5,11 @@ type OmitByValue<Base, Condition> = Pick<
   }[keyof Base]
 >;
 
-type StatusCodes = "200_OK" | "404_NOT_FOUND" | "500_INTERNAL_SERVER_ERROR";
+type StatusCodes =
+  | "200_OK"
+  | "404_NOT_FOUND"
+  | "500_INTERNAL_SERVER_ERROR"
+  | "503_SERVICE_UNAVAILABLE";
 
 interface CounterfactResponse {
   status?: StatusCodes;
@@ -119,16 +123,20 @@ type FlattenResponses<
 
 // eslint-disable-next-line import/exports-last
 export type BuildResponseType<
-  ResponsesForStatusCode extends {
+  Responses extends {
     [key: string]: {
       content: CounterfactResponse;
       headers?: { [key: string]: number | string };
     };
   }
 > = {
-  [StatusCode in keyof ResponsesForStatusCode]: BuildResponseTypeForStatusCode<
-    ResponsesForStatusCode[StatusCode]["content"] & {
-      headers: ResponsesForStatusCode[StatusCode]["headers"];
+  [StatusCode in StatusCodes]: BuildResponseTypeForStatusCode<
+    Responses[StatusCode extends keyof Responses
+      ? StatusCode
+      : "DEFAULT"]["content"] & {
+      headers: Responses[StatusCode extends keyof Responses
+        ? StatusCode
+        : "DEFAULT"]["headers"];
       status: StatusCode;
     }
   >;
@@ -181,7 +189,7 @@ export type HTTP_GET = ({
   response,
   context,
 }: {
-  response: BuildResponseType<Omit<Responses, "DEFAULT">>;
+  response: BuildResponseType<Responses>;
   context: { found: () => boolean; message: () => "Hello World" };
 }) => FlattenResponses<Responses>;
 
