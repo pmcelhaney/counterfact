@@ -1,5 +1,3 @@
-// build-response-type.ts
-
 type Except<Base, Condition> = Pick<
   Base,
   {
@@ -49,6 +47,18 @@ type ShortcutFunction<
   Exclude<RemainingResponses, { contentType: ContentType; body: any }>
 >;
 
+type MaybeShortcutFunction<
+  AllResponses extends CounterfactResponse,
+  RemainingResponses extends AllResponses,
+  ContentType extends RemainingResponses["contentType"] = AllResponses["contentType"]
+> = {
+  contentType: ContentType;
+  body: any;
+  headers: any;
+} extends RemainingResponses
+  ? ShortcutFunction<AllResponses, RemainingResponses, ContentType>
+  : never;
+
 type BuildResponseTypeForStatusCode<
   AllResponses extends CounterfactResponse,
   RemainingResponses extends AllResponses = AllResponses
@@ -57,31 +67,21 @@ type BuildResponseTypeForStatusCode<
   : Except<
       {
         match: MatchFunction<AllResponses, RemainingResponses>;
-        json: {
-          contentType: "application/json";
-          body: any;
-          headers: any;
-        } extends RemainingResponses
-          ? ShortcutFunction<
-              AllResponses,
-              RemainingResponses,
-              "application/json"
-            >
-          : never;
-        text: {
-          contentType: "text/plain";
-          body: any;
-          headers: any;
-        } extends RemainingResponses
-          ? ShortcutFunction<AllResponses, RemainingResponses, "text/plain">
-          : never;
-        html: {
-          contentType: "text/html";
-          body: any;
-          headers: any;
-        } extends RemainingResponses
-          ? ShortcutFunction<AllResponses, RemainingResponses, "text/html">
-          : never;
+        json: MaybeShortcutFunction<
+          AllResponses,
+          RemainingResponses,
+          "application/json"
+        >;
+        text: MaybeShortcutFunction<
+          AllResponses,
+          RemainingResponses,
+          "text/plain"
+        >;
+        html: MaybeShortcutFunction<
+          AllResponses,
+          RemainingResponses,
+          "text/html"
+        >;
       },
       never
     >;
@@ -153,12 +153,6 @@ export const GET: HTTP_GET = ({
       .match("text/html", "<h1>not found</h1>")
       .match("application/json", { message: "not found" });
   }
-
-  return {
-    contentType: "text/plain",
-    body: context.message(),
-    headers: {},
-  };
 
   return response["200_OK"]
     .text("Hello World", { "x-custom-header": "bar" })
