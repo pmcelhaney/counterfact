@@ -5,7 +5,7 @@ type OmitByValue<Base, Condition> = Pick<
   }[keyof Base]
 >;
 
-type StatusCodes = `${number}_${string}`;
+type StatusCodes = "200_OK" | "404_NOT_FOUND" | "500_INTERNAL_SERVER_ERROR";
 
 interface CounterfactResponse {
   status?: StatusCodes;
@@ -164,13 +164,24 @@ type Responses = {
       | { contentType: "application/json"; body: { message: string } }
       | { contentType: "text/html"; body: string };
   };
+  DEFAULT: {
+    headers: {
+      "x-default-header": string;
+    };
+    content:
+      | {
+          contentType: "text/plain";
+          body: string;
+        }
+      | { contentType: "text/html"; body: string };
+  };
 };
 
 export type HTTP_GET = ({
   response,
   context,
 }: {
-  response: BuildResponseType<Responses>;
+  response: BuildResponseType<Omit<Responses, "DEFAULT">>;
   context: { found: () => boolean; message: () => "Hello World" };
 }) => FlattenResponses<Responses>;
 
