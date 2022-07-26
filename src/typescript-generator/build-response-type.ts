@@ -152,13 +152,7 @@ export type HTTP_GET = ({
 }) => Responses[keyof Responses]["content"];
 
 // How it's used in the paths/**/*.ts file
-export const GET: HTTP_GET = ({
-  response,
-  context,
-}: {
-  response: BuildResponseType<Responses>;
-  context: { found: () => boolean; message: () => "Hello World" };
-}) => {
+export const GET: HTTP_GET = ({ response, context }) => {
   if (!context.found()) {
     return response["404_NOT_FOUND"]
       .match("text/plain", "not found", { "x-404-header": "bar" })
@@ -167,7 +161,7 @@ export const GET: HTTP_GET = ({
   }
 
   return response["200_OK"]
-    .text("Hello World", { "x-custom-header": "bar" })
-    .html("<h1>Hello World</h1>")
-    .json({ message: "Hello World" });
+    .text(context.message(), { "x-custom-header": "bar" })
+    .html(`<h1>${context.message()}</h1>`)
+    .json({ message: context.message() });
 };
