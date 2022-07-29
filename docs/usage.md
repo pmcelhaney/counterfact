@@ -1,10 +1,14 @@
 # Usage
 
+_Warning: Do not try this at home. Most of the code snippets below depend on features that have not been completed yet. See the "depends on" list at the top of each section for current status._
+
 These features do not depend on TypeScript or the code generator. In order to get the most out of the code generator, you should first review this document to understand the basics.
 
 ## Hello World
 
-To get started, create a directory called `paths` and under a file called `hello.js`.
+[ Depends on #https://github.com/pmcelhaney/counterfact/issues/132 and https://github.com/pmcelhaney/counterfact/issues/128 ]
+
+To get started, create a directory called `paths` and under that a file called `hello.js`.
 
 ```js
 // paths/hello.js
@@ -57,7 +61,7 @@ We can refactor this code to make it a bit more readable by destructuring the `r
 export function GET({ query }) {
   //                  ^^^^^^^^^ the request parameter is destructured
   const exclamationPoints = "!".repeat(query.excitementLevel);
-  //                                     ^ we can delete "request."
+  //                                   ^ we can delete "request."
   return `Hello, world${exclamationPoints}`;
 }
 ```
@@ -456,6 +460,8 @@ export function GET({ path, query }) {
 
 ## Response Builder
 
+[Depends on https://github.com/pmcelhaney/counterfact/issues/133, https://github.com/pmcelhaney/counterfact/issues/134, https://github.com/pmcelhaney/counterfact/issues/135 ]
+
 The return value tends to be somewhat verbose and repetitive. As such, Counterfact provides a _response builder_ object called `response` to make the code a bit more tidy and readable. Let's update the `GET()` function to take advantage of `response`.
 
 <!-- prettier-ignore -->
@@ -493,7 +499,7 @@ response[responseCode]
   .random() // a random, valid value (depends on Counterfact having been initialized with an OpenAPI document)
 ```
 
-The `response` API was carefully designed to take advantage of TypeScript and IDEs that provide intellisense.
+The `response` API was carefully designed to take advantage of TypeScript and IDEs that provide intellisense. [ Creating a context-sensitive type is going to take some work, starting with https://github.com/pmcelhaney/counterfact/issues/136 ]
 
 ### Asynchronous Handlers
 
