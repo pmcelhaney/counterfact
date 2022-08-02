@@ -1,5 +1,16 @@
 # counterfact
 
+## 0.7.0
+
+### Minor Changes
+
+- a3dfb48: `npm counterfact init <openapi-file> <destination>` command to build a new package with a Counterfact server
+
+### Patch Changes
+
+- 69b4598: replaced EventEmitter with EventTarget
+- 1551cbb: handle additionalProperties when converting a JSON Schema to TypeScript
+
 ## 0.6.0
 
 ### Minor Changes
