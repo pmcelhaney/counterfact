@@ -41,6 +41,11 @@ module.exports = {
     sourceType: "module",
   },
 
+  env: {
+    es2021: true,
+    node: true,
+  },
+
   rules,
 
   overrides: [
