@@ -1,12 +1,10 @@
-/* eslint-disable node/no-unsupported-features/es-syntax */
-/* eslint-disable import/no-dynamic-require */
 import fs from "node:fs/promises";
 import nodePath from "node:path";
-import EventEmitter, { once } from "node:events";
+import { once } from "node:events";
 
 import chokidar from "chokidar";
 
-export class ModuleLoader extends EventEmitter {
+export class ModuleLoader extends EventTarget {
   basePath;
 
   registry;
@@ -22,8 +20,8 @@ export class ModuleLoader extends EventEmitter {
   async watch() {
     this.watcher = chokidar
       .watch(`${this.basePath}/**/*.{js,mjs,ts,mts}`)
-      .on("all", (event, pathName) => {
-        if (!["add", "change", "unlink"].includes(event)) {
+      .on("all", (eventName, pathName) => {
+        if (!["add", "change", "unlink"].includes(eventName)) {
           return;
         }
 
@@ -34,16 +32,17 @@ export class ModuleLoader extends EventEmitter {
           return;
         }
 
-        if (event === "unlink") {
+        if (eventName === "unlink") {
           this.registry.remove(url);
-          this.emit("remove", pathName);
+          this.dispatchEvent(new Event("remove"), pathName);
         }
 
+        // eslint-disable-next-line node/no-unsupported-features/es-syntax, import/no-dynamic-require
         import(`${pathName}?cacheBust=${Date.now()}`)
           // eslint-disable-next-line promise/prefer-await-to-then
           .then((endpoint) => {
             this.registry.add(url, endpoint);
-            this.emit(event, pathName);
+            this.dispatchEvent(new Event(eventName), pathName);
 
             return "ok";
           })
@@ -80,6 +79,7 @@ export class ModuleLoader extends EventEmitter {
         return;
       }
 
+      // eslint-disable-next-line node/no-unsupported-features/es-syntax, import/no-dynamic-require
       const endpoint = await import(
         nodePath.join(this.basePath, directory, file.name)
       );
