@@ -4,6 +4,7 @@
   "collectCoverage": true,
 
   "collectCoverageFrom": ["src/**/*.{js,jsx,ts,tsx}", "!**/node_modules/**"],
+  "coverageProvider": "v8",
 
   "coverageThreshold": {
     "global": {
