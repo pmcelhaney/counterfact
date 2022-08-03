@@ -53,6 +53,7 @@
     "supertest": "6.2.4"
   },
   "dependencies": {
+    "@hapi/accept": "^6.0.0",
     "@types/json-schema": "^7.0.11",
     "chokidar": "^3.5.3",
     "fs-extra": "^10.1.0",

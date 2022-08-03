@@ -45,6 +45,114 @@ describe("a dispatcher", () => {
     });
   });
 
+  it("finds the best content item for an accept header", () => {
+    const dispatcher = new Dispatcher();
+
+    const html = dispatcher.selectContent("text/html", [
+      {
+        type: "text/plain",
+        body: "hello",
+      },
+      {
+        type: "text/html",
+        body: "<h1>hello</h1>",
+      },
+    ]);
+
+    expect(html.type).toBe("text/html");
+  });
+
+  it("returns HTTP 406 if it can't return content matching the accept header", async () => {
+    const registry = new Registry();
+
+    registry.add("/hello", {
+      GET() {
+        return {
+          status: 200,
+          contentType: "text/plain",
+          body: "I am not JSON",
+        };
+      },
+    });
+
+    const dispatcher = new Dispatcher(registry);
+    const response = await dispatcher.request({
+      method: "GET",
+      path: "/hello",
+
+      headers: {
+        accept: "application/json",
+      },
+    });
+
+    expect(response.status).toBe(406);
+  });
+
+  it.each([
+    ["text/html", ["text/html"], "text/html"],
+    ["text/plain", ["text/html", "text/plain"], "text/plain"],
+    ["text/*", ["text/html", "text/plain"], "text/html"],
+    ["*/json", ["text/html", "application/json"], "application/json"],
+    [
+      "*/html;q=0.1,*/json;q=0.2",
+      ["text/html", "application/json"],
+      "application/json",
+    ],
+  ])(
+    'given accept header "%s" and content types: %s, select %s',
+    (acceptHeader, types, expected) => {
+      const dispatcher = new Dispatcher();
+
+      const content = types.map((type) => ({ type }));
+
+      expect(dispatcher.selectContent(acceptHeader, content).type).toBe(
+        expected
+      );
+    }
+  );
+
+  it("selects the best content item matching the Accepts header", async () => {
+    const registry = new Registry();
+
+    registry.add("/hello", {
+      GET() {
+        return {
+          status: 200,
+
+          headers: {},
+
+          content: [
+            {
+              type: "text/plain",
+              body: "Hello, world!",
+            },
+            {
+              type: "text/html",
+              body: "<h1>Hello, world!</h1>",
+            },
+          ],
+        };
+      },
+    });
+
+    const dispatcher = new Dispatcher(registry);
+    const html = await dispatcher.request({
+      method: "GET",
+      path: "/hello",
+
+      headers: {
+        accept: "text/html",
+      },
+    });
+
+    expect(html).toStrictEqual({
+      status: 200,
+      headers: {},
+      contentType: "text/html",
+      body: "<h1>Hello, world!</h1>",
+    });
+  });
+
   it("passes the request body", async () => {
     const registry = new Registry();
 
@@ -212,7 +320,7 @@ describe("a dispatcher", () => {
   });
 });
 
-describe("given a in invalid path", () => {
+describe("given an invalid path", () => {
   it("returns a 404 when the route is not found", () => {
     const registry = new Registry();
 

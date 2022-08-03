@@ -6,8 +6,6 @@ These features do not depend on TypeScript or the code generator. In order to ge
 
 ## Hello World
 
-[ Depends on #https://github.com/pmcelhaney/counterfact/issues/132 and https://github.com/pmcelhaney/counterfact/issues/128 ]
-
 To get started, create a directory called `paths` and under that a file called `hello.js`.
 
 ```js
@@ -426,7 +424,7 @@ The `GET()` and `POST()` functions are now simplified. The business logic has be
 
 ## Multiple Content Types
 
-Sometimes an endpoint can return a response body with one of multiple content types. Which one is sent depends on which ones the client reports in its `Accepts:` header.
+Sometimes an endpoint can return a response body with one of multiple content types. It returns the best match per the client's `Accept:` header.
 
 ```js
 export function GET({ path, query }) {
@@ -439,20 +437,20 @@ export function GET({ path, query }) {
       "X-Unit": query.unit,
     },
 
-    contentType: [
-      [
-        "application/json",
-        {
+    content: [
+      {
+        type: "application/json",
+        body: {
           city: path.city,
           temperature: context.getTemperature(path.city, query.unit),
         },
-      ],
-      [
-        "text/plain",
-        `It is ${context.getTemperature(path.city, query.unit)} in ${
+      },
+      {
+        type: "text/plain",
+        body: `It is ${context.getTemperature(path.city, query.unit)} in ${
           path.city
         }.`,
-      ],
+      },
     ],
   };
 }
