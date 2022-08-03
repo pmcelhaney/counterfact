@@ -17,10 +17,32 @@ describe("a dispatcher", () => {
     const response = await dispatcher.request({
       method: "GET",
       path: "/hello",
-      body: "",
     });
 
     expect(response.body).toBe("hello");
+  });
+
+  it("converts a string return value to a full response object with content-type text/plain", async () => {
+    const registry = new Registry();
+
+    registry.add("/hello", {
+      GET() {
+        return "hello";
+      },
+    });
+
+    const dispatcher = new Dispatcher(registry);
+    const response = await dispatcher.request({
+      method: "GET",
+      path: "/hello",
+    });
+
+    expect(response).toStrictEqual({
+      status: 200,
+      headers: {},
+      contentType: "text/plain",
+      body: "hello",
+    });
   });
 
   it("passes the request body", async () => {
