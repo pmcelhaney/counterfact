@@ -155,7 +155,7 @@ describe("a dispatcher", () => {
     expect(response.status).toBe(201);
   });
 
-  it("allows the store to be mutated directly", async () => {
+  it("allows the context object to be mutated directly", async () => {
     const registry = new Registry({ value: 0 });
 
     registry.add("/increment/{value}", {
