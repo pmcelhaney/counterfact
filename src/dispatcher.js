@@ -14,10 +14,6 @@ export class Dispatcher {
     )({
       tools: new Tools({ headers }),
 
-      reduce: (reducer) => {
-        this.registry.context = reducer(this.registry.context);
-      },
-
       context: this.registry.context,
       body,
       query,

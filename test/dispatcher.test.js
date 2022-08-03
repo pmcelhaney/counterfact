@@ -155,40 +155,6 @@ describe("a dispatcher", () => {
     expect(response.status).toBe(201);
   });
 
-  it("passes a reducer function that can be used to read / update the store", async () => {
-    const registry = new Registry({ value: 0 });
-
-    registry.add("/increment/{value}", {
-      GET({ reduce, path }) {
-        const amountToIncrement = Number.parseInt(path.value, 10);
-
-        reduce((context) => ({
-          value: context.value + amountToIncrement,
-        }));
-
-        return { body: "incremented" };
-      },
-    });
-
-    const dispatcher = new Dispatcher(registry);
-
-    await dispatcher.request({
-      method: "GET",
-      path: "/increment/1",
-      body: "",
-    });
-
-    expect(registry.context.value).toBe(1);
-
-    await dispatcher.request({
-      method: "GET",
-      path: "/increment/2",
-      body: "",
-    });
-
-    expect(registry.context.value).toBe(3);
-  });
-
   it("allows the store to be mutated directly", async () => {
     const registry = new Registry({ value: 0 });
 
