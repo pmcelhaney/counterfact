@@ -1,5 +1,6 @@
 import Accept from "@hapi/accept";
 
+import { createResponseBuilder } from "./response-builder.js";
 import { Tools } from "./tools.js";
 
 export class Dispatcher {
@@ -21,6 +22,7 @@ export class Dispatcher {
         body,
         query,
         headers,
+        response: createResponseBuilder(),
       }),
       headers?.accept ?? "*/*"
     );
