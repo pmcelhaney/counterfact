@@ -1,13 +1,7 @@
-export function GET({ path, context, query }) {
+export function GET({ path, context, query, response }) {
   context.visits ??= {};
   context.visits[path.name] ??= 0;
   context.visits[path.name] += 1;
 
-  if (!path) {
-    return { body: "Hello, stranger!" };
-  }
-
-  return {
-    body: `${query.greeting ?? "Hello"}, ${path.name}!`,
-  };
+  return response["200"].text(`${query.greeting ?? "Hello!!!"}, ${path.name}!`);
 }
