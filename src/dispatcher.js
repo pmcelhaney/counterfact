@@ -6,24 +6,37 @@ import { Tools } from "./tools.js";
 export class Dispatcher {
   registry;
 
-  constructor(registry) {
+  constructor(registry, openApiDocument) {
     this.registry = registry;
+    this.openApiDocument = openApiDocument;
   }
 
-  request({ method, path, headers, body, query }) {
-    const normalizedResponse = this.normalizeResponse(
-      this.registry.endpoint(
-        method,
-        path
-      )({
-        tools: new Tools({ headers }),
+  operationForPathAndMethod(path, method) {
+    return this.openApiDocument?.paths?.[path]?.[method.toLowerCase()];
+  }
 
-        context: this.registry.context,
-        body,
-        query,
-        headers,
-        response: createResponseBuilder(),
-      }),
+  async request({ method, path, headers, body, query }) {
+    const response = await this.registry.endpoint(
+      method,
+      path
+    )({
+      tools: new Tools({ headers }),
+
+      context: this.registry.context,
+      body,
+      query,
+      headers,
+
+      response: createResponseBuilder(
+        this.operationForPathAndMethod(
+          this.registry.handler(path).matchedPath,
+          method
+        )
+      ),
+    });
+
+    const normalizedResponse = this.normalizeResponse(
+      response,
       headers?.accept ?? "*/*"
     );
 
@@ -61,7 +74,6 @@ export class Dispatcher {
         ...response,
         contentType: content.type,
         body: content.body,
-        content: undefined,
       };
 
       delete normalizedResponse.content;

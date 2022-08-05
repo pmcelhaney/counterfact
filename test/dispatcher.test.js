@@ -286,6 +286,49 @@ describe("a dispatcher", () => {
     expect(htmlResponse.body).toBe("<h1>hello</h1>");
   });
 
+  it("gives the response builder the OpenAPI object it needs to generate a random response", async () => {
+    const registry = new Registry();
+
+    registry.add("/a", {
+      GET({ response }) {
+        return response[200].random();
+      },
+    });
+
+    const openApiDocument = {
+      paths: {
+        "/a": {
+          get: {
+            responses: {
+              200: {
+                content: {
+                  "text/plain": {
+                    schema: {
+                      type: "string",
+                      examples: ["hello"],
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    };
+
+    const dispatcher = new Dispatcher(registry, openApiDocument);
+    const htmlResponse = await dispatcher.request({
+      method: "GET",
+      path: "/a",
+
+      headers: {
+        accept: "text/plain",
+      },
+    });
+
+    expect(htmlResponse.body).toBe("hello");
+  });
+
   it("passes status code in the response", async () => {
     const registry = new Registry();
 
@@ -343,7 +386,7 @@ describe("a dispatcher", () => {
 });
 
 describe("given an invalid path", () => {
-  it("returns a 404 when the route is not found", () => {
+  it("returns a 404 when the route is not found", async () => {
     const registry = new Registry();
 
     registry.add("/your/{side}/{bodyPart}/in/and/your/left/foot/out", {
@@ -355,7 +398,9 @@ describe("given an invalid path", () => {
       },
     });
 
-    const response = new Dispatcher(registry).request({
+    const dispatcher = new Dispatcher(registry);
+
+    const response = await dispatcher.request({
       method: "PUT",
       path: "/your/left/foot/in/and/your/right/foot/out",
     });
