@@ -26,7 +26,9 @@ export class ModuleLoader extends EventTarget {
         }
 
         const parts = nodePath.parse(pathName.replace(this.basePath, ""));
-        const url = `/${nodePath.join(parts.dir, parts.name)}`;
+        const url = nodePath.normalize(
+          `/${nodePath.join(parts.dir, parts.name)}`
+        );
 
         if (parts.name.includes("#")) {
           return;
