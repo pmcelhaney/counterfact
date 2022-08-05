@@ -264,6 +264,28 @@ describe("a dispatcher", () => {
     expect(textResponse.body).toBe(false);
   });
 
+  it("passes a response builder", async () => {
+    const registry = new Registry();
+
+    registry.add("/a", {
+      GET({ response }) {
+        return response[200].text("hello").html("<h1>hello</h1>");
+      },
+    });
+
+    const dispatcher = new Dispatcher(registry);
+    const htmlResponse = await dispatcher.request({
+      method: "GET",
+      path: "/a",
+
+      headers: {
+        accept: "text/html",
+      },
+    });
+
+    expect(htmlResponse.body).toBe("<h1>hello</h1>");
+  });
+
   it("passes status code in the response", async () => {
     const registry = new Registry();
 
