@@ -68,8 +68,8 @@ export async function withTemporaryFiles(files, ...callbacks) {
       });
     }
   } finally {
-    // await fs.rm(temporaryDirectory, {
-    //   recursive: true,
-    // });
+    await fs.rm(temporaryDirectory, {
+      recursive: true,
+    });
   }
 }
