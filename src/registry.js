@@ -86,6 +86,11 @@ export class Registry {
       });
     }
 
-    return ({ ...context }) => lambda({ ...context, path: handler.path });
+    return ({ ...context }) =>
+      lambda({
+        ...context,
+        path: handler.path,
+        matchedPath: handler.matchedPath ?? "none",
+      });
   }
 }

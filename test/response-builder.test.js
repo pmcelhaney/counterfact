@@ -45,4 +45,85 @@ describe("a response builder", () => {
       "x-two": 2,
     });
   });
+
+  describe("builds a random response based on an Open API operation object", () => {
+    const operation = {
+      responses: {
+        200: {
+          content: {
+            "application/json": {
+              schema: {
+                type: "object",
+
+                properties: {
+                  value: {
+                    type: "string",
+                    required: true,
+                    examples: ["hello"],
+                  },
+                },
+
+                additionalProperties: false,
+              },
+            },
+
+            "text/plain": {
+              schema: {
+                type: "string",
+                examples: ["hello"],
+              },
+            },
+          },
+        },
+
+        default: {
+          content: {
+            "text/plain": {
+              schema: {
+                type: "string",
+                examples: ["an error occurred"],
+              },
+            },
+          },
+        },
+      },
+    };
+
+    it("using the status code", () => {
+      const response = createResponseBuilder(operation)[200].random();
+
+      expect(response.status).toBe(200);
+      expect(response.content).toStrictEqual([
+        { type: "application/json", body: { value: "hello" } },
+        { type: "text/plain", body: "hello" },
+      ]);
+    });
+
+    it("falls back to 'default' when status code is not listed explicitly", () => {
+      const response = createResponseBuilder(operation)[403].random();
+
+      expect(response.status).toBe(403);
+      expect(response.content).toStrictEqual([
+        { type: "text/plain", body: "an error occurred" },
+      ]);
+    });
+
+    it("returns 500 if it doesn't know what to do with the status code", () => {
+      const operationWithoutDefault = { ...operation };
+
+      delete operationWithoutDefault.responses.default;
+
+      const response = createResponseBuilder(
+        operationWithoutDefault
+      )[403].random();
+
+      expect(response.status).toBe(500);
+      expect(response.content).toStrictEqual([
+        {
+          type: "text/plain",
+          body: "The Open API document does not specify a response for status code 403",
+        },
+      ]);
+    });
+  });
 });

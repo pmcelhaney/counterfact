@@ -70,4 +70,50 @@ describe("integration test", () => {
       await moduleLoader.stopWatching();
     });
   });
+
+  it("uses an OpenAPI document to generate a random response", async () => {
+    const app = new Koa();
+    const request = supertest(app.callback());
+    const files = {
+      "openapi.yaml": `
+        openapi: 3.0.0
+        info:
+          title: Counterfact
+          version: 1.0.0
+        paths:
+          /hello:
+            get:
+              responses:
+                200:
+                  content:
+                    text/plain:
+                      schema:
+                        type: string
+                        examples: 
+                          - "hello"
+      `,
+
+      "paths/hello.mjs": `
+        export async function GET({response}) {
+          return response[200].random();
+        }
+      `,
+    };
+
+    await withTemporaryFiles(files, async (basePath) => {
+      const { koaMiddleware, moduleLoader } = await counterfact(
+        `${basePath}/paths`,
+        { name: "World" },
+        `${basePath}/openapi.yaml`
+      );
+
+      app.use(koaMiddleware);
+
+      const getResponse = await request.get("/hello");
+
+      expect(getResponse.text).toBe("hello");
+
+      await moduleLoader.stopWatching();
+    });
+  });
 });
