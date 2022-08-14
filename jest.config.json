@@ -3,7 +3,7 @@
   "testEnvironment": "node",
   "collectCoverage": true,
 
-  "collectCoverageFrom": ["src/**/*.{js,jsx,ts,tsx}", "!**/node_modules/**"],
+  "collectCoverageFrom": ["src/**/*.{js,jsx,ts,tsx}", "!**/node_modules/**", "!**/*.d.ts"],
   "coverageProvider": "v8",
 
   "coverageThreshold": {
