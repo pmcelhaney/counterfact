@@ -135,27 +135,19 @@ if (statusCode === \\"405\\") {
             "OperationTypeCoder@petstore.yaml#/paths/~1pet/post@[object Object]:true" => "HTTP_POST",
             "OperationTypeCoder@petstore.yaml#/paths/~1pet/put@[object Object]:true" => "HTTP_PUT",
             "SchemaTypeCoder@undefined@components/Pet.ts:true" => "Pet",
-            "tools@internal/tools.ts:true" => "Tools",
           },
           "exports": Map {
             "HTTP_POST" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: Pet, context: Context, tools: Tools}) => {  
-            status: 200, 
-          contentType?: \\"application/xml\\",
-          body?: Pet
-          
-        } | {  
-            status: 200, 
-          contentType?: \\"application/json\\",
-          body?: Pet
-          
-        } | {  
-            status: 405, 
-          
-          
-          
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+              "code": "{/* error creating export \\"HTTP_POST\\" for path-types/pet.types.ts: TypeError: Cannot convert undefined or null to object
+    at Function.keys (<anonymous>)
+    at keys (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:14:22)
+    at Array.map (<anonymous>)
+    at ResponseTypeCoder.map [as buildContentObjectType] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:10:10)
+    at ResponseTypeCoder.buildContentObjectType [as write] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:38:43)
+    at OperationTypeCoder.write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/operation-type-coder.js:101:7)
+    at write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/script.js:47:47) */}",
               "done": true,
+              "error": [TypeError: Cannot convert undefined or null to object],
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet/post",
               "isType": true,
               "name": "HTTP_POST",
@@ -163,33 +155,16 @@ if (statusCode === \\"405\\") {
               "typeDeclaration": "",
             },
             "HTTP_PUT" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: Pet, context: Context, tools: Tools}) => {  
-            status: 200, 
-          contentType?: \\"application/xml\\",
-          body?: Pet
-          
-        } | {  
-            status: 200, 
-          contentType?: \\"application/json\\",
-          body?: Pet
-          
-        } | {  
-            status: 400, 
-          
-          
-          
-        } | {  
-            status: 404, 
-          
-          
-          
-        } | {  
-            status: 405, 
-          
-          
-          
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+              "code": "{/* error creating export \\"HTTP_PUT\\" for path-types/pet.types.ts: TypeError: Cannot convert undefined or null to object
+    at Function.keys (<anonymous>)
+    at keys (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:14:22)
+    at Array.map (<anonymous>)
+    at ResponseTypeCoder.map [as buildContentObjectType] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:10:10)
+    at ResponseTypeCoder.buildContentObjectType [as write] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:38:43)
+    at OperationTypeCoder.write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/operation-type-coder.js:101:7)
+    at write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/script.js:47:47) */}",
               "done": true,
+              "error": [TypeError: Cannot convert undefined or null to object],
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet/put",
               "isType": true,
               "name": "HTTP_PUT",
@@ -201,6 +176,10 @@ if (statusCode === \\"405\\") {
             "Context" => Object {
               "isType": true,
               "modulePath": "../context/context.js",
+            },
+            "ResponseBuilderBuilder" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
             },
           },
           "imports": Map {
@@ -453,44 +432,6 @@ if (statusCode === \\"405\\") {
                   },
                 },
                 "path": "components/Pet.ts",
-                "repository": Repository {
-                  "scripts": [Circular],
-                  "writeFiles": [Function],
-                },
-                "typeCache": Map {},
-              },
-            },
-            "Tools" => Object {
-              "isType": true,
-              "name": "Tools",
-              "script": Script {
-                "cache": Map {
-                  "tools@[object Object]:true" => "Tools",
-                },
-                "exports": Map {
-                  "Tools" => Object {
-                    "code": "
-    {
-        oneOf: (array: string[]) => string;
-        randomFromSchema: (schema: JSONSchema6 ) => unknown;
-        accepts: (contentType: string) => boolean;
-    }",
-                    "done": true,
-                    "id": "tools",
-                    "isType": true,
-                    "name": "Tools",
-                    "promise": Promise {},
-                    "typeDeclaration": "",
-                  },
-                },
-                "externalImports": Map {
-                  "JSONSchema6" => Object {
-                    "isType": false,
-                    "modulePath": "json-schema",
-                  },
-                },
-                "imports": Map {},
-                "path": "internal/tools.ts",
                 "repository": Repository {
                   "scripts": [Circular],
                   "writeFiles": [Function],
@@ -515,27 +456,19 @@ if (statusCode === \\"405\\") {
             "OperationTypeCoder@petstore.yaml#/paths/~1pet/post@[object Object]:true" => "HTTP_POST",
             "OperationTypeCoder@petstore.yaml#/paths/~1pet/put@[object Object]:true" => "HTTP_PUT",
             "SchemaTypeCoder@undefined@components/Pet.ts:true" => "Pet",
-            "tools@internal/tools.ts:true" => "Tools",
           },
           "exports": Map {
             "HTTP_POST" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: Pet, context: Context, tools: Tools}) => {  
-            status: 200, 
-          contentType?: \\"application/xml\\",
-          body?: Pet
-          
-        } | {  
-            status: 200, 
-          contentType?: \\"application/json\\",
-          body?: Pet
-          
-        } | {  
-            status: 405, 
-          
-          
-          
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+              "code": "{/* error creating export \\"HTTP_POST\\" for path-types/pet.types.ts: TypeError: Cannot convert undefined or null to object
+    at Function.keys (<anonymous>)
+    at keys (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:14:22)
+    at Array.map (<anonymous>)
+    at ResponseTypeCoder.map [as buildContentObjectType] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:10:10)
+    at ResponseTypeCoder.buildContentObjectType [as write] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:38:43)
+    at OperationTypeCoder.write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/operation-type-coder.js:101:7)
+    at write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/script.js:47:47) */}",
               "done": true,
+              "error": [TypeError: Cannot convert undefined or null to object],
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet/post",
               "isType": true,
               "name": "HTTP_POST",
@@ -543,33 +476,16 @@ if (statusCode === \\"405\\") {
               "typeDeclaration": "",
             },
             "HTTP_PUT" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: Pet, context: Context, tools: Tools}) => {  
-            status: 200, 
-          contentType?: \\"application/xml\\",
-          body?: Pet
-          
-        } | {  
-            status: 200, 
-          contentType?: \\"application/json\\",
-          body?: Pet
-          
-        } | {  
-            status: 400, 
-          
-          
-          
-        } | {  
-            status: 404, 
-          
-          
-          
-        } | {  
-            status: 405, 
-          
-          
-          
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+              "code": "{/* error creating export \\"HTTP_PUT\\" for path-types/pet.types.ts: TypeError: Cannot convert undefined or null to object
+    at Function.keys (<anonymous>)
+    at keys (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:14:22)
+    at Array.map (<anonymous>)
+    at ResponseTypeCoder.map [as buildContentObjectType] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:10:10)
+    at ResponseTypeCoder.buildContentObjectType [as write] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:38:43)
+    at OperationTypeCoder.write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/operation-type-coder.js:101:7)
+    at write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/script.js:47:47) */}",
               "done": true,
+              "error": [TypeError: Cannot convert undefined or null to object],
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet/put",
               "isType": true,
               "name": "HTTP_PUT",
@@ -581,6 +497,10 @@ if (statusCode === \\"405\\") {
             "Context" => Object {
               "isType": true,
               "modulePath": "../context/context.js",
+            },
+            "ResponseBuilderBuilder" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
             },
           },
           "imports": Map {
@@ -833,44 +753,6 @@ if (statusCode === \\"405\\") {
                   },
                 },
                 "path": "components/Pet.ts",
-                "repository": Repository {
-                  "scripts": [Circular],
-                  "writeFiles": [Function],
-                },
-                "typeCache": Map {},
-              },
-            },
-            "Tools" => Object {
-              "isType": true,
-              "name": "Tools",
-              "script": Script {
-                "cache": Map {
-                  "tools@[object Object]:true" => "Tools",
-                },
-                "exports": Map {
-                  "Tools" => Object {
-                    "code": "
-    {
-        oneOf: (array: string[]) => string;
-        randomFromSchema: (schema: JSONSchema6 ) => unknown;
-        accepts: (contentType: string) => boolean;
-    }",
-                    "done": true,
-                    "id": "tools",
-                    "isType": true,
-                    "name": "Tools",
-                    "promise": Promise {},
-                    "typeDeclaration": "",
-                  },
-                },
-                "externalImports": Map {
-                  "JSONSchema6" => Object {
-                    "isType": false,
-                    "modulePath": "json-schema",
-                  },
-                },
-                "imports": Map {},
-                "path": "internal/tools.ts",
                 "repository": Repository {
                   "scripts": [Circular],
                   "writeFiles": [Function],
@@ -1412,27 +1294,19 @@ if (statusCode === \\"405\\") {
       "OperationTypeCoder@petstore.yaml#/paths/~1pet/post@[object Object]:true" => "HTTP_POST",
       "OperationTypeCoder@petstore.yaml#/paths/~1pet/put@[object Object]:true" => "HTTP_PUT",
       "SchemaTypeCoder@undefined@components/Pet.ts:true" => "Pet",
-      "tools@internal/tools.ts:true" => "Tools",
     },
     "exports": Map {
       "HTTP_POST" => Object {
-        "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: Pet, context: Context, tools: Tools}) => {  
-            status: 200, 
-          contentType?: \\"application/xml\\",
-          body?: Pet
-          
-        } | {  
-            status: 200, 
-          contentType?: \\"application/json\\",
-          body?: Pet
-          
-        } | {  
-            status: 405, 
-          
-          
-          
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        "code": "{/* error creating export \\"HTTP_POST\\" for path-types/pet.types.ts: TypeError: Cannot convert undefined or null to object
+    at Function.keys (<anonymous>)
+    at keys (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:14:22)
+    at Array.map (<anonymous>)
+    at ResponseTypeCoder.map [as buildContentObjectType] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:10:10)
+    at ResponseTypeCoder.buildContentObjectType [as write] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:38:43)
+    at OperationTypeCoder.write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/operation-type-coder.js:101:7)
+    at write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/script.js:47:47) */}",
         "done": true,
+        "error": [TypeError: Cannot convert undefined or null to object],
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet/post",
         "isType": true,
         "name": "HTTP_POST",
@@ -1440,33 +1314,16 @@ if (statusCode === \\"405\\") {
         "typeDeclaration": "",
       },
       "HTTP_PUT" => Object {
-        "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: Pet, context: Context, tools: Tools}) => {  
-            status: 200, 
-          contentType?: \\"application/xml\\",
-          body?: Pet
-          
-        } | {  
-            status: 200, 
-          contentType?: \\"application/json\\",
-          body?: Pet
-          
-        } | {  
-            status: 400, 
-          
-          
-          
-        } | {  
-            status: 404, 
-          
-          
-          
-        } | {  
-            status: 405, 
-          
-          
-          
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        "code": "{/* error creating export \\"HTTP_PUT\\" for path-types/pet.types.ts: TypeError: Cannot convert undefined or null to object
+    at Function.keys (<anonymous>)
+    at keys (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:14:22)
+    at Array.map (<anonymous>)
+    at ResponseTypeCoder.map [as buildContentObjectType] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:10:10)
+    at ResponseTypeCoder.buildContentObjectType [as write] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:38:43)
+    at OperationTypeCoder.write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/operation-type-coder.js:101:7)
+    at write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/script.js:47:47) */}",
         "done": true,
+        "error": [TypeError: Cannot convert undefined or null to object],
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet/put",
         "isType": true,
         "name": "HTTP_PUT",
@@ -1478,6 +1335,10 @@ if (statusCode === \\"405\\") {
       "Context" => Object {
         "isType": true,
         "modulePath": "../context/context.js",
+      },
+      "ResponseBuilderBuilder" => Object {
+        "isType": true,
+        "modulePath": "counterfact",
       },
     },
     "imports": Map {
@@ -1737,44 +1598,6 @@ if (statusCode === \\"405\\") {
           "typeCache": Map {},
         },
       },
-      "Tools" => Object {
-        "isType": true,
-        "name": "Tools",
-        "script": Script {
-          "cache": Map {
-            "tools@[object Object]:true" => "Tools",
-          },
-          "exports": Map {
-            "Tools" => Object {
-              "code": "
-    {
-        oneOf: (array: string[]) => string;
-        randomFromSchema: (schema: JSONSchema6 ) => unknown;
-        accepts: (contentType: string) => boolean;
-    }",
-              "done": true,
-              "id": "tools",
-              "isType": true,
-              "name": "Tools",
-              "promise": Promise {},
-              "typeDeclaration": "",
-            },
-          },
-          "externalImports": Map {
-            "JSONSchema6" => Object {
-              "isType": false,
-              "modulePath": "json-schema",
-            },
-          },
-          "imports": Map {},
-          "path": "internal/tools.ts",
-          "repository": Repository {
-            "scripts": [Circular],
-            "writeFiles": [Function],
-          },
-          "typeCache": Map {},
-        },
-      },
     },
     "path": "path-types/pet.types.ts",
     "repository": Repository {
@@ -1857,28 +1680,20 @@ if (statusCode === \\"400\\") {
         "script": Script {
           "cache": Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1findByStatus/get@[object Object]:true" => "HTTP_GET",
-            "tools@internal/tools.ts:true" => "Tools",
             "SchemaTypeCoder@undefined@components/Pet.ts:true" => "Pet",
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: {status?: string}, path: never, header: never, body: undefined, context: Context, tools: Tools}) => {  
-            status: 200, 
-          contentType?: \\"application/xml\\",
-          body?: Array<Pet>
-          
-        } | {  
-            status: 200, 
-          contentType?: \\"application/json\\",
-          body?: Array<Pet>
-          
-        } | {  
-            status: 400, 
-          
-          
-          
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+              "code": "{/* error creating export \\"HTTP_GET\\" for path-types/pet/findByStatus.types.ts: TypeError: Cannot convert undefined or null to object
+    at Function.keys (<anonymous>)
+    at keys (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:14:22)
+    at Array.map (<anonymous>)
+    at ResponseTypeCoder.map [as buildContentObjectType] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:10:10)
+    at ResponseTypeCoder.buildContentObjectType [as write] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:38:43)
+    at OperationTypeCoder.write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/operation-type-coder.js:101:7)
+    at write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/script.js:47:47) */}",
               "done": true,
+              "error": [TypeError: Cannot convert undefined or null to object],
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
               "isType": true,
               "name": "HTTP_GET",
@@ -1891,46 +1706,12 @@ if (statusCode === \\"400\\") {
               "isType": true,
               "modulePath": "../../context/context.js",
             },
+            "ResponseBuilderBuilder" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
           },
           "imports": Map {
-            "Tools" => Object {
-              "isType": true,
-              "name": "Tools",
-              "script": Script {
-                "cache": Map {
-                  "tools@[object Object]:true" => "Tools",
-                },
-                "exports": Map {
-                  "Tools" => Object {
-                    "code": "
-    {
-        oneOf: (array: string[]) => string;
-        randomFromSchema: (schema: JSONSchema6 ) => unknown;
-        accepts: (contentType: string) => boolean;
-    }",
-                    "done": true,
-                    "id": "tools",
-                    "isType": true,
-                    "name": "Tools",
-                    "promise": Promise {},
-                    "typeDeclaration": "",
-                  },
-                },
-                "externalImports": Map {
-                  "JSONSchema6" => Object {
-                    "isType": false,
-                    "modulePath": "json-schema",
-                  },
-                },
-                "imports": Map {},
-                "path": "internal/tools.ts",
-                "repository": Repository {
-                  "scripts": [Circular],
-                  "writeFiles": [Function],
-                },
-                "typeCache": Map {},
-              },
-            },
             "Pet" => Object {
               "isType": true,
               "name": "Pet",
@@ -2719,28 +2500,20 @@ if (statusCode === \\"400\\") {
   "path-types/pet/findByStatus.types.ts" => Script {
     "cache": Map {
       "OperationTypeCoder@petstore.yaml#/paths/~1pet~1findByStatus/get@[object Object]:true" => "HTTP_GET",
-      "tools@internal/tools.ts:true" => "Tools",
       "SchemaTypeCoder@undefined@components/Pet.ts:true" => "Pet",
     },
     "exports": Map {
       "HTTP_GET" => Object {
-        "code": "({ query, path, header, body, context, tools }: { query: {status?: string}, path: never, header: never, body: undefined, context: Context, tools: Tools}) => {  
-            status: 200, 
-          contentType?: \\"application/xml\\",
-          body?: Array<Pet>
-          
-        } | {  
-            status: 200, 
-          contentType?: \\"application/json\\",
-          body?: Array<Pet>
-          
-        } | {  
-            status: 400, 
-          
-          
-          
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        "code": "{/* error creating export \\"HTTP_GET\\" for path-types/pet/findByStatus.types.ts: TypeError: Cannot convert undefined or null to object
+    at Function.keys (<anonymous>)
+    at keys (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:14:22)
+    at Array.map (<anonymous>)
+    at ResponseTypeCoder.map [as buildContentObjectType] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:10:10)
+    at ResponseTypeCoder.buildContentObjectType [as write] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:38:43)
+    at OperationTypeCoder.write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/operation-type-coder.js:101:7)
+    at write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/script.js:47:47) */}",
         "done": true,
+        "error": [TypeError: Cannot convert undefined or null to object],
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
         "isType": true,
         "name": "HTTP_GET",
@@ -2753,46 +2526,12 @@ if (statusCode === \\"400\\") {
         "isType": true,
         "modulePath": "../../context/context.js",
       },
+      "ResponseBuilderBuilder" => Object {
+        "isType": true,
+        "modulePath": "counterfact",
+      },
     },
     "imports": Map {
-      "Tools" => Object {
-        "isType": true,
-        "name": "Tools",
-        "script": Script {
-          "cache": Map {
-            "tools@[object Object]:true" => "Tools",
-          },
-          "exports": Map {
-            "Tools" => Object {
-              "code": "
-    {
-        oneOf: (array: string[]) => string;
-        randomFromSchema: (schema: JSONSchema6 ) => unknown;
-        accepts: (contentType: string) => boolean;
-    }",
-              "done": true,
-              "id": "tools",
-              "isType": true,
-              "name": "Tools",
-              "promise": Promise {},
-              "typeDeclaration": "",
-            },
-          },
-          "externalImports": Map {
-            "JSONSchema6" => Object {
-              "isType": false,
-              "modulePath": "json-schema",
-            },
-          },
-          "imports": Map {},
-          "path": "internal/tools.ts",
-          "repository": Repository {
-            "scripts": [Circular],
-            "writeFiles": [Function],
-          },
-          "typeCache": Map {},
-        },
-      },
       "Pet" => Object {
         "isType": true,
         "name": "Pet",
@@ -3131,28 +2870,20 @@ if (statusCode === \\"400\\") {
         "script": Script {
           "cache": Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1findByTags/get@[object Object]:true" => "HTTP_GET",
-            "tools@internal/tools.ts:true" => "Tools",
             "SchemaTypeCoder@undefined@components/Pet.ts:true" => "Pet",
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: {tags?: Array<string>}, path: never, header: never, body: undefined, context: Context, tools: Tools}) => {  
-            status: 200, 
-          contentType?: \\"application/xml\\",
-          body?: Array<Pet>
-          
-        } | {  
-            status: 200, 
-          contentType?: \\"application/json\\",
-          body?: Array<Pet>
-          
-        } | {  
-            status: 400, 
-          
-          
-          
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+              "code": "{/* error creating export \\"HTTP_GET\\" for path-types/pet/findByTags.types.ts: TypeError: Cannot convert undefined or null to object
+    at Function.keys (<anonymous>)
+    at keys (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:14:22)
+    at Array.map (<anonymous>)
+    at ResponseTypeCoder.map [as buildContentObjectType] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:10:10)
+    at ResponseTypeCoder.buildContentObjectType [as write] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:38:43)
+    at OperationTypeCoder.write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/operation-type-coder.js:101:7)
+    at write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/script.js:47:47) */}",
               "done": true,
+              "error": [TypeError: Cannot convert undefined or null to object],
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1findByTags/get",
               "isType": true,
               "name": "HTTP_GET",
@@ -3165,46 +2896,12 @@ if (statusCode === \\"400\\") {
               "isType": true,
               "modulePath": "../../context/context.js",
             },
+            "ResponseBuilderBuilder" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
           },
           "imports": Map {
-            "Tools" => Object {
-              "isType": true,
-              "name": "Tools",
-              "script": Script {
-                "cache": Map {
-                  "tools@[object Object]:true" => "Tools",
-                },
-                "exports": Map {
-                  "Tools" => Object {
-                    "code": "
-    {
-        oneOf: (array: string[]) => string;
-        randomFromSchema: (schema: JSONSchema6 ) => unknown;
-        accepts: (contentType: string) => boolean;
-    }",
-                    "done": true,
-                    "id": "tools",
-                    "isType": true,
-                    "name": "Tools",
-                    "promise": Promise {},
-                    "typeDeclaration": "",
-                  },
-                },
-                "externalImports": Map {
-                  "JSONSchema6" => Object {
-                    "isType": false,
-                    "modulePath": "json-schema",
-                  },
-                },
-                "imports": Map {},
-                "path": "internal/tools.ts",
-                "repository": Repository {
-                  "scripts": [Circular],
-                  "writeFiles": [Function],
-                },
-                "typeCache": Map {},
-              },
-            },
             "Pet" => Object {
               "isType": true,
               "name": "Pet",
@@ -3993,28 +3690,20 @@ if (statusCode === \\"400\\") {
   "path-types/pet/findByTags.types.ts" => Script {
     "cache": Map {
       "OperationTypeCoder@petstore.yaml#/paths/~1pet~1findByTags/get@[object Object]:true" => "HTTP_GET",
-      "tools@internal/tools.ts:true" => "Tools",
       "SchemaTypeCoder@undefined@components/Pet.ts:true" => "Pet",
     },
     "exports": Map {
       "HTTP_GET" => Object {
-        "code": "({ query, path, header, body, context, tools }: { query: {tags?: Array<string>}, path: never, header: never, body: undefined, context: Context, tools: Tools}) => {  
-            status: 200, 
-          contentType?: \\"application/xml\\",
-          body?: Array<Pet>
-          
-        } | {  
-            status: 200, 
-          contentType?: \\"application/json\\",
-          body?: Array<Pet>
-          
-        } | {  
-            status: 400, 
-          
-          
-          
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        "code": "{/* error creating export \\"HTTP_GET\\" for path-types/pet/findByTags.types.ts: TypeError: Cannot convert undefined or null to object
+    at Function.keys (<anonymous>)
+    at keys (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:14:22)
+    at Array.map (<anonymous>)
+    at ResponseTypeCoder.map [as buildContentObjectType] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:10:10)
+    at ResponseTypeCoder.buildContentObjectType [as write] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:38:43)
+    at OperationTypeCoder.write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/operation-type-coder.js:101:7)
+    at write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/script.js:47:47) */}",
         "done": true,
+        "error": [TypeError: Cannot convert undefined or null to object],
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1findByTags/get",
         "isType": true,
         "name": "HTTP_GET",
@@ -4027,46 +3716,12 @@ if (statusCode === \\"400\\") {
         "isType": true,
         "modulePath": "../../context/context.js",
       },
+      "ResponseBuilderBuilder" => Object {
+        "isType": true,
+        "modulePath": "counterfact",
+      },
     },
     "imports": Map {
-      "Tools" => Object {
-        "isType": true,
-        "name": "Tools",
-        "script": Script {
-          "cache": Map {
-            "tools@[object Object]:true" => "Tools",
-          },
-          "exports": Map {
-            "Tools" => Object {
-              "code": "
-    {
-        oneOf: (array: string[]) => string;
-        randomFromSchema: (schema: JSONSchema6 ) => unknown;
-        accepts: (contentType: string) => boolean;
-    }",
-              "done": true,
-              "id": "tools",
-              "isType": true,
-              "name": "Tools",
-              "promise": Promise {},
-              "typeDeclaration": "",
-            },
-          },
-          "externalImports": Map {
-            "JSONSchema6" => Object {
-              "isType": false,
-              "modulePath": "json-schema",
-            },
-          },
-          "imports": Map {},
-          "path": "internal/tools.ts",
-          "repository": Repository {
-            "scripts": [Circular],
-            "writeFiles": [Function],
-          },
-          "typeCache": Map {},
-        },
-      },
       "Pet" => Object {
         "isType": true,
         "name": "Pet",
@@ -4456,33 +4111,20 @@ if (statusCode === \\"404\\") {
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/get@[object Object]:true" => "HTTP_GET",
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/post@[object Object]:true" => "HTTP_POST",
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/delete@[object Object]:true" => "HTTP_DELETE",
-            "tools@internal/tools.ts:true" => "Tools",
             "SchemaTypeCoder@undefined@components/Pet.ts:true" => "Pet",
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: {petId: number}, header: never, body: undefined, context: Context, tools: Tools}) => {  
-            status: 200, 
-          contentType?: \\"application/xml\\",
-          body?: Pet
-          
-        } | {  
-            status: 200, 
-          contentType?: \\"application/json\\",
-          body?: Pet
-          
-        } | {  
-            status: 400, 
-          
-          
-          
-        } | {  
-            status: 404, 
-          
-          
-          
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+              "code": "{/* error creating export \\"HTTP_GET\\" for path-types/pet/{petId}.types.ts: TypeError: Cannot convert undefined or null to object
+    at Function.keys (<anonymous>)
+    at keys (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:14:22)
+    at Array.map (<anonymous>)
+    at ResponseTypeCoder.map [as buildContentObjectType] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:10:10)
+    at ResponseTypeCoder.buildContentObjectType [as write] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:38:43)
+    at OperationTypeCoder.write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/operation-type-coder.js:101:7)
+    at write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/script.js:47:47) */}",
               "done": true,
+              "error": [TypeError: Cannot convert undefined or null to object],
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/get",
               "isType": true,
               "name": "HTTP_GET",
@@ -4490,13 +4132,16 @@ if (statusCode === \\"404\\") {
               "typeDeclaration": "",
             },
             "HTTP_POST" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: {name?: number, status?: string}, path: {petId: number}, header: never, body: undefined, context: Context, tools: Tools}) => {  
-            status: 405, 
-          
-          
-          
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+              "code": "{/* error creating export \\"HTTP_POST\\" for path-types/pet/{petId}.types.ts: TypeError: Cannot convert undefined or null to object
+    at Function.keys (<anonymous>)
+    at keys (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:14:22)
+    at Array.map (<anonymous>)
+    at ResponseTypeCoder.map [as buildContentObjectType] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:10:10)
+    at ResponseTypeCoder.buildContentObjectType [as write] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:38:43)
+    at OperationTypeCoder.write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/operation-type-coder.js:101:7)
+    at write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/script.js:47:47) */}",
               "done": true,
+              "error": [TypeError: Cannot convert undefined or null to object],
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/post",
               "isType": true,
               "name": "HTTP_POST",
@@ -4504,13 +4149,16 @@ if (statusCode === \\"404\\") {
               "typeDeclaration": "",
             },
             "HTTP_DELETE" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: {petId: string}, header: {api_key?: string}, body: undefined, context: Context, tools: Tools}) => {  
-            status: 400, 
-          
-          
-          
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+              "code": "{/* error creating export \\"HTTP_DELETE\\" for path-types/pet/{petId}.types.ts: TypeError: Cannot convert undefined or null to object
+    at Function.keys (<anonymous>)
+    at keys (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:14:22)
+    at Array.map (<anonymous>)
+    at ResponseTypeCoder.map [as buildContentObjectType] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:10:10)
+    at ResponseTypeCoder.buildContentObjectType [as write] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:38:43)
+    at OperationTypeCoder.write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/operation-type-coder.js:101:7)
+    at write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/script.js:47:47) */}",
               "done": true,
+              "error": [TypeError: Cannot convert undefined or null to object],
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/delete",
               "isType": true,
               "name": "HTTP_DELETE",
@@ -4523,46 +4171,12 @@ if (statusCode === \\"404\\") {
               "isType": true,
               "modulePath": "../../context/context.js",
             },
+            "ResponseBuilderBuilder" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
           },
           "imports": Map {
-            "Tools" => Object {
-              "isType": true,
-              "name": "Tools",
-              "script": Script {
-                "cache": Map {
-                  "tools@[object Object]:true" => "Tools",
-                },
-                "exports": Map {
-                  "Tools" => Object {
-                    "code": "
-    {
-        oneOf: (array: string[]) => string;
-        randomFromSchema: (schema: JSONSchema6 ) => unknown;
-        accepts: (contentType: string) => boolean;
-    }",
-                    "done": true,
-                    "id": "tools",
-                    "isType": true,
-                    "name": "Tools",
-                    "promise": Promise {},
-                    "typeDeclaration": "",
-                  },
-                },
-                "externalImports": Map {
-                  "JSONSchema6" => Object {
-                    "isType": false,
-                    "modulePath": "json-schema",
-                  },
-                },
-                "imports": Map {},
-                "path": "internal/tools.ts",
-                "repository": Repository {
-                  "scripts": [Circular],
-                  "writeFiles": [Function],
-                },
-                "typeCache": Map {},
-              },
-            },
             "Pet" => Object {
               "isType": true,
               "name": "Pet",
@@ -4836,33 +4450,20 @@ if (statusCode === \\"404\\") {
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/get@[object Object]:true" => "HTTP_GET",
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/post@[object Object]:true" => "HTTP_POST",
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/delete@[object Object]:true" => "HTTP_DELETE",
-            "tools@internal/tools.ts:true" => "Tools",
             "SchemaTypeCoder@undefined@components/Pet.ts:true" => "Pet",
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: {petId: number}, header: never, body: undefined, context: Context, tools: Tools}) => {  
-            status: 200, 
-          contentType?: \\"application/xml\\",
-          body?: Pet
-          
-        } | {  
-            status: 200, 
-          contentType?: \\"application/json\\",
-          body?: Pet
-          
-        } | {  
-            status: 400, 
-          
-          
-          
-        } | {  
-            status: 404, 
-          
-          
-          
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+              "code": "{/* error creating export \\"HTTP_GET\\" for path-types/pet/{petId}.types.ts: TypeError: Cannot convert undefined or null to object
+    at Function.keys (<anonymous>)
+    at keys (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:14:22)
+    at Array.map (<anonymous>)
+    at ResponseTypeCoder.map [as buildContentObjectType] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:10:10)
+    at ResponseTypeCoder.buildContentObjectType [as write] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:38:43)
+    at OperationTypeCoder.write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/operation-type-coder.js:101:7)
+    at write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/script.js:47:47) */}",
               "done": true,
+              "error": [TypeError: Cannot convert undefined or null to object],
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/get",
               "isType": true,
               "name": "HTTP_GET",
@@ -4870,13 +4471,16 @@ if (statusCode === \\"404\\") {
               "typeDeclaration": "",
             },
             "HTTP_POST" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: {name?: number, status?: string}, path: {petId: number}, header: never, body: undefined, context: Context, tools: Tools}) => {  
-            status: 405, 
-          
-          
-          
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+              "code": "{/* error creating export \\"HTTP_POST\\" for path-types/pet/{petId}.types.ts: TypeError: Cannot convert undefined or null to object
+    at Function.keys (<anonymous>)
+    at keys (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:14:22)
+    at Array.map (<anonymous>)
+    at ResponseTypeCoder.map [as buildContentObjectType] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:10:10)
+    at ResponseTypeCoder.buildContentObjectType [as write] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:38:43)
+    at OperationTypeCoder.write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/operation-type-coder.js:101:7)
+    at write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/script.js:47:47) */}",
               "done": true,
+              "error": [TypeError: Cannot convert undefined or null to object],
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/post",
               "isType": true,
               "name": "HTTP_POST",
@@ -4884,13 +4488,16 @@ if (statusCode === \\"404\\") {
               "typeDeclaration": "",
             },
             "HTTP_DELETE" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: {petId: string}, header: {api_key?: string}, body: undefined, context: Context, tools: Tools}) => {  
-            status: 400, 
-          
-          
-          
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+              "code": "{/* error creating export \\"HTTP_DELETE\\" for path-types/pet/{petId}.types.ts: TypeError: Cannot convert undefined or null to object
+    at Function.keys (<anonymous>)
+    at keys (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:14:22)
+    at Array.map (<anonymous>)
+    at ResponseTypeCoder.map [as buildContentObjectType] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:10:10)
+    at ResponseTypeCoder.buildContentObjectType [as write] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:38:43)
+    at OperationTypeCoder.write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/operation-type-coder.js:101:7)
+    at write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/script.js:47:47) */}",
               "done": true,
+              "error": [TypeError: Cannot convert undefined or null to object],
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/delete",
               "isType": true,
               "name": "HTTP_DELETE",
@@ -4903,46 +4510,12 @@ if (statusCode === \\"404\\") {
               "isType": true,
               "modulePath": "../../context/context.js",
             },
+            "ResponseBuilderBuilder" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
           },
           "imports": Map {
-            "Tools" => Object {
-              "isType": true,
-              "name": "Tools",
-              "script": Script {
-                "cache": Map {
-                  "tools@[object Object]:true" => "Tools",
-                },
-                "exports": Map {
-                  "Tools" => Object {
-                    "code": "
-    {
-        oneOf: (array: string[]) => string;
-        randomFromSchema: (schema: JSONSchema6 ) => unknown;
-        accepts: (contentType: string) => boolean;
-    }",
-                    "done": true,
-                    "id": "tools",
-                    "isType": true,
-                    "name": "Tools",
-                    "promise": Promise {},
-                    "typeDeclaration": "",
-                  },
-                },
-                "externalImports": Map {
-                  "JSONSchema6" => Object {
-                    "isType": false,
-                    "modulePath": "json-schema",
-                  },
-                },
-                "imports": Map {},
-                "path": "internal/tools.ts",
-                "repository": Repository {
-                  "scripts": [Circular],
-                  "writeFiles": [Function],
-                },
-                "typeCache": Map {},
-              },
-            },
             "Pet" => Object {
               "isType": true,
               "name": "Pet",
@@ -5216,33 +4789,20 @@ if (statusCode === \\"404\\") {
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/get@[object Object]:true" => "HTTP_GET",
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/post@[object Object]:true" => "HTTP_POST",
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/delete@[object Object]:true" => "HTTP_DELETE",
-            "tools@internal/tools.ts:true" => "Tools",
             "SchemaTypeCoder@undefined@components/Pet.ts:true" => "Pet",
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: {petId: number}, header: never, body: undefined, context: Context, tools: Tools}) => {  
-            status: 200, 
-          contentType?: \\"application/xml\\",
-          body?: Pet
-          
-        } | {  
-            status: 200, 
-          contentType?: \\"application/json\\",
-          body?: Pet
-          
-        } | {  
-            status: 400, 
-          
-          
-          
-        } | {  
-            status: 404, 
-          
-          
-          
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+              "code": "{/* error creating export \\"HTTP_GET\\" for path-types/pet/{petId}.types.ts: TypeError: Cannot convert undefined or null to object
+    at Function.keys (<anonymous>)
+    at keys (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:14:22)
+    at Array.map (<anonymous>)
+    at ResponseTypeCoder.map [as buildContentObjectType] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:10:10)
+    at ResponseTypeCoder.buildContentObjectType [as write] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:38:43)
+    at OperationTypeCoder.write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/operation-type-coder.js:101:7)
+    at write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/script.js:47:47) */}",
               "done": true,
+              "error": [TypeError: Cannot convert undefined or null to object],
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/get",
               "isType": true,
               "name": "HTTP_GET",
@@ -5250,13 +4810,16 @@ if (statusCode === \\"404\\") {
               "typeDeclaration": "",
             },
             "HTTP_POST" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: {name?: number, status?: string}, path: {petId: number}, header: never, body: undefined, context: Context, tools: Tools}) => {  
-            status: 405, 
-          
-          
-          
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+              "code": "{/* error creating export \\"HTTP_POST\\" for path-types/pet/{petId}.types.ts: TypeError: Cannot convert undefined or null to object
+    at Function.keys (<anonymous>)
+    at keys (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:14:22)
+    at Array.map (<anonymous>)
+    at ResponseTypeCoder.map [as buildContentObjectType] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:10:10)
+    at ResponseTypeCoder.buildContentObjectType [as write] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:38:43)
+    at OperationTypeCoder.write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/operation-type-coder.js:101:7)
+    at write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/script.js:47:47) */}",
               "done": true,
+              "error": [TypeError: Cannot convert undefined or null to object],
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/post",
               "isType": true,
               "name": "HTTP_POST",
@@ -5264,13 +4827,16 @@ if (statusCode === \\"404\\") {
               "typeDeclaration": "",
             },
             "HTTP_DELETE" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: {petId: string}, header: {api_key?: string}, body: undefined, context: Context, tools: Tools}) => {  
-            status: 400, 
-          
-          
-          
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+              "code": "{/* error creating export \\"HTTP_DELETE\\" for path-types/pet/{petId}.types.ts: TypeError: Cannot convert undefined or null to object
+    at Function.keys (<anonymous>)
+    at keys (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:14:22)
+    at Array.map (<anonymous>)
+    at ResponseTypeCoder.map [as buildContentObjectType] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:10:10)
+    at ResponseTypeCoder.buildContentObjectType [as write] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:38:43)
+    at OperationTypeCoder.write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/operation-type-coder.js:101:7)
+    at write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/script.js:47:47) */}",
               "done": true,
+              "error": [TypeError: Cannot convert undefined or null to object],
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/delete",
               "isType": true,
               "name": "HTTP_DELETE",
@@ -5283,46 +4849,12 @@ if (statusCode === \\"404\\") {
               "isType": true,
               "modulePath": "../../context/context.js",
             },
+            "ResponseBuilderBuilder" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
           },
           "imports": Map {
-            "Tools" => Object {
-              "isType": true,
-              "name": "Tools",
-              "script": Script {
-                "cache": Map {
-                  "tools@[object Object]:true" => "Tools",
-                },
-                "exports": Map {
-                  "Tools" => Object {
-                    "code": "
-    {
-        oneOf: (array: string[]) => string;
-        randomFromSchema: (schema: JSONSchema6 ) => unknown;
-        accepts: (contentType: string) => boolean;
-    }",
-                    "done": true,
-                    "id": "tools",
-                    "isType": true,
-                    "name": "Tools",
-                    "promise": Promise {},
-                    "typeDeclaration": "",
-                  },
-                },
-                "externalImports": Map {
-                  "JSONSchema6" => Object {
-                    "isType": false,
-                    "modulePath": "json-schema",
-                  },
-                },
-                "imports": Map {},
-                "path": "internal/tools.ts",
-                "repository": Repository {
-                  "scripts": [Circular],
-                  "writeFiles": [Function],
-                },
-                "typeCache": Map {},
-              },
-            },
             "Pet" => Object {
               "isType": true,
               "name": "Pet",
@@ -6113,33 +5645,20 @@ if (statusCode === \\"404\\") {
       "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/get@[object Object]:true" => "HTTP_GET",
       "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/post@[object Object]:true" => "HTTP_POST",
       "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/delete@[object Object]:true" => "HTTP_DELETE",
-      "tools@internal/tools.ts:true" => "Tools",
       "SchemaTypeCoder@undefined@components/Pet.ts:true" => "Pet",
     },
     "exports": Map {
       "HTTP_GET" => Object {
-        "code": "({ query, path, header, body, context, tools }: { query: never, path: {petId: number}, header: never, body: undefined, context: Context, tools: Tools}) => {  
-            status: 200, 
-          contentType?: \\"application/xml\\",
-          body?: Pet
-          
-        } | {  
-            status: 200, 
-          contentType?: \\"application/json\\",
-          body?: Pet
-          
-        } | {  
-            status: 400, 
-          
-          
-          
-        } | {  
-            status: 404, 
-          
-          
-          
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        "code": "{/* error creating export \\"HTTP_GET\\" for path-types/pet/{petId}.types.ts: TypeError: Cannot convert undefined or null to object
+    at Function.keys (<anonymous>)
+    at keys (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:14:22)
+    at Array.map (<anonymous>)
+    at ResponseTypeCoder.map [as buildContentObjectType] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:10:10)
+    at ResponseTypeCoder.buildContentObjectType [as write] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:38:43)
+    at OperationTypeCoder.write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/operation-type-coder.js:101:7)
+    at write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/script.js:47:47) */}",
         "done": true,
+        "error": [TypeError: Cannot convert undefined or null to object],
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/get",
         "isType": true,
         "name": "HTTP_GET",
@@ -6147,13 +5666,16 @@ if (statusCode === \\"404\\") {
         "typeDeclaration": "",
       },
       "HTTP_POST" => Object {
-        "code": "({ query, path, header, body, context, tools }: { query: {name?: number, status?: string}, path: {petId: number}, header: never, body: undefined, context: Context, tools: Tools}) => {  
-            status: 405, 
-          
-          
-          
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        "code": "{/* error creating export \\"HTTP_POST\\" for path-types/pet/{petId}.types.ts: TypeError: Cannot convert undefined or null to object
+    at Function.keys (<anonymous>)
+    at keys (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:14:22)
+    at Array.map (<anonymous>)
+    at ResponseTypeCoder.map [as buildContentObjectType] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:10:10)
+    at ResponseTypeCoder.buildContentObjectType [as write] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:38:43)
+    at OperationTypeCoder.write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/operation-type-coder.js:101:7)
+    at write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/script.js:47:47) */}",
         "done": true,
+        "error": [TypeError: Cannot convert undefined or null to object],
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/post",
         "isType": true,
         "name": "HTTP_POST",
@@ -6161,13 +5683,16 @@ if (statusCode === \\"404\\") {
         "typeDeclaration": "",
       },
       "HTTP_DELETE" => Object {
-        "code": "({ query, path, header, body, context, tools }: { query: never, path: {petId: string}, header: {api_key?: string}, body: undefined, context: Context, tools: Tools}) => {  
-            status: 400, 
-          
-          
-          
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        "code": "{/* error creating export \\"HTTP_DELETE\\" for path-types/pet/{petId}.types.ts: TypeError: Cannot convert undefined or null to object
+    at Function.keys (<anonymous>)
+    at keys (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:14:22)
+    at Array.map (<anonymous>)
+    at ResponseTypeCoder.map [as buildContentObjectType] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:10:10)
+    at ResponseTypeCoder.buildContentObjectType [as write] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:38:43)
+    at OperationTypeCoder.write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/operation-type-coder.js:101:7)
+    at write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/script.js:47:47) */}",
         "done": true,
+        "error": [TypeError: Cannot convert undefined or null to object],
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/delete",
         "isType": true,
         "name": "HTTP_DELETE",
@@ -6180,46 +5705,12 @@ if (statusCode === \\"404\\") {
         "isType": true,
         "modulePath": "../../context/context.js",
       },
+      "ResponseBuilderBuilder" => Object {
+        "isType": true,
+        "modulePath": "counterfact",
+      },
     },
     "imports": Map {
-      "Tools" => Object {
-        "isType": true,
-        "name": "Tools",
-        "script": Script {
-          "cache": Map {
-            "tools@[object Object]:true" => "Tools",
-          },
-          "exports": Map {
-            "Tools" => Object {
-              "code": "
-    {
-        oneOf: (array: string[]) => string;
-        randomFromSchema: (schema: JSONSchema6 ) => unknown;
-        accepts: (contentType: string) => boolean;
-    }",
-              "done": true,
-              "id": "tools",
-              "isType": true,
-              "name": "Tools",
-              "promise": Promise {},
-              "typeDeclaration": "",
-            },
-          },
-          "externalImports": Map {
-            "JSONSchema6" => Object {
-              "isType": false,
-              "modulePath": "json-schema",
-            },
-          },
-          "imports": Map {},
-          "path": "internal/tools.ts",
-          "repository": Repository {
-            "scripts": [Circular],
-            "writeFiles": [Function],
-          },
-          "typeCache": Map {},
-        },
-      },
       "Pet" => Object {
         "isType": true,
         "name": "Pet",
@@ -6534,12 +6025,21 @@ if (statusCode === \\"404\\") {
         "script": Script {
           "cache": Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post@[object Object]:true" => "HTTP_POST",
-            "tools@internal/tools.ts:true" => "Tools",
             "SchemaTypeCoder@undefined@components/ApiResponse.ts:true" => "ApiResponse",
+            "tools@internal/tools.ts:true" => "Tools",
           },
           "exports": Map {
             "HTTP_POST" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: {additionalMetadata?: number}, path: {petId: number}, header: never, body: undefined, context: Context, tools: Tools}) => {  
+              "code": "({ query, path, header, body, context, tools }: { query: {additionalMetadata?: number}, path: {petId: number}, header: never, body: undefined, context: Context, response: ResponseBuilderBuilder<{
+      200: {
+          headers: {};
+          content: {
+            \\"application/json\\": { 
+                    schema:  ApiResponse
+                }
+          }
+        }
+      }>, tools: Tools}) => {  
             status: 200, 
           contentType?: \\"application/json\\",
           body?: ApiResponse
@@ -6558,46 +6058,12 @@ if (statusCode === \\"404\\") {
               "isType": true,
               "modulePath": "../../../context/context.js",
             },
+            "ResponseBuilderBuilder" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
           },
           "imports": Map {
-            "Tools" => Object {
-              "isType": true,
-              "name": "Tools",
-              "script": Script {
-                "cache": Map {
-                  "tools@[object Object]:true" => "Tools",
-                },
-                "exports": Map {
-                  "Tools" => Object {
-                    "code": "
-    {
-        oneOf: (array: string[]) => string;
-        randomFromSchema: (schema: JSONSchema6 ) => unknown;
-        accepts: (contentType: string) => boolean;
-    }",
-                    "done": true,
-                    "id": "tools",
-                    "isType": true,
-                    "name": "Tools",
-                    "promise": Promise {},
-                    "typeDeclaration": "",
-                  },
-                },
-                "externalImports": Map {
-                  "JSONSchema6" => Object {
-                    "isType": false,
-                    "modulePath": "json-schema",
-                  },
-                },
-                "imports": Map {},
-                "path": "internal/tools.ts",
-                "repository": Repository {
-                  "scripts": [Circular],
-                  "writeFiles": [Function],
-                },
-                "typeCache": Map {},
-              },
-            },
             "ApiResponse" => Object {
               "isType": true,
               "name": "ApiResponse",
@@ -6640,6 +6106,44 @@ if (statusCode === \\"404\\") {
                 },
                 "imports": Map {},
                 "path": "components/ApiResponse.ts",
+                "repository": Repository {
+                  "scripts": [Circular],
+                  "writeFiles": [Function],
+                },
+                "typeCache": Map {},
+              },
+            },
+            "Tools" => Object {
+              "isType": true,
+              "name": "Tools",
+              "script": Script {
+                "cache": Map {
+                  "tools@[object Object]:true" => "Tools",
+                },
+                "exports": Map {
+                  "Tools" => Object {
+                    "code": "
+    {
+        oneOf: (array: string[]) => string;
+        randomFromSchema: (schema: JSONSchema6 ) => unknown;
+        accepts: (contentType: string) => boolean;
+    }",
+                    "done": true,
+                    "id": "tools",
+                    "isType": true,
+                    "name": "Tools",
+                    "promise": Promise {},
+                    "typeDeclaration": "",
+                  },
+                },
+                "externalImports": Map {
+                  "JSONSchema6" => Object {
+                    "isType": false,
+                    "modulePath": "json-schema",
+                  },
+                },
+                "imports": Map {},
+                "path": "internal/tools.ts",
                 "repository": Repository {
                   "scripts": [Circular],
                   "writeFiles": [Function],
@@ -6765,12 +6269,21 @@ if (statusCode === \\"404\\") {
   "path-types/pet/{petId}/uploadImage.types.ts" => Script {
     "cache": Map {
       "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post@[object Object]:true" => "HTTP_POST",
-      "tools@internal/tools.ts:true" => "Tools",
       "SchemaTypeCoder@undefined@components/ApiResponse.ts:true" => "ApiResponse",
+      "tools@internal/tools.ts:true" => "Tools",
     },
     "exports": Map {
       "HTTP_POST" => Object {
-        "code": "({ query, path, header, body, context, tools }: { query: {additionalMetadata?: number}, path: {petId: number}, header: never, body: undefined, context: Context, tools: Tools}) => {  
+        "code": "({ query, path, header, body, context, tools }: { query: {additionalMetadata?: number}, path: {petId: number}, header: never, body: undefined, context: Context, response: ResponseBuilderBuilder<{
+      200: {
+          headers: {};
+          content: {
+            \\"application/json\\": { 
+                    schema:  ApiResponse
+                }
+          }
+        }
+      }>, tools: Tools}) => {  
             status: 200, 
           contentType?: \\"application/json\\",
           body?: ApiResponse
@@ -6789,46 +6302,12 @@ if (statusCode === \\"404\\") {
         "isType": true,
         "modulePath": "../../../context/context.js",
       },
+      "ResponseBuilderBuilder" => Object {
+        "isType": true,
+        "modulePath": "counterfact",
+      },
     },
     "imports": Map {
-      "Tools" => Object {
-        "isType": true,
-        "name": "Tools",
-        "script": Script {
-          "cache": Map {
-            "tools@[object Object]:true" => "Tools",
-          },
-          "exports": Map {
-            "Tools" => Object {
-              "code": "
-    {
-        oneOf: (array: string[]) => string;
-        randomFromSchema: (schema: JSONSchema6 ) => unknown;
-        accepts: (contentType: string) => boolean;
-    }",
-              "done": true,
-              "id": "tools",
-              "isType": true,
-              "name": "Tools",
-              "promise": Promise {},
-              "typeDeclaration": "",
-            },
-          },
-          "externalImports": Map {
-            "JSONSchema6" => Object {
-              "isType": false,
-              "modulePath": "json-schema",
-            },
-          },
-          "imports": Map {},
-          "path": "internal/tools.ts",
-          "repository": Repository {
-            "scripts": [Circular],
-            "writeFiles": [Function],
-          },
-          "typeCache": Map {},
-        },
-      },
       "ApiResponse" => Object {
         "isType": true,
         "name": "ApiResponse",
@@ -6871,6 +6350,44 @@ if (statusCode === \\"404\\") {
           },
           "imports": Map {},
           "path": "components/ApiResponse.ts",
+          "repository": Repository {
+            "scripts": [Circular],
+            "writeFiles": [Function],
+          },
+          "typeCache": Map {},
+        },
+      },
+      "Tools" => Object {
+        "isType": true,
+        "name": "Tools",
+        "script": Script {
+          "cache": Map {
+            "tools@[object Object]:true" => "Tools",
+          },
+          "exports": Map {
+            "Tools" => Object {
+              "code": "
+    {
+        oneOf: (array: string[]) => string;
+        randomFromSchema: (schema: JSONSchema6 ) => unknown;
+        accepts: (contentType: string) => boolean;
+    }",
+              "done": true,
+              "id": "tools",
+              "isType": true,
+              "name": "Tools",
+              "promise": Promise {},
+              "typeDeclaration": "",
+            },
+          },
+          "externalImports": Map {
+            "JSONSchema6" => Object {
+              "isType": false,
+              "modulePath": "json-schema",
+            },
+          },
+          "imports": Map {},
+          "path": "internal/tools.ts",
           "repository": Repository {
             "scripts": [Circular],
             "writeFiles": [Function],
@@ -6944,7 +6461,16 @@ if (statusCode === \\"404\\") {
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: undefined, context: Context, tools: Tools}) => {  
+              "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: undefined, context: Context, response: ResponseBuilderBuilder<{
+      200: {
+          headers: {};
+          content: {
+            \\"application/json\\": { 
+                    schema:  {[key: string]: number}
+                }
+          }
+        }
+      }>, tools: Tools}) => {  
             status: 200, 
           contentType?: \\"application/json\\",
           body?: {[key: string]: number}
@@ -6962,6 +6488,10 @@ if (statusCode === \\"404\\") {
             "Context" => Object {
               "isType": true,
               "modulePath": "../../context/context.js",
+            },
+            "ResponseBuilderBuilder" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
             },
           },
           "imports": Map {
@@ -7027,7 +6557,16 @@ if (statusCode === \\"404\\") {
     },
     "exports": Map {
       "HTTP_GET" => Object {
-        "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: undefined, context: Context, tools: Tools}) => {  
+        "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: undefined, context: Context, response: ResponseBuilderBuilder<{
+      200: {
+          headers: {};
+          content: {
+            \\"application/json\\": { 
+                    schema:  {[key: string]: number}
+                }
+          }
+        }
+      }>, tools: Tools}) => {  
             status: 200, 
           contentType?: \\"application/json\\",
           body?: {[key: string]: number}
@@ -7045,6 +6584,10 @@ if (statusCode === \\"404\\") {
       "Context" => Object {
         "isType": true,
         "modulePath": "../../context/context.js",
+      },
+      "ResponseBuilderBuilder" => Object {
+        "isType": true,
+        "modulePath": "counterfact",
       },
     },
     "imports": Map {
@@ -7150,22 +6693,19 @@ if (statusCode === \\"405\\") {
           "cache": Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1store~1order/post@[object Object]:true" => "HTTP_POST",
             "SchemaTypeCoder@undefined@components/Order.ts:true" => "Order",
-            "tools@internal/tools.ts:true" => "Tools",
           },
           "exports": Map {
             "HTTP_POST" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: Order, context: Context, tools: Tools}) => {  
-            status: 200, 
-          contentType?: \\"application/json\\",
-          body?: Order
-          
-        } | {  
-            status: 405, 
-          
-          
-          
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+              "code": "{/* error creating export \\"HTTP_POST\\" for path-types/store/order.types.ts: TypeError: Cannot convert undefined or null to object
+    at Function.keys (<anonymous>)
+    at keys (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:14:22)
+    at Array.map (<anonymous>)
+    at ResponseTypeCoder.map [as buildContentObjectType] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:10:10)
+    at ResponseTypeCoder.buildContentObjectType [as write] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:38:43)
+    at OperationTypeCoder.write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/operation-type-coder.js:101:7)
+    at write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/script.js:47:47) */}",
               "done": true,
+              "error": [TypeError: Cannot convert undefined or null to object],
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1store~1order/post",
               "isType": true,
               "name": "HTTP_POST",
@@ -7177,6 +6717,10 @@ if (statusCode === \\"405\\") {
             "Context" => Object {
               "isType": true,
               "modulePath": "../../context/context.js",
+            },
+            "ResponseBuilderBuilder" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
             },
           },
           "imports": Map {
@@ -7222,44 +6766,6 @@ if (statusCode === \\"405\\") {
                 },
                 "imports": Map {},
                 "path": "components/Order.ts",
-                "repository": Repository {
-                  "scripts": [Circular],
-                  "writeFiles": [Function],
-                },
-                "typeCache": Map {},
-              },
-            },
-            "Tools" => Object {
-              "isType": true,
-              "name": "Tools",
-              "script": Script {
-                "cache": Map {
-                  "tools@[object Object]:true" => "Tools",
-                },
-                "exports": Map {
-                  "Tools" => Object {
-                    "code": "
-    {
-        oneOf: (array: string[]) => string;
-        randomFromSchema: (schema: JSONSchema6 ) => unknown;
-        accepts: (contentType: string) => boolean;
-    }",
-                    "done": true,
-                    "id": "tools",
-                    "isType": true,
-                    "name": "Tools",
-                    "promise": Promise {},
-                    "typeDeclaration": "",
-                  },
-                },
-                "externalImports": Map {
-                  "JSONSchema6" => Object {
-                    "isType": false,
-                    "modulePath": "json-schema",
-                  },
-                },
-                "imports": Map {},
-                "path": "internal/tools.ts",
                 "repository": Repository {
                   "scripts": [Circular],
                   "writeFiles": [Function],
@@ -7386,22 +6892,19 @@ if (statusCode === \\"405\\") {
     "cache": Map {
       "OperationTypeCoder@petstore.yaml#/paths/~1store~1order/post@[object Object]:true" => "HTTP_POST",
       "SchemaTypeCoder@undefined@components/Order.ts:true" => "Order",
-      "tools@internal/tools.ts:true" => "Tools",
     },
     "exports": Map {
       "HTTP_POST" => Object {
-        "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: Order, context: Context, tools: Tools}) => {  
-            status: 200, 
-          contentType?: \\"application/json\\",
-          body?: Order
-          
-        } | {  
-            status: 405, 
-          
-          
-          
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        "code": "{/* error creating export \\"HTTP_POST\\" for path-types/store/order.types.ts: TypeError: Cannot convert undefined or null to object
+    at Function.keys (<anonymous>)
+    at keys (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:14:22)
+    at Array.map (<anonymous>)
+    at ResponseTypeCoder.map [as buildContentObjectType] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:10:10)
+    at ResponseTypeCoder.buildContentObjectType [as write] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:38:43)
+    at OperationTypeCoder.write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/operation-type-coder.js:101:7)
+    at write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/script.js:47:47) */}",
         "done": true,
+        "error": [TypeError: Cannot convert undefined or null to object],
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1store~1order/post",
         "isType": true,
         "name": "HTTP_POST",
@@ -7413,6 +6916,10 @@ if (statusCode === \\"405\\") {
       "Context" => Object {
         "isType": true,
         "modulePath": "../../context/context.js",
+      },
+      "ResponseBuilderBuilder" => Object {
+        "isType": true,
+        "modulePath": "counterfact",
       },
     },
     "imports": Map {
@@ -7458,44 +6965,6 @@ if (statusCode === \\"405\\") {
           },
           "imports": Map {},
           "path": "components/Order.ts",
-          "repository": Repository {
-            "scripts": [Circular],
-            "writeFiles": [Function],
-          },
-          "typeCache": Map {},
-        },
-      },
-      "Tools" => Object {
-        "isType": true,
-        "name": "Tools",
-        "script": Script {
-          "cache": Map {
-            "tools@[object Object]:true" => "Tools",
-          },
-          "exports": Map {
-            "Tools" => Object {
-              "code": "
-    {
-        oneOf: (array: string[]) => string;
-        randomFromSchema: (schema: JSONSchema6 ) => unknown;
-        accepts: (contentType: string) => boolean;
-    }",
-              "done": true,
-              "id": "tools",
-              "isType": true,
-              "name": "Tools",
-              "promise": Promise {},
-              "typeDeclaration": "",
-            },
-          },
-          "externalImports": Map {
-            "JSONSchema6" => Object {
-              "isType": false,
-              "modulePath": "json-schema",
-            },
-          },
-          "imports": Map {},
-          "path": "internal/tools.ts",
           "repository": Repository {
             "scripts": [Circular],
             "writeFiles": [Function],
@@ -7615,33 +7084,20 @@ if (statusCode === \\"404\\") {
           "cache": Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get@[object Object]:true" => "HTTP_GET",
             "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete@[object Object]:true" => "HTTP_DELETE",
-            "tools@internal/tools.ts:true" => "Tools",
             "SchemaTypeCoder@undefined@components/Order.ts:true" => "Order",
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: {orderId: number}, header: never, body: undefined, context: Context, tools: Tools}) => {  
-            status: 200, 
-          contentType?: \\"application/xml\\",
-          body?: Order
-          
-        } | {  
-            status: 200, 
-          contentType?: \\"application/json\\",
-          body?: Order
-          
-        } | {  
-            status: 400, 
-          
-          
-          
-        } | {  
-            status: 404, 
-          
-          
-          
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+              "code": "{/* error creating export \\"HTTP_GET\\" for path-types/store/order/{orderId}.types.ts: TypeError: Cannot convert undefined or null to object
+    at Function.keys (<anonymous>)
+    at keys (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:14:22)
+    at Array.map (<anonymous>)
+    at ResponseTypeCoder.map [as buildContentObjectType] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:10:10)
+    at ResponseTypeCoder.buildContentObjectType [as write] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:38:43)
+    at OperationTypeCoder.write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/operation-type-coder.js:101:7)
+    at write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/script.js:47:47) */}",
               "done": true,
+              "error": [TypeError: Cannot convert undefined or null to object],
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get",
               "isType": true,
               "name": "HTTP_GET",
@@ -7649,18 +7105,16 @@ if (statusCode === \\"404\\") {
               "typeDeclaration": "",
             },
             "HTTP_DELETE" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: {orderId: number}, header: never, body: undefined, context: Context, tools: Tools}) => {  
-            status: 400, 
-          
-          
-          
-        } | {  
-            status: 404, 
-          
-          
-          
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+              "code": "{/* error creating export \\"HTTP_DELETE\\" for path-types/store/order/{orderId}.types.ts: TypeError: Cannot convert undefined or null to object
+    at Function.keys (<anonymous>)
+    at keys (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:14:22)
+    at Array.map (<anonymous>)
+    at ResponseTypeCoder.map [as buildContentObjectType] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:10:10)
+    at ResponseTypeCoder.buildContentObjectType [as write] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:38:43)
+    at OperationTypeCoder.write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/operation-type-coder.js:101:7)
+    at write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/script.js:47:47) */}",
               "done": true,
+              "error": [TypeError: Cannot convert undefined or null to object],
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete",
               "isType": true,
               "name": "HTTP_DELETE",
@@ -7673,46 +7127,12 @@ if (statusCode === \\"404\\") {
               "isType": true,
               "modulePath": "../../../context/context.js",
             },
+            "ResponseBuilderBuilder" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
           },
           "imports": Map {
-            "Tools" => Object {
-              "isType": true,
-              "name": "Tools",
-              "script": Script {
-                "cache": Map {
-                  "tools@[object Object]:true" => "Tools",
-                },
-                "exports": Map {
-                  "Tools" => Object {
-                    "code": "
-    {
-        oneOf: (array: string[]) => string;
-        randomFromSchema: (schema: JSONSchema6 ) => unknown;
-        accepts: (contentType: string) => boolean;
-    }",
-                    "done": true,
-                    "id": "tools",
-                    "isType": true,
-                    "name": "Tools",
-                    "promise": Promise {},
-                    "typeDeclaration": "",
-                  },
-                },
-                "externalImports": Map {
-                  "JSONSchema6" => Object {
-                    "isType": false,
-                    "modulePath": "json-schema",
-                  },
-                },
-                "imports": Map {},
-                "path": "internal/tools.ts",
-                "repository": Repository {
-                  "scripts": [Circular],
-                  "writeFiles": [Function],
-                },
-                "typeCache": Map {},
-              },
-            },
             "Order" => Object {
               "isType": true,
               "name": "Order",
@@ -7778,33 +7198,20 @@ if (statusCode === \\"404\\") {
           "cache": Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get@[object Object]:true" => "HTTP_GET",
             "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete@[object Object]:true" => "HTTP_DELETE",
-            "tools@internal/tools.ts:true" => "Tools",
             "SchemaTypeCoder@undefined@components/Order.ts:true" => "Order",
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: {orderId: number}, header: never, body: undefined, context: Context, tools: Tools}) => {  
-            status: 200, 
-          contentType?: \\"application/xml\\",
-          body?: Order
-          
-        } | {  
-            status: 200, 
-          contentType?: \\"application/json\\",
-          body?: Order
-          
-        } | {  
-            status: 400, 
-          
-          
-          
-        } | {  
-            status: 404, 
-          
-          
-          
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+              "code": "{/* error creating export \\"HTTP_GET\\" for path-types/store/order/{orderId}.types.ts: TypeError: Cannot convert undefined or null to object
+    at Function.keys (<anonymous>)
+    at keys (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:14:22)
+    at Array.map (<anonymous>)
+    at ResponseTypeCoder.map [as buildContentObjectType] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:10:10)
+    at ResponseTypeCoder.buildContentObjectType [as write] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:38:43)
+    at OperationTypeCoder.write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/operation-type-coder.js:101:7)
+    at write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/script.js:47:47) */}",
               "done": true,
+              "error": [TypeError: Cannot convert undefined or null to object],
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get",
               "isType": true,
               "name": "HTTP_GET",
@@ -7812,18 +7219,16 @@ if (statusCode === \\"404\\") {
               "typeDeclaration": "",
             },
             "HTTP_DELETE" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: {orderId: number}, header: never, body: undefined, context: Context, tools: Tools}) => {  
-            status: 400, 
-          
-          
-          
-        } | {  
-            status: 404, 
-          
-          
-          
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+              "code": "{/* error creating export \\"HTTP_DELETE\\" for path-types/store/order/{orderId}.types.ts: TypeError: Cannot convert undefined or null to object
+    at Function.keys (<anonymous>)
+    at keys (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:14:22)
+    at Array.map (<anonymous>)
+    at ResponseTypeCoder.map [as buildContentObjectType] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:10:10)
+    at ResponseTypeCoder.buildContentObjectType [as write] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:38:43)
+    at OperationTypeCoder.write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/operation-type-coder.js:101:7)
+    at write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/script.js:47:47) */}",
               "done": true,
+              "error": [TypeError: Cannot convert undefined or null to object],
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete",
               "isType": true,
               "name": "HTTP_DELETE",
@@ -7836,46 +7241,12 @@ if (statusCode === \\"404\\") {
               "isType": true,
               "modulePath": "../../../context/context.js",
             },
+            "ResponseBuilderBuilder" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
           },
           "imports": Map {
-            "Tools" => Object {
-              "isType": true,
-              "name": "Tools",
-              "script": Script {
-                "cache": Map {
-                  "tools@[object Object]:true" => "Tools",
-                },
-                "exports": Map {
-                  "Tools" => Object {
-                    "code": "
-    {
-        oneOf: (array: string[]) => string;
-        randomFromSchema: (schema: JSONSchema6 ) => unknown;
-        accepts: (contentType: string) => boolean;
-    }",
-                    "done": true,
-                    "id": "tools",
-                    "isType": true,
-                    "name": "Tools",
-                    "promise": Promise {},
-                    "typeDeclaration": "",
-                  },
-                },
-                "externalImports": Map {
-                  "JSONSchema6" => Object {
-                    "isType": false,
-                    "modulePath": "json-schema",
-                  },
-                },
-                "imports": Map {},
-                "path": "internal/tools.ts",
-                "repository": Repository {
-                  "scripts": [Circular],
-                  "writeFiles": [Function],
-                },
-                "typeCache": Map {},
-              },
-            },
             "Order" => Object {
               "isType": true,
               "name": "Order",
@@ -8044,33 +7415,20 @@ if (statusCode === \\"404\\") {
     "cache": Map {
       "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get@[object Object]:true" => "HTTP_GET",
       "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete@[object Object]:true" => "HTTP_DELETE",
-      "tools@internal/tools.ts:true" => "Tools",
       "SchemaTypeCoder@undefined@components/Order.ts:true" => "Order",
     },
     "exports": Map {
       "HTTP_GET" => Object {
-        "code": "({ query, path, header, body, context, tools }: { query: never, path: {orderId: number}, header: never, body: undefined, context: Context, tools: Tools}) => {  
-            status: 200, 
-          contentType?: \\"application/xml\\",
-          body?: Order
-          
-        } | {  
-            status: 200, 
-          contentType?: \\"application/json\\",
-          body?: Order
-          
-        } | {  
-            status: 400, 
-          
-          
-          
-        } | {  
-            status: 404, 
-          
-          
-          
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        "code": "{/* error creating export \\"HTTP_GET\\" for path-types/store/order/{orderId}.types.ts: TypeError: Cannot convert undefined or null to object
+    at Function.keys (<anonymous>)
+    at keys (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:14:22)
+    at Array.map (<anonymous>)
+    at ResponseTypeCoder.map [as buildContentObjectType] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:10:10)
+    at ResponseTypeCoder.buildContentObjectType [as write] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:38:43)
+    at OperationTypeCoder.write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/operation-type-coder.js:101:7)
+    at write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/script.js:47:47) */}",
         "done": true,
+        "error": [TypeError: Cannot convert undefined or null to object],
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get",
         "isType": true,
         "name": "HTTP_GET",
@@ -8078,18 +7436,16 @@ if (statusCode === \\"404\\") {
         "typeDeclaration": "",
       },
       "HTTP_DELETE" => Object {
-        "code": "({ query, path, header, body, context, tools }: { query: never, path: {orderId: number}, header: never, body: undefined, context: Context, tools: Tools}) => {  
-            status: 400, 
-          
-          
-          
-        } | {  
-            status: 404, 
-          
-          
-          
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        "code": "{/* error creating export \\"HTTP_DELETE\\" for path-types/store/order/{orderId}.types.ts: TypeError: Cannot convert undefined or null to object
+    at Function.keys (<anonymous>)
+    at keys (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:14:22)
+    at Array.map (<anonymous>)
+    at ResponseTypeCoder.map [as buildContentObjectType] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:10:10)
+    at ResponseTypeCoder.buildContentObjectType [as write] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:38:43)
+    at OperationTypeCoder.write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/operation-type-coder.js:101:7)
+    at write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/script.js:47:47) */}",
         "done": true,
+        "error": [TypeError: Cannot convert undefined or null to object],
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete",
         "isType": true,
         "name": "HTTP_DELETE",
@@ -8102,46 +7458,12 @@ if (statusCode === \\"404\\") {
         "isType": true,
         "modulePath": "../../../context/context.js",
       },
+      "ResponseBuilderBuilder" => Object {
+        "isType": true,
+        "modulePath": "counterfact",
+      },
     },
     "imports": Map {
-      "Tools" => Object {
-        "isType": true,
-        "name": "Tools",
-        "script": Script {
-          "cache": Map {
-            "tools@[object Object]:true" => "Tools",
-          },
-          "exports": Map {
-            "Tools" => Object {
-              "code": "
-    {
-        oneOf: (array: string[]) => string;
-        randomFromSchema: (schema: JSONSchema6 ) => unknown;
-        accepts: (contentType: string) => boolean;
-    }",
-              "done": true,
-              "id": "tools",
-              "isType": true,
-              "name": "Tools",
-              "promise": Promise {},
-              "typeDeclaration": "",
-            },
-          },
-          "externalImports": Map {
-            "JSONSchema6" => Object {
-              "isType": false,
-              "modulePath": "json-schema",
-            },
-          },
-          "imports": Map {},
-          "path": "internal/tools.ts",
-          "repository": Repository {
-            "scripts": [Circular],
-            "writeFiles": [Function],
-          },
-          "typeCache": Map {},
-        },
-      },
       "Order" => Object {
         "isType": true,
         "name": "Order",
@@ -8265,7 +7587,19 @@ if (tools.accepts(\\"application/xml\\")) {
           },
           "exports": Map {
             "HTTP_POST" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: User, context: Context, tools: Tools}) => {  
+              "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: User, context: Context, response: ResponseBuilderBuilder<{
+      default: {
+          headers: {};
+          content: {
+            \\"application/json\\": { 
+                    schema:  User
+                },
+\\"application/xml\\": { 
+                    schema:  User
+                }
+          }
+        }
+      }>, tools: Tools}) => {  
             status: number | undefined, 
           contentType?: \\"application/json\\",
           body?: User
@@ -8288,6 +7622,10 @@ if (tools.accepts(\\"application/xml\\")) {
             "Context" => Object {
               "isType": true,
               "modulePath": "../context/context.js",
+            },
+            "ResponseBuilderBuilder" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
             },
           },
           "imports": Map {
@@ -8501,7 +7839,19 @@ if (tools.accepts(\\"application/xml\\")) {
     },
     "exports": Map {
       "HTTP_POST" => Object {
-        "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: User, context: Context, tools: Tools}) => {  
+        "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: User, context: Context, response: ResponseBuilderBuilder<{
+      default: {
+          headers: {};
+          content: {
+            \\"application/json\\": { 
+                    schema:  User
+                },
+\\"application/xml\\": { 
+                    schema:  User
+                }
+          }
+        }
+      }>, tools: Tools}) => {  
             status: number | undefined, 
           contentType?: \\"application/json\\",
           body?: User
@@ -8524,6 +7874,10 @@ if (tools.accepts(\\"application/xml\\")) {
       "Context" => Object {
         "isType": true,
         "modulePath": "../context/context.js",
+      },
+      "ResponseBuilderBuilder" => Object {
+        "isType": true,
+        "modulePath": "counterfact",
       },
     },
     "imports": Map {
@@ -8689,27 +8043,19 @@ return {
           "cache": Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1user~1createWithList/post@[object Object]:true" => "HTTP_POST",
             "SchemaTypeCoder@undefined@components/User.ts:true" => "User",
-            "tools@internal/tools.ts:true" => "Tools",
           },
           "exports": Map {
             "HTTP_POST" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: Array<User>, context: Context, tools: Tools}) => {  
-            status: 200, 
-          contentType?: \\"application/xml\\",
-          body?: User
-          
-        } | {  
-            status: 200, 
-          contentType?: \\"application/json\\",
-          body?: User
-          
-        } | {  
-            status: number | undefined, 
-          
-          
-          
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+              "code": "{/* error creating export \\"HTTP_POST\\" for path-types/user/createWithList.types.ts: TypeError: Cannot convert undefined or null to object
+    at Function.keys (<anonymous>)
+    at keys (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:14:22)
+    at Array.map (<anonymous>)
+    at ResponseTypeCoder.map [as buildContentObjectType] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:10:10)
+    at ResponseTypeCoder.buildContentObjectType [as write] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:38:43)
+    at OperationTypeCoder.write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/operation-type-coder.js:101:7)
+    at write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/script.js:47:47) */}",
               "done": true,
+              "error": [TypeError: Cannot convert undefined or null to object],
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1createWithList/post",
               "isType": true,
               "name": "HTTP_POST",
@@ -8721,6 +8067,10 @@ return {
             "Context" => Object {
               "isType": true,
               "modulePath": "../../context/context.js",
+            },
+            "ResponseBuilderBuilder" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
             },
           },
           "imports": Map {
@@ -8766,44 +8116,6 @@ return {
                 },
                 "imports": Map {},
                 "path": "components/User.ts",
-                "repository": Repository {
-                  "scripts": [Circular],
-                  "writeFiles": [Function],
-                },
-                "typeCache": Map {},
-              },
-            },
-            "Tools" => Object {
-              "isType": true,
-              "name": "Tools",
-              "script": Script {
-                "cache": Map {
-                  "tools@[object Object]:true" => "Tools",
-                },
-                "exports": Map {
-                  "Tools" => Object {
-                    "code": "
-    {
-        oneOf: (array: string[]) => string;
-        randomFromSchema: (schema: JSONSchema6 ) => unknown;
-        accepts: (contentType: string) => boolean;
-    }",
-                    "done": true,
-                    "id": "tools",
-                    "isType": true,
-                    "name": "Tools",
-                    "promise": Promise {},
-                    "typeDeclaration": "",
-                  },
-                },
-                "externalImports": Map {
-                  "JSONSchema6" => Object {
-                    "isType": false,
-                    "modulePath": "json-schema",
-                  },
-                },
-                "imports": Map {},
-                "path": "internal/tools.ts",
                 "repository": Repository {
                   "scripts": [Circular],
                   "writeFiles": [Function],
@@ -8930,27 +8242,19 @@ return {
     "cache": Map {
       "OperationTypeCoder@petstore.yaml#/paths/~1user~1createWithList/post@[object Object]:true" => "HTTP_POST",
       "SchemaTypeCoder@undefined@components/User.ts:true" => "User",
-      "tools@internal/tools.ts:true" => "Tools",
     },
     "exports": Map {
       "HTTP_POST" => Object {
-        "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: Array<User>, context: Context, tools: Tools}) => {  
-            status: 200, 
-          contentType?: \\"application/xml\\",
-          body?: User
-          
-        } | {  
-            status: 200, 
-          contentType?: \\"application/json\\",
-          body?: User
-          
-        } | {  
-            status: number | undefined, 
-          
-          
-          
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        "code": "{/* error creating export \\"HTTP_POST\\" for path-types/user/createWithList.types.ts: TypeError: Cannot convert undefined or null to object
+    at Function.keys (<anonymous>)
+    at keys (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:14:22)
+    at Array.map (<anonymous>)
+    at ResponseTypeCoder.map [as buildContentObjectType] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:10:10)
+    at ResponseTypeCoder.buildContentObjectType [as write] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:38:43)
+    at OperationTypeCoder.write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/operation-type-coder.js:101:7)
+    at write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/script.js:47:47) */}",
         "done": true,
+        "error": [TypeError: Cannot convert undefined or null to object],
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1createWithList/post",
         "isType": true,
         "name": "HTTP_POST",
@@ -8962,6 +8266,10 @@ return {
       "Context" => Object {
         "isType": true,
         "modulePath": "../../context/context.js",
+      },
+      "ResponseBuilderBuilder" => Object {
+        "isType": true,
+        "modulePath": "counterfact",
       },
     },
     "imports": Map {
@@ -9007,44 +8315,6 @@ return {
           },
           "imports": Map {},
           "path": "components/User.ts",
-          "repository": Repository {
-            "scripts": [Circular],
-            "writeFiles": [Function],
-          },
-          "typeCache": Map {},
-        },
-      },
-      "Tools" => Object {
-        "isType": true,
-        "name": "Tools",
-        "script": Script {
-          "cache": Map {
-            "tools@[object Object]:true" => "Tools",
-          },
-          "exports": Map {
-            "Tools" => Object {
-              "code": "
-    {
-        oneOf: (array: string[]) => string;
-        randomFromSchema: (schema: JSONSchema6 ) => unknown;
-        accepts: (contentType: string) => boolean;
-    }",
-              "done": true,
-              "id": "tools",
-              "isType": true,
-              "name": "Tools",
-              "promise": Promise {},
-              "typeDeclaration": "",
-            },
-          },
-          "externalImports": Map {
-            "JSONSchema6" => Object {
-              "isType": false,
-              "modulePath": "json-schema",
-            },
-          },
-          "imports": Map {},
-          "path": "internal/tools.ts",
           "repository": Repository {
             "scripts": [Circular],
             "writeFiles": [Function],
@@ -9126,27 +8396,19 @@ if (statusCode === \\"400\\") {
         "script": Script {
           "cache": Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1user~1login/get@[object Object]:true" => "HTTP_GET",
-            "tools@internal/tools.ts:true" => "Tools",
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: {username?: string, password?: string}, path: never, header: never, body: undefined, context: Context, tools: Tools}) => {  
-            status: 200, 
-          contentType?: \\"application/xml\\",
-          body?: string
-          
-        } | {  
-            status: 200, 
-          contentType?: \\"application/json\\",
-          body?: string
-          
-        } | {  
-            status: 400, 
-          
-          
-          
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+              "code": "{/* error creating export \\"HTTP_GET\\" for path-types/user/login.types.ts: TypeError: Cannot convert undefined or null to object
+    at Function.keys (<anonymous>)
+    at keys (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:14:22)
+    at Array.map (<anonymous>)
+    at ResponseTypeCoder.map [as buildContentObjectType] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:10:10)
+    at ResponseTypeCoder.buildContentObjectType [as write] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:38:43)
+    at OperationTypeCoder.write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/operation-type-coder.js:101:7)
+    at write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/script.js:47:47) */}",
               "done": true,
+              "error": [TypeError: Cannot convert undefined or null to object],
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1login/get",
               "isType": true,
               "name": "HTTP_GET",
@@ -9159,47 +8421,12 @@ if (statusCode === \\"400\\") {
               "isType": true,
               "modulePath": "../../context/context.js",
             },
-          },
-          "imports": Map {
-            "Tools" => Object {
+            "ResponseBuilderBuilder" => Object {
               "isType": true,
-              "name": "Tools",
-              "script": Script {
-                "cache": Map {
-                  "tools@[object Object]:true" => "Tools",
-                },
-                "exports": Map {
-                  "Tools" => Object {
-                    "code": "
-    {
-        oneOf: (array: string[]) => string;
-        randomFromSchema: (schema: JSONSchema6 ) => unknown;
-        accepts: (contentType: string) => boolean;
-    }",
-                    "done": true,
-                    "id": "tools",
-                    "isType": true,
-                    "name": "Tools",
-                    "promise": Promise {},
-                    "typeDeclaration": "",
-                  },
-                },
-                "externalImports": Map {
-                  "JSONSchema6" => Object {
-                    "isType": false,
-                    "modulePath": "json-schema",
-                  },
-                },
-                "imports": Map {},
-                "path": "internal/tools.ts",
-                "repository": Repository {
-                  "scripts": [Circular],
-                  "writeFiles": [Function],
-                },
-                "typeCache": Map {},
-              },
+              "modulePath": "counterfact",
             },
           },
+          "imports": Map {},
           "path": "path-types/user/login.types.ts",
           "repository": Repository {
             "scripts": [Circular],
@@ -9219,27 +8446,19 @@ if (statusCode === \\"400\\") {
   "path-types/user/login.types.ts" => Script {
     "cache": Map {
       "OperationTypeCoder@petstore.yaml#/paths/~1user~1login/get@[object Object]:true" => "HTTP_GET",
-      "tools@internal/tools.ts:true" => "Tools",
     },
     "exports": Map {
       "HTTP_GET" => Object {
-        "code": "({ query, path, header, body, context, tools }: { query: {username?: string, password?: string}, path: never, header: never, body: undefined, context: Context, tools: Tools}) => {  
-            status: 200, 
-          contentType?: \\"application/xml\\",
-          body?: string
-          
-        } | {  
-            status: 200, 
-          contentType?: \\"application/json\\",
-          body?: string
-          
-        } | {  
-            status: 400, 
-          
-          
-          
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        "code": "{/* error creating export \\"HTTP_GET\\" for path-types/user/login.types.ts: TypeError: Cannot convert undefined or null to object
+    at Function.keys (<anonymous>)
+    at keys (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:14:22)
+    at Array.map (<anonymous>)
+    at ResponseTypeCoder.map [as buildContentObjectType] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:10:10)
+    at ResponseTypeCoder.buildContentObjectType [as write] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:38:43)
+    at OperationTypeCoder.write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/operation-type-coder.js:101:7)
+    at write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/script.js:47:47) */}",
         "done": true,
+        "error": [TypeError: Cannot convert undefined or null to object],
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1login/get",
         "isType": true,
         "name": "HTTP_GET",
@@ -9252,47 +8471,12 @@ if (statusCode === \\"400\\") {
         "isType": true,
         "modulePath": "../../context/context.js",
       },
-    },
-    "imports": Map {
-      "Tools" => Object {
+      "ResponseBuilderBuilder" => Object {
         "isType": true,
-        "name": "Tools",
-        "script": Script {
-          "cache": Map {
-            "tools@[object Object]:true" => "Tools",
-          },
-          "exports": Map {
-            "Tools" => Object {
-              "code": "
-    {
-        oneOf: (array: string[]) => string;
-        randomFromSchema: (schema: JSONSchema6 ) => unknown;
-        accepts: (contentType: string) => boolean;
-    }",
-              "done": true,
-              "id": "tools",
-              "isType": true,
-              "name": "Tools",
-              "promise": Promise {},
-              "typeDeclaration": "",
-            },
-          },
-          "externalImports": Map {
-            "JSONSchema6" => Object {
-              "isType": false,
-              "modulePath": "json-schema",
-            },
-          },
-          "imports": Map {},
-          "path": "internal/tools.ts",
-          "repository": Repository {
-            "scripts": [Circular],
-            "writeFiles": [Function],
-          },
-          "typeCache": Map {},
-        },
+        "modulePath": "counterfact",
       },
     },
+    "imports": Map {},
     "path": "path-types/user/login.types.ts",
     "repository": Repository {
       "scripts": [Circular],
@@ -9336,17 +8520,19 @@ if (statusCode === \\"400\\") {
         "script": Script {
           "cache": Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1user~1logout/get@[object Object]:true" => "HTTP_GET",
-            "tools@internal/tools.ts:true" => "Tools",
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: never, header: never, body: undefined, context: Context, tools: Tools}) => {  
-            status: number | undefined, 
-          
-          
-          
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+              "code": "{/* error creating export \\"HTTP_GET\\" for path-types/user/logout.types.ts: TypeError: Cannot convert undefined or null to object
+    at Function.keys (<anonymous>)
+    at keys (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:14:22)
+    at Array.map (<anonymous>)
+    at ResponseTypeCoder.map [as buildContentObjectType] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:10:10)
+    at ResponseTypeCoder.buildContentObjectType [as write] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:38:43)
+    at OperationTypeCoder.write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/operation-type-coder.js:101:7)
+    at write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/script.js:47:47) */}",
               "done": true,
+              "error": [TypeError: Cannot convert undefined or null to object],
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1logout/get",
               "isType": true,
               "name": "HTTP_GET",
@@ -9359,47 +8545,12 @@ if (statusCode === \\"400\\") {
               "isType": true,
               "modulePath": "../../context/context.js",
             },
-          },
-          "imports": Map {
-            "Tools" => Object {
+            "ResponseBuilderBuilder" => Object {
               "isType": true,
-              "name": "Tools",
-              "script": Script {
-                "cache": Map {
-                  "tools@[object Object]:true" => "Tools",
-                },
-                "exports": Map {
-                  "Tools" => Object {
-                    "code": "
-    {
-        oneOf: (array: string[]) => string;
-        randomFromSchema: (schema: JSONSchema6 ) => unknown;
-        accepts: (contentType: string) => boolean;
-    }",
-                    "done": true,
-                    "id": "tools",
-                    "isType": true,
-                    "name": "Tools",
-                    "promise": Promise {},
-                    "typeDeclaration": "",
-                  },
-                },
-                "externalImports": Map {
-                  "JSONSchema6" => Object {
-                    "isType": false,
-                    "modulePath": "json-schema",
-                  },
-                },
-                "imports": Map {},
-                "path": "internal/tools.ts",
-                "repository": Repository {
-                  "scripts": [Circular],
-                  "writeFiles": [Function],
-                },
-                "typeCache": Map {},
-              },
+              "modulePath": "counterfact",
             },
           },
+          "imports": Map {},
           "path": "path-types/user/logout.types.ts",
           "repository": Repository {
             "scripts": [Circular],
@@ -9419,17 +8570,19 @@ if (statusCode === \\"400\\") {
   "path-types/user/logout.types.ts" => Script {
     "cache": Map {
       "OperationTypeCoder@petstore.yaml#/paths/~1user~1logout/get@[object Object]:true" => "HTTP_GET",
-      "tools@internal/tools.ts:true" => "Tools",
     },
     "exports": Map {
       "HTTP_GET" => Object {
-        "code": "({ query, path, header, body, context, tools }: { query: never, path: never, header: never, body: undefined, context: Context, tools: Tools}) => {  
-            status: number | undefined, 
-          
-          
-          
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        "code": "{/* error creating export \\"HTTP_GET\\" for path-types/user/logout.types.ts: TypeError: Cannot convert undefined or null to object
+    at Function.keys (<anonymous>)
+    at keys (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:14:22)
+    at Array.map (<anonymous>)
+    at ResponseTypeCoder.map [as buildContentObjectType] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:10:10)
+    at ResponseTypeCoder.buildContentObjectType [as write] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:38:43)
+    at OperationTypeCoder.write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/operation-type-coder.js:101:7)
+    at write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/script.js:47:47) */}",
         "done": true,
+        "error": [TypeError: Cannot convert undefined or null to object],
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1logout/get",
         "isType": true,
         "name": "HTTP_GET",
@@ -9442,47 +8595,12 @@ if (statusCode === \\"400\\") {
         "isType": true,
         "modulePath": "../../context/context.js",
       },
-    },
-    "imports": Map {
-      "Tools" => Object {
+      "ResponseBuilderBuilder" => Object {
         "isType": true,
-        "name": "Tools",
-        "script": Script {
-          "cache": Map {
-            "tools@[object Object]:true" => "Tools",
-          },
-          "exports": Map {
-            "Tools" => Object {
-              "code": "
-    {
-        oneOf: (array: string[]) => string;
-        randomFromSchema: (schema: JSONSchema6 ) => unknown;
-        accepts: (contentType: string) => boolean;
-    }",
-              "done": true,
-              "id": "tools",
-              "isType": true,
-              "name": "Tools",
-              "promise": Promise {},
-              "typeDeclaration": "",
-            },
-          },
-          "externalImports": Map {
-            "JSONSchema6" => Object {
-              "isType": false,
-              "modulePath": "json-schema",
-            },
-          },
-          "imports": Map {},
-          "path": "internal/tools.ts",
-          "repository": Repository {
-            "scripts": [Circular],
-            "writeFiles": [Function],
-          },
-          "typeCache": Map {},
-        },
+        "modulePath": "counterfact",
       },
     },
+    "imports": Map {},
     "path": "path-types/user/logout.types.ts",
     "repository": Repository {
       "scripts": [Circular],
@@ -9618,33 +8736,20 @@ if (statusCode === \\"404\\") {
             "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/get@[object Object]:true" => "HTTP_GET",
             "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/put@[object Object]:true" => "HTTP_PUT",
             "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/delete@[object Object]:true" => "HTTP_DELETE",
-            "tools@internal/tools.ts:true" => "Tools",
             "SchemaTypeCoder@undefined@components/User.ts:true" => "User",
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: undefined, context: Context, tools: Tools}) => {  
-            status: 200, 
-          contentType?: \\"application/xml\\",
-          body?: User
-          
-        } | {  
-            status: 200, 
-          contentType?: \\"application/json\\",
-          body?: User
-          
-        } | {  
-            status: 400, 
-          
-          
-          
-        } | {  
-            status: 404, 
-          
-          
-          
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+              "code": "{/* error creating export \\"HTTP_GET\\" for path-types/user/{username}.types.ts: TypeError: Cannot convert undefined or null to object
+    at Function.keys (<anonymous>)
+    at keys (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:14:22)
+    at Array.map (<anonymous>)
+    at ResponseTypeCoder.map [as buildContentObjectType] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:10:10)
+    at ResponseTypeCoder.buildContentObjectType [as write] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:38:43)
+    at OperationTypeCoder.write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/operation-type-coder.js:101:7)
+    at write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/script.js:47:47) */}",
               "done": true,
+              "error": [TypeError: Cannot convert undefined or null to object],
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/get",
               "isType": true,
               "name": "HTTP_GET",
@@ -9652,13 +8757,16 @@ if (statusCode === \\"404\\") {
               "typeDeclaration": "",
             },
             "HTTP_PUT" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: User, context: Context, tools: Tools}) => {  
-            status: number | undefined, 
-          
-          
-          
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+              "code": "{/* error creating export \\"HTTP_PUT\\" for path-types/user/{username}.types.ts: TypeError: Cannot convert undefined or null to object
+    at Function.keys (<anonymous>)
+    at keys (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:14:22)
+    at Array.map (<anonymous>)
+    at ResponseTypeCoder.map [as buildContentObjectType] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:10:10)
+    at ResponseTypeCoder.buildContentObjectType [as write] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:38:43)
+    at OperationTypeCoder.write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/operation-type-coder.js:101:7)
+    at write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/script.js:47:47) */}",
               "done": true,
+              "error": [TypeError: Cannot convert undefined or null to object],
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/put",
               "isType": true,
               "name": "HTTP_PUT",
@@ -9666,18 +8774,16 @@ if (statusCode === \\"404\\") {
               "typeDeclaration": "",
             },
             "HTTP_DELETE" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: undefined, context: Context, tools: Tools}) => {  
-            status: 400, 
-          
-          
-          
-        } | {  
-            status: 404, 
-          
-          
-          
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+              "code": "{/* error creating export \\"HTTP_DELETE\\" for path-types/user/{username}.types.ts: TypeError: Cannot convert undefined or null to object
+    at Function.keys (<anonymous>)
+    at keys (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:14:22)
+    at Array.map (<anonymous>)
+    at ResponseTypeCoder.map [as buildContentObjectType] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:10:10)
+    at ResponseTypeCoder.buildContentObjectType [as write] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:38:43)
+    at OperationTypeCoder.write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/operation-type-coder.js:101:7)
+    at write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/script.js:47:47) */}",
               "done": true,
+              "error": [TypeError: Cannot convert undefined or null to object],
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/delete",
               "isType": true,
               "name": "HTTP_DELETE",
@@ -9690,46 +8796,12 @@ if (statusCode === \\"404\\") {
               "isType": true,
               "modulePath": "../../context/context.js",
             },
+            "ResponseBuilderBuilder" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
           },
           "imports": Map {
-            "Tools" => Object {
-              "isType": true,
-              "name": "Tools",
-              "script": Script {
-                "cache": Map {
-                  "tools@[object Object]:true" => "Tools",
-                },
-                "exports": Map {
-                  "Tools" => Object {
-                    "code": "
-    {
-        oneOf: (array: string[]) => string;
-        randomFromSchema: (schema: JSONSchema6 ) => unknown;
-        accepts: (contentType: string) => boolean;
-    }",
-                    "done": true,
-                    "id": "tools",
-                    "isType": true,
-                    "name": "Tools",
-                    "promise": Promise {},
-                    "typeDeclaration": "",
-                  },
-                },
-                "externalImports": Map {
-                  "JSONSchema6" => Object {
-                    "isType": false,
-                    "modulePath": "json-schema",
-                  },
-                },
-                "imports": Map {},
-                "path": "internal/tools.ts",
-                "repository": Repository {
-                  "scripts": [Circular],
-                  "writeFiles": [Function],
-                },
-                "typeCache": Map {},
-              },
-            },
             "User" => Object {
               "isType": true,
               "name": "User",
@@ -9796,33 +8868,20 @@ if (statusCode === \\"404\\") {
             "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/get@[object Object]:true" => "HTTP_GET",
             "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/put@[object Object]:true" => "HTTP_PUT",
             "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/delete@[object Object]:true" => "HTTP_DELETE",
-            "tools@internal/tools.ts:true" => "Tools",
             "SchemaTypeCoder@undefined@components/User.ts:true" => "User",
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: undefined, context: Context, tools: Tools}) => {  
-            status: 200, 
-          contentType?: \\"application/xml\\",
-          body?: User
-          
-        } | {  
-            status: 200, 
-          contentType?: \\"application/json\\",
-          body?: User
-          
-        } | {  
-            status: 400, 
-          
-          
-          
-        } | {  
-            status: 404, 
-          
-          
-          
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+              "code": "{/* error creating export \\"HTTP_GET\\" for path-types/user/{username}.types.ts: TypeError: Cannot convert undefined or null to object
+    at Function.keys (<anonymous>)
+    at keys (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:14:22)
+    at Array.map (<anonymous>)
+    at ResponseTypeCoder.map [as buildContentObjectType] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:10:10)
+    at ResponseTypeCoder.buildContentObjectType [as write] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:38:43)
+    at OperationTypeCoder.write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/operation-type-coder.js:101:7)
+    at write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/script.js:47:47) */}",
               "done": true,
+              "error": [TypeError: Cannot convert undefined or null to object],
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/get",
               "isType": true,
               "name": "HTTP_GET",
@@ -9830,13 +8889,16 @@ if (statusCode === \\"404\\") {
               "typeDeclaration": "",
             },
             "HTTP_PUT" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: User, context: Context, tools: Tools}) => {  
-            status: number | undefined, 
-          
-          
-          
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+              "code": "{/* error creating export \\"HTTP_PUT\\" for path-types/user/{username}.types.ts: TypeError: Cannot convert undefined or null to object
+    at Function.keys (<anonymous>)
+    at keys (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:14:22)
+    at Array.map (<anonymous>)
+    at ResponseTypeCoder.map [as buildContentObjectType] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:10:10)
+    at ResponseTypeCoder.buildContentObjectType [as write] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:38:43)
+    at OperationTypeCoder.write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/operation-type-coder.js:101:7)
+    at write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/script.js:47:47) */}",
               "done": true,
+              "error": [TypeError: Cannot convert undefined or null to object],
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/put",
               "isType": true,
               "name": "HTTP_PUT",
@@ -9844,18 +8906,16 @@ if (statusCode === \\"404\\") {
               "typeDeclaration": "",
             },
             "HTTP_DELETE" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: undefined, context: Context, tools: Tools}) => {  
-            status: 400, 
-          
-          
-          
-        } | {  
-            status: 404, 
-          
-          
-          
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+              "code": "{/* error creating export \\"HTTP_DELETE\\" for path-types/user/{username}.types.ts: TypeError: Cannot convert undefined or null to object
+    at Function.keys (<anonymous>)
+    at keys (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:14:22)
+    at Array.map (<anonymous>)
+    at ResponseTypeCoder.map [as buildContentObjectType] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:10:10)
+    at ResponseTypeCoder.buildContentObjectType [as write] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:38:43)
+    at OperationTypeCoder.write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/operation-type-coder.js:101:7)
+    at write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/script.js:47:47) */}",
               "done": true,
+              "error": [TypeError: Cannot convert undefined or null to object],
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/delete",
               "isType": true,
               "name": "HTTP_DELETE",
@@ -9868,46 +8928,12 @@ if (statusCode === \\"404\\") {
               "isType": true,
               "modulePath": "../../context/context.js",
             },
+            "ResponseBuilderBuilder" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
           },
           "imports": Map {
-            "Tools" => Object {
-              "isType": true,
-              "name": "Tools",
-              "script": Script {
-                "cache": Map {
-                  "tools@[object Object]:true" => "Tools",
-                },
-                "exports": Map {
-                  "Tools" => Object {
-                    "code": "
-    {
-        oneOf: (array: string[]) => string;
-        randomFromSchema: (schema: JSONSchema6 ) => unknown;
-        accepts: (contentType: string) => boolean;
-    }",
-                    "done": true,
-                    "id": "tools",
-                    "isType": true,
-                    "name": "Tools",
-                    "promise": Promise {},
-                    "typeDeclaration": "",
-                  },
-                },
-                "externalImports": Map {
-                  "JSONSchema6" => Object {
-                    "isType": false,
-                    "modulePath": "json-schema",
-                  },
-                },
-                "imports": Map {},
-                "path": "internal/tools.ts",
-                "repository": Repository {
-                  "scripts": [Circular],
-                  "writeFiles": [Function],
-                },
-                "typeCache": Map {},
-              },
-            },
             "User" => Object {
               "isType": true,
               "name": "User",
@@ -9974,33 +9000,20 @@ if (statusCode === \\"404\\") {
             "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/get@[object Object]:true" => "HTTP_GET",
             "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/put@[object Object]:true" => "HTTP_PUT",
             "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/delete@[object Object]:true" => "HTTP_DELETE",
-            "tools@internal/tools.ts:true" => "Tools",
             "SchemaTypeCoder@undefined@components/User.ts:true" => "User",
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: undefined, context: Context, tools: Tools}) => {  
-            status: 200, 
-          contentType?: \\"application/xml\\",
-          body?: User
-          
-        } | {  
-            status: 200, 
-          contentType?: \\"application/json\\",
-          body?: User
-          
-        } | {  
-            status: 400, 
-          
-          
-          
-        } | {  
-            status: 404, 
-          
-          
-          
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+              "code": "{/* error creating export \\"HTTP_GET\\" for path-types/user/{username}.types.ts: TypeError: Cannot convert undefined or null to object
+    at Function.keys (<anonymous>)
+    at keys (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:14:22)
+    at Array.map (<anonymous>)
+    at ResponseTypeCoder.map [as buildContentObjectType] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:10:10)
+    at ResponseTypeCoder.buildContentObjectType [as write] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:38:43)
+    at OperationTypeCoder.write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/operation-type-coder.js:101:7)
+    at write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/script.js:47:47) */}",
               "done": true,
+              "error": [TypeError: Cannot convert undefined or null to object],
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/get",
               "isType": true,
               "name": "HTTP_GET",
@@ -10008,13 +9021,16 @@ if (statusCode === \\"404\\") {
               "typeDeclaration": "",
             },
             "HTTP_PUT" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: User, context: Context, tools: Tools}) => {  
-            status: number | undefined, 
-          
-          
-          
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+              "code": "{/* error creating export \\"HTTP_PUT\\" for path-types/user/{username}.types.ts: TypeError: Cannot convert undefined or null to object
+    at Function.keys (<anonymous>)
+    at keys (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:14:22)
+    at Array.map (<anonymous>)
+    at ResponseTypeCoder.map [as buildContentObjectType] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:10:10)
+    at ResponseTypeCoder.buildContentObjectType [as write] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:38:43)
+    at OperationTypeCoder.write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/operation-type-coder.js:101:7)
+    at write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/script.js:47:47) */}",
               "done": true,
+              "error": [TypeError: Cannot convert undefined or null to object],
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/put",
               "isType": true,
               "name": "HTTP_PUT",
@@ -10022,18 +9038,16 @@ if (statusCode === \\"404\\") {
               "typeDeclaration": "",
             },
             "HTTP_DELETE" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: undefined, context: Context, tools: Tools}) => {  
-            status: 400, 
-          
-          
-          
-        } | {  
-            status: 404, 
-          
-          
-          
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+              "code": "{/* error creating export \\"HTTP_DELETE\\" for path-types/user/{username}.types.ts: TypeError: Cannot convert undefined or null to object
+    at Function.keys (<anonymous>)
+    at keys (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:14:22)
+    at Array.map (<anonymous>)
+    at ResponseTypeCoder.map [as buildContentObjectType] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:10:10)
+    at ResponseTypeCoder.buildContentObjectType [as write] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:38:43)
+    at OperationTypeCoder.write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/operation-type-coder.js:101:7)
+    at write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/script.js:47:47) */}",
               "done": true,
+              "error": [TypeError: Cannot convert undefined or null to object],
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/delete",
               "isType": true,
               "name": "HTTP_DELETE",
@@ -10046,46 +9060,12 @@ if (statusCode === \\"404\\") {
               "isType": true,
               "modulePath": "../../context/context.js",
             },
+            "ResponseBuilderBuilder" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
           },
           "imports": Map {
-            "Tools" => Object {
-              "isType": true,
-              "name": "Tools",
-              "script": Script {
-                "cache": Map {
-                  "tools@[object Object]:true" => "Tools",
-                },
-                "exports": Map {
-                  "Tools" => Object {
-                    "code": "
-    {
-        oneOf: (array: string[]) => string;
-        randomFromSchema: (schema: JSONSchema6 ) => unknown;
-        accepts: (contentType: string) => boolean;
-    }",
-                    "done": true,
-                    "id": "tools",
-                    "isType": true,
-                    "name": "Tools",
-                    "promise": Promise {},
-                    "typeDeclaration": "",
-                  },
-                },
-                "externalImports": Map {
-                  "JSONSchema6" => Object {
-                    "isType": false,
-                    "modulePath": "json-schema",
-                  },
-                },
-                "imports": Map {},
-                "path": "internal/tools.ts",
-                "repository": Repository {
-                  "scripts": [Circular],
-                  "writeFiles": [Function],
-                },
-                "typeCache": Map {},
-              },
-            },
             "User" => Object {
               "isType": true,
               "name": "User",
@@ -10255,33 +9235,20 @@ if (statusCode === \\"404\\") {
       "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/get@[object Object]:true" => "HTTP_GET",
       "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/put@[object Object]:true" => "HTTP_PUT",
       "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/delete@[object Object]:true" => "HTTP_DELETE",
-      "tools@internal/tools.ts:true" => "Tools",
       "SchemaTypeCoder@undefined@components/User.ts:true" => "User",
     },
     "exports": Map {
       "HTTP_GET" => Object {
-        "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: undefined, context: Context, tools: Tools}) => {  
-            status: 200, 
-          contentType?: \\"application/xml\\",
-          body?: User
-          
-        } | {  
-            status: 200, 
-          contentType?: \\"application/json\\",
-          body?: User
-          
-        } | {  
-            status: 400, 
-          
-          
-          
-        } | {  
-            status: 404, 
-          
-          
-          
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        "code": "{/* error creating export \\"HTTP_GET\\" for path-types/user/{username}.types.ts: TypeError: Cannot convert undefined or null to object
+    at Function.keys (<anonymous>)
+    at keys (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:14:22)
+    at Array.map (<anonymous>)
+    at ResponseTypeCoder.map [as buildContentObjectType] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:10:10)
+    at ResponseTypeCoder.buildContentObjectType [as write] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:38:43)
+    at OperationTypeCoder.write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/operation-type-coder.js:101:7)
+    at write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/script.js:47:47) */}",
         "done": true,
+        "error": [TypeError: Cannot convert undefined or null to object],
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/get",
         "isType": true,
         "name": "HTTP_GET",
@@ -10289,13 +9256,16 @@ if (statusCode === \\"404\\") {
         "typeDeclaration": "",
       },
       "HTTP_PUT" => Object {
-        "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: User, context: Context, tools: Tools}) => {  
-            status: number | undefined, 
-          
-          
-          
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        "code": "{/* error creating export \\"HTTP_PUT\\" for path-types/user/{username}.types.ts: TypeError: Cannot convert undefined or null to object
+    at Function.keys (<anonymous>)
+    at keys (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:14:22)
+    at Array.map (<anonymous>)
+    at ResponseTypeCoder.map [as buildContentObjectType] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:10:10)
+    at ResponseTypeCoder.buildContentObjectType [as write] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:38:43)
+    at OperationTypeCoder.write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/operation-type-coder.js:101:7)
+    at write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/script.js:47:47) */}",
         "done": true,
+        "error": [TypeError: Cannot convert undefined or null to object],
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/put",
         "isType": true,
         "name": "HTTP_PUT",
@@ -10303,18 +9273,16 @@ if (statusCode === \\"404\\") {
         "typeDeclaration": "",
       },
       "HTTP_DELETE" => Object {
-        "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: undefined, context: Context, tools: Tools}) => {  
-            status: 400, 
-          
-          
-          
-        } | {  
-            status: 404, 
-          
-          
-          
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        "code": "{/* error creating export \\"HTTP_DELETE\\" for path-types/user/{username}.types.ts: TypeError: Cannot convert undefined or null to object
+    at Function.keys (<anonymous>)
+    at keys (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:14:22)
+    at Array.map (<anonymous>)
+    at ResponseTypeCoder.map [as buildContentObjectType] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:10:10)
+    at ResponseTypeCoder.buildContentObjectType [as write] (/Users/pmcelhaney/code/counterfact/src/typescript-generator/response-type.coder.js:38:43)
+    at OperationTypeCoder.write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/operation-type-coder.js:101:7)
+    at write (/Users/pmcelhaney/code/counterfact/src/typescript-generator/script.js:47:47) */}",
         "done": true,
+        "error": [TypeError: Cannot convert undefined or null to object],
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/delete",
         "isType": true,
         "name": "HTTP_DELETE",
@@ -10327,46 +9295,12 @@ if (statusCode === \\"404\\") {
         "isType": true,
         "modulePath": "../../context/context.js",
       },
+      "ResponseBuilderBuilder" => Object {
+        "isType": true,
+        "modulePath": "counterfact",
+      },
     },
     "imports": Map {
-      "Tools" => Object {
-        "isType": true,
-        "name": "Tools",
-        "script": Script {
-          "cache": Map {
-            "tools@[object Object]:true" => "Tools",
-          },
-          "exports": Map {
-            "Tools" => Object {
-              "code": "
-    {
-        oneOf: (array: string[]) => string;
-        randomFromSchema: (schema: JSONSchema6 ) => unknown;
-        accepts: (contentType: string) => boolean;
-    }",
-              "done": true,
-              "id": "tools",
-              "isType": true,
-              "name": "Tools",
-              "promise": Promise {},
-              "typeDeclaration": "",
-            },
-          },
-          "externalImports": Map {
-            "JSONSchema6" => Object {
-              "isType": false,
-              "modulePath": "json-schema",
-            },
-          },
-          "imports": Map {},
-          "path": "internal/tools.ts",
-          "repository": Repository {
-            "scripts": [Circular],
-            "writeFiles": [Function],
-          },
-          "typeCache": Map {},
-        },
-      },
       "User" => Object {
         "isType": true,
         "name": "User",
@@ -10676,40 +9610,6 @@ if (statusCode === \\"404\\") {
     },
     "typeCache": Map {},
   },
-  "internal/tools.ts" => Script {
-    "cache": Map {
-      "tools@[object Object]:true" => "Tools",
-    },
-    "exports": Map {
-      "Tools" => Object {
-        "code": "
-    {
-        oneOf: (array: string[]) => string;
-        randomFromSchema: (schema: JSONSchema6 ) => unknown;
-        accepts: (contentType: string) => boolean;
-    }",
-        "done": true,
-        "id": "tools",
-        "isType": true,
-        "name": "Tools",
-        "promise": Promise {},
-        "typeDeclaration": "",
-      },
-    },
-    "externalImports": Map {
-      "JSONSchema6" => Object {
-        "isType": false,
-        "modulePath": "json-schema",
-      },
-    },
-    "imports": Map {},
-    "path": "internal/tools.ts",
-    "repository": Repository {
-      "scripts": [Circular],
-      "writeFiles": [Function],
-    },
-    "typeCache": Map {},
-  },
   "components/ApiResponse.ts" => Script {
     "cache": Map {
       "SchemaTypeCoder@undefined@[object Object]:true" => "ApiResponse",
@@ -10749,6 +9649,40 @@ if (statusCode === \\"404\\") {
     },
     "imports": Map {},
     "path": "components/ApiResponse.ts",
+    "repository": Repository {
+      "scripts": [Circular],
+      "writeFiles": [Function],
+    },
+    "typeCache": Map {},
+  },
+  "internal/tools.ts" => Script {
+    "cache": Map {
+      "tools@[object Object]:true" => "Tools",
+    },
+    "exports": Map {
+      "Tools" => Object {
+        "code": "
+    {
+        oneOf: (array: string[]) => string;
+        randomFromSchema: (schema: JSONSchema6 ) => unknown;
+        accepts: (contentType: string) => boolean;
+    }",
+        "done": true,
+        "id": "tools",
+        "isType": true,
+        "name": "Tools",
+        "promise": Promise {},
+        "typeDeclaration": "",
+      },
+    },
+    "externalImports": Map {
+      "JSONSchema6" => Object {
+        "isType": false,
+        "modulePath": "json-schema",
+      },
+    },
+    "imports": Map {},
+    "path": "internal/tools.ts",
     "repository": Repository {
       "scripts": [Circular],
       "writeFiles": [Function],

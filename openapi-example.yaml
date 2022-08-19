@@ -1,4 +1,6 @@
 openapi: 3.0.3
+servers:
+  - url: /
 info:
   version: 1.0.0 
   title: Sample API
