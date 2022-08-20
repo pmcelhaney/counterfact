@@ -250,6 +250,10 @@ if (statusCode === \\"405\\") {
               "isType": true,
               "modulePath": "counterfact",
             },
+            "HttpStatusCode" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
           },
           "imports": Map {
             "Pet" => Object {
@@ -675,6 +679,10 @@ if (statusCode === \\"405\\") {
               "modulePath": "../context/context.js",
             },
             "ResponseBuilderBuilder" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
+            "HttpStatusCode" => Object {
               "isType": true,
               "modulePath": "counterfact",
             },
@@ -1623,6 +1631,10 @@ if (statusCode === \\"405\\") {
         "isType": true,
         "modulePath": "counterfact",
       },
+      "HttpStatusCode" => Object {
+        "isType": true,
+        "modulePath": "counterfact",
+      },
     },
     "imports": Map {
       "Pet" => Object {
@@ -2053,6 +2065,10 @@ if (statusCode === \\"400\\") {
               "modulePath": "../../context/context.js",
             },
             "ResponseBuilderBuilder" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
+            "HttpStatusCode" => Object {
               "isType": true,
               "modulePath": "counterfact",
             },
@@ -2939,6 +2955,10 @@ if (statusCode === \\"400\\") {
         "isType": true,
         "modulePath": "counterfact",
       },
+      "HttpStatusCode" => Object {
+        "isType": true,
+        "modulePath": "counterfact",
+      },
     },
     "imports": Map {
       "Pet" => Object {
@@ -3369,6 +3389,10 @@ if (statusCode === \\"400\\") {
               "modulePath": "../../context/context.js",
             },
             "ResponseBuilderBuilder" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
+            "HttpStatusCode" => Object {
               "isType": true,
               "modulePath": "counterfact",
             },
@@ -4255,6 +4279,10 @@ if (statusCode === \\"400\\") {
         "isType": true,
         "modulePath": "counterfact",
       },
+      "HttpStatusCode" => Object {
+        "isType": true,
+        "modulePath": "counterfact",
+      },
     },
     "imports": Map {
       "Pet" => Object {
@@ -4791,6 +4819,10 @@ if (statusCode === \\"404\\") {
               "isType": true,
               "modulePath": "counterfact",
             },
+            "HttpStatusCode" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
           },
           "imports": Map {
             "Pet" => Object {
@@ -5211,6 +5243,10 @@ if (statusCode === \\"404\\") {
               "isType": true,
               "modulePath": "counterfact",
             },
+            "HttpStatusCode" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
           },
           "imports": Map {
             "Pet" => Object {
@@ -5628,6 +5664,10 @@ if (statusCode === \\"404\\") {
               "modulePath": "../../context/context.js",
             },
             "ResponseBuilderBuilder" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
+            "HttpStatusCode" => Object {
               "isType": true,
               "modulePath": "counterfact",
             },
@@ -6568,6 +6608,10 @@ if (statusCode === \\"404\\") {
         "isType": true,
         "modulePath": "counterfact",
       },
+      "HttpStatusCode" => Object {
+        "isType": true,
+        "modulePath": "counterfact",
+      },
     },
     "imports": Map {
       "Pet" => Object {
@@ -6959,6 +7003,10 @@ if (statusCode === \\"404\\") {
               "isType": true,
               "modulePath": "counterfact",
             },
+            "HttpStatusCode" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
           },
           "imports": Map {
             "ApiResponse" => Object {
@@ -7203,6 +7251,10 @@ if (statusCode === \\"404\\") {
         "isType": true,
         "modulePath": "counterfact",
       },
+      "HttpStatusCode" => Object {
+        "isType": true,
+        "modulePath": "counterfact",
+      },
     },
     "imports": Map {
       "ApiResponse" => Object {
@@ -7390,6 +7442,10 @@ if (statusCode === \\"404\\") {
               "isType": true,
               "modulePath": "counterfact",
             },
+            "HttpStatusCode" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
           },
           "imports": Map {
             "Tools" => Object {
@@ -7483,6 +7539,10 @@ if (statusCode === \\"404\\") {
         "modulePath": "../../context/context.js",
       },
       "ResponseBuilderBuilder" => Object {
+        "isType": true,
+        "modulePath": "counterfact",
+      },
+      "HttpStatusCode" => Object {
         "isType": true,
         "modulePath": "counterfact",
       },
@@ -7633,6 +7693,10 @@ if (statusCode === \\"405\\") {
               "modulePath": "../../context/context.js",
             },
             "ResponseBuilderBuilder" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
+            "HttpStatusCode" => Object {
               "isType": true,
               "modulePath": "counterfact",
             },
@@ -7887,6 +7951,10 @@ if (statusCode === \\"405\\") {
         "modulePath": "../../context/context.js",
       },
       "ResponseBuilderBuilder" => Object {
+        "isType": true,
+        "modulePath": "counterfact",
+      },
+      "HttpStatusCode" => Object {
         "isType": true,
         "modulePath": "counterfact",
       },
@@ -8187,6 +8255,10 @@ if (statusCode === \\"404\\") {
               "isType": true,
               "modulePath": "counterfact",
             },
+            "HttpStatusCode" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
           },
           "imports": Map {
             "Order" => Object {
@@ -8385,6 +8457,10 @@ if (statusCode === \\"404\\") {
               "modulePath": "../../../context/context.js",
             },
             "ResponseBuilderBuilder" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
+            "HttpStatusCode" => Object {
               "isType": true,
               "modulePath": "counterfact",
             },
@@ -8692,6 +8768,10 @@ if (statusCode === \\"404\\") {
         "isType": true,
         "modulePath": "counterfact",
       },
+      "HttpStatusCode" => Object {
+        "isType": true,
+        "modulePath": "counterfact",
+      },
     },
     "imports": Map {
       "Order" => Object {
@@ -8856,7 +8936,7 @@ if (tools.accepts(\\"application/xml\\")) {
           "exports": Map {
             "HTTP_POST" => Object {
               "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: User, context: Context, response: ResponseBuilderBuilder<{
-      default: {
+      [statusCode in HttpStatusCode]: {
           headers: {};
           content: {
       \\"application/json\\": { 
@@ -8892,6 +8972,10 @@ if (tools.accepts(\\"application/xml\\")) {
               "modulePath": "../context/context.js",
             },
             "ResponseBuilderBuilder" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
+            "HttpStatusCode" => Object {
               "isType": true,
               "modulePath": "counterfact",
             },
@@ -9108,7 +9192,7 @@ if (tools.accepts(\\"application/xml\\")) {
     "exports": Map {
       "HTTP_POST" => Object {
         "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: User, context: Context, response: ResponseBuilderBuilder<{
-      default: {
+      [statusCode in HttpStatusCode]: {
           headers: {};
           content: {
       \\"application/json\\": { 
@@ -9144,6 +9228,10 @@ if (tools.accepts(\\"application/xml\\")) {
         "modulePath": "../context/context.js",
       },
       "ResponseBuilderBuilder" => Object {
+        "isType": true,
+        "modulePath": "counterfact",
+      },
+      "HttpStatusCode" => Object {
         "isType": true,
         "modulePath": "counterfact",
       },
@@ -9326,7 +9414,7 @@ return {
               schema:  User
             }
     };
-        },default: {
+        },[statusCode in Exclude<HttpStatusCode, 200>]: {
           headers: {};
           content: {
       
@@ -9362,6 +9450,10 @@ return {
               "modulePath": "../../context/context.js",
             },
             "ResponseBuilderBuilder" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
+            "HttpStatusCode" => Object {
               "isType": true,
               "modulePath": "counterfact",
             },
@@ -9588,7 +9680,7 @@ return {
               schema:  User
             }
     };
-        },default: {
+        },[statusCode in Exclude<HttpStatusCode, 200>]: {
           headers: {};
           content: {
       
@@ -9624,6 +9716,10 @@ return {
         "modulePath": "../../context/context.js",
       },
       "ResponseBuilderBuilder" => Object {
+        "isType": true,
+        "modulePath": "counterfact",
+      },
+      "HttpStatusCode" => Object {
         "isType": true,
         "modulePath": "counterfact",
       },
@@ -9844,6 +9940,10 @@ if (statusCode === \\"400\\") {
               "isType": true,
               "modulePath": "counterfact",
             },
+            "HttpStatusCode" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
           },
           "imports": Map {
             "Tools" => Object {
@@ -9958,6 +10058,10 @@ if (statusCode === \\"400\\") {
         "isType": true,
         "modulePath": "counterfact",
       },
+      "HttpStatusCode" => Object {
+        "isType": true,
+        "modulePath": "counterfact",
+      },
     },
     "imports": Map {
       "Tools" => Object {
@@ -10047,7 +10151,7 @@ if (statusCode === \\"400\\") {
           "exports": Map {
             "HTTP_GET" => Object {
               "code": "({ query, path, header, body, context, tools }: { query: never, path: never, header: never, body: undefined, context: Context, response: ResponseBuilderBuilder<{
-      default: {
+      [statusCode in HttpStatusCode]: {
           headers: {};
           content: {
       
@@ -10073,6 +10177,10 @@ if (statusCode === \\"400\\") {
               "modulePath": "../../context/context.js",
             },
             "ResponseBuilderBuilder" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
+            "HttpStatusCode" => Object {
               "isType": true,
               "modulePath": "counterfact",
             },
@@ -10141,7 +10249,7 @@ if (statusCode === \\"400\\") {
     "exports": Map {
       "HTTP_GET" => Object {
         "code": "({ query, path, header, body, context, tools }: { query: never, path: never, header: never, body: undefined, context: Context, response: ResponseBuilderBuilder<{
-      default: {
+      [statusCode in HttpStatusCode]: {
           headers: {};
           content: {
       
@@ -10167,6 +10275,10 @@ if (statusCode === \\"400\\") {
         "modulePath": "../../context/context.js",
       },
       "ResponseBuilderBuilder" => Object {
+        "isType": true,
+        "modulePath": "counterfact",
+      },
+      "HttpStatusCode" => Object {
         "isType": true,
         "modulePath": "counterfact",
       },
@@ -10403,7 +10515,7 @@ if (statusCode === \\"404\\") {
             },
             "HTTP_PUT" => Object {
               "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: User, context: Context, response: ResponseBuilderBuilder<{
-      default: {
+      [statusCode in HttpStatusCode]: {
           headers: {};
           content: {
       
@@ -10460,6 +10572,10 @@ if (statusCode === \\"404\\") {
               "modulePath": "../../context/context.js",
             },
             "ResponseBuilderBuilder" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
+            "HttpStatusCode" => Object {
               "isType": true,
               "modulePath": "counterfact",
             },
@@ -10626,7 +10742,7 @@ if (statusCode === \\"404\\") {
             },
             "HTTP_PUT" => Object {
               "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: User, context: Context, response: ResponseBuilderBuilder<{
-      default: {
+      [statusCode in HttpStatusCode]: {
           headers: {};
           content: {
       
@@ -10683,6 +10799,10 @@ if (statusCode === \\"404\\") {
               "modulePath": "../../context/context.js",
             },
             "ResponseBuilderBuilder" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
+            "HttpStatusCode" => Object {
               "isType": true,
               "modulePath": "counterfact",
             },
@@ -10849,7 +10969,7 @@ if (statusCode === \\"404\\") {
             },
             "HTTP_PUT" => Object {
               "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: User, context: Context, response: ResponseBuilderBuilder<{
-      default: {
+      [statusCode in HttpStatusCode]: {
           headers: {};
           content: {
       
@@ -10906,6 +11026,10 @@ if (statusCode === \\"404\\") {
               "modulePath": "../../context/context.js",
             },
             "ResponseBuilderBuilder" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
+            "HttpStatusCode" => Object {
               "isType": true,
               "modulePath": "counterfact",
             },
@@ -11175,7 +11299,7 @@ if (statusCode === \\"404\\") {
       },
       "HTTP_PUT" => Object {
         "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: User, context: Context, response: ResponseBuilderBuilder<{
-      default: {
+      [statusCode in HttpStatusCode]: {
           headers: {};
           content: {
       
@@ -11232,6 +11356,10 @@ if (statusCode === \\"404\\") {
         "modulePath": "../../context/context.js",
       },
       "ResponseBuilderBuilder" => Object {
+        "isType": true,
+        "modulePath": "counterfact",
+      },
+      "HttpStatusCode" => Object {
         "isType": true,
         "modulePath": "counterfact",
       },

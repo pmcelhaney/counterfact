@@ -31,7 +31,7 @@ exports[`an OperationTypeCoder generates a complex post operation 1`] = `
         };
       };
     };
-    default: {
+    [statusCode in Exclude<HttpStatusCode, 200 | 400>]: {
       headers: {};
       content: {
         \\"application/json\\": {
@@ -76,7 +76,7 @@ exports[`an OperationTypeCoder generates a simple get operation 1`] = `
   body: undefined;
   context: Context;
   response: ResponseBuilderBuilder<{
-    default: {
+    [statusCode in HttpStatusCode]: {
       headers: {};
       content: {
         \\"application/json\\": {
