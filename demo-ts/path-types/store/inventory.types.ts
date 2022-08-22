@@ -32,4 +32,5 @@ export type HTTP_GET = ({
       contentType?: "application/json";
       body?: { [key: string]: number };
     }
-  | { status: 415; contentType: "text/plain"; body: string };
+  | { status: 415; contentType: "text/plain"; body: string }
+  | { isCounterfactResponse: true };

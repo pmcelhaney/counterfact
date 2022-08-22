@@ -103,6 +103,9 @@ export class OperationTypeCoder extends Coder {
     return `({ query, path, header, body, context, tools }: { query: ${queryType}, path: ${pathType}, header: ${headerType}, body: ${bodyType}, context: Context, response: ${responseType}, tools: ${script.importType(
       new ToolsCoder(),
       "internal/tools.ts"
-    )}}) => any`;
+    )}}) => ${this.responseTypes(
+      script
+    )} | { status: 415, contentType: "text/plain", body: string }
+    | { isCounterfactResponse: true }`;
   }
 }

@@ -30,6 +30,7 @@ type CounterfactResponse = {
   status: number;
   headers: Record<string, string | number>;
   content: Array<{ type: MediaType; body: unknown }>;
+  isCounterfactResponse: true;
 };
 
 type IfHasKey<R, Key, Yes, No> = Key extends keyof R ? Yes : No;

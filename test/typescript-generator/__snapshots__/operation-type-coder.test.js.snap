@@ -57,7 +57,8 @@ exports[`an OperationTypeCoder generates a complex post operation 1`] = `
       contentType?: \\"application/json\\";
       body?: Type;
     }
-  | { status: 415; contentType: \\"text/plain\\"; body: string };
+  | { status: 415; contentType: \\"text/plain\\"; body: string }
+  | { isCounterfactResponse: true };
 "
 `;
 
@@ -92,6 +93,7 @@ exports[`an OperationTypeCoder generates a simple get operation 1`] = `
       contentType?: \\"application/json\\";
       body?: Type;
     }
-  | { status: 415; contentType: \\"text/plain\\"; body: string };
+  | { status: 415; contentType: \\"text/plain\\"; body: string }
+  | { isCounterfactResponse: true };
 "
 `;

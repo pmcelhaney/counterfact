@@ -41,4 +41,5 @@ export type HTTP_POST = ({
       contentType?: "application/xml";
       body?: User;
     }
-  | { status: 415; contentType: "text/plain"; body: string };
+  | { status: 415; contentType: "text/plain"; body: string }
+  | { isCounterfactResponse: true };

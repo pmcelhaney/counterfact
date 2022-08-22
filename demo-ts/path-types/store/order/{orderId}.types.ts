@@ -55,7 +55,8 @@ export type HTTP_GET = ({
   | {
       status: 404;
     }
-  | { status: 415; contentType: "text/plain"; body: string };
+  | { status: 415; contentType: "text/plain"; body: string }
+  | { isCounterfactResponse: true };
 export type HTTP_DELETE = ({
   query,
   path,
@@ -87,4 +88,5 @@ export type HTTP_DELETE = ({
   | {
       status: 404;
     }
-  | { status: 415; contentType: "text/plain"; body: string };
+  | { status: 415; contentType: "text/plain"; body: string }
+  | { isCounterfactResponse: true };

@@ -26,4 +26,5 @@ export type HTTP_GET = ({
   | {
       status: number | undefined;
     }
-  | { status: 415; contentType: "text/plain"; body: string };
+  | { status: 415; contentType: "text/plain"; body: string }
+  | { isCounterfactResponse: true };

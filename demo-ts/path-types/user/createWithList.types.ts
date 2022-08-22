@@ -48,4 +48,5 @@ export type HTTP_POST = ({
   | {
       status: number | undefined;
     }
-  | { status: 415; contentType: "text/plain"; body: string };
+  | { status: 415; contentType: "text/plain"; body: string }
+  | { isCounterfactResponse: true };

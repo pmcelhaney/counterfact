@@ -48,4 +48,5 @@ export type HTTP_GET = ({
   | {
       status: 400;
     }
-  | { status: 415; contentType: "text/plain"; body: string };
+  | { status: 415; contentType: "text/plain"; body: string }
+  | { isCounterfactResponse: true };
