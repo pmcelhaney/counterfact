@@ -7,7 +7,7 @@
   "main": "index.js",
   "dependencies": {
     "@types/koa-bodyparser": "^4.3.7",
-    "counterfact": "^0.6.0",
+    "counterfact": "../",
     "json-schema-faker": "^0.5.0-rcv.44",
     "koa": "^2.13.4",
     "koa-bodyparser": "^4.3.0",
