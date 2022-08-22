@@ -89,6 +89,8 @@ export type ResponseBuilderBuilder<Responses extends OpenApiResponses> = {
 } & Record<string, ResponseBuilder<Responses["default"]>>;
 
 
+export function counterfact( basePath: string, context: any, openApiPath?: string);
+
 /* 
 // Usage:
 

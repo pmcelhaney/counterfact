@@ -5,6 +5,7 @@
   "type": "module",
   "main": "./src/counterfact.js",
   "exports": "./src/counterfact.js",
+  "types": "./src/counterfact.d.ts",
   "author": "Patrick McElhaney <pmcelhaney@gmail.com> (https://patrickmcelhaney.com)",
   "license": "MIT",
   "repository": "github:pmcelhaney/counterfact",
@@ -19,7 +20,7 @@
   "engines": {
     "node": ">=16.9.0"
   },
-  "types": "./src/types.d.ts",
+
   "bin": {
     "counterfact": "./bin/counterfact.js"
   },
