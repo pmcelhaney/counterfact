@@ -34,4 +34,4 @@ export type HTTP_POST = ({
       body?: ApiResponse;
     }
   | { status: 415; contentType: "text/plain"; body: string }
-  | { isCounterfactResponse: true };
+  | void;

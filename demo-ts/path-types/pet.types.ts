@@ -49,7 +49,7 @@ export type HTTP_POST = ({
       status: 405;
     }
   | { status: 415; contentType: "text/plain"; body: string }
-  | { isCounterfactResponse: true };
+  | void;
 export type HTTP_PUT = ({
   query,
   path,
@@ -110,4 +110,4 @@ export type HTTP_PUT = ({
       status: 405;
     }
   | { status: 415; contentType: "text/plain"; body: string }
-  | { isCounterfactResponse: true };
+  | void;

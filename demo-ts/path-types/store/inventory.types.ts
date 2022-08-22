@@ -33,4 +33,4 @@ export type HTTP_GET = ({
       body?: { [key: string]: number };
     }
   | { status: 415; contentType: "text/plain"; body: string }
-  | { isCounterfactResponse: true };
+  | void;

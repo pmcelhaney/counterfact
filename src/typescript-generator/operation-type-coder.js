@@ -106,6 +106,6 @@ export class OperationTypeCoder extends Coder {
     )}}) => ${this.responseTypes(
       script
     )} | { status: 415, contentType: "text/plain", body: string }
-    | { isCounterfactResponse: true }`;
+    | void`;
   }
 }

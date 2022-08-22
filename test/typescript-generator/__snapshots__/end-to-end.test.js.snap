@@ -172,7 +172,7 @@ if (statusCode === \\"405\\") {
           
           
         } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | { isCounterfactResponse: true }",
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet/post",
               "isType": true,
@@ -234,7 +234,7 @@ if (statusCode === \\"405\\") {
           
           
         } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | { isCounterfactResponse: true }",
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet/put",
               "isType": true,
@@ -606,7 +606,7 @@ if (statusCode === \\"405\\") {
           
           
         } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | { isCounterfactResponse: true }",
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet/post",
               "isType": true,
@@ -668,7 +668,7 @@ if (statusCode === \\"405\\") {
           
           
         } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | { isCounterfactResponse: true }",
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet/put",
               "isType": true,
@@ -1557,7 +1557,7 @@ if (statusCode === \\"405\\") {
           
           
         } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | { isCounterfactResponse: true }",
+    | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet/post",
         "isType": true,
@@ -1619,7 +1619,7 @@ if (statusCode === \\"405\\") {
           
           
         } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | { isCounterfactResponse: true }",
+    | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet/put",
         "isType": true,
@@ -2057,7 +2057,7 @@ if (statusCode === \\"400\\") {
           
           
         } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | { isCounterfactResponse: true }",
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
               "isType": true,
@@ -2945,7 +2945,7 @@ if (statusCode === \\"400\\") {
           
           
         } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | { isCounterfactResponse: true }",
+    | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
         "isType": true,
@@ -3383,7 +3383,7 @@ if (statusCode === \\"400\\") {
           
           
         } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | { isCounterfactResponse: true }",
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1findByTags/get",
               "isType": true,
@@ -4271,7 +4271,7 @@ if (statusCode === \\"400\\") {
           
           
         } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | { isCounterfactResponse: true }",
+    | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1findByTags/get",
         "isType": true,
@@ -4770,7 +4770,7 @@ if (statusCode === \\"404\\") {
           
           
         } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | { isCounterfactResponse: true }",
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/get",
               "isType": true,
@@ -4792,7 +4792,7 @@ if (statusCode === \\"404\\") {
           
           
         } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | { isCounterfactResponse: true }",
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/post",
               "isType": true,
@@ -4814,7 +4814,7 @@ if (statusCode === \\"404\\") {
           
           
         } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | { isCounterfactResponse: true }",
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/delete",
               "isType": true,
@@ -5197,7 +5197,7 @@ if (statusCode === \\"404\\") {
           
           
         } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | { isCounterfactResponse: true }",
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/get",
               "isType": true,
@@ -5219,7 +5219,7 @@ if (statusCode === \\"404\\") {
           
           
         } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | { isCounterfactResponse: true }",
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/post",
               "isType": true,
@@ -5241,7 +5241,7 @@ if (statusCode === \\"404\\") {
           
           
         } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | { isCounterfactResponse: true }",
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/delete",
               "isType": true,
@@ -5624,7 +5624,7 @@ if (statusCode === \\"404\\") {
           
           
         } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | { isCounterfactResponse: true }",
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/get",
               "isType": true,
@@ -5646,7 +5646,7 @@ if (statusCode === \\"404\\") {
           
           
         } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | { isCounterfactResponse: true }",
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/post",
               "isType": true,
@@ -5668,7 +5668,7 @@ if (statusCode === \\"404\\") {
           
           
         } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | { isCounterfactResponse: true }",
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/delete",
               "isType": true,
@@ -6568,7 +6568,7 @@ if (statusCode === \\"404\\") {
           
           
         } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | { isCounterfactResponse: true }",
+    | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/get",
         "isType": true,
@@ -6590,7 +6590,7 @@ if (statusCode === \\"404\\") {
           
           
         } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | { isCounterfactResponse: true }",
+    | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/post",
         "isType": true,
@@ -6612,7 +6612,7 @@ if (statusCode === \\"404\\") {
           
           
         } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | { isCounterfactResponse: true }",
+    | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/delete",
         "isType": true,
@@ -7008,7 +7008,7 @@ if (statusCode === \\"404\\") {
           body?: ApiResponse
           
         } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | { isCounterfactResponse: true }",
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post",
               "isType": true,
@@ -7257,7 +7257,7 @@ if (statusCode === \\"404\\") {
           body?: ApiResponse
           
         } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | { isCounterfactResponse: true }",
+    | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post",
         "isType": true,
@@ -7449,7 +7449,7 @@ if (statusCode === \\"404\\") {
           body?: {[key: string]: number}
           
         } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | { isCounterfactResponse: true }",
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1store~1inventory/get",
               "isType": true,
@@ -7550,7 +7550,7 @@ if (statusCode === \\"404\\") {
           body?: {[key: string]: number}
           
         } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | { isCounterfactResponse: true }",
+    | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1store~1inventory/get",
         "isType": true,
@@ -7705,7 +7705,7 @@ if (statusCode === \\"405\\") {
           
           
         } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | { isCounterfactResponse: true }",
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1store~1order/post",
               "isType": true,
@@ -7964,7 +7964,7 @@ if (statusCode === \\"405\\") {
           
           
         } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | { isCounterfactResponse: true }",
+    | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1store~1order/post",
         "isType": true,
@@ -8235,7 +8235,7 @@ if (statusCode === \\"404\\") {
           
           
         } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | { isCounterfactResponse: true }",
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get",
               "isType": true,
@@ -8267,7 +8267,7 @@ if (statusCode === \\"404\\") {
           
           
         } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | { isCounterfactResponse: true }",
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete",
               "isType": true,
@@ -8442,7 +8442,7 @@ if (statusCode === \\"404\\") {
           
           
         } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | { isCounterfactResponse: true }",
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get",
               "isType": true,
@@ -8474,7 +8474,7 @@ if (statusCode === \\"404\\") {
           
           
         } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | { isCounterfactResponse: true }",
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete",
               "isType": true,
@@ -8752,7 +8752,7 @@ if (statusCode === \\"404\\") {
           
           
         } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | { isCounterfactResponse: true }",
+    | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get",
         "isType": true,
@@ -8784,7 +8784,7 @@ if (statusCode === \\"404\\") {
           
           
         } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | { isCounterfactResponse: true }",
+    | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete",
         "isType": true,
@@ -8992,7 +8992,7 @@ if (tools.accepts(\\"application/xml\\")) {
           body?: User
           
         } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | { isCounterfactResponse: true }",
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user/post",
               "isType": true,
@@ -9249,7 +9249,7 @@ if (tools.accepts(\\"application/xml\\")) {
           body?: User
           
         } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | { isCounterfactResponse: true }",
+    | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1user/post",
         "isType": true,
@@ -9472,7 +9472,7 @@ return {
           
           
         } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | { isCounterfactResponse: true }",
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1createWithList/post",
               "isType": true,
@@ -9739,7 +9739,7 @@ return {
           
           
         } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | { isCounterfactResponse: true }",
+    | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1createWithList/post",
         "isType": true,
@@ -9961,7 +9961,7 @@ if (statusCode === \\"400\\") {
           
           
         } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | { isCounterfactResponse: true }",
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1login/get",
               "isType": true,
@@ -10080,7 +10080,7 @@ if (statusCode === \\"400\\") {
           
           
         } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | { isCounterfactResponse: true }",
+    | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1login/get",
         "isType": true,
@@ -10203,7 +10203,7 @@ if (statusCode === \\"400\\") {
           
           
         } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | { isCounterfactResponse: true }",
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1logout/get",
               "isType": true,
@@ -10302,7 +10302,7 @@ if (statusCode === \\"400\\") {
           
           
         } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | { isCounterfactResponse: true }",
+    | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1logout/get",
         "isType": true,
@@ -10548,7 +10548,7 @@ if (statusCode === \\"404\\") {
           
           
         } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | { isCounterfactResponse: true }",
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/get",
               "isType": true,
@@ -10570,7 +10570,7 @@ if (statusCode === \\"404\\") {
           
           
         } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | { isCounterfactResponse: true }",
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/put",
               "isType": true,
@@ -10602,7 +10602,7 @@ if (statusCode === \\"404\\") {
           
           
         } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | { isCounterfactResponse: true }",
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/delete",
               "isType": true,
@@ -10778,7 +10778,7 @@ if (statusCode === \\"404\\") {
           
           
         } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | { isCounterfactResponse: true }",
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/get",
               "isType": true,
@@ -10800,7 +10800,7 @@ if (statusCode === \\"404\\") {
           
           
         } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | { isCounterfactResponse: true }",
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/put",
               "isType": true,
@@ -10832,7 +10832,7 @@ if (statusCode === \\"404\\") {
           
           
         } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | { isCounterfactResponse: true }",
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/delete",
               "isType": true,
@@ -11008,7 +11008,7 @@ if (statusCode === \\"404\\") {
           
           
         } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | { isCounterfactResponse: true }",
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/get",
               "isType": true,
@@ -11030,7 +11030,7 @@ if (statusCode === \\"404\\") {
           
           
         } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | { isCounterfactResponse: true }",
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/put",
               "isType": true,
@@ -11062,7 +11062,7 @@ if (statusCode === \\"404\\") {
           
           
         } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | { isCounterfactResponse: true }",
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/delete",
               "isType": true,
@@ -11341,7 +11341,7 @@ if (statusCode === \\"404\\") {
           
           
         } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | { isCounterfactResponse: true }",
+    | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/get",
         "isType": true,
@@ -11363,7 +11363,7 @@ if (statusCode === \\"404\\") {
           
           
         } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | { isCounterfactResponse: true }",
+    | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/put",
         "isType": true,
@@ -11395,7 +11395,7 @@ if (statusCode === \\"404\\") {
           
           
         } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | { isCounterfactResponse: true }",
+    | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/delete",
         "isType": true,

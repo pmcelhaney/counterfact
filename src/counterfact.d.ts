@@ -71,7 +71,7 @@ type HeaderFunction<Response extends OpenApiResponse> = <
 type ResponseBuilder<Response extends OpenApiResponse> = [
   keyof Response["content"]
 ] extends [never]
-  ? CounterfactResponse
+  ? void
   : OmitValueWhenNever<{
       header: [keyof Response["headers"]] extends [never]
         ? never
@@ -84,7 +84,7 @@ type ResponseBuilder<Response extends OpenApiResponse> = [
       html: MaybeShortcut<"text/html", Response>;
       random: [keyof Response["content"]] extends [never]
         ? never
-        : () => CounterfactResponse;
+        : () => void;
     }>;
 
 export type ResponseBuilderBuilder<Responses extends OpenApiResponses> = {

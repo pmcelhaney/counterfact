@@ -42,4 +42,4 @@ export type HTTP_POST = ({
       body?: User;
     }
   | { status: 415; contentType: "text/plain"; body: string }
-  | { isCounterfactResponse: true };
+  | void;
