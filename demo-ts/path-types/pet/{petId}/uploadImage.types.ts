@@ -1,6 +1,8 @@
 import type { Context } from "../../../context/context.js";
-import type { Tools } from "./../../../internal/tools.js";
+import type { ResponseBuilderBuilder } from "counterfact";
+import type { HttpStatusCode } from "counterfact";
 import type { ApiResponse } from "./../../../components/ApiResponse.js";
+import type { Tools } from "./../../../internal/tools.js";
 export type HTTP_POST = ({
   query,
   path,
@@ -14,6 +16,16 @@ export type HTTP_POST = ({
   header: never;
   body: undefined;
   context: Context;
+  response: ResponseBuilderBuilder<{
+    200: {
+      headers: {};
+      content: {
+        "application/json": {
+          schema: ApiResponse;
+        };
+      };
+    };
+  }>;
   tools: Tools;
 }) =>
   | {
@@ -21,4 +33,5 @@ export type HTTP_POST = ({
       contentType?: "application/json";
       body?: ApiResponse;
     }
-  | { status: 415; contentType: "text/plain"; body: string };
+  | { status: 415; contentType: "text/plain"; body: string }
+  | void;

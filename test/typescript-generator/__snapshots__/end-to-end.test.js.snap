@@ -139,7 +139,24 @@ if (statusCode === \\"405\\") {
           },
           "exports": Map {
             "HTTP_POST" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: Pet, context: Context, tools: Tools}) => {  
+              "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: Pet, context: Context, response: ResponseBuilderBuilder<{
+      200: {
+          headers: {};
+          content: {
+      \\"application/xml\\": { 
+              schema:  Pet
+            },
+\\"application/json\\": { 
+              schema:  Pet
+            }
+    };
+        },405: {
+          headers: {};
+          content: {
+      
+    };
+        }
+      }>, tools: Tools}) => {  
             status: 200, 
           contentType?: \\"application/xml\\",
           body?: Pet
@@ -154,7 +171,8 @@ if (statusCode === \\"405\\") {
           
           
           
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        } | { status: 415, contentType: \\"text/plain\\", body: string }
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet/post",
               "isType": true,
@@ -163,7 +181,34 @@ if (statusCode === \\"405\\") {
               "typeDeclaration": "",
             },
             "HTTP_PUT" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: Pet, context: Context, tools: Tools}) => {  
+              "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: Pet, context: Context, response: ResponseBuilderBuilder<{
+      200: {
+          headers: {};
+          content: {
+      \\"application/xml\\": { 
+              schema:  Pet
+            },
+\\"application/json\\": { 
+              schema:  Pet
+            }
+    };
+        },400: {
+          headers: {};
+          content: {
+      
+    };
+        },404: {
+          headers: {};
+          content: {
+      
+    };
+        },405: {
+          headers: {};
+          content: {
+      
+    };
+        }
+      }>, tools: Tools}) => {  
             status: 200, 
           contentType?: \\"application/xml\\",
           body?: Pet
@@ -188,7 +233,8 @@ if (statusCode === \\"405\\") {
           
           
           
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        } | { status: 415, contentType: \\"text/plain\\", body: string }
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet/put",
               "isType": true,
@@ -201,6 +247,14 @@ if (statusCode === \\"405\\") {
             "Context" => Object {
               "isType": true,
               "modulePath": "../context/context.js",
+            },
+            "ResponseBuilderBuilder" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
+            "HttpStatusCode" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
             },
           },
           "imports": Map {
@@ -519,7 +573,24 @@ if (statusCode === \\"405\\") {
           },
           "exports": Map {
             "HTTP_POST" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: Pet, context: Context, tools: Tools}) => {  
+              "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: Pet, context: Context, response: ResponseBuilderBuilder<{
+      200: {
+          headers: {};
+          content: {
+      \\"application/xml\\": { 
+              schema:  Pet
+            },
+\\"application/json\\": { 
+              schema:  Pet
+            }
+    };
+        },405: {
+          headers: {};
+          content: {
+      
+    };
+        }
+      }>, tools: Tools}) => {  
             status: 200, 
           contentType?: \\"application/xml\\",
           body?: Pet
@@ -534,7 +605,8 @@ if (statusCode === \\"405\\") {
           
           
           
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        } | { status: 415, contentType: \\"text/plain\\", body: string }
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet/post",
               "isType": true,
@@ -543,7 +615,34 @@ if (statusCode === \\"405\\") {
               "typeDeclaration": "",
             },
             "HTTP_PUT" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: Pet, context: Context, tools: Tools}) => {  
+              "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: Pet, context: Context, response: ResponseBuilderBuilder<{
+      200: {
+          headers: {};
+          content: {
+      \\"application/xml\\": { 
+              schema:  Pet
+            },
+\\"application/json\\": { 
+              schema:  Pet
+            }
+    };
+        },400: {
+          headers: {};
+          content: {
+      
+    };
+        },404: {
+          headers: {};
+          content: {
+      
+    };
+        },405: {
+          headers: {};
+          content: {
+      
+    };
+        }
+      }>, tools: Tools}) => {  
             status: 200, 
           contentType?: \\"application/xml\\",
           body?: Pet
@@ -568,7 +667,8 @@ if (statusCode === \\"405\\") {
           
           
           
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        } | { status: 415, contentType: \\"text/plain\\", body: string }
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet/put",
               "isType": true,
@@ -581,6 +681,14 @@ if (statusCode === \\"405\\") {
             "Context" => Object {
               "isType": true,
               "modulePath": "../context/context.js",
+            },
+            "ResponseBuilderBuilder" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
+            "HttpStatusCode" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
             },
           },
           "imports": Map {
@@ -1416,7 +1524,24 @@ if (statusCode === \\"405\\") {
     },
     "exports": Map {
       "HTTP_POST" => Object {
-        "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: Pet, context: Context, tools: Tools}) => {  
+        "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: Pet, context: Context, response: ResponseBuilderBuilder<{
+      200: {
+          headers: {};
+          content: {
+      \\"application/xml\\": { 
+              schema:  Pet
+            },
+\\"application/json\\": { 
+              schema:  Pet
+            }
+    };
+        },405: {
+          headers: {};
+          content: {
+      
+    };
+        }
+      }>, tools: Tools}) => {  
             status: 200, 
           contentType?: \\"application/xml\\",
           body?: Pet
@@ -1431,7 +1556,8 @@ if (statusCode === \\"405\\") {
           
           
           
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        } | { status: 415, contentType: \\"text/plain\\", body: string }
+    | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet/post",
         "isType": true,
@@ -1440,7 +1566,34 @@ if (statusCode === \\"405\\") {
         "typeDeclaration": "",
       },
       "HTTP_PUT" => Object {
-        "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: Pet, context: Context, tools: Tools}) => {  
+        "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: Pet, context: Context, response: ResponseBuilderBuilder<{
+      200: {
+          headers: {};
+          content: {
+      \\"application/xml\\": { 
+              schema:  Pet
+            },
+\\"application/json\\": { 
+              schema:  Pet
+            }
+    };
+        },400: {
+          headers: {};
+          content: {
+      
+    };
+        },404: {
+          headers: {};
+          content: {
+      
+    };
+        },405: {
+          headers: {};
+          content: {
+      
+    };
+        }
+      }>, tools: Tools}) => {  
             status: 200, 
           contentType?: \\"application/xml\\",
           body?: Pet
@@ -1465,7 +1618,8 @@ if (statusCode === \\"405\\") {
           
           
           
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        } | { status: 415, contentType: \\"text/plain\\", body: string }
+    | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet/put",
         "isType": true,
@@ -1478,6 +1632,14 @@ if (statusCode === \\"405\\") {
       "Context" => Object {
         "isType": true,
         "modulePath": "../context/context.js",
+      },
+      "ResponseBuilderBuilder" => Object {
+        "isType": true,
+        "modulePath": "counterfact",
+      },
+      "HttpStatusCode" => Object {
+        "isType": true,
+        "modulePath": "counterfact",
       },
     },
     "imports": Map {
@@ -1857,12 +2019,29 @@ if (statusCode === \\"400\\") {
         "script": Script {
           "cache": Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1findByStatus/get@[object Object]:true" => "HTTP_GET",
-            "tools@internal/tools.ts:true" => "Tools",
             "SchemaTypeCoder@undefined@components/Pet.ts:true" => "Pet",
+            "tools@internal/tools.ts:true" => "Tools",
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: {status?: string}, path: never, header: never, body: undefined, context: Context, tools: Tools}) => {  
+              "code": "({ query, path, header, body, context, tools }: { query: {status?: string}, path: never, header: never, body: undefined, context: Context, response: ResponseBuilderBuilder<{
+      200: {
+          headers: {};
+          content: {
+      \\"application/xml\\": { 
+              schema:  Array<Pet>
+            },
+\\"application/json\\": { 
+              schema:  Array<Pet>
+            }
+    };
+        },400: {
+          headers: {};
+          content: {
+      
+    };
+        }
+      }>, tools: Tools}) => {  
             status: 200, 
           contentType?: \\"application/xml\\",
           body?: Array<Pet>
@@ -1877,7 +2056,8 @@ if (statusCode === \\"400\\") {
           
           
           
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        } | { status: 415, contentType: \\"text/plain\\", body: string }
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
               "isType": true,
@@ -1891,46 +2071,16 @@ if (statusCode === \\"400\\") {
               "isType": true,
               "modulePath": "../../context/context.js",
             },
+            "ResponseBuilderBuilder" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
+            "HttpStatusCode" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
           },
           "imports": Map {
-            "Tools" => Object {
-              "isType": true,
-              "name": "Tools",
-              "script": Script {
-                "cache": Map {
-                  "tools@[object Object]:true" => "Tools",
-                },
-                "exports": Map {
-                  "Tools" => Object {
-                    "code": "
-    {
-        oneOf: (array: string[]) => string;
-        randomFromSchema: (schema: JSONSchema6 ) => unknown;
-        accepts: (contentType: string) => boolean;
-    }",
-                    "done": true,
-                    "id": "tools",
-                    "isType": true,
-                    "name": "Tools",
-                    "promise": Promise {},
-                    "typeDeclaration": "",
-                  },
-                },
-                "externalImports": Map {
-                  "JSONSchema6" => Object {
-                    "isType": false,
-                    "modulePath": "json-schema",
-                  },
-                },
-                "imports": Map {},
-                "path": "internal/tools.ts",
-                "repository": Repository {
-                  "scripts": [Circular],
-                  "writeFiles": [Function],
-                },
-                "typeCache": Map {},
-              },
-            },
             "Pet" => Object {
               "isType": true,
               "name": "Pet",
@@ -2180,6 +2330,44 @@ if (statusCode === \\"400\\") {
                   },
                 },
                 "path": "components/Pet.ts",
+                "repository": Repository {
+                  "scripts": [Circular],
+                  "writeFiles": [Function],
+                },
+                "typeCache": Map {},
+              },
+            },
+            "Tools" => Object {
+              "isType": true,
+              "name": "Tools",
+              "script": Script {
+                "cache": Map {
+                  "tools@[object Object]:true" => "Tools",
+                },
+                "exports": Map {
+                  "Tools" => Object {
+                    "code": "
+    {
+        oneOf: (array: string[]) => string;
+        randomFromSchema: (schema: JSONSchema6 ) => unknown;
+        accepts: (contentType: string) => boolean;
+    }",
+                    "done": true,
+                    "id": "tools",
+                    "isType": true,
+                    "name": "Tools",
+                    "promise": Promise {},
+                    "typeDeclaration": "",
+                  },
+                },
+                "externalImports": Map {
+                  "JSONSchema6" => Object {
+                    "isType": false,
+                    "modulePath": "json-schema",
+                  },
+                },
+                "imports": Map {},
+                "path": "internal/tools.ts",
                 "repository": Repository {
                   "scripts": [Circular],
                   "writeFiles": [Function],
@@ -2719,12 +2907,29 @@ if (statusCode === \\"400\\") {
   "path-types/pet/findByStatus.types.ts" => Script {
     "cache": Map {
       "OperationTypeCoder@petstore.yaml#/paths/~1pet~1findByStatus/get@[object Object]:true" => "HTTP_GET",
-      "tools@internal/tools.ts:true" => "Tools",
       "SchemaTypeCoder@undefined@components/Pet.ts:true" => "Pet",
+      "tools@internal/tools.ts:true" => "Tools",
     },
     "exports": Map {
       "HTTP_GET" => Object {
-        "code": "({ query, path, header, body, context, tools }: { query: {status?: string}, path: never, header: never, body: undefined, context: Context, tools: Tools}) => {  
+        "code": "({ query, path, header, body, context, tools }: { query: {status?: string}, path: never, header: never, body: undefined, context: Context, response: ResponseBuilderBuilder<{
+      200: {
+          headers: {};
+          content: {
+      \\"application/xml\\": { 
+              schema:  Array<Pet>
+            },
+\\"application/json\\": { 
+              schema:  Array<Pet>
+            }
+    };
+        },400: {
+          headers: {};
+          content: {
+      
+    };
+        }
+      }>, tools: Tools}) => {  
             status: 200, 
           contentType?: \\"application/xml\\",
           body?: Array<Pet>
@@ -2739,7 +2944,8 @@ if (statusCode === \\"400\\") {
           
           
           
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        } | { status: 415, contentType: \\"text/plain\\", body: string }
+    | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
         "isType": true,
@@ -2753,46 +2959,16 @@ if (statusCode === \\"400\\") {
         "isType": true,
         "modulePath": "../../context/context.js",
       },
+      "ResponseBuilderBuilder" => Object {
+        "isType": true,
+        "modulePath": "counterfact",
+      },
+      "HttpStatusCode" => Object {
+        "isType": true,
+        "modulePath": "counterfact",
+      },
     },
     "imports": Map {
-      "Tools" => Object {
-        "isType": true,
-        "name": "Tools",
-        "script": Script {
-          "cache": Map {
-            "tools@[object Object]:true" => "Tools",
-          },
-          "exports": Map {
-            "Tools" => Object {
-              "code": "
-    {
-        oneOf: (array: string[]) => string;
-        randomFromSchema: (schema: JSONSchema6 ) => unknown;
-        accepts: (contentType: string) => boolean;
-    }",
-              "done": true,
-              "id": "tools",
-              "isType": true,
-              "name": "Tools",
-              "promise": Promise {},
-              "typeDeclaration": "",
-            },
-          },
-          "externalImports": Map {
-            "JSONSchema6" => Object {
-              "isType": false,
-              "modulePath": "json-schema",
-            },
-          },
-          "imports": Map {},
-          "path": "internal/tools.ts",
-          "repository": Repository {
-            "scripts": [Circular],
-            "writeFiles": [Function],
-          },
-          "typeCache": Map {},
-        },
-      },
       "Pet" => Object {
         "isType": true,
         "name": "Pet",
@@ -3049,6 +3225,44 @@ if (statusCode === \\"400\\") {
           "typeCache": Map {},
         },
       },
+      "Tools" => Object {
+        "isType": true,
+        "name": "Tools",
+        "script": Script {
+          "cache": Map {
+            "tools@[object Object]:true" => "Tools",
+          },
+          "exports": Map {
+            "Tools" => Object {
+              "code": "
+    {
+        oneOf: (array: string[]) => string;
+        randomFromSchema: (schema: JSONSchema6 ) => unknown;
+        accepts: (contentType: string) => boolean;
+    }",
+              "done": true,
+              "id": "tools",
+              "isType": true,
+              "name": "Tools",
+              "promise": Promise {},
+              "typeDeclaration": "",
+            },
+          },
+          "externalImports": Map {
+            "JSONSchema6" => Object {
+              "isType": false,
+              "modulePath": "json-schema",
+            },
+          },
+          "imports": Map {},
+          "path": "internal/tools.ts",
+          "repository": Repository {
+            "scripts": [Circular],
+            "writeFiles": [Function],
+          },
+          "typeCache": Map {},
+        },
+      },
     },
     "path": "path-types/pet/findByStatus.types.ts",
     "repository": Repository {
@@ -3131,12 +3345,29 @@ if (statusCode === \\"400\\") {
         "script": Script {
           "cache": Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1findByTags/get@[object Object]:true" => "HTTP_GET",
-            "tools@internal/tools.ts:true" => "Tools",
             "SchemaTypeCoder@undefined@components/Pet.ts:true" => "Pet",
+            "tools@internal/tools.ts:true" => "Tools",
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: {tags?: Array<string>}, path: never, header: never, body: undefined, context: Context, tools: Tools}) => {  
+              "code": "({ query, path, header, body, context, tools }: { query: {tags?: Array<string>}, path: never, header: never, body: undefined, context: Context, response: ResponseBuilderBuilder<{
+      200: {
+          headers: {};
+          content: {
+      \\"application/xml\\": { 
+              schema:  Array<Pet>
+            },
+\\"application/json\\": { 
+              schema:  Array<Pet>
+            }
+    };
+        },400: {
+          headers: {};
+          content: {
+      
+    };
+        }
+      }>, tools: Tools}) => {  
             status: 200, 
           contentType?: \\"application/xml\\",
           body?: Array<Pet>
@@ -3151,7 +3382,8 @@ if (statusCode === \\"400\\") {
           
           
           
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        } | { status: 415, contentType: \\"text/plain\\", body: string }
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1findByTags/get",
               "isType": true,
@@ -3165,46 +3397,16 @@ if (statusCode === \\"400\\") {
               "isType": true,
               "modulePath": "../../context/context.js",
             },
+            "ResponseBuilderBuilder" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
+            "HttpStatusCode" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
           },
           "imports": Map {
-            "Tools" => Object {
-              "isType": true,
-              "name": "Tools",
-              "script": Script {
-                "cache": Map {
-                  "tools@[object Object]:true" => "Tools",
-                },
-                "exports": Map {
-                  "Tools" => Object {
-                    "code": "
-    {
-        oneOf: (array: string[]) => string;
-        randomFromSchema: (schema: JSONSchema6 ) => unknown;
-        accepts: (contentType: string) => boolean;
-    }",
-                    "done": true,
-                    "id": "tools",
-                    "isType": true,
-                    "name": "Tools",
-                    "promise": Promise {},
-                    "typeDeclaration": "",
-                  },
-                },
-                "externalImports": Map {
-                  "JSONSchema6" => Object {
-                    "isType": false,
-                    "modulePath": "json-schema",
-                  },
-                },
-                "imports": Map {},
-                "path": "internal/tools.ts",
-                "repository": Repository {
-                  "scripts": [Circular],
-                  "writeFiles": [Function],
-                },
-                "typeCache": Map {},
-              },
-            },
             "Pet" => Object {
               "isType": true,
               "name": "Pet",
@@ -3454,6 +3656,44 @@ if (statusCode === \\"400\\") {
                   },
                 },
                 "path": "components/Pet.ts",
+                "repository": Repository {
+                  "scripts": [Circular],
+                  "writeFiles": [Function],
+                },
+                "typeCache": Map {},
+              },
+            },
+            "Tools" => Object {
+              "isType": true,
+              "name": "Tools",
+              "script": Script {
+                "cache": Map {
+                  "tools@[object Object]:true" => "Tools",
+                },
+                "exports": Map {
+                  "Tools" => Object {
+                    "code": "
+    {
+        oneOf: (array: string[]) => string;
+        randomFromSchema: (schema: JSONSchema6 ) => unknown;
+        accepts: (contentType: string) => boolean;
+    }",
+                    "done": true,
+                    "id": "tools",
+                    "isType": true,
+                    "name": "Tools",
+                    "promise": Promise {},
+                    "typeDeclaration": "",
+                  },
+                },
+                "externalImports": Map {
+                  "JSONSchema6" => Object {
+                    "isType": false,
+                    "modulePath": "json-schema",
+                  },
+                },
+                "imports": Map {},
+                "path": "internal/tools.ts",
                 "repository": Repository {
                   "scripts": [Circular],
                   "writeFiles": [Function],
@@ -3993,12 +4233,29 @@ if (statusCode === \\"400\\") {
   "path-types/pet/findByTags.types.ts" => Script {
     "cache": Map {
       "OperationTypeCoder@petstore.yaml#/paths/~1pet~1findByTags/get@[object Object]:true" => "HTTP_GET",
-      "tools@internal/tools.ts:true" => "Tools",
       "SchemaTypeCoder@undefined@components/Pet.ts:true" => "Pet",
+      "tools@internal/tools.ts:true" => "Tools",
     },
     "exports": Map {
       "HTTP_GET" => Object {
-        "code": "({ query, path, header, body, context, tools }: { query: {tags?: Array<string>}, path: never, header: never, body: undefined, context: Context, tools: Tools}) => {  
+        "code": "({ query, path, header, body, context, tools }: { query: {tags?: Array<string>}, path: never, header: never, body: undefined, context: Context, response: ResponseBuilderBuilder<{
+      200: {
+          headers: {};
+          content: {
+      \\"application/xml\\": { 
+              schema:  Array<Pet>
+            },
+\\"application/json\\": { 
+              schema:  Array<Pet>
+            }
+    };
+        },400: {
+          headers: {};
+          content: {
+      
+    };
+        }
+      }>, tools: Tools}) => {  
             status: 200, 
           contentType?: \\"application/xml\\",
           body?: Array<Pet>
@@ -4013,7 +4270,8 @@ if (statusCode === \\"400\\") {
           
           
           
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        } | { status: 415, contentType: \\"text/plain\\", body: string }
+    | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1findByTags/get",
         "isType": true,
@@ -4027,46 +4285,16 @@ if (statusCode === \\"400\\") {
         "isType": true,
         "modulePath": "../../context/context.js",
       },
+      "ResponseBuilderBuilder" => Object {
+        "isType": true,
+        "modulePath": "counterfact",
+      },
+      "HttpStatusCode" => Object {
+        "isType": true,
+        "modulePath": "counterfact",
+      },
     },
     "imports": Map {
-      "Tools" => Object {
-        "isType": true,
-        "name": "Tools",
-        "script": Script {
-          "cache": Map {
-            "tools@[object Object]:true" => "Tools",
-          },
-          "exports": Map {
-            "Tools" => Object {
-              "code": "
-    {
-        oneOf: (array: string[]) => string;
-        randomFromSchema: (schema: JSONSchema6 ) => unknown;
-        accepts: (contentType: string) => boolean;
-    }",
-              "done": true,
-              "id": "tools",
-              "isType": true,
-              "name": "Tools",
-              "promise": Promise {},
-              "typeDeclaration": "",
-            },
-          },
-          "externalImports": Map {
-            "JSONSchema6" => Object {
-              "isType": false,
-              "modulePath": "json-schema",
-            },
-          },
-          "imports": Map {},
-          "path": "internal/tools.ts",
-          "repository": Repository {
-            "scripts": [Circular],
-            "writeFiles": [Function],
-          },
-          "typeCache": Map {},
-        },
-      },
       "Pet" => Object {
         "isType": true,
         "name": "Pet",
@@ -4323,6 +4551,44 @@ if (statusCode === \\"400\\") {
           "typeCache": Map {},
         },
       },
+      "Tools" => Object {
+        "isType": true,
+        "name": "Tools",
+        "script": Script {
+          "cache": Map {
+            "tools@[object Object]:true" => "Tools",
+          },
+          "exports": Map {
+            "Tools" => Object {
+              "code": "
+    {
+        oneOf: (array: string[]) => string;
+        randomFromSchema: (schema: JSONSchema6 ) => unknown;
+        accepts: (contentType: string) => boolean;
+    }",
+              "done": true,
+              "id": "tools",
+              "isType": true,
+              "name": "Tools",
+              "promise": Promise {},
+              "typeDeclaration": "",
+            },
+          },
+          "externalImports": Map {
+            "JSONSchema6" => Object {
+              "isType": false,
+              "modulePath": "json-schema",
+            },
+          },
+          "imports": Map {},
+          "path": "internal/tools.ts",
+          "repository": Repository {
+            "scripts": [Circular],
+            "writeFiles": [Function],
+          },
+          "typeCache": Map {},
+        },
+      },
     },
     "path": "path-types/pet/findByTags.types.ts",
     "repository": Repository {
@@ -4456,12 +4722,34 @@ if (statusCode === \\"404\\") {
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/get@[object Object]:true" => "HTTP_GET",
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/post@[object Object]:true" => "HTTP_POST",
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/delete@[object Object]:true" => "HTTP_DELETE",
-            "tools@internal/tools.ts:true" => "Tools",
             "SchemaTypeCoder@undefined@components/Pet.ts:true" => "Pet",
+            "tools@internal/tools.ts:true" => "Tools",
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: {petId: number}, header: never, body: undefined, context: Context, tools: Tools}) => {  
+              "code": "({ query, path, header, body, context, tools }: { query: never, path: {petId: number}, header: never, body: undefined, context: Context, response: ResponseBuilderBuilder<{
+      200: {
+          headers: {};
+          content: {
+      \\"application/xml\\": { 
+              schema:  Pet
+            },
+\\"application/json\\": { 
+              schema:  Pet
+            }
+    };
+        },400: {
+          headers: {};
+          content: {
+      
+    };
+        },404: {
+          headers: {};
+          content: {
+      
+    };
+        }
+      }>, tools: Tools}) => {  
             status: 200, 
           contentType?: \\"application/xml\\",
           body?: Pet
@@ -4481,7 +4769,8 @@ if (statusCode === \\"404\\") {
           
           
           
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        } | { status: 415, contentType: \\"text/plain\\", body: string }
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/get",
               "isType": true,
@@ -4490,12 +4779,20 @@ if (statusCode === \\"404\\") {
               "typeDeclaration": "",
             },
             "HTTP_POST" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: {name?: number, status?: string}, path: {petId: number}, header: never, body: undefined, context: Context, tools: Tools}) => {  
+              "code": "({ query, path, header, body, context, tools }: { query: {name?: number, status?: string}, path: {petId: number}, header: never, body: undefined, context: Context, response: ResponseBuilderBuilder<{
+      405: {
+          headers: {};
+          content: {
+      
+    };
+        }
+      }>, tools: Tools}) => {  
             status: 405, 
           
           
           
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        } | { status: 415, contentType: \\"text/plain\\", body: string }
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/post",
               "isType": true,
@@ -4504,12 +4801,20 @@ if (statusCode === \\"404\\") {
               "typeDeclaration": "",
             },
             "HTTP_DELETE" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: {petId: string}, header: {api_key?: string}, body: undefined, context: Context, tools: Tools}) => {  
+              "code": "({ query, path, header, body, context, tools }: { query: never, path: {petId: string}, header: {api_key?: string}, body: undefined, context: Context, response: ResponseBuilderBuilder<{
+      400: {
+          headers: {};
+          content: {
+      
+    };
+        }
+      }>, tools: Tools}) => {  
             status: 400, 
           
           
           
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        } | { status: 415, contentType: \\"text/plain\\", body: string }
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/delete",
               "isType": true,
@@ -4523,46 +4828,16 @@ if (statusCode === \\"404\\") {
               "isType": true,
               "modulePath": "../../context/context.js",
             },
+            "ResponseBuilderBuilder" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
+            "HttpStatusCode" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
           },
           "imports": Map {
-            "Tools" => Object {
-              "isType": true,
-              "name": "Tools",
-              "script": Script {
-                "cache": Map {
-                  "tools@[object Object]:true" => "Tools",
-                },
-                "exports": Map {
-                  "Tools" => Object {
-                    "code": "
-    {
-        oneOf: (array: string[]) => string;
-        randomFromSchema: (schema: JSONSchema6 ) => unknown;
-        accepts: (contentType: string) => boolean;
-    }",
-                    "done": true,
-                    "id": "tools",
-                    "isType": true,
-                    "name": "Tools",
-                    "promise": Promise {},
-                    "typeDeclaration": "",
-                  },
-                },
-                "externalImports": Map {
-                  "JSONSchema6" => Object {
-                    "isType": false,
-                    "modulePath": "json-schema",
-                  },
-                },
-                "imports": Map {},
-                "path": "internal/tools.ts",
-                "repository": Repository {
-                  "scripts": [Circular],
-                  "writeFiles": [Function],
-                },
-                "typeCache": Map {},
-              },
-            },
             "Pet" => Object {
               "isType": true,
               "name": "Pet",
@@ -4812,6 +5087,44 @@ if (statusCode === \\"404\\") {
                   },
                 },
                 "path": "components/Pet.ts",
+                "repository": Repository {
+                  "scripts": [Circular],
+                  "writeFiles": [Function],
+                },
+                "typeCache": Map {},
+              },
+            },
+            "Tools" => Object {
+              "isType": true,
+              "name": "Tools",
+              "script": Script {
+                "cache": Map {
+                  "tools@[object Object]:true" => "Tools",
+                },
+                "exports": Map {
+                  "Tools" => Object {
+                    "code": "
+    {
+        oneOf: (array: string[]) => string;
+        randomFromSchema: (schema: JSONSchema6 ) => unknown;
+        accepts: (contentType: string) => boolean;
+    }",
+                    "done": true,
+                    "id": "tools",
+                    "isType": true,
+                    "name": "Tools",
+                    "promise": Promise {},
+                    "typeDeclaration": "",
+                  },
+                },
+                "externalImports": Map {
+                  "JSONSchema6" => Object {
+                    "isType": false,
+                    "modulePath": "json-schema",
+                  },
+                },
+                "imports": Map {},
+                "path": "internal/tools.ts",
                 "repository": Repository {
                   "scripts": [Circular],
                   "writeFiles": [Function],
@@ -4836,12 +5149,34 @@ if (statusCode === \\"404\\") {
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/get@[object Object]:true" => "HTTP_GET",
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/post@[object Object]:true" => "HTTP_POST",
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/delete@[object Object]:true" => "HTTP_DELETE",
-            "tools@internal/tools.ts:true" => "Tools",
             "SchemaTypeCoder@undefined@components/Pet.ts:true" => "Pet",
+            "tools@internal/tools.ts:true" => "Tools",
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: {petId: number}, header: never, body: undefined, context: Context, tools: Tools}) => {  
+              "code": "({ query, path, header, body, context, tools }: { query: never, path: {petId: number}, header: never, body: undefined, context: Context, response: ResponseBuilderBuilder<{
+      200: {
+          headers: {};
+          content: {
+      \\"application/xml\\": { 
+              schema:  Pet
+            },
+\\"application/json\\": { 
+              schema:  Pet
+            }
+    };
+        },400: {
+          headers: {};
+          content: {
+      
+    };
+        },404: {
+          headers: {};
+          content: {
+      
+    };
+        }
+      }>, tools: Tools}) => {  
             status: 200, 
           contentType?: \\"application/xml\\",
           body?: Pet
@@ -4861,7 +5196,8 @@ if (statusCode === \\"404\\") {
           
           
           
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        } | { status: 415, contentType: \\"text/plain\\", body: string }
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/get",
               "isType": true,
@@ -4870,12 +5206,20 @@ if (statusCode === \\"404\\") {
               "typeDeclaration": "",
             },
             "HTTP_POST" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: {name?: number, status?: string}, path: {petId: number}, header: never, body: undefined, context: Context, tools: Tools}) => {  
+              "code": "({ query, path, header, body, context, tools }: { query: {name?: number, status?: string}, path: {petId: number}, header: never, body: undefined, context: Context, response: ResponseBuilderBuilder<{
+      405: {
+          headers: {};
+          content: {
+      
+    };
+        }
+      }>, tools: Tools}) => {  
             status: 405, 
           
           
           
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        } | { status: 415, contentType: \\"text/plain\\", body: string }
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/post",
               "isType": true,
@@ -4884,12 +5228,20 @@ if (statusCode === \\"404\\") {
               "typeDeclaration": "",
             },
             "HTTP_DELETE" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: {petId: string}, header: {api_key?: string}, body: undefined, context: Context, tools: Tools}) => {  
+              "code": "({ query, path, header, body, context, tools }: { query: never, path: {petId: string}, header: {api_key?: string}, body: undefined, context: Context, response: ResponseBuilderBuilder<{
+      400: {
+          headers: {};
+          content: {
+      
+    };
+        }
+      }>, tools: Tools}) => {  
             status: 400, 
           
           
           
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        } | { status: 415, contentType: \\"text/plain\\", body: string }
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/delete",
               "isType": true,
@@ -4903,46 +5255,16 @@ if (statusCode === \\"404\\") {
               "isType": true,
               "modulePath": "../../context/context.js",
             },
+            "ResponseBuilderBuilder" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
+            "HttpStatusCode" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
           },
           "imports": Map {
-            "Tools" => Object {
-              "isType": true,
-              "name": "Tools",
-              "script": Script {
-                "cache": Map {
-                  "tools@[object Object]:true" => "Tools",
-                },
-                "exports": Map {
-                  "Tools" => Object {
-                    "code": "
-    {
-        oneOf: (array: string[]) => string;
-        randomFromSchema: (schema: JSONSchema6 ) => unknown;
-        accepts: (contentType: string) => boolean;
-    }",
-                    "done": true,
-                    "id": "tools",
-                    "isType": true,
-                    "name": "Tools",
-                    "promise": Promise {},
-                    "typeDeclaration": "",
-                  },
-                },
-                "externalImports": Map {
-                  "JSONSchema6" => Object {
-                    "isType": false,
-                    "modulePath": "json-schema",
-                  },
-                },
-                "imports": Map {},
-                "path": "internal/tools.ts",
-                "repository": Repository {
-                  "scripts": [Circular],
-                  "writeFiles": [Function],
-                },
-                "typeCache": Map {},
-              },
-            },
             "Pet" => Object {
               "isType": true,
               "name": "Pet",
@@ -5192,6 +5514,44 @@ if (statusCode === \\"404\\") {
                   },
                 },
                 "path": "components/Pet.ts",
+                "repository": Repository {
+                  "scripts": [Circular],
+                  "writeFiles": [Function],
+                },
+                "typeCache": Map {},
+              },
+            },
+            "Tools" => Object {
+              "isType": true,
+              "name": "Tools",
+              "script": Script {
+                "cache": Map {
+                  "tools@[object Object]:true" => "Tools",
+                },
+                "exports": Map {
+                  "Tools" => Object {
+                    "code": "
+    {
+        oneOf: (array: string[]) => string;
+        randomFromSchema: (schema: JSONSchema6 ) => unknown;
+        accepts: (contentType: string) => boolean;
+    }",
+                    "done": true,
+                    "id": "tools",
+                    "isType": true,
+                    "name": "Tools",
+                    "promise": Promise {},
+                    "typeDeclaration": "",
+                  },
+                },
+                "externalImports": Map {
+                  "JSONSchema6" => Object {
+                    "isType": false,
+                    "modulePath": "json-schema",
+                  },
+                },
+                "imports": Map {},
+                "path": "internal/tools.ts",
                 "repository": Repository {
                   "scripts": [Circular],
                   "writeFiles": [Function],
@@ -5216,12 +5576,34 @@ if (statusCode === \\"404\\") {
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/get@[object Object]:true" => "HTTP_GET",
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/post@[object Object]:true" => "HTTP_POST",
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/delete@[object Object]:true" => "HTTP_DELETE",
-            "tools@internal/tools.ts:true" => "Tools",
             "SchemaTypeCoder@undefined@components/Pet.ts:true" => "Pet",
+            "tools@internal/tools.ts:true" => "Tools",
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: {petId: number}, header: never, body: undefined, context: Context, tools: Tools}) => {  
+              "code": "({ query, path, header, body, context, tools }: { query: never, path: {petId: number}, header: never, body: undefined, context: Context, response: ResponseBuilderBuilder<{
+      200: {
+          headers: {};
+          content: {
+      \\"application/xml\\": { 
+              schema:  Pet
+            },
+\\"application/json\\": { 
+              schema:  Pet
+            }
+    };
+        },400: {
+          headers: {};
+          content: {
+      
+    };
+        },404: {
+          headers: {};
+          content: {
+      
+    };
+        }
+      }>, tools: Tools}) => {  
             status: 200, 
           contentType?: \\"application/xml\\",
           body?: Pet
@@ -5241,7 +5623,8 @@ if (statusCode === \\"404\\") {
           
           
           
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        } | { status: 415, contentType: \\"text/plain\\", body: string }
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/get",
               "isType": true,
@@ -5250,12 +5633,20 @@ if (statusCode === \\"404\\") {
               "typeDeclaration": "",
             },
             "HTTP_POST" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: {name?: number, status?: string}, path: {petId: number}, header: never, body: undefined, context: Context, tools: Tools}) => {  
+              "code": "({ query, path, header, body, context, tools }: { query: {name?: number, status?: string}, path: {petId: number}, header: never, body: undefined, context: Context, response: ResponseBuilderBuilder<{
+      405: {
+          headers: {};
+          content: {
+      
+    };
+        }
+      }>, tools: Tools}) => {  
             status: 405, 
           
           
           
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        } | { status: 415, contentType: \\"text/plain\\", body: string }
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/post",
               "isType": true,
@@ -5264,12 +5655,20 @@ if (statusCode === \\"404\\") {
               "typeDeclaration": "",
             },
             "HTTP_DELETE" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: {petId: string}, header: {api_key?: string}, body: undefined, context: Context, tools: Tools}) => {  
+              "code": "({ query, path, header, body, context, tools }: { query: never, path: {petId: string}, header: {api_key?: string}, body: undefined, context: Context, response: ResponseBuilderBuilder<{
+      400: {
+          headers: {};
+          content: {
+      
+    };
+        }
+      }>, tools: Tools}) => {  
             status: 400, 
           
           
           
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        } | { status: 415, contentType: \\"text/plain\\", body: string }
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/delete",
               "isType": true,
@@ -5283,46 +5682,16 @@ if (statusCode === \\"404\\") {
               "isType": true,
               "modulePath": "../../context/context.js",
             },
+            "ResponseBuilderBuilder" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
+            "HttpStatusCode" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
           },
           "imports": Map {
-            "Tools" => Object {
-              "isType": true,
-              "name": "Tools",
-              "script": Script {
-                "cache": Map {
-                  "tools@[object Object]:true" => "Tools",
-                },
-                "exports": Map {
-                  "Tools" => Object {
-                    "code": "
-    {
-        oneOf: (array: string[]) => string;
-        randomFromSchema: (schema: JSONSchema6 ) => unknown;
-        accepts: (contentType: string) => boolean;
-    }",
-                    "done": true,
-                    "id": "tools",
-                    "isType": true,
-                    "name": "Tools",
-                    "promise": Promise {},
-                    "typeDeclaration": "",
-                  },
-                },
-                "externalImports": Map {
-                  "JSONSchema6" => Object {
-                    "isType": false,
-                    "modulePath": "json-schema",
-                  },
-                },
-                "imports": Map {},
-                "path": "internal/tools.ts",
-                "repository": Repository {
-                  "scripts": [Circular],
-                  "writeFiles": [Function],
-                },
-                "typeCache": Map {},
-              },
-            },
             "Pet" => Object {
               "isType": true,
               "name": "Pet",
@@ -5572,6 +5941,44 @@ if (statusCode === \\"404\\") {
                   },
                 },
                 "path": "components/Pet.ts",
+                "repository": Repository {
+                  "scripts": [Circular],
+                  "writeFiles": [Function],
+                },
+                "typeCache": Map {},
+              },
+            },
+            "Tools" => Object {
+              "isType": true,
+              "name": "Tools",
+              "script": Script {
+                "cache": Map {
+                  "tools@[object Object]:true" => "Tools",
+                },
+                "exports": Map {
+                  "Tools" => Object {
+                    "code": "
+    {
+        oneOf: (array: string[]) => string;
+        randomFromSchema: (schema: JSONSchema6 ) => unknown;
+        accepts: (contentType: string) => boolean;
+    }",
+                    "done": true,
+                    "id": "tools",
+                    "isType": true,
+                    "name": "Tools",
+                    "promise": Promise {},
+                    "typeDeclaration": "",
+                  },
+                },
+                "externalImports": Map {
+                  "JSONSchema6" => Object {
+                    "isType": false,
+                    "modulePath": "json-schema",
+                  },
+                },
+                "imports": Map {},
+                "path": "internal/tools.ts",
                 "repository": Repository {
                   "scripts": [Circular],
                   "writeFiles": [Function],
@@ -6113,12 +6520,34 @@ if (statusCode === \\"404\\") {
       "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/get@[object Object]:true" => "HTTP_GET",
       "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/post@[object Object]:true" => "HTTP_POST",
       "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/delete@[object Object]:true" => "HTTP_DELETE",
-      "tools@internal/tools.ts:true" => "Tools",
       "SchemaTypeCoder@undefined@components/Pet.ts:true" => "Pet",
+      "tools@internal/tools.ts:true" => "Tools",
     },
     "exports": Map {
       "HTTP_GET" => Object {
-        "code": "({ query, path, header, body, context, tools }: { query: never, path: {petId: number}, header: never, body: undefined, context: Context, tools: Tools}) => {  
+        "code": "({ query, path, header, body, context, tools }: { query: never, path: {petId: number}, header: never, body: undefined, context: Context, response: ResponseBuilderBuilder<{
+      200: {
+          headers: {};
+          content: {
+      \\"application/xml\\": { 
+              schema:  Pet
+            },
+\\"application/json\\": { 
+              schema:  Pet
+            }
+    };
+        },400: {
+          headers: {};
+          content: {
+      
+    };
+        },404: {
+          headers: {};
+          content: {
+      
+    };
+        }
+      }>, tools: Tools}) => {  
             status: 200, 
           contentType?: \\"application/xml\\",
           body?: Pet
@@ -6138,7 +6567,8 @@ if (statusCode === \\"404\\") {
           
           
           
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        } | { status: 415, contentType: \\"text/plain\\", body: string }
+    | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/get",
         "isType": true,
@@ -6147,12 +6577,20 @@ if (statusCode === \\"404\\") {
         "typeDeclaration": "",
       },
       "HTTP_POST" => Object {
-        "code": "({ query, path, header, body, context, tools }: { query: {name?: number, status?: string}, path: {petId: number}, header: never, body: undefined, context: Context, tools: Tools}) => {  
+        "code": "({ query, path, header, body, context, tools }: { query: {name?: number, status?: string}, path: {petId: number}, header: never, body: undefined, context: Context, response: ResponseBuilderBuilder<{
+      405: {
+          headers: {};
+          content: {
+      
+    };
+        }
+      }>, tools: Tools}) => {  
             status: 405, 
           
           
           
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        } | { status: 415, contentType: \\"text/plain\\", body: string }
+    | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/post",
         "isType": true,
@@ -6161,12 +6599,20 @@ if (statusCode === \\"404\\") {
         "typeDeclaration": "",
       },
       "HTTP_DELETE" => Object {
-        "code": "({ query, path, header, body, context, tools }: { query: never, path: {petId: string}, header: {api_key?: string}, body: undefined, context: Context, tools: Tools}) => {  
+        "code": "({ query, path, header, body, context, tools }: { query: never, path: {petId: string}, header: {api_key?: string}, body: undefined, context: Context, response: ResponseBuilderBuilder<{
+      400: {
+          headers: {};
+          content: {
+      
+    };
+        }
+      }>, tools: Tools}) => {  
             status: 400, 
           
           
           
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        } | { status: 415, contentType: \\"text/plain\\", body: string }
+    | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/delete",
         "isType": true,
@@ -6180,46 +6626,16 @@ if (statusCode === \\"404\\") {
         "isType": true,
         "modulePath": "../../context/context.js",
       },
+      "ResponseBuilderBuilder" => Object {
+        "isType": true,
+        "modulePath": "counterfact",
+      },
+      "HttpStatusCode" => Object {
+        "isType": true,
+        "modulePath": "counterfact",
+      },
     },
     "imports": Map {
-      "Tools" => Object {
-        "isType": true,
-        "name": "Tools",
-        "script": Script {
-          "cache": Map {
-            "tools@[object Object]:true" => "Tools",
-          },
-          "exports": Map {
-            "Tools" => Object {
-              "code": "
-    {
-        oneOf: (array: string[]) => string;
-        randomFromSchema: (schema: JSONSchema6 ) => unknown;
-        accepts: (contentType: string) => boolean;
-    }",
-              "done": true,
-              "id": "tools",
-              "isType": true,
-              "name": "Tools",
-              "promise": Promise {},
-              "typeDeclaration": "",
-            },
-          },
-          "externalImports": Map {
-            "JSONSchema6" => Object {
-              "isType": false,
-              "modulePath": "json-schema",
-            },
-          },
-          "imports": Map {},
-          "path": "internal/tools.ts",
-          "repository": Repository {
-            "scripts": [Circular],
-            "writeFiles": [Function],
-          },
-          "typeCache": Map {},
-        },
-      },
       "Pet" => Object {
         "isType": true,
         "name": "Pet",
@@ -6476,6 +6892,44 @@ if (statusCode === \\"404\\") {
           "typeCache": Map {},
         },
       },
+      "Tools" => Object {
+        "isType": true,
+        "name": "Tools",
+        "script": Script {
+          "cache": Map {
+            "tools@[object Object]:true" => "Tools",
+          },
+          "exports": Map {
+            "Tools" => Object {
+              "code": "
+    {
+        oneOf: (array: string[]) => string;
+        randomFromSchema: (schema: JSONSchema6 ) => unknown;
+        accepts: (contentType: string) => boolean;
+    }",
+              "done": true,
+              "id": "tools",
+              "isType": true,
+              "name": "Tools",
+              "promise": Promise {},
+              "typeDeclaration": "",
+            },
+          },
+          "externalImports": Map {
+            "JSONSchema6" => Object {
+              "isType": false,
+              "modulePath": "json-schema",
+            },
+          },
+          "imports": Map {},
+          "path": "internal/tools.ts",
+          "repository": Repository {
+            "scripts": [Circular],
+            "writeFiles": [Function],
+          },
+          "typeCache": Map {},
+        },
+      },
     },
     "path": "path-types/pet/{petId}.types.ts",
     "repository": Repository {
@@ -6534,17 +6988,27 @@ if (statusCode === \\"404\\") {
         "script": Script {
           "cache": Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post@[object Object]:true" => "HTTP_POST",
-            "tools@internal/tools.ts:true" => "Tools",
             "SchemaTypeCoder@undefined@components/ApiResponse.ts:true" => "ApiResponse",
+            "tools@internal/tools.ts:true" => "Tools",
           },
           "exports": Map {
             "HTTP_POST" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: {additionalMetadata?: number}, path: {petId: number}, header: never, body: undefined, context: Context, tools: Tools}) => {  
+              "code": "({ query, path, header, body, context, tools }: { query: {additionalMetadata?: number}, path: {petId: number}, header: never, body: undefined, context: Context, response: ResponseBuilderBuilder<{
+      200: {
+          headers: {};
+          content: {
+      \\"application/json\\": { 
+              schema:  ApiResponse
+            }
+    };
+        }
+      }>, tools: Tools}) => {  
             status: 200, 
           contentType?: \\"application/json\\",
           body?: ApiResponse
           
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        } | { status: 415, contentType: \\"text/plain\\", body: string }
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post",
               "isType": true,
@@ -6558,46 +7022,16 @@ if (statusCode === \\"404\\") {
               "isType": true,
               "modulePath": "../../../context/context.js",
             },
+            "ResponseBuilderBuilder" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
+            "HttpStatusCode" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
           },
           "imports": Map {
-            "Tools" => Object {
-              "isType": true,
-              "name": "Tools",
-              "script": Script {
-                "cache": Map {
-                  "tools@[object Object]:true" => "Tools",
-                },
-                "exports": Map {
-                  "Tools" => Object {
-                    "code": "
-    {
-        oneOf: (array: string[]) => string;
-        randomFromSchema: (schema: JSONSchema6 ) => unknown;
-        accepts: (contentType: string) => boolean;
-    }",
-                    "done": true,
-                    "id": "tools",
-                    "isType": true,
-                    "name": "Tools",
-                    "promise": Promise {},
-                    "typeDeclaration": "",
-                  },
-                },
-                "externalImports": Map {
-                  "JSONSchema6" => Object {
-                    "isType": false,
-                    "modulePath": "json-schema",
-                  },
-                },
-                "imports": Map {},
-                "path": "internal/tools.ts",
-                "repository": Repository {
-                  "scripts": [Circular],
-                  "writeFiles": [Function],
-                },
-                "typeCache": Map {},
-              },
-            },
             "ApiResponse" => Object {
               "isType": true,
               "name": "ApiResponse",
@@ -6640,6 +7074,44 @@ if (statusCode === \\"404\\") {
                 },
                 "imports": Map {},
                 "path": "components/ApiResponse.ts",
+                "repository": Repository {
+                  "scripts": [Circular],
+                  "writeFiles": [Function],
+                },
+                "typeCache": Map {},
+              },
+            },
+            "Tools" => Object {
+              "isType": true,
+              "name": "Tools",
+              "script": Script {
+                "cache": Map {
+                  "tools@[object Object]:true" => "Tools",
+                },
+                "exports": Map {
+                  "Tools" => Object {
+                    "code": "
+    {
+        oneOf: (array: string[]) => string;
+        randomFromSchema: (schema: JSONSchema6 ) => unknown;
+        accepts: (contentType: string) => boolean;
+    }",
+                    "done": true,
+                    "id": "tools",
+                    "isType": true,
+                    "name": "Tools",
+                    "promise": Promise {},
+                    "typeDeclaration": "",
+                  },
+                },
+                "externalImports": Map {
+                  "JSONSchema6" => Object {
+                    "isType": false,
+                    "modulePath": "json-schema",
+                  },
+                },
+                "imports": Map {},
+                "path": "internal/tools.ts",
                 "repository": Repository {
                   "scripts": [Circular],
                   "writeFiles": [Function],
@@ -6765,17 +7237,27 @@ if (statusCode === \\"404\\") {
   "path-types/pet/{petId}/uploadImage.types.ts" => Script {
     "cache": Map {
       "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post@[object Object]:true" => "HTTP_POST",
-      "tools@internal/tools.ts:true" => "Tools",
       "SchemaTypeCoder@undefined@components/ApiResponse.ts:true" => "ApiResponse",
+      "tools@internal/tools.ts:true" => "Tools",
     },
     "exports": Map {
       "HTTP_POST" => Object {
-        "code": "({ query, path, header, body, context, tools }: { query: {additionalMetadata?: number}, path: {petId: number}, header: never, body: undefined, context: Context, tools: Tools}) => {  
+        "code": "({ query, path, header, body, context, tools }: { query: {additionalMetadata?: number}, path: {petId: number}, header: never, body: undefined, context: Context, response: ResponseBuilderBuilder<{
+      200: {
+          headers: {};
+          content: {
+      \\"application/json\\": { 
+              schema:  ApiResponse
+            }
+    };
+        }
+      }>, tools: Tools}) => {  
             status: 200, 
           contentType?: \\"application/json\\",
           body?: ApiResponse
           
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        } | { status: 415, contentType: \\"text/plain\\", body: string }
+    | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post",
         "isType": true,
@@ -6789,46 +7271,16 @@ if (statusCode === \\"404\\") {
         "isType": true,
         "modulePath": "../../../context/context.js",
       },
+      "ResponseBuilderBuilder" => Object {
+        "isType": true,
+        "modulePath": "counterfact",
+      },
+      "HttpStatusCode" => Object {
+        "isType": true,
+        "modulePath": "counterfact",
+      },
     },
     "imports": Map {
-      "Tools" => Object {
-        "isType": true,
-        "name": "Tools",
-        "script": Script {
-          "cache": Map {
-            "tools@[object Object]:true" => "Tools",
-          },
-          "exports": Map {
-            "Tools" => Object {
-              "code": "
-    {
-        oneOf: (array: string[]) => string;
-        randomFromSchema: (schema: JSONSchema6 ) => unknown;
-        accepts: (contentType: string) => boolean;
-    }",
-              "done": true,
-              "id": "tools",
-              "isType": true,
-              "name": "Tools",
-              "promise": Promise {},
-              "typeDeclaration": "",
-            },
-          },
-          "externalImports": Map {
-            "JSONSchema6" => Object {
-              "isType": false,
-              "modulePath": "json-schema",
-            },
-          },
-          "imports": Map {},
-          "path": "internal/tools.ts",
-          "repository": Repository {
-            "scripts": [Circular],
-            "writeFiles": [Function],
-          },
-          "typeCache": Map {},
-        },
-      },
       "ApiResponse" => Object {
         "isType": true,
         "name": "ApiResponse",
@@ -6871,6 +7323,44 @@ if (statusCode === \\"404\\") {
           },
           "imports": Map {},
           "path": "components/ApiResponse.ts",
+          "repository": Repository {
+            "scripts": [Circular],
+            "writeFiles": [Function],
+          },
+          "typeCache": Map {},
+        },
+      },
+      "Tools" => Object {
+        "isType": true,
+        "name": "Tools",
+        "script": Script {
+          "cache": Map {
+            "tools@[object Object]:true" => "Tools",
+          },
+          "exports": Map {
+            "Tools" => Object {
+              "code": "
+    {
+        oneOf: (array: string[]) => string;
+        randomFromSchema: (schema: JSONSchema6 ) => unknown;
+        accepts: (contentType: string) => boolean;
+    }",
+              "done": true,
+              "id": "tools",
+              "isType": true,
+              "name": "Tools",
+              "promise": Promise {},
+              "typeDeclaration": "",
+            },
+          },
+          "externalImports": Map {
+            "JSONSchema6" => Object {
+              "isType": false,
+              "modulePath": "json-schema",
+            },
+          },
+          "imports": Map {},
+          "path": "internal/tools.ts",
           "repository": Repository {
             "scripts": [Circular],
             "writeFiles": [Function],
@@ -6944,12 +7434,22 @@ if (statusCode === \\"404\\") {
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: undefined, context: Context, tools: Tools}) => {  
+              "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: undefined, context: Context, response: ResponseBuilderBuilder<{
+      200: {
+          headers: {};
+          content: {
+      \\"application/json\\": { 
+              schema:  {[key: string]: number}
+            }
+    };
+        }
+      }>, tools: Tools}) => {  
             status: 200, 
           contentType?: \\"application/json\\",
           body?: {[key: string]: number}
           
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        } | { status: 415, contentType: \\"text/plain\\", body: string }
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1store~1inventory/get",
               "isType": true,
@@ -6962,6 +7462,14 @@ if (statusCode === \\"404\\") {
             "Context" => Object {
               "isType": true,
               "modulePath": "../../context/context.js",
+            },
+            "ResponseBuilderBuilder" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
+            "HttpStatusCode" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
             },
           },
           "imports": Map {
@@ -7027,12 +7535,22 @@ if (statusCode === \\"404\\") {
     },
     "exports": Map {
       "HTTP_GET" => Object {
-        "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: undefined, context: Context, tools: Tools}) => {  
+        "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: undefined, context: Context, response: ResponseBuilderBuilder<{
+      200: {
+          headers: {};
+          content: {
+      \\"application/json\\": { 
+              schema:  {[key: string]: number}
+            }
+    };
+        }
+      }>, tools: Tools}) => {  
             status: 200, 
           contentType?: \\"application/json\\",
           body?: {[key: string]: number}
           
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        } | { status: 415, contentType: \\"text/plain\\", body: string }
+    | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1store~1inventory/get",
         "isType": true,
@@ -7045,6 +7563,14 @@ if (statusCode === \\"404\\") {
       "Context" => Object {
         "isType": true,
         "modulePath": "../../context/context.js",
+      },
+      "ResponseBuilderBuilder" => Object {
+        "isType": true,
+        "modulePath": "counterfact",
+      },
+      "HttpStatusCode" => Object {
+        "isType": true,
+        "modulePath": "counterfact",
       },
     },
     "imports": Map {
@@ -7154,7 +7680,21 @@ if (statusCode === \\"405\\") {
           },
           "exports": Map {
             "HTTP_POST" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: Order, context: Context, tools: Tools}) => {  
+              "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: Order, context: Context, response: ResponseBuilderBuilder<{
+      200: {
+          headers: {};
+          content: {
+      \\"application/json\\": { 
+              schema:  Order
+            }
+    };
+        },405: {
+          headers: {};
+          content: {
+      
+    };
+        }
+      }>, tools: Tools}) => {  
             status: 200, 
           contentType?: \\"application/json\\",
           body?: Order
@@ -7164,7 +7704,8 @@ if (statusCode === \\"405\\") {
           
           
           
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        } | { status: 415, contentType: \\"text/plain\\", body: string }
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1store~1order/post",
               "isType": true,
@@ -7177,6 +7718,14 @@ if (statusCode === \\"405\\") {
             "Context" => Object {
               "isType": true,
               "modulePath": "../../context/context.js",
+            },
+            "ResponseBuilderBuilder" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
+            "HttpStatusCode" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
             },
           },
           "imports": Map {
@@ -7390,7 +7939,21 @@ if (statusCode === \\"405\\") {
     },
     "exports": Map {
       "HTTP_POST" => Object {
-        "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: Order, context: Context, tools: Tools}) => {  
+        "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: Order, context: Context, response: ResponseBuilderBuilder<{
+      200: {
+          headers: {};
+          content: {
+      \\"application/json\\": { 
+              schema:  Order
+            }
+    };
+        },405: {
+          headers: {};
+          content: {
+      
+    };
+        }
+      }>, tools: Tools}) => {  
             status: 200, 
           contentType?: \\"application/json\\",
           body?: Order
@@ -7400,7 +7963,8 @@ if (statusCode === \\"405\\") {
           
           
           
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        } | { status: 415, contentType: \\"text/plain\\", body: string }
+    | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1store~1order/post",
         "isType": true,
@@ -7413,6 +7977,14 @@ if (statusCode === \\"405\\") {
       "Context" => Object {
         "isType": true,
         "modulePath": "../../context/context.js",
+      },
+      "ResponseBuilderBuilder" => Object {
+        "isType": true,
+        "modulePath": "counterfact",
+      },
+      "HttpStatusCode" => Object {
+        "isType": true,
+        "modulePath": "counterfact",
       },
     },
     "imports": Map {
@@ -7615,12 +8187,34 @@ if (statusCode === \\"404\\") {
           "cache": Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get@[object Object]:true" => "HTTP_GET",
             "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete@[object Object]:true" => "HTTP_DELETE",
-            "tools@internal/tools.ts:true" => "Tools",
             "SchemaTypeCoder@undefined@components/Order.ts:true" => "Order",
+            "tools@internal/tools.ts:true" => "Tools",
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: {orderId: number}, header: never, body: undefined, context: Context, tools: Tools}) => {  
+              "code": "({ query, path, header, body, context, tools }: { query: never, path: {orderId: number}, header: never, body: undefined, context: Context, response: ResponseBuilderBuilder<{
+      200: {
+          headers: {};
+          content: {
+      \\"application/xml\\": { 
+              schema:  Order
+            },
+\\"application/json\\": { 
+              schema:  Order
+            }
+    };
+        },400: {
+          headers: {};
+          content: {
+      
+    };
+        },404: {
+          headers: {};
+          content: {
+      
+    };
+        }
+      }>, tools: Tools}) => {  
             status: 200, 
           contentType?: \\"application/xml\\",
           body?: Order
@@ -7640,7 +8234,8 @@ if (statusCode === \\"404\\") {
           
           
           
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        } | { status: 415, contentType: \\"text/plain\\", body: string }
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get",
               "isType": true,
@@ -7649,7 +8244,19 @@ if (statusCode === \\"404\\") {
               "typeDeclaration": "",
             },
             "HTTP_DELETE" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: {orderId: number}, header: never, body: undefined, context: Context, tools: Tools}) => {  
+              "code": "({ query, path, header, body, context, tools }: { query: never, path: {orderId: number}, header: never, body: undefined, context: Context, response: ResponseBuilderBuilder<{
+      400: {
+          headers: {};
+          content: {
+      
+    };
+        },404: {
+          headers: {};
+          content: {
+      
+    };
+        }
+      }>, tools: Tools}) => {  
             status: 400, 
           
           
@@ -7659,7 +8266,8 @@ if (statusCode === \\"404\\") {
           
           
           
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        } | { status: 415, contentType: \\"text/plain\\", body: string }
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete",
               "isType": true,
@@ -7673,46 +8281,16 @@ if (statusCode === \\"404\\") {
               "isType": true,
               "modulePath": "../../../context/context.js",
             },
+            "ResponseBuilderBuilder" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
+            "HttpStatusCode" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
           },
           "imports": Map {
-            "Tools" => Object {
-              "isType": true,
-              "name": "Tools",
-              "script": Script {
-                "cache": Map {
-                  "tools@[object Object]:true" => "Tools",
-                },
-                "exports": Map {
-                  "Tools" => Object {
-                    "code": "
-    {
-        oneOf: (array: string[]) => string;
-        randomFromSchema: (schema: JSONSchema6 ) => unknown;
-        accepts: (contentType: string) => boolean;
-    }",
-                    "done": true,
-                    "id": "tools",
-                    "isType": true,
-                    "name": "Tools",
-                    "promise": Promise {},
-                    "typeDeclaration": "",
-                  },
-                },
-                "externalImports": Map {
-                  "JSONSchema6" => Object {
-                    "isType": false,
-                    "modulePath": "json-schema",
-                  },
-                },
-                "imports": Map {},
-                "path": "internal/tools.ts",
-                "repository": Repository {
-                  "scripts": [Circular],
-                  "writeFiles": [Function],
-                },
-                "typeCache": Map {},
-              },
-            },
             "Order" => Object {
               "isType": true,
               "name": "Order",
@@ -7755,6 +8333,44 @@ if (statusCode === \\"404\\") {
                 },
                 "imports": Map {},
                 "path": "components/Order.ts",
+                "repository": Repository {
+                  "scripts": [Circular],
+                  "writeFiles": [Function],
+                },
+                "typeCache": Map {},
+              },
+            },
+            "Tools" => Object {
+              "isType": true,
+              "name": "Tools",
+              "script": Script {
+                "cache": Map {
+                  "tools@[object Object]:true" => "Tools",
+                },
+                "exports": Map {
+                  "Tools" => Object {
+                    "code": "
+    {
+        oneOf: (array: string[]) => string;
+        randomFromSchema: (schema: JSONSchema6 ) => unknown;
+        accepts: (contentType: string) => boolean;
+    }",
+                    "done": true,
+                    "id": "tools",
+                    "isType": true,
+                    "name": "Tools",
+                    "promise": Promise {},
+                    "typeDeclaration": "",
+                  },
+                },
+                "externalImports": Map {
+                  "JSONSchema6" => Object {
+                    "isType": false,
+                    "modulePath": "json-schema",
+                  },
+                },
+                "imports": Map {},
+                "path": "internal/tools.ts",
                 "repository": Repository {
                   "scripts": [Circular],
                   "writeFiles": [Function],
@@ -7778,12 +8394,34 @@ if (statusCode === \\"404\\") {
           "cache": Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get@[object Object]:true" => "HTTP_GET",
             "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete@[object Object]:true" => "HTTP_DELETE",
-            "tools@internal/tools.ts:true" => "Tools",
             "SchemaTypeCoder@undefined@components/Order.ts:true" => "Order",
+            "tools@internal/tools.ts:true" => "Tools",
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: {orderId: number}, header: never, body: undefined, context: Context, tools: Tools}) => {  
+              "code": "({ query, path, header, body, context, tools }: { query: never, path: {orderId: number}, header: never, body: undefined, context: Context, response: ResponseBuilderBuilder<{
+      200: {
+          headers: {};
+          content: {
+      \\"application/xml\\": { 
+              schema:  Order
+            },
+\\"application/json\\": { 
+              schema:  Order
+            }
+    };
+        },400: {
+          headers: {};
+          content: {
+      
+    };
+        },404: {
+          headers: {};
+          content: {
+      
+    };
+        }
+      }>, tools: Tools}) => {  
             status: 200, 
           contentType?: \\"application/xml\\",
           body?: Order
@@ -7803,7 +8441,8 @@ if (statusCode === \\"404\\") {
           
           
           
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        } | { status: 415, contentType: \\"text/plain\\", body: string }
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get",
               "isType": true,
@@ -7812,7 +8451,19 @@ if (statusCode === \\"404\\") {
               "typeDeclaration": "",
             },
             "HTTP_DELETE" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: {orderId: number}, header: never, body: undefined, context: Context, tools: Tools}) => {  
+              "code": "({ query, path, header, body, context, tools }: { query: never, path: {orderId: number}, header: never, body: undefined, context: Context, response: ResponseBuilderBuilder<{
+      400: {
+          headers: {};
+          content: {
+      
+    };
+        },404: {
+          headers: {};
+          content: {
+      
+    };
+        }
+      }>, tools: Tools}) => {  
             status: 400, 
           
           
@@ -7822,7 +8473,8 @@ if (statusCode === \\"404\\") {
           
           
           
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        } | { status: 415, contentType: \\"text/plain\\", body: string }
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete",
               "isType": true,
@@ -7836,46 +8488,16 @@ if (statusCode === \\"404\\") {
               "isType": true,
               "modulePath": "../../../context/context.js",
             },
+            "ResponseBuilderBuilder" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
+            "HttpStatusCode" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
           },
           "imports": Map {
-            "Tools" => Object {
-              "isType": true,
-              "name": "Tools",
-              "script": Script {
-                "cache": Map {
-                  "tools@[object Object]:true" => "Tools",
-                },
-                "exports": Map {
-                  "Tools" => Object {
-                    "code": "
-    {
-        oneOf: (array: string[]) => string;
-        randomFromSchema: (schema: JSONSchema6 ) => unknown;
-        accepts: (contentType: string) => boolean;
-    }",
-                    "done": true,
-                    "id": "tools",
-                    "isType": true,
-                    "name": "Tools",
-                    "promise": Promise {},
-                    "typeDeclaration": "",
-                  },
-                },
-                "externalImports": Map {
-                  "JSONSchema6" => Object {
-                    "isType": false,
-                    "modulePath": "json-schema",
-                  },
-                },
-                "imports": Map {},
-                "path": "internal/tools.ts",
-                "repository": Repository {
-                  "scripts": [Circular],
-                  "writeFiles": [Function],
-                },
-                "typeCache": Map {},
-              },
-            },
             "Order" => Object {
               "isType": true,
               "name": "Order",
@@ -7918,6 +8540,44 @@ if (statusCode === \\"404\\") {
                 },
                 "imports": Map {},
                 "path": "components/Order.ts",
+                "repository": Repository {
+                  "scripts": [Circular],
+                  "writeFiles": [Function],
+                },
+                "typeCache": Map {},
+              },
+            },
+            "Tools" => Object {
+              "isType": true,
+              "name": "Tools",
+              "script": Script {
+                "cache": Map {
+                  "tools@[object Object]:true" => "Tools",
+                },
+                "exports": Map {
+                  "Tools" => Object {
+                    "code": "
+    {
+        oneOf: (array: string[]) => string;
+        randomFromSchema: (schema: JSONSchema6 ) => unknown;
+        accepts: (contentType: string) => boolean;
+    }",
+                    "done": true,
+                    "id": "tools",
+                    "isType": true,
+                    "name": "Tools",
+                    "promise": Promise {},
+                    "typeDeclaration": "",
+                  },
+                },
+                "externalImports": Map {
+                  "JSONSchema6" => Object {
+                    "isType": false,
+                    "modulePath": "json-schema",
+                  },
+                },
+                "imports": Map {},
+                "path": "internal/tools.ts",
                 "repository": Repository {
                   "scripts": [Circular],
                   "writeFiles": [Function],
@@ -8044,12 +8704,34 @@ if (statusCode === \\"404\\") {
     "cache": Map {
       "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get@[object Object]:true" => "HTTP_GET",
       "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete@[object Object]:true" => "HTTP_DELETE",
-      "tools@internal/tools.ts:true" => "Tools",
       "SchemaTypeCoder@undefined@components/Order.ts:true" => "Order",
+      "tools@internal/tools.ts:true" => "Tools",
     },
     "exports": Map {
       "HTTP_GET" => Object {
-        "code": "({ query, path, header, body, context, tools }: { query: never, path: {orderId: number}, header: never, body: undefined, context: Context, tools: Tools}) => {  
+        "code": "({ query, path, header, body, context, tools }: { query: never, path: {orderId: number}, header: never, body: undefined, context: Context, response: ResponseBuilderBuilder<{
+      200: {
+          headers: {};
+          content: {
+      \\"application/xml\\": { 
+              schema:  Order
+            },
+\\"application/json\\": { 
+              schema:  Order
+            }
+    };
+        },400: {
+          headers: {};
+          content: {
+      
+    };
+        },404: {
+          headers: {};
+          content: {
+      
+    };
+        }
+      }>, tools: Tools}) => {  
             status: 200, 
           contentType?: \\"application/xml\\",
           body?: Order
@@ -8069,7 +8751,8 @@ if (statusCode === \\"404\\") {
           
           
           
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        } | { status: 415, contentType: \\"text/plain\\", body: string }
+    | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get",
         "isType": true,
@@ -8078,7 +8761,19 @@ if (statusCode === \\"404\\") {
         "typeDeclaration": "",
       },
       "HTTP_DELETE" => Object {
-        "code": "({ query, path, header, body, context, tools }: { query: never, path: {orderId: number}, header: never, body: undefined, context: Context, tools: Tools}) => {  
+        "code": "({ query, path, header, body, context, tools }: { query: never, path: {orderId: number}, header: never, body: undefined, context: Context, response: ResponseBuilderBuilder<{
+      400: {
+          headers: {};
+          content: {
+      
+    };
+        },404: {
+          headers: {};
+          content: {
+      
+    };
+        }
+      }>, tools: Tools}) => {  
             status: 400, 
           
           
@@ -8088,7 +8783,8 @@ if (statusCode === \\"404\\") {
           
           
           
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        } | { status: 415, contentType: \\"text/plain\\", body: string }
+    | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete",
         "isType": true,
@@ -8102,46 +8798,16 @@ if (statusCode === \\"404\\") {
         "isType": true,
         "modulePath": "../../../context/context.js",
       },
+      "ResponseBuilderBuilder" => Object {
+        "isType": true,
+        "modulePath": "counterfact",
+      },
+      "HttpStatusCode" => Object {
+        "isType": true,
+        "modulePath": "counterfact",
+      },
     },
     "imports": Map {
-      "Tools" => Object {
-        "isType": true,
-        "name": "Tools",
-        "script": Script {
-          "cache": Map {
-            "tools@[object Object]:true" => "Tools",
-          },
-          "exports": Map {
-            "Tools" => Object {
-              "code": "
-    {
-        oneOf: (array: string[]) => string;
-        randomFromSchema: (schema: JSONSchema6 ) => unknown;
-        accepts: (contentType: string) => boolean;
-    }",
-              "done": true,
-              "id": "tools",
-              "isType": true,
-              "name": "Tools",
-              "promise": Promise {},
-              "typeDeclaration": "",
-            },
-          },
-          "externalImports": Map {
-            "JSONSchema6" => Object {
-              "isType": false,
-              "modulePath": "json-schema",
-            },
-          },
-          "imports": Map {},
-          "path": "internal/tools.ts",
-          "repository": Repository {
-            "scripts": [Circular],
-            "writeFiles": [Function],
-          },
-          "typeCache": Map {},
-        },
-      },
       "Order" => Object {
         "isType": true,
         "name": "Order",
@@ -8184,6 +8850,44 @@ if (statusCode === \\"404\\") {
           },
           "imports": Map {},
           "path": "components/Order.ts",
+          "repository": Repository {
+            "scripts": [Circular],
+            "writeFiles": [Function],
+          },
+          "typeCache": Map {},
+        },
+      },
+      "Tools" => Object {
+        "isType": true,
+        "name": "Tools",
+        "script": Script {
+          "cache": Map {
+            "tools@[object Object]:true" => "Tools",
+          },
+          "exports": Map {
+            "Tools" => Object {
+              "code": "
+    {
+        oneOf: (array: string[]) => string;
+        randomFromSchema: (schema: JSONSchema6 ) => unknown;
+        accepts: (contentType: string) => boolean;
+    }",
+              "done": true,
+              "id": "tools",
+              "isType": true,
+              "name": "Tools",
+              "promise": Promise {},
+              "typeDeclaration": "",
+            },
+          },
+          "externalImports": Map {
+            "JSONSchema6" => Object {
+              "isType": false,
+              "modulePath": "json-schema",
+            },
+          },
+          "imports": Map {},
+          "path": "internal/tools.ts",
           "repository": Repository {
             "scripts": [Circular],
             "writeFiles": [Function],
@@ -8265,7 +8969,19 @@ if (tools.accepts(\\"application/xml\\")) {
           },
           "exports": Map {
             "HTTP_POST" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: User, context: Context, tools: Tools}) => {  
+              "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: User, context: Context, response: ResponseBuilderBuilder<{
+      [statusCode in HttpStatusCode]: {
+          headers: {};
+          content: {
+      \\"application/json\\": { 
+              schema:  User
+            },
+\\"application/xml\\": { 
+              schema:  User
+            }
+    };
+        }
+      }>, tools: Tools}) => {  
             status: number | undefined, 
           contentType?: \\"application/json\\",
           body?: User
@@ -8275,7 +8991,8 @@ if (tools.accepts(\\"application/xml\\")) {
           contentType?: \\"application/xml\\",
           body?: User
           
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        } | { status: 415, contentType: \\"text/plain\\", body: string }
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user/post",
               "isType": true,
@@ -8288,6 +9005,14 @@ if (tools.accepts(\\"application/xml\\")) {
             "Context" => Object {
               "isType": true,
               "modulePath": "../context/context.js",
+            },
+            "ResponseBuilderBuilder" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
+            "HttpStatusCode" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
             },
           },
           "imports": Map {
@@ -8501,7 +9226,19 @@ if (tools.accepts(\\"application/xml\\")) {
     },
     "exports": Map {
       "HTTP_POST" => Object {
-        "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: User, context: Context, tools: Tools}) => {  
+        "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: User, context: Context, response: ResponseBuilderBuilder<{
+      [statusCode in HttpStatusCode]: {
+          headers: {};
+          content: {
+      \\"application/json\\": { 
+              schema:  User
+            },
+\\"application/xml\\": { 
+              schema:  User
+            }
+    };
+        }
+      }>, tools: Tools}) => {  
             status: number | undefined, 
           contentType?: \\"application/json\\",
           body?: User
@@ -8511,7 +9248,8 @@ if (tools.accepts(\\"application/xml\\")) {
           contentType?: \\"application/xml\\",
           body?: User
           
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        } | { status: 415, contentType: \\"text/plain\\", body: string }
+    | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1user/post",
         "isType": true,
@@ -8524,6 +9262,14 @@ if (tools.accepts(\\"application/xml\\")) {
       "Context" => Object {
         "isType": true,
         "modulePath": "../context/context.js",
+      },
+      "ResponseBuilderBuilder" => Object {
+        "isType": true,
+        "modulePath": "counterfact",
+      },
+      "HttpStatusCode" => Object {
+        "isType": true,
+        "modulePath": "counterfact",
       },
     },
     "imports": Map {
@@ -8693,7 +9439,24 @@ return {
           },
           "exports": Map {
             "HTTP_POST" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: Array<User>, context: Context, tools: Tools}) => {  
+              "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: Array<User>, context: Context, response: ResponseBuilderBuilder<{
+      200: {
+          headers: {};
+          content: {
+      \\"application/xml\\": { 
+              schema:  User
+            },
+\\"application/json\\": { 
+              schema:  User
+            }
+    };
+        },[statusCode in Exclude<HttpStatusCode, 200>]: {
+          headers: {};
+          content: {
+      
+    };
+        }
+      }>, tools: Tools}) => {  
             status: 200, 
           contentType?: \\"application/xml\\",
           body?: User
@@ -8708,7 +9471,8 @@ return {
           
           
           
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        } | { status: 415, contentType: \\"text/plain\\", body: string }
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1createWithList/post",
               "isType": true,
@@ -8721,6 +9485,14 @@ return {
             "Context" => Object {
               "isType": true,
               "modulePath": "../../context/context.js",
+            },
+            "ResponseBuilderBuilder" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
+            "HttpStatusCode" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
             },
           },
           "imports": Map {
@@ -8934,7 +9706,24 @@ return {
     },
     "exports": Map {
       "HTTP_POST" => Object {
-        "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: Array<User>, context: Context, tools: Tools}) => {  
+        "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: Array<User>, context: Context, response: ResponseBuilderBuilder<{
+      200: {
+          headers: {};
+          content: {
+      \\"application/xml\\": { 
+              schema:  User
+            },
+\\"application/json\\": { 
+              schema:  User
+            }
+    };
+        },[statusCode in Exclude<HttpStatusCode, 200>]: {
+          headers: {};
+          content: {
+      
+    };
+        }
+      }>, tools: Tools}) => {  
             status: 200, 
           contentType?: \\"application/xml\\",
           body?: User
@@ -8949,7 +9738,8 @@ return {
           
           
           
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        } | { status: 415, contentType: \\"text/plain\\", body: string }
+    | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1createWithList/post",
         "isType": true,
@@ -8962,6 +9752,14 @@ return {
       "Context" => Object {
         "isType": true,
         "modulePath": "../../context/context.js",
+      },
+      "ResponseBuilderBuilder" => Object {
+        "isType": true,
+        "modulePath": "counterfact",
+      },
+      "HttpStatusCode" => Object {
+        "isType": true,
+        "modulePath": "counterfact",
       },
     },
     "imports": Map {
@@ -9130,7 +9928,24 @@ if (statusCode === \\"400\\") {
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: {username?: string, password?: string}, path: never, header: never, body: undefined, context: Context, tools: Tools}) => {  
+              "code": "({ query, path, header, body, context, tools }: { query: {username?: string, password?: string}, path: never, header: never, body: undefined, context: Context, response: ResponseBuilderBuilder<{
+      200: {
+          headers: {};
+          content: {
+      \\"application/xml\\": { 
+              schema:  string
+            },
+\\"application/json\\": { 
+              schema:  string
+            }
+    };
+        },400: {
+          headers: {};
+          content: {
+      
+    };
+        }
+      }>, tools: Tools}) => {  
             status: 200, 
           contentType?: \\"application/xml\\",
           body?: string
@@ -9145,7 +9960,8 @@ if (statusCode === \\"400\\") {
           
           
           
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        } | { status: 415, contentType: \\"text/plain\\", body: string }
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1login/get",
               "isType": true,
@@ -9158,6 +9974,14 @@ if (statusCode === \\"400\\") {
             "Context" => Object {
               "isType": true,
               "modulePath": "../../context/context.js",
+            },
+            "ResponseBuilderBuilder" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
+            "HttpStatusCode" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
             },
           },
           "imports": Map {
@@ -9223,7 +10047,24 @@ if (statusCode === \\"400\\") {
     },
     "exports": Map {
       "HTTP_GET" => Object {
-        "code": "({ query, path, header, body, context, tools }: { query: {username?: string, password?: string}, path: never, header: never, body: undefined, context: Context, tools: Tools}) => {  
+        "code": "({ query, path, header, body, context, tools }: { query: {username?: string, password?: string}, path: never, header: never, body: undefined, context: Context, response: ResponseBuilderBuilder<{
+      200: {
+          headers: {};
+          content: {
+      \\"application/xml\\": { 
+              schema:  string
+            },
+\\"application/json\\": { 
+              schema:  string
+            }
+    };
+        },400: {
+          headers: {};
+          content: {
+      
+    };
+        }
+      }>, tools: Tools}) => {  
             status: 200, 
           contentType?: \\"application/xml\\",
           body?: string
@@ -9238,7 +10079,8 @@ if (statusCode === \\"400\\") {
           
           
           
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        } | { status: 415, contentType: \\"text/plain\\", body: string }
+    | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1login/get",
         "isType": true,
@@ -9251,6 +10093,14 @@ if (statusCode === \\"400\\") {
       "Context" => Object {
         "isType": true,
         "modulePath": "../../context/context.js",
+      },
+      "ResponseBuilderBuilder" => Object {
+        "isType": true,
+        "modulePath": "counterfact",
+      },
+      "HttpStatusCode" => Object {
+        "isType": true,
+        "modulePath": "counterfact",
       },
     },
     "imports": Map {
@@ -9340,12 +10190,20 @@ if (statusCode === \\"400\\") {
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: never, header: never, body: undefined, context: Context, tools: Tools}) => {  
+              "code": "({ query, path, header, body, context, tools }: { query: never, path: never, header: never, body: undefined, context: Context, response: ResponseBuilderBuilder<{
+      [statusCode in HttpStatusCode]: {
+          headers: {};
+          content: {
+      
+    };
+        }
+      }>, tools: Tools}) => {  
             status: number | undefined, 
           
           
           
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        } | { status: 415, contentType: \\"text/plain\\", body: string }
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1logout/get",
               "isType": true,
@@ -9358,6 +10216,14 @@ if (statusCode === \\"400\\") {
             "Context" => Object {
               "isType": true,
               "modulePath": "../../context/context.js",
+            },
+            "ResponseBuilderBuilder" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
+            "HttpStatusCode" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
             },
           },
           "imports": Map {
@@ -9423,12 +10289,20 @@ if (statusCode === \\"400\\") {
     },
     "exports": Map {
       "HTTP_GET" => Object {
-        "code": "({ query, path, header, body, context, tools }: { query: never, path: never, header: never, body: undefined, context: Context, tools: Tools}) => {  
+        "code": "({ query, path, header, body, context, tools }: { query: never, path: never, header: never, body: undefined, context: Context, response: ResponseBuilderBuilder<{
+      [statusCode in HttpStatusCode]: {
+          headers: {};
+          content: {
+      
+    };
+        }
+      }>, tools: Tools}) => {  
             status: number | undefined, 
           
           
           
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        } | { status: 415, contentType: \\"text/plain\\", body: string }
+    | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1logout/get",
         "isType": true,
@@ -9441,6 +10315,14 @@ if (statusCode === \\"400\\") {
       "Context" => Object {
         "isType": true,
         "modulePath": "../../context/context.js",
+      },
+      "ResponseBuilderBuilder" => Object {
+        "isType": true,
+        "modulePath": "counterfact",
+      },
+      "HttpStatusCode" => Object {
+        "isType": true,
+        "modulePath": "counterfact",
       },
     },
     "imports": Map {
@@ -9618,12 +10500,34 @@ if (statusCode === \\"404\\") {
             "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/get@[object Object]:true" => "HTTP_GET",
             "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/put@[object Object]:true" => "HTTP_PUT",
             "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/delete@[object Object]:true" => "HTTP_DELETE",
-            "tools@internal/tools.ts:true" => "Tools",
             "SchemaTypeCoder@undefined@components/User.ts:true" => "User",
+            "tools@internal/tools.ts:true" => "Tools",
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: undefined, context: Context, tools: Tools}) => {  
+              "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: undefined, context: Context, response: ResponseBuilderBuilder<{
+      200: {
+          headers: {};
+          content: {
+      \\"application/xml\\": { 
+              schema:  User
+            },
+\\"application/json\\": { 
+              schema:  User
+            }
+    };
+        },400: {
+          headers: {};
+          content: {
+      
+    };
+        },404: {
+          headers: {};
+          content: {
+      
+    };
+        }
+      }>, tools: Tools}) => {  
             status: 200, 
           contentType?: \\"application/xml\\",
           body?: User
@@ -9643,7 +10547,8 @@ if (statusCode === \\"404\\") {
           
           
           
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        } | { status: 415, contentType: \\"text/plain\\", body: string }
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/get",
               "isType": true,
@@ -9652,12 +10557,20 @@ if (statusCode === \\"404\\") {
               "typeDeclaration": "",
             },
             "HTTP_PUT" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: User, context: Context, tools: Tools}) => {  
+              "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: User, context: Context, response: ResponseBuilderBuilder<{
+      [statusCode in HttpStatusCode]: {
+          headers: {};
+          content: {
+      
+    };
+        }
+      }>, tools: Tools}) => {  
             status: number | undefined, 
           
           
           
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        } | { status: 415, contentType: \\"text/plain\\", body: string }
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/put",
               "isType": true,
@@ -9666,7 +10579,19 @@ if (statusCode === \\"404\\") {
               "typeDeclaration": "",
             },
             "HTTP_DELETE" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: undefined, context: Context, tools: Tools}) => {  
+              "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: undefined, context: Context, response: ResponseBuilderBuilder<{
+      400: {
+          headers: {};
+          content: {
+      
+    };
+        },404: {
+          headers: {};
+          content: {
+      
+    };
+        }
+      }>, tools: Tools}) => {  
             status: 400, 
           
           
@@ -9676,7 +10601,8 @@ if (statusCode === \\"404\\") {
           
           
           
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        } | { status: 415, contentType: \\"text/plain\\", body: string }
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/delete",
               "isType": true,
@@ -9690,46 +10616,16 @@ if (statusCode === \\"404\\") {
               "isType": true,
               "modulePath": "../../context/context.js",
             },
+            "ResponseBuilderBuilder" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
+            "HttpStatusCode" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
           },
           "imports": Map {
-            "Tools" => Object {
-              "isType": true,
-              "name": "Tools",
-              "script": Script {
-                "cache": Map {
-                  "tools@[object Object]:true" => "Tools",
-                },
-                "exports": Map {
-                  "Tools" => Object {
-                    "code": "
-    {
-        oneOf: (array: string[]) => string;
-        randomFromSchema: (schema: JSONSchema6 ) => unknown;
-        accepts: (contentType: string) => boolean;
-    }",
-                    "done": true,
-                    "id": "tools",
-                    "isType": true,
-                    "name": "Tools",
-                    "promise": Promise {},
-                    "typeDeclaration": "",
-                  },
-                },
-                "externalImports": Map {
-                  "JSONSchema6" => Object {
-                    "isType": false,
-                    "modulePath": "json-schema",
-                  },
-                },
-                "imports": Map {},
-                "path": "internal/tools.ts",
-                "repository": Repository {
-                  "scripts": [Circular],
-                  "writeFiles": [Function],
-                },
-                "typeCache": Map {},
-              },
-            },
             "User" => Object {
               "isType": true,
               "name": "User",
@@ -9772,6 +10668,44 @@ if (statusCode === \\"404\\") {
                 },
                 "imports": Map {},
                 "path": "components/User.ts",
+                "repository": Repository {
+                  "scripts": [Circular],
+                  "writeFiles": [Function],
+                },
+                "typeCache": Map {},
+              },
+            },
+            "Tools" => Object {
+              "isType": true,
+              "name": "Tools",
+              "script": Script {
+                "cache": Map {
+                  "tools@[object Object]:true" => "Tools",
+                },
+                "exports": Map {
+                  "Tools" => Object {
+                    "code": "
+    {
+        oneOf: (array: string[]) => string;
+        randomFromSchema: (schema: JSONSchema6 ) => unknown;
+        accepts: (contentType: string) => boolean;
+    }",
+                    "done": true,
+                    "id": "tools",
+                    "isType": true,
+                    "name": "Tools",
+                    "promise": Promise {},
+                    "typeDeclaration": "",
+                  },
+                },
+                "externalImports": Map {
+                  "JSONSchema6" => Object {
+                    "isType": false,
+                    "modulePath": "json-schema",
+                  },
+                },
+                "imports": Map {},
+                "path": "internal/tools.ts",
                 "repository": Repository {
                   "scripts": [Circular],
                   "writeFiles": [Function],
@@ -9796,12 +10730,34 @@ if (statusCode === \\"404\\") {
             "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/get@[object Object]:true" => "HTTP_GET",
             "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/put@[object Object]:true" => "HTTP_PUT",
             "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/delete@[object Object]:true" => "HTTP_DELETE",
-            "tools@internal/tools.ts:true" => "Tools",
             "SchemaTypeCoder@undefined@components/User.ts:true" => "User",
+            "tools@internal/tools.ts:true" => "Tools",
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: undefined, context: Context, tools: Tools}) => {  
+              "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: undefined, context: Context, response: ResponseBuilderBuilder<{
+      200: {
+          headers: {};
+          content: {
+      \\"application/xml\\": { 
+              schema:  User
+            },
+\\"application/json\\": { 
+              schema:  User
+            }
+    };
+        },400: {
+          headers: {};
+          content: {
+      
+    };
+        },404: {
+          headers: {};
+          content: {
+      
+    };
+        }
+      }>, tools: Tools}) => {  
             status: 200, 
           contentType?: \\"application/xml\\",
           body?: User
@@ -9821,7 +10777,8 @@ if (statusCode === \\"404\\") {
           
           
           
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        } | { status: 415, contentType: \\"text/plain\\", body: string }
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/get",
               "isType": true,
@@ -9830,12 +10787,20 @@ if (statusCode === \\"404\\") {
               "typeDeclaration": "",
             },
             "HTTP_PUT" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: User, context: Context, tools: Tools}) => {  
+              "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: User, context: Context, response: ResponseBuilderBuilder<{
+      [statusCode in HttpStatusCode]: {
+          headers: {};
+          content: {
+      
+    };
+        }
+      }>, tools: Tools}) => {  
             status: number | undefined, 
           
           
           
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        } | { status: 415, contentType: \\"text/plain\\", body: string }
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/put",
               "isType": true,
@@ -9844,7 +10809,19 @@ if (statusCode === \\"404\\") {
               "typeDeclaration": "",
             },
             "HTTP_DELETE" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: undefined, context: Context, tools: Tools}) => {  
+              "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: undefined, context: Context, response: ResponseBuilderBuilder<{
+      400: {
+          headers: {};
+          content: {
+      
+    };
+        },404: {
+          headers: {};
+          content: {
+      
+    };
+        }
+      }>, tools: Tools}) => {  
             status: 400, 
           
           
@@ -9854,7 +10831,8 @@ if (statusCode === \\"404\\") {
           
           
           
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        } | { status: 415, contentType: \\"text/plain\\", body: string }
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/delete",
               "isType": true,
@@ -9868,46 +10846,16 @@ if (statusCode === \\"404\\") {
               "isType": true,
               "modulePath": "../../context/context.js",
             },
+            "ResponseBuilderBuilder" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
+            "HttpStatusCode" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
           },
           "imports": Map {
-            "Tools" => Object {
-              "isType": true,
-              "name": "Tools",
-              "script": Script {
-                "cache": Map {
-                  "tools@[object Object]:true" => "Tools",
-                },
-                "exports": Map {
-                  "Tools" => Object {
-                    "code": "
-    {
-        oneOf: (array: string[]) => string;
-        randomFromSchema: (schema: JSONSchema6 ) => unknown;
-        accepts: (contentType: string) => boolean;
-    }",
-                    "done": true,
-                    "id": "tools",
-                    "isType": true,
-                    "name": "Tools",
-                    "promise": Promise {},
-                    "typeDeclaration": "",
-                  },
-                },
-                "externalImports": Map {
-                  "JSONSchema6" => Object {
-                    "isType": false,
-                    "modulePath": "json-schema",
-                  },
-                },
-                "imports": Map {},
-                "path": "internal/tools.ts",
-                "repository": Repository {
-                  "scripts": [Circular],
-                  "writeFiles": [Function],
-                },
-                "typeCache": Map {},
-              },
-            },
             "User" => Object {
               "isType": true,
               "name": "User",
@@ -9950,6 +10898,44 @@ if (statusCode === \\"404\\") {
                 },
                 "imports": Map {},
                 "path": "components/User.ts",
+                "repository": Repository {
+                  "scripts": [Circular],
+                  "writeFiles": [Function],
+                },
+                "typeCache": Map {},
+              },
+            },
+            "Tools" => Object {
+              "isType": true,
+              "name": "Tools",
+              "script": Script {
+                "cache": Map {
+                  "tools@[object Object]:true" => "Tools",
+                },
+                "exports": Map {
+                  "Tools" => Object {
+                    "code": "
+    {
+        oneOf: (array: string[]) => string;
+        randomFromSchema: (schema: JSONSchema6 ) => unknown;
+        accepts: (contentType: string) => boolean;
+    }",
+                    "done": true,
+                    "id": "tools",
+                    "isType": true,
+                    "name": "Tools",
+                    "promise": Promise {},
+                    "typeDeclaration": "",
+                  },
+                },
+                "externalImports": Map {
+                  "JSONSchema6" => Object {
+                    "isType": false,
+                    "modulePath": "json-schema",
+                  },
+                },
+                "imports": Map {},
+                "path": "internal/tools.ts",
                 "repository": Repository {
                   "scripts": [Circular],
                   "writeFiles": [Function],
@@ -9974,12 +10960,34 @@ if (statusCode === \\"404\\") {
             "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/get@[object Object]:true" => "HTTP_GET",
             "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/put@[object Object]:true" => "HTTP_PUT",
             "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/delete@[object Object]:true" => "HTTP_DELETE",
-            "tools@internal/tools.ts:true" => "Tools",
             "SchemaTypeCoder@undefined@components/User.ts:true" => "User",
+            "tools@internal/tools.ts:true" => "Tools",
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: undefined, context: Context, tools: Tools}) => {  
+              "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: undefined, context: Context, response: ResponseBuilderBuilder<{
+      200: {
+          headers: {};
+          content: {
+      \\"application/xml\\": { 
+              schema:  User
+            },
+\\"application/json\\": { 
+              schema:  User
+            }
+    };
+        },400: {
+          headers: {};
+          content: {
+      
+    };
+        },404: {
+          headers: {};
+          content: {
+      
+    };
+        }
+      }>, tools: Tools}) => {  
             status: 200, 
           contentType?: \\"application/xml\\",
           body?: User
@@ -9999,7 +11007,8 @@ if (statusCode === \\"404\\") {
           
           
           
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        } | { status: 415, contentType: \\"text/plain\\", body: string }
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/get",
               "isType": true,
@@ -10008,12 +11017,20 @@ if (statusCode === \\"404\\") {
               "typeDeclaration": "",
             },
             "HTTP_PUT" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: User, context: Context, tools: Tools}) => {  
+              "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: User, context: Context, response: ResponseBuilderBuilder<{
+      [statusCode in HttpStatusCode]: {
+          headers: {};
+          content: {
+      
+    };
+        }
+      }>, tools: Tools}) => {  
             status: number | undefined, 
           
           
           
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        } | { status: 415, contentType: \\"text/plain\\", body: string }
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/put",
               "isType": true,
@@ -10022,7 +11039,19 @@ if (statusCode === \\"404\\") {
               "typeDeclaration": "",
             },
             "HTTP_DELETE" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: undefined, context: Context, tools: Tools}) => {  
+              "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: undefined, context: Context, response: ResponseBuilderBuilder<{
+      400: {
+          headers: {};
+          content: {
+      
+    };
+        },404: {
+          headers: {};
+          content: {
+      
+    };
+        }
+      }>, tools: Tools}) => {  
             status: 400, 
           
           
@@ -10032,7 +11061,8 @@ if (statusCode === \\"404\\") {
           
           
           
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        } | { status: 415, contentType: \\"text/plain\\", body: string }
+    | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/delete",
               "isType": true,
@@ -10046,46 +11076,16 @@ if (statusCode === \\"404\\") {
               "isType": true,
               "modulePath": "../../context/context.js",
             },
+            "ResponseBuilderBuilder" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
+            "HttpStatusCode" => Object {
+              "isType": true,
+              "modulePath": "counterfact",
+            },
           },
           "imports": Map {
-            "Tools" => Object {
-              "isType": true,
-              "name": "Tools",
-              "script": Script {
-                "cache": Map {
-                  "tools@[object Object]:true" => "Tools",
-                },
-                "exports": Map {
-                  "Tools" => Object {
-                    "code": "
-    {
-        oneOf: (array: string[]) => string;
-        randomFromSchema: (schema: JSONSchema6 ) => unknown;
-        accepts: (contentType: string) => boolean;
-    }",
-                    "done": true,
-                    "id": "tools",
-                    "isType": true,
-                    "name": "Tools",
-                    "promise": Promise {},
-                    "typeDeclaration": "",
-                  },
-                },
-                "externalImports": Map {
-                  "JSONSchema6" => Object {
-                    "isType": false,
-                    "modulePath": "json-schema",
-                  },
-                },
-                "imports": Map {},
-                "path": "internal/tools.ts",
-                "repository": Repository {
-                  "scripts": [Circular],
-                  "writeFiles": [Function],
-                },
-                "typeCache": Map {},
-              },
-            },
             "User" => Object {
               "isType": true,
               "name": "User",
@@ -10128,6 +11128,44 @@ if (statusCode === \\"404\\") {
                 },
                 "imports": Map {},
                 "path": "components/User.ts",
+                "repository": Repository {
+                  "scripts": [Circular],
+                  "writeFiles": [Function],
+                },
+                "typeCache": Map {},
+              },
+            },
+            "Tools" => Object {
+              "isType": true,
+              "name": "Tools",
+              "script": Script {
+                "cache": Map {
+                  "tools@[object Object]:true" => "Tools",
+                },
+                "exports": Map {
+                  "Tools" => Object {
+                    "code": "
+    {
+        oneOf: (array: string[]) => string;
+        randomFromSchema: (schema: JSONSchema6 ) => unknown;
+        accepts: (contentType: string) => boolean;
+    }",
+                    "done": true,
+                    "id": "tools",
+                    "isType": true,
+                    "name": "Tools",
+                    "promise": Promise {},
+                    "typeDeclaration": "",
+                  },
+                },
+                "externalImports": Map {
+                  "JSONSchema6" => Object {
+                    "isType": false,
+                    "modulePath": "json-schema",
+                  },
+                },
+                "imports": Map {},
+                "path": "internal/tools.ts",
                 "repository": Repository {
                   "scripts": [Circular],
                   "writeFiles": [Function],
@@ -10255,12 +11293,34 @@ if (statusCode === \\"404\\") {
       "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/get@[object Object]:true" => "HTTP_GET",
       "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/put@[object Object]:true" => "HTTP_PUT",
       "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/delete@[object Object]:true" => "HTTP_DELETE",
-      "tools@internal/tools.ts:true" => "Tools",
       "SchemaTypeCoder@undefined@components/User.ts:true" => "User",
+      "tools@internal/tools.ts:true" => "Tools",
     },
     "exports": Map {
       "HTTP_GET" => Object {
-        "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: undefined, context: Context, tools: Tools}) => {  
+        "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: undefined, context: Context, response: ResponseBuilderBuilder<{
+      200: {
+          headers: {};
+          content: {
+      \\"application/xml\\": { 
+              schema:  User
+            },
+\\"application/json\\": { 
+              schema:  User
+            }
+    };
+        },400: {
+          headers: {};
+          content: {
+      
+    };
+        },404: {
+          headers: {};
+          content: {
+      
+    };
+        }
+      }>, tools: Tools}) => {  
             status: 200, 
           contentType?: \\"application/xml\\",
           body?: User
@@ -10280,7 +11340,8 @@ if (statusCode === \\"404\\") {
           
           
           
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        } | { status: 415, contentType: \\"text/plain\\", body: string }
+    | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/get",
         "isType": true,
@@ -10289,12 +11350,20 @@ if (statusCode === \\"404\\") {
         "typeDeclaration": "",
       },
       "HTTP_PUT" => Object {
-        "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: User, context: Context, tools: Tools}) => {  
+        "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: User, context: Context, response: ResponseBuilderBuilder<{
+      [statusCode in HttpStatusCode]: {
+          headers: {};
+          content: {
+      
+    };
+        }
+      }>, tools: Tools}) => {  
             status: number | undefined, 
           
           
           
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        } | { status: 415, contentType: \\"text/plain\\", body: string }
+    | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/put",
         "isType": true,
@@ -10303,7 +11372,19 @@ if (statusCode === \\"404\\") {
         "typeDeclaration": "",
       },
       "HTTP_DELETE" => Object {
-        "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: undefined, context: Context, tools: Tools}) => {  
+        "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: undefined, context: Context, response: ResponseBuilderBuilder<{
+      400: {
+          headers: {};
+          content: {
+      
+    };
+        },404: {
+          headers: {};
+          content: {
+      
+    };
+        }
+      }>, tools: Tools}) => {  
             status: 400, 
           
           
@@ -10313,7 +11394,8 @@ if (statusCode === \\"404\\") {
           
           
           
-        } | { status: 415, contentType: \\"text/plain\\", body: string }",
+        } | { status: 415, contentType: \\"text/plain\\", body: string }
+    | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/delete",
         "isType": true,
@@ -10327,46 +11409,16 @@ if (statusCode === \\"404\\") {
         "isType": true,
         "modulePath": "../../context/context.js",
       },
+      "ResponseBuilderBuilder" => Object {
+        "isType": true,
+        "modulePath": "counterfact",
+      },
+      "HttpStatusCode" => Object {
+        "isType": true,
+        "modulePath": "counterfact",
+      },
     },
     "imports": Map {
-      "Tools" => Object {
-        "isType": true,
-        "name": "Tools",
-        "script": Script {
-          "cache": Map {
-            "tools@[object Object]:true" => "Tools",
-          },
-          "exports": Map {
-            "Tools" => Object {
-              "code": "
-    {
-        oneOf: (array: string[]) => string;
-        randomFromSchema: (schema: JSONSchema6 ) => unknown;
-        accepts: (contentType: string) => boolean;
-    }",
-              "done": true,
-              "id": "tools",
-              "isType": true,
-              "name": "Tools",
-              "promise": Promise {},
-              "typeDeclaration": "",
-            },
-          },
-          "externalImports": Map {
-            "JSONSchema6" => Object {
-              "isType": false,
-              "modulePath": "json-schema",
-            },
-          },
-          "imports": Map {},
-          "path": "internal/tools.ts",
-          "repository": Repository {
-            "scripts": [Circular],
-            "writeFiles": [Function],
-          },
-          "typeCache": Map {},
-        },
-      },
       "User" => Object {
         "isType": true,
         "name": "User",
@@ -10409,6 +11461,44 @@ if (statusCode === \\"404\\") {
           },
           "imports": Map {},
           "path": "components/User.ts",
+          "repository": Repository {
+            "scripts": [Circular],
+            "writeFiles": [Function],
+          },
+          "typeCache": Map {},
+        },
+      },
+      "Tools" => Object {
+        "isType": true,
+        "name": "Tools",
+        "script": Script {
+          "cache": Map {
+            "tools@[object Object]:true" => "Tools",
+          },
+          "exports": Map {
+            "Tools" => Object {
+              "code": "
+    {
+        oneOf: (array: string[]) => string;
+        randomFromSchema: (schema: JSONSchema6 ) => unknown;
+        accepts: (contentType: string) => boolean;
+    }",
+              "done": true,
+              "id": "tools",
+              "isType": true,
+              "name": "Tools",
+              "promise": Promise {},
+              "typeDeclaration": "",
+            },
+          },
+          "externalImports": Map {
+            "JSONSchema6" => Object {
+              "isType": false,
+              "modulePath": "json-schema",
+            },
+          },
+          "imports": Map {},
+          "path": "internal/tools.ts",
           "repository": Repository {
             "scripts": [Circular],
             "writeFiles": [Function],

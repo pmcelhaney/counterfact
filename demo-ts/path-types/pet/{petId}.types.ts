@@ -1,6 +1,8 @@
 import type { Context } from "../../context/context.js";
-import type { Tools } from "./../../internal/tools.js";
+import type { ResponseBuilderBuilder } from "counterfact";
+import type { HttpStatusCode } from "counterfact";
 import type { Pet } from "./../../components/Pet.js";
+import type { Tools } from "./../../internal/tools.js";
 export type HTTP_GET = ({
   query,
   path,
@@ -14,6 +16,27 @@ export type HTTP_GET = ({
   header: never;
   body: undefined;
   context: Context;
+  response: ResponseBuilderBuilder<{
+    200: {
+      headers: {};
+      content: {
+        "application/xml": {
+          schema: Pet;
+        };
+        "application/json": {
+          schema: Pet;
+        };
+      };
+    };
+    400: {
+      headers: {};
+      content: {};
+    };
+    404: {
+      headers: {};
+      content: {};
+    };
+  }>;
   tools: Tools;
 }) =>
   | {
@@ -32,7 +55,8 @@ export type HTTP_GET = ({
   | {
       status: 404;
     }
-  | { status: 415; contentType: "text/plain"; body: string };
+  | { status: 415; contentType: "text/plain"; body: string }
+  | void;
 export type HTTP_POST = ({
   query,
   path,
@@ -46,12 +70,19 @@ export type HTTP_POST = ({
   header: never;
   body: undefined;
   context: Context;
+  response: ResponseBuilderBuilder<{
+    405: {
+      headers: {};
+      content: {};
+    };
+  }>;
   tools: Tools;
 }) =>
   | {
       status: 405;
     }
-  | { status: 415; contentType: "text/plain"; body: string };
+  | { status: 415; contentType: "text/plain"; body: string }
+  | void;
 export type HTTP_DELETE = ({
   query,
   path,
@@ -65,9 +96,16 @@ export type HTTP_DELETE = ({
   header: { api_key?: string };
   body: undefined;
   context: Context;
+  response: ResponseBuilderBuilder<{
+    400: {
+      headers: {};
+      content: {};
+    };
+  }>;
   tools: Tools;
 }) =>
   | {
       status: 400;
     }
-  | { status: 415; contentType: "text/plain"; body: string };
+  | { status: 415; contentType: "text/plain"; body: string }
+  | void;

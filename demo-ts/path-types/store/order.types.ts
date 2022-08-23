@@ -1,4 +1,6 @@
 import type { Context } from "../../context/context.js";
+import type { ResponseBuilderBuilder } from "counterfact";
+import type { HttpStatusCode } from "counterfact";
 import type { Order } from "./../../components/Order.js";
 import type { Tools } from "./../../internal/tools.js";
 export type HTTP_POST = ({
@@ -14,6 +16,20 @@ export type HTTP_POST = ({
   header: undefined;
   body: Order;
   context: Context;
+  response: ResponseBuilderBuilder<{
+    200: {
+      headers: {};
+      content: {
+        "application/json": {
+          schema: Order;
+        };
+      };
+    };
+    405: {
+      headers: {};
+      content: {};
+    };
+  }>;
   tools: Tools;
 }) =>
   | {
@@ -24,4 +40,5 @@ export type HTTP_POST = ({
   | {
       status: 405;
     }
-  | { status: 415; contentType: "text/plain"; body: string };
+  | { status: 415; contentType: "text/plain"; body: string }
+  | void;

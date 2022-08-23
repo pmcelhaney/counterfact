@@ -4,6 +4,7 @@ import { Coder } from "./coder.js";
 import { ToolsCoder } from "./tools-coder.js";
 import { SchemaTypeCoder } from "./schema-type-coder.js";
 import { ParametersTypeCoder } from "./parameters-type-coder.js";
+import { ResponseTypeCoder } from "./response-type-coder.js";
 
 export class OperationTypeCoder extends Coder {
   names() {
@@ -95,11 +96,16 @@ export class OperationTypeCoder extends Coder {
       ? new SchemaTypeCoder(bodyRequirement).write(script)
       : "undefined";
 
-    return `({ query, path, header, body, context, tools }: { query: ${queryType}, path: ${pathType}, header: ${headerType}, body: ${bodyType}, context: Context, tools: ${script.importType(
+    const responseType = new ResponseTypeCoder(
+      this.requirement.select("responses")
+    ).write(script);
+
+    return `({ query, path, header, body, context, tools }: { query: ${queryType}, path: ${pathType}, header: ${headerType}, body: ${bodyType}, context: Context, response: ${responseType}, tools: ${script.importType(
       new ToolsCoder(),
       "internal/tools.ts"
     )}}) => ${this.responseTypes(
       script
-    )} | { status: 415, contentType: "text/plain", body: string }`;
+    )} | { status: 415, contentType: "text/plain", body: string }
+    | void`;
   }
 }
