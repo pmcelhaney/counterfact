@@ -3,17 +3,8 @@
   "eslint.format.enable": true,
   "eslint.packageManager": "yarn",
   "eslint.codeActionsOnSave.mode": "problems",
-  "eslint.codeActionsOnSave.rules": [
-    "!import/namespace",
-    "!etc/no-deprecated",
-    "!import/no-cycle",
-    "!no-explicit-type-exports/no-explicit-type-exports",
-    "!import/no-deprecated",
-    "!import/no-self-import",
-    "!import/default",
-    "!import/no-named-as-default",
-    "*"
-  ],
+  "eslint.useESLintClass": true,
+  "eslint.codeActionsOnSave.rules": ["*"],
   "files.insertFinalNewline": true,
   "jest.nodeEnv": {
     "NODE_OPTIONS": "--experimental-vm-modules"
@@ -24,5 +15,5 @@
   "[typescript]": {
     "editor.defaultFormatter": "dbaeumer.vscode-eslint"
   },
-  "cSpell.words": ["bodyparser", "counterfact", "openapi"]
+  "cSpell.words": ["bodyparser", "counterfact", "openapi", "transpiles"]
 }

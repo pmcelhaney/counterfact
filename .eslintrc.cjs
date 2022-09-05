@@ -24,6 +24,15 @@ const rules = {
   "node/no-callback-literal": "off",
   "node/file-extension-in-import": "off",
   "node/no-missing-import": "off",
+
+  // too slow
+  "import/no-cycle": "off",
+  "import/no-unused-modules": "off",
+  "import/namespace": "off",
+  "import/no-named-as-default": "off",
+  "import/no-deprecated": "off",
+  "import/default": "off",
+  "import/no-named-as-default-member": "off",
 };
 
 module.exports = {
