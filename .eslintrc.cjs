@@ -93,6 +93,7 @@ module.exports = {
         "no-magic-numbers": ["off"],
         "id-length": ["off"],
         "max-lines": "off",
+        "jest/unbound-method": "off",
       },
     },
 
