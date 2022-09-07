@@ -10,13 +10,21 @@ const TYPESCRIPT_SOURCE = "const x:number = 1;\n";
 const JAVASCRIPT_SOURCE = "var x = 1;\n";
 
 describe("a Transpiler", () => {
+  // eslint-disable-next-line init-declarations
+  let transpiler;
+
+  // eslint-disable-next-line jest/no-hooks
+  afterEach(() => {
+    transpiler.stopWatching();
+  });
+
   it("finds a file and transpiles it", async () => {
     const files = {
       "src/found.ts": TYPESCRIPT_SOURCE,
     };
 
     await withTemporaryFiles(files, async (basePath, { path }) => {
-      const transpiler = new Transpiler(path("src"), path("dist"));
+      transpiler = new Transpiler(path("src"), path("dist"));
 
       await transpiler.watch();
 
@@ -31,19 +39,30 @@ describe("a Transpiler", () => {
   });
 
   it("discovers a new file and transpiles it", async () => {
-    await withTemporaryFiles({}, async (basePath, { path, add }) => {
-      const transpiler = new Transpiler(path("src"), path("dist"));
+    // on Linux the watcher doesn't seem to work consistently if there's not a file in the directory to begin with
 
-      await transpiler.watch();
-      add("src/added.ts", TYPESCRIPT_SOURCE);
-      await once(transpiler, "write");
+    await withTemporaryFiles(
+      { "src/starter.ts": TYPESCRIPT_SOURCE },
+      async (basePath, { path, add }) => {
+        transpiler = new Transpiler(path("src"), path("dist"));
 
-      await expect(fs.readFile(path("dist/added.js"), "utf8")).resolves.toBe(
-        JAVASCRIPT_SOURCE
-      );
+        const writeTheFirstFile = once(transpiler, "write");
 
-      transpiler.stopWatching();
-    });
+        await transpiler.watch();
+        await writeTheFirstFile;
+
+        const write = once(transpiler, "write");
+
+        await add("src/added.ts", TYPESCRIPT_SOURCE);
+        await write;
+
+        await expect(fs.readFile(path("dist/added.js"), "utf8")).resolves.toBe(
+          JAVASCRIPT_SOURCE
+        );
+
+        transpiler.stopWatching();
+      }
+    );
   });
 
   it("sees an updated file and transpiles it", async () => {
@@ -52,7 +71,7 @@ describe("a Transpiler", () => {
     };
 
     await withTemporaryFiles(files, async (basePath, { path, add }) => {
-      const transpiler = new Transpiler(path("src"), path("dist"));
+      transpiler = new Transpiler(path("src"), path("dist"));
 
       const initialWrite = once(transpiler, "write");
 
@@ -70,7 +89,7 @@ describe("a Transpiler", () => {
 
       transpiler.stopWatching();
     });
-  });
+  }, 10_000);
 
   it("sees a removed TypeScript file and deletes the JavaScript file", async () => {
     const files = {
@@ -78,7 +97,7 @@ describe("a Transpiler", () => {
     };
 
     await withTemporaryFiles(files, async (basePath, { path, remove }) => {
-      const transpiler = new Transpiler(path("src"), path("dist"));
+      transpiler = new Transpiler(path("src"), path("dist"));
 
       await transpiler.watch();
       await once(transpiler, "write");
