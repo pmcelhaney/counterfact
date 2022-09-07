@@ -28,8 +28,6 @@ describe("a Transpiler", () => {
 
       await transpiler.watch();
 
-      await once(transpiler, "write");
-
       await expect(fs.readFile(path("dist/found.js"), "utf8")).resolves.toBe(
         JAVASCRIPT_SOURCE
       );
@@ -46,10 +44,7 @@ describe("a Transpiler", () => {
       async (basePath, { path, add }) => {
         transpiler = new Transpiler(path("src"), path("dist"));
 
-        const writeTheFirstFile = once(transpiler, "write");
-
         await transpiler.watch();
-        await writeTheFirstFile;
 
         const write = once(transpiler, "write");
 
@@ -100,7 +95,6 @@ describe("a Transpiler", () => {
       transpiler = new Transpiler(path("src"), path("dist"));
 
       await transpiler.watch();
-      await once(transpiler, "write");
       await remove("src/delete-me.ts");
       await once(transpiler, "delete");
 

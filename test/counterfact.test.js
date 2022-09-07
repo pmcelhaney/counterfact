@@ -10,17 +10,17 @@ describe("integration test", () => {
     const app = new Koa();
     const request = supertest(app.callback());
     const files = {
-      "hello.mjs": `
+      "paths/hello.mjs": `
         export async function GET() {
           return await Promise.resolve({ body: "GET /hello" });
         }
       `,
-      "hello/world.mjs": `
+      "paths/hello/world.mjs": `
         export async function POST() {
           return await Promise.resolve({ body: "POST /hello/world" });
         }
       `,
-      "teapot.mjs": `
+      "paths/teapot.mjs": `
       export async function POST() {
         return await Promise.resolve({ status: 418, body: "I am a teapot." });
       }
@@ -56,10 +56,9 @@ describe("integration test", () => {
     };
 
     await withTemporaryFiles(files, async (basePath) => {
-      const { koaMiddleware, moduleLoader } = await counterfact(
-        `${basePath}/paths`,
-        { name: "World" }
-      );
+      const { koaMiddleware, moduleLoader } = await counterfact(basePath, {
+        name: "World",
+      });
 
       app.use(koaMiddleware);
 
@@ -102,7 +101,7 @@ describe("integration test", () => {
 
     await withTemporaryFiles(files, async (basePath) => {
       const { koaMiddleware, moduleLoader } = await counterfact(
-        `${basePath}/paths`,
+        basePath,
         { name: "World" },
         `${basePath}/openapi.yaml`
       );

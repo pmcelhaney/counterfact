@@ -32,10 +32,14 @@ export async function counterfact(
     nodePath.join(os.tmpdir(), "counterfact-")
   )}/`;
 
-  await fs.writeFile(
-    nodePath.join(modulesPath, "package.json"),
-    '{"type": "module"}'
-  );
+  try {
+    await fs.writeFile(
+      nodePath.join(modulesPath, "package.json"),
+      '{"type": "module"}'
+    );
+  } catch {
+    throw new Error("could not write package.json");
+  }
 
   const transpiler = new Transpiler(basePath, modulesPath);
 
@@ -48,6 +52,7 @@ export async function counterfact(
   );
 
   await moduleLoader.load();
+
   await moduleLoader.watch();
 
   return { koaMiddleware: koaMiddleware(dispatcher), registry, moduleLoader };
