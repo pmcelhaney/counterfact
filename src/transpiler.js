@@ -1,7 +1,7 @@
-import { once } from "node:events";
 import fs from "node:fs/promises";
 import nodePath from "node:path";
 import { constants as fsConstants } from "node:fs";
+import { once } from "node:events";
 
 import ts from "typescript";
 import chokidar from "chokidar";
@@ -26,10 +26,6 @@ export class Transpiler extends EventTarget {
   async watch() {
     this.watcher = chokidar.watch(`${this.sourcePath}/**/*.{js,mjs,ts,mts}`);
 
-    await once(this.watcher, "ready");
-
-    this.dispatchEvent(new Event("write"));
-
     this.watcher.on("all", async (eventName, sourcePath) => {
       const destinationPath = sourcePath
         .replace(this.sourcePath, this.destinationPath)
@@ -51,6 +47,11 @@ export class Transpiler extends EventTarget {
         this.dispatchEvent(new Event("delete"));
       }
     });
+    await once(this.watcher, "ready");
+  }
+
+  async stopWatching() {
+    await this.watcher?.close();
   }
 
   async transpileFile(eventName, sourcePath, destinationPath) {

@@ -19,11 +19,14 @@ describe("a Transpiler", () => {
       const transpiler = new Transpiler(path("src"), path("dist"));
 
       await transpiler.watch();
+
       await once(transpiler, "write");
 
       await expect(fs.readFile(path("dist/found.js"), "utf8")).resolves.toBe(
         JAVASCRIPT_SOURCE
       );
+
+      transpiler.stopWatching();
     });
   });
 
@@ -38,6 +41,8 @@ describe("a Transpiler", () => {
       await expect(fs.readFile(path("dist/added.js"), "utf8")).resolves.toBe(
         JAVASCRIPT_SOURCE
       );
+
+      transpiler.stopWatching();
     });
   });
 
@@ -49,13 +54,21 @@ describe("a Transpiler", () => {
     await withTemporaryFiles(files, async (basePath, { path, add }) => {
       const transpiler = new Transpiler(path("src"), path("dist"));
 
+      const initialWrite = once(transpiler, "write");
+
       await transpiler.watch();
+      await initialWrite;
+
+      const overwrite = once(transpiler, "write");
+
       add("src/update-me.ts", TYPESCRIPT_SOURCE);
-      await once(transpiler, "write");
+      await overwrite;
 
       await expect(
         fs.readFile(path("dist/update-me.js"), "utf8")
       ).resolves.toBe(JAVASCRIPT_SOURCE);
+
+      transpiler.stopWatching();
     });
   });
 
@@ -75,6 +88,8 @@ describe("a Transpiler", () => {
       await expect(() =>
         fs.access(path("dist/delete-me.js"), fsConstants.F_OK)
       ).rejects.toThrow(/ENOENT/u);
+
+      transpiler.stopWatching();
     });
   });
 });
