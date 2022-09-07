@@ -15,11 +15,6 @@ async function main() {
   const basePath = nodePath.resolve(destination);
 
   await start(basePath, 3100);
-
-  // process.stdout.write("Usage:\n");
-  // process.stdout.write("  counterfact start [basePath] [port]\n");
-  // process.stdout.write("  counterfact generate [source] [destination]\n");
-  // process.stdout.write("  counterfact init [source] [destination]\n");
 }
 
 await main();
