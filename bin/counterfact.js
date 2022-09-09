@@ -7,7 +7,7 @@ import { generate } from "../src/typescript-generator/generate.js";
 import { init } from "../src/typescript-generator/init.js";
 import { start } from "../src/start.js";
 
-// eslint-disable-next-line max-statements, sonarjs/cognitive-complexity
+// eslint-disable-next-line max-statements, sonarjs/cognitive-complexity, complexity
 async function main() {
   // eslint-disable-next-line prefer-destructuring
   const command = process.argv[2];
@@ -67,6 +67,20 @@ async function main() {
     process.stdout.write(`  cd ${destination}\n`);
     process.stdout.write("  npm install\n");
     process.stdout.write("  npm start -- --open\n");
+
+    return;
+  }
+
+  if (command === "go" && process.argv.length === 5) {
+    const [, source, destination = "."] = process.argv
+      .slice(2)
+      .map((pathString) => nodePath.join(process.cwd(), pathString));
+
+    await generate(source, destination);
+
+    const basePath = nodePath.resolve(destination);
+
+    await start(basePath, 3100);
 
     return;
   }
