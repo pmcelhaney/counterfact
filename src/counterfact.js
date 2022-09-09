@@ -2,6 +2,7 @@ import fs from "node:fs/promises";
 import nodePath from "node:path";
 import os from "node:os";
 
+import $RefParser from "json-schema-ref-parser";
 import yaml from "js-yaml";
 
 import { Registry } from "./registry.js";
@@ -12,7 +13,9 @@ import { Transpiler } from "./transpiler.js";
 
 async function loadOpenApiDocument(source) {
   try {
-    return yaml.load(await fs.readFile(source, "utf8"));
+    return $RefParser.dereference(
+      await yaml.load(await fs.readFile(source, "utf8"))
+    );
   } catch {
     return undefined;
   }
