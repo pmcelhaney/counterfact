@@ -63,6 +63,7 @@
     "fs-extra": "^10.1.0",
     "js-yaml": "^4.1.0",
     "json-schema-faker": "^0.5.0-rcv.44",
+    "json-schema-ref-parser": "^9.0.9",
     "jsonwebtoken": "^8.5.1",
     "koa": "^2.13.4",
     "koa-bodyparser": "^4.3.0",
