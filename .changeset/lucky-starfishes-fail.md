@@ -2,4 +2,4 @@
 "counterfact": minor
 ---
 
-simplify the CLI so there's one command that goes soup to nuts
+adds a 'go' command that generates code and starts the server in one step
