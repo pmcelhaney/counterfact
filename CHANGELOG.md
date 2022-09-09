@@ -1,5 +1,25 @@
 # counterfact
 
+## 0.7.0
+
+### Minor Changes
+
+- 4f3c7c9: define a ResponseBuilder type -- to be refined later with one or more generic arguments
+- 5f3ee3f: response builder fluent API which is going to make intellisense with TypeScript awesome
+- 6221e7d: `counterfact start` command to start a server
+- a3dfb48: `npm counterfact init <openapi-file> <destination>` command to build a new package with a Counterfact server
+- 9f91d57: adds a 'go' command that generates code and starts the server in one step
+- 25dcd45: ability to respond with multiple content types, return the best match for the request's accept header
+- c84a4f4: Counterfact is now able to read an OpenAPI document and use it to generate a random response.
+- c0cb938: a function can now return "hello world" as shorthand for `{status: 200, contentType: "text/plain", body: "hello world"}`
+
+### Patch Changes
+
+- 69b4598: replaced EventEmitter with EventTarget
+- a07c2b2: fix a crash when regenerating code
+- 85c3349: fixed an issue where hot reload did not work in some cases
+- 1551cbb: handle additionalProperties when converting a JSON Schema to TypeScript
+
 ## 0.6.0
 
 ### Minor Changes
