@@ -20,7 +20,7 @@ jobs:
     - name: install, run tests
       run: |
         yarn
-        yarn test
+        yarn test --forceExit
 
     - name: Coveralls
       uses: coverallsapp/github-action@1.1.3

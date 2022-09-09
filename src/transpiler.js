@@ -26,13 +26,17 @@ export class Transpiler extends EventTarget {
   async watch() {
     this.watcher = chokidar.watch(`${this.sourcePath}/**/*.{js,mjs,ts,mts}`);
 
+    const transpiles = [];
+
     this.watcher.on("all", async (eventName, sourcePath) => {
       const destinationPath = sourcePath
         .replace(this.sourcePath, this.destinationPath)
         .replace(".ts", ".js");
 
       if (["add", "change"].includes(eventName)) {
-        this.transpileFile(eventName, sourcePath, destinationPath);
+        transpiles.push(
+          this.transpileFile(eventName, sourcePath, destinationPath)
+        );
       }
 
       if (eventName === "unlink") {
@@ -48,6 +52,7 @@ export class Transpiler extends EventTarget {
       }
     });
     await once(this.watcher, "ready");
+    await Promise.all(transpiles);
   }
 
   async stopWatching() {
@@ -63,14 +68,18 @@ export class Transpiler extends EventTarget {
       compilerOptions: { module: ts.ModuleKind.ES2022 },
     }).outputText;
 
-    await fs.writeFile(
-      nodePath.join(
-        sourcePath
-          .replace(this.sourcePath, this.destinationPath)
-          .replace(".ts", ".js")
-      ),
-      result
-    );
+    try {
+      await fs.writeFile(
+        nodePath.join(
+          sourcePath
+            .replace(this.sourcePath, this.destinationPath)
+            .replace(".ts", ".js")
+        ),
+        result
+      );
+    } catch {
+      throw new Error("could not transpile");
+    }
 
     this.dispatchEvent(new Event("write"));
   }

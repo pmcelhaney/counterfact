@@ -21,8 +21,12 @@ export async function init(source, destination) {
 
   specification.servers.unshift({ url: "/" });
 
-  await fs.writeFile(
-    nodePath.join(destination, "counterfact", "public", "openapi.yaml"),
-    yaml.dump(specification)
-  );
+  try {
+    await fs.writeFile(
+      nodePath.join(destination, "counterfact", "public", "openapi.yaml"),
+      yaml.dump(specification)
+    );
+  } catch {
+    throw new Error("Could not write openapi.yaml");
+  }
 }

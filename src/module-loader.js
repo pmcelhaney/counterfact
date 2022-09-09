@@ -1,4 +1,5 @@
 import fs from "node:fs/promises";
+import { existsSync } from "node:fs";
 import nodePath from "node:path";
 import { once } from "node:events";
 
@@ -61,9 +62,14 @@ export class ModuleLoader extends EventTarget {
   }
 
   async load(directory = "") {
+    if (!existsSync(nodePath.join(this.basePath, directory))) {
+      throw new Error(`Directory does not exist ${this.basePath}`);
+    }
+
     const files = await fs.readdir(nodePath.join(this.basePath, directory), {
       withFileTypes: true,
     });
+
     const imports = files.flatMap(async (file) => {
       if (file.name.includes("#")) {
         return;

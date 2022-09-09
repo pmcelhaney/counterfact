@@ -1,5 +1,3 @@
-import nodePath from "node:path";
-
 import Koa from "koa";
 import bodyParser from "koa-bodyparser";
 
@@ -15,10 +13,7 @@ export async function start(basePath = process.cwd(), port = DEFAULT_PORT) {
 
   app.use(bodyParser());
 
-  const { koaMiddleware } = await counterfact(
-    nodePath.join(basePath, "paths"),
-    context
-  );
+  const { koaMiddleware } = await counterfact(basePath, context);
 
   app.use(koaMiddleware);
 
