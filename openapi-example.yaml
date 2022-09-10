@@ -52,6 +52,9 @@ paths:
               schema: 
                 type: 
                   string
+                example: an example string
               examples:
-                hello-world:
-                  value: Hello, world
+                hello-example1:
+                  value: Hello, example1
+                hello-example2:
+                  value: Hello, example2
