@@ -69,9 +69,9 @@ describe("a SchemaTypeCoder", () => {
       })
     );
 
-    const expected = format("const x = { name: string, age: number };");
+    const expected = format("type x = { name?: string, age?: number };");
 
-    expect(format(`const x = ${coder.write()}`)).toStrictEqual(expected);
+    expect(format(`type x = ${coder.write()}`)).toStrictEqual(expected);
   });
 
   it("generates a type declaration for an object with additionalProperties", () => {
@@ -91,7 +91,29 @@ describe("a SchemaTypeCoder", () => {
     );
 
     const expected = format(
-      "type x = { name: string, age: number, [key: string]: unknown };"
+      "type x = { name?: string, age?: number, [key: string]: unknown };"
+    );
+
+    expect(format(`type x = ${coder.write()}`)).toStrictEqual(expected);
+  });
+
+  it("generates a type declaration for an object with required properties", () => {
+    const coder = new SchemaTypeCoder(
+      new Requirement({
+        type: "object",
+
+        properties: {
+          optionalString: { type: "string" },
+          requiredString: { type: "string", required: true },
+          anotherRequiredString: { type: "string" },
+        },
+
+        required: ["anotherRequiredString"],
+      })
+    );
+
+    const expected = format(
+      "type x = { optionalString?: string, requiredString: string, anotherRequiredString: string };"
     );
 
     expect(format(`type x = ${coder.write()}`)).toStrictEqual(expected);
@@ -112,7 +134,7 @@ describe("a SchemaTypeCoder", () => {
     );
 
     const expected = format(
-      "type x = { name: string, age: number, [key: string]: unknown };"
+      "type x = { name?: string, age?: number, [key: string]: unknown };"
     );
 
     expect(format(`type x = ${coder.write()}`)).toStrictEqual(expected);
@@ -132,7 +154,7 @@ describe("a SchemaTypeCoder", () => {
       })
     );
 
-    const expected = format("type x = { name: string, age: number };");
+    const expected = format("type x = { name?: string, age?: number };");
 
     expect(format(`type x = ${coder.write()}`)).toStrictEqual(expected);
   });
@@ -142,18 +164,11 @@ describe("a SchemaTypeCoder", () => {
       new Requirement({
         type: "object",
 
-        properties: {
-          name: { type: "string" },
-          nickname: { type: "string" },
-        },
-
-        additionalProperties: { type: "string" },
+        additionalProperties: { type: "boolean" },
       })
     );
 
-    const expected = format(
-      "type x = { name: string, nickname: string, [key: string]: string };"
-    );
+    const expected = format("type x = {  [key: string]: boolean };");
 
     expect(format(`type x = ${coder.write()}`)).toStrictEqual(expected);
   });
@@ -162,11 +177,19 @@ describe("a SchemaTypeCoder", () => {
     const coder = new SchemaTypeCoder(
       new Requirement({
         type: "object",
-        additionalProperties: { type: "string" },
+
+        properties: {
+          aNumber: { type: "number" },
+          anotherNumber: { type: "number" },
+        },
+
+        additionalProperties: { type: "number" },
       })
     );
 
-    const expected = format("type x = { [key: string]: string };");
+    const expected = format(
+      "type x = { aNumber?: number; anotherNumber?: number; [key: string]: number };"
+    );
 
     expect(format(`type x = ${coder.write()}`)).toStrictEqual(expected);
   });
