@@ -77,18 +77,19 @@ export class Registry {
 
   endpoint(httpRequestMethod, url) {
     const handler = this.handler(url);
-    const lambda = handler?.module?.[httpRequestMethod];
+    const execute = handler?.module?.[httpRequestMethod];
 
-    if (!lambda) {
+    if (!execute) {
       return () => ({
         status: 404,
         body: `Could not find a ${httpRequestMethod} method at ${url}\nGot as far as ${handler.matchedPath}`,
       });
     }
 
-    return ({ ...context }) =>
-      lambda({
-        ...context,
+    return ({ ...requestData }) =>
+      execute({
+        ...requestData,
+        context: this.context,
         path: handler.path,
         matchedPath: handler.matchedPath ?? "none",
       });

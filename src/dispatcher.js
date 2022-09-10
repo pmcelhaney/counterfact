@@ -21,8 +21,6 @@ export class Dispatcher {
       path
     )({
       tools: new Tools({ headers }),
-
-      context: this.registry.context,
       body,
       query,
       headers,
