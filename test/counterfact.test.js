@@ -87,9 +87,13 @@ describe("integration test", () => {
                   content:
                     text/plain:
                       schema:
-                        type: string
-                        examples: 
-                          - "hello"
+                        $ref: "#/components/schemas/Hello"
+        components:
+          schemas:
+            Hello: 
+              type: string
+              examples: 
+                - "hello"
       `,
 
       "paths/hello.mjs": `
