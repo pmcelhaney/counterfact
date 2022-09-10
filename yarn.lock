@@ -3425,6 +3425,23 @@ cosmiconfig@^7.0.0, cosmiconfig@^7.0.1:
     path-type "^4.0.0"
     yaml "^1.10.0"
 
+counterfact@./:
+  version "0.7.0"
+  dependencies:
+    "@hapi/accept" "^6.0.0"
+    "@types/json-schema" "^7.0.11"
+    chokidar "^3.5.3"
+    counterfact "./"
+    fs-extra "^10.1.0"
+    js-yaml "^4.1.0"
+    json-schema-faker "^0.5.0-rcv.44"
+    json-schema-ref-parser "^9.0.9"
+    jsonwebtoken "^8.5.1"
+    koa "^2.13.4"
+    koa-bodyparser "^4.3.0"
+    prettier "^2.7.1"
+    typescript "^4.8.2"
+
 crc-32@^1.2.0:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/crc-32/-/crc-32-1.2.2.tgz#3cad35a934b8bf71f25ca524b6da51fb7eace2ff"
