@@ -39,6 +39,19 @@ export class ResponseTypeCoder extends Coder {
     }`;
   }
 
+  buildHeaders(script, responseCode) {
+    const response = this.requirement.select(responseCode);
+
+    const properties = Object.keys(response.data.headers ?? {}).map(
+      (name) =>
+        `"${name}": { schema: ${new SchemaTypeCoder(
+          response.select("headers").select(name).select("schema")
+        ).write(script)}}`
+    );
+
+    return `{${properties.join(";")}}`;
+  }
+
   buildResponseObjectType(script) {
     const responses = this.requirement.data;
 
@@ -49,7 +62,7 @@ export class ResponseTypeCoder extends Coder {
             responseCode,
             responses
           )}: {
-          headers: {};
+          headers: ${this.buildHeaders(script, responseCode)};
           content: ${this.buildContentObjectType(
             script,
             responseCode,

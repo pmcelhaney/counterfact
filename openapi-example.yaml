@@ -47,6 +47,10 @@ paths:
       responses:
         default:
           description: Successful response
+          headers:
+            x-test:
+              schema:
+                type: string
           content:
             application/json:
               schema: 

@@ -4777,7 +4777,7 @@ Map {
             "HTTP_GET" => Object {
               "code": "({ query, path, header, body, context, tools }: { query: {username?: string, password?: string}, path: never, header: never, body: undefined, context: Context, response: ResponseBuilderBuilder<{
       200: {
-          headers: {};
+          headers: {\\"X-Rate-Limit\\": { schema: number};\\"X-Expires-After\\": { schema: string}};
           content: {
       \\"application/xml\\": { 
               schema:  string
@@ -4896,7 +4896,7 @@ Map {
       "HTTP_GET" => Object {
         "code": "({ query, path, header, body, context, tools }: { query: {username?: string, password?: string}, path: never, header: never, body: undefined, context: Context, response: ResponseBuilderBuilder<{
       200: {
-          headers: {};
+          headers: {\\"X-Rate-Limit\\": { schema: number};\\"X-Expires-After\\": { schema: string}};
           content: {
       \\"application/xml\\": { 
               schema:  string
