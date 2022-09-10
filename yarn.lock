@@ -3425,17 +3425,17 @@ cosmiconfig@^7.0.0, cosmiconfig@^7.0.1:
     path-type "^4.0.0"
     yaml "^1.10.0"
 
-counterfact@./:
+counterfact@^0.7.0:
   version "0.7.0"
+  resolved "https://registry.yarnpkg.com/counterfact/-/counterfact-0.7.0.tgz#cf4b93d06ae643a2cba463871b097f2b14e145a4"
+  integrity sha512-Tf+3v7sEd/23M/Gd0HQCQETRlTqabgseNwREsiwYEKB11sTHGVB82C9bSOOBoG6ap9FsUDiqcyqrIltVDdivLQ==
   dependencies:
     "@hapi/accept" "^6.0.0"
     "@types/json-schema" "^7.0.11"
     chokidar "^3.5.3"
-    counterfact "./"
     fs-extra "^10.1.0"
     js-yaml "^4.1.0"
     json-schema-faker "^0.5.0-rcv.44"
-    json-schema-ref-parser "^9.0.9"
     jsonwebtoken "^8.5.1"
     koa "^2.13.4"
     koa-bodyparser "^4.3.0"
