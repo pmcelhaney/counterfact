@@ -80,7 +80,7 @@ async function main() {
 
     const basePath = nodePath.resolve(destination);
 
-    await start(basePath, 3100);
+    await start(basePath, 3100, source);
 
     return;
   }
