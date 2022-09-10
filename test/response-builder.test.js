@@ -72,6 +72,8 @@ describe("a response builder", () => {
                 type: "string",
                 examples: ["hello"],
               },
+
+              examples: ["example text response"],
             },
           },
         },
@@ -95,7 +97,7 @@ describe("a response builder", () => {
       expect(response.status).toBe(200);
       expect(response.content).toStrictEqual([
         { type: "application/json", body: { value: "hello" } },
-        { type: "text/plain", body: "hello" },
+        { type: "text/plain", body: "example text response" },
       ]);
     });
 
