@@ -17,6 +17,18 @@ export class Requirement {
     return this.specification.requirementAt(this.data.$ref, this.url);
   }
 
+  get(item) {
+    if (!(item in this.data)) {
+      return undefined;
+    }
+
+    return new Requirement(
+      this.data[item],
+      `${this.url}/${item}`,
+      this.specification
+    );
+  }
+
   select(path, data = this.data, basePath = "") {
     const [head, ...tail] = path.split("/");
 

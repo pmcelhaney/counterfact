@@ -14,7 +14,7 @@ export class OperationTypeCoder extends Coder {
   }
 
   responseTypes(script) {
-    const responses = this.requirement.select("responses");
+    const responses = this.requirement.get("responses");
 
     return Object.entries(responses.data)
       .flatMap(([responseCode, response]) =>
@@ -28,10 +28,10 @@ export class OperationTypeCoder extends Coder {
       )
       .map((type) => {
         const schema = responses
-          .select(type.responseCode)
-          .select("content")
-          ?.select(type.contentType.replace("/", "~1"))
-          ?.select("schema");
+          .get(type.responseCode)
+          .get("content")
+          ?.get(type.contentType)
+          ?.get("schema");
 
         const body = schema
           ? new SchemaTypeCoder(schema).write(script)
@@ -72,7 +72,7 @@ export class OperationTypeCoder extends Coder {
       nodePath.relative(nodePath.dirname(script.path), "context/context.js")
     );
 
-    const parameters = this.requirement.select("parameters");
+    const parameters = this.requirement.get("parameters");
     const queryType =
       parameters === undefined
         ? "undefined"
@@ -97,7 +97,7 @@ export class OperationTypeCoder extends Coder {
       : "undefined";
 
     const responseType = new ResponseTypeCoder(
-      this.requirement.select("responses")
+      this.requirement.get("responses")
     ).write(script);
 
     return `({ query, path, header, body, context, tools }: { query: ${queryType}, path: ${pathType}, header: ${headerType}, body: ${bodyType}, context: Context, response: ${responseType}, tools: ${script.importType(

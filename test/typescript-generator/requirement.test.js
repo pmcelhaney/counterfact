@@ -26,6 +26,16 @@ describe("a Requirement", () => {
     expect(requirement.select("foo~1bar").data).toBe("slash");
   });
 
+  it("get(name) - does not escape special characters", () => {
+    const requirement = new Requirement({
+      "foo/bar": "slash",
+      "foo~bar": "tilde",
+    });
+
+    expect(requirement.get("foo~bar").data).toBe("tilde");
+    expect(requirement.get("foo/bar").data).toBe("slash");
+  });
+
   it("knows if it is a reference ($ref)", () => {
     const yes = new Requirement({
       $ref: "some.yaml#other/url",

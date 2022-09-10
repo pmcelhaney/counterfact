@@ -20,7 +20,7 @@ export class SchemaTypeCoder extends Coder {
       return "unknown";
     }
 
-    const requirement = this.requirement.select("additionalProperties");
+    const requirement = this.requirement.get("additionalProperties");
 
     return new SchemaTypeCoder(requirement).write(script);
   }
@@ -29,7 +29,7 @@ export class SchemaTypeCoder extends Coder {
     const { data } = this.requirement;
 
     const properties = Object.keys(data.properties ?? {}).map((name) => {
-      const property = this.requirement.select(`properties/${name}`);
+      const property = this.requirement.get("properties").get(name);
 
       const isRequired =
         data.required?.includes(name) || property.data.required;
@@ -50,7 +50,7 @@ export class SchemaTypeCoder extends Coder {
   }
 
   arraySchema(script) {
-    return `Array<${new SchemaTypeCoder(this.requirement.select("items")).write(
+    return `Array<${new SchemaTypeCoder(this.requirement.get("items")).write(
       script
     )}>`;
   }

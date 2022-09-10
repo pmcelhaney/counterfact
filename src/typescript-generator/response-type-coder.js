@@ -28,10 +28,10 @@ export class ResponseTypeCoder extends Coder {
             `"${mediaType}": { 
               schema:  ${new SchemaTypeCoder(
                 this.requirement
-                  .select(statusCode)
-                  .select("content")
-                  .select(mediaType.replace("/", "~1"))
-                  .select("schema")
+                  .get(statusCode)
+                  .get("content")
+                  .get(mediaType)
+                  .get("schema")
               ).write(script)}
             }`
         )
@@ -40,12 +40,12 @@ export class ResponseTypeCoder extends Coder {
   }
 
   buildHeaders(script, responseCode) {
-    const response = this.requirement.select(responseCode);
+    const response = this.requirement.get(responseCode);
 
     const properties = Object.keys(response.data.headers ?? {}).map(
       (name) =>
         `"${name}": { schema: ${new SchemaTypeCoder(
-          response.select("headers").select(name).select("schema")
+          response.get("headers").get(name).get("schema")
         ).write(script)}}`
     );
 
