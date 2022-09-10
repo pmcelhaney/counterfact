@@ -70,7 +70,7 @@ describe("a Coder", () => {
   });
 
   it("when asked to delegate a requirement that is a $ref, looks up the $ref and returns another coder of the same type with an inline requirement", async () => {
-    const specification = new Specification("spec.yaml");
+    const specification = new Specification();
 
     specification.cache.set(".", {
       components: { schemas: { Person: { type: "string" } } },

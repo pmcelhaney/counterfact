@@ -6,12 +6,12 @@ describe("a Specification", () => {
   it("loads a file from disk", async () => {
     await withTemporaryFiles(
       { "openapi.yaml": "hello:\n  world" },
-      async (temporaryDirectory) => {
-        const specification = new Specification(temporaryDirectory);
+      async (temporaryDirectory, { path }) => {
+        const specification = new Specification();
 
-        await specification.loadFile("openapi.yaml");
+        await specification.loadFile(path("openapi.yaml"));
 
-        expect(specification.cache.get("openapi.yaml")).toStrictEqual({
+        expect(specification.cache.get(path("openapi.yaml"))).toStrictEqual({
           hello: "world",
         });
       }

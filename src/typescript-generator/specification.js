@@ -6,8 +6,7 @@ import yaml from "js-yaml";
 import { Requirement } from "./requirement.js";
 
 export class Specification {
-  constructor(basePath) {
-    this.basePath = basePath;
+  constructor() {
     this.cache = new Map();
   }
 
@@ -22,22 +21,16 @@ export class Specification {
     return rootRequirement.select(path.slice(1));
   }
 
-  async loadFile(path) {
-    if (this.cache.has(path)) {
-      return this.cache.get(path);
+  async loadFile(url) {
+    if (this.cache.has(url)) {
+      return this.cache.get(url);
     }
 
-    if (!this.basePath) {
-      throw new Error("Specification was constructed without a base path");
-    }
+    const source = await fs.readFile(url, "utf8");
 
-    const source = await fs.readFile(
-      nodePath.join(this.basePath, path),
-      "utf8"
-    );
     const data = await yaml.load(source);
 
-    this.cache.set(path, data);
+    this.cache.set(url, data);
 
     return data;
   }

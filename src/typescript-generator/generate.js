@@ -1,5 +1,3 @@
-import nodePath from "node:path";
-
 import { Repository } from "./repository.js";
 import { Specification } from "./specification.js";
 import { OperationCoder } from "./operation-coder.js";
@@ -9,11 +7,9 @@ export async function generate(
   destination,
   repository = new Repository()
 ) {
-  const specification = new Specification(nodePath.dirname(source));
+  const specification = new Specification();
 
-  const requirement = await specification.requirementAt(
-    `${nodePath.basename(source)}#/paths`
-  );
+  const requirement = await specification.requirementAt(`${source}#/paths`);
 
   requirement.forEach(([key, pathDefinition]) => {
     pathDefinition.forEach(([, operation]) => {
