@@ -1,9 +1,8 @@
+/* eslint-disable no-magic-numbers */
 import nodePath from "node:path";
 
 import { Coder } from "./coder.js";
-import { SchemaCoder } from "./schema-coder.js";
 import { OperationTypeCoder } from "./operation-type-coder.js";
-import { SchemaTypeCoder } from "./schema-type-coder.js";
 
 export class OperationCoder extends Coder {
   requestMethod() {
@@ -14,20 +13,8 @@ export class OperationCoder extends Coder {
     return super.names(this.requestMethod());
   }
 
-  write(script) {
+  write() {
     const responses = this.requirement.select("responses");
-
-    const returns = responses.map(([statusCode, response]) => {
-      if (statusCode === "default") {
-        return this.responseForStatusCode(script, response);
-      }
-
-      return `if (statusCode === "${statusCode}") { 
-        ${this.responseForStatusCode(script, response, statusCode)}
-      }`;
-    });
-
-    const statusCodes = responses.map(([statusCode]) => statusCode);
 
     const requestProperties = this.requirement.data.parameters
       ? Array.from(
@@ -43,79 +30,17 @@ export class OperationCoder extends Coder {
 
     requestProperties.push("context", "tools");
 
-    return `({ ${requestProperties.join(", ")} }) => {
-      const statusCode = tools.oneOf(${JSON.stringify(statusCodes)});
+    const [firstStatusCode] = responses.map(([statusCode]) => statusCode);
+    const [firstResponse] = responses.map(([, response]) => response.data);
 
-      ${returns.join("\n")}
- 
-      return {
-        status: 415,
-        contentType: "text/plain",
-        body: "HTTP 415: Unsupported Media Type",
-      }
-    }`;
-  }
-
-  responseForStatusCode(script, response, statusCode) {
-    const content = response.select("content");
-
-    if (content === undefined) {
-      return `return { 
-        status: ${statusCode} 
-      }`;
+    if (!("content" in firstResponse)) {
+      return "() => { /* no response content specified in the OpenAPI document */ }";
     }
 
-    const returns = content.map(([contentType, responseForContentType]) =>
-      this.responseForContentType(
-        statusCode,
-        contentType,
-        responseForContentType,
-        script
-      )
-    );
-
-    return returns.join("\n");
-  }
-
-  // eslint-disable-next-line max-params
-  responseForContentType(statusCode, contentType, response, script) {
-    const statusLine = statusCode === undefined ? "" : `status: ${statusCode},`;
-
-    const exampleKeys = Object.keys(response.select("examples")?.data ?? {});
-    const examples = (response.select("examples") || []).map(
-      ([name, example]) => `if (example === "${name}") { 
-          
-            return {
-              ${statusLine}
-              contentType: "${contentType}",
-              body: ${JSON.stringify(example.select("value").data)}
-            }
-        }`
-    );
-
-    const bodyType = new SchemaTypeCoder(response.select("schema")).write(
-      script
-    );
-
-    const exampleSelector =
-      examples.length === 0
-        ? ""
-        : `const example = tools.oneOf(${JSON.stringify(exampleKeys)});`;
-
-    return `if (tools.accepts("${contentType}")) { 
-      ${exampleSelector}
-
-      ${examples.join("\n")}
-
- 
-
-      return {
-        ${statusLine}
-        contentType: "${contentType}",
-        body: tools.randomFromSchema(${new SchemaCoder(
-          response.select("schema")
-        ).write(script)}) as ${bodyType}
-      };
+    return `({ response}) => {
+      return response[${
+        firstStatusCode === "default" ? 200 : firstStatusCode
+      }].random();
     }`;
   }
 
