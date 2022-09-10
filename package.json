@@ -38,8 +38,8 @@
   },
   "devDependencies": {
     "@changesets/cli": "2.24.4",
-    "@stryker-mutator/core": "6.1.2",
-    "@stryker-mutator/jest-runner": "6.1.2",
+    "@stryker-mutator/core": "6.2.2",
+    "@stryker-mutator/jest-runner": "6.2.2",
     "@types/koa": "2.13.5",
     "@types/koa-static": "^4.0.2",
     "eslint": "8.23.0",
@@ -61,6 +61,7 @@
     "@hapi/accept": "^6.0.0",
     "@types/json-schema": "^7.0.11",
     "chokidar": "^3.5.3",
+    "counterfact": "./",
     "fs-extra": "^10.1.0",
     "js-yaml": "^4.1.0",
     "json-schema-faker": "^0.5.0-rcv.44",
