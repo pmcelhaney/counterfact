@@ -42,6 +42,7 @@ module.exports = {
     "/reports/",
     "/demo-ts",
     "/templates/",
+    "/out/",
   ],
 
   extends: ["hardcore", "hardcore/ts", "hardcore/node"],
