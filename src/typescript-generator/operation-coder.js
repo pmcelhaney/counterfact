@@ -14,7 +14,7 @@ export class OperationCoder extends Coder {
   }
 
   write() {
-    const responses = this.requirement.select("responses");
+    const responses = this.requirement.get("responses");
 
     const requestProperties = this.requirement.data.parameters
       ? Array.from(

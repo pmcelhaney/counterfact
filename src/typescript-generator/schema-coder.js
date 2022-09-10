@@ -39,9 +39,7 @@ export class SchemaCoder extends Coder {
   arraySchema(script) {
     return `{
         type: "array",     
-        items: ${new SchemaCoder(this.requirement.select("items")).write(
-          script
-        )}
+        items: ${new SchemaCoder(this.requirement.get("items")).write(script)}
       }`;
   }
 
