@@ -2,6 +2,10 @@ import jsf from "json-schema-faker";
 
 jsf.option("useExamplesValue", true);
 
+function oneOf(array) {
+  return array[Math.floor(Math.random() * array.length)];
+}
+
 export function createResponseBuilder(operation) {
   return new Proxy(
     {},
@@ -71,7 +75,9 @@ export function createResponseBuilder(operation) {
             content: Object.keys(content).map((type) => ({
               type,
 
-              body: jsf.generate(content[type].schema),
+              body: content[type].examples
+                ? oneOf(content[type].examples)
+                : jsf.generate(content[type].schema),
             })),
           };
         },
