@@ -177,7 +177,7 @@ Map {
                 },
                 "exports": Map {
                   "Pet" => Object {
-                    "code": "{id: number,name: string,category: Category,photoUrls: Array<string>,tags: Array<Tag>,status: string}",
+                    "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isType": true,
@@ -197,7 +197,7 @@ Map {
                       },
                       "exports": Map {
                         "Category" => Object {
-                          "code": "{id: number,name: string}",
+                          "code": "{id?: number,name?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
                           "isType": true,
@@ -225,7 +225,7 @@ Map {
                       },
                       "exports": Map {
                         "Tag" => Object {
-                          "code": "{id: number,name: string}",
+                          "code": "{id?: number,name?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
                           "isType": true,
@@ -442,7 +442,7 @@ Map {
                 },
                 "exports": Map {
                   "Pet" => Object {
-                    "code": "{id: number,name: string,category: Category,photoUrls: Array<string>,tags: Array<Tag>,status: string}",
+                    "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isType": true,
@@ -462,7 +462,7 @@ Map {
                       },
                       "exports": Map {
                         "Category" => Object {
-                          "code": "{id: number,name: string}",
+                          "code": "{id?: number,name?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
                           "isType": true,
@@ -490,7 +490,7 @@ Map {
                       },
                       "exports": Map {
                         "Tag" => Object {
-                          "code": "{id: number,name: string}",
+                          "code": "{id?: number,name?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
                           "isType": true,
@@ -712,7 +712,7 @@ Map {
           },
           "exports": Map {
             "Pet" => Object {
-              "code": "{id: number,name: string,category: Category,photoUrls: Array<string>,tags: Array<Tag>,status: string}",
+              "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
               "isType": true,
@@ -732,7 +732,7 @@ Map {
                 },
                 "exports": Map {
                   "Category" => Object {
-                    "code": "{id: number,name: string}",
+                    "code": "{id?: number,name?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isType": true,
@@ -760,7 +760,7 @@ Map {
                 },
                 "exports": Map {
                   "Tag" => Object {
-                    "code": "{id: number,name: string}",
+                    "code": "{id?: number,name?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isType": true,
@@ -933,7 +933,7 @@ Map {
                 },
                 "exports": Map {
                   "Pet" => Object {
-                    "code": "{id: number,name: string,category: Category,photoUrls: Array<string>,tags: Array<Tag>,status: string}",
+                    "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isType": true,
@@ -953,7 +953,7 @@ Map {
                       },
                       "exports": Map {
                         "Category" => Object {
-                          "code": "{id: number,name: string}",
+                          "code": "{id?: number,name?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
                           "isType": true,
@@ -981,7 +981,7 @@ Map {
                       },
                       "exports": Map {
                         "Tag" => Object {
-                          "code": "{id: number,name: string}",
+                          "code": "{id?: number,name?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
                           "isType": true,
@@ -1140,7 +1140,7 @@ Map {
           },
           "exports": Map {
             "Pet" => Object {
-              "code": "{id: number,name: string,category: Category,photoUrls: Array<string>,tags: Array<Tag>,status: string}",
+              "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
               "isType": true,
@@ -1160,7 +1160,7 @@ Map {
                 },
                 "exports": Map {
                   "Category" => Object {
-                    "code": "{id: number,name: string}",
+                    "code": "{id?: number,name?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isType": true,
@@ -1188,7 +1188,7 @@ Map {
                 },
                 "exports": Map {
                   "Tag" => Object {
-                    "code": "{id: number,name: string}",
+                    "code": "{id?: number,name?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isType": true,
@@ -1361,7 +1361,7 @@ Map {
                 },
                 "exports": Map {
                   "Pet" => Object {
-                    "code": "{id: number,name: string,category: Category,photoUrls: Array<string>,tags: Array<Tag>,status: string}",
+                    "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isType": true,
@@ -1381,7 +1381,7 @@ Map {
                       },
                       "exports": Map {
                         "Category" => Object {
-                          "code": "{id: number,name: string}",
+                          "code": "{id?: number,name?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
                           "isType": true,
@@ -1409,7 +1409,7 @@ Map {
                       },
                       "exports": Map {
                         "Tag" => Object {
-                          "code": "{id: number,name: string}",
+                          "code": "{id?: number,name?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
                           "isType": true,
@@ -1568,7 +1568,7 @@ Map {
           },
           "exports": Map {
             "Pet" => Object {
-              "code": "{id: number,name: string,category: Category,photoUrls: Array<string>,tags: Array<Tag>,status: string}",
+              "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
               "isType": true,
@@ -1588,7 +1588,7 @@ Map {
                 },
                 "exports": Map {
                   "Category" => Object {
-                    "code": "{id: number,name: string}",
+                    "code": "{id?: number,name?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isType": true,
@@ -1616,7 +1616,7 @@ Map {
                 },
                 "exports": Map {
                   "Tag" => Object {
-                    "code": "{id: number,name: string}",
+                    "code": "{id?: number,name?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isType": true,
@@ -1867,7 +1867,7 @@ Map {
                 },
                 "exports": Map {
                   "Pet" => Object {
-                    "code": "{id: number,name: string,category: Category,photoUrls: Array<string>,tags: Array<Tag>,status: string}",
+                    "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isType": true,
@@ -1887,7 +1887,7 @@ Map {
                       },
                       "exports": Map {
                         "Category" => Object {
-                          "code": "{id: number,name: string}",
+                          "code": "{id?: number,name?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
                           "isType": true,
@@ -1915,7 +1915,7 @@ Map {
                       },
                       "exports": Map {
                         "Tag" => Object {
-                          "code": "{id: number,name: string}",
+                          "code": "{id?: number,name?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
                           "isType": true,
@@ -2125,7 +2125,7 @@ Map {
                 },
                 "exports": Map {
                   "Pet" => Object {
-                    "code": "{id: number,name: string,category: Category,photoUrls: Array<string>,tags: Array<Tag>,status: string}",
+                    "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isType": true,
@@ -2145,7 +2145,7 @@ Map {
                       },
                       "exports": Map {
                         "Category" => Object {
-                          "code": "{id: number,name: string}",
+                          "code": "{id?: number,name?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
                           "isType": true,
@@ -2173,7 +2173,7 @@ Map {
                       },
                       "exports": Map {
                         "Tag" => Object {
-                          "code": "{id: number,name: string}",
+                          "code": "{id?: number,name?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
                           "isType": true,
@@ -2383,7 +2383,7 @@ Map {
                 },
                 "exports": Map {
                   "Pet" => Object {
-                    "code": "{id: number,name: string,category: Category,photoUrls: Array<string>,tags: Array<Tag>,status: string}",
+                    "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isType": true,
@@ -2403,7 +2403,7 @@ Map {
                       },
                       "exports": Map {
                         "Category" => Object {
-                          "code": "{id: number,name: string}",
+                          "code": "{id?: number,name?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
                           "isType": true,
@@ -2431,7 +2431,7 @@ Map {
                       },
                       "exports": Map {
                         "Tag" => Object {
-                          "code": "{id: number,name: string}",
+                          "code": "{id?: number,name?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
                           "isType": true,
@@ -2646,7 +2646,7 @@ Map {
           },
           "exports": Map {
             "Pet" => Object {
-              "code": "{id: number,name: string,category: Category,photoUrls: Array<string>,tags: Array<Tag>,status: string}",
+              "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
               "isType": true,
@@ -2666,7 +2666,7 @@ Map {
                 },
                 "exports": Map {
                   "Category" => Object {
-                    "code": "{id: number,name: string}",
+                    "code": "{id?: number,name?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isType": true,
@@ -2694,7 +2694,7 @@ Map {
                 },
                 "exports": Map {
                   "Tag" => Object {
-                    "code": "{id: number,name: string}",
+                    "code": "{id?: number,name?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isType": true,
@@ -2847,7 +2847,7 @@ Map {
                 },
                 "exports": Map {
                   "ApiResponse" => Object {
-                    "code": "{code: number,type: string,message: string}",
+                    "code": "{code?: number,type?: string,message?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isType": true,
@@ -2977,7 +2977,7 @@ Map {
           },
           "exports": Map {
             "ApiResponse" => Object {
-              "code": "{code: number,type: string,message: string}",
+              "code": "{code?: number,type?: string,message?: string}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
               "isType": true,
@@ -3347,7 +3347,7 @@ Map {
                 },
                 "exports": Map {
                   "Order" => Object {
-                    "code": "{id: number,petId: number,quantity: number,shipDate: string,status: string,complete: boolean}",
+                    "code": "{id?: number,petId?: number,quantity?: number,shipDate?: string,status?: string,complete?: boolean}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isType": true,
@@ -3487,7 +3487,7 @@ Map {
           },
           "exports": Map {
             "Order" => Object {
-              "code": "{id: number,petId: number,quantity: number,shipDate: string,status: string,complete: boolean}",
+              "code": "{id?: number,petId?: number,quantity?: number,shipDate?: string,status?: string,complete?: boolean}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
               "isType": true,
@@ -3703,7 +3703,7 @@ Map {
                 },
                 "exports": Map {
                   "Order" => Object {
-                    "code": "{id: number,petId: number,quantity: number,shipDate: string,status: string,complete: boolean}",
+                    "code": "{id?: number,petId?: number,quantity?: number,shipDate?: string,status?: string,complete?: boolean}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isType": true,
@@ -3889,7 +3889,7 @@ Map {
                 },
                 "exports": Map {
                   "Order" => Object {
-                    "code": "{id: number,petId: number,quantity: number,shipDate: string,status: string,complete: boolean}",
+                    "code": "{id?: number,petId?: number,quantity?: number,shipDate?: string,status?: string,complete?: boolean}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isType": true,
@@ -4080,7 +4080,7 @@ Map {
           },
           "exports": Map {
             "Order" => Object {
-              "code": "{id: number,petId: number,quantity: number,shipDate: string,status: string,complete: boolean}",
+              "code": "{id?: number,petId?: number,quantity?: number,shipDate?: string,status?: string,complete?: boolean}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
               "isType": true,
@@ -4232,7 +4232,7 @@ Map {
                 },
                 "exports": Map {
                   "User" => Object {
-                    "code": "{id: number,username: string,firstName: string,lastName: string,email: string,password: string,phone: string,userStatus: number}",
+                    "code": "{id?: number,username?: string,firstName?: string,lastName?: string,email?: string,password?: string,phone?: string,userStatus?: number}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isType": true,
@@ -4370,7 +4370,7 @@ Map {
           },
           "exports": Map {
             "User" => Object {
-              "code": "{id: number,username: string,firstName: string,lastName: string,email: string,password: string,phone: string,userStatus: number}",
+              "code": "{id?: number,username?: string,firstName?: string,lastName?: string,email?: string,password?: string,phone?: string,userStatus?: number}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
               "isType": true,
@@ -4532,7 +4532,7 @@ Map {
                 },
                 "exports": Map {
                   "User" => Object {
-                    "code": "{id: number,username: string,firstName: string,lastName: string,email: string,password: string,phone: string,userStatus: number}",
+                    "code": "{id?: number,username?: string,firstName?: string,lastName?: string,email?: string,password?: string,phone?: string,userStatus?: number}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isType": true,
@@ -4680,7 +4680,7 @@ Map {
           },
           "exports": Map {
             "User" => Object {
-              "code": "{id: number,username: string,firstName: string,lastName: string,email: string,password: string,phone: string,userStatus: number}",
+              "code": "{id?: number,username?: string,firstName?: string,lastName?: string,email?: string,password?: string,phone?: string,userStatus?: number}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
               "isType": true,
@@ -5392,7 +5392,7 @@ Map {
                 },
                 "exports": Map {
                   "User" => Object {
-                    "code": "{id: number,username: string,firstName: string,lastName: string,email: string,password: string,phone: string,userStatus: number}",
+                    "code": "{id?: number,username?: string,firstName?: string,lastName?: string,email?: string,password?: string,phone?: string,userStatus?: number}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isType": true,
@@ -5601,7 +5601,7 @@ Map {
                 },
                 "exports": Map {
                   "User" => Object {
-                    "code": "{id: number,username: string,firstName: string,lastName: string,email: string,password: string,phone: string,userStatus: number}",
+                    "code": "{id?: number,username?: string,firstName?: string,lastName?: string,email?: string,password?: string,phone?: string,userStatus?: number}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isType": true,
@@ -5810,7 +5810,7 @@ Map {
                 },
                 "exports": Map {
                   "User" => Object {
-                    "code": "{id: number,username: string,firstName: string,lastName: string,email: string,password: string,phone: string,userStatus: number}",
+                    "code": "{id?: number,username?: string,firstName?: string,lastName?: string,email?: string,password?: string,phone?: string,userStatus?: number}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isType": true,
@@ -6024,7 +6024,7 @@ Map {
           },
           "exports": Map {
             "User" => Object {
-              "code": "{id: number,username: string,firstName: string,lastName: string,email: string,password: string,phone: string,userStatus: number}",
+              "code": "{id?: number,username?: string,firstName?: string,lastName?: string,email?: string,password?: string,phone?: string,userStatus?: number}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
               "isType": true,
@@ -6097,7 +6097,7 @@ Map {
     },
     "exports": Map {
       "Pet" => Object {
-        "code": "{id: number,name: string,category: Category,photoUrls: Array<string>,tags: Array<Tag>,status: string}",
+        "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
         "done": true,
         "id": "SchemaTypeCoder@undefined",
         "isType": true,
@@ -6117,7 +6117,7 @@ Map {
           },
           "exports": Map {
             "Category" => Object {
-              "code": "{id: number,name: string}",
+              "code": "{id?: number,name?: string}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
               "isType": true,
@@ -6145,7 +6145,7 @@ Map {
           },
           "exports": Map {
             "Tag" => Object {
-              "code": "{id: number,name: string}",
+              "code": "{id?: number,name?: string}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
               "isType": true,
@@ -6212,7 +6212,7 @@ Map {
     },
     "exports": Map {
       "ApiResponse" => Object {
-        "code": "{code: number,type: string,message: string}",
+        "code": "{code?: number,type?: string,message?: string}",
         "done": true,
         "id": "SchemaTypeCoder@undefined",
         "isType": true,
@@ -6236,7 +6236,7 @@ Map {
     },
     "exports": Map {
       "Order" => Object {
-        "code": "{id: number,petId: number,quantity: number,shipDate: string,status: string,complete: boolean}",
+        "code": "{id?: number,petId?: number,quantity?: number,shipDate?: string,status?: string,complete?: boolean}",
         "done": true,
         "id": "SchemaTypeCoder@undefined",
         "isType": true,
@@ -6260,7 +6260,7 @@ Map {
     },
     "exports": Map {
       "User" => Object {
-        "code": "{id: number,username: string,firstName: string,lastName: string,email: string,password: string,phone: string,userStatus: number}",
+        "code": "{id?: number,username?: string,firstName?: string,lastName?: string,email?: string,password?: string,phone?: string,userStatus?: number}",
         "done": true,
         "id": "SchemaTypeCoder@undefined",
         "isType": true,
@@ -6284,7 +6284,7 @@ Map {
     },
     "exports": Map {
       "Category" => Object {
-        "code": "{id: number,name: string}",
+        "code": "{id?: number,name?: string}",
         "done": true,
         "id": "SchemaTypeCoder@undefined",
         "isType": true,
@@ -6308,7 +6308,7 @@ Map {
     },
     "exports": Map {
       "Tag" => Object {
-        "code": "{id: number,name: string}",
+        "code": "{id?: number,name?: string}",
         "done": true,
         "id": "SchemaTypeCoder@undefined",
         "isType": true,

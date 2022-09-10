@@ -31,7 +31,13 @@ export class SchemaTypeCoder extends Coder {
     const properties = Object.keys(data.properties ?? {}).map((name) => {
       const property = this.requirement.select(`properties/${name}`);
 
-      return `${name}?: ${new SchemaTypeCoder(property).write(script)}`;
+      const isRequired =
+        data.required?.includes(name) || property.data.required;
+      const optionalFlag = isRequired ? "" : "?";
+
+      return `${name}${optionalFlag}: ${new SchemaTypeCoder(property).write(
+        script
+      )}`;
     });
 
     if (data.additionalProperties) {
