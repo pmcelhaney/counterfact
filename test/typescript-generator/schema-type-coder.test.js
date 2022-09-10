@@ -69,9 +69,9 @@ describe("a SchemaTypeCoder", () => {
       })
     );
 
-    const expected = format("const x = { name: string, age: number };");
+    const expected = format("type x = { name?: string, age?: number };");
 
-    expect(format(`const x = ${coder.write()}`)).toStrictEqual(expected);
+    expect(format(`type x = ${coder.write()}`)).toStrictEqual(expected);
   });
 
   it("generates a type declaration for an object with additionalProperties", () => {
@@ -91,7 +91,7 @@ describe("a SchemaTypeCoder", () => {
     );
 
     const expected = format(
-      "type x = { name: string, age: number, [key: string]: unknown };"
+      "type x = { name?: string, age?: number, [key: string]: unknown };"
     );
 
     expect(format(`type x = ${coder.write()}`)).toStrictEqual(expected);
@@ -112,7 +112,7 @@ describe("a SchemaTypeCoder", () => {
     );
 
     const expected = format(
-      "type x = { name: string, age: number, [key: string]: unknown };"
+      "type x = { name?: string, age?: number, [key: string]: unknown };"
     );
 
     expect(format(`type x = ${coder.write()}`)).toStrictEqual(expected);
@@ -132,7 +132,7 @@ describe("a SchemaTypeCoder", () => {
       })
     );
 
-    const expected = format("type x = { name: string, age: number };");
+    const expected = format("type x = { name?: string, age?: number };");
 
     expect(format(`type x = ${coder.write()}`)).toStrictEqual(expected);
   });
@@ -142,18 +142,11 @@ describe("a SchemaTypeCoder", () => {
       new Requirement({
         type: "object",
 
-        properties: {
-          name: { type: "string" },
-          nickname: { type: "string" },
-        },
-
-        additionalProperties: { type: "string" },
+        additionalProperties: { type: "boolean" },
       })
     );
 
-    const expected = format(
-      "type x = { name: string, nickname: string, [key: string]: string };"
-    );
+    const expected = format("type x = {  [key: string]: boolean };");
 
     expect(format(`type x = ${coder.write()}`)).toStrictEqual(expected);
   });
