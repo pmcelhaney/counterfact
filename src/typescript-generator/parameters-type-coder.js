@@ -22,14 +22,14 @@ export class ParametersTypeCoder extends Coder {
     const typeDefinitions = this.requirement.data
       .filter((parameter) => parameter.in === this.placement)
       .map((parameter, index) => {
-        const requirement = this.requirement.select(String(index));
+        const requirement = this.requirement.get(String(index));
 
         const { name, required } = parameter;
 
         const optionalFlag = required ? "" : "?";
 
         return `${name}${optionalFlag}: ${new SchemaTypeCoder(
-          requirement.select("schema")
+          requirement.get("schema")
         ).write(script)}`;
       });
 
