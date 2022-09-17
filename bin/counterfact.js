@@ -72,13 +72,13 @@ async function main() {
   }
 
   if (command === "go" && process.argv.length === 5) {
-    const [, source, destination = "."] = process.argv
-      .slice(2)
-      .map((pathString) => nodePath.join(process.cwd(), pathString));
+    const [, source, destination = "."] = process.argv.slice(2);
 
-    await generate(source, destination);
+    await generate(source, nodePath.join(process.cwd(), destination));
 
-    const basePath = nodePath.resolve(destination);
+    const basePath = nodePath.resolve(
+      nodePath.join(process.cwd(), destination)
+    );
 
     await start(basePath, 3100, source);
 
