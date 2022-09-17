@@ -2,8 +2,12 @@ import jsf from "json-schema-faker";
 
 jsf.option("useExamplesValue", true);
 
-function oneOf(array) {
-  return array[Math.floor(Math.random() * array.length)];
+function oneOf(items) {
+  if (Array.isArray(items)) {
+    return items[Math.floor(Math.random() * items.length)];
+  }
+
+  return oneOf(Object.values(items));
 }
 
 export function createResponseBuilder(operation) {

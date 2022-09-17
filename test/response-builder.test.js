@@ -73,7 +73,7 @@ describe("a response builder", () => {
                 examples: ["hello"],
               },
 
-              examples: ["example text response"],
+              examples: { text: "example text response" },
             },
           },
         },
