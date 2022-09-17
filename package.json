@@ -1,6 +1,6 @@
 {
   "name": "counterfact",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "a library for building a fake REST API for testing",
   "type": "module",
   "main": "./src/counterfact.js",
@@ -61,7 +61,7 @@
     "@hapi/accept": "^6.0.0",
     "@types/json-schema": "^7.0.11",
     "chokidar": "^3.5.3",
-    "counterfact": "^0.7.0",
+    "counterfact": "^0.8.0",
     "fs-extra": "^10.1.0",
     "js-yaml": "^4.1.0",
     "json-schema-faker": "^0.5.0-rcv.44",
