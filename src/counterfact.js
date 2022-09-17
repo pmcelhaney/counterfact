@@ -5,27 +5,13 @@ import os from "node:os";
 
 import $RefParser from "json-schema-ref-parser";
 import yaml from "js-yaml";
-import nodeFetch from "node-fetch";
 
+import { readFile } from "./read-file.js";
 import { Registry } from "./registry.js";
 import { Dispatcher } from "./dispatcher.js";
 import { koaMiddleware } from "./koa-middleware.js";
 import { ModuleLoader } from "./module-loader.js";
 import { Transpiler } from "./transpiler.js";
-
-async function readFile(urlOrPath) {
-  if (urlOrPath.startsWith("http")) {
-    const response = await nodeFetch(urlOrPath);
-
-    return response.text();
-  }
-
-  if (urlOrPath.startsWith("file")) {
-    return fs.readFile(new URL(urlOrPath), "utf8");
-  }
-
-  return fs.readFile(urlOrPath, "utf8");
-}
 
 async function loadOpenApiDocument(source) {
   try {
