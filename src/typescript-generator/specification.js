@@ -2,6 +2,7 @@ import fs from "node:fs/promises";
 import nodePath from "node:path";
 
 import yaml from "js-yaml";
+import nodeFetch from "node-fetch";
 
 import { Requirement } from "./requirement.js";
 
@@ -21,17 +22,31 @@ export class Specification {
     return rootRequirement.select(path.slice(1));
   }
 
-  async loadFile(url) {
-    if (this.cache.has(url)) {
-      return this.cache.get(url);
+  async loadFile(urlOrPath) {
+    if (this.cache.has(urlOrPath)) {
+      return this.cache.get(urlOrPath);
     }
 
-    const source = await fs.readFile(url, "utf8");
+    const source = await this.readFile(urlOrPath, "utf8");
 
     const data = await yaml.load(source);
 
-    this.cache.set(url, data);
+    this.cache.set(urlOrPath, data);
 
     return data;
+  }
+
+  async readFile(urlOrPath) {
+    if (urlOrPath.startsWith("http")) {
+      const response = await nodeFetch(urlOrPath);
+
+      return response.text();
+    }
+
+    if (urlOrPath.startsWith("file")) {
+      return fs.readFile(new URL(urlOrPath), "utf8");
+    }
+
+    return fs.readFile(urlOrPath, "utf8");
   }
 }

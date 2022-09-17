@@ -69,6 +69,7 @@
     "jsonwebtoken": "^8.5.1",
     "koa": "^2.13.4",
     "koa-bodyparser": "^4.3.0",
+    "node-fetch": "^3.2.10",
     "prettier": "^2.7.1",
     "typescript": "^4.8.2"
   }

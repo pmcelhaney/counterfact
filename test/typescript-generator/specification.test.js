@@ -1,3 +1,7 @@
+import { pathToFileURL } from "node:url";
+
+import Koa from "koa";
+
 import { withTemporaryFiles } from "../lib/with-temporary-files.js";
 import { Requirement } from "../../src/typescript-generator/requirement.js";
 import { Specification } from "../../src/typescript-generator/specification.js";
@@ -16,6 +20,44 @@ describe("a Specification", () => {
         });
       }
     );
+  });
+
+  it("loads a file from disk with a file URL", async () => {
+    await withTemporaryFiles(
+      { "openapi.yaml": "hello:\n  world" },
+      async (temporaryDirectory, { path }) => {
+        const specification = new Specification();
+
+        const url = pathToFileURL(path("openapi.yaml")).href;
+
+        await specification.loadFile(url);
+
+        expect(specification.cache.get(url)).toStrictEqual({
+          hello: "world",
+        });
+      }
+    );
+  });
+
+  it("loads a file from the web", async () => {
+    const app = new Koa();
+
+    app.use(({ response }) => {
+      response.body = "hello: world";
+    });
+
+    const server = app.listen(0);
+    const url = `http://localhost:${server.address().port}/`;
+
+    const specification = new Specification();
+
+    await specification.loadFile(url);
+
+    expect(specification.cache.get(url)).toStrictEqual({
+      hello: "world",
+    });
+
+    await server.close();
   });
 
   it("returns a requirement for a URL", async () => {
