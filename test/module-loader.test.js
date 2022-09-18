@@ -2,6 +2,7 @@ import { once } from "node:events";
 
 import { ModuleLoader } from "../src/module-loader.js";
 import { Registry } from "../src/registry.js";
+import { ModelRegistry } from "../src/model-registry.js";
 
 import { withTemporaryFiles } from "./lib/with-temporary-files.js";
 
@@ -104,7 +105,7 @@ describe("a module loader", () => {
       await add("#other.mjs", "should not be loaded");
 
       expect(registry.exists("GET", "/module")).toBe(true);
-      expect(registry.exists("GET", "/README")).toBe(false);
+      expect(registry.exists("GET", "/READMEx")).toBe(false);
       expect(registry.exists("GET", "/other")).toBe(false);
       expect(registry.exists("GET", "/types")).toBe(false);
 
@@ -145,5 +146,29 @@ describe("a module loader", () => {
         await loader.stopWatching();
       }
     );
+  });
+
+  it("finds a model and adds it to the model registry", async () => {
+    const files = {
+      "#model.mjs": `
+      export const model = "main";
+      `,
+      "hello/#model.mjs": `
+      export const model = "hello";
+      `,
+    };
+
+    await withTemporaryFiles(files, async (basePath) => {
+      const registry = new Registry();
+
+      const modelRegistry = new ModelRegistry();
+
+      const loader = new ModuleLoader(basePath, registry, modelRegistry);
+
+      await loader.load();
+
+      expect(modelRegistry.find("/hello")).toBe("hello");
+      expect(modelRegistry.find("/hello/world")).toBe("hello");
+    });
   });
 });

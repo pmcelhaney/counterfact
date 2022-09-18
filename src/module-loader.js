@@ -5,6 +5,8 @@ import { once } from "node:events";
 
 import chokidar from "chokidar";
 
+import { ModelRegistry } from "./model-registry.js";
+
 export class ModuleLoader extends EventTarget {
   basePath;
 
@@ -12,10 +14,13 @@ export class ModuleLoader extends EventTarget {
 
   watcher;
 
-  constructor(basePath, registry) {
+  modelRegistry;
+
+  constructor(basePath, registry, modelRegistry = new ModelRegistry()) {
     super();
     this.basePath = basePath;
     this.registry = registry;
+    this.modelRegistry = modelRegistry;
   }
 
   async watch() {
@@ -31,10 +36,6 @@ export class ModuleLoader extends EventTarget {
           `/${nodePath.join(parts.dir, parts.name)}`
         );
 
-        if (parts.name.includes("#")) {
-          return;
-        }
-
         if (eventName === "unlink") {
           this.registry.remove(url);
           this.dispatchEvent(new Event("remove"), pathName);
@@ -44,10 +45,16 @@ export class ModuleLoader extends EventTarget {
         import(`${pathName}?cacheBust=${Date.now()}`)
           // eslint-disable-next-line promise/prefer-await-to-then
           .then((endpoint) => {
+            if (pathName.includes("#model")) {
+              this.modelRegistry.add(endpoint.model);
+
+              return "model";
+            }
+
             this.registry.add(url, endpoint);
             this.dispatchEvent(new Event(eventName), pathName);
 
-            return "ok";
+            return "path";
           })
           // eslint-disable-next-line promise/prefer-await-to-then
           .catch((error) => {
@@ -71,10 +78,6 @@ export class ModuleLoader extends EventTarget {
     });
 
     const imports = files.flatMap(async (file) => {
-      if (file.name.includes("#")) {
-        return;
-      }
-
       const extension = file.name.split(".").at(-1);
 
       if (file.isDirectory()) {
@@ -92,10 +95,14 @@ export class ModuleLoader extends EventTarget {
         nodePath.join(this.basePath, directory, file.name)
       );
 
-      this.registry.add(
-        `/${nodePath.join(directory, nodePath.parse(file.name).name)}`,
-        endpoint
-      );
+      if (file.name.includes("#model")) {
+        this.modelRegistry.add(`/${directory}`, endpoint.model);
+      } else {
+        this.registry.add(
+          `/${nodePath.join(directory, nodePath.parse(file.name).name)}`,
+          endpoint
+        );
+      }
     });
 
     await Promise.all(imports);
