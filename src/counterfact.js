@@ -12,6 +12,7 @@ import { Dispatcher } from "./dispatcher.js";
 import { koaMiddleware } from "./koa-middleware.js";
 import { ModuleLoader } from "./module-loader.js";
 import { Transpiler } from "./transpiler.js";
+import { ModelRegistry } from "./model-registry.js";
 
 async function loadOpenApiDocument(source) {
   try {
@@ -48,7 +49,11 @@ export async function counterfact(
 
   await transpiler.watch();
 
-  const dispatcher = new Dispatcher(registry, openApiDocument);
+  const dispatcher = new Dispatcher(
+    registry,
+    new ModelRegistry(),
+    openApiDocument
+  );
   const moduleLoader = new ModuleLoader(
     nodePath.join(modulesPath, "paths"),
     registry
