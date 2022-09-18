@@ -3476,7 +3476,7 @@ cosmiconfig@^7.0.0, cosmiconfig@^7.0.1:
     path-type "^4.0.0"
     yaml "^1.10.0"
 
-counterfact@^0.7.0:
+counterfact@*:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/counterfact/-/counterfact-0.7.0.tgz#cf4b93d06ae643a2cba463871b097f2b14e145a4"
   integrity sha512-Tf+3v7sEd/23M/Gd0HQCQETRlTqabgseNwREsiwYEKB11sTHGVB82C9bSOOBoG6ap9FsUDiqcyqrIltVDdivLQ==
