@@ -148,12 +148,8 @@ describe("a module loader", () => {
 
   it("finds a model and adds it to the model registry", async () => {
     const files = {
-      "$model.mjs": `
-      export default class { get name() { return  "main" }  };
-      `,
-      "hello/$model.mjs": `
-      export default class { get name () { return "hello" } }; 
-      `,
+      "$model.mjs": 'export default "main"',
+      "hello/$model.mjs": 'export default "hello"',
     };
 
     await withTemporaryFiles(files, async (basePath) => {
@@ -165,9 +161,9 @@ describe("a module loader", () => {
 
       await loader.load();
 
-      expect(modelRegistry.find("/hello").name).toBe("hello");
-      expect(modelRegistry.find("/hello/world").name).toBe("hello");
-      expect(modelRegistry.find("/some/other/path").name).toBe("main");
+      expect(modelRegistry.find("/hello")).toBe("hello");
+      expect(modelRegistry.find("/hello/world")).toBe("hello");
+      expect(modelRegistry.find("/some/other/path")).toBe("main");
     });
   });
 });

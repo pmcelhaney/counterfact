@@ -45,22 +45,22 @@ Map {
           "cache": Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1pet/post@[object Object]:true" => "HTTP_POST",
             "OperationTypeCoder@petstore.yaml#/paths/~1pet/put@[object Object]:true" => "HTTP_PUT",
-            "ModelCoder@petstore.yaml#/paths/~1pet/post@paths//$model.ts:true:true" => "Pet",
-            "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet2",
+            "ModelCoder@petstore.yaml#/paths/~1pet/post@paths//$model.ts:true:true" => "Model",
+            "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
             "tools@internal/tools.ts:true:false" => "Tools",
-            "ModelCoder@petstore.yaml#/paths/~1pet/put@paths//$model.ts:true:true" => "Pet3",
+            "ModelCoder@petstore.yaml#/paths/~1pet/put@paths//$model.ts:true:true" => "Model2",
           },
           "exports": Map {
             "HTTP_POST" => Object {
-              "code": "({ query, path, header, body, model, tools }: { query: undefined, path: undefined, header: undefined, body: Pet2, model: Pet, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, model, tools }: { query: undefined, path: undefined, header: undefined, body: Pet, model: Model, response: ResponseBuilderBuilder<{
       200: {
           headers: {};
           content: {
       \\"application/xml\\": { 
-              schema:  Pet2
+              schema:  Pet
             },
 \\"application/json\\": { 
-              schema:  Pet2
+              schema:  Pet
             }
     };
         },405: {
@@ -72,12 +72,12 @@ Map {
       }>, tools: Tools}) => {  
             status: 200, 
           contentType?: \\"application/xml\\",
-          body?: Pet2
+          body?: Pet
           
         } | {  
             status: 200, 
           contentType?: \\"application/json\\",
-          body?: Pet2
+          body?: Pet
           
         } | {  
             status: 405, 
@@ -95,15 +95,15 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_PUT" => Object {
-              "code": "({ query, path, header, body, model, tools }: { query: undefined, path: undefined, header: undefined, body: Pet2, model: Pet3, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, model, tools }: { query: undefined, path: undefined, header: undefined, body: Pet, model: Model2, response: ResponseBuilderBuilder<{
       200: {
           headers: {};
           content: {
       \\"application/xml\\": { 
-              schema:  Pet2
+              schema:  Pet
             },
 \\"application/json\\": { 
-              schema:  Pet2
+              schema:  Pet
             }
     };
         },400: {
@@ -125,12 +125,12 @@ Map {
       }>, tools: Tools}) => {  
             status: 200, 
           contentType?: \\"application/xml\\",
-          body?: Pet2
+          body?: Pet
           
         } | {  
             status: 200, 
           contentType?: \\"application/json\\",
-          body?: Pet2
+          body?: Pet
           
         } | {  
             status: 400, 
@@ -169,22 +169,22 @@ Map {
             },
           },
           "imports": Map {
-            "Pet" => Object {
+            "Model" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "Pet",
+              "name": "Model",
               "script": Script {
                 "cache": Map {
-                  "default" => "Pet",
+                  "default" => "Model",
                 },
                 "exports": Map {
-                  "Pet" => Object {
-                    "code": "class Pet {}",
+                  "Model" => Object {
+                    "code": "{}",
                     "done": true,
                     "id": "ModelCoder@petstore.yaml#/paths/~1pet/post",
                     "isDefault": true,
                     "isType": true,
-                    "name": "Pet",
+                    "name": "Model",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -199,7 +199,7 @@ Map {
                 "typeCache": Map {},
               },
             },
-            "Pet2" => Object {
+            "Pet" => Object {
               "isDefault": false,
               "isType": true,
               "name": "Pet",
@@ -332,22 +332,22 @@ Map {
                 "typeCache": Map {},
               },
             },
-            "Pet3" => Object {
+            "Model2" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "Pet",
+              "name": "Model",
               "script": Script {
                 "cache": Map {
-                  "default" => "Pet",
+                  "default" => "Model",
                 },
                 "exports": Map {
-                  "Pet" => Object {
-                    "code": "class Pet {}",
+                  "Model" => Object {
+                    "code": "{}",
                     "done": true,
                     "id": "ModelCoder@petstore.yaml#/paths/~1pet/post",
                     "isDefault": true,
                     "isType": true,
-                    "name": "Pet",
+                    "name": "Model",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -379,22 +379,22 @@ Map {
           "cache": Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1pet/post@[object Object]:true" => "HTTP_POST",
             "OperationTypeCoder@petstore.yaml#/paths/~1pet/put@[object Object]:true" => "HTTP_PUT",
-            "ModelCoder@petstore.yaml#/paths/~1pet/post@paths//$model.ts:true:true" => "Pet",
-            "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet2",
+            "ModelCoder@petstore.yaml#/paths/~1pet/post@paths//$model.ts:true:true" => "Model",
+            "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
             "tools@internal/tools.ts:true:false" => "Tools",
-            "ModelCoder@petstore.yaml#/paths/~1pet/put@paths//$model.ts:true:true" => "Pet3",
+            "ModelCoder@petstore.yaml#/paths/~1pet/put@paths//$model.ts:true:true" => "Model2",
           },
           "exports": Map {
             "HTTP_POST" => Object {
-              "code": "({ query, path, header, body, model, tools }: { query: undefined, path: undefined, header: undefined, body: Pet2, model: Pet, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, model, tools }: { query: undefined, path: undefined, header: undefined, body: Pet, model: Model, response: ResponseBuilderBuilder<{
       200: {
           headers: {};
           content: {
       \\"application/xml\\": { 
-              schema:  Pet2
+              schema:  Pet
             },
 \\"application/json\\": { 
-              schema:  Pet2
+              schema:  Pet
             }
     };
         },405: {
@@ -406,12 +406,12 @@ Map {
       }>, tools: Tools}) => {  
             status: 200, 
           contentType?: \\"application/xml\\",
-          body?: Pet2
+          body?: Pet
           
         } | {  
             status: 200, 
           contentType?: \\"application/json\\",
-          body?: Pet2
+          body?: Pet
           
         } | {  
             status: 405, 
@@ -429,15 +429,15 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_PUT" => Object {
-              "code": "({ query, path, header, body, model, tools }: { query: undefined, path: undefined, header: undefined, body: Pet2, model: Pet3, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, model, tools }: { query: undefined, path: undefined, header: undefined, body: Pet, model: Model2, response: ResponseBuilderBuilder<{
       200: {
           headers: {};
           content: {
       \\"application/xml\\": { 
-              schema:  Pet2
+              schema:  Pet
             },
 \\"application/json\\": { 
-              schema:  Pet2
+              schema:  Pet
             }
     };
         },400: {
@@ -459,12 +459,12 @@ Map {
       }>, tools: Tools}) => {  
             status: 200, 
           contentType?: \\"application/xml\\",
-          body?: Pet2
+          body?: Pet
           
         } | {  
             status: 200, 
           contentType?: \\"application/json\\",
-          body?: Pet2
+          body?: Pet
           
         } | {  
             status: 400, 
@@ -503,22 +503,22 @@ Map {
             },
           },
           "imports": Map {
-            "Pet" => Object {
+            "Model" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "Pet",
+              "name": "Model",
               "script": Script {
                 "cache": Map {
-                  "default" => "Pet",
+                  "default" => "Model",
                 },
                 "exports": Map {
-                  "Pet" => Object {
-                    "code": "class Pet {}",
+                  "Model" => Object {
+                    "code": "{}",
                     "done": true,
                     "id": "ModelCoder@petstore.yaml#/paths/~1pet/post",
                     "isDefault": true,
                     "isType": true,
-                    "name": "Pet",
+                    "name": "Model",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -533,7 +533,7 @@ Map {
                 "typeCache": Map {},
               },
             },
-            "Pet2" => Object {
+            "Pet" => Object {
               "isDefault": false,
               "isType": true,
               "name": "Pet",
@@ -666,22 +666,22 @@ Map {
                 "typeCache": Map {},
               },
             },
-            "Pet3" => Object {
+            "Model2" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "Pet",
+              "name": "Model",
               "script": Script {
                 "cache": Map {
-                  "default" => "Pet",
+                  "default" => "Model",
                 },
                 "exports": Map {
-                  "Pet" => Object {
-                    "code": "class Pet {}",
+                  "Model" => Object {
+                    "code": "{}",
                     "done": true,
                     "id": "ModelCoder@petstore.yaml#/paths/~1pet/post",
                     "isDefault": true,
                     "isType": true,
-                    "name": "Pet",
+                    "name": "Model",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -717,22 +717,22 @@ Map {
     "cache": Map {
       "OperationTypeCoder@petstore.yaml#/paths/~1pet/post@[object Object]:true" => "HTTP_POST",
       "OperationTypeCoder@petstore.yaml#/paths/~1pet/put@[object Object]:true" => "HTTP_PUT",
-      "ModelCoder@petstore.yaml#/paths/~1pet/post@paths//$model.ts:true:true" => "Pet",
-      "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet2",
+      "ModelCoder@petstore.yaml#/paths/~1pet/post@paths//$model.ts:true:true" => "Model",
+      "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
       "tools@internal/tools.ts:true:false" => "Tools",
-      "ModelCoder@petstore.yaml#/paths/~1pet/put@paths//$model.ts:true:true" => "Pet3",
+      "ModelCoder@petstore.yaml#/paths/~1pet/put@paths//$model.ts:true:true" => "Model2",
     },
     "exports": Map {
       "HTTP_POST" => Object {
-        "code": "({ query, path, header, body, model, tools }: { query: undefined, path: undefined, header: undefined, body: Pet2, model: Pet, response: ResponseBuilderBuilder<{
+        "code": "({ query, path, header, body, model, tools }: { query: undefined, path: undefined, header: undefined, body: Pet, model: Model, response: ResponseBuilderBuilder<{
       200: {
           headers: {};
           content: {
       \\"application/xml\\": { 
-              schema:  Pet2
+              schema:  Pet
             },
 \\"application/json\\": { 
-              schema:  Pet2
+              schema:  Pet
             }
     };
         },405: {
@@ -744,12 +744,12 @@ Map {
       }>, tools: Tools}) => {  
             status: 200, 
           contentType?: \\"application/xml\\",
-          body?: Pet2
+          body?: Pet
           
         } | {  
             status: 200, 
           contentType?: \\"application/json\\",
-          body?: Pet2
+          body?: Pet
           
         } | {  
             status: 405, 
@@ -767,15 +767,15 @@ Map {
         "typeDeclaration": "",
       },
       "HTTP_PUT" => Object {
-        "code": "({ query, path, header, body, model, tools }: { query: undefined, path: undefined, header: undefined, body: Pet2, model: Pet3, response: ResponseBuilderBuilder<{
+        "code": "({ query, path, header, body, model, tools }: { query: undefined, path: undefined, header: undefined, body: Pet, model: Model2, response: ResponseBuilderBuilder<{
       200: {
           headers: {};
           content: {
       \\"application/xml\\": { 
-              schema:  Pet2
+              schema:  Pet
             },
 \\"application/json\\": { 
-              schema:  Pet2
+              schema:  Pet
             }
     };
         },400: {
@@ -797,12 +797,12 @@ Map {
       }>, tools: Tools}) => {  
             status: 200, 
           contentType?: \\"application/xml\\",
-          body?: Pet2
+          body?: Pet
           
         } | {  
             status: 200, 
           contentType?: \\"application/json\\",
-          body?: Pet2
+          body?: Pet
           
         } | {  
             status: 400, 
@@ -841,22 +841,22 @@ Map {
       },
     },
     "imports": Map {
-      "Pet" => Object {
+      "Model" => Object {
         "isDefault": true,
         "isType": true,
-        "name": "Pet",
+        "name": "Model",
         "script": Script {
           "cache": Map {
-            "default" => "Pet",
+            "default" => "Model",
           },
           "exports": Map {
-            "Pet" => Object {
-              "code": "class Pet {}",
+            "Model" => Object {
+              "code": "{}",
               "done": true,
               "id": "ModelCoder@petstore.yaml#/paths/~1pet/post",
               "isDefault": true,
               "isType": true,
-              "name": "Pet",
+              "name": "Model",
               "promise": Promise {},
               "typeDeclaration": "",
             },
@@ -871,7 +871,7 @@ Map {
           "typeCache": Map {},
         },
       },
-      "Pet2" => Object {
+      "Pet" => Object {
         "isDefault": false,
         "isType": true,
         "name": "Pet",
@@ -1004,22 +1004,22 @@ Map {
           "typeCache": Map {},
         },
       },
-      "Pet3" => Object {
+      "Model2" => Object {
         "isDefault": true,
         "isType": true,
-        "name": "Pet",
+        "name": "Model",
         "script": Script {
           "cache": Map {
-            "default" => "Pet",
+            "default" => "Model",
           },
           "exports": Map {
-            "Pet" => Object {
-              "code": "class Pet {}",
+            "Model" => Object {
+              "code": "{}",
               "done": true,
               "id": "ModelCoder@petstore.yaml#/paths/~1pet/post",
               "isDefault": true,
               "isType": true,
-              "name": "Pet",
+              "name": "Model",
               "promise": Promise {},
               "typeDeclaration": "",
             },
@@ -1070,13 +1070,13 @@ Map {
         "script": Script {
           "cache": Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1findByStatus/get@[object Object]:true" => "HTTP_GET",
-            "ModelCoder@petstore.yaml#/paths/~1pet~1findByStatus/get@paths/pet/$model.ts:true:true" => "PetfindByStatus",
+            "ModelCoder@petstore.yaml#/paths/~1pet~1findByStatus/get@paths/pet/$model.ts:true:true" => "Model",
             "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
             "tools@internal/tools.ts:true:false" => "Tools",
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, model, tools }: { query: {status?: string}, path: never, header: never, body: undefined, model: PetfindByStatus, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, model, tools }: { query: {status?: string}, path: never, header: never, body: undefined, model: Model, response: ResponseBuilderBuilder<{
       200: {
           headers: {};
           content: {
@@ -1130,22 +1130,24 @@ Map {
             },
           },
           "imports": Map {
-            "PetfindByStatus" => Object {
+            "Model" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "PetfindByStatus",
+              "name": "Model",
               "script": Script {
                 "cache": Map {
-                  "default" => "PetfindByStatus",
+                  "default" => "Model",
                 },
                 "exports": Map {
-                  "PetfindByStatus" => Object {
-                    "code": "class PetfindByStatus {}",
+                  "Model" => Object {
+                    "code": Object {
+                      "raw": "export { default } from \\"../$model.js\\"",
+                    },
                     "done": true,
                     "id": "ModelCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
                     "isDefault": true,
                     "isType": true,
-                    "name": "PetfindByStatus",
+                    "name": "Model",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -1313,13 +1315,13 @@ Map {
   "path-types/pet/findByStatus.types.ts" => Script {
     "cache": Map {
       "OperationTypeCoder@petstore.yaml#/paths/~1pet~1findByStatus/get@[object Object]:true" => "HTTP_GET",
-      "ModelCoder@petstore.yaml#/paths/~1pet~1findByStatus/get@paths/pet/$model.ts:true:true" => "PetfindByStatus",
+      "ModelCoder@petstore.yaml#/paths/~1pet~1findByStatus/get@paths/pet/$model.ts:true:true" => "Model",
       "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
       "tools@internal/tools.ts:true:false" => "Tools",
     },
     "exports": Map {
       "HTTP_GET" => Object {
-        "code": "({ query, path, header, body, model, tools }: { query: {status?: string}, path: never, header: never, body: undefined, model: PetfindByStatus, response: ResponseBuilderBuilder<{
+        "code": "({ query, path, header, body, model, tools }: { query: {status?: string}, path: never, header: never, body: undefined, model: Model, response: ResponseBuilderBuilder<{
       200: {
           headers: {};
           content: {
@@ -1373,22 +1375,24 @@ Map {
       },
     },
     "imports": Map {
-      "PetfindByStatus" => Object {
+      "Model" => Object {
         "isDefault": true,
         "isType": true,
-        "name": "PetfindByStatus",
+        "name": "Model",
         "script": Script {
           "cache": Map {
-            "default" => "PetfindByStatus",
+            "default" => "Model",
           },
           "exports": Map {
-            "PetfindByStatus" => Object {
-              "code": "class PetfindByStatus {}",
+            "Model" => Object {
+              "code": Object {
+                "raw": "export { default } from \\"../$model.js\\"",
+              },
               "done": true,
               "id": "ModelCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
               "isDefault": true,
               "isType": true,
-              "name": "PetfindByStatus",
+              "name": "Model",
               "promise": Promise {},
               "typeDeclaration": "",
             },
@@ -1572,13 +1576,13 @@ Map {
         "script": Script {
           "cache": Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1findByTags/get@[object Object]:true" => "HTTP_GET",
-            "ModelCoder@petstore.yaml#/paths/~1pet~1findByTags/get@paths/pet/$model.ts:true:true" => "PetfindByTags",
+            "ModelCoder@petstore.yaml#/paths/~1pet~1findByTags/get@paths/pet/$model.ts:true:true" => "Model",
             "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
             "tools@internal/tools.ts:true:false" => "Tools",
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, model, tools }: { query: {tags?: Array<string>}, path: never, header: never, body: undefined, model: PetfindByTags, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, model, tools }: { query: {tags?: Array<string>}, path: never, header: never, body: undefined, model: Model, response: ResponseBuilderBuilder<{
       200: {
           headers: {};
           content: {
@@ -1632,22 +1636,24 @@ Map {
             },
           },
           "imports": Map {
-            "PetfindByTags" => Object {
+            "Model" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "PetfindByStatus",
+              "name": "Model",
               "script": Script {
                 "cache": Map {
-                  "default" => "PetfindByStatus",
+                  "default" => "Model",
                 },
                 "exports": Map {
-                  "PetfindByStatus" => Object {
-                    "code": "class PetfindByStatus {}",
+                  "Model" => Object {
+                    "code": Object {
+                      "raw": "export { default } from \\"../$model.js\\"",
+                    },
                     "done": true,
                     "id": "ModelCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
                     "isDefault": true,
                     "isType": true,
-                    "name": "PetfindByStatus",
+                    "name": "Model",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -1815,13 +1821,13 @@ Map {
   "path-types/pet/findByTags.types.ts" => Script {
     "cache": Map {
       "OperationTypeCoder@petstore.yaml#/paths/~1pet~1findByTags/get@[object Object]:true" => "HTTP_GET",
-      "ModelCoder@petstore.yaml#/paths/~1pet~1findByTags/get@paths/pet/$model.ts:true:true" => "PetfindByTags",
+      "ModelCoder@petstore.yaml#/paths/~1pet~1findByTags/get@paths/pet/$model.ts:true:true" => "Model",
       "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
       "tools@internal/tools.ts:true:false" => "Tools",
     },
     "exports": Map {
       "HTTP_GET" => Object {
-        "code": "({ query, path, header, body, model, tools }: { query: {tags?: Array<string>}, path: never, header: never, body: undefined, model: PetfindByTags, response: ResponseBuilderBuilder<{
+        "code": "({ query, path, header, body, model, tools }: { query: {tags?: Array<string>}, path: never, header: never, body: undefined, model: Model, response: ResponseBuilderBuilder<{
       200: {
           headers: {};
           content: {
@@ -1875,22 +1881,24 @@ Map {
       },
     },
     "imports": Map {
-      "PetfindByTags" => Object {
+      "Model" => Object {
         "isDefault": true,
         "isType": true,
-        "name": "PetfindByStatus",
+        "name": "Model",
         "script": Script {
           "cache": Map {
-            "default" => "PetfindByStatus",
+            "default" => "Model",
           },
           "exports": Map {
-            "PetfindByStatus" => Object {
-              "code": "class PetfindByStatus {}",
+            "Model" => Object {
+              "code": Object {
+                "raw": "export { default } from \\"../$model.js\\"",
+              },
               "done": true,
               "id": "ModelCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
               "isDefault": true,
               "isType": true,
-              "name": "PetfindByStatus",
+              "name": "Model",
               "promise": Promise {},
               "typeDeclaration": "",
             },
@@ -2100,15 +2108,15 @@ Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/get@[object Object]:true" => "HTTP_GET",
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/post@[object Object]:true" => "HTTP_POST",
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/delete@[object Object]:true" => "HTTP_DELETE",
-            "ModelCoder@petstore.yaml#/paths/~1pet~1{petId}/get@paths/pet/$model.ts:true:true" => "Pet{petId}",
+            "ModelCoder@petstore.yaml#/paths/~1pet~1{petId}/get@paths/pet/$model.ts:true:true" => "Model",
             "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
             "tools@internal/tools.ts:true:false" => "Tools",
-            "ModelCoder@petstore.yaml#/paths/~1pet~1{petId}/post@paths/pet/$model.ts:true:true" => "Pet{petId}2",
-            "ModelCoder@petstore.yaml#/paths/~1pet~1{petId}/delete@paths/pet/$model.ts:true:true" => "Pet{petId}3",
+            "ModelCoder@petstore.yaml#/paths/~1pet~1{petId}/post@paths/pet/$model.ts:true:true" => "Model2",
+            "ModelCoder@petstore.yaml#/paths/~1pet~1{petId}/delete@paths/pet/$model.ts:true:true" => "Model3",
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, model, tools }: { query: never, path: {petId: number}, header: never, body: undefined, model: Pet{petId}, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, model, tools }: { query: never, path: {petId: number}, header: never, body: undefined, model: Model, response: ResponseBuilderBuilder<{
       200: {
           headers: {};
           content: {
@@ -2161,7 +2169,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_POST" => Object {
-              "code": "({ query, path, header, body, model, tools }: { query: {name?: number, status?: string}, path: {petId: number}, header: never, body: undefined, model: Pet{petId}2, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, model, tools }: { query: {name?: number, status?: string}, path: {petId: number}, header: never, body: undefined, model: Model2, response: ResponseBuilderBuilder<{
       405: {
           headers: {};
           content: {
@@ -2184,7 +2192,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_DELETE" => Object {
-              "code": "({ query, path, header, body, model, tools }: { query: never, path: {petId: string}, header: {api_key?: string}, body: undefined, model: Pet{petId}3, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, model, tools }: { query: never, path: {petId: string}, header: {api_key?: string}, body: undefined, model: Model3, response: ResponseBuilderBuilder<{
       400: {
           headers: {};
           content: {
@@ -2218,22 +2226,24 @@ Map {
             },
           },
           "imports": Map {
-            "Pet{petId}" => Object {
+            "Model" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "PetfindByStatus",
+              "name": "Model",
               "script": Script {
                 "cache": Map {
-                  "default" => "PetfindByStatus",
+                  "default" => "Model",
                 },
                 "exports": Map {
-                  "PetfindByStatus" => Object {
-                    "code": "class PetfindByStatus {}",
+                  "Model" => Object {
+                    "code": Object {
+                      "raw": "export { default } from \\"../$model.js\\"",
+                    },
                     "done": true,
                     "id": "ModelCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
                     "isDefault": true,
                     "isType": true,
-                    "name": "PetfindByStatus",
+                    "name": "Model",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -2381,22 +2391,24 @@ Map {
                 "typeCache": Map {},
               },
             },
-            "Pet{petId}2" => Object {
+            "Model2" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "PetfindByStatus",
+              "name": "Model",
               "script": Script {
                 "cache": Map {
-                  "default" => "PetfindByStatus",
+                  "default" => "Model",
                 },
                 "exports": Map {
-                  "PetfindByStatus" => Object {
-                    "code": "class PetfindByStatus {}",
+                  "Model" => Object {
+                    "code": Object {
+                      "raw": "export { default } from \\"../$model.js\\"",
+                    },
                     "done": true,
                     "id": "ModelCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
                     "isDefault": true,
                     "isType": true,
-                    "name": "PetfindByStatus",
+                    "name": "Model",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -2411,22 +2423,24 @@ Map {
                 "typeCache": Map {},
               },
             },
-            "Pet{petId}3" => Object {
+            "Model3" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "PetfindByStatus",
+              "name": "Model",
               "script": Script {
                 "cache": Map {
-                  "default" => "PetfindByStatus",
+                  "default" => "Model",
                 },
                 "exports": Map {
-                  "PetfindByStatus" => Object {
-                    "code": "class PetfindByStatus {}",
+                  "Model" => Object {
+                    "code": Object {
+                      "raw": "export { default } from \\"../$model.js\\"",
+                    },
                     "done": true,
                     "id": "ModelCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
                     "isDefault": true,
                     "isType": true,
-                    "name": "PetfindByStatus",
+                    "name": "Model",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -2459,15 +2473,15 @@ Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/get@[object Object]:true" => "HTTP_GET",
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/post@[object Object]:true" => "HTTP_POST",
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/delete@[object Object]:true" => "HTTP_DELETE",
-            "ModelCoder@petstore.yaml#/paths/~1pet~1{petId}/get@paths/pet/$model.ts:true:true" => "Pet{petId}",
+            "ModelCoder@petstore.yaml#/paths/~1pet~1{petId}/get@paths/pet/$model.ts:true:true" => "Model",
             "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
             "tools@internal/tools.ts:true:false" => "Tools",
-            "ModelCoder@petstore.yaml#/paths/~1pet~1{petId}/post@paths/pet/$model.ts:true:true" => "Pet{petId}2",
-            "ModelCoder@petstore.yaml#/paths/~1pet~1{petId}/delete@paths/pet/$model.ts:true:true" => "Pet{petId}3",
+            "ModelCoder@petstore.yaml#/paths/~1pet~1{petId}/post@paths/pet/$model.ts:true:true" => "Model2",
+            "ModelCoder@petstore.yaml#/paths/~1pet~1{petId}/delete@paths/pet/$model.ts:true:true" => "Model3",
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, model, tools }: { query: never, path: {petId: number}, header: never, body: undefined, model: Pet{petId}, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, model, tools }: { query: never, path: {petId: number}, header: never, body: undefined, model: Model, response: ResponseBuilderBuilder<{
       200: {
           headers: {};
           content: {
@@ -2520,7 +2534,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_POST" => Object {
-              "code": "({ query, path, header, body, model, tools }: { query: {name?: number, status?: string}, path: {petId: number}, header: never, body: undefined, model: Pet{petId}2, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, model, tools }: { query: {name?: number, status?: string}, path: {petId: number}, header: never, body: undefined, model: Model2, response: ResponseBuilderBuilder<{
       405: {
           headers: {};
           content: {
@@ -2543,7 +2557,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_DELETE" => Object {
-              "code": "({ query, path, header, body, model, tools }: { query: never, path: {petId: string}, header: {api_key?: string}, body: undefined, model: Pet{petId}3, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, model, tools }: { query: never, path: {petId: string}, header: {api_key?: string}, body: undefined, model: Model3, response: ResponseBuilderBuilder<{
       400: {
           headers: {};
           content: {
@@ -2577,22 +2591,24 @@ Map {
             },
           },
           "imports": Map {
-            "Pet{petId}" => Object {
+            "Model" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "PetfindByStatus",
+              "name": "Model",
               "script": Script {
                 "cache": Map {
-                  "default" => "PetfindByStatus",
+                  "default" => "Model",
                 },
                 "exports": Map {
-                  "PetfindByStatus" => Object {
-                    "code": "class PetfindByStatus {}",
+                  "Model" => Object {
+                    "code": Object {
+                      "raw": "export { default } from \\"../$model.js\\"",
+                    },
                     "done": true,
                     "id": "ModelCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
                     "isDefault": true,
                     "isType": true,
-                    "name": "PetfindByStatus",
+                    "name": "Model",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -2740,22 +2756,24 @@ Map {
                 "typeCache": Map {},
               },
             },
-            "Pet{petId}2" => Object {
+            "Model2" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "PetfindByStatus",
+              "name": "Model",
               "script": Script {
                 "cache": Map {
-                  "default" => "PetfindByStatus",
+                  "default" => "Model",
                 },
                 "exports": Map {
-                  "PetfindByStatus" => Object {
-                    "code": "class PetfindByStatus {}",
+                  "Model" => Object {
+                    "code": Object {
+                      "raw": "export { default } from \\"../$model.js\\"",
+                    },
                     "done": true,
                     "id": "ModelCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
                     "isDefault": true,
                     "isType": true,
-                    "name": "PetfindByStatus",
+                    "name": "Model",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -2770,22 +2788,24 @@ Map {
                 "typeCache": Map {},
               },
             },
-            "Pet{petId}3" => Object {
+            "Model3" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "PetfindByStatus",
+              "name": "Model",
               "script": Script {
                 "cache": Map {
-                  "default" => "PetfindByStatus",
+                  "default" => "Model",
                 },
                 "exports": Map {
-                  "PetfindByStatus" => Object {
-                    "code": "class PetfindByStatus {}",
+                  "Model" => Object {
+                    "code": Object {
+                      "raw": "export { default } from \\"../$model.js\\"",
+                    },
                     "done": true,
                     "id": "ModelCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
                     "isDefault": true,
                     "isType": true,
-                    "name": "PetfindByStatus",
+                    "name": "Model",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -2818,15 +2838,15 @@ Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/get@[object Object]:true" => "HTTP_GET",
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/post@[object Object]:true" => "HTTP_POST",
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/delete@[object Object]:true" => "HTTP_DELETE",
-            "ModelCoder@petstore.yaml#/paths/~1pet~1{petId}/get@paths/pet/$model.ts:true:true" => "Pet{petId}",
+            "ModelCoder@petstore.yaml#/paths/~1pet~1{petId}/get@paths/pet/$model.ts:true:true" => "Model",
             "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
             "tools@internal/tools.ts:true:false" => "Tools",
-            "ModelCoder@petstore.yaml#/paths/~1pet~1{petId}/post@paths/pet/$model.ts:true:true" => "Pet{petId}2",
-            "ModelCoder@petstore.yaml#/paths/~1pet~1{petId}/delete@paths/pet/$model.ts:true:true" => "Pet{petId}3",
+            "ModelCoder@petstore.yaml#/paths/~1pet~1{petId}/post@paths/pet/$model.ts:true:true" => "Model2",
+            "ModelCoder@petstore.yaml#/paths/~1pet~1{petId}/delete@paths/pet/$model.ts:true:true" => "Model3",
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, model, tools }: { query: never, path: {petId: number}, header: never, body: undefined, model: Pet{petId}, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, model, tools }: { query: never, path: {petId: number}, header: never, body: undefined, model: Model, response: ResponseBuilderBuilder<{
       200: {
           headers: {};
           content: {
@@ -2879,7 +2899,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_POST" => Object {
-              "code": "({ query, path, header, body, model, tools }: { query: {name?: number, status?: string}, path: {petId: number}, header: never, body: undefined, model: Pet{petId}2, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, model, tools }: { query: {name?: number, status?: string}, path: {petId: number}, header: never, body: undefined, model: Model2, response: ResponseBuilderBuilder<{
       405: {
           headers: {};
           content: {
@@ -2902,7 +2922,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_DELETE" => Object {
-              "code": "({ query, path, header, body, model, tools }: { query: never, path: {petId: string}, header: {api_key?: string}, body: undefined, model: Pet{petId}3, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, model, tools }: { query: never, path: {petId: string}, header: {api_key?: string}, body: undefined, model: Model3, response: ResponseBuilderBuilder<{
       400: {
           headers: {};
           content: {
@@ -2936,22 +2956,24 @@ Map {
             },
           },
           "imports": Map {
-            "Pet{petId}" => Object {
+            "Model" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "PetfindByStatus",
+              "name": "Model",
               "script": Script {
                 "cache": Map {
-                  "default" => "PetfindByStatus",
+                  "default" => "Model",
                 },
                 "exports": Map {
-                  "PetfindByStatus" => Object {
-                    "code": "class PetfindByStatus {}",
+                  "Model" => Object {
+                    "code": Object {
+                      "raw": "export { default } from \\"../$model.js\\"",
+                    },
                     "done": true,
                     "id": "ModelCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
                     "isDefault": true,
                     "isType": true,
-                    "name": "PetfindByStatus",
+                    "name": "Model",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -3099,22 +3121,24 @@ Map {
                 "typeCache": Map {},
               },
             },
-            "Pet{petId}2" => Object {
+            "Model2" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "PetfindByStatus",
+              "name": "Model",
               "script": Script {
                 "cache": Map {
-                  "default" => "PetfindByStatus",
+                  "default" => "Model",
                 },
                 "exports": Map {
-                  "PetfindByStatus" => Object {
-                    "code": "class PetfindByStatus {}",
+                  "Model" => Object {
+                    "code": Object {
+                      "raw": "export { default } from \\"../$model.js\\"",
+                    },
                     "done": true,
                     "id": "ModelCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
                     "isDefault": true,
                     "isType": true,
-                    "name": "PetfindByStatus",
+                    "name": "Model",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -3129,22 +3153,24 @@ Map {
                 "typeCache": Map {},
               },
             },
-            "Pet{petId}3" => Object {
+            "Model3" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "PetfindByStatus",
+              "name": "Model",
               "script": Script {
                 "cache": Map {
-                  "default" => "PetfindByStatus",
+                  "default" => "Model",
                 },
                 "exports": Map {
-                  "PetfindByStatus" => Object {
-                    "code": "class PetfindByStatus {}",
+                  "Model" => Object {
+                    "code": Object {
+                      "raw": "export { default } from \\"../$model.js\\"",
+                    },
                     "done": true,
                     "id": "ModelCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
                     "isDefault": true,
                     "isType": true,
-                    "name": "PetfindByStatus",
+                    "name": "Model",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -3181,15 +3207,15 @@ Map {
       "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/get@[object Object]:true" => "HTTP_GET",
       "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/post@[object Object]:true" => "HTTP_POST",
       "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/delete@[object Object]:true" => "HTTP_DELETE",
-      "ModelCoder@petstore.yaml#/paths/~1pet~1{petId}/get@paths/pet/$model.ts:true:true" => "Pet{petId}",
+      "ModelCoder@petstore.yaml#/paths/~1pet~1{petId}/get@paths/pet/$model.ts:true:true" => "Model",
       "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
       "tools@internal/tools.ts:true:false" => "Tools",
-      "ModelCoder@petstore.yaml#/paths/~1pet~1{petId}/post@paths/pet/$model.ts:true:true" => "Pet{petId}2",
-      "ModelCoder@petstore.yaml#/paths/~1pet~1{petId}/delete@paths/pet/$model.ts:true:true" => "Pet{petId}3",
+      "ModelCoder@petstore.yaml#/paths/~1pet~1{petId}/post@paths/pet/$model.ts:true:true" => "Model2",
+      "ModelCoder@petstore.yaml#/paths/~1pet~1{petId}/delete@paths/pet/$model.ts:true:true" => "Model3",
     },
     "exports": Map {
       "HTTP_GET" => Object {
-        "code": "({ query, path, header, body, model, tools }: { query: never, path: {petId: number}, header: never, body: undefined, model: Pet{petId}, response: ResponseBuilderBuilder<{
+        "code": "({ query, path, header, body, model, tools }: { query: never, path: {petId: number}, header: never, body: undefined, model: Model, response: ResponseBuilderBuilder<{
       200: {
           headers: {};
           content: {
@@ -3242,7 +3268,7 @@ Map {
         "typeDeclaration": "",
       },
       "HTTP_POST" => Object {
-        "code": "({ query, path, header, body, model, tools }: { query: {name?: number, status?: string}, path: {petId: number}, header: never, body: undefined, model: Pet{petId}2, response: ResponseBuilderBuilder<{
+        "code": "({ query, path, header, body, model, tools }: { query: {name?: number, status?: string}, path: {petId: number}, header: never, body: undefined, model: Model2, response: ResponseBuilderBuilder<{
       405: {
           headers: {};
           content: {
@@ -3265,7 +3291,7 @@ Map {
         "typeDeclaration": "",
       },
       "HTTP_DELETE" => Object {
-        "code": "({ query, path, header, body, model, tools }: { query: never, path: {petId: string}, header: {api_key?: string}, body: undefined, model: Pet{petId}3, response: ResponseBuilderBuilder<{
+        "code": "({ query, path, header, body, model, tools }: { query: never, path: {petId: string}, header: {api_key?: string}, body: undefined, model: Model3, response: ResponseBuilderBuilder<{
       400: {
           headers: {};
           content: {
@@ -3299,22 +3325,24 @@ Map {
       },
     },
     "imports": Map {
-      "Pet{petId}" => Object {
+      "Model" => Object {
         "isDefault": true,
         "isType": true,
-        "name": "PetfindByStatus",
+        "name": "Model",
         "script": Script {
           "cache": Map {
-            "default" => "PetfindByStatus",
+            "default" => "Model",
           },
           "exports": Map {
-            "PetfindByStatus" => Object {
-              "code": "class PetfindByStatus {}",
+            "Model" => Object {
+              "code": Object {
+                "raw": "export { default } from \\"../$model.js\\"",
+              },
               "done": true,
               "id": "ModelCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
               "isDefault": true,
               "isType": true,
-              "name": "PetfindByStatus",
+              "name": "Model",
               "promise": Promise {},
               "typeDeclaration": "",
             },
@@ -3462,22 +3490,24 @@ Map {
           "typeCache": Map {},
         },
       },
-      "Pet{petId}2" => Object {
+      "Model2" => Object {
         "isDefault": true,
         "isType": true,
-        "name": "PetfindByStatus",
+        "name": "Model",
         "script": Script {
           "cache": Map {
-            "default" => "PetfindByStatus",
+            "default" => "Model",
           },
           "exports": Map {
-            "PetfindByStatus" => Object {
-              "code": "class PetfindByStatus {}",
+            "Model" => Object {
+              "code": Object {
+                "raw": "export { default } from \\"../$model.js\\"",
+              },
               "done": true,
               "id": "ModelCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
               "isDefault": true,
               "isType": true,
-              "name": "PetfindByStatus",
+              "name": "Model",
               "promise": Promise {},
               "typeDeclaration": "",
             },
@@ -3492,22 +3522,24 @@ Map {
           "typeCache": Map {},
         },
       },
-      "Pet{petId}3" => Object {
+      "Model3" => Object {
         "isDefault": true,
         "isType": true,
-        "name": "PetfindByStatus",
+        "name": "Model",
         "script": Script {
           "cache": Map {
-            "default" => "PetfindByStatus",
+            "default" => "Model",
           },
           "exports": Map {
-            "PetfindByStatus" => Object {
-              "code": "class PetfindByStatus {}",
+            "Model" => Object {
+              "code": Object {
+                "raw": "export { default } from \\"../$model.js\\"",
+              },
               "done": true,
               "id": "ModelCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
               "isDefault": true,
               "isType": true,
-              "name": "PetfindByStatus",
+              "name": "Model",
               "promise": Promise {},
               "typeDeclaration": "",
             },
@@ -3558,13 +3590,13 @@ Map {
         "script": Script {
           "cache": Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post@[object Object]:true" => "HTTP_POST",
-            "ModelCoder@petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post@paths/pet/{petId}/$model.ts:true:true" => "Pet{petId}uploadImage",
+            "ModelCoder@petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post@paths/pet/{petId}/$model.ts:true:true" => "Model",
             "SchemaTypeCoder@undefined@components/ApiResponse.ts:true:false" => "ApiResponse",
             "tools@internal/tools.ts:true:false" => "Tools",
           },
           "exports": Map {
             "HTTP_POST" => Object {
-              "code": "({ query, path, header, body, model, tools }: { query: {additionalMetadata?: number}, path: {petId: number}, header: never, body: undefined, model: Pet{petId}uploadImage, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, model, tools }: { query: {additionalMetadata?: number}, path: {petId: number}, header: never, body: undefined, model: Model, response: ResponseBuilderBuilder<{
       200: {
           headers: {};
           content: {
@@ -3600,22 +3632,24 @@ Map {
             },
           },
           "imports": Map {
-            "Pet{petId}uploadImage" => Object {
+            "Model" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "Pet{petId}uploadImage",
+              "name": "Model",
               "script": Script {
                 "cache": Map {
-                  "default" => "Pet{petId}uploadImage",
+                  "default" => "Model",
                 },
                 "exports": Map {
-                  "Pet{petId}uploadImage" => Object {
-                    "code": "class Pet{petId}uploadImage {}",
+                  "Model" => Object {
+                    "code": Object {
+                      "raw": "export { default } from \\"../$model.js\\"",
+                    },
                     "done": true,
                     "id": "ModelCoder@petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post",
                     "isDefault": true,
                     "isType": true,
-                    "name": "Pet{petId}uploadImage",
+                    "name": "Model",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -3720,13 +3754,13 @@ Map {
   "path-types/pet/{petId}/uploadImage.types.ts" => Script {
     "cache": Map {
       "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post@[object Object]:true" => "HTTP_POST",
-      "ModelCoder@petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post@paths/pet/{petId}/$model.ts:true:true" => "Pet{petId}uploadImage",
+      "ModelCoder@petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post@paths/pet/{petId}/$model.ts:true:true" => "Model",
       "SchemaTypeCoder@undefined@components/ApiResponse.ts:true:false" => "ApiResponse",
       "tools@internal/tools.ts:true:false" => "Tools",
     },
     "exports": Map {
       "HTTP_POST" => Object {
-        "code": "({ query, path, header, body, model, tools }: { query: {additionalMetadata?: number}, path: {petId: number}, header: never, body: undefined, model: Pet{petId}uploadImage, response: ResponseBuilderBuilder<{
+        "code": "({ query, path, header, body, model, tools }: { query: {additionalMetadata?: number}, path: {petId: number}, header: never, body: undefined, model: Model, response: ResponseBuilderBuilder<{
       200: {
           headers: {};
           content: {
@@ -3762,22 +3796,24 @@ Map {
       },
     },
     "imports": Map {
-      "Pet{petId}uploadImage" => Object {
+      "Model" => Object {
         "isDefault": true,
         "isType": true,
-        "name": "Pet{petId}uploadImage",
+        "name": "Model",
         "script": Script {
           "cache": Map {
-            "default" => "Pet{petId}uploadImage",
+            "default" => "Model",
           },
           "exports": Map {
-            "Pet{petId}uploadImage" => Object {
-              "code": "class Pet{petId}uploadImage {}",
+            "Model" => Object {
+              "code": Object {
+                "raw": "export { default } from \\"../$model.js\\"",
+              },
               "done": true,
               "id": "ModelCoder@petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post",
               "isDefault": true,
               "isType": true,
-              "name": "Pet{petId}uploadImage",
+              "name": "Model",
               "promise": Promise {},
               "typeDeclaration": "",
             },
@@ -3898,12 +3934,12 @@ Map {
         "script": Script {
           "cache": Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1store~1inventory/get@[object Object]:true" => "HTTP_GET",
-            "ModelCoder@petstore.yaml#/paths/~1store~1inventory/get@paths/store/$model.ts:true:true" => "Storeinventory",
+            "ModelCoder@petstore.yaml#/paths/~1store~1inventory/get@paths/store/$model.ts:true:true" => "Model",
             "tools@internal/tools.ts:true:false" => "Tools",
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, model, tools }: { query: undefined, path: undefined, header: undefined, body: undefined, model: Storeinventory, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, model, tools }: { query: undefined, path: undefined, header: undefined, body: undefined, model: Model, response: ResponseBuilderBuilder<{
       200: {
           headers: {};
           content: {
@@ -3939,22 +3975,24 @@ Map {
             },
           },
           "imports": Map {
-            "Storeinventory" => Object {
+            "Model" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "Storeinventory",
+              "name": "Model",
               "script": Script {
                 "cache": Map {
-                  "default" => "Storeinventory",
+                  "default" => "Model",
                 },
                 "exports": Map {
-                  "Storeinventory" => Object {
-                    "code": "class Storeinventory {}",
+                  "Model" => Object {
+                    "code": Object {
+                      "raw": "export { default } from \\"../$model.js\\"",
+                    },
                     "done": true,
                     "id": "ModelCoder@petstore.yaml#/paths/~1store~1inventory/get",
                     "isDefault": true,
                     "isType": true,
-                    "name": "Storeinventory",
+                    "name": "Model",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -4029,12 +4067,12 @@ Map {
   "path-types/store/inventory.types.ts" => Script {
     "cache": Map {
       "OperationTypeCoder@petstore.yaml#/paths/~1store~1inventory/get@[object Object]:true" => "HTTP_GET",
-      "ModelCoder@petstore.yaml#/paths/~1store~1inventory/get@paths/store/$model.ts:true:true" => "Storeinventory",
+      "ModelCoder@petstore.yaml#/paths/~1store~1inventory/get@paths/store/$model.ts:true:true" => "Model",
       "tools@internal/tools.ts:true:false" => "Tools",
     },
     "exports": Map {
       "HTTP_GET" => Object {
-        "code": "({ query, path, header, body, model, tools }: { query: undefined, path: undefined, header: undefined, body: undefined, model: Storeinventory, response: ResponseBuilderBuilder<{
+        "code": "({ query, path, header, body, model, tools }: { query: undefined, path: undefined, header: undefined, body: undefined, model: Model, response: ResponseBuilderBuilder<{
       200: {
           headers: {};
           content: {
@@ -4070,22 +4108,24 @@ Map {
       },
     },
     "imports": Map {
-      "Storeinventory" => Object {
+      "Model" => Object {
         "isDefault": true,
         "isType": true,
-        "name": "Storeinventory",
+        "name": "Model",
         "script": Script {
           "cache": Map {
-            "default" => "Storeinventory",
+            "default" => "Model",
           },
           "exports": Map {
-            "Storeinventory" => Object {
-              "code": "class Storeinventory {}",
+            "Model" => Object {
+              "code": Object {
+                "raw": "export { default } from \\"../$model.js\\"",
+              },
               "done": true,
               "id": "ModelCoder@petstore.yaml#/paths/~1store~1inventory/get",
               "isDefault": true,
               "isType": true,
-              "name": "Storeinventory",
+              "name": "Model",
               "promise": Promise {},
               "typeDeclaration": "",
             },
@@ -4176,13 +4216,13 @@ Map {
         "script": Script {
           "cache": Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1store~1order/post@[object Object]:true" => "HTTP_POST",
-            "ModelCoder@petstore.yaml#/paths/~1store~1order/post@paths/store/$model.ts:true:true" => "Storeorder",
+            "ModelCoder@petstore.yaml#/paths/~1store~1order/post@paths/store/$model.ts:true:true" => "Model",
             "SchemaTypeCoder@undefined@components/Order.ts:true:false" => "Order",
             "tools@internal/tools.ts:true:false" => "Tools",
           },
           "exports": Map {
             "HTTP_POST" => Object {
-              "code": "({ query, path, header, body, model, tools }: { query: undefined, path: undefined, header: undefined, body: Order, model: Storeorder, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, model, tools }: { query: undefined, path: undefined, header: undefined, body: Order, model: Model, response: ResponseBuilderBuilder<{
       200: {
           headers: {};
           content: {
@@ -4228,22 +4268,24 @@ Map {
             },
           },
           "imports": Map {
-            "Storeorder" => Object {
+            "Model" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "Storeinventory",
+              "name": "Model",
               "script": Script {
                 "cache": Map {
-                  "default" => "Storeinventory",
+                  "default" => "Model",
                 },
                 "exports": Map {
-                  "Storeinventory" => Object {
-                    "code": "class Storeinventory {}",
+                  "Model" => Object {
+                    "code": Object {
+                      "raw": "export { default } from \\"../$model.js\\"",
+                    },
                     "done": true,
                     "id": "ModelCoder@petstore.yaml#/paths/~1store~1inventory/get",
                     "isDefault": true,
                     "isType": true,
-                    "name": "Storeinventory",
+                    "name": "Model",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -4348,13 +4390,13 @@ Map {
   "path-types/store/order.types.ts" => Script {
     "cache": Map {
       "OperationTypeCoder@petstore.yaml#/paths/~1store~1order/post@[object Object]:true" => "HTTP_POST",
-      "ModelCoder@petstore.yaml#/paths/~1store~1order/post@paths/store/$model.ts:true:true" => "Storeorder",
+      "ModelCoder@petstore.yaml#/paths/~1store~1order/post@paths/store/$model.ts:true:true" => "Model",
       "SchemaTypeCoder@undefined@components/Order.ts:true:false" => "Order",
       "tools@internal/tools.ts:true:false" => "Tools",
     },
     "exports": Map {
       "HTTP_POST" => Object {
-        "code": "({ query, path, header, body, model, tools }: { query: undefined, path: undefined, header: undefined, body: Order, model: Storeorder, response: ResponseBuilderBuilder<{
+        "code": "({ query, path, header, body, model, tools }: { query: undefined, path: undefined, header: undefined, body: Order, model: Model, response: ResponseBuilderBuilder<{
       200: {
           headers: {};
           content: {
@@ -4400,22 +4442,24 @@ Map {
       },
     },
     "imports": Map {
-      "Storeorder" => Object {
+      "Model" => Object {
         "isDefault": true,
         "isType": true,
-        "name": "Storeinventory",
+        "name": "Model",
         "script": Script {
           "cache": Map {
-            "default" => "Storeinventory",
+            "default" => "Model",
           },
           "exports": Map {
-            "Storeinventory" => Object {
-              "code": "class Storeinventory {}",
+            "Model" => Object {
+              "code": Object {
+                "raw": "export { default } from \\"../$model.js\\"",
+              },
               "done": true,
               "id": "ModelCoder@petstore.yaml#/paths/~1store~1inventory/get",
               "isDefault": true,
               "isType": true,
-              "name": "Storeinventory",
+              "name": "Model",
               "promise": Promise {},
               "typeDeclaration": "",
             },
@@ -4549,14 +4593,14 @@ Map {
           "cache": Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get@[object Object]:true" => "HTTP_GET",
             "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete@[object Object]:true" => "HTTP_DELETE",
-            "ModelCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get@paths/store/order/$model.ts:true:true" => "Storeorder{orderId}",
+            "ModelCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get@paths/store/order/$model.ts:true:true" => "Model",
             "SchemaTypeCoder@undefined@components/Order.ts:true:false" => "Order",
             "tools@internal/tools.ts:true:false" => "Tools",
-            "ModelCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete@paths/store/order/$model.ts:true:true" => "Storeorder{orderId}2",
+            "ModelCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete@paths/store/order/$model.ts:true:true" => "Model2",
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, model, tools }: { query: never, path: {orderId: number}, header: never, body: undefined, model: Storeorder{orderId}, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, model, tools }: { query: never, path: {orderId: number}, header: never, body: undefined, model: Model, response: ResponseBuilderBuilder<{
       200: {
           headers: {};
           content: {
@@ -4609,7 +4653,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_DELETE" => Object {
-              "code": "({ query, path, header, body, model, tools }: { query: never, path: {orderId: number}, header: never, body: undefined, model: Storeorder{orderId}2, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, model, tools }: { query: never, path: {orderId: number}, header: never, body: undefined, model: Model2, response: ResponseBuilderBuilder<{
       400: {
           headers: {};
           content: {
@@ -4653,22 +4697,24 @@ Map {
             },
           },
           "imports": Map {
-            "Storeorder{orderId}" => Object {
+            "Model" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "Storeorder{orderId}",
+              "name": "Model",
               "script": Script {
                 "cache": Map {
-                  "default" => "Storeorder{orderId}",
+                  "default" => "Model",
                 },
                 "exports": Map {
-                  "Storeorder{orderId}" => Object {
-                    "code": "class Storeorder{orderId} {}",
+                  "Model" => Object {
+                    "code": Object {
+                      "raw": "export { default } from \\"../$model.js\\"",
+                    },
                     "done": true,
                     "id": "ModelCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get",
                     "isDefault": true,
                     "isType": true,
-                    "name": "Storeorder{orderId}",
+                    "name": "Model",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -4753,22 +4799,24 @@ Map {
                 "typeCache": Map {},
               },
             },
-            "Storeorder{orderId}2" => Object {
+            "Model2" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "Storeorder{orderId}",
+              "name": "Model",
               "script": Script {
                 "cache": Map {
-                  "default" => "Storeorder{orderId}",
+                  "default" => "Model",
                 },
                 "exports": Map {
-                  "Storeorder{orderId}" => Object {
-                    "code": "class Storeorder{orderId} {}",
+                  "Model" => Object {
+                    "code": Object {
+                      "raw": "export { default } from \\"../$model.js\\"",
+                    },
                     "done": true,
                     "id": "ModelCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get",
                     "isDefault": true,
                     "isType": true,
-                    "name": "Storeorder{orderId}",
+                    "name": "Model",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -4800,14 +4848,14 @@ Map {
           "cache": Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get@[object Object]:true" => "HTTP_GET",
             "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete@[object Object]:true" => "HTTP_DELETE",
-            "ModelCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get@paths/store/order/$model.ts:true:true" => "Storeorder{orderId}",
+            "ModelCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get@paths/store/order/$model.ts:true:true" => "Model",
             "SchemaTypeCoder@undefined@components/Order.ts:true:false" => "Order",
             "tools@internal/tools.ts:true:false" => "Tools",
-            "ModelCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete@paths/store/order/$model.ts:true:true" => "Storeorder{orderId}2",
+            "ModelCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete@paths/store/order/$model.ts:true:true" => "Model2",
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, model, tools }: { query: never, path: {orderId: number}, header: never, body: undefined, model: Storeorder{orderId}, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, model, tools }: { query: never, path: {orderId: number}, header: never, body: undefined, model: Model, response: ResponseBuilderBuilder<{
       200: {
           headers: {};
           content: {
@@ -4860,7 +4908,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_DELETE" => Object {
-              "code": "({ query, path, header, body, model, tools }: { query: never, path: {orderId: number}, header: never, body: undefined, model: Storeorder{orderId}2, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, model, tools }: { query: never, path: {orderId: number}, header: never, body: undefined, model: Model2, response: ResponseBuilderBuilder<{
       400: {
           headers: {};
           content: {
@@ -4904,22 +4952,24 @@ Map {
             },
           },
           "imports": Map {
-            "Storeorder{orderId}" => Object {
+            "Model" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "Storeorder{orderId}",
+              "name": "Model",
               "script": Script {
                 "cache": Map {
-                  "default" => "Storeorder{orderId}",
+                  "default" => "Model",
                 },
                 "exports": Map {
-                  "Storeorder{orderId}" => Object {
-                    "code": "class Storeorder{orderId} {}",
+                  "Model" => Object {
+                    "code": Object {
+                      "raw": "export { default } from \\"../$model.js\\"",
+                    },
                     "done": true,
                     "id": "ModelCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get",
                     "isDefault": true,
                     "isType": true,
-                    "name": "Storeorder{orderId}",
+                    "name": "Model",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -5004,22 +5054,24 @@ Map {
                 "typeCache": Map {},
               },
             },
-            "Storeorder{orderId}2" => Object {
+            "Model2" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "Storeorder{orderId}",
+              "name": "Model",
               "script": Script {
                 "cache": Map {
-                  "default" => "Storeorder{orderId}",
+                  "default" => "Model",
                 },
                 "exports": Map {
-                  "Storeorder{orderId}" => Object {
-                    "code": "class Storeorder{orderId} {}",
+                  "Model" => Object {
+                    "code": Object {
+                      "raw": "export { default } from \\"../$model.js\\"",
+                    },
                     "done": true,
                     "id": "ModelCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get",
                     "isDefault": true,
                     "isType": true,
-                    "name": "Storeorder{orderId}",
+                    "name": "Model",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -5055,14 +5107,14 @@ Map {
     "cache": Map {
       "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get@[object Object]:true" => "HTTP_GET",
       "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete@[object Object]:true" => "HTTP_DELETE",
-      "ModelCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get@paths/store/order/$model.ts:true:true" => "Storeorder{orderId}",
+      "ModelCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get@paths/store/order/$model.ts:true:true" => "Model",
       "SchemaTypeCoder@undefined@components/Order.ts:true:false" => "Order",
       "tools@internal/tools.ts:true:false" => "Tools",
-      "ModelCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete@paths/store/order/$model.ts:true:true" => "Storeorder{orderId}2",
+      "ModelCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete@paths/store/order/$model.ts:true:true" => "Model2",
     },
     "exports": Map {
       "HTTP_GET" => Object {
-        "code": "({ query, path, header, body, model, tools }: { query: never, path: {orderId: number}, header: never, body: undefined, model: Storeorder{orderId}, response: ResponseBuilderBuilder<{
+        "code": "({ query, path, header, body, model, tools }: { query: never, path: {orderId: number}, header: never, body: undefined, model: Model, response: ResponseBuilderBuilder<{
       200: {
           headers: {};
           content: {
@@ -5115,7 +5167,7 @@ Map {
         "typeDeclaration": "",
       },
       "HTTP_DELETE" => Object {
-        "code": "({ query, path, header, body, model, tools }: { query: never, path: {orderId: number}, header: never, body: undefined, model: Storeorder{orderId}2, response: ResponseBuilderBuilder<{
+        "code": "({ query, path, header, body, model, tools }: { query: never, path: {orderId: number}, header: never, body: undefined, model: Model2, response: ResponseBuilderBuilder<{
       400: {
           headers: {};
           content: {
@@ -5159,22 +5211,24 @@ Map {
       },
     },
     "imports": Map {
-      "Storeorder{orderId}" => Object {
+      "Model" => Object {
         "isDefault": true,
         "isType": true,
-        "name": "Storeorder{orderId}",
+        "name": "Model",
         "script": Script {
           "cache": Map {
-            "default" => "Storeorder{orderId}",
+            "default" => "Model",
           },
           "exports": Map {
-            "Storeorder{orderId}" => Object {
-              "code": "class Storeorder{orderId} {}",
+            "Model" => Object {
+              "code": Object {
+                "raw": "export { default } from \\"../$model.js\\"",
+              },
               "done": true,
               "id": "ModelCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get",
               "isDefault": true,
               "isType": true,
-              "name": "Storeorder{orderId}",
+              "name": "Model",
               "promise": Promise {},
               "typeDeclaration": "",
             },
@@ -5259,22 +5313,24 @@ Map {
           "typeCache": Map {},
         },
       },
-      "Storeorder{orderId}2" => Object {
+      "Model2" => Object {
         "isDefault": true,
         "isType": true,
-        "name": "Storeorder{orderId}",
+        "name": "Model",
         "script": Script {
           "cache": Map {
-            "default" => "Storeorder{orderId}",
+            "default" => "Model",
           },
           "exports": Map {
-            "Storeorder{orderId}" => Object {
-              "code": "class Storeorder{orderId} {}",
+            "Model" => Object {
+              "code": Object {
+                "raw": "export { default } from \\"../$model.js\\"",
+              },
               "done": true,
               "id": "ModelCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get",
               "isDefault": true,
               "isType": true,
-              "name": "Storeorder{orderId}",
+              "name": "Model",
               "promise": Promise {},
               "typeDeclaration": "",
             },
@@ -5325,33 +5381,33 @@ Map {
         "script": Script {
           "cache": Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1user/post@[object Object]:true" => "HTTP_POST",
-            "ModelCoder@petstore.yaml#/paths/~1user/post@paths//$model.ts:true:true" => "User",
-            "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User2",
+            "ModelCoder@petstore.yaml#/paths/~1user/post@paths//$model.ts:true:true" => "Model",
+            "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
             "tools@internal/tools.ts:true:false" => "Tools",
           },
           "exports": Map {
             "HTTP_POST" => Object {
-              "code": "({ query, path, header, body, model, tools }: { query: undefined, path: undefined, header: undefined, body: User2, model: User, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, model, tools }: { query: undefined, path: undefined, header: undefined, body: User, model: Model, response: ResponseBuilderBuilder<{
       [statusCode in HttpStatusCode]: {
           headers: {};
           content: {
       \\"application/json\\": { 
-              schema:  User2
+              schema:  User
             },
 \\"application/xml\\": { 
-              schema:  User2
+              schema:  User
             }
     };
         }
       }>, tools: Tools}) => {  
             status: number | undefined, 
           contentType?: \\"application/json\\",
-          body?: User2
+          body?: User
           
         } | {  
             status: number | undefined, 
           contentType?: \\"application/xml\\",
-          body?: User2
+          body?: User
           
         } | { status: 415, contentType: \\"text/plain\\", body: string }
     | void",
@@ -5375,22 +5431,22 @@ Map {
             },
           },
           "imports": Map {
-            "User" => Object {
+            "Model" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "Pet",
+              "name": "Model",
               "script": Script {
                 "cache": Map {
-                  "default" => "Pet",
+                  "default" => "Model",
                 },
                 "exports": Map {
-                  "Pet" => Object {
-                    "code": "class Pet {}",
+                  "Model" => Object {
+                    "code": "{}",
                     "done": true,
                     "id": "ModelCoder@petstore.yaml#/paths/~1pet/post",
                     "isDefault": true,
                     "isType": true,
-                    "name": "Pet",
+                    "name": "Model",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -5405,7 +5461,7 @@ Map {
                 "typeCache": Map {},
               },
             },
-            "User2" => Object {
+            "User" => Object {
               "isDefault": false,
               "isType": true,
               "name": "User",
@@ -5495,33 +5551,33 @@ Map {
   "path-types/user.types.ts" => Script {
     "cache": Map {
       "OperationTypeCoder@petstore.yaml#/paths/~1user/post@[object Object]:true" => "HTTP_POST",
-      "ModelCoder@petstore.yaml#/paths/~1user/post@paths//$model.ts:true:true" => "User",
-      "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User2",
+      "ModelCoder@petstore.yaml#/paths/~1user/post@paths//$model.ts:true:true" => "Model",
+      "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
       "tools@internal/tools.ts:true:false" => "Tools",
     },
     "exports": Map {
       "HTTP_POST" => Object {
-        "code": "({ query, path, header, body, model, tools }: { query: undefined, path: undefined, header: undefined, body: User2, model: User, response: ResponseBuilderBuilder<{
+        "code": "({ query, path, header, body, model, tools }: { query: undefined, path: undefined, header: undefined, body: User, model: Model, response: ResponseBuilderBuilder<{
       [statusCode in HttpStatusCode]: {
           headers: {};
           content: {
       \\"application/json\\": { 
-              schema:  User2
+              schema:  User
             },
 \\"application/xml\\": { 
-              schema:  User2
+              schema:  User
             }
     };
         }
       }>, tools: Tools}) => {  
             status: number | undefined, 
           contentType?: \\"application/json\\",
-          body?: User2
+          body?: User
           
         } | {  
             status: number | undefined, 
           contentType?: \\"application/xml\\",
-          body?: User2
+          body?: User
           
         } | { status: 415, contentType: \\"text/plain\\", body: string }
     | void",
@@ -5545,22 +5601,22 @@ Map {
       },
     },
     "imports": Map {
-      "User" => Object {
+      "Model" => Object {
         "isDefault": true,
         "isType": true,
-        "name": "Pet",
+        "name": "Model",
         "script": Script {
           "cache": Map {
-            "default" => "Pet",
+            "default" => "Model",
           },
           "exports": Map {
-            "Pet" => Object {
-              "code": "class Pet {}",
+            "Model" => Object {
+              "code": "{}",
               "done": true,
               "id": "ModelCoder@petstore.yaml#/paths/~1pet/post",
               "isDefault": true,
               "isType": true,
-              "name": "Pet",
+              "name": "Model",
               "promise": Promise {},
               "typeDeclaration": "",
             },
@@ -5575,7 +5631,7 @@ Map {
           "typeCache": Map {},
         },
       },
-      "User2" => Object {
+      "User" => Object {
         "isDefault": false,
         "isType": true,
         "name": "User",
@@ -5681,13 +5737,13 @@ Map {
         "script": Script {
           "cache": Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1user~1createWithList/post@[object Object]:true" => "HTTP_POST",
-            "ModelCoder@petstore.yaml#/paths/~1user~1createWithList/post@paths/user/$model.ts:true:true" => "UsercreateWithList",
+            "ModelCoder@petstore.yaml#/paths/~1user~1createWithList/post@paths/user/$model.ts:true:true" => "Model",
             "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
             "tools@internal/tools.ts:true:false" => "Tools",
           },
           "exports": Map {
             "HTTP_POST" => Object {
-              "code": "({ query, path, header, body, model, tools }: { query: undefined, path: undefined, header: undefined, body: Array<User>, model: UsercreateWithList, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, model, tools }: { query: undefined, path: undefined, header: undefined, body: Array<User>, model: Model, response: ResponseBuilderBuilder<{
       200: {
           headers: {};
           content: {
@@ -5741,22 +5797,24 @@ Map {
             },
           },
           "imports": Map {
-            "UsercreateWithList" => Object {
+            "Model" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "UsercreateWithList",
+              "name": "Model",
               "script": Script {
                 "cache": Map {
-                  "default" => "UsercreateWithList",
+                  "default" => "Model",
                 },
                 "exports": Map {
-                  "UsercreateWithList" => Object {
-                    "code": "class UsercreateWithList {}",
+                  "Model" => Object {
+                    "code": Object {
+                      "raw": "export { default } from \\"../$model.js\\"",
+                    },
                     "done": true,
                     "id": "ModelCoder@petstore.yaml#/paths/~1user~1createWithList/post",
                     "isDefault": true,
                     "isType": true,
-                    "name": "UsercreateWithList",
+                    "name": "Model",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -5861,13 +5919,13 @@ Map {
   "path-types/user/createWithList.types.ts" => Script {
     "cache": Map {
       "OperationTypeCoder@petstore.yaml#/paths/~1user~1createWithList/post@[object Object]:true" => "HTTP_POST",
-      "ModelCoder@petstore.yaml#/paths/~1user~1createWithList/post@paths/user/$model.ts:true:true" => "UsercreateWithList",
+      "ModelCoder@petstore.yaml#/paths/~1user~1createWithList/post@paths/user/$model.ts:true:true" => "Model",
       "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
       "tools@internal/tools.ts:true:false" => "Tools",
     },
     "exports": Map {
       "HTTP_POST" => Object {
-        "code": "({ query, path, header, body, model, tools }: { query: undefined, path: undefined, header: undefined, body: Array<User>, model: UsercreateWithList, response: ResponseBuilderBuilder<{
+        "code": "({ query, path, header, body, model, tools }: { query: undefined, path: undefined, header: undefined, body: Array<User>, model: Model, response: ResponseBuilderBuilder<{
       200: {
           headers: {};
           content: {
@@ -5921,22 +5979,24 @@ Map {
       },
     },
     "imports": Map {
-      "UsercreateWithList" => Object {
+      "Model" => Object {
         "isDefault": true,
         "isType": true,
-        "name": "UsercreateWithList",
+        "name": "Model",
         "script": Script {
           "cache": Map {
-            "default" => "UsercreateWithList",
+            "default" => "Model",
           },
           "exports": Map {
-            "UsercreateWithList" => Object {
-              "code": "class UsercreateWithList {}",
+            "Model" => Object {
+              "code": Object {
+                "raw": "export { default } from \\"../$model.js\\"",
+              },
               "done": true,
               "id": "ModelCoder@petstore.yaml#/paths/~1user~1createWithList/post",
               "isDefault": true,
               "isType": true,
-              "name": "UsercreateWithList",
+              "name": "Model",
               "promise": Promise {},
               "typeDeclaration": "",
             },
@@ -6057,12 +6117,12 @@ Map {
         "script": Script {
           "cache": Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1user~1login/get@[object Object]:true" => "HTTP_GET",
-            "ModelCoder@petstore.yaml#/paths/~1user~1login/get@paths/user/$model.ts:true:true" => "Userlogin",
+            "ModelCoder@petstore.yaml#/paths/~1user~1login/get@paths/user/$model.ts:true:true" => "Model",
             "tools@internal/tools.ts:true:false" => "Tools",
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, model, tools }: { query: {username?: string, password?: string}, path: never, header: never, body: undefined, model: Userlogin, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, model, tools }: { query: {username?: string, password?: string}, path: never, header: never, body: undefined, model: Model, response: ResponseBuilderBuilder<{
       200: {
           headers: {\\"X-Rate-Limit\\": { schema: number};\\"X-Expires-After\\": { schema: string}};
           content: {
@@ -6116,22 +6176,24 @@ Map {
             },
           },
           "imports": Map {
-            "Userlogin" => Object {
+            "Model" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "UsercreateWithList",
+              "name": "Model",
               "script": Script {
                 "cache": Map {
-                  "default" => "UsercreateWithList",
+                  "default" => "Model",
                 },
                 "exports": Map {
-                  "UsercreateWithList" => Object {
-                    "code": "class UsercreateWithList {}",
+                  "Model" => Object {
+                    "code": Object {
+                      "raw": "export { default } from \\"../$model.js\\"",
+                    },
                     "done": true,
                     "id": "ModelCoder@petstore.yaml#/paths/~1user~1createWithList/post",
                     "isDefault": true,
                     "isType": true,
-                    "name": "UsercreateWithList",
+                    "name": "Model",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -6206,12 +6268,12 @@ Map {
   "path-types/user/login.types.ts" => Script {
     "cache": Map {
       "OperationTypeCoder@petstore.yaml#/paths/~1user~1login/get@[object Object]:true" => "HTTP_GET",
-      "ModelCoder@petstore.yaml#/paths/~1user~1login/get@paths/user/$model.ts:true:true" => "Userlogin",
+      "ModelCoder@petstore.yaml#/paths/~1user~1login/get@paths/user/$model.ts:true:true" => "Model",
       "tools@internal/tools.ts:true:false" => "Tools",
     },
     "exports": Map {
       "HTTP_GET" => Object {
-        "code": "({ query, path, header, body, model, tools }: { query: {username?: string, password?: string}, path: never, header: never, body: undefined, model: Userlogin, response: ResponseBuilderBuilder<{
+        "code": "({ query, path, header, body, model, tools }: { query: {username?: string, password?: string}, path: never, header: never, body: undefined, model: Model, response: ResponseBuilderBuilder<{
       200: {
           headers: {\\"X-Rate-Limit\\": { schema: number};\\"X-Expires-After\\": { schema: string}};
           content: {
@@ -6265,22 +6327,24 @@ Map {
       },
     },
     "imports": Map {
-      "Userlogin" => Object {
+      "Model" => Object {
         "isDefault": true,
         "isType": true,
-        "name": "UsercreateWithList",
+        "name": "Model",
         "script": Script {
           "cache": Map {
-            "default" => "UsercreateWithList",
+            "default" => "Model",
           },
           "exports": Map {
-            "UsercreateWithList" => Object {
-              "code": "class UsercreateWithList {}",
+            "Model" => Object {
+              "code": Object {
+                "raw": "export { default } from \\"../$model.js\\"",
+              },
               "done": true,
               "id": "ModelCoder@petstore.yaml#/paths/~1user~1createWithList/post",
               "isDefault": true,
               "isType": true,
-              "name": "UsercreateWithList",
+              "name": "Model",
               "promise": Promise {},
               "typeDeclaration": "",
             },
@@ -6369,12 +6433,12 @@ Map {
         "script": Script {
           "cache": Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1user~1logout/get@[object Object]:true" => "HTTP_GET",
-            "ModelCoder@petstore.yaml#/paths/~1user~1logout/get@paths/user/$model.ts:true:true" => "Userlogout",
+            "ModelCoder@petstore.yaml#/paths/~1user~1logout/get@paths/user/$model.ts:true:true" => "Model",
             "tools@internal/tools.ts:true:false" => "Tools",
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, model, tools }: { query: never, path: never, header: never, body: undefined, model: Userlogout, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, model, tools }: { query: never, path: never, header: never, body: undefined, model: Model, response: ResponseBuilderBuilder<{
       [statusCode in HttpStatusCode]: {
           headers: {};
           content: {
@@ -6408,22 +6472,24 @@ Map {
             },
           },
           "imports": Map {
-            "Userlogout" => Object {
+            "Model" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "UsercreateWithList",
+              "name": "Model",
               "script": Script {
                 "cache": Map {
-                  "default" => "UsercreateWithList",
+                  "default" => "Model",
                 },
                 "exports": Map {
-                  "UsercreateWithList" => Object {
-                    "code": "class UsercreateWithList {}",
+                  "Model" => Object {
+                    "code": Object {
+                      "raw": "export { default } from \\"../$model.js\\"",
+                    },
                     "done": true,
                     "id": "ModelCoder@petstore.yaml#/paths/~1user~1createWithList/post",
                     "isDefault": true,
                     "isType": true,
-                    "name": "UsercreateWithList",
+                    "name": "Model",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -6498,12 +6564,12 @@ Map {
   "path-types/user/logout.types.ts" => Script {
     "cache": Map {
       "OperationTypeCoder@petstore.yaml#/paths/~1user~1logout/get@[object Object]:true" => "HTTP_GET",
-      "ModelCoder@petstore.yaml#/paths/~1user~1logout/get@paths/user/$model.ts:true:true" => "Userlogout",
+      "ModelCoder@petstore.yaml#/paths/~1user~1logout/get@paths/user/$model.ts:true:true" => "Model",
       "tools@internal/tools.ts:true:false" => "Tools",
     },
     "exports": Map {
       "HTTP_GET" => Object {
-        "code": "({ query, path, header, body, model, tools }: { query: never, path: never, header: never, body: undefined, model: Userlogout, response: ResponseBuilderBuilder<{
+        "code": "({ query, path, header, body, model, tools }: { query: never, path: never, header: never, body: undefined, model: Model, response: ResponseBuilderBuilder<{
       [statusCode in HttpStatusCode]: {
           headers: {};
           content: {
@@ -6537,22 +6603,24 @@ Map {
       },
     },
     "imports": Map {
-      "Userlogout" => Object {
+      "Model" => Object {
         "isDefault": true,
         "isType": true,
-        "name": "UsercreateWithList",
+        "name": "Model",
         "script": Script {
           "cache": Map {
-            "default" => "UsercreateWithList",
+            "default" => "Model",
           },
           "exports": Map {
-            "UsercreateWithList" => Object {
-              "code": "class UsercreateWithList {}",
+            "Model" => Object {
+              "code": Object {
+                "raw": "export { default } from \\"../$model.js\\"",
+              },
               "done": true,
               "id": "ModelCoder@petstore.yaml#/paths/~1user~1createWithList/post",
               "isDefault": true,
               "isType": true,
-              "name": "UsercreateWithList",
+              "name": "Model",
               "promise": Promise {},
               "typeDeclaration": "",
             },
@@ -6669,15 +6737,15 @@ Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/get@[object Object]:true" => "HTTP_GET",
             "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/put@[object Object]:true" => "HTTP_PUT",
             "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/delete@[object Object]:true" => "HTTP_DELETE",
-            "ModelCoder@petstore.yaml#/paths/~1user~1{username}/get@paths/user/$model.ts:true:true" => "User{username}",
+            "ModelCoder@petstore.yaml#/paths/~1user~1{username}/get@paths/user/$model.ts:true:true" => "Model",
             "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
             "tools@internal/tools.ts:true:false" => "Tools",
-            "ModelCoder@petstore.yaml#/paths/~1user~1{username}/put@paths/user/$model.ts:true:true" => "User{username}2",
-            "ModelCoder@petstore.yaml#/paths/~1user~1{username}/delete@paths/user/$model.ts:true:true" => "User{username}3",
+            "ModelCoder@petstore.yaml#/paths/~1user~1{username}/put@paths/user/$model.ts:true:true" => "Model2",
+            "ModelCoder@petstore.yaml#/paths/~1user~1{username}/delete@paths/user/$model.ts:true:true" => "Model3",
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, model, tools }: { query: never, path: {username: string}, header: never, body: undefined, model: User{username}, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, model, tools }: { query: never, path: {username: string}, header: never, body: undefined, model: Model, response: ResponseBuilderBuilder<{
       200: {
           headers: {};
           content: {
@@ -6730,7 +6798,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_PUT" => Object {
-              "code": "({ query, path, header, body, model, tools }: { query: never, path: {username: string}, header: never, body: User, model: User{username}2, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, model, tools }: { query: never, path: {username: string}, header: never, body: User, model: Model2, response: ResponseBuilderBuilder<{
       [statusCode in HttpStatusCode]: {
           headers: {};
           content: {
@@ -6753,7 +6821,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_DELETE" => Object {
-              "code": "({ query, path, header, body, model, tools }: { query: never, path: {username: string}, header: never, body: undefined, model: User{username}3, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, model, tools }: { query: never, path: {username: string}, header: never, body: undefined, model: Model3, response: ResponseBuilderBuilder<{
       400: {
           headers: {};
           content: {
@@ -6797,22 +6865,24 @@ Map {
             },
           },
           "imports": Map {
-            "User{username}" => Object {
+            "Model" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "UsercreateWithList",
+              "name": "Model",
               "script": Script {
                 "cache": Map {
-                  "default" => "UsercreateWithList",
+                  "default" => "Model",
                 },
                 "exports": Map {
-                  "UsercreateWithList" => Object {
-                    "code": "class UsercreateWithList {}",
+                  "Model" => Object {
+                    "code": Object {
+                      "raw": "export { default } from \\"../$model.js\\"",
+                    },
                     "done": true,
                     "id": "ModelCoder@petstore.yaml#/paths/~1user~1createWithList/post",
                     "isDefault": true,
                     "isType": true,
-                    "name": "UsercreateWithList",
+                    "name": "Model",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -6897,22 +6967,24 @@ Map {
                 "typeCache": Map {},
               },
             },
-            "User{username}2" => Object {
+            "Model2" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "UsercreateWithList",
+              "name": "Model",
               "script": Script {
                 "cache": Map {
-                  "default" => "UsercreateWithList",
+                  "default" => "Model",
                 },
                 "exports": Map {
-                  "UsercreateWithList" => Object {
-                    "code": "class UsercreateWithList {}",
+                  "Model" => Object {
+                    "code": Object {
+                      "raw": "export { default } from \\"../$model.js\\"",
+                    },
                     "done": true,
                     "id": "ModelCoder@petstore.yaml#/paths/~1user~1createWithList/post",
                     "isDefault": true,
                     "isType": true,
-                    "name": "UsercreateWithList",
+                    "name": "Model",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -6927,22 +6999,24 @@ Map {
                 "typeCache": Map {},
               },
             },
-            "User{username}3" => Object {
+            "Model3" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "UsercreateWithList",
+              "name": "Model",
               "script": Script {
                 "cache": Map {
-                  "default" => "UsercreateWithList",
+                  "default" => "Model",
                 },
                 "exports": Map {
-                  "UsercreateWithList" => Object {
-                    "code": "class UsercreateWithList {}",
+                  "Model" => Object {
+                    "code": Object {
+                      "raw": "export { default } from \\"../$model.js\\"",
+                    },
                     "done": true,
                     "id": "ModelCoder@petstore.yaml#/paths/~1user~1createWithList/post",
                     "isDefault": true,
                     "isType": true,
-                    "name": "UsercreateWithList",
+                    "name": "Model",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -6975,15 +7049,15 @@ Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/get@[object Object]:true" => "HTTP_GET",
             "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/put@[object Object]:true" => "HTTP_PUT",
             "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/delete@[object Object]:true" => "HTTP_DELETE",
-            "ModelCoder@petstore.yaml#/paths/~1user~1{username}/get@paths/user/$model.ts:true:true" => "User{username}",
+            "ModelCoder@petstore.yaml#/paths/~1user~1{username}/get@paths/user/$model.ts:true:true" => "Model",
             "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
             "tools@internal/tools.ts:true:false" => "Tools",
-            "ModelCoder@petstore.yaml#/paths/~1user~1{username}/put@paths/user/$model.ts:true:true" => "User{username}2",
-            "ModelCoder@petstore.yaml#/paths/~1user~1{username}/delete@paths/user/$model.ts:true:true" => "User{username}3",
+            "ModelCoder@petstore.yaml#/paths/~1user~1{username}/put@paths/user/$model.ts:true:true" => "Model2",
+            "ModelCoder@petstore.yaml#/paths/~1user~1{username}/delete@paths/user/$model.ts:true:true" => "Model3",
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, model, tools }: { query: never, path: {username: string}, header: never, body: undefined, model: User{username}, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, model, tools }: { query: never, path: {username: string}, header: never, body: undefined, model: Model, response: ResponseBuilderBuilder<{
       200: {
           headers: {};
           content: {
@@ -7036,7 +7110,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_PUT" => Object {
-              "code": "({ query, path, header, body, model, tools }: { query: never, path: {username: string}, header: never, body: User, model: User{username}2, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, model, tools }: { query: never, path: {username: string}, header: never, body: User, model: Model2, response: ResponseBuilderBuilder<{
       [statusCode in HttpStatusCode]: {
           headers: {};
           content: {
@@ -7059,7 +7133,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_DELETE" => Object {
-              "code": "({ query, path, header, body, model, tools }: { query: never, path: {username: string}, header: never, body: undefined, model: User{username}3, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, model, tools }: { query: never, path: {username: string}, header: never, body: undefined, model: Model3, response: ResponseBuilderBuilder<{
       400: {
           headers: {};
           content: {
@@ -7103,22 +7177,24 @@ Map {
             },
           },
           "imports": Map {
-            "User{username}" => Object {
+            "Model" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "UsercreateWithList",
+              "name": "Model",
               "script": Script {
                 "cache": Map {
-                  "default" => "UsercreateWithList",
+                  "default" => "Model",
                 },
                 "exports": Map {
-                  "UsercreateWithList" => Object {
-                    "code": "class UsercreateWithList {}",
+                  "Model" => Object {
+                    "code": Object {
+                      "raw": "export { default } from \\"../$model.js\\"",
+                    },
                     "done": true,
                     "id": "ModelCoder@petstore.yaml#/paths/~1user~1createWithList/post",
                     "isDefault": true,
                     "isType": true,
-                    "name": "UsercreateWithList",
+                    "name": "Model",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -7203,22 +7279,24 @@ Map {
                 "typeCache": Map {},
               },
             },
-            "User{username}2" => Object {
+            "Model2" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "UsercreateWithList",
+              "name": "Model",
               "script": Script {
                 "cache": Map {
-                  "default" => "UsercreateWithList",
+                  "default" => "Model",
                 },
                 "exports": Map {
-                  "UsercreateWithList" => Object {
-                    "code": "class UsercreateWithList {}",
+                  "Model" => Object {
+                    "code": Object {
+                      "raw": "export { default } from \\"../$model.js\\"",
+                    },
                     "done": true,
                     "id": "ModelCoder@petstore.yaml#/paths/~1user~1createWithList/post",
                     "isDefault": true,
                     "isType": true,
-                    "name": "UsercreateWithList",
+                    "name": "Model",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -7233,22 +7311,24 @@ Map {
                 "typeCache": Map {},
               },
             },
-            "User{username}3" => Object {
+            "Model3" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "UsercreateWithList",
+              "name": "Model",
               "script": Script {
                 "cache": Map {
-                  "default" => "UsercreateWithList",
+                  "default" => "Model",
                 },
                 "exports": Map {
-                  "UsercreateWithList" => Object {
-                    "code": "class UsercreateWithList {}",
+                  "Model" => Object {
+                    "code": Object {
+                      "raw": "export { default } from \\"../$model.js\\"",
+                    },
                     "done": true,
                     "id": "ModelCoder@petstore.yaml#/paths/~1user~1createWithList/post",
                     "isDefault": true,
                     "isType": true,
-                    "name": "UsercreateWithList",
+                    "name": "Model",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -7281,15 +7361,15 @@ Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/get@[object Object]:true" => "HTTP_GET",
             "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/put@[object Object]:true" => "HTTP_PUT",
             "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/delete@[object Object]:true" => "HTTP_DELETE",
-            "ModelCoder@petstore.yaml#/paths/~1user~1{username}/get@paths/user/$model.ts:true:true" => "User{username}",
+            "ModelCoder@petstore.yaml#/paths/~1user~1{username}/get@paths/user/$model.ts:true:true" => "Model",
             "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
             "tools@internal/tools.ts:true:false" => "Tools",
-            "ModelCoder@petstore.yaml#/paths/~1user~1{username}/put@paths/user/$model.ts:true:true" => "User{username}2",
-            "ModelCoder@petstore.yaml#/paths/~1user~1{username}/delete@paths/user/$model.ts:true:true" => "User{username}3",
+            "ModelCoder@petstore.yaml#/paths/~1user~1{username}/put@paths/user/$model.ts:true:true" => "Model2",
+            "ModelCoder@petstore.yaml#/paths/~1user~1{username}/delete@paths/user/$model.ts:true:true" => "Model3",
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, model, tools }: { query: never, path: {username: string}, header: never, body: undefined, model: User{username}, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, model, tools }: { query: never, path: {username: string}, header: never, body: undefined, model: Model, response: ResponseBuilderBuilder<{
       200: {
           headers: {};
           content: {
@@ -7342,7 +7422,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_PUT" => Object {
-              "code": "({ query, path, header, body, model, tools }: { query: never, path: {username: string}, header: never, body: User, model: User{username}2, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, model, tools }: { query: never, path: {username: string}, header: never, body: User, model: Model2, response: ResponseBuilderBuilder<{
       [statusCode in HttpStatusCode]: {
           headers: {};
           content: {
@@ -7365,7 +7445,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_DELETE" => Object {
-              "code": "({ query, path, header, body, model, tools }: { query: never, path: {username: string}, header: never, body: undefined, model: User{username}3, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, model, tools }: { query: never, path: {username: string}, header: never, body: undefined, model: Model3, response: ResponseBuilderBuilder<{
       400: {
           headers: {};
           content: {
@@ -7409,22 +7489,24 @@ Map {
             },
           },
           "imports": Map {
-            "User{username}" => Object {
+            "Model" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "UsercreateWithList",
+              "name": "Model",
               "script": Script {
                 "cache": Map {
-                  "default" => "UsercreateWithList",
+                  "default" => "Model",
                 },
                 "exports": Map {
-                  "UsercreateWithList" => Object {
-                    "code": "class UsercreateWithList {}",
+                  "Model" => Object {
+                    "code": Object {
+                      "raw": "export { default } from \\"../$model.js\\"",
+                    },
                     "done": true,
                     "id": "ModelCoder@petstore.yaml#/paths/~1user~1createWithList/post",
                     "isDefault": true,
                     "isType": true,
-                    "name": "UsercreateWithList",
+                    "name": "Model",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -7509,22 +7591,24 @@ Map {
                 "typeCache": Map {},
               },
             },
-            "User{username}2" => Object {
+            "Model2" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "UsercreateWithList",
+              "name": "Model",
               "script": Script {
                 "cache": Map {
-                  "default" => "UsercreateWithList",
+                  "default" => "Model",
                 },
                 "exports": Map {
-                  "UsercreateWithList" => Object {
-                    "code": "class UsercreateWithList {}",
+                  "Model" => Object {
+                    "code": Object {
+                      "raw": "export { default } from \\"../$model.js\\"",
+                    },
                     "done": true,
                     "id": "ModelCoder@petstore.yaml#/paths/~1user~1createWithList/post",
                     "isDefault": true,
                     "isType": true,
-                    "name": "UsercreateWithList",
+                    "name": "Model",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -7539,22 +7623,24 @@ Map {
                 "typeCache": Map {},
               },
             },
-            "User{username}3" => Object {
+            "Model3" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "UsercreateWithList",
+              "name": "Model",
               "script": Script {
                 "cache": Map {
-                  "default" => "UsercreateWithList",
+                  "default" => "Model",
                 },
                 "exports": Map {
-                  "UsercreateWithList" => Object {
-                    "code": "class UsercreateWithList {}",
+                  "Model" => Object {
+                    "code": Object {
+                      "raw": "export { default } from \\"../$model.js\\"",
+                    },
                     "done": true,
                     "id": "ModelCoder@petstore.yaml#/paths/~1user~1createWithList/post",
                     "isDefault": true,
                     "isType": true,
-                    "name": "UsercreateWithList",
+                    "name": "Model",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -7591,15 +7677,15 @@ Map {
       "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/get@[object Object]:true" => "HTTP_GET",
       "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/put@[object Object]:true" => "HTTP_PUT",
       "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/delete@[object Object]:true" => "HTTP_DELETE",
-      "ModelCoder@petstore.yaml#/paths/~1user~1{username}/get@paths/user/$model.ts:true:true" => "User{username}",
+      "ModelCoder@petstore.yaml#/paths/~1user~1{username}/get@paths/user/$model.ts:true:true" => "Model",
       "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
       "tools@internal/tools.ts:true:false" => "Tools",
-      "ModelCoder@petstore.yaml#/paths/~1user~1{username}/put@paths/user/$model.ts:true:true" => "User{username}2",
-      "ModelCoder@petstore.yaml#/paths/~1user~1{username}/delete@paths/user/$model.ts:true:true" => "User{username}3",
+      "ModelCoder@petstore.yaml#/paths/~1user~1{username}/put@paths/user/$model.ts:true:true" => "Model2",
+      "ModelCoder@petstore.yaml#/paths/~1user~1{username}/delete@paths/user/$model.ts:true:true" => "Model3",
     },
     "exports": Map {
       "HTTP_GET" => Object {
-        "code": "({ query, path, header, body, model, tools }: { query: never, path: {username: string}, header: never, body: undefined, model: User{username}, response: ResponseBuilderBuilder<{
+        "code": "({ query, path, header, body, model, tools }: { query: never, path: {username: string}, header: never, body: undefined, model: Model, response: ResponseBuilderBuilder<{
       200: {
           headers: {};
           content: {
@@ -7652,7 +7738,7 @@ Map {
         "typeDeclaration": "",
       },
       "HTTP_PUT" => Object {
-        "code": "({ query, path, header, body, model, tools }: { query: never, path: {username: string}, header: never, body: User, model: User{username}2, response: ResponseBuilderBuilder<{
+        "code": "({ query, path, header, body, model, tools }: { query: never, path: {username: string}, header: never, body: User, model: Model2, response: ResponseBuilderBuilder<{
       [statusCode in HttpStatusCode]: {
           headers: {};
           content: {
@@ -7675,7 +7761,7 @@ Map {
         "typeDeclaration": "",
       },
       "HTTP_DELETE" => Object {
-        "code": "({ query, path, header, body, model, tools }: { query: never, path: {username: string}, header: never, body: undefined, model: User{username}3, response: ResponseBuilderBuilder<{
+        "code": "({ query, path, header, body, model, tools }: { query: never, path: {username: string}, header: never, body: undefined, model: Model3, response: ResponseBuilderBuilder<{
       400: {
           headers: {};
           content: {
@@ -7719,22 +7805,24 @@ Map {
       },
     },
     "imports": Map {
-      "User{username}" => Object {
+      "Model" => Object {
         "isDefault": true,
         "isType": true,
-        "name": "UsercreateWithList",
+        "name": "Model",
         "script": Script {
           "cache": Map {
-            "default" => "UsercreateWithList",
+            "default" => "Model",
           },
           "exports": Map {
-            "UsercreateWithList" => Object {
-              "code": "class UsercreateWithList {}",
+            "Model" => Object {
+              "code": Object {
+                "raw": "export { default } from \\"../$model.js\\"",
+              },
               "done": true,
               "id": "ModelCoder@petstore.yaml#/paths/~1user~1createWithList/post",
               "isDefault": true,
               "isType": true,
-              "name": "UsercreateWithList",
+              "name": "Model",
               "promise": Promise {},
               "typeDeclaration": "",
             },
@@ -7819,22 +7907,24 @@ Map {
           "typeCache": Map {},
         },
       },
-      "User{username}2" => Object {
+      "Model2" => Object {
         "isDefault": true,
         "isType": true,
-        "name": "UsercreateWithList",
+        "name": "Model",
         "script": Script {
           "cache": Map {
-            "default" => "UsercreateWithList",
+            "default" => "Model",
           },
           "exports": Map {
-            "UsercreateWithList" => Object {
-              "code": "class UsercreateWithList {}",
+            "Model" => Object {
+              "code": Object {
+                "raw": "export { default } from \\"../$model.js\\"",
+              },
               "done": true,
               "id": "ModelCoder@petstore.yaml#/paths/~1user~1createWithList/post",
               "isDefault": true,
               "isType": true,
-              "name": "UsercreateWithList",
+              "name": "Model",
               "promise": Promise {},
               "typeDeclaration": "",
             },
@@ -7849,22 +7939,24 @@ Map {
           "typeCache": Map {},
         },
       },
-      "User{username}3" => Object {
+      "Model3" => Object {
         "isDefault": true,
         "isType": true,
-        "name": "UsercreateWithList",
+        "name": "Model",
         "script": Script {
           "cache": Map {
-            "default" => "UsercreateWithList",
+            "default" => "Model",
           },
           "exports": Map {
-            "UsercreateWithList" => Object {
-              "code": "class UsercreateWithList {}",
+            "Model" => Object {
+              "code": Object {
+                "raw": "export { default } from \\"../$model.js\\"",
+              },
               "done": true,
               "id": "ModelCoder@petstore.yaml#/paths/~1user~1createWithList/post",
               "isDefault": true,
               "isType": true,
-              "name": "UsercreateWithList",
+              "name": "Model",
               "promise": Promise {},
               "typeDeclaration": "",
             },
@@ -7889,16 +7981,16 @@ Map {
   },
   "paths//$model.ts" => Script {
     "cache": Map {
-      "default" => "Pet",
+      "default" => "Model",
     },
     "exports": Map {
-      "Pet" => Object {
-        "code": "class Pet {}",
+      "Model" => Object {
+        "code": "{}",
         "done": true,
         "id": "ModelCoder@petstore.yaml#/paths/~1pet/post",
         "isDefault": true,
         "isType": true,
-        "name": "Pet",
+        "name": "Model",
         "promise": Promise {},
         "typeDeclaration": "",
       },
@@ -8037,16 +8129,18 @@ Map {
   },
   "paths/pet/$model.ts" => Script {
     "cache": Map {
-      "default" => "PetfindByStatus",
+      "default" => "Model",
     },
     "exports": Map {
-      "PetfindByStatus" => Object {
-        "code": "class PetfindByStatus {}",
+      "Model" => Object {
+        "code": Object {
+          "raw": "export { default } from \\"../$model.js\\"",
+        },
         "done": true,
         "id": "ModelCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
         "isDefault": true,
         "isType": true,
-        "name": "PetfindByStatus",
+        "name": "Model",
         "promise": Promise {},
         "typeDeclaration": "",
       },
@@ -8062,16 +8156,18 @@ Map {
   },
   "paths/pet/{petId}/$model.ts" => Script {
     "cache": Map {
-      "default" => "Pet{petId}uploadImage",
+      "default" => "Model",
     },
     "exports": Map {
-      "Pet{petId}uploadImage" => Object {
-        "code": "class Pet{petId}uploadImage {}",
+      "Model" => Object {
+        "code": Object {
+          "raw": "export { default } from \\"../$model.js\\"",
+        },
         "done": true,
         "id": "ModelCoder@petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post",
         "isDefault": true,
         "isType": true,
-        "name": "Pet{petId}uploadImage",
+        "name": "Model",
         "promise": Promise {},
         "typeDeclaration": "",
       },
@@ -8112,16 +8208,18 @@ Map {
   },
   "paths/store/$model.ts" => Script {
     "cache": Map {
-      "default" => "Storeinventory",
+      "default" => "Model",
     },
     "exports": Map {
-      "Storeinventory" => Object {
-        "code": "class Storeinventory {}",
+      "Model" => Object {
+        "code": Object {
+          "raw": "export { default } from \\"../$model.js\\"",
+        },
         "done": true,
         "id": "ModelCoder@petstore.yaml#/paths/~1store~1inventory/get",
         "isDefault": true,
         "isType": true,
-        "name": "Storeinventory",
+        "name": "Model",
         "promise": Promise {},
         "typeDeclaration": "",
       },
@@ -8162,16 +8260,18 @@ Map {
   },
   "paths/store/order/$model.ts" => Script {
     "cache": Map {
-      "default" => "Storeorder{orderId}",
+      "default" => "Model",
     },
     "exports": Map {
-      "Storeorder{orderId}" => Object {
-        "code": "class Storeorder{orderId} {}",
+      "Model" => Object {
+        "code": Object {
+          "raw": "export { default } from \\"../$model.js\\"",
+        },
         "done": true,
         "id": "ModelCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get",
         "isDefault": true,
         "isType": true,
-        "name": "Storeorder{orderId}",
+        "name": "Model",
         "promise": Promise {},
         "typeDeclaration": "",
       },
@@ -8212,16 +8312,18 @@ Map {
   },
   "paths/user/$model.ts" => Script {
     "cache": Map {
-      "default" => "UsercreateWithList",
+      "default" => "Model",
     },
     "exports": Map {
-      "UsercreateWithList" => Object {
-        "code": "class UsercreateWithList {}",
+      "Model" => Object {
+        "code": Object {
+          "raw": "export { default } from \\"../$model.js\\"",
+        },
         "done": true,
         "id": "ModelCoder@petstore.yaml#/paths/~1user~1createWithList/post",
         "isDefault": true,
         "isType": true,
-        "name": "UsercreateWithList",
+        "name": "Model",
         "promise": Promise {},
         "typeDeclaration": "",
       },

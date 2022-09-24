@@ -162,6 +162,10 @@ export class Script {
     return Array.from(
       this.exports.values(),
       ({ name, isType, isDefault, code, typeDeclaration }) => {
+        if (code.raw) {
+          return code.raw;
+        }
+
         if (isDefault) {
           return `export default ${code};`;
         }

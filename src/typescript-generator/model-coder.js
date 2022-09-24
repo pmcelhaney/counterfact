@@ -13,10 +13,10 @@ export class ModelCoder extends Coder {
 
   write() {
     if (this.isRoot()) {
-      return "class Model {}";
+      return "{}";
     }
 
-    return "class Model {} // should come from parent";
+    return { raw: 'export { default } from "../$model.js"' };
   }
 
   modulePath() {

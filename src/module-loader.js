@@ -118,8 +118,6 @@ export class ModuleLoader extends EventTarget {
   }
 
   addModel(directory, endpoint) {
-    const Model = endpoint.default;
-
-    this.modelRegistry.add(`/${directory}`, new Model());
+    this.modelRegistry.add(`/${directory}`, endpoint.default);
   }
 }
