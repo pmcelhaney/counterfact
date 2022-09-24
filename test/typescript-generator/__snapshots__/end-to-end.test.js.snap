@@ -4,10 +4,10 @@ exports[`end-to-end test generates the same code for pet store that it did on th
 Map {
   "paths/pet.ts" => Script {
     "cache": Map {
-      "OperationCoder@petstore.yaml#/paths/~1pet/post@[object Object]:false" => "POST",
-      "OperationTypeCoder@petstore.yaml#/paths/~1pet/post@path-types/pet.types.ts:true" => "HTTP_POST",
-      "OperationCoder@petstore.yaml#/paths/~1pet/put@[object Object]:false" => "PUT",
-      "OperationTypeCoder@petstore.yaml#/paths/~1pet/put@path-types/pet.types.ts:true" => "HTTP_PUT",
+      "OperationCoder@petstore.yaml#/paths/~1pet/post@[object Object]:false:false" => "POST",
+      "OperationTypeCoder@petstore.yaml#/paths/~1pet/post@path-types/pet.types.ts:true:false" => "HTTP_POST",
+      "OperationCoder@petstore.yaml#/paths/~1pet/put@[object Object]:false:false" => "PUT",
+      "OperationTypeCoder@petstore.yaml#/paths/~1pet/put@path-types/pet.types.ts:true:false" => "HTTP_PUT",
     },
     "exports": Map {
       "POST" => Object {
@@ -16,6 +16,7 @@ Map {
     }",
         "done": true,
         "id": "OperationCoder@petstore.yaml#/paths/~1pet/post",
+        "isDefault": false,
         "isType": false,
         "name": "POST",
         "promise": Promise {},
@@ -27,6 +28,7 @@ Map {
     }",
         "done": true,
         "id": "OperationCoder@petstore.yaml#/paths/~1pet/put",
+        "isDefault": false,
         "isType": false,
         "name": "PUT",
         "promise": Promise {},
@@ -40,10 +42,10 @@ Map {
         "name": "HTTP_POST",
         "script": Script {
           "cache": Map {
-            "OperationTypeCoder@petstore.yaml#/paths/~1pet/post@[object Object]:true" => "HTTP_POST",
-            "OperationTypeCoder@petstore.yaml#/paths/~1pet/put@[object Object]:true" => "HTTP_PUT",
-            "SchemaTypeCoder@undefined@components/Pet.ts:true" => "Pet",
-            "tools@internal/tools.ts:true" => "Tools",
+            "OperationTypeCoder@petstore.yaml#/paths/~1pet/post@[object Object]:true:false" => "HTTP_POST",
+            "OperationTypeCoder@petstore.yaml#/paths/~1pet/put@[object Object]:true:false" => "HTTP_PUT",
+            "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
+            "tools@internal/tools.ts:true:false" => "Tools",
           },
           "exports": Map {
             "HTTP_POST" => Object {
@@ -83,6 +85,7 @@ Map {
     | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet/post",
+              "isDefault": false,
               "isType": true,
               "name": "HTTP_POST",
               "promise": Promise {},
@@ -145,6 +148,7 @@ Map {
     | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet/put",
+              "isDefault": false,
               "isType": true,
               "name": "HTTP_PUT",
               "promise": Promise {},
@@ -171,15 +175,16 @@ Map {
               "name": "Pet",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined@[object Object]:true" => "Pet",
-                  "SchemaTypeCoder@undefined@components/Category.ts:true" => "Category",
-                  "SchemaTypeCoder@undefined@components/Tag.ts:true" => "Tag",
+                  "SchemaTypeCoder@undefined@[object Object]:true:false" => "Pet",
+                  "SchemaTypeCoder@undefined@components/Category.ts:true:false" => "Category",
+                  "SchemaTypeCoder@undefined@components/Tag.ts:true:false" => "Tag",
                 },
                 "exports": Map {
                   "Pet" => Object {
                     "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
+                    "isDefault": false,
                     "isType": true,
                     "name": "Pet",
                     "promise": Promise {},
@@ -193,13 +198,14 @@ Map {
                     "name": "Category",
                     "script": Script {
                       "cache": Map {
-                        "SchemaTypeCoder@undefined@[object Object]:true" => "Category",
+                        "SchemaTypeCoder@undefined@[object Object]:true:false" => "Category",
                       },
                       "exports": Map {
                         "Category" => Object {
                           "code": "{id?: number,name?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
+                          "isDefault": false,
                           "isType": true,
                           "name": "Category",
                           "promise": Promise {},
@@ -221,13 +227,14 @@ Map {
                     "name": "Tag",
                     "script": Script {
                       "cache": Map {
-                        "SchemaTypeCoder@undefined@[object Object]:true" => "Tag",
+                        "SchemaTypeCoder@undefined@[object Object]:true:false" => "Tag",
                       },
                       "exports": Map {
                         "Tag" => Object {
                           "code": "{id?: number,name?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
+                          "isDefault": false,
                           "isType": true,
                           "name": "Tag",
                           "promise": Promise {},
@@ -258,7 +265,7 @@ Map {
               "name": "Tools",
               "script": Script {
                 "cache": Map {
-                  "tools@[object Object]:true" => "Tools",
+                  "tools@[object Object]:true:false" => "Tools",
                 },
                 "exports": Map {
                   "Tools" => Object {
@@ -270,6 +277,7 @@ Map {
     }",
                     "done": true,
                     "id": "tools",
+                    "isDefault": false,
                     "isType": true,
                     "name": "Tools",
                     "promise": Promise {},
@@ -305,10 +313,10 @@ Map {
         "name": "HTTP_PUT",
         "script": Script {
           "cache": Map {
-            "OperationTypeCoder@petstore.yaml#/paths/~1pet/post@[object Object]:true" => "HTTP_POST",
-            "OperationTypeCoder@petstore.yaml#/paths/~1pet/put@[object Object]:true" => "HTTP_PUT",
-            "SchemaTypeCoder@undefined@components/Pet.ts:true" => "Pet",
-            "tools@internal/tools.ts:true" => "Tools",
+            "OperationTypeCoder@petstore.yaml#/paths/~1pet/post@[object Object]:true:false" => "HTTP_POST",
+            "OperationTypeCoder@petstore.yaml#/paths/~1pet/put@[object Object]:true:false" => "HTTP_PUT",
+            "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
+            "tools@internal/tools.ts:true:false" => "Tools",
           },
           "exports": Map {
             "HTTP_POST" => Object {
@@ -348,6 +356,7 @@ Map {
     | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet/post",
+              "isDefault": false,
               "isType": true,
               "name": "HTTP_POST",
               "promise": Promise {},
@@ -410,6 +419,7 @@ Map {
     | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet/put",
+              "isDefault": false,
               "isType": true,
               "name": "HTTP_PUT",
               "promise": Promise {},
@@ -436,15 +446,16 @@ Map {
               "name": "Pet",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined@[object Object]:true" => "Pet",
-                  "SchemaTypeCoder@undefined@components/Category.ts:true" => "Category",
-                  "SchemaTypeCoder@undefined@components/Tag.ts:true" => "Tag",
+                  "SchemaTypeCoder@undefined@[object Object]:true:false" => "Pet",
+                  "SchemaTypeCoder@undefined@components/Category.ts:true:false" => "Category",
+                  "SchemaTypeCoder@undefined@components/Tag.ts:true:false" => "Tag",
                 },
                 "exports": Map {
                   "Pet" => Object {
                     "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
+                    "isDefault": false,
                     "isType": true,
                     "name": "Pet",
                     "promise": Promise {},
@@ -458,13 +469,14 @@ Map {
                     "name": "Category",
                     "script": Script {
                       "cache": Map {
-                        "SchemaTypeCoder@undefined@[object Object]:true" => "Category",
+                        "SchemaTypeCoder@undefined@[object Object]:true:false" => "Category",
                       },
                       "exports": Map {
                         "Category" => Object {
                           "code": "{id?: number,name?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
+                          "isDefault": false,
                           "isType": true,
                           "name": "Category",
                           "promise": Promise {},
@@ -486,13 +498,14 @@ Map {
                     "name": "Tag",
                     "script": Script {
                       "cache": Map {
-                        "SchemaTypeCoder@undefined@[object Object]:true" => "Tag",
+                        "SchemaTypeCoder@undefined@[object Object]:true:false" => "Tag",
                       },
                       "exports": Map {
                         "Tag" => Object {
                           "code": "{id?: number,name?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
+                          "isDefault": false,
                           "isType": true,
                           "name": "Tag",
                           "promise": Promise {},
@@ -523,7 +536,7 @@ Map {
               "name": "Tools",
               "script": Script {
                 "cache": Map {
-                  "tools@[object Object]:true" => "Tools",
+                  "tools@[object Object]:true:false" => "Tools",
                 },
                 "exports": Map {
                   "Tools" => Object {
@@ -535,6 +548,7 @@ Map {
     }",
                     "done": true,
                     "id": "tools",
+                    "isDefault": false,
                     "isType": true,
                     "name": "Tools",
                     "promise": Promise {},
@@ -575,10 +589,10 @@ Map {
   },
   "path-types/pet.types.ts" => Script {
     "cache": Map {
-      "OperationTypeCoder@petstore.yaml#/paths/~1pet/post@[object Object]:true" => "HTTP_POST",
-      "OperationTypeCoder@petstore.yaml#/paths/~1pet/put@[object Object]:true" => "HTTP_PUT",
-      "SchemaTypeCoder@undefined@components/Pet.ts:true" => "Pet",
-      "tools@internal/tools.ts:true" => "Tools",
+      "OperationTypeCoder@petstore.yaml#/paths/~1pet/post@[object Object]:true:false" => "HTTP_POST",
+      "OperationTypeCoder@petstore.yaml#/paths/~1pet/put@[object Object]:true:false" => "HTTP_PUT",
+      "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
+      "tools@internal/tools.ts:true:false" => "Tools",
     },
     "exports": Map {
       "HTTP_POST" => Object {
@@ -618,6 +632,7 @@ Map {
     | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet/post",
+        "isDefault": false,
         "isType": true,
         "name": "HTTP_POST",
         "promise": Promise {},
@@ -680,6 +695,7 @@ Map {
     | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet/put",
+        "isDefault": false,
         "isType": true,
         "name": "HTTP_PUT",
         "promise": Promise {},
@@ -706,15 +722,16 @@ Map {
         "name": "Pet",
         "script": Script {
           "cache": Map {
-            "SchemaTypeCoder@undefined@[object Object]:true" => "Pet",
-            "SchemaTypeCoder@undefined@components/Category.ts:true" => "Category",
-            "SchemaTypeCoder@undefined@components/Tag.ts:true" => "Tag",
+            "SchemaTypeCoder@undefined@[object Object]:true:false" => "Pet",
+            "SchemaTypeCoder@undefined@components/Category.ts:true:false" => "Category",
+            "SchemaTypeCoder@undefined@components/Tag.ts:true:false" => "Tag",
           },
           "exports": Map {
             "Pet" => Object {
               "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
+              "isDefault": false,
               "isType": true,
               "name": "Pet",
               "promise": Promise {},
@@ -728,13 +745,14 @@ Map {
               "name": "Category",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined@[object Object]:true" => "Category",
+                  "SchemaTypeCoder@undefined@[object Object]:true:false" => "Category",
                 },
                 "exports": Map {
                   "Category" => Object {
                     "code": "{id?: number,name?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
+                    "isDefault": false,
                     "isType": true,
                     "name": "Category",
                     "promise": Promise {},
@@ -756,13 +774,14 @@ Map {
               "name": "Tag",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined@[object Object]:true" => "Tag",
+                  "SchemaTypeCoder@undefined@[object Object]:true:false" => "Tag",
                 },
                 "exports": Map {
                   "Tag" => Object {
                     "code": "{id?: number,name?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
+                    "isDefault": false,
                     "isType": true,
                     "name": "Tag",
                     "promise": Promise {},
@@ -793,7 +812,7 @@ Map {
         "name": "Tools",
         "script": Script {
           "cache": Map {
-            "tools@[object Object]:true" => "Tools",
+            "tools@[object Object]:true:false" => "Tools",
           },
           "exports": Map {
             "Tools" => Object {
@@ -805,6 +824,7 @@ Map {
     }",
               "done": true,
               "id": "tools",
+              "isDefault": false,
               "isType": true,
               "name": "Tools",
               "promise": Promise {},
@@ -836,8 +856,8 @@ Map {
   },
   "paths/pet/findByStatus.ts" => Script {
     "cache": Map {
-      "OperationCoder@petstore.yaml#/paths/~1pet~1findByStatus/get@[object Object]:false" => "GET",
-      "OperationTypeCoder@petstore.yaml#/paths/~1pet~1findByStatus/get@path-types/pet/findByStatus.types.ts:true" => "HTTP_GET",
+      "OperationCoder@petstore.yaml#/paths/~1pet~1findByStatus/get@[object Object]:false:false" => "GET",
+      "OperationTypeCoder@petstore.yaml#/paths/~1pet~1findByStatus/get@path-types/pet/findByStatus.types.ts:true:false" => "HTTP_GET",
     },
     "exports": Map {
       "GET" => Object {
@@ -846,6 +866,7 @@ Map {
     }",
         "done": true,
         "id": "OperationCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
+        "isDefault": false,
         "isType": false,
         "name": "GET",
         "promise": Promise {},
@@ -859,9 +880,9 @@ Map {
         "name": "HTTP_GET",
         "script": Script {
           "cache": Map {
-            "OperationTypeCoder@petstore.yaml#/paths/~1pet~1findByStatus/get@[object Object]:true" => "HTTP_GET",
-            "SchemaTypeCoder@undefined@components/Pet.ts:true" => "Pet",
-            "tools@internal/tools.ts:true" => "Tools",
+            "OperationTypeCoder@petstore.yaml#/paths/~1pet~1findByStatus/get@[object Object]:true:false" => "HTTP_GET",
+            "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
+            "tools@internal/tools.ts:true:false" => "Tools",
           },
           "exports": Map {
             "HTTP_GET" => Object {
@@ -901,6 +922,7 @@ Map {
     | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
+              "isDefault": false,
               "isType": true,
               "name": "HTTP_GET",
               "promise": Promise {},
@@ -927,15 +949,16 @@ Map {
               "name": "Pet",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined@[object Object]:true" => "Pet",
-                  "SchemaTypeCoder@undefined@components/Category.ts:true" => "Category",
-                  "SchemaTypeCoder@undefined@components/Tag.ts:true" => "Tag",
+                  "SchemaTypeCoder@undefined@[object Object]:true:false" => "Pet",
+                  "SchemaTypeCoder@undefined@components/Category.ts:true:false" => "Category",
+                  "SchemaTypeCoder@undefined@components/Tag.ts:true:false" => "Tag",
                 },
                 "exports": Map {
                   "Pet" => Object {
                     "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
+                    "isDefault": false,
                     "isType": true,
                     "name": "Pet",
                     "promise": Promise {},
@@ -949,13 +972,14 @@ Map {
                     "name": "Category",
                     "script": Script {
                       "cache": Map {
-                        "SchemaTypeCoder@undefined@[object Object]:true" => "Category",
+                        "SchemaTypeCoder@undefined@[object Object]:true:false" => "Category",
                       },
                       "exports": Map {
                         "Category" => Object {
                           "code": "{id?: number,name?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
+                          "isDefault": false,
                           "isType": true,
                           "name": "Category",
                           "promise": Promise {},
@@ -977,13 +1001,14 @@ Map {
                     "name": "Tag",
                     "script": Script {
                       "cache": Map {
-                        "SchemaTypeCoder@undefined@[object Object]:true" => "Tag",
+                        "SchemaTypeCoder@undefined@[object Object]:true:false" => "Tag",
                       },
                       "exports": Map {
                         "Tag" => Object {
                           "code": "{id?: number,name?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
+                          "isDefault": false,
                           "isType": true,
                           "name": "Tag",
                           "promise": Promise {},
@@ -1014,7 +1039,7 @@ Map {
               "name": "Tools",
               "script": Script {
                 "cache": Map {
-                  "tools@[object Object]:true" => "Tools",
+                  "tools@[object Object]:true:false" => "Tools",
                 },
                 "exports": Map {
                   "Tools" => Object {
@@ -1026,6 +1051,7 @@ Map {
     }",
                     "done": true,
                     "id": "tools",
+                    "isDefault": false,
                     "isType": true,
                     "name": "Tools",
                     "promise": Promise {},
@@ -1066,9 +1092,9 @@ Map {
   },
   "path-types/pet/findByStatus.types.ts" => Script {
     "cache": Map {
-      "OperationTypeCoder@petstore.yaml#/paths/~1pet~1findByStatus/get@[object Object]:true" => "HTTP_GET",
-      "SchemaTypeCoder@undefined@components/Pet.ts:true" => "Pet",
-      "tools@internal/tools.ts:true" => "Tools",
+      "OperationTypeCoder@petstore.yaml#/paths/~1pet~1findByStatus/get@[object Object]:true:false" => "HTTP_GET",
+      "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
+      "tools@internal/tools.ts:true:false" => "Tools",
     },
     "exports": Map {
       "HTTP_GET" => Object {
@@ -1108,6 +1134,7 @@ Map {
     | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
+        "isDefault": false,
         "isType": true,
         "name": "HTTP_GET",
         "promise": Promise {},
@@ -1134,15 +1161,16 @@ Map {
         "name": "Pet",
         "script": Script {
           "cache": Map {
-            "SchemaTypeCoder@undefined@[object Object]:true" => "Pet",
-            "SchemaTypeCoder@undefined@components/Category.ts:true" => "Category",
-            "SchemaTypeCoder@undefined@components/Tag.ts:true" => "Tag",
+            "SchemaTypeCoder@undefined@[object Object]:true:false" => "Pet",
+            "SchemaTypeCoder@undefined@components/Category.ts:true:false" => "Category",
+            "SchemaTypeCoder@undefined@components/Tag.ts:true:false" => "Tag",
           },
           "exports": Map {
             "Pet" => Object {
               "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
+              "isDefault": false,
               "isType": true,
               "name": "Pet",
               "promise": Promise {},
@@ -1156,13 +1184,14 @@ Map {
               "name": "Category",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined@[object Object]:true" => "Category",
+                  "SchemaTypeCoder@undefined@[object Object]:true:false" => "Category",
                 },
                 "exports": Map {
                   "Category" => Object {
                     "code": "{id?: number,name?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
+                    "isDefault": false,
                     "isType": true,
                     "name": "Category",
                     "promise": Promise {},
@@ -1184,13 +1213,14 @@ Map {
               "name": "Tag",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined@[object Object]:true" => "Tag",
+                  "SchemaTypeCoder@undefined@[object Object]:true:false" => "Tag",
                 },
                 "exports": Map {
                   "Tag" => Object {
                     "code": "{id?: number,name?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
+                    "isDefault": false,
                     "isType": true,
                     "name": "Tag",
                     "promise": Promise {},
@@ -1221,7 +1251,7 @@ Map {
         "name": "Tools",
         "script": Script {
           "cache": Map {
-            "tools@[object Object]:true" => "Tools",
+            "tools@[object Object]:true:false" => "Tools",
           },
           "exports": Map {
             "Tools" => Object {
@@ -1233,6 +1263,7 @@ Map {
     }",
               "done": true,
               "id": "tools",
+              "isDefault": false,
               "isType": true,
               "name": "Tools",
               "promise": Promise {},
@@ -1264,8 +1295,8 @@ Map {
   },
   "paths/pet/findByTags.ts" => Script {
     "cache": Map {
-      "OperationCoder@petstore.yaml#/paths/~1pet~1findByTags/get@[object Object]:false" => "GET",
-      "OperationTypeCoder@petstore.yaml#/paths/~1pet~1findByTags/get@path-types/pet/findByTags.types.ts:true" => "HTTP_GET",
+      "OperationCoder@petstore.yaml#/paths/~1pet~1findByTags/get@[object Object]:false:false" => "GET",
+      "OperationTypeCoder@petstore.yaml#/paths/~1pet~1findByTags/get@path-types/pet/findByTags.types.ts:true:false" => "HTTP_GET",
     },
     "exports": Map {
       "GET" => Object {
@@ -1274,6 +1305,7 @@ Map {
     }",
         "done": true,
         "id": "OperationCoder@petstore.yaml#/paths/~1pet~1findByTags/get",
+        "isDefault": false,
         "isType": false,
         "name": "GET",
         "promise": Promise {},
@@ -1287,9 +1319,9 @@ Map {
         "name": "HTTP_GET",
         "script": Script {
           "cache": Map {
-            "OperationTypeCoder@petstore.yaml#/paths/~1pet~1findByTags/get@[object Object]:true" => "HTTP_GET",
-            "SchemaTypeCoder@undefined@components/Pet.ts:true" => "Pet",
-            "tools@internal/tools.ts:true" => "Tools",
+            "OperationTypeCoder@petstore.yaml#/paths/~1pet~1findByTags/get@[object Object]:true:false" => "HTTP_GET",
+            "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
+            "tools@internal/tools.ts:true:false" => "Tools",
           },
           "exports": Map {
             "HTTP_GET" => Object {
@@ -1329,6 +1361,7 @@ Map {
     | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1findByTags/get",
+              "isDefault": false,
               "isType": true,
               "name": "HTTP_GET",
               "promise": Promise {},
@@ -1355,15 +1388,16 @@ Map {
               "name": "Pet",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined@[object Object]:true" => "Pet",
-                  "SchemaTypeCoder@undefined@components/Category.ts:true" => "Category",
-                  "SchemaTypeCoder@undefined@components/Tag.ts:true" => "Tag",
+                  "SchemaTypeCoder@undefined@[object Object]:true:false" => "Pet",
+                  "SchemaTypeCoder@undefined@components/Category.ts:true:false" => "Category",
+                  "SchemaTypeCoder@undefined@components/Tag.ts:true:false" => "Tag",
                 },
                 "exports": Map {
                   "Pet" => Object {
                     "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
+                    "isDefault": false,
                     "isType": true,
                     "name": "Pet",
                     "promise": Promise {},
@@ -1377,13 +1411,14 @@ Map {
                     "name": "Category",
                     "script": Script {
                       "cache": Map {
-                        "SchemaTypeCoder@undefined@[object Object]:true" => "Category",
+                        "SchemaTypeCoder@undefined@[object Object]:true:false" => "Category",
                       },
                       "exports": Map {
                         "Category" => Object {
                           "code": "{id?: number,name?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
+                          "isDefault": false,
                           "isType": true,
                           "name": "Category",
                           "promise": Promise {},
@@ -1405,13 +1440,14 @@ Map {
                     "name": "Tag",
                     "script": Script {
                       "cache": Map {
-                        "SchemaTypeCoder@undefined@[object Object]:true" => "Tag",
+                        "SchemaTypeCoder@undefined@[object Object]:true:false" => "Tag",
                       },
                       "exports": Map {
                         "Tag" => Object {
                           "code": "{id?: number,name?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
+                          "isDefault": false,
                           "isType": true,
                           "name": "Tag",
                           "promise": Promise {},
@@ -1442,7 +1478,7 @@ Map {
               "name": "Tools",
               "script": Script {
                 "cache": Map {
-                  "tools@[object Object]:true" => "Tools",
+                  "tools@[object Object]:true:false" => "Tools",
                 },
                 "exports": Map {
                   "Tools" => Object {
@@ -1454,6 +1490,7 @@ Map {
     }",
                     "done": true,
                     "id": "tools",
+                    "isDefault": false,
                     "isType": true,
                     "name": "Tools",
                     "promise": Promise {},
@@ -1494,9 +1531,9 @@ Map {
   },
   "path-types/pet/findByTags.types.ts" => Script {
     "cache": Map {
-      "OperationTypeCoder@petstore.yaml#/paths/~1pet~1findByTags/get@[object Object]:true" => "HTTP_GET",
-      "SchemaTypeCoder@undefined@components/Pet.ts:true" => "Pet",
-      "tools@internal/tools.ts:true" => "Tools",
+      "OperationTypeCoder@petstore.yaml#/paths/~1pet~1findByTags/get@[object Object]:true:false" => "HTTP_GET",
+      "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
+      "tools@internal/tools.ts:true:false" => "Tools",
     },
     "exports": Map {
       "HTTP_GET" => Object {
@@ -1536,6 +1573,7 @@ Map {
     | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1findByTags/get",
+        "isDefault": false,
         "isType": true,
         "name": "HTTP_GET",
         "promise": Promise {},
@@ -1562,15 +1600,16 @@ Map {
         "name": "Pet",
         "script": Script {
           "cache": Map {
-            "SchemaTypeCoder@undefined@[object Object]:true" => "Pet",
-            "SchemaTypeCoder@undefined@components/Category.ts:true" => "Category",
-            "SchemaTypeCoder@undefined@components/Tag.ts:true" => "Tag",
+            "SchemaTypeCoder@undefined@[object Object]:true:false" => "Pet",
+            "SchemaTypeCoder@undefined@components/Category.ts:true:false" => "Category",
+            "SchemaTypeCoder@undefined@components/Tag.ts:true:false" => "Tag",
           },
           "exports": Map {
             "Pet" => Object {
               "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
+              "isDefault": false,
               "isType": true,
               "name": "Pet",
               "promise": Promise {},
@@ -1584,13 +1623,14 @@ Map {
               "name": "Category",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined@[object Object]:true" => "Category",
+                  "SchemaTypeCoder@undefined@[object Object]:true:false" => "Category",
                 },
                 "exports": Map {
                   "Category" => Object {
                     "code": "{id?: number,name?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
+                    "isDefault": false,
                     "isType": true,
                     "name": "Category",
                     "promise": Promise {},
@@ -1612,13 +1652,14 @@ Map {
               "name": "Tag",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined@[object Object]:true" => "Tag",
+                  "SchemaTypeCoder@undefined@[object Object]:true:false" => "Tag",
                 },
                 "exports": Map {
                   "Tag" => Object {
                     "code": "{id?: number,name?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
+                    "isDefault": false,
                     "isType": true,
                     "name": "Tag",
                     "promise": Promise {},
@@ -1649,7 +1690,7 @@ Map {
         "name": "Tools",
         "script": Script {
           "cache": Map {
-            "tools@[object Object]:true" => "Tools",
+            "tools@[object Object]:true:false" => "Tools",
           },
           "exports": Map {
             "Tools" => Object {
@@ -1661,6 +1702,7 @@ Map {
     }",
               "done": true,
               "id": "tools",
+              "isDefault": false,
               "isType": true,
               "name": "Tools",
               "promise": Promise {},
@@ -1692,12 +1734,12 @@ Map {
   },
   "paths/pet/{petId}.ts" => Script {
     "cache": Map {
-      "OperationCoder@petstore.yaml#/paths/~1pet~1{petId}/get@[object Object]:false" => "GET",
-      "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/get@path-types/pet/{petId}.types.ts:true" => "HTTP_GET",
-      "OperationCoder@petstore.yaml#/paths/~1pet~1{petId}/post@[object Object]:false" => "POST",
-      "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/post@path-types/pet/{petId}.types.ts:true" => "HTTP_POST",
-      "OperationCoder@petstore.yaml#/paths/~1pet~1{petId}/delete@[object Object]:false" => "DELETE",
-      "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/delete@path-types/pet/{petId}.types.ts:true" => "HTTP_DELETE",
+      "OperationCoder@petstore.yaml#/paths/~1pet~1{petId}/get@[object Object]:false:false" => "GET",
+      "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/get@path-types/pet/{petId}.types.ts:true:false" => "HTTP_GET",
+      "OperationCoder@petstore.yaml#/paths/~1pet~1{petId}/post@[object Object]:false:false" => "POST",
+      "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/post@path-types/pet/{petId}.types.ts:true:false" => "HTTP_POST",
+      "OperationCoder@petstore.yaml#/paths/~1pet~1{petId}/delete@[object Object]:false:false" => "DELETE",
+      "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/delete@path-types/pet/{petId}.types.ts:true:false" => "HTTP_DELETE",
     },
     "exports": Map {
       "GET" => Object {
@@ -1706,6 +1748,7 @@ Map {
     }",
         "done": true,
         "id": "OperationCoder@petstore.yaml#/paths/~1pet~1{petId}/get",
+        "isDefault": false,
         "isType": false,
         "name": "GET",
         "promise": Promise {},
@@ -1715,6 +1758,7 @@ Map {
         "code": "() => { /* no response content specified in the OpenAPI document */ }",
         "done": true,
         "id": "OperationCoder@petstore.yaml#/paths/~1pet~1{petId}/post",
+        "isDefault": false,
         "isType": false,
         "name": "POST",
         "promise": Promise {},
@@ -1724,6 +1768,7 @@ Map {
         "code": "() => { /* no response content specified in the OpenAPI document */ }",
         "done": true,
         "id": "OperationCoder@petstore.yaml#/paths/~1pet~1{petId}/delete",
+        "isDefault": false,
         "isType": false,
         "name": "DELETE",
         "promise": Promise {},
@@ -1737,11 +1782,11 @@ Map {
         "name": "HTTP_GET",
         "script": Script {
           "cache": Map {
-            "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/get@[object Object]:true" => "HTTP_GET",
-            "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/post@[object Object]:true" => "HTTP_POST",
-            "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/delete@[object Object]:true" => "HTTP_DELETE",
-            "SchemaTypeCoder@undefined@components/Pet.ts:true" => "Pet",
-            "tools@internal/tools.ts:true" => "Tools",
+            "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/get@[object Object]:true:false" => "HTTP_GET",
+            "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/post@[object Object]:true:false" => "HTTP_POST",
+            "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/delete@[object Object]:true:false" => "HTTP_DELETE",
+            "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
+            "tools@internal/tools.ts:true:false" => "Tools",
           },
           "exports": Map {
             "HTTP_GET" => Object {
@@ -1791,6 +1836,7 @@ Map {
     | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/get",
+              "isDefault": false,
               "isType": true,
               "name": "HTTP_GET",
               "promise": Promise {},
@@ -1813,6 +1859,7 @@ Map {
     | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/post",
+              "isDefault": false,
               "isType": true,
               "name": "HTTP_POST",
               "promise": Promise {},
@@ -1835,6 +1882,7 @@ Map {
     | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/delete",
+              "isDefault": false,
               "isType": true,
               "name": "HTTP_DELETE",
               "promise": Promise {},
@@ -1861,15 +1909,16 @@ Map {
               "name": "Pet",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined@[object Object]:true" => "Pet",
-                  "SchemaTypeCoder@undefined@components/Category.ts:true" => "Category",
-                  "SchemaTypeCoder@undefined@components/Tag.ts:true" => "Tag",
+                  "SchemaTypeCoder@undefined@[object Object]:true:false" => "Pet",
+                  "SchemaTypeCoder@undefined@components/Category.ts:true:false" => "Category",
+                  "SchemaTypeCoder@undefined@components/Tag.ts:true:false" => "Tag",
                 },
                 "exports": Map {
                   "Pet" => Object {
                     "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
+                    "isDefault": false,
                     "isType": true,
                     "name": "Pet",
                     "promise": Promise {},
@@ -1883,13 +1932,14 @@ Map {
                     "name": "Category",
                     "script": Script {
                       "cache": Map {
-                        "SchemaTypeCoder@undefined@[object Object]:true" => "Category",
+                        "SchemaTypeCoder@undefined@[object Object]:true:false" => "Category",
                       },
                       "exports": Map {
                         "Category" => Object {
                           "code": "{id?: number,name?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
+                          "isDefault": false,
                           "isType": true,
                           "name": "Category",
                           "promise": Promise {},
@@ -1911,13 +1961,14 @@ Map {
                     "name": "Tag",
                     "script": Script {
                       "cache": Map {
-                        "SchemaTypeCoder@undefined@[object Object]:true" => "Tag",
+                        "SchemaTypeCoder@undefined@[object Object]:true:false" => "Tag",
                       },
                       "exports": Map {
                         "Tag" => Object {
                           "code": "{id?: number,name?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
+                          "isDefault": false,
                           "isType": true,
                           "name": "Tag",
                           "promise": Promise {},
@@ -1948,7 +1999,7 @@ Map {
               "name": "Tools",
               "script": Script {
                 "cache": Map {
-                  "tools@[object Object]:true" => "Tools",
+                  "tools@[object Object]:true:false" => "Tools",
                 },
                 "exports": Map {
                   "Tools" => Object {
@@ -1960,6 +2011,7 @@ Map {
     }",
                     "done": true,
                     "id": "tools",
+                    "isDefault": false,
                     "isType": true,
                     "name": "Tools",
                     "promise": Promise {},
@@ -1995,11 +2047,11 @@ Map {
         "name": "HTTP_POST",
         "script": Script {
           "cache": Map {
-            "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/get@[object Object]:true" => "HTTP_GET",
-            "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/post@[object Object]:true" => "HTTP_POST",
-            "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/delete@[object Object]:true" => "HTTP_DELETE",
-            "SchemaTypeCoder@undefined@components/Pet.ts:true" => "Pet",
-            "tools@internal/tools.ts:true" => "Tools",
+            "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/get@[object Object]:true:false" => "HTTP_GET",
+            "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/post@[object Object]:true:false" => "HTTP_POST",
+            "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/delete@[object Object]:true:false" => "HTTP_DELETE",
+            "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
+            "tools@internal/tools.ts:true:false" => "Tools",
           },
           "exports": Map {
             "HTTP_GET" => Object {
@@ -2049,6 +2101,7 @@ Map {
     | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/get",
+              "isDefault": false,
               "isType": true,
               "name": "HTTP_GET",
               "promise": Promise {},
@@ -2071,6 +2124,7 @@ Map {
     | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/post",
+              "isDefault": false,
               "isType": true,
               "name": "HTTP_POST",
               "promise": Promise {},
@@ -2093,6 +2147,7 @@ Map {
     | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/delete",
+              "isDefault": false,
               "isType": true,
               "name": "HTTP_DELETE",
               "promise": Promise {},
@@ -2119,15 +2174,16 @@ Map {
               "name": "Pet",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined@[object Object]:true" => "Pet",
-                  "SchemaTypeCoder@undefined@components/Category.ts:true" => "Category",
-                  "SchemaTypeCoder@undefined@components/Tag.ts:true" => "Tag",
+                  "SchemaTypeCoder@undefined@[object Object]:true:false" => "Pet",
+                  "SchemaTypeCoder@undefined@components/Category.ts:true:false" => "Category",
+                  "SchemaTypeCoder@undefined@components/Tag.ts:true:false" => "Tag",
                 },
                 "exports": Map {
                   "Pet" => Object {
                     "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
+                    "isDefault": false,
                     "isType": true,
                     "name": "Pet",
                     "promise": Promise {},
@@ -2141,13 +2197,14 @@ Map {
                     "name": "Category",
                     "script": Script {
                       "cache": Map {
-                        "SchemaTypeCoder@undefined@[object Object]:true" => "Category",
+                        "SchemaTypeCoder@undefined@[object Object]:true:false" => "Category",
                       },
                       "exports": Map {
                         "Category" => Object {
                           "code": "{id?: number,name?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
+                          "isDefault": false,
                           "isType": true,
                           "name": "Category",
                           "promise": Promise {},
@@ -2169,13 +2226,14 @@ Map {
                     "name": "Tag",
                     "script": Script {
                       "cache": Map {
-                        "SchemaTypeCoder@undefined@[object Object]:true" => "Tag",
+                        "SchemaTypeCoder@undefined@[object Object]:true:false" => "Tag",
                       },
                       "exports": Map {
                         "Tag" => Object {
                           "code": "{id?: number,name?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
+                          "isDefault": false,
                           "isType": true,
                           "name": "Tag",
                           "promise": Promise {},
@@ -2206,7 +2264,7 @@ Map {
               "name": "Tools",
               "script": Script {
                 "cache": Map {
-                  "tools@[object Object]:true" => "Tools",
+                  "tools@[object Object]:true:false" => "Tools",
                 },
                 "exports": Map {
                   "Tools" => Object {
@@ -2218,6 +2276,7 @@ Map {
     }",
                     "done": true,
                     "id": "tools",
+                    "isDefault": false,
                     "isType": true,
                     "name": "Tools",
                     "promise": Promise {},
@@ -2253,11 +2312,11 @@ Map {
         "name": "HTTP_DELETE",
         "script": Script {
           "cache": Map {
-            "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/get@[object Object]:true" => "HTTP_GET",
-            "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/post@[object Object]:true" => "HTTP_POST",
-            "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/delete@[object Object]:true" => "HTTP_DELETE",
-            "SchemaTypeCoder@undefined@components/Pet.ts:true" => "Pet",
-            "tools@internal/tools.ts:true" => "Tools",
+            "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/get@[object Object]:true:false" => "HTTP_GET",
+            "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/post@[object Object]:true:false" => "HTTP_POST",
+            "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/delete@[object Object]:true:false" => "HTTP_DELETE",
+            "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
+            "tools@internal/tools.ts:true:false" => "Tools",
           },
           "exports": Map {
             "HTTP_GET" => Object {
@@ -2307,6 +2366,7 @@ Map {
     | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/get",
+              "isDefault": false,
               "isType": true,
               "name": "HTTP_GET",
               "promise": Promise {},
@@ -2329,6 +2389,7 @@ Map {
     | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/post",
+              "isDefault": false,
               "isType": true,
               "name": "HTTP_POST",
               "promise": Promise {},
@@ -2351,6 +2412,7 @@ Map {
     | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/delete",
+              "isDefault": false,
               "isType": true,
               "name": "HTTP_DELETE",
               "promise": Promise {},
@@ -2377,15 +2439,16 @@ Map {
               "name": "Pet",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined@[object Object]:true" => "Pet",
-                  "SchemaTypeCoder@undefined@components/Category.ts:true" => "Category",
-                  "SchemaTypeCoder@undefined@components/Tag.ts:true" => "Tag",
+                  "SchemaTypeCoder@undefined@[object Object]:true:false" => "Pet",
+                  "SchemaTypeCoder@undefined@components/Category.ts:true:false" => "Category",
+                  "SchemaTypeCoder@undefined@components/Tag.ts:true:false" => "Tag",
                 },
                 "exports": Map {
                   "Pet" => Object {
                     "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
+                    "isDefault": false,
                     "isType": true,
                     "name": "Pet",
                     "promise": Promise {},
@@ -2399,13 +2462,14 @@ Map {
                     "name": "Category",
                     "script": Script {
                       "cache": Map {
-                        "SchemaTypeCoder@undefined@[object Object]:true" => "Category",
+                        "SchemaTypeCoder@undefined@[object Object]:true:false" => "Category",
                       },
                       "exports": Map {
                         "Category" => Object {
                           "code": "{id?: number,name?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
+                          "isDefault": false,
                           "isType": true,
                           "name": "Category",
                           "promise": Promise {},
@@ -2427,13 +2491,14 @@ Map {
                     "name": "Tag",
                     "script": Script {
                       "cache": Map {
-                        "SchemaTypeCoder@undefined@[object Object]:true" => "Tag",
+                        "SchemaTypeCoder@undefined@[object Object]:true:false" => "Tag",
                       },
                       "exports": Map {
                         "Tag" => Object {
                           "code": "{id?: number,name?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
+                          "isDefault": false,
                           "isType": true,
                           "name": "Tag",
                           "promise": Promise {},
@@ -2464,7 +2529,7 @@ Map {
               "name": "Tools",
               "script": Script {
                 "cache": Map {
-                  "tools@[object Object]:true" => "Tools",
+                  "tools@[object Object]:true:false" => "Tools",
                 },
                 "exports": Map {
                   "Tools" => Object {
@@ -2476,6 +2541,7 @@ Map {
     }",
                     "done": true,
                     "id": "tools",
+                    "isDefault": false,
                     "isType": true,
                     "name": "Tools",
                     "promise": Promise {},
@@ -2516,11 +2582,11 @@ Map {
   },
   "path-types/pet/{petId}.types.ts" => Script {
     "cache": Map {
-      "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/get@[object Object]:true" => "HTTP_GET",
-      "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/post@[object Object]:true" => "HTTP_POST",
-      "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/delete@[object Object]:true" => "HTTP_DELETE",
-      "SchemaTypeCoder@undefined@components/Pet.ts:true" => "Pet",
-      "tools@internal/tools.ts:true" => "Tools",
+      "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/get@[object Object]:true:false" => "HTTP_GET",
+      "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/post@[object Object]:true:false" => "HTTP_POST",
+      "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/delete@[object Object]:true:false" => "HTTP_DELETE",
+      "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
+      "tools@internal/tools.ts:true:false" => "Tools",
     },
     "exports": Map {
       "HTTP_GET" => Object {
@@ -2570,6 +2636,7 @@ Map {
     | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/get",
+        "isDefault": false,
         "isType": true,
         "name": "HTTP_GET",
         "promise": Promise {},
@@ -2592,6 +2659,7 @@ Map {
     | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/post",
+        "isDefault": false,
         "isType": true,
         "name": "HTTP_POST",
         "promise": Promise {},
@@ -2614,6 +2682,7 @@ Map {
     | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/delete",
+        "isDefault": false,
         "isType": true,
         "name": "HTTP_DELETE",
         "promise": Promise {},
@@ -2640,15 +2709,16 @@ Map {
         "name": "Pet",
         "script": Script {
           "cache": Map {
-            "SchemaTypeCoder@undefined@[object Object]:true" => "Pet",
-            "SchemaTypeCoder@undefined@components/Category.ts:true" => "Category",
-            "SchemaTypeCoder@undefined@components/Tag.ts:true" => "Tag",
+            "SchemaTypeCoder@undefined@[object Object]:true:false" => "Pet",
+            "SchemaTypeCoder@undefined@components/Category.ts:true:false" => "Category",
+            "SchemaTypeCoder@undefined@components/Tag.ts:true:false" => "Tag",
           },
           "exports": Map {
             "Pet" => Object {
               "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
+              "isDefault": false,
               "isType": true,
               "name": "Pet",
               "promise": Promise {},
@@ -2662,13 +2732,14 @@ Map {
               "name": "Category",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined@[object Object]:true" => "Category",
+                  "SchemaTypeCoder@undefined@[object Object]:true:false" => "Category",
                 },
                 "exports": Map {
                   "Category" => Object {
                     "code": "{id?: number,name?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
+                    "isDefault": false,
                     "isType": true,
                     "name": "Category",
                     "promise": Promise {},
@@ -2690,13 +2761,14 @@ Map {
               "name": "Tag",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined@[object Object]:true" => "Tag",
+                  "SchemaTypeCoder@undefined@[object Object]:true:false" => "Tag",
                 },
                 "exports": Map {
                   "Tag" => Object {
                     "code": "{id?: number,name?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
+                    "isDefault": false,
                     "isType": true,
                     "name": "Tag",
                     "promise": Promise {},
@@ -2727,7 +2799,7 @@ Map {
         "name": "Tools",
         "script": Script {
           "cache": Map {
-            "tools@[object Object]:true" => "Tools",
+            "tools@[object Object]:true:false" => "Tools",
           },
           "exports": Map {
             "Tools" => Object {
@@ -2739,6 +2811,7 @@ Map {
     }",
               "done": true,
               "id": "tools",
+              "isDefault": false,
               "isType": true,
               "name": "Tools",
               "promise": Promise {},
@@ -2770,8 +2843,8 @@ Map {
   },
   "paths/pet/{petId}/uploadImage.ts" => Script {
     "cache": Map {
-      "OperationCoder@petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post@[object Object]:false" => "POST",
-      "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post@path-types/pet/{petId}/uploadImage.types.ts:true" => "HTTP_POST",
+      "OperationCoder@petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post@[object Object]:false:false" => "POST",
+      "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post@path-types/pet/{petId}/uploadImage.types.ts:true:false" => "HTTP_POST",
     },
     "exports": Map {
       "POST" => Object {
@@ -2780,6 +2853,7 @@ Map {
     }",
         "done": true,
         "id": "OperationCoder@petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post",
+        "isDefault": false,
         "isType": false,
         "name": "POST",
         "promise": Promise {},
@@ -2793,9 +2867,9 @@ Map {
         "name": "HTTP_POST",
         "script": Script {
           "cache": Map {
-            "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post@[object Object]:true" => "HTTP_POST",
-            "SchemaTypeCoder@undefined@components/ApiResponse.ts:true" => "ApiResponse",
-            "tools@internal/tools.ts:true" => "Tools",
+            "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post@[object Object]:true:false" => "HTTP_POST",
+            "SchemaTypeCoder@undefined@components/ApiResponse.ts:true:false" => "ApiResponse",
+            "tools@internal/tools.ts:true:false" => "Tools",
           },
           "exports": Map {
             "HTTP_POST" => Object {
@@ -2817,6 +2891,7 @@ Map {
     | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post",
+              "isDefault": false,
               "isType": true,
               "name": "HTTP_POST",
               "promise": Promise {},
@@ -2843,13 +2918,14 @@ Map {
               "name": "ApiResponse",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined@[object Object]:true" => "ApiResponse",
+                  "SchemaTypeCoder@undefined@[object Object]:true:false" => "ApiResponse",
                 },
                 "exports": Map {
                   "ApiResponse" => Object {
                     "code": "{code?: number,type?: string,message?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
+                    "isDefault": false,
                     "isType": true,
                     "name": "ApiResponse",
                     "promise": Promise {},
@@ -2871,7 +2947,7 @@ Map {
               "name": "Tools",
               "script": Script {
                 "cache": Map {
-                  "tools@[object Object]:true" => "Tools",
+                  "tools@[object Object]:true:false" => "Tools",
                 },
                 "exports": Map {
                   "Tools" => Object {
@@ -2883,6 +2959,7 @@ Map {
     }",
                     "done": true,
                     "id": "tools",
+                    "isDefault": false,
                     "isType": true,
                     "name": "Tools",
                     "promise": Promise {},
@@ -2923,9 +3000,9 @@ Map {
   },
   "path-types/pet/{petId}/uploadImage.types.ts" => Script {
     "cache": Map {
-      "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post@[object Object]:true" => "HTTP_POST",
-      "SchemaTypeCoder@undefined@components/ApiResponse.ts:true" => "ApiResponse",
-      "tools@internal/tools.ts:true" => "Tools",
+      "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post@[object Object]:true:false" => "HTTP_POST",
+      "SchemaTypeCoder@undefined@components/ApiResponse.ts:true:false" => "ApiResponse",
+      "tools@internal/tools.ts:true:false" => "Tools",
     },
     "exports": Map {
       "HTTP_POST" => Object {
@@ -2947,6 +3024,7 @@ Map {
     | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post",
+        "isDefault": false,
         "isType": true,
         "name": "HTTP_POST",
         "promise": Promise {},
@@ -2973,13 +3051,14 @@ Map {
         "name": "ApiResponse",
         "script": Script {
           "cache": Map {
-            "SchemaTypeCoder@undefined@[object Object]:true" => "ApiResponse",
+            "SchemaTypeCoder@undefined@[object Object]:true:false" => "ApiResponse",
           },
           "exports": Map {
             "ApiResponse" => Object {
               "code": "{code?: number,type?: string,message?: string}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
+              "isDefault": false,
               "isType": true,
               "name": "ApiResponse",
               "promise": Promise {},
@@ -3001,7 +3080,7 @@ Map {
         "name": "Tools",
         "script": Script {
           "cache": Map {
-            "tools@[object Object]:true" => "Tools",
+            "tools@[object Object]:true:false" => "Tools",
           },
           "exports": Map {
             "Tools" => Object {
@@ -3013,6 +3092,7 @@ Map {
     }",
               "done": true,
               "id": "tools",
+              "isDefault": false,
               "isType": true,
               "name": "Tools",
               "promise": Promise {},
@@ -3044,8 +3124,8 @@ Map {
   },
   "paths/store/inventory.ts" => Script {
     "cache": Map {
-      "OperationCoder@petstore.yaml#/paths/~1store~1inventory/get@[object Object]:false" => "GET",
-      "OperationTypeCoder@petstore.yaml#/paths/~1store~1inventory/get@path-types/store/inventory.types.ts:true" => "HTTP_GET",
+      "OperationCoder@petstore.yaml#/paths/~1store~1inventory/get@[object Object]:false:false" => "GET",
+      "OperationTypeCoder@petstore.yaml#/paths/~1store~1inventory/get@path-types/store/inventory.types.ts:true:false" => "HTTP_GET",
     },
     "exports": Map {
       "GET" => Object {
@@ -3054,6 +3134,7 @@ Map {
     }",
         "done": true,
         "id": "OperationCoder@petstore.yaml#/paths/~1store~1inventory/get",
+        "isDefault": false,
         "isType": false,
         "name": "GET",
         "promise": Promise {},
@@ -3067,8 +3148,8 @@ Map {
         "name": "HTTP_GET",
         "script": Script {
           "cache": Map {
-            "OperationTypeCoder@petstore.yaml#/paths/~1store~1inventory/get@[object Object]:true" => "HTTP_GET",
-            "tools@internal/tools.ts:true" => "Tools",
+            "OperationTypeCoder@petstore.yaml#/paths/~1store~1inventory/get@[object Object]:true:false" => "HTTP_GET",
+            "tools@internal/tools.ts:true:false" => "Tools",
           },
           "exports": Map {
             "HTTP_GET" => Object {
@@ -3090,6 +3171,7 @@ Map {
     | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1store~1inventory/get",
+              "isDefault": false,
               "isType": true,
               "name": "HTTP_GET",
               "promise": Promise {},
@@ -3116,7 +3198,7 @@ Map {
               "name": "Tools",
               "script": Script {
                 "cache": Map {
-                  "tools@[object Object]:true" => "Tools",
+                  "tools@[object Object]:true:false" => "Tools",
                 },
                 "exports": Map {
                   "Tools" => Object {
@@ -3128,6 +3210,7 @@ Map {
     }",
                     "done": true,
                     "id": "tools",
+                    "isDefault": false,
                     "isType": true,
                     "name": "Tools",
                     "promise": Promise {},
@@ -3168,8 +3251,8 @@ Map {
   },
   "path-types/store/inventory.types.ts" => Script {
     "cache": Map {
-      "OperationTypeCoder@petstore.yaml#/paths/~1store~1inventory/get@[object Object]:true" => "HTTP_GET",
-      "tools@internal/tools.ts:true" => "Tools",
+      "OperationTypeCoder@petstore.yaml#/paths/~1store~1inventory/get@[object Object]:true:false" => "HTTP_GET",
+      "tools@internal/tools.ts:true:false" => "Tools",
     },
     "exports": Map {
       "HTTP_GET" => Object {
@@ -3191,6 +3274,7 @@ Map {
     | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1store~1inventory/get",
+        "isDefault": false,
         "isType": true,
         "name": "HTTP_GET",
         "promise": Promise {},
@@ -3217,7 +3301,7 @@ Map {
         "name": "Tools",
         "script": Script {
           "cache": Map {
-            "tools@[object Object]:true" => "Tools",
+            "tools@[object Object]:true:false" => "Tools",
           },
           "exports": Map {
             "Tools" => Object {
@@ -3229,6 +3313,7 @@ Map {
     }",
               "done": true,
               "id": "tools",
+              "isDefault": false,
               "isType": true,
               "name": "Tools",
               "promise": Promise {},
@@ -3260,8 +3345,8 @@ Map {
   },
   "paths/store/order.ts" => Script {
     "cache": Map {
-      "OperationCoder@petstore.yaml#/paths/~1store~1order/post@[object Object]:false" => "POST",
-      "OperationTypeCoder@petstore.yaml#/paths/~1store~1order/post@path-types/store/order.types.ts:true" => "HTTP_POST",
+      "OperationCoder@petstore.yaml#/paths/~1store~1order/post@[object Object]:false:false" => "POST",
+      "OperationTypeCoder@petstore.yaml#/paths/~1store~1order/post@path-types/store/order.types.ts:true:false" => "HTTP_POST",
     },
     "exports": Map {
       "POST" => Object {
@@ -3270,6 +3355,7 @@ Map {
     }",
         "done": true,
         "id": "OperationCoder@petstore.yaml#/paths/~1store~1order/post",
+        "isDefault": false,
         "isType": false,
         "name": "POST",
         "promise": Promise {},
@@ -3283,9 +3369,9 @@ Map {
         "name": "HTTP_POST",
         "script": Script {
           "cache": Map {
-            "OperationTypeCoder@petstore.yaml#/paths/~1store~1order/post@[object Object]:true" => "HTTP_POST",
-            "SchemaTypeCoder@undefined@components/Order.ts:true" => "Order",
-            "tools@internal/tools.ts:true" => "Tools",
+            "OperationTypeCoder@petstore.yaml#/paths/~1store~1order/post@[object Object]:true:false" => "HTTP_POST",
+            "SchemaTypeCoder@undefined@components/Order.ts:true:false" => "Order",
+            "tools@internal/tools.ts:true:false" => "Tools",
           },
           "exports": Map {
             "HTTP_POST" => Object {
@@ -3317,6 +3403,7 @@ Map {
     | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1store~1order/post",
+              "isDefault": false,
               "isType": true,
               "name": "HTTP_POST",
               "promise": Promise {},
@@ -3343,13 +3430,14 @@ Map {
               "name": "Order",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined@[object Object]:true" => "Order",
+                  "SchemaTypeCoder@undefined@[object Object]:true:false" => "Order",
                 },
                 "exports": Map {
                   "Order" => Object {
                     "code": "{id?: number,petId?: number,quantity?: number,shipDate?: string,status?: string,complete?: boolean}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
+                    "isDefault": false,
                     "isType": true,
                     "name": "Order",
                     "promise": Promise {},
@@ -3371,7 +3459,7 @@ Map {
               "name": "Tools",
               "script": Script {
                 "cache": Map {
-                  "tools@[object Object]:true" => "Tools",
+                  "tools@[object Object]:true:false" => "Tools",
                 },
                 "exports": Map {
                   "Tools" => Object {
@@ -3383,6 +3471,7 @@ Map {
     }",
                     "done": true,
                     "id": "tools",
+                    "isDefault": false,
                     "isType": true,
                     "name": "Tools",
                     "promise": Promise {},
@@ -3423,9 +3512,9 @@ Map {
   },
   "path-types/store/order.types.ts" => Script {
     "cache": Map {
-      "OperationTypeCoder@petstore.yaml#/paths/~1store~1order/post@[object Object]:true" => "HTTP_POST",
-      "SchemaTypeCoder@undefined@components/Order.ts:true" => "Order",
-      "tools@internal/tools.ts:true" => "Tools",
+      "OperationTypeCoder@petstore.yaml#/paths/~1store~1order/post@[object Object]:true:false" => "HTTP_POST",
+      "SchemaTypeCoder@undefined@components/Order.ts:true:false" => "Order",
+      "tools@internal/tools.ts:true:false" => "Tools",
     },
     "exports": Map {
       "HTTP_POST" => Object {
@@ -3457,6 +3546,7 @@ Map {
     | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1store~1order/post",
+        "isDefault": false,
         "isType": true,
         "name": "HTTP_POST",
         "promise": Promise {},
@@ -3483,13 +3573,14 @@ Map {
         "name": "Order",
         "script": Script {
           "cache": Map {
-            "SchemaTypeCoder@undefined@[object Object]:true" => "Order",
+            "SchemaTypeCoder@undefined@[object Object]:true:false" => "Order",
           },
           "exports": Map {
             "Order" => Object {
               "code": "{id?: number,petId?: number,quantity?: number,shipDate?: string,status?: string,complete?: boolean}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
+              "isDefault": false,
               "isType": true,
               "name": "Order",
               "promise": Promise {},
@@ -3511,7 +3602,7 @@ Map {
         "name": "Tools",
         "script": Script {
           "cache": Map {
-            "tools@[object Object]:true" => "Tools",
+            "tools@[object Object]:true:false" => "Tools",
           },
           "exports": Map {
             "Tools" => Object {
@@ -3523,6 +3614,7 @@ Map {
     }",
               "done": true,
               "id": "tools",
+              "isDefault": false,
               "isType": true,
               "name": "Tools",
               "promise": Promise {},
@@ -3554,10 +3646,10 @@ Map {
   },
   "paths/store/order/{orderId}.ts" => Script {
     "cache": Map {
-      "OperationCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get@[object Object]:false" => "GET",
-      "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get@path-types/store/order/{orderId}.types.ts:true" => "HTTP_GET",
-      "OperationCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete@[object Object]:false" => "DELETE",
-      "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete@path-types/store/order/{orderId}.types.ts:true" => "HTTP_DELETE",
+      "OperationCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get@[object Object]:false:false" => "GET",
+      "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get@path-types/store/order/{orderId}.types.ts:true:false" => "HTTP_GET",
+      "OperationCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete@[object Object]:false:false" => "DELETE",
+      "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete@path-types/store/order/{orderId}.types.ts:true:false" => "HTTP_DELETE",
     },
     "exports": Map {
       "GET" => Object {
@@ -3566,6 +3658,7 @@ Map {
     }",
         "done": true,
         "id": "OperationCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get",
+        "isDefault": false,
         "isType": false,
         "name": "GET",
         "promise": Promise {},
@@ -3575,6 +3668,7 @@ Map {
         "code": "() => { /* no response content specified in the OpenAPI document */ }",
         "done": true,
         "id": "OperationCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete",
+        "isDefault": false,
         "isType": false,
         "name": "DELETE",
         "promise": Promise {},
@@ -3588,10 +3682,10 @@ Map {
         "name": "HTTP_GET",
         "script": Script {
           "cache": Map {
-            "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get@[object Object]:true" => "HTTP_GET",
-            "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete@[object Object]:true" => "HTTP_DELETE",
-            "SchemaTypeCoder@undefined@components/Order.ts:true" => "Order",
-            "tools@internal/tools.ts:true" => "Tools",
+            "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get@[object Object]:true:false" => "HTTP_GET",
+            "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete@[object Object]:true:false" => "HTTP_DELETE",
+            "SchemaTypeCoder@undefined@components/Order.ts:true:false" => "Order",
+            "tools@internal/tools.ts:true:false" => "Tools",
           },
           "exports": Map {
             "HTTP_GET" => Object {
@@ -3641,6 +3735,7 @@ Map {
     | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get",
+              "isDefault": false,
               "isType": true,
               "name": "HTTP_GET",
               "promise": Promise {},
@@ -3673,6 +3768,7 @@ Map {
     | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete",
+              "isDefault": false,
               "isType": true,
               "name": "HTTP_DELETE",
               "promise": Promise {},
@@ -3699,13 +3795,14 @@ Map {
               "name": "Order",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined@[object Object]:true" => "Order",
+                  "SchemaTypeCoder@undefined@[object Object]:true:false" => "Order",
                 },
                 "exports": Map {
                   "Order" => Object {
                     "code": "{id?: number,petId?: number,quantity?: number,shipDate?: string,status?: string,complete?: boolean}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
+                    "isDefault": false,
                     "isType": true,
                     "name": "Order",
                     "promise": Promise {},
@@ -3727,7 +3824,7 @@ Map {
               "name": "Tools",
               "script": Script {
                 "cache": Map {
-                  "tools@[object Object]:true" => "Tools",
+                  "tools@[object Object]:true:false" => "Tools",
                 },
                 "exports": Map {
                   "Tools" => Object {
@@ -3739,6 +3836,7 @@ Map {
     }",
                     "done": true,
                     "id": "tools",
+                    "isDefault": false,
                     "isType": true,
                     "name": "Tools",
                     "promise": Promise {},
@@ -3774,10 +3872,10 @@ Map {
         "name": "HTTP_DELETE",
         "script": Script {
           "cache": Map {
-            "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get@[object Object]:true" => "HTTP_GET",
-            "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete@[object Object]:true" => "HTTP_DELETE",
-            "SchemaTypeCoder@undefined@components/Order.ts:true" => "Order",
-            "tools@internal/tools.ts:true" => "Tools",
+            "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get@[object Object]:true:false" => "HTTP_GET",
+            "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete@[object Object]:true:false" => "HTTP_DELETE",
+            "SchemaTypeCoder@undefined@components/Order.ts:true:false" => "Order",
+            "tools@internal/tools.ts:true:false" => "Tools",
           },
           "exports": Map {
             "HTTP_GET" => Object {
@@ -3827,6 +3925,7 @@ Map {
     | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get",
+              "isDefault": false,
               "isType": true,
               "name": "HTTP_GET",
               "promise": Promise {},
@@ -3859,6 +3958,7 @@ Map {
     | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete",
+              "isDefault": false,
               "isType": true,
               "name": "HTTP_DELETE",
               "promise": Promise {},
@@ -3885,13 +3985,14 @@ Map {
               "name": "Order",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined@[object Object]:true" => "Order",
+                  "SchemaTypeCoder@undefined@[object Object]:true:false" => "Order",
                 },
                 "exports": Map {
                   "Order" => Object {
                     "code": "{id?: number,petId?: number,quantity?: number,shipDate?: string,status?: string,complete?: boolean}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
+                    "isDefault": false,
                     "isType": true,
                     "name": "Order",
                     "promise": Promise {},
@@ -3913,7 +4014,7 @@ Map {
               "name": "Tools",
               "script": Script {
                 "cache": Map {
-                  "tools@[object Object]:true" => "Tools",
+                  "tools@[object Object]:true:false" => "Tools",
                 },
                 "exports": Map {
                   "Tools" => Object {
@@ -3925,6 +4026,7 @@ Map {
     }",
                     "done": true,
                     "id": "tools",
+                    "isDefault": false,
                     "isType": true,
                     "name": "Tools",
                     "promise": Promise {},
@@ -3965,10 +4067,10 @@ Map {
   },
   "path-types/store/order/{orderId}.types.ts" => Script {
     "cache": Map {
-      "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get@[object Object]:true" => "HTTP_GET",
-      "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete@[object Object]:true" => "HTTP_DELETE",
-      "SchemaTypeCoder@undefined@components/Order.ts:true" => "Order",
-      "tools@internal/tools.ts:true" => "Tools",
+      "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get@[object Object]:true:false" => "HTTP_GET",
+      "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete@[object Object]:true:false" => "HTTP_DELETE",
+      "SchemaTypeCoder@undefined@components/Order.ts:true:false" => "Order",
+      "tools@internal/tools.ts:true:false" => "Tools",
     },
     "exports": Map {
       "HTTP_GET" => Object {
@@ -4018,6 +4120,7 @@ Map {
     | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get",
+        "isDefault": false,
         "isType": true,
         "name": "HTTP_GET",
         "promise": Promise {},
@@ -4050,6 +4153,7 @@ Map {
     | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete",
+        "isDefault": false,
         "isType": true,
         "name": "HTTP_DELETE",
         "promise": Promise {},
@@ -4076,13 +4180,14 @@ Map {
         "name": "Order",
         "script": Script {
           "cache": Map {
-            "SchemaTypeCoder@undefined@[object Object]:true" => "Order",
+            "SchemaTypeCoder@undefined@[object Object]:true:false" => "Order",
           },
           "exports": Map {
             "Order" => Object {
               "code": "{id?: number,petId?: number,quantity?: number,shipDate?: string,status?: string,complete?: boolean}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
+              "isDefault": false,
               "isType": true,
               "name": "Order",
               "promise": Promise {},
@@ -4104,7 +4209,7 @@ Map {
         "name": "Tools",
         "script": Script {
           "cache": Map {
-            "tools@[object Object]:true" => "Tools",
+            "tools@[object Object]:true:false" => "Tools",
           },
           "exports": Map {
             "Tools" => Object {
@@ -4116,6 +4221,7 @@ Map {
     }",
               "done": true,
               "id": "tools",
+              "isDefault": false,
               "isType": true,
               "name": "Tools",
               "promise": Promise {},
@@ -4147,8 +4253,8 @@ Map {
   },
   "paths/user.ts" => Script {
     "cache": Map {
-      "OperationCoder@petstore.yaml#/paths/~1user/post@[object Object]:false" => "POST",
-      "OperationTypeCoder@petstore.yaml#/paths/~1user/post@path-types/user.types.ts:true" => "HTTP_POST",
+      "OperationCoder@petstore.yaml#/paths/~1user/post@[object Object]:false:false" => "POST",
+      "OperationTypeCoder@petstore.yaml#/paths/~1user/post@path-types/user.types.ts:true:false" => "HTTP_POST",
     },
     "exports": Map {
       "POST" => Object {
@@ -4157,6 +4263,7 @@ Map {
     }",
         "done": true,
         "id": "OperationCoder@petstore.yaml#/paths/~1user/post",
+        "isDefault": false,
         "isType": false,
         "name": "POST",
         "promise": Promise {},
@@ -4170,9 +4277,9 @@ Map {
         "name": "HTTP_POST",
         "script": Script {
           "cache": Map {
-            "OperationTypeCoder@petstore.yaml#/paths/~1user/post@[object Object]:true" => "HTTP_POST",
-            "SchemaTypeCoder@undefined@components/User.ts:true" => "User",
-            "tools@internal/tools.ts:true" => "Tools",
+            "OperationTypeCoder@petstore.yaml#/paths/~1user/post@[object Object]:true:false" => "HTTP_POST",
+            "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
+            "tools@internal/tools.ts:true:false" => "Tools",
           },
           "exports": Map {
             "HTTP_POST" => Object {
@@ -4202,6 +4309,7 @@ Map {
     | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user/post",
+              "isDefault": false,
               "isType": true,
               "name": "HTTP_POST",
               "promise": Promise {},
@@ -4228,13 +4336,14 @@ Map {
               "name": "User",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined@[object Object]:true" => "User",
+                  "SchemaTypeCoder@undefined@[object Object]:true:false" => "User",
                 },
                 "exports": Map {
                   "User" => Object {
                     "code": "{id?: number,username?: string,firstName?: string,lastName?: string,email?: string,password?: string,phone?: string,userStatus?: number}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
+                    "isDefault": false,
                     "isType": true,
                     "name": "User",
                     "promise": Promise {},
@@ -4256,7 +4365,7 @@ Map {
               "name": "Tools",
               "script": Script {
                 "cache": Map {
-                  "tools@[object Object]:true" => "Tools",
+                  "tools@[object Object]:true:false" => "Tools",
                 },
                 "exports": Map {
                   "Tools" => Object {
@@ -4268,6 +4377,7 @@ Map {
     }",
                     "done": true,
                     "id": "tools",
+                    "isDefault": false,
                     "isType": true,
                     "name": "Tools",
                     "promise": Promise {},
@@ -4308,9 +4418,9 @@ Map {
   },
   "path-types/user.types.ts" => Script {
     "cache": Map {
-      "OperationTypeCoder@petstore.yaml#/paths/~1user/post@[object Object]:true" => "HTTP_POST",
-      "SchemaTypeCoder@undefined@components/User.ts:true" => "User",
-      "tools@internal/tools.ts:true" => "Tools",
+      "OperationTypeCoder@petstore.yaml#/paths/~1user/post@[object Object]:true:false" => "HTTP_POST",
+      "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
+      "tools@internal/tools.ts:true:false" => "Tools",
     },
     "exports": Map {
       "HTTP_POST" => Object {
@@ -4340,6 +4450,7 @@ Map {
     | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1user/post",
+        "isDefault": false,
         "isType": true,
         "name": "HTTP_POST",
         "promise": Promise {},
@@ -4366,13 +4477,14 @@ Map {
         "name": "User",
         "script": Script {
           "cache": Map {
-            "SchemaTypeCoder@undefined@[object Object]:true" => "User",
+            "SchemaTypeCoder@undefined@[object Object]:true:false" => "User",
           },
           "exports": Map {
             "User" => Object {
               "code": "{id?: number,username?: string,firstName?: string,lastName?: string,email?: string,password?: string,phone?: string,userStatus?: number}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
+              "isDefault": false,
               "isType": true,
               "name": "User",
               "promise": Promise {},
@@ -4394,7 +4506,7 @@ Map {
         "name": "Tools",
         "script": Script {
           "cache": Map {
-            "tools@[object Object]:true" => "Tools",
+            "tools@[object Object]:true:false" => "Tools",
           },
           "exports": Map {
             "Tools" => Object {
@@ -4406,6 +4518,7 @@ Map {
     }",
               "done": true,
               "id": "tools",
+              "isDefault": false,
               "isType": true,
               "name": "Tools",
               "promise": Promise {},
@@ -4437,8 +4550,8 @@ Map {
   },
   "paths/user/createWithList.ts" => Script {
     "cache": Map {
-      "OperationCoder@petstore.yaml#/paths/~1user~1createWithList/post@[object Object]:false" => "POST",
-      "OperationTypeCoder@petstore.yaml#/paths/~1user~1createWithList/post@path-types/user/createWithList.types.ts:true" => "HTTP_POST",
+      "OperationCoder@petstore.yaml#/paths/~1user~1createWithList/post@[object Object]:false:false" => "POST",
+      "OperationTypeCoder@petstore.yaml#/paths/~1user~1createWithList/post@path-types/user/createWithList.types.ts:true:false" => "HTTP_POST",
     },
     "exports": Map {
       "POST" => Object {
@@ -4447,6 +4560,7 @@ Map {
     }",
         "done": true,
         "id": "OperationCoder@petstore.yaml#/paths/~1user~1createWithList/post",
+        "isDefault": false,
         "isType": false,
         "name": "POST",
         "promise": Promise {},
@@ -4460,9 +4574,9 @@ Map {
         "name": "HTTP_POST",
         "script": Script {
           "cache": Map {
-            "OperationTypeCoder@petstore.yaml#/paths/~1user~1createWithList/post@[object Object]:true" => "HTTP_POST",
-            "SchemaTypeCoder@undefined@components/User.ts:true" => "User",
-            "tools@internal/tools.ts:true" => "Tools",
+            "OperationTypeCoder@petstore.yaml#/paths/~1user~1createWithList/post@[object Object]:true:false" => "HTTP_POST",
+            "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
+            "tools@internal/tools.ts:true:false" => "Tools",
           },
           "exports": Map {
             "HTTP_POST" => Object {
@@ -4502,6 +4616,7 @@ Map {
     | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1createWithList/post",
+              "isDefault": false,
               "isType": true,
               "name": "HTTP_POST",
               "promise": Promise {},
@@ -4528,13 +4643,14 @@ Map {
               "name": "User",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined@[object Object]:true" => "User",
+                  "SchemaTypeCoder@undefined@[object Object]:true:false" => "User",
                 },
                 "exports": Map {
                   "User" => Object {
                     "code": "{id?: number,username?: string,firstName?: string,lastName?: string,email?: string,password?: string,phone?: string,userStatus?: number}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
+                    "isDefault": false,
                     "isType": true,
                     "name": "User",
                     "promise": Promise {},
@@ -4556,7 +4672,7 @@ Map {
               "name": "Tools",
               "script": Script {
                 "cache": Map {
-                  "tools@[object Object]:true" => "Tools",
+                  "tools@[object Object]:true:false" => "Tools",
                 },
                 "exports": Map {
                   "Tools" => Object {
@@ -4568,6 +4684,7 @@ Map {
     }",
                     "done": true,
                     "id": "tools",
+                    "isDefault": false,
                     "isType": true,
                     "name": "Tools",
                     "promise": Promise {},
@@ -4608,9 +4725,9 @@ Map {
   },
   "path-types/user/createWithList.types.ts" => Script {
     "cache": Map {
-      "OperationTypeCoder@petstore.yaml#/paths/~1user~1createWithList/post@[object Object]:true" => "HTTP_POST",
-      "SchemaTypeCoder@undefined@components/User.ts:true" => "User",
-      "tools@internal/tools.ts:true" => "Tools",
+      "OperationTypeCoder@petstore.yaml#/paths/~1user~1createWithList/post@[object Object]:true:false" => "HTTP_POST",
+      "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
+      "tools@internal/tools.ts:true:false" => "Tools",
     },
     "exports": Map {
       "HTTP_POST" => Object {
@@ -4650,6 +4767,7 @@ Map {
     | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1createWithList/post",
+        "isDefault": false,
         "isType": true,
         "name": "HTTP_POST",
         "promise": Promise {},
@@ -4676,13 +4794,14 @@ Map {
         "name": "User",
         "script": Script {
           "cache": Map {
-            "SchemaTypeCoder@undefined@[object Object]:true" => "User",
+            "SchemaTypeCoder@undefined@[object Object]:true:false" => "User",
           },
           "exports": Map {
             "User" => Object {
               "code": "{id?: number,username?: string,firstName?: string,lastName?: string,email?: string,password?: string,phone?: string,userStatus?: number}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
+              "isDefault": false,
               "isType": true,
               "name": "User",
               "promise": Promise {},
@@ -4704,7 +4823,7 @@ Map {
         "name": "Tools",
         "script": Script {
           "cache": Map {
-            "tools@[object Object]:true" => "Tools",
+            "tools@[object Object]:true:false" => "Tools",
           },
           "exports": Map {
             "Tools" => Object {
@@ -4716,6 +4835,7 @@ Map {
     }",
               "done": true,
               "id": "tools",
+              "isDefault": false,
               "isType": true,
               "name": "Tools",
               "promise": Promise {},
@@ -4747,8 +4867,8 @@ Map {
   },
   "paths/user/login.ts" => Script {
     "cache": Map {
-      "OperationCoder@petstore.yaml#/paths/~1user~1login/get@[object Object]:false" => "GET",
-      "OperationTypeCoder@petstore.yaml#/paths/~1user~1login/get@path-types/user/login.types.ts:true" => "HTTP_GET",
+      "OperationCoder@petstore.yaml#/paths/~1user~1login/get@[object Object]:false:false" => "GET",
+      "OperationTypeCoder@petstore.yaml#/paths/~1user~1login/get@path-types/user/login.types.ts:true:false" => "HTTP_GET",
     },
     "exports": Map {
       "GET" => Object {
@@ -4757,6 +4877,7 @@ Map {
     }",
         "done": true,
         "id": "OperationCoder@petstore.yaml#/paths/~1user~1login/get",
+        "isDefault": false,
         "isType": false,
         "name": "GET",
         "promise": Promise {},
@@ -4770,8 +4891,8 @@ Map {
         "name": "HTTP_GET",
         "script": Script {
           "cache": Map {
-            "OperationTypeCoder@petstore.yaml#/paths/~1user~1login/get@[object Object]:true" => "HTTP_GET",
-            "tools@internal/tools.ts:true" => "Tools",
+            "OperationTypeCoder@petstore.yaml#/paths/~1user~1login/get@[object Object]:true:false" => "HTTP_GET",
+            "tools@internal/tools.ts:true:false" => "Tools",
           },
           "exports": Map {
             "HTTP_GET" => Object {
@@ -4811,6 +4932,7 @@ Map {
     | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1login/get",
+              "isDefault": false,
               "isType": true,
               "name": "HTTP_GET",
               "promise": Promise {},
@@ -4837,7 +4959,7 @@ Map {
               "name": "Tools",
               "script": Script {
                 "cache": Map {
-                  "tools@[object Object]:true" => "Tools",
+                  "tools@[object Object]:true:false" => "Tools",
                 },
                 "exports": Map {
                   "Tools" => Object {
@@ -4849,6 +4971,7 @@ Map {
     }",
                     "done": true,
                     "id": "tools",
+                    "isDefault": false,
                     "isType": true,
                     "name": "Tools",
                     "promise": Promise {},
@@ -4889,8 +5012,8 @@ Map {
   },
   "path-types/user/login.types.ts" => Script {
     "cache": Map {
-      "OperationTypeCoder@petstore.yaml#/paths/~1user~1login/get@[object Object]:true" => "HTTP_GET",
-      "tools@internal/tools.ts:true" => "Tools",
+      "OperationTypeCoder@petstore.yaml#/paths/~1user~1login/get@[object Object]:true:false" => "HTTP_GET",
+      "tools@internal/tools.ts:true:false" => "Tools",
     },
     "exports": Map {
       "HTTP_GET" => Object {
@@ -4930,6 +5053,7 @@ Map {
     | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1login/get",
+        "isDefault": false,
         "isType": true,
         "name": "HTTP_GET",
         "promise": Promise {},
@@ -4956,7 +5080,7 @@ Map {
         "name": "Tools",
         "script": Script {
           "cache": Map {
-            "tools@[object Object]:true" => "Tools",
+            "tools@[object Object]:true:false" => "Tools",
           },
           "exports": Map {
             "Tools" => Object {
@@ -4968,6 +5092,7 @@ Map {
     }",
               "done": true,
               "id": "tools",
+              "isDefault": false,
               "isType": true,
               "name": "Tools",
               "promise": Promise {},
@@ -4999,14 +5124,15 @@ Map {
   },
   "paths/user/logout.ts" => Script {
     "cache": Map {
-      "OperationCoder@petstore.yaml#/paths/~1user~1logout/get@[object Object]:false" => "GET",
-      "OperationTypeCoder@petstore.yaml#/paths/~1user~1logout/get@path-types/user/logout.types.ts:true" => "HTTP_GET",
+      "OperationCoder@petstore.yaml#/paths/~1user~1logout/get@[object Object]:false:false" => "GET",
+      "OperationTypeCoder@petstore.yaml#/paths/~1user~1logout/get@path-types/user/logout.types.ts:true:false" => "HTTP_GET",
     },
     "exports": Map {
       "GET" => Object {
         "code": "() => { /* no response content specified in the OpenAPI document */ }",
         "done": true,
         "id": "OperationCoder@petstore.yaml#/paths/~1user~1logout/get",
+        "isDefault": false,
         "isType": false,
         "name": "GET",
         "promise": Promise {},
@@ -5020,8 +5146,8 @@ Map {
         "name": "HTTP_GET",
         "script": Script {
           "cache": Map {
-            "OperationTypeCoder@petstore.yaml#/paths/~1user~1logout/get@[object Object]:true" => "HTTP_GET",
-            "tools@internal/tools.ts:true" => "Tools",
+            "OperationTypeCoder@petstore.yaml#/paths/~1user~1logout/get@[object Object]:true:false" => "HTTP_GET",
+            "tools@internal/tools.ts:true:false" => "Tools",
           },
           "exports": Map {
             "HTTP_GET" => Object {
@@ -5041,6 +5167,7 @@ Map {
     | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1logout/get",
+              "isDefault": false,
               "isType": true,
               "name": "HTTP_GET",
               "promise": Promise {},
@@ -5067,7 +5194,7 @@ Map {
               "name": "Tools",
               "script": Script {
                 "cache": Map {
-                  "tools@[object Object]:true" => "Tools",
+                  "tools@[object Object]:true:false" => "Tools",
                 },
                 "exports": Map {
                   "Tools" => Object {
@@ -5079,6 +5206,7 @@ Map {
     }",
                     "done": true,
                     "id": "tools",
+                    "isDefault": false,
                     "isType": true,
                     "name": "Tools",
                     "promise": Promise {},
@@ -5119,8 +5247,8 @@ Map {
   },
   "path-types/user/logout.types.ts" => Script {
     "cache": Map {
-      "OperationTypeCoder@petstore.yaml#/paths/~1user~1logout/get@[object Object]:true" => "HTTP_GET",
-      "tools@internal/tools.ts:true" => "Tools",
+      "OperationTypeCoder@petstore.yaml#/paths/~1user~1logout/get@[object Object]:true:false" => "HTTP_GET",
+      "tools@internal/tools.ts:true:false" => "Tools",
     },
     "exports": Map {
       "HTTP_GET" => Object {
@@ -5140,6 +5268,7 @@ Map {
     | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1logout/get",
+        "isDefault": false,
         "isType": true,
         "name": "HTTP_GET",
         "promise": Promise {},
@@ -5166,7 +5295,7 @@ Map {
         "name": "Tools",
         "script": Script {
           "cache": Map {
-            "tools@[object Object]:true" => "Tools",
+            "tools@[object Object]:true:false" => "Tools",
           },
           "exports": Map {
             "Tools" => Object {
@@ -5178,6 +5307,7 @@ Map {
     }",
               "done": true,
               "id": "tools",
+              "isDefault": false,
               "isType": true,
               "name": "Tools",
               "promise": Promise {},
@@ -5209,12 +5339,12 @@ Map {
   },
   "paths/user/{username}.ts" => Script {
     "cache": Map {
-      "OperationCoder@petstore.yaml#/paths/~1user~1{username}/get@[object Object]:false" => "GET",
-      "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/get@path-types/user/{username}.types.ts:true" => "HTTP_GET",
-      "OperationCoder@petstore.yaml#/paths/~1user~1{username}/put@[object Object]:false" => "PUT",
-      "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/put@path-types/user/{username}.types.ts:true" => "HTTP_PUT",
-      "OperationCoder@petstore.yaml#/paths/~1user~1{username}/delete@[object Object]:false" => "DELETE",
-      "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/delete@path-types/user/{username}.types.ts:true" => "HTTP_DELETE",
+      "OperationCoder@petstore.yaml#/paths/~1user~1{username}/get@[object Object]:false:false" => "GET",
+      "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/get@path-types/user/{username}.types.ts:true:false" => "HTTP_GET",
+      "OperationCoder@petstore.yaml#/paths/~1user~1{username}/put@[object Object]:false:false" => "PUT",
+      "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/put@path-types/user/{username}.types.ts:true:false" => "HTTP_PUT",
+      "OperationCoder@petstore.yaml#/paths/~1user~1{username}/delete@[object Object]:false:false" => "DELETE",
+      "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/delete@path-types/user/{username}.types.ts:true:false" => "HTTP_DELETE",
     },
     "exports": Map {
       "GET" => Object {
@@ -5223,6 +5353,7 @@ Map {
     }",
         "done": true,
         "id": "OperationCoder@petstore.yaml#/paths/~1user~1{username}/get",
+        "isDefault": false,
         "isType": false,
         "name": "GET",
         "promise": Promise {},
@@ -5232,6 +5363,7 @@ Map {
         "code": "() => { /* no response content specified in the OpenAPI document */ }",
         "done": true,
         "id": "OperationCoder@petstore.yaml#/paths/~1user~1{username}/put",
+        "isDefault": false,
         "isType": false,
         "name": "PUT",
         "promise": Promise {},
@@ -5241,6 +5373,7 @@ Map {
         "code": "() => { /* no response content specified in the OpenAPI document */ }",
         "done": true,
         "id": "OperationCoder@petstore.yaml#/paths/~1user~1{username}/delete",
+        "isDefault": false,
         "isType": false,
         "name": "DELETE",
         "promise": Promise {},
@@ -5254,11 +5387,11 @@ Map {
         "name": "HTTP_GET",
         "script": Script {
           "cache": Map {
-            "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/get@[object Object]:true" => "HTTP_GET",
-            "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/put@[object Object]:true" => "HTTP_PUT",
-            "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/delete@[object Object]:true" => "HTTP_DELETE",
-            "SchemaTypeCoder@undefined@components/User.ts:true" => "User",
-            "tools@internal/tools.ts:true" => "Tools",
+            "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/get@[object Object]:true:false" => "HTTP_GET",
+            "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/put@[object Object]:true:false" => "HTTP_PUT",
+            "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/delete@[object Object]:true:false" => "HTTP_DELETE",
+            "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
+            "tools@internal/tools.ts:true:false" => "Tools",
           },
           "exports": Map {
             "HTTP_GET" => Object {
@@ -5308,6 +5441,7 @@ Map {
     | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/get",
+              "isDefault": false,
               "isType": true,
               "name": "HTTP_GET",
               "promise": Promise {},
@@ -5330,6 +5464,7 @@ Map {
     | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/put",
+              "isDefault": false,
               "isType": true,
               "name": "HTTP_PUT",
               "promise": Promise {},
@@ -5362,6 +5497,7 @@ Map {
     | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/delete",
+              "isDefault": false,
               "isType": true,
               "name": "HTTP_DELETE",
               "promise": Promise {},
@@ -5388,13 +5524,14 @@ Map {
               "name": "User",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined@[object Object]:true" => "User",
+                  "SchemaTypeCoder@undefined@[object Object]:true:false" => "User",
                 },
                 "exports": Map {
                   "User" => Object {
                     "code": "{id?: number,username?: string,firstName?: string,lastName?: string,email?: string,password?: string,phone?: string,userStatus?: number}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
+                    "isDefault": false,
                     "isType": true,
                     "name": "User",
                     "promise": Promise {},
@@ -5416,7 +5553,7 @@ Map {
               "name": "Tools",
               "script": Script {
                 "cache": Map {
-                  "tools@[object Object]:true" => "Tools",
+                  "tools@[object Object]:true:false" => "Tools",
                 },
                 "exports": Map {
                   "Tools" => Object {
@@ -5428,6 +5565,7 @@ Map {
     }",
                     "done": true,
                     "id": "tools",
+                    "isDefault": false,
                     "isType": true,
                     "name": "Tools",
                     "promise": Promise {},
@@ -5463,11 +5601,11 @@ Map {
         "name": "HTTP_PUT",
         "script": Script {
           "cache": Map {
-            "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/get@[object Object]:true" => "HTTP_GET",
-            "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/put@[object Object]:true" => "HTTP_PUT",
-            "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/delete@[object Object]:true" => "HTTP_DELETE",
-            "SchemaTypeCoder@undefined@components/User.ts:true" => "User",
-            "tools@internal/tools.ts:true" => "Tools",
+            "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/get@[object Object]:true:false" => "HTTP_GET",
+            "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/put@[object Object]:true:false" => "HTTP_PUT",
+            "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/delete@[object Object]:true:false" => "HTTP_DELETE",
+            "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
+            "tools@internal/tools.ts:true:false" => "Tools",
           },
           "exports": Map {
             "HTTP_GET" => Object {
@@ -5517,6 +5655,7 @@ Map {
     | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/get",
+              "isDefault": false,
               "isType": true,
               "name": "HTTP_GET",
               "promise": Promise {},
@@ -5539,6 +5678,7 @@ Map {
     | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/put",
+              "isDefault": false,
               "isType": true,
               "name": "HTTP_PUT",
               "promise": Promise {},
@@ -5571,6 +5711,7 @@ Map {
     | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/delete",
+              "isDefault": false,
               "isType": true,
               "name": "HTTP_DELETE",
               "promise": Promise {},
@@ -5597,13 +5738,14 @@ Map {
               "name": "User",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined@[object Object]:true" => "User",
+                  "SchemaTypeCoder@undefined@[object Object]:true:false" => "User",
                 },
                 "exports": Map {
                   "User" => Object {
                     "code": "{id?: number,username?: string,firstName?: string,lastName?: string,email?: string,password?: string,phone?: string,userStatus?: number}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
+                    "isDefault": false,
                     "isType": true,
                     "name": "User",
                     "promise": Promise {},
@@ -5625,7 +5767,7 @@ Map {
               "name": "Tools",
               "script": Script {
                 "cache": Map {
-                  "tools@[object Object]:true" => "Tools",
+                  "tools@[object Object]:true:false" => "Tools",
                 },
                 "exports": Map {
                   "Tools" => Object {
@@ -5637,6 +5779,7 @@ Map {
     }",
                     "done": true,
                     "id": "tools",
+                    "isDefault": false,
                     "isType": true,
                     "name": "Tools",
                     "promise": Promise {},
@@ -5672,11 +5815,11 @@ Map {
         "name": "HTTP_DELETE",
         "script": Script {
           "cache": Map {
-            "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/get@[object Object]:true" => "HTTP_GET",
-            "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/put@[object Object]:true" => "HTTP_PUT",
-            "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/delete@[object Object]:true" => "HTTP_DELETE",
-            "SchemaTypeCoder@undefined@components/User.ts:true" => "User",
-            "tools@internal/tools.ts:true" => "Tools",
+            "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/get@[object Object]:true:false" => "HTTP_GET",
+            "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/put@[object Object]:true:false" => "HTTP_PUT",
+            "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/delete@[object Object]:true:false" => "HTTP_DELETE",
+            "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
+            "tools@internal/tools.ts:true:false" => "Tools",
           },
           "exports": Map {
             "HTTP_GET" => Object {
@@ -5726,6 +5869,7 @@ Map {
     | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/get",
+              "isDefault": false,
               "isType": true,
               "name": "HTTP_GET",
               "promise": Promise {},
@@ -5748,6 +5892,7 @@ Map {
     | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/put",
+              "isDefault": false,
               "isType": true,
               "name": "HTTP_PUT",
               "promise": Promise {},
@@ -5780,6 +5925,7 @@ Map {
     | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/delete",
+              "isDefault": false,
               "isType": true,
               "name": "HTTP_DELETE",
               "promise": Promise {},
@@ -5806,13 +5952,14 @@ Map {
               "name": "User",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined@[object Object]:true" => "User",
+                  "SchemaTypeCoder@undefined@[object Object]:true:false" => "User",
                 },
                 "exports": Map {
                   "User" => Object {
                     "code": "{id?: number,username?: string,firstName?: string,lastName?: string,email?: string,password?: string,phone?: string,userStatus?: number}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
+                    "isDefault": false,
                     "isType": true,
                     "name": "User",
                     "promise": Promise {},
@@ -5834,7 +5981,7 @@ Map {
               "name": "Tools",
               "script": Script {
                 "cache": Map {
-                  "tools@[object Object]:true" => "Tools",
+                  "tools@[object Object]:true:false" => "Tools",
                 },
                 "exports": Map {
                   "Tools" => Object {
@@ -5846,6 +5993,7 @@ Map {
     }",
                     "done": true,
                     "id": "tools",
+                    "isDefault": false,
                     "isType": true,
                     "name": "Tools",
                     "promise": Promise {},
@@ -5886,11 +6034,11 @@ Map {
   },
   "path-types/user/{username}.types.ts" => Script {
     "cache": Map {
-      "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/get@[object Object]:true" => "HTTP_GET",
-      "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/put@[object Object]:true" => "HTTP_PUT",
-      "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/delete@[object Object]:true" => "HTTP_DELETE",
-      "SchemaTypeCoder@undefined@components/User.ts:true" => "User",
-      "tools@internal/tools.ts:true" => "Tools",
+      "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/get@[object Object]:true:false" => "HTTP_GET",
+      "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/put@[object Object]:true:false" => "HTTP_PUT",
+      "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/delete@[object Object]:true:false" => "HTTP_DELETE",
+      "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
+      "tools@internal/tools.ts:true:false" => "Tools",
     },
     "exports": Map {
       "HTTP_GET" => Object {
@@ -5940,6 +6088,7 @@ Map {
     | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/get",
+        "isDefault": false,
         "isType": true,
         "name": "HTTP_GET",
         "promise": Promise {},
@@ -5962,6 +6111,7 @@ Map {
     | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/put",
+        "isDefault": false,
         "isType": true,
         "name": "HTTP_PUT",
         "promise": Promise {},
@@ -5994,6 +6144,7 @@ Map {
     | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/delete",
+        "isDefault": false,
         "isType": true,
         "name": "HTTP_DELETE",
         "promise": Promise {},
@@ -6020,13 +6171,14 @@ Map {
         "name": "User",
         "script": Script {
           "cache": Map {
-            "SchemaTypeCoder@undefined@[object Object]:true" => "User",
+            "SchemaTypeCoder@undefined@[object Object]:true:false" => "User",
           },
           "exports": Map {
             "User" => Object {
               "code": "{id?: number,username?: string,firstName?: string,lastName?: string,email?: string,password?: string,phone?: string,userStatus?: number}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
+              "isDefault": false,
               "isType": true,
               "name": "User",
               "promise": Promise {},
@@ -6048,7 +6200,7 @@ Map {
         "name": "Tools",
         "script": Script {
           "cache": Map {
-            "tools@[object Object]:true" => "Tools",
+            "tools@[object Object]:true:false" => "Tools",
           },
           "exports": Map {
             "Tools" => Object {
@@ -6060,6 +6212,7 @@ Map {
     }",
               "done": true,
               "id": "tools",
+              "isDefault": false,
               "isType": true,
               "name": "Tools",
               "promise": Promise {},
@@ -6091,15 +6244,16 @@ Map {
   },
   "components/Pet.ts" => Script {
     "cache": Map {
-      "SchemaTypeCoder@undefined@[object Object]:true" => "Pet",
-      "SchemaTypeCoder@undefined@components/Category.ts:true" => "Category",
-      "SchemaTypeCoder@undefined@components/Tag.ts:true" => "Tag",
+      "SchemaTypeCoder@undefined@[object Object]:true:false" => "Pet",
+      "SchemaTypeCoder@undefined@components/Category.ts:true:false" => "Category",
+      "SchemaTypeCoder@undefined@components/Tag.ts:true:false" => "Tag",
     },
     "exports": Map {
       "Pet" => Object {
         "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
         "done": true,
         "id": "SchemaTypeCoder@undefined",
+        "isDefault": false,
         "isType": true,
         "name": "Pet",
         "promise": Promise {},
@@ -6113,13 +6267,14 @@ Map {
         "name": "Category",
         "script": Script {
           "cache": Map {
-            "SchemaTypeCoder@undefined@[object Object]:true" => "Category",
+            "SchemaTypeCoder@undefined@[object Object]:true:false" => "Category",
           },
           "exports": Map {
             "Category" => Object {
               "code": "{id?: number,name?: string}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
+              "isDefault": false,
               "isType": true,
               "name": "Category",
               "promise": Promise {},
@@ -6141,13 +6296,14 @@ Map {
         "name": "Tag",
         "script": Script {
           "cache": Map {
-            "SchemaTypeCoder@undefined@[object Object]:true" => "Tag",
+            "SchemaTypeCoder@undefined@[object Object]:true:false" => "Tag",
           },
           "exports": Map {
             "Tag" => Object {
               "code": "{id?: number,name?: string}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
+              "isDefault": false,
               "isType": true,
               "name": "Tag",
               "promise": Promise {},
@@ -6174,7 +6330,7 @@ Map {
   },
   "internal/tools.ts" => Script {
     "cache": Map {
-      "tools@[object Object]:true" => "Tools",
+      "tools@[object Object]:true:false" => "Tools",
     },
     "exports": Map {
       "Tools" => Object {
@@ -6186,6 +6342,7 @@ Map {
     }",
         "done": true,
         "id": "tools",
+        "isDefault": false,
         "isType": true,
         "name": "Tools",
         "promise": Promise {},
@@ -6208,13 +6365,14 @@ Map {
   },
   "components/ApiResponse.ts" => Script {
     "cache": Map {
-      "SchemaTypeCoder@undefined@[object Object]:true" => "ApiResponse",
+      "SchemaTypeCoder@undefined@[object Object]:true:false" => "ApiResponse",
     },
     "exports": Map {
       "ApiResponse" => Object {
         "code": "{code?: number,type?: string,message?: string}",
         "done": true,
         "id": "SchemaTypeCoder@undefined",
+        "isDefault": false,
         "isType": true,
         "name": "ApiResponse",
         "promise": Promise {},
@@ -6232,13 +6390,14 @@ Map {
   },
   "components/Order.ts" => Script {
     "cache": Map {
-      "SchemaTypeCoder@undefined@[object Object]:true" => "Order",
+      "SchemaTypeCoder@undefined@[object Object]:true:false" => "Order",
     },
     "exports": Map {
       "Order" => Object {
         "code": "{id?: number,petId?: number,quantity?: number,shipDate?: string,status?: string,complete?: boolean}",
         "done": true,
         "id": "SchemaTypeCoder@undefined",
+        "isDefault": false,
         "isType": true,
         "name": "Order",
         "promise": Promise {},
@@ -6256,13 +6415,14 @@ Map {
   },
   "components/User.ts" => Script {
     "cache": Map {
-      "SchemaTypeCoder@undefined@[object Object]:true" => "User",
+      "SchemaTypeCoder@undefined@[object Object]:true:false" => "User",
     },
     "exports": Map {
       "User" => Object {
         "code": "{id?: number,username?: string,firstName?: string,lastName?: string,email?: string,password?: string,phone?: string,userStatus?: number}",
         "done": true,
         "id": "SchemaTypeCoder@undefined",
+        "isDefault": false,
         "isType": true,
         "name": "User",
         "promise": Promise {},
@@ -6280,13 +6440,14 @@ Map {
   },
   "components/Category.ts" => Script {
     "cache": Map {
-      "SchemaTypeCoder@undefined@[object Object]:true" => "Category",
+      "SchemaTypeCoder@undefined@[object Object]:true:false" => "Category",
     },
     "exports": Map {
       "Category" => Object {
         "code": "{id?: number,name?: string}",
         "done": true,
         "id": "SchemaTypeCoder@undefined",
+        "isDefault": false,
         "isType": true,
         "name": "Category",
         "promise": Promise {},
@@ -6304,13 +6465,14 @@ Map {
   },
   "components/Tag.ts" => Script {
     "cache": Map {
-      "SchemaTypeCoder@undefined@[object Object]:true" => "Tag",
+      "SchemaTypeCoder@undefined@[object Object]:true:false" => "Tag",
     },
     "exports": Map {
       "Tag" => Object {
         "code": "{id?: number,name?: string}",
         "done": true,
         "id": "SchemaTypeCoder@undefined",
+        "isDefault": false,
         "isType": true,
         "name": "Tag",
         "promise": Promise {},

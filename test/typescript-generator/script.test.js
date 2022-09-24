@@ -62,6 +62,7 @@ describe("a Script", () => {
       script: exportingScript,
       name: "Account",
       isType: false,
+      isDefault: false,
     });
   });
 
@@ -89,10 +90,12 @@ describe("a Script", () => {
 
     script.import(coder);
     script.importType(coder);
+    script.importDefault(coder);
 
     expect(script.importStatements()).toStrictEqual([
       'import { Account0 } from "./export-from-me.js";',
       'import type { Account1 } from "./export-from-me.js";',
+      'import Account2 from "./export-from-me.js";',
     ]);
   });
 
@@ -120,12 +123,14 @@ describe("a Script", () => {
 
     script.export(coder);
     script.exportType(coder);
+    script.exportDefault(coder);
 
     await script.finished();
 
     expect(script.exportStatements()).toStrictEqual([
       "export const Account0 = { };",
       "export type Account1 = { };",
+      "export default { };",
     ]);
   });
 
@@ -136,10 +141,13 @@ describe("a Script", () => {
 
     script.importStatements = () => ["import { foo } from './foo.js;"];
 
-    script.exportStatements = () => ['export const bar = "Bar";'];
+    script.exportStatements = () => [
+      'export const bar = "Bar";',
+      "export default class {};",
+    ];
 
     expect(script.contents()).toBe(
-      'import { foo } from \'./foo.js;\nexport const bar = "Bar";'
+      'import { foo } from \'./foo.js;\nexport const bar = "Bar";\nexport default class {};'
     );
   });
 });
