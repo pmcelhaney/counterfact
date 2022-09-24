@@ -46,7 +46,7 @@ export class ModuleLoader extends EventTarget {
           // eslint-disable-next-line promise/prefer-await-to-then
           .then((endpoint) => {
             if (pathName.includes("#model")) {
-              this.modelRegistry.add(endpoint.model);
+              this.modelRegistry.add(endpoint.default);
 
               return "model";
             }

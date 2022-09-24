@@ -151,7 +151,7 @@ describe("a module loader", () => {
   it("finds a model and adds it to the model registry", async () => {
     const files = {
       "#model.mjs": `
-      export const model = "main";
+      export default "main";
       `,
       "hello/#model.mjs": `
       export const model = "hello";
