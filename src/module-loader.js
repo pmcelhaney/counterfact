@@ -56,7 +56,7 @@ export class ModuleLoader extends EventTarget {
         import(`${escape(pathName)}?cacheBust=${Date.now()}`)
           // eslint-disable-next-line promise/prefer-await-to-then
           .then((endpoint) => {
-            if (pathName.includes("#model")) {
+            if (pathName.includes("$model")) {
               return "model (ignored)";
             }
 
@@ -104,7 +104,7 @@ export class ModuleLoader extends EventTarget {
         escapePathForImport(nodePath.join(this.basePath, directory, file.name))
       );
 
-      if (file.name.includes("#model")) {
+      if (file.name.includes("$model")) {
         this.addModel(directory, endpoint);
       } else {
         this.registry.add(
