@@ -22,7 +22,9 @@ export class Script {
   }
 
   export(coder, isType = false, isDefault = false) {
-    const cacheKey = `${coder.id}@${nodePath}:${isType}:${isDefault}`;
+    const cacheKey = isDefault
+      ? "default"
+      : `${coder.id}@${nodePath}:${isType}`;
 
     if (this.cache.has(cacheKey)) {
       return this.cache.get(cacheKey);
@@ -68,7 +70,6 @@ export class Script {
     this.export(coder, isType, true);
   }
 
-  // eslint-disable-next-line max-statements
   import(coder, isType = false, isDefault = false) {
     const modulePath = coder.modulePath();
 
@@ -82,13 +83,13 @@ export class Script {
 
     this.cache.set(cacheKey, name);
 
-    if (name === "get") {
-      throw new Error(`name not working, ${coder.names().next().value}`);
-    }
-
     const scriptFromWhichToExport = this.repository.get(modulePath);
 
-    const exportedName = scriptFromWhichToExport.export(coder, isType);
+    const exportedName = scriptFromWhichToExport.export(
+      coder,
+      isType,
+      isDefault
+    );
 
     this.imports.set(name, {
       script: scriptFromWhichToExport,
@@ -104,8 +105,8 @@ export class Script {
     return this.import(coder, true);
   }
 
-  importDefault(coder) {
-    return this.import(coder, false, true);
+  importDefault(coder, isType = true) {
+    return this.import(coder, isType, true);
   }
 
   importExternal(name, modulePath, isType = false) {

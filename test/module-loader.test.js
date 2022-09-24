@@ -91,7 +91,6 @@ describe("a module loader", () => {
     const files = {
       "module.mjs": contents,
       "README.md": contents,
-      "#types.mjs": contents,
     };
 
     await withTemporaryFiles(files, async (basePath, { add }) => {
@@ -102,7 +101,6 @@ describe("a module loader", () => {
       await loader.watch();
 
       await add("other.txt", "should not be loaded");
-      await add("#other.mjs", "should not be loaded");
 
       expect(registry.exists("GET", "/module")).toBe(true);
       expect(registry.exists("GET", "/READMEx")).toBe(false);

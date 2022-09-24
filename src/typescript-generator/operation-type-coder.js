@@ -5,6 +5,7 @@ import { ToolsCoder } from "./tools-coder.js";
 import { SchemaTypeCoder } from "./schema-type-coder.js";
 import { ParametersTypeCoder } from "./parameters-type-coder.js";
 import { ResponseTypeCoder } from "./response-type-coder.js";
+import { ModelCoder } from "./model-coder.js";
 
 export class OperationTypeCoder extends Coder {
   names() {
@@ -67,9 +68,8 @@ export class OperationTypeCoder extends Coder {
   }
 
   write(script) {
-    script.importExternalType(
-      "Context",
-      nodePath.relative(nodePath.dirname(script.path), "context/context.js")
+    const modelImportName = script.importDefault(
+      new ModelCoder(this.requirement)
     );
 
     const parameters = this.requirement.get("parameters");
@@ -100,7 +100,7 @@ export class OperationTypeCoder extends Coder {
       this.requirement.get("responses")
     ).write(script);
 
-    return `({ query, path, header, body, context, tools }: { query: ${queryType}, path: ${pathType}, header: ${headerType}, body: ${bodyType}, context: Context, response: ${responseType}, tools: ${script.importType(
+    return `({ query, path, header, body, model, tools }: { query: ${queryType}, path: ${pathType}, header: ${headerType}, body: ${bodyType}, model: ${modelImportName}, response: ${responseType}, tools: ${script.importType(
       new ToolsCoder(),
       "internal/tools.ts"
     )}}) => ${this.responseTypes(

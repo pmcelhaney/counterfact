@@ -6,14 +6,14 @@ exports[`an OperationTypeCoder generates a complex post operation 1`] = `
   path,
   header,
   body,
-  context,
+  model,
   tools,
 }: {
   query: { name?: string };
   path: { id?: string };
   header: { name?: string };
   body: Type;
-  context: Context;
+  model: default;
   response: ResponseBuilderBuilder<{
     200: {
       headers: {};
@@ -68,14 +68,14 @@ exports[`an OperationTypeCoder generates a simple get operation 1`] = `
   path,
   header,
   body,
-  context,
+  model,
   tools,
 }: {
   query: undefined;
   path: undefined;
   header: undefined;
   body: undefined;
-  context: Context;
+  model: default;
   response: ResponseBuilderBuilder<{
     [statusCode in HttpStatusCode]: {
       headers: {};

@@ -11,6 +11,10 @@ function format(code) {
 const dummyScript = {
   path: ".",
 
+  importDefault() {
+    return "default";
+  },
+
   importExternalType() {
     return "ExternalType";
   },

@@ -65,7 +65,7 @@ export class Repository {
             .then((stat) => stat.isFile())
             .catch(() => false))
         ) {
-          process.stdout.write(`not overwriting${fullPath}\n`);
+          process.stdout.write(`not overwriting ${fullPath}\n`);
 
           return;
         }
