@@ -1,5 +1,5 @@
 export function parentPath(path) {
-  return String(path.split("/").slice(0, -1).join("/"));
+  return String(path.split("/").slice(0, -1).join("/")) || "/";
 }
 
 export class ModelRegistry {
@@ -7,9 +7,14 @@ export class ModelRegistry {
 
   constructor() {
     this.add("", {});
+    this.add("/", {});
   }
 
   add(path, model) {
+    if (model === undefined) {
+      throw new Error("model cannot be undefined");
+    }
+
     this.entries.set(path, model);
   }
 

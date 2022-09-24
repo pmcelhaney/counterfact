@@ -96,7 +96,7 @@ export class ModuleLoader extends EventTarget {
       );
 
       if (file.name.includes("#model")) {
-        this.modelRegistry.add(`/${directory}`, endpoint.model);
+        this.modelRegistry.add(`/${directory}`, endpoint.default);
       } else {
         this.registry.add(
           `/${nodePath.join(directory, nodePath.parse(file.name).name)}`,

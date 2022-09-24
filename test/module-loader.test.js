@@ -154,7 +154,7 @@ describe("a module loader", () => {
       export default "main";
       `,
       "hello/#model.mjs": `
-      export const model = "hello";
+      export default "hello-world"; 
       `,
     };
 
@@ -167,8 +167,9 @@ describe("a module loader", () => {
 
       await loader.load();
 
-      expect(modelRegistry.find("/hello")).toBe("hello");
-      expect(modelRegistry.find("/hello/world")).toBe("hello");
+      expect(modelRegistry.find("/hello")).toBe("hello-world");
+      expect(modelRegistry.find("/hello/world")).toBe("hello-world");
+      expect(modelRegistry.find("/some/other/path")).toBe("main");
     });
   });
 });

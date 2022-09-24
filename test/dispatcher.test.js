@@ -393,7 +393,7 @@ describe("a dispatcher", () => {
     const registry = new Registry();
     const modelRegistry = new ModelRegistry();
 
-    modelRegistry.add("", "test model");
+    modelRegistry.add("/", "test model");
     registry.add("/echo", {
       GET({ model }) {
         return { body: model };

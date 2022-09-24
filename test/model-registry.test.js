@@ -37,7 +37,7 @@ describe("parentPath()", () => {
     expect(parentPath("/hello/world")).toBe("/hello");
   });
 
-  it("returns an empty string when the path is at the root", () => {
-    expect(parentPath("/hello")).toBe("");
+  it("returns '/' when the path is at the root", () => {
+    expect(parentPath("/hello")).toBe("/");
   });
 });
