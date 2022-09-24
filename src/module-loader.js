@@ -96,7 +96,7 @@ export class ModuleLoader extends EventTarget {
       );
 
       if (file.name.includes("#model")) {
-        this.modelRegistry.add(`/${directory}`, endpoint.default);
+        this.addModel(directory, endpoint);
       } else {
         this.registry.add(
           `/${nodePath.join(directory, nodePath.parse(file.name).name)}`,
@@ -106,5 +106,11 @@ export class ModuleLoader extends EventTarget {
     });
 
     await Promise.all(imports);
+  }
+
+  addModel(directory, endpoint) {
+    const Model = endpoint.default;
+
+    this.modelRegistry.add(`/${directory}`, new Model());
   }
 }

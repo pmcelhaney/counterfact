@@ -151,10 +151,10 @@ describe("a module loader", () => {
   it("finds a model and adds it to the model registry", async () => {
     const files = {
       "#model.mjs": `
-      export default "main";
+      export default class { get name() { return  "main" }  };
       `,
       "hello/#model.mjs": `
-      export default "hello-world"; 
+      export default class { get name () { return "hello" } }; 
       `,
     };
 
@@ -167,9 +167,9 @@ describe("a module loader", () => {
 
       await loader.load();
 
-      expect(modelRegistry.find("/hello")).toBe("hello-world");
-      expect(modelRegistry.find("/hello/world")).toBe("hello-world");
-      expect(modelRegistry.find("/some/other/path")).toBe("main");
+      expect(modelRegistry.find("/hello").name).toBe("hello");
+      expect(modelRegistry.find("/hello/world").name).toBe("hello");
+      expect(modelRegistry.find("/some/other/path").name).toBe("main");
     });
   });
 });
