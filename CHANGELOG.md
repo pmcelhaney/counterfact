@@ -1,5 +1,26 @@
 # counterfact
 
+## 0.8.0
+
+### Minor Changes
+
+- 920504a: when encoding JSON schema in TypeScript, mark object properties as optional unless they are required
+- 92dc769: the open API document can now be loaded from a URL rather than a local path
+- ed44ba4: fix so that response[statusCode].random() can use the OpenAPI spec
+- 5a767e7: the generated code for a path now uses response[statusCode].random() instead of a bunch of ugly boilerplate
+
+### Patch Changes
+
+- a1de4c0: add headers to the generated response type
+- 86c1412: fix an issue where random() wasn't reading the examples right
+- Updated dependencies [a1de4c0]
+- Updated dependencies [920504a]
+- Updated dependencies [86c1412]
+- Updated dependencies [92dc769]
+- Updated dependencies [ed44ba4]
+- Updated dependencies [5a767e7]
+  - counterfact@0.8.0
+
 ## 0.7.0
 
 ### Minor Changes
