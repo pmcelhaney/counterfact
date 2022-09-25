@@ -48,14 +48,13 @@ export async function counterfact(
 
   await transpiler.watch();
 
-  const dispatcher = new Dispatcher(
-    registry,
-    new ContextRegistry(),
-    openApiDocument
-  );
+  const contextRegistry = new ContextRegistry();
+
+  const dispatcher = new Dispatcher(registry, contextRegistry, openApiDocument);
   const moduleLoader = new ModuleLoader(
     nodePath.join(modulesPath, "paths"),
-    registry
+    registry,
+    contextRegistry
   );
 
   await moduleLoader.load();

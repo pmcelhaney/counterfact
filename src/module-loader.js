@@ -52,14 +52,14 @@ export class ModuleLoader extends EventTarget {
           this.dispatchEvent(new Event("remove"), pathName);
         }
 
+        if (pathName.includes("$context")) {
+          return;
+        }
+
         // eslint-disable-next-line node/no-unsupported-features/es-syntax, import/no-dynamic-require
         import(`${escape(pathName)}?cacheBust=${Date.now()}`)
           // eslint-disable-next-line promise/prefer-await-to-then
           .then((endpoint) => {
-            if (pathName.includes("$context")) {
-              return "context (ignored)";
-            }
-
             this.registry.add(url, endpoint);
             this.dispatchEvent(new Event(eventName), pathName);
 
