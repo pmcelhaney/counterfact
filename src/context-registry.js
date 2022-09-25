@@ -2,20 +2,19 @@ export function parentPath(path) {
   return String(path.split("/").slice(0, -1).join("/")) || "/";
 }
 
-export class ModelRegistry {
+export class ContextRegistry {
   entries = new Map();
 
   constructor() {
-    this.add("", {});
     this.add("/", {});
   }
 
-  add(path, model) {
-    if (model === undefined) {
-      throw new Error("model cannot be undefined");
+  add(path, context) {
+    if (context === undefined) {
+      throw new Error("context cannot be undefined");
     }
 
-    this.entries.set(path, model);
+    this.entries.set(path, context);
   }
 
   find(path) {

@@ -1,5 +1,5 @@
 import { Dispatcher } from "../src/dispatcher.js";
-import { ModelRegistry } from "../src/model-registry.js";
+import { ContextRegistry } from "../src/context-registry.js";
 import { Registry } from "../src/registry.js";
 
 describe("a dispatcher", () => {
@@ -14,7 +14,7 @@ describe("a dispatcher", () => {
       },
     });
 
-    const dispatcher = new Dispatcher(registry, new ModelRegistry());
+    const dispatcher = new Dispatcher(registry, new ContextRegistry());
     const response = await dispatcher.request({
       method: "GET",
       path: "/hello",
@@ -32,7 +32,7 @@ describe("a dispatcher", () => {
       },
     });
 
-    const dispatcher = new Dispatcher(registry, new ModelRegistry());
+    const dispatcher = new Dispatcher(registry, new ContextRegistry());
     const response = await dispatcher.request({
       method: "GET",
       path: "/hello",
@@ -76,7 +76,7 @@ describe("a dispatcher", () => {
       },
     });
 
-    const dispatcher = new Dispatcher(registry, new ModelRegistry());
+    const dispatcher = new Dispatcher(registry, new ContextRegistry());
     const response = await dispatcher.request({
       method: "GET",
       path: "/hello",
@@ -136,7 +136,7 @@ describe("a dispatcher", () => {
       },
     });
 
-    const dispatcher = new Dispatcher(registry, new ModelRegistry());
+    const dispatcher = new Dispatcher(registry, new ContextRegistry());
     const html = await dispatcher.request({
       method: "GET",
       path: "/hello",
@@ -165,7 +165,7 @@ describe("a dispatcher", () => {
       },
     });
 
-    const dispatcher = new Dispatcher(registry, new ModelRegistry());
+    const dispatcher = new Dispatcher(registry, new ContextRegistry());
     const response = await dispatcher.request({
       method: "GET",
       path: "/a",
@@ -191,7 +191,7 @@ describe("a dispatcher", () => {
       },
     });
 
-    const dispatcher = new Dispatcher(registry, new ModelRegistry());
+    const dispatcher = new Dispatcher(registry, new ContextRegistry());
 
     const authHeader = {
       Authorization: `Bearer: ${mockedJWT}`,
@@ -219,7 +219,7 @@ describe("a dispatcher", () => {
       },
     });
 
-    const dispatcher = new Dispatcher(registry, new ModelRegistry());
+    const dispatcher = new Dispatcher(registry, new ContextRegistry());
     const response = await dispatcher.request({
       method: "GET",
       path: "/a",
@@ -241,7 +241,7 @@ describe("a dispatcher", () => {
       },
     });
 
-    const dispatcher = new Dispatcher(registry, new ModelRegistry());
+    const dispatcher = new Dispatcher(registry, new ContextRegistry());
     const htmlResponse = await dispatcher.request({
       method: "GET",
       path: "/a",
@@ -274,7 +274,7 @@ describe("a dispatcher", () => {
       },
     });
 
-    const dispatcher = new Dispatcher(registry, new ModelRegistry());
+    const dispatcher = new Dispatcher(registry, new ContextRegistry());
     const htmlResponse = await dispatcher.request({
       method: "GET",
       path: "/a",
@@ -319,7 +319,7 @@ describe("a dispatcher", () => {
 
     const dispatcher = new Dispatcher(
       registry,
-      new ModelRegistry(),
+      new ContextRegistry(),
       openApiDocument
     );
     const htmlResponse = await dispatcher.request({
@@ -346,7 +346,7 @@ describe("a dispatcher", () => {
       },
     });
 
-    const dispatcher = new Dispatcher(registry, new ModelRegistry());
+    const dispatcher = new Dispatcher(registry, new ContextRegistry());
     const response = await dispatcher.request({
       method: "PUT",
       path: "/stuff",
@@ -356,7 +356,11 @@ describe("a dispatcher", () => {
   });
 
   it("allows the context object to be mutated directly", async () => {
-    const registry = new Registry({ value: 0 });
+    const registry = new Registry();
+    const contextRegistry = new ContextRegistry();
+    const rootContext = { value: 0 };
+
+    contextRegistry.add("/", rootContext);
 
     registry.add("/increment/{value}", {
       GET({ context, path }) {
@@ -368,7 +372,7 @@ describe("a dispatcher", () => {
       },
     });
 
-    const dispatcher = new Dispatcher(registry, new ModelRegistry());
+    const dispatcher = new Dispatcher(registry, contextRegistry);
 
     const result = await dispatcher.request({
       method: "GET",
@@ -378,7 +382,7 @@ describe("a dispatcher", () => {
 
     expect(result.body).toBe("incremented");
 
-    expect(registry.context.value).toBe(1);
+    expect(rootContext.value).toBe(1);
 
     await dispatcher.request({
       method: "GET",
@@ -386,28 +390,28 @@ describe("a dispatcher", () => {
       body: "",
     });
 
-    expect(registry.context.value).toBe(3);
+    expect(rootContext.value).toBe(3);
   });
 
-  it("passes a model object", async () => {
+  it("passes a context object", async () => {
     const registry = new Registry();
-    const modelRegistry = new ModelRegistry();
+    const contextRegistry = new ContextRegistry();
 
-    modelRegistry.add("/", "test model");
+    contextRegistry.add("/", "test context");
     registry.add("/echo", {
-      GET({ model }) {
-        return { body: model };
+      GET({ context }) {
+        return { body: context };
       },
     });
 
-    const dispatcher = new Dispatcher(registry, modelRegistry);
+    const dispatcher = new Dispatcher(registry, contextRegistry);
 
     const result = await dispatcher.request({
       method: "GET",
       path: "/echo",
     });
 
-    expect(result.body).toBe("test model");
+    expect(result.body).toBe("test context");
   });
 });
 
@@ -424,7 +428,7 @@ describe("given an invalid path", () => {
       },
     });
 
-    const dispatcher = new Dispatcher(registry, new ModelRegistry());
+    const dispatcher = new Dispatcher(registry, new ContextRegistry());
 
     const response = await dispatcher.request({
       method: "PUT",

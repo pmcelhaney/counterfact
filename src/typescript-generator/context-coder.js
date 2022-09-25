@@ -16,7 +16,7 @@ export class ModelCoder extends Coder {
       return "{}";
     }
 
-    return { raw: 'export { default } from "../$model.js"' };
+    return { raw: 'export { default } from "../$context.js"' };
   }
 
   modulePath() {
@@ -25,6 +25,9 @@ export class ModelCoder extends Coder {
       .at(-2)
       .replaceAll("~1", "/");
 
-    return `${nodePath.join("paths", nodePath.dirname(pathString))}/$model.ts`;
+    return `${nodePath.join(
+      "paths",
+      nodePath.dirname(pathString)
+    )}/$context.ts`;
   }
 }

@@ -5,12 +5,6 @@ export class Registry {
     children: {},
   };
 
-  context;
-
-  constructor(context = {}) {
-    this.context = context;
-  }
-
   add(url, module) {
     let node = this.moduleTree;
 
@@ -89,7 +83,6 @@ export class Registry {
     return ({ ...requestData }) =>
       execute({
         ...requestData,
-        context: this.context,
         path: handler.path,
         matchedPath: handler.matchedPath ?? "none",
       });

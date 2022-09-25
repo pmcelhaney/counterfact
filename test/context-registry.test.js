@@ -1,30 +1,30 @@
-import { ModelRegistry, parentPath } from "../src/model-registry.js";
+import { ContextRegistry, parentPath } from "../src/context-registry.js";
 
 describe("moduleRegistry", () => {
-  it("finds a model that exactly matches the path", () => {
+  it("finds a context that exactly matches the path", () => {
     const helloModel = { name: "hello" };
 
-    const registry = new ModelRegistry();
+    const registry = new ContextRegistry();
 
     registry.add("/hello", helloModel);
 
     expect(registry.find("/hello")).toBe(helloModel);
   });
 
-  it("finds a model at a parent path", () => {
+  it("finds a context at a parent path", () => {
     const helloModel = { name: "hello" };
 
-    const registry = new ModelRegistry();
+    const registry = new ContextRegistry();
 
     registry.add("/hello", helloModel);
 
     expect(registry.find("/hello/world")).toBe(helloModel);
   });
 
-  it("returns an empty object when there is no matching model", () => {
+  it("returns an empty object when there is no matching context", () => {
     const helloModel = { name: "hello" };
 
-    const registry = new ModelRegistry();
+    const registry = new ContextRegistry();
 
     registry.add("/hello", helloModel);
 

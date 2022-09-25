@@ -1,7 +1,7 @@
 import { Registry } from "../src/registry.js";
 import { Dispatcher } from "../src/dispatcher.js";
 import { koaMiddleware } from "../src/koa-middleware.js";
-import { ModelRegistry } from "../src/model-registry.js";
+import { ContextRegistry } from "../src/context-registry.js";
 
 describe("koa middleware", () => {
   it("passes the request to the dispatcher and returns the response", async () => {
@@ -15,7 +15,7 @@ describe("koa middleware", () => {
       },
     });
 
-    const dispatcher = new Dispatcher(registry, new ModelRegistry());
+    const dispatcher = new Dispatcher(registry, new ContextRegistry());
     const middleware = koaMiddleware(dispatcher);
     const ctx = {
       request: { path: "/hello", method: "POST", body: { name: "Homer" } },
@@ -38,7 +38,7 @@ describe("koa middleware", () => {
       },
     });
 
-    const dispatcher = new Dispatcher(registry, new ModelRegistry());
+    const dispatcher = new Dispatcher(registry, new ContextRegistry());
     const middleware = koaMiddleware(dispatcher);
     const ctx = {
       request: { path: "/not-modified", method: "GET" },

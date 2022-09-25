@@ -6,7 +6,7 @@ import vm from "node:vm";
 
 import chokidar from "chokidar";
 
-import { ModelRegistry } from "./model-registry.js";
+import { ContextRegistry } from "./context-registry.js";
 
 function escapePathForImport(path) {
   // If --experimental-vm-modules is enabled
@@ -25,13 +25,13 @@ export class ModuleLoader extends EventTarget {
 
   watcher;
 
-  modelRegistry;
+  contextRegistry;
 
-  constructor(basePath, registry, modelRegistry = new ModelRegistry()) {
+  constructor(basePath, registry, contextRegistry = new ContextRegistry()) {
     super();
     this.basePath = basePath;
     this.registry = registry;
-    this.modelRegistry = modelRegistry;
+    this.contextRegistry = contextRegistry;
   }
 
   async watch() {
@@ -56,8 +56,8 @@ export class ModuleLoader extends EventTarget {
         import(`${escape(pathName)}?cacheBust=${Date.now()}`)
           // eslint-disable-next-line promise/prefer-await-to-then
           .then((endpoint) => {
-            if (pathName.includes("$model")) {
-              return "model (ignored)";
+            if (pathName.includes("$context")) {
+              return "context (ignored)";
             }
 
             this.registry.add(url, endpoint);
@@ -104,8 +104,8 @@ export class ModuleLoader extends EventTarget {
         escapePathForImport(nodePath.join(this.basePath, directory, file.name))
       );
 
-      if (file.name.includes("$model")) {
-        this.addModel(directory, endpoint);
+      if (file.name.includes("$context")) {
+        this.addContext(directory, endpoint);
       } else {
         this.registry.add(
           `/${nodePath.join(directory, nodePath.parse(file.name).name)}`,
@@ -117,7 +117,7 @@ export class ModuleLoader extends EventTarget {
     await Promise.all(imports);
   }
 
-  addModel(directory, endpoint) {
-    this.modelRegistry.add(`/${directory}`, endpoint.default);
+  addContext(directory, endpoint) {
+    this.contextRegistry.add(`/${directory}`, endpoint.default);
   }
 }

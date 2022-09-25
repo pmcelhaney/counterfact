@@ -6,9 +6,9 @@ import { Tools } from "./tools.js";
 export class Dispatcher {
   registry;
 
-  constructor(registry, modelRegistry, openApiDocument) {
+  constructor(registry, contextRegistry, openApiDocument) {
     this.registry = registry;
-    this.modelRegistry = modelRegistry;
+    this.contextRegistry = contextRegistry;
     this.openApiDocument = openApiDocument;
   }
 
@@ -25,7 +25,7 @@ export class Dispatcher {
       body,
       query,
       headers,
-      model: this.modelRegistry.find(path),
+      context: this.contextRegistry.find(path),
 
       response: createResponseBuilder(
         this.operationForPathAndMethod(

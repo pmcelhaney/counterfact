@@ -2,7 +2,7 @@ import { once } from "node:events";
 
 import { ModuleLoader } from "../src/module-loader.js";
 import { Registry } from "../src/registry.js";
-import { ModelRegistry } from "../src/model-registry.js";
+import { ContextRegistry } from "../src/context-registry.js";
 
 import { withTemporaryFiles } from "./lib/with-temporary-files.js";
 
@@ -146,24 +146,24 @@ describe("a module loader", () => {
     );
   });
 
-  it("finds a model and adds it to the model registry", async () => {
+  it("finds a context and adds it to the context registry", async () => {
     const files = {
-      "$model.mjs": 'export default "main"',
-      "hello/$model.mjs": 'export default "hello"',
+      "$context.mjs": 'export default "main"',
+      "hello/$context.mjs": 'export default "hello"',
     };
 
     await withTemporaryFiles(files, async (basePath) => {
       const registry = new Registry();
 
-      const modelRegistry = new ModelRegistry();
+      const contextRegistry = new ContextRegistry();
 
-      const loader = new ModuleLoader(basePath, registry, modelRegistry);
+      const loader = new ModuleLoader(basePath, registry, contextRegistry);
 
       await loader.load();
 
-      expect(modelRegistry.find("/hello")).toBe("hello");
-      expect(modelRegistry.find("/hello/world")).toBe("hello");
-      expect(modelRegistry.find("/some/other/path")).toBe("main");
+      expect(contextRegistry.find("/hello")).toBe("hello");
+      expect(contextRegistry.find("/hello/world")).toBe("hello");
+      expect(contextRegistry.find("/some/other/path")).toBe("main");
     });
   });
 });
