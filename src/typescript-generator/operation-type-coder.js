@@ -5,7 +5,7 @@ import { ToolsCoder } from "./tools-coder.js";
 import { SchemaTypeCoder } from "./schema-type-coder.js";
 import { ParametersTypeCoder } from "./parameters-type-coder.js";
 import { ResponseTypeCoder } from "./response-type-coder.js";
-import { ModelCoder } from "./context-coder.js";
+import { ContextCoder } from "./context-coder.js";
 
 export class OperationTypeCoder extends Coder {
   names() {
@@ -69,7 +69,7 @@ export class OperationTypeCoder extends Coder {
 
   write(script) {
     const contextImportName = script.importDefault(
-      new ModelCoder(this.requirement)
+      new ContextCoder(this.requirement)
     );
 
     const parameters = this.requirement.get("parameters");

@@ -2,13 +2,13 @@ import nodePath from "node:path";
 
 import { Coder } from "./coder.js";
 
-export class ModelCoder extends Coder {
+export class ContextCoder extends Coder {
   isRoot() {
     return this.requirement.url.split("/").at(-2).split("~1").length === 2;
   }
 
   names() {
-    return super.names("Model");
+    return super.names("Context");
   }
 
   write() {

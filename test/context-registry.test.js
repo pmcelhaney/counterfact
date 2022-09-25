@@ -2,31 +2,31 @@ import { ContextRegistry, parentPath } from "../src/context-registry.js";
 
 describe("moduleRegistry", () => {
   it("finds a context that exactly matches the path", () => {
-    const helloModel = { name: "hello" };
+    const helloContext = { name: "hello" };
 
     const registry = new ContextRegistry();
 
-    registry.add("/hello", helloModel);
+    registry.add("/hello", helloContext);
 
-    expect(registry.find("/hello")).toBe(helloModel);
+    expect(registry.find("/hello")).toBe(helloContext);
   });
 
   it("finds a context at a parent path", () => {
-    const helloModel = { name: "hello" };
+    const helloContext = { name: "hello" };
 
     const registry = new ContextRegistry();
 
-    registry.add("/hello", helloModel);
+    registry.add("/hello", helloContext);
 
-    expect(registry.find("/hello/world")).toBe(helloModel);
+    expect(registry.find("/hello/world")).toBe(helloContext);
   });
 
   it("returns an empty object when there is no matching context", () => {
-    const helloModel = { name: "hello" };
+    const helloContext = { name: "hello" };
 
     const registry = new ContextRegistry();
 
-    registry.add("/hello", helloModel);
+    registry.add("/hello", helloContext);
 
     expect(registry.find("/goodbye/world")).toStrictEqual({});
   });

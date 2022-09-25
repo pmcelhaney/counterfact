@@ -45,14 +45,14 @@ Map {
           "cache": Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1pet/post@[object Object]:true" => "HTTP_POST",
             "OperationTypeCoder@petstore.yaml#/paths/~1pet/put@[object Object]:true" => "HTTP_PUT",
-            "ModelCoder@petstore.yaml#/paths/~1pet/post@paths//$context.ts:true:true" => "Model",
+            "ContextCoder@petstore.yaml#/paths/~1pet/post@paths//$context.ts:true:true" => "Context",
             "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
             "tools@internal/tools.ts:true:false" => "Tools",
-            "ModelCoder@petstore.yaml#/paths/~1pet/put@paths//$context.ts:true:true" => "Model2",
+            "ContextCoder@petstore.yaml#/paths/~1pet/put@paths//$context.ts:true:true" => "Context2",
           },
           "exports": Map {
             "HTTP_POST" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: Pet, context: Model, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: Pet, context: Context, response: ResponseBuilderBuilder<{
       200: {
           headers: {};
           content: {
@@ -95,7 +95,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_PUT" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: Pet, context: Model2, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: Pet, context: Context2, response: ResponseBuilderBuilder<{
       200: {
           headers: {};
           content: {
@@ -169,22 +169,22 @@ Map {
             },
           },
           "imports": Map {
-            "Model" => Object {
+            "Context" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "Model",
+              "name": "Context",
               "script": Script {
                 "cache": Map {
-                  "default" => "Model",
+                  "default" => "Context",
                 },
                 "exports": Map {
-                  "Model" => Object {
+                  "Context" => Object {
                     "code": "{}",
                     "done": true,
-                    "id": "ModelCoder@petstore.yaml#/paths/~1pet/post",
+                    "id": "ContextCoder@petstore.yaml#/paths/~1pet/post",
                     "isDefault": true,
                     "isType": true,
-                    "name": "Model",
+                    "name": "Context",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -332,22 +332,22 @@ Map {
                 "typeCache": Map {},
               },
             },
-            "Model2" => Object {
+            "Context2" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "Model",
+              "name": "Context",
               "script": Script {
                 "cache": Map {
-                  "default" => "Model",
+                  "default" => "Context",
                 },
                 "exports": Map {
-                  "Model" => Object {
+                  "Context" => Object {
                     "code": "{}",
                     "done": true,
-                    "id": "ModelCoder@petstore.yaml#/paths/~1pet/post",
+                    "id": "ContextCoder@petstore.yaml#/paths/~1pet/post",
                     "isDefault": true,
                     "isType": true,
-                    "name": "Model",
+                    "name": "Context",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -379,14 +379,14 @@ Map {
           "cache": Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1pet/post@[object Object]:true" => "HTTP_POST",
             "OperationTypeCoder@petstore.yaml#/paths/~1pet/put@[object Object]:true" => "HTTP_PUT",
-            "ModelCoder@petstore.yaml#/paths/~1pet/post@paths//$context.ts:true:true" => "Model",
+            "ContextCoder@petstore.yaml#/paths/~1pet/post@paths//$context.ts:true:true" => "Context",
             "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
             "tools@internal/tools.ts:true:false" => "Tools",
-            "ModelCoder@petstore.yaml#/paths/~1pet/put@paths//$context.ts:true:true" => "Model2",
+            "ContextCoder@petstore.yaml#/paths/~1pet/put@paths//$context.ts:true:true" => "Context2",
           },
           "exports": Map {
             "HTTP_POST" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: Pet, context: Model, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: Pet, context: Context, response: ResponseBuilderBuilder<{
       200: {
           headers: {};
           content: {
@@ -429,7 +429,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_PUT" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: Pet, context: Model2, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: Pet, context: Context2, response: ResponseBuilderBuilder<{
       200: {
           headers: {};
           content: {
@@ -503,22 +503,22 @@ Map {
             },
           },
           "imports": Map {
-            "Model" => Object {
+            "Context" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "Model",
+              "name": "Context",
               "script": Script {
                 "cache": Map {
-                  "default" => "Model",
+                  "default" => "Context",
                 },
                 "exports": Map {
-                  "Model" => Object {
+                  "Context" => Object {
                     "code": "{}",
                     "done": true,
-                    "id": "ModelCoder@petstore.yaml#/paths/~1pet/post",
+                    "id": "ContextCoder@petstore.yaml#/paths/~1pet/post",
                     "isDefault": true,
                     "isType": true,
-                    "name": "Model",
+                    "name": "Context",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -666,22 +666,22 @@ Map {
                 "typeCache": Map {},
               },
             },
-            "Model2" => Object {
+            "Context2" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "Model",
+              "name": "Context",
               "script": Script {
                 "cache": Map {
-                  "default" => "Model",
+                  "default" => "Context",
                 },
                 "exports": Map {
-                  "Model" => Object {
+                  "Context" => Object {
                     "code": "{}",
                     "done": true,
-                    "id": "ModelCoder@petstore.yaml#/paths/~1pet/post",
+                    "id": "ContextCoder@petstore.yaml#/paths/~1pet/post",
                     "isDefault": true,
                     "isType": true,
-                    "name": "Model",
+                    "name": "Context",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -717,14 +717,14 @@ Map {
     "cache": Map {
       "OperationTypeCoder@petstore.yaml#/paths/~1pet/post@[object Object]:true" => "HTTP_POST",
       "OperationTypeCoder@petstore.yaml#/paths/~1pet/put@[object Object]:true" => "HTTP_PUT",
-      "ModelCoder@petstore.yaml#/paths/~1pet/post@paths//$context.ts:true:true" => "Model",
+      "ContextCoder@petstore.yaml#/paths/~1pet/post@paths//$context.ts:true:true" => "Context",
       "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
       "tools@internal/tools.ts:true:false" => "Tools",
-      "ModelCoder@petstore.yaml#/paths/~1pet/put@paths//$context.ts:true:true" => "Model2",
+      "ContextCoder@petstore.yaml#/paths/~1pet/put@paths//$context.ts:true:true" => "Context2",
     },
     "exports": Map {
       "HTTP_POST" => Object {
-        "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: Pet, context: Model, response: ResponseBuilderBuilder<{
+        "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: Pet, context: Context, response: ResponseBuilderBuilder<{
       200: {
           headers: {};
           content: {
@@ -767,7 +767,7 @@ Map {
         "typeDeclaration": "",
       },
       "HTTP_PUT" => Object {
-        "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: Pet, context: Model2, response: ResponseBuilderBuilder<{
+        "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: Pet, context: Context2, response: ResponseBuilderBuilder<{
       200: {
           headers: {};
           content: {
@@ -841,22 +841,22 @@ Map {
       },
     },
     "imports": Map {
-      "Model" => Object {
+      "Context" => Object {
         "isDefault": true,
         "isType": true,
-        "name": "Model",
+        "name": "Context",
         "script": Script {
           "cache": Map {
-            "default" => "Model",
+            "default" => "Context",
           },
           "exports": Map {
-            "Model" => Object {
+            "Context" => Object {
               "code": "{}",
               "done": true,
-              "id": "ModelCoder@petstore.yaml#/paths/~1pet/post",
+              "id": "ContextCoder@petstore.yaml#/paths/~1pet/post",
               "isDefault": true,
               "isType": true,
-              "name": "Model",
+              "name": "Context",
               "promise": Promise {},
               "typeDeclaration": "",
             },
@@ -1004,22 +1004,22 @@ Map {
           "typeCache": Map {},
         },
       },
-      "Model2" => Object {
+      "Context2" => Object {
         "isDefault": true,
         "isType": true,
-        "name": "Model",
+        "name": "Context",
         "script": Script {
           "cache": Map {
-            "default" => "Model",
+            "default" => "Context",
           },
           "exports": Map {
-            "Model" => Object {
+            "Context" => Object {
               "code": "{}",
               "done": true,
-              "id": "ModelCoder@petstore.yaml#/paths/~1pet/post",
+              "id": "ContextCoder@petstore.yaml#/paths/~1pet/post",
               "isDefault": true,
               "isType": true,
-              "name": "Model",
+              "name": "Context",
               "promise": Promise {},
               "typeDeclaration": "",
             },
@@ -1070,13 +1070,13 @@ Map {
         "script": Script {
           "cache": Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1findByStatus/get@[object Object]:true" => "HTTP_GET",
-            "ModelCoder@petstore.yaml#/paths/~1pet~1findByStatus/get@paths/pet/$context.ts:true:true" => "Model",
+            "ContextCoder@petstore.yaml#/paths/~1pet~1findByStatus/get@paths/pet/$context.ts:true:true" => "Context",
             "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
             "tools@internal/tools.ts:true:false" => "Tools",
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: {status?: string}, path: never, header: never, body: undefined, context: Model, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context, tools }: { query: {status?: string}, path: never, header: never, body: undefined, context: Context, response: ResponseBuilderBuilder<{
       200: {
           headers: {};
           content: {
@@ -1130,24 +1130,24 @@ Map {
             },
           },
           "imports": Map {
-            "Model" => Object {
+            "Context" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "Model",
+              "name": "Context",
               "script": Script {
                 "cache": Map {
-                  "default" => "Model",
+                  "default" => "Context",
                 },
                 "exports": Map {
-                  "Model" => Object {
+                  "Context" => Object {
                     "code": Object {
                       "raw": "export { default } from \\"../$context.js\\"",
                     },
                     "done": true,
-                    "id": "ModelCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
+                    "id": "ContextCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
                     "isDefault": true,
                     "isType": true,
-                    "name": "Model",
+                    "name": "Context",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -1315,13 +1315,13 @@ Map {
   "path-types/pet/findByStatus.types.ts" => Script {
     "cache": Map {
       "OperationTypeCoder@petstore.yaml#/paths/~1pet~1findByStatus/get@[object Object]:true" => "HTTP_GET",
-      "ModelCoder@petstore.yaml#/paths/~1pet~1findByStatus/get@paths/pet/$context.ts:true:true" => "Model",
+      "ContextCoder@petstore.yaml#/paths/~1pet~1findByStatus/get@paths/pet/$context.ts:true:true" => "Context",
       "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
       "tools@internal/tools.ts:true:false" => "Tools",
     },
     "exports": Map {
       "HTTP_GET" => Object {
-        "code": "({ query, path, header, body, context, tools }: { query: {status?: string}, path: never, header: never, body: undefined, context: Model, response: ResponseBuilderBuilder<{
+        "code": "({ query, path, header, body, context, tools }: { query: {status?: string}, path: never, header: never, body: undefined, context: Context, response: ResponseBuilderBuilder<{
       200: {
           headers: {};
           content: {
@@ -1375,24 +1375,24 @@ Map {
       },
     },
     "imports": Map {
-      "Model" => Object {
+      "Context" => Object {
         "isDefault": true,
         "isType": true,
-        "name": "Model",
+        "name": "Context",
         "script": Script {
           "cache": Map {
-            "default" => "Model",
+            "default" => "Context",
           },
           "exports": Map {
-            "Model" => Object {
+            "Context" => Object {
               "code": Object {
                 "raw": "export { default } from \\"../$context.js\\"",
               },
               "done": true,
-              "id": "ModelCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
+              "id": "ContextCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
               "isDefault": true,
               "isType": true,
-              "name": "Model",
+              "name": "Context",
               "promise": Promise {},
               "typeDeclaration": "",
             },
@@ -1576,13 +1576,13 @@ Map {
         "script": Script {
           "cache": Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1findByTags/get@[object Object]:true" => "HTTP_GET",
-            "ModelCoder@petstore.yaml#/paths/~1pet~1findByTags/get@paths/pet/$context.ts:true:true" => "Model",
+            "ContextCoder@petstore.yaml#/paths/~1pet~1findByTags/get@paths/pet/$context.ts:true:true" => "Context",
             "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
             "tools@internal/tools.ts:true:false" => "Tools",
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: {tags?: Array<string>}, path: never, header: never, body: undefined, context: Model, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context, tools }: { query: {tags?: Array<string>}, path: never, header: never, body: undefined, context: Context, response: ResponseBuilderBuilder<{
       200: {
           headers: {};
           content: {
@@ -1636,24 +1636,24 @@ Map {
             },
           },
           "imports": Map {
-            "Model" => Object {
+            "Context" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "Model",
+              "name": "Context",
               "script": Script {
                 "cache": Map {
-                  "default" => "Model",
+                  "default" => "Context",
                 },
                 "exports": Map {
-                  "Model" => Object {
+                  "Context" => Object {
                     "code": Object {
                       "raw": "export { default } from \\"../$context.js\\"",
                     },
                     "done": true,
-                    "id": "ModelCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
+                    "id": "ContextCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
                     "isDefault": true,
                     "isType": true,
-                    "name": "Model",
+                    "name": "Context",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -1821,13 +1821,13 @@ Map {
   "path-types/pet/findByTags.types.ts" => Script {
     "cache": Map {
       "OperationTypeCoder@petstore.yaml#/paths/~1pet~1findByTags/get@[object Object]:true" => "HTTP_GET",
-      "ModelCoder@petstore.yaml#/paths/~1pet~1findByTags/get@paths/pet/$context.ts:true:true" => "Model",
+      "ContextCoder@petstore.yaml#/paths/~1pet~1findByTags/get@paths/pet/$context.ts:true:true" => "Context",
       "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
       "tools@internal/tools.ts:true:false" => "Tools",
     },
     "exports": Map {
       "HTTP_GET" => Object {
-        "code": "({ query, path, header, body, context, tools }: { query: {tags?: Array<string>}, path: never, header: never, body: undefined, context: Model, response: ResponseBuilderBuilder<{
+        "code": "({ query, path, header, body, context, tools }: { query: {tags?: Array<string>}, path: never, header: never, body: undefined, context: Context, response: ResponseBuilderBuilder<{
       200: {
           headers: {};
           content: {
@@ -1881,24 +1881,24 @@ Map {
       },
     },
     "imports": Map {
-      "Model" => Object {
+      "Context" => Object {
         "isDefault": true,
         "isType": true,
-        "name": "Model",
+        "name": "Context",
         "script": Script {
           "cache": Map {
-            "default" => "Model",
+            "default" => "Context",
           },
           "exports": Map {
-            "Model" => Object {
+            "Context" => Object {
               "code": Object {
                 "raw": "export { default } from \\"../$context.js\\"",
               },
               "done": true,
-              "id": "ModelCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
+              "id": "ContextCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
               "isDefault": true,
               "isType": true,
-              "name": "Model",
+              "name": "Context",
               "promise": Promise {},
               "typeDeclaration": "",
             },
@@ -2108,15 +2108,15 @@ Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/get@[object Object]:true" => "HTTP_GET",
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/post@[object Object]:true" => "HTTP_POST",
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/delete@[object Object]:true" => "HTTP_DELETE",
-            "ModelCoder@petstore.yaml#/paths/~1pet~1{petId}/get@paths/pet/$context.ts:true:true" => "Model",
+            "ContextCoder@petstore.yaml#/paths/~1pet~1{petId}/get@paths/pet/$context.ts:true:true" => "Context",
             "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
             "tools@internal/tools.ts:true:false" => "Tools",
-            "ModelCoder@petstore.yaml#/paths/~1pet~1{petId}/post@paths/pet/$context.ts:true:true" => "Model2",
-            "ModelCoder@petstore.yaml#/paths/~1pet~1{petId}/delete@paths/pet/$context.ts:true:true" => "Model3",
+            "ContextCoder@petstore.yaml#/paths/~1pet~1{petId}/post@paths/pet/$context.ts:true:true" => "Context2",
+            "ContextCoder@petstore.yaml#/paths/~1pet~1{petId}/delete@paths/pet/$context.ts:true:true" => "Context3",
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: {petId: number}, header: never, body: undefined, context: Model, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context, tools }: { query: never, path: {petId: number}, header: never, body: undefined, context: Context, response: ResponseBuilderBuilder<{
       200: {
           headers: {};
           content: {
@@ -2169,7 +2169,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_POST" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: {name?: number, status?: string}, path: {petId: number}, header: never, body: undefined, context: Model2, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context, tools }: { query: {name?: number, status?: string}, path: {petId: number}, header: never, body: undefined, context: Context2, response: ResponseBuilderBuilder<{
       405: {
           headers: {};
           content: {
@@ -2192,7 +2192,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_DELETE" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: {petId: string}, header: {api_key?: string}, body: undefined, context: Model3, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context, tools }: { query: never, path: {petId: string}, header: {api_key?: string}, body: undefined, context: Context3, response: ResponseBuilderBuilder<{
       400: {
           headers: {};
           content: {
@@ -2226,24 +2226,24 @@ Map {
             },
           },
           "imports": Map {
-            "Model" => Object {
+            "Context" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "Model",
+              "name": "Context",
               "script": Script {
                 "cache": Map {
-                  "default" => "Model",
+                  "default" => "Context",
                 },
                 "exports": Map {
-                  "Model" => Object {
+                  "Context" => Object {
                     "code": Object {
                       "raw": "export { default } from \\"../$context.js\\"",
                     },
                     "done": true,
-                    "id": "ModelCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
+                    "id": "ContextCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
                     "isDefault": true,
                     "isType": true,
-                    "name": "Model",
+                    "name": "Context",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -2391,24 +2391,24 @@ Map {
                 "typeCache": Map {},
               },
             },
-            "Model2" => Object {
+            "Context2" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "Model",
+              "name": "Context",
               "script": Script {
                 "cache": Map {
-                  "default" => "Model",
+                  "default" => "Context",
                 },
                 "exports": Map {
-                  "Model" => Object {
+                  "Context" => Object {
                     "code": Object {
                       "raw": "export { default } from \\"../$context.js\\"",
                     },
                     "done": true,
-                    "id": "ModelCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
+                    "id": "ContextCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
                     "isDefault": true,
                     "isType": true,
-                    "name": "Model",
+                    "name": "Context",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -2423,24 +2423,24 @@ Map {
                 "typeCache": Map {},
               },
             },
-            "Model3" => Object {
+            "Context3" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "Model",
+              "name": "Context",
               "script": Script {
                 "cache": Map {
-                  "default" => "Model",
+                  "default" => "Context",
                 },
                 "exports": Map {
-                  "Model" => Object {
+                  "Context" => Object {
                     "code": Object {
                       "raw": "export { default } from \\"../$context.js\\"",
                     },
                     "done": true,
-                    "id": "ModelCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
+                    "id": "ContextCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
                     "isDefault": true,
                     "isType": true,
-                    "name": "Model",
+                    "name": "Context",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -2473,15 +2473,15 @@ Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/get@[object Object]:true" => "HTTP_GET",
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/post@[object Object]:true" => "HTTP_POST",
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/delete@[object Object]:true" => "HTTP_DELETE",
-            "ModelCoder@petstore.yaml#/paths/~1pet~1{petId}/get@paths/pet/$context.ts:true:true" => "Model",
+            "ContextCoder@petstore.yaml#/paths/~1pet~1{petId}/get@paths/pet/$context.ts:true:true" => "Context",
             "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
             "tools@internal/tools.ts:true:false" => "Tools",
-            "ModelCoder@petstore.yaml#/paths/~1pet~1{petId}/post@paths/pet/$context.ts:true:true" => "Model2",
-            "ModelCoder@petstore.yaml#/paths/~1pet~1{petId}/delete@paths/pet/$context.ts:true:true" => "Model3",
+            "ContextCoder@petstore.yaml#/paths/~1pet~1{petId}/post@paths/pet/$context.ts:true:true" => "Context2",
+            "ContextCoder@petstore.yaml#/paths/~1pet~1{petId}/delete@paths/pet/$context.ts:true:true" => "Context3",
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: {petId: number}, header: never, body: undefined, context: Model, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context, tools }: { query: never, path: {petId: number}, header: never, body: undefined, context: Context, response: ResponseBuilderBuilder<{
       200: {
           headers: {};
           content: {
@@ -2534,7 +2534,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_POST" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: {name?: number, status?: string}, path: {petId: number}, header: never, body: undefined, context: Model2, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context, tools }: { query: {name?: number, status?: string}, path: {petId: number}, header: never, body: undefined, context: Context2, response: ResponseBuilderBuilder<{
       405: {
           headers: {};
           content: {
@@ -2557,7 +2557,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_DELETE" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: {petId: string}, header: {api_key?: string}, body: undefined, context: Model3, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context, tools }: { query: never, path: {petId: string}, header: {api_key?: string}, body: undefined, context: Context3, response: ResponseBuilderBuilder<{
       400: {
           headers: {};
           content: {
@@ -2591,24 +2591,24 @@ Map {
             },
           },
           "imports": Map {
-            "Model" => Object {
+            "Context" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "Model",
+              "name": "Context",
               "script": Script {
                 "cache": Map {
-                  "default" => "Model",
+                  "default" => "Context",
                 },
                 "exports": Map {
-                  "Model" => Object {
+                  "Context" => Object {
                     "code": Object {
                       "raw": "export { default } from \\"../$context.js\\"",
                     },
                     "done": true,
-                    "id": "ModelCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
+                    "id": "ContextCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
                     "isDefault": true,
                     "isType": true,
-                    "name": "Model",
+                    "name": "Context",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -2756,24 +2756,24 @@ Map {
                 "typeCache": Map {},
               },
             },
-            "Model2" => Object {
+            "Context2" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "Model",
+              "name": "Context",
               "script": Script {
                 "cache": Map {
-                  "default" => "Model",
+                  "default" => "Context",
                 },
                 "exports": Map {
-                  "Model" => Object {
+                  "Context" => Object {
                     "code": Object {
                       "raw": "export { default } from \\"../$context.js\\"",
                     },
                     "done": true,
-                    "id": "ModelCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
+                    "id": "ContextCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
                     "isDefault": true,
                     "isType": true,
-                    "name": "Model",
+                    "name": "Context",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -2788,24 +2788,24 @@ Map {
                 "typeCache": Map {},
               },
             },
-            "Model3" => Object {
+            "Context3" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "Model",
+              "name": "Context",
               "script": Script {
                 "cache": Map {
-                  "default" => "Model",
+                  "default" => "Context",
                 },
                 "exports": Map {
-                  "Model" => Object {
+                  "Context" => Object {
                     "code": Object {
                       "raw": "export { default } from \\"../$context.js\\"",
                     },
                     "done": true,
-                    "id": "ModelCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
+                    "id": "ContextCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
                     "isDefault": true,
                     "isType": true,
-                    "name": "Model",
+                    "name": "Context",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -2838,15 +2838,15 @@ Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/get@[object Object]:true" => "HTTP_GET",
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/post@[object Object]:true" => "HTTP_POST",
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/delete@[object Object]:true" => "HTTP_DELETE",
-            "ModelCoder@petstore.yaml#/paths/~1pet~1{petId}/get@paths/pet/$context.ts:true:true" => "Model",
+            "ContextCoder@petstore.yaml#/paths/~1pet~1{petId}/get@paths/pet/$context.ts:true:true" => "Context",
             "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
             "tools@internal/tools.ts:true:false" => "Tools",
-            "ModelCoder@petstore.yaml#/paths/~1pet~1{petId}/post@paths/pet/$context.ts:true:true" => "Model2",
-            "ModelCoder@petstore.yaml#/paths/~1pet~1{petId}/delete@paths/pet/$context.ts:true:true" => "Model3",
+            "ContextCoder@petstore.yaml#/paths/~1pet~1{petId}/post@paths/pet/$context.ts:true:true" => "Context2",
+            "ContextCoder@petstore.yaml#/paths/~1pet~1{petId}/delete@paths/pet/$context.ts:true:true" => "Context3",
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: {petId: number}, header: never, body: undefined, context: Model, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context, tools }: { query: never, path: {petId: number}, header: never, body: undefined, context: Context, response: ResponseBuilderBuilder<{
       200: {
           headers: {};
           content: {
@@ -2899,7 +2899,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_POST" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: {name?: number, status?: string}, path: {petId: number}, header: never, body: undefined, context: Model2, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context, tools }: { query: {name?: number, status?: string}, path: {petId: number}, header: never, body: undefined, context: Context2, response: ResponseBuilderBuilder<{
       405: {
           headers: {};
           content: {
@@ -2922,7 +2922,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_DELETE" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: {petId: string}, header: {api_key?: string}, body: undefined, context: Model3, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context, tools }: { query: never, path: {petId: string}, header: {api_key?: string}, body: undefined, context: Context3, response: ResponseBuilderBuilder<{
       400: {
           headers: {};
           content: {
@@ -2956,24 +2956,24 @@ Map {
             },
           },
           "imports": Map {
-            "Model" => Object {
+            "Context" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "Model",
+              "name": "Context",
               "script": Script {
                 "cache": Map {
-                  "default" => "Model",
+                  "default" => "Context",
                 },
                 "exports": Map {
-                  "Model" => Object {
+                  "Context" => Object {
                     "code": Object {
                       "raw": "export { default } from \\"../$context.js\\"",
                     },
                     "done": true,
-                    "id": "ModelCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
+                    "id": "ContextCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
                     "isDefault": true,
                     "isType": true,
-                    "name": "Model",
+                    "name": "Context",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -3121,24 +3121,24 @@ Map {
                 "typeCache": Map {},
               },
             },
-            "Model2" => Object {
+            "Context2" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "Model",
+              "name": "Context",
               "script": Script {
                 "cache": Map {
-                  "default" => "Model",
+                  "default" => "Context",
                 },
                 "exports": Map {
-                  "Model" => Object {
+                  "Context" => Object {
                     "code": Object {
                       "raw": "export { default } from \\"../$context.js\\"",
                     },
                     "done": true,
-                    "id": "ModelCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
+                    "id": "ContextCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
                     "isDefault": true,
                     "isType": true,
-                    "name": "Model",
+                    "name": "Context",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -3153,24 +3153,24 @@ Map {
                 "typeCache": Map {},
               },
             },
-            "Model3" => Object {
+            "Context3" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "Model",
+              "name": "Context",
               "script": Script {
                 "cache": Map {
-                  "default" => "Model",
+                  "default" => "Context",
                 },
                 "exports": Map {
-                  "Model" => Object {
+                  "Context" => Object {
                     "code": Object {
                       "raw": "export { default } from \\"../$context.js\\"",
                     },
                     "done": true,
-                    "id": "ModelCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
+                    "id": "ContextCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
                     "isDefault": true,
                     "isType": true,
-                    "name": "Model",
+                    "name": "Context",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -3207,15 +3207,15 @@ Map {
       "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/get@[object Object]:true" => "HTTP_GET",
       "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/post@[object Object]:true" => "HTTP_POST",
       "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/delete@[object Object]:true" => "HTTP_DELETE",
-      "ModelCoder@petstore.yaml#/paths/~1pet~1{petId}/get@paths/pet/$context.ts:true:true" => "Model",
+      "ContextCoder@petstore.yaml#/paths/~1pet~1{petId}/get@paths/pet/$context.ts:true:true" => "Context",
       "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
       "tools@internal/tools.ts:true:false" => "Tools",
-      "ModelCoder@petstore.yaml#/paths/~1pet~1{petId}/post@paths/pet/$context.ts:true:true" => "Model2",
-      "ModelCoder@petstore.yaml#/paths/~1pet~1{petId}/delete@paths/pet/$context.ts:true:true" => "Model3",
+      "ContextCoder@petstore.yaml#/paths/~1pet~1{petId}/post@paths/pet/$context.ts:true:true" => "Context2",
+      "ContextCoder@petstore.yaml#/paths/~1pet~1{petId}/delete@paths/pet/$context.ts:true:true" => "Context3",
     },
     "exports": Map {
       "HTTP_GET" => Object {
-        "code": "({ query, path, header, body, context, tools }: { query: never, path: {petId: number}, header: never, body: undefined, context: Model, response: ResponseBuilderBuilder<{
+        "code": "({ query, path, header, body, context, tools }: { query: never, path: {petId: number}, header: never, body: undefined, context: Context, response: ResponseBuilderBuilder<{
       200: {
           headers: {};
           content: {
@@ -3268,7 +3268,7 @@ Map {
         "typeDeclaration": "",
       },
       "HTTP_POST" => Object {
-        "code": "({ query, path, header, body, context, tools }: { query: {name?: number, status?: string}, path: {petId: number}, header: never, body: undefined, context: Model2, response: ResponseBuilderBuilder<{
+        "code": "({ query, path, header, body, context, tools }: { query: {name?: number, status?: string}, path: {petId: number}, header: never, body: undefined, context: Context2, response: ResponseBuilderBuilder<{
       405: {
           headers: {};
           content: {
@@ -3291,7 +3291,7 @@ Map {
         "typeDeclaration": "",
       },
       "HTTP_DELETE" => Object {
-        "code": "({ query, path, header, body, context, tools }: { query: never, path: {petId: string}, header: {api_key?: string}, body: undefined, context: Model3, response: ResponseBuilderBuilder<{
+        "code": "({ query, path, header, body, context, tools }: { query: never, path: {petId: string}, header: {api_key?: string}, body: undefined, context: Context3, response: ResponseBuilderBuilder<{
       400: {
           headers: {};
           content: {
@@ -3325,24 +3325,24 @@ Map {
       },
     },
     "imports": Map {
-      "Model" => Object {
+      "Context" => Object {
         "isDefault": true,
         "isType": true,
-        "name": "Model",
+        "name": "Context",
         "script": Script {
           "cache": Map {
-            "default" => "Model",
+            "default" => "Context",
           },
           "exports": Map {
-            "Model" => Object {
+            "Context" => Object {
               "code": Object {
                 "raw": "export { default } from \\"../$context.js\\"",
               },
               "done": true,
-              "id": "ModelCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
+              "id": "ContextCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
               "isDefault": true,
               "isType": true,
-              "name": "Model",
+              "name": "Context",
               "promise": Promise {},
               "typeDeclaration": "",
             },
@@ -3490,24 +3490,24 @@ Map {
           "typeCache": Map {},
         },
       },
-      "Model2" => Object {
+      "Context2" => Object {
         "isDefault": true,
         "isType": true,
-        "name": "Model",
+        "name": "Context",
         "script": Script {
           "cache": Map {
-            "default" => "Model",
+            "default" => "Context",
           },
           "exports": Map {
-            "Model" => Object {
+            "Context" => Object {
               "code": Object {
                 "raw": "export { default } from \\"../$context.js\\"",
               },
               "done": true,
-              "id": "ModelCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
+              "id": "ContextCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
               "isDefault": true,
               "isType": true,
-              "name": "Model",
+              "name": "Context",
               "promise": Promise {},
               "typeDeclaration": "",
             },
@@ -3522,24 +3522,24 @@ Map {
           "typeCache": Map {},
         },
       },
-      "Model3" => Object {
+      "Context3" => Object {
         "isDefault": true,
         "isType": true,
-        "name": "Model",
+        "name": "Context",
         "script": Script {
           "cache": Map {
-            "default" => "Model",
+            "default" => "Context",
           },
           "exports": Map {
-            "Model" => Object {
+            "Context" => Object {
               "code": Object {
                 "raw": "export { default } from \\"../$context.js\\"",
               },
               "done": true,
-              "id": "ModelCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
+              "id": "ContextCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
               "isDefault": true,
               "isType": true,
-              "name": "Model",
+              "name": "Context",
               "promise": Promise {},
               "typeDeclaration": "",
             },
@@ -3590,13 +3590,13 @@ Map {
         "script": Script {
           "cache": Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post@[object Object]:true" => "HTTP_POST",
-            "ModelCoder@petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post@paths/pet/{petId}/$context.ts:true:true" => "Model",
+            "ContextCoder@petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post@paths/pet/{petId}/$context.ts:true:true" => "Context",
             "SchemaTypeCoder@undefined@components/ApiResponse.ts:true:false" => "ApiResponse",
             "tools@internal/tools.ts:true:false" => "Tools",
           },
           "exports": Map {
             "HTTP_POST" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: {additionalMetadata?: number}, path: {petId: number}, header: never, body: undefined, context: Model, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context, tools }: { query: {additionalMetadata?: number}, path: {petId: number}, header: never, body: undefined, context: Context, response: ResponseBuilderBuilder<{
       200: {
           headers: {};
           content: {
@@ -3632,24 +3632,24 @@ Map {
             },
           },
           "imports": Map {
-            "Model" => Object {
+            "Context" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "Model",
+              "name": "Context",
               "script": Script {
                 "cache": Map {
-                  "default" => "Model",
+                  "default" => "Context",
                 },
                 "exports": Map {
-                  "Model" => Object {
+                  "Context" => Object {
                     "code": Object {
                       "raw": "export { default } from \\"../$context.js\\"",
                     },
                     "done": true,
-                    "id": "ModelCoder@petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post",
+                    "id": "ContextCoder@petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post",
                     "isDefault": true,
                     "isType": true,
-                    "name": "Model",
+                    "name": "Context",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -3754,13 +3754,13 @@ Map {
   "path-types/pet/{petId}/uploadImage.types.ts" => Script {
     "cache": Map {
       "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post@[object Object]:true" => "HTTP_POST",
-      "ModelCoder@petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post@paths/pet/{petId}/$context.ts:true:true" => "Model",
+      "ContextCoder@petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post@paths/pet/{petId}/$context.ts:true:true" => "Context",
       "SchemaTypeCoder@undefined@components/ApiResponse.ts:true:false" => "ApiResponse",
       "tools@internal/tools.ts:true:false" => "Tools",
     },
     "exports": Map {
       "HTTP_POST" => Object {
-        "code": "({ query, path, header, body, context, tools }: { query: {additionalMetadata?: number}, path: {petId: number}, header: never, body: undefined, context: Model, response: ResponseBuilderBuilder<{
+        "code": "({ query, path, header, body, context, tools }: { query: {additionalMetadata?: number}, path: {petId: number}, header: never, body: undefined, context: Context, response: ResponseBuilderBuilder<{
       200: {
           headers: {};
           content: {
@@ -3796,24 +3796,24 @@ Map {
       },
     },
     "imports": Map {
-      "Model" => Object {
+      "Context" => Object {
         "isDefault": true,
         "isType": true,
-        "name": "Model",
+        "name": "Context",
         "script": Script {
           "cache": Map {
-            "default" => "Model",
+            "default" => "Context",
           },
           "exports": Map {
-            "Model" => Object {
+            "Context" => Object {
               "code": Object {
                 "raw": "export { default } from \\"../$context.js\\"",
               },
               "done": true,
-              "id": "ModelCoder@petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post",
+              "id": "ContextCoder@petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post",
               "isDefault": true,
               "isType": true,
-              "name": "Model",
+              "name": "Context",
               "promise": Promise {},
               "typeDeclaration": "",
             },
@@ -3934,12 +3934,12 @@ Map {
         "script": Script {
           "cache": Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1store~1inventory/get@[object Object]:true" => "HTTP_GET",
-            "ModelCoder@petstore.yaml#/paths/~1store~1inventory/get@paths/store/$context.ts:true:true" => "Model",
+            "ContextCoder@petstore.yaml#/paths/~1store~1inventory/get@paths/store/$context.ts:true:true" => "Context",
             "tools@internal/tools.ts:true:false" => "Tools",
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: undefined, context: Model, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: undefined, context: Context, response: ResponseBuilderBuilder<{
       200: {
           headers: {};
           content: {
@@ -3975,24 +3975,24 @@ Map {
             },
           },
           "imports": Map {
-            "Model" => Object {
+            "Context" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "Model",
+              "name": "Context",
               "script": Script {
                 "cache": Map {
-                  "default" => "Model",
+                  "default" => "Context",
                 },
                 "exports": Map {
-                  "Model" => Object {
+                  "Context" => Object {
                     "code": Object {
                       "raw": "export { default } from \\"../$context.js\\"",
                     },
                     "done": true,
-                    "id": "ModelCoder@petstore.yaml#/paths/~1store~1inventory/get",
+                    "id": "ContextCoder@petstore.yaml#/paths/~1store~1inventory/get",
                     "isDefault": true,
                     "isType": true,
-                    "name": "Model",
+                    "name": "Context",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -4067,12 +4067,12 @@ Map {
   "path-types/store/inventory.types.ts" => Script {
     "cache": Map {
       "OperationTypeCoder@petstore.yaml#/paths/~1store~1inventory/get@[object Object]:true" => "HTTP_GET",
-      "ModelCoder@petstore.yaml#/paths/~1store~1inventory/get@paths/store/$context.ts:true:true" => "Model",
+      "ContextCoder@petstore.yaml#/paths/~1store~1inventory/get@paths/store/$context.ts:true:true" => "Context",
       "tools@internal/tools.ts:true:false" => "Tools",
     },
     "exports": Map {
       "HTTP_GET" => Object {
-        "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: undefined, context: Model, response: ResponseBuilderBuilder<{
+        "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: undefined, context: Context, response: ResponseBuilderBuilder<{
       200: {
           headers: {};
           content: {
@@ -4108,24 +4108,24 @@ Map {
       },
     },
     "imports": Map {
-      "Model" => Object {
+      "Context" => Object {
         "isDefault": true,
         "isType": true,
-        "name": "Model",
+        "name": "Context",
         "script": Script {
           "cache": Map {
-            "default" => "Model",
+            "default" => "Context",
           },
           "exports": Map {
-            "Model" => Object {
+            "Context" => Object {
               "code": Object {
                 "raw": "export { default } from \\"../$context.js\\"",
               },
               "done": true,
-              "id": "ModelCoder@petstore.yaml#/paths/~1store~1inventory/get",
+              "id": "ContextCoder@petstore.yaml#/paths/~1store~1inventory/get",
               "isDefault": true,
               "isType": true,
-              "name": "Model",
+              "name": "Context",
               "promise": Promise {},
               "typeDeclaration": "",
             },
@@ -4216,13 +4216,13 @@ Map {
         "script": Script {
           "cache": Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1store~1order/post@[object Object]:true" => "HTTP_POST",
-            "ModelCoder@petstore.yaml#/paths/~1store~1order/post@paths/store/$context.ts:true:true" => "Model",
+            "ContextCoder@petstore.yaml#/paths/~1store~1order/post@paths/store/$context.ts:true:true" => "Context",
             "SchemaTypeCoder@undefined@components/Order.ts:true:false" => "Order",
             "tools@internal/tools.ts:true:false" => "Tools",
           },
           "exports": Map {
             "HTTP_POST" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: Order, context: Model, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: Order, context: Context, response: ResponseBuilderBuilder<{
       200: {
           headers: {};
           content: {
@@ -4268,24 +4268,24 @@ Map {
             },
           },
           "imports": Map {
-            "Model" => Object {
+            "Context" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "Model",
+              "name": "Context",
               "script": Script {
                 "cache": Map {
-                  "default" => "Model",
+                  "default" => "Context",
                 },
                 "exports": Map {
-                  "Model" => Object {
+                  "Context" => Object {
                     "code": Object {
                       "raw": "export { default } from \\"../$context.js\\"",
                     },
                     "done": true,
-                    "id": "ModelCoder@petstore.yaml#/paths/~1store~1inventory/get",
+                    "id": "ContextCoder@petstore.yaml#/paths/~1store~1inventory/get",
                     "isDefault": true,
                     "isType": true,
-                    "name": "Model",
+                    "name": "Context",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -4390,13 +4390,13 @@ Map {
   "path-types/store/order.types.ts" => Script {
     "cache": Map {
       "OperationTypeCoder@petstore.yaml#/paths/~1store~1order/post@[object Object]:true" => "HTTP_POST",
-      "ModelCoder@petstore.yaml#/paths/~1store~1order/post@paths/store/$context.ts:true:true" => "Model",
+      "ContextCoder@petstore.yaml#/paths/~1store~1order/post@paths/store/$context.ts:true:true" => "Context",
       "SchemaTypeCoder@undefined@components/Order.ts:true:false" => "Order",
       "tools@internal/tools.ts:true:false" => "Tools",
     },
     "exports": Map {
       "HTTP_POST" => Object {
-        "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: Order, context: Model, response: ResponseBuilderBuilder<{
+        "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: Order, context: Context, response: ResponseBuilderBuilder<{
       200: {
           headers: {};
           content: {
@@ -4442,24 +4442,24 @@ Map {
       },
     },
     "imports": Map {
-      "Model" => Object {
+      "Context" => Object {
         "isDefault": true,
         "isType": true,
-        "name": "Model",
+        "name": "Context",
         "script": Script {
           "cache": Map {
-            "default" => "Model",
+            "default" => "Context",
           },
           "exports": Map {
-            "Model" => Object {
+            "Context" => Object {
               "code": Object {
                 "raw": "export { default } from \\"../$context.js\\"",
               },
               "done": true,
-              "id": "ModelCoder@petstore.yaml#/paths/~1store~1inventory/get",
+              "id": "ContextCoder@petstore.yaml#/paths/~1store~1inventory/get",
               "isDefault": true,
               "isType": true,
-              "name": "Model",
+              "name": "Context",
               "promise": Promise {},
               "typeDeclaration": "",
             },
@@ -4593,14 +4593,14 @@ Map {
           "cache": Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get@[object Object]:true" => "HTTP_GET",
             "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete@[object Object]:true" => "HTTP_DELETE",
-            "ModelCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get@paths/store/order/$context.ts:true:true" => "Model",
+            "ContextCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get@paths/store/order/$context.ts:true:true" => "Context",
             "SchemaTypeCoder@undefined@components/Order.ts:true:false" => "Order",
             "tools@internal/tools.ts:true:false" => "Tools",
-            "ModelCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete@paths/store/order/$context.ts:true:true" => "Model2",
+            "ContextCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete@paths/store/order/$context.ts:true:true" => "Context2",
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: {orderId: number}, header: never, body: undefined, context: Model, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context, tools }: { query: never, path: {orderId: number}, header: never, body: undefined, context: Context, response: ResponseBuilderBuilder<{
       200: {
           headers: {};
           content: {
@@ -4653,7 +4653,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_DELETE" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: {orderId: number}, header: never, body: undefined, context: Model2, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context, tools }: { query: never, path: {orderId: number}, header: never, body: undefined, context: Context2, response: ResponseBuilderBuilder<{
       400: {
           headers: {};
           content: {
@@ -4697,24 +4697,24 @@ Map {
             },
           },
           "imports": Map {
-            "Model" => Object {
+            "Context" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "Model",
+              "name": "Context",
               "script": Script {
                 "cache": Map {
-                  "default" => "Model",
+                  "default" => "Context",
                 },
                 "exports": Map {
-                  "Model" => Object {
+                  "Context" => Object {
                     "code": Object {
                       "raw": "export { default } from \\"../$context.js\\"",
                     },
                     "done": true,
-                    "id": "ModelCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get",
+                    "id": "ContextCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get",
                     "isDefault": true,
                     "isType": true,
-                    "name": "Model",
+                    "name": "Context",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -4799,24 +4799,24 @@ Map {
                 "typeCache": Map {},
               },
             },
-            "Model2" => Object {
+            "Context2" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "Model",
+              "name": "Context",
               "script": Script {
                 "cache": Map {
-                  "default" => "Model",
+                  "default" => "Context",
                 },
                 "exports": Map {
-                  "Model" => Object {
+                  "Context" => Object {
                     "code": Object {
                       "raw": "export { default } from \\"../$context.js\\"",
                     },
                     "done": true,
-                    "id": "ModelCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get",
+                    "id": "ContextCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get",
                     "isDefault": true,
                     "isType": true,
-                    "name": "Model",
+                    "name": "Context",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -4848,14 +4848,14 @@ Map {
           "cache": Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get@[object Object]:true" => "HTTP_GET",
             "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete@[object Object]:true" => "HTTP_DELETE",
-            "ModelCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get@paths/store/order/$context.ts:true:true" => "Model",
+            "ContextCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get@paths/store/order/$context.ts:true:true" => "Context",
             "SchemaTypeCoder@undefined@components/Order.ts:true:false" => "Order",
             "tools@internal/tools.ts:true:false" => "Tools",
-            "ModelCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete@paths/store/order/$context.ts:true:true" => "Model2",
+            "ContextCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete@paths/store/order/$context.ts:true:true" => "Context2",
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: {orderId: number}, header: never, body: undefined, context: Model, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context, tools }: { query: never, path: {orderId: number}, header: never, body: undefined, context: Context, response: ResponseBuilderBuilder<{
       200: {
           headers: {};
           content: {
@@ -4908,7 +4908,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_DELETE" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: {orderId: number}, header: never, body: undefined, context: Model2, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context, tools }: { query: never, path: {orderId: number}, header: never, body: undefined, context: Context2, response: ResponseBuilderBuilder<{
       400: {
           headers: {};
           content: {
@@ -4952,24 +4952,24 @@ Map {
             },
           },
           "imports": Map {
-            "Model" => Object {
+            "Context" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "Model",
+              "name": "Context",
               "script": Script {
                 "cache": Map {
-                  "default" => "Model",
+                  "default" => "Context",
                 },
                 "exports": Map {
-                  "Model" => Object {
+                  "Context" => Object {
                     "code": Object {
                       "raw": "export { default } from \\"../$context.js\\"",
                     },
                     "done": true,
-                    "id": "ModelCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get",
+                    "id": "ContextCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get",
                     "isDefault": true,
                     "isType": true,
-                    "name": "Model",
+                    "name": "Context",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -5054,24 +5054,24 @@ Map {
                 "typeCache": Map {},
               },
             },
-            "Model2" => Object {
+            "Context2" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "Model",
+              "name": "Context",
               "script": Script {
                 "cache": Map {
-                  "default" => "Model",
+                  "default" => "Context",
                 },
                 "exports": Map {
-                  "Model" => Object {
+                  "Context" => Object {
                     "code": Object {
                       "raw": "export { default } from \\"../$context.js\\"",
                     },
                     "done": true,
-                    "id": "ModelCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get",
+                    "id": "ContextCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get",
                     "isDefault": true,
                     "isType": true,
-                    "name": "Model",
+                    "name": "Context",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -5107,14 +5107,14 @@ Map {
     "cache": Map {
       "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get@[object Object]:true" => "HTTP_GET",
       "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete@[object Object]:true" => "HTTP_DELETE",
-      "ModelCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get@paths/store/order/$context.ts:true:true" => "Model",
+      "ContextCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get@paths/store/order/$context.ts:true:true" => "Context",
       "SchemaTypeCoder@undefined@components/Order.ts:true:false" => "Order",
       "tools@internal/tools.ts:true:false" => "Tools",
-      "ModelCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete@paths/store/order/$context.ts:true:true" => "Model2",
+      "ContextCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete@paths/store/order/$context.ts:true:true" => "Context2",
     },
     "exports": Map {
       "HTTP_GET" => Object {
-        "code": "({ query, path, header, body, context, tools }: { query: never, path: {orderId: number}, header: never, body: undefined, context: Model, response: ResponseBuilderBuilder<{
+        "code": "({ query, path, header, body, context, tools }: { query: never, path: {orderId: number}, header: never, body: undefined, context: Context, response: ResponseBuilderBuilder<{
       200: {
           headers: {};
           content: {
@@ -5167,7 +5167,7 @@ Map {
         "typeDeclaration": "",
       },
       "HTTP_DELETE" => Object {
-        "code": "({ query, path, header, body, context, tools }: { query: never, path: {orderId: number}, header: never, body: undefined, context: Model2, response: ResponseBuilderBuilder<{
+        "code": "({ query, path, header, body, context, tools }: { query: never, path: {orderId: number}, header: never, body: undefined, context: Context2, response: ResponseBuilderBuilder<{
       400: {
           headers: {};
           content: {
@@ -5211,24 +5211,24 @@ Map {
       },
     },
     "imports": Map {
-      "Model" => Object {
+      "Context" => Object {
         "isDefault": true,
         "isType": true,
-        "name": "Model",
+        "name": "Context",
         "script": Script {
           "cache": Map {
-            "default" => "Model",
+            "default" => "Context",
           },
           "exports": Map {
-            "Model" => Object {
+            "Context" => Object {
               "code": Object {
                 "raw": "export { default } from \\"../$context.js\\"",
               },
               "done": true,
-              "id": "ModelCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get",
+              "id": "ContextCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get",
               "isDefault": true,
               "isType": true,
-              "name": "Model",
+              "name": "Context",
               "promise": Promise {},
               "typeDeclaration": "",
             },
@@ -5313,24 +5313,24 @@ Map {
           "typeCache": Map {},
         },
       },
-      "Model2" => Object {
+      "Context2" => Object {
         "isDefault": true,
         "isType": true,
-        "name": "Model",
+        "name": "Context",
         "script": Script {
           "cache": Map {
-            "default" => "Model",
+            "default" => "Context",
           },
           "exports": Map {
-            "Model" => Object {
+            "Context" => Object {
               "code": Object {
                 "raw": "export { default } from \\"../$context.js\\"",
               },
               "done": true,
-              "id": "ModelCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get",
+              "id": "ContextCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get",
               "isDefault": true,
               "isType": true,
-              "name": "Model",
+              "name": "Context",
               "promise": Promise {},
               "typeDeclaration": "",
             },
@@ -5381,13 +5381,13 @@ Map {
         "script": Script {
           "cache": Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1user/post@[object Object]:true" => "HTTP_POST",
-            "ModelCoder@petstore.yaml#/paths/~1user/post@paths//$context.ts:true:true" => "Model",
+            "ContextCoder@petstore.yaml#/paths/~1user/post@paths//$context.ts:true:true" => "Context",
             "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
             "tools@internal/tools.ts:true:false" => "Tools",
           },
           "exports": Map {
             "HTTP_POST" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: User, context: Model, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: User, context: Context, response: ResponseBuilderBuilder<{
       [statusCode in HttpStatusCode]: {
           headers: {};
           content: {
@@ -5431,22 +5431,22 @@ Map {
             },
           },
           "imports": Map {
-            "Model" => Object {
+            "Context" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "Model",
+              "name": "Context",
               "script": Script {
                 "cache": Map {
-                  "default" => "Model",
+                  "default" => "Context",
                 },
                 "exports": Map {
-                  "Model" => Object {
+                  "Context" => Object {
                     "code": "{}",
                     "done": true,
-                    "id": "ModelCoder@petstore.yaml#/paths/~1pet/post",
+                    "id": "ContextCoder@petstore.yaml#/paths/~1pet/post",
                     "isDefault": true,
                     "isType": true,
-                    "name": "Model",
+                    "name": "Context",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -5551,13 +5551,13 @@ Map {
   "path-types/user.types.ts" => Script {
     "cache": Map {
       "OperationTypeCoder@petstore.yaml#/paths/~1user/post@[object Object]:true" => "HTTP_POST",
-      "ModelCoder@petstore.yaml#/paths/~1user/post@paths//$context.ts:true:true" => "Model",
+      "ContextCoder@petstore.yaml#/paths/~1user/post@paths//$context.ts:true:true" => "Context",
       "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
       "tools@internal/tools.ts:true:false" => "Tools",
     },
     "exports": Map {
       "HTTP_POST" => Object {
-        "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: User, context: Model, response: ResponseBuilderBuilder<{
+        "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: User, context: Context, response: ResponseBuilderBuilder<{
       [statusCode in HttpStatusCode]: {
           headers: {};
           content: {
@@ -5601,22 +5601,22 @@ Map {
       },
     },
     "imports": Map {
-      "Model" => Object {
+      "Context" => Object {
         "isDefault": true,
         "isType": true,
-        "name": "Model",
+        "name": "Context",
         "script": Script {
           "cache": Map {
-            "default" => "Model",
+            "default" => "Context",
           },
           "exports": Map {
-            "Model" => Object {
+            "Context" => Object {
               "code": "{}",
               "done": true,
-              "id": "ModelCoder@petstore.yaml#/paths/~1pet/post",
+              "id": "ContextCoder@petstore.yaml#/paths/~1pet/post",
               "isDefault": true,
               "isType": true,
-              "name": "Model",
+              "name": "Context",
               "promise": Promise {},
               "typeDeclaration": "",
             },
@@ -5737,13 +5737,13 @@ Map {
         "script": Script {
           "cache": Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1user~1createWithList/post@[object Object]:true" => "HTTP_POST",
-            "ModelCoder@petstore.yaml#/paths/~1user~1createWithList/post@paths/user/$context.ts:true:true" => "Model",
+            "ContextCoder@petstore.yaml#/paths/~1user~1createWithList/post@paths/user/$context.ts:true:true" => "Context",
             "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
             "tools@internal/tools.ts:true:false" => "Tools",
           },
           "exports": Map {
             "HTTP_POST" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: Array<User>, context: Model, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: Array<User>, context: Context, response: ResponseBuilderBuilder<{
       200: {
           headers: {};
           content: {
@@ -5797,24 +5797,24 @@ Map {
             },
           },
           "imports": Map {
-            "Model" => Object {
+            "Context" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "Model",
+              "name": "Context",
               "script": Script {
                 "cache": Map {
-                  "default" => "Model",
+                  "default" => "Context",
                 },
                 "exports": Map {
-                  "Model" => Object {
+                  "Context" => Object {
                     "code": Object {
                       "raw": "export { default } from \\"../$context.js\\"",
                     },
                     "done": true,
-                    "id": "ModelCoder@petstore.yaml#/paths/~1user~1createWithList/post",
+                    "id": "ContextCoder@petstore.yaml#/paths/~1user~1createWithList/post",
                     "isDefault": true,
                     "isType": true,
-                    "name": "Model",
+                    "name": "Context",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -5919,13 +5919,13 @@ Map {
   "path-types/user/createWithList.types.ts" => Script {
     "cache": Map {
       "OperationTypeCoder@petstore.yaml#/paths/~1user~1createWithList/post@[object Object]:true" => "HTTP_POST",
-      "ModelCoder@petstore.yaml#/paths/~1user~1createWithList/post@paths/user/$context.ts:true:true" => "Model",
+      "ContextCoder@petstore.yaml#/paths/~1user~1createWithList/post@paths/user/$context.ts:true:true" => "Context",
       "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
       "tools@internal/tools.ts:true:false" => "Tools",
     },
     "exports": Map {
       "HTTP_POST" => Object {
-        "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: Array<User>, context: Model, response: ResponseBuilderBuilder<{
+        "code": "({ query, path, header, body, context, tools }: { query: undefined, path: undefined, header: undefined, body: Array<User>, context: Context, response: ResponseBuilderBuilder<{
       200: {
           headers: {};
           content: {
@@ -5979,24 +5979,24 @@ Map {
       },
     },
     "imports": Map {
-      "Model" => Object {
+      "Context" => Object {
         "isDefault": true,
         "isType": true,
-        "name": "Model",
+        "name": "Context",
         "script": Script {
           "cache": Map {
-            "default" => "Model",
+            "default" => "Context",
           },
           "exports": Map {
-            "Model" => Object {
+            "Context" => Object {
               "code": Object {
                 "raw": "export { default } from \\"../$context.js\\"",
               },
               "done": true,
-              "id": "ModelCoder@petstore.yaml#/paths/~1user~1createWithList/post",
+              "id": "ContextCoder@petstore.yaml#/paths/~1user~1createWithList/post",
               "isDefault": true,
               "isType": true,
-              "name": "Model",
+              "name": "Context",
               "promise": Promise {},
               "typeDeclaration": "",
             },
@@ -6117,12 +6117,12 @@ Map {
         "script": Script {
           "cache": Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1user~1login/get@[object Object]:true" => "HTTP_GET",
-            "ModelCoder@petstore.yaml#/paths/~1user~1login/get@paths/user/$context.ts:true:true" => "Model",
+            "ContextCoder@petstore.yaml#/paths/~1user~1login/get@paths/user/$context.ts:true:true" => "Context",
             "tools@internal/tools.ts:true:false" => "Tools",
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: {username?: string, password?: string}, path: never, header: never, body: undefined, context: Model, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context, tools }: { query: {username?: string, password?: string}, path: never, header: never, body: undefined, context: Context, response: ResponseBuilderBuilder<{
       200: {
           headers: {\\"X-Rate-Limit\\": { schema: number};\\"X-Expires-After\\": { schema: string}};
           content: {
@@ -6176,24 +6176,24 @@ Map {
             },
           },
           "imports": Map {
-            "Model" => Object {
+            "Context" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "Model",
+              "name": "Context",
               "script": Script {
                 "cache": Map {
-                  "default" => "Model",
+                  "default" => "Context",
                 },
                 "exports": Map {
-                  "Model" => Object {
+                  "Context" => Object {
                     "code": Object {
                       "raw": "export { default } from \\"../$context.js\\"",
                     },
                     "done": true,
-                    "id": "ModelCoder@petstore.yaml#/paths/~1user~1createWithList/post",
+                    "id": "ContextCoder@petstore.yaml#/paths/~1user~1createWithList/post",
                     "isDefault": true,
                     "isType": true,
-                    "name": "Model",
+                    "name": "Context",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -6268,12 +6268,12 @@ Map {
   "path-types/user/login.types.ts" => Script {
     "cache": Map {
       "OperationTypeCoder@petstore.yaml#/paths/~1user~1login/get@[object Object]:true" => "HTTP_GET",
-      "ModelCoder@petstore.yaml#/paths/~1user~1login/get@paths/user/$context.ts:true:true" => "Model",
+      "ContextCoder@petstore.yaml#/paths/~1user~1login/get@paths/user/$context.ts:true:true" => "Context",
       "tools@internal/tools.ts:true:false" => "Tools",
     },
     "exports": Map {
       "HTTP_GET" => Object {
-        "code": "({ query, path, header, body, context, tools }: { query: {username?: string, password?: string}, path: never, header: never, body: undefined, context: Model, response: ResponseBuilderBuilder<{
+        "code": "({ query, path, header, body, context, tools }: { query: {username?: string, password?: string}, path: never, header: never, body: undefined, context: Context, response: ResponseBuilderBuilder<{
       200: {
           headers: {\\"X-Rate-Limit\\": { schema: number};\\"X-Expires-After\\": { schema: string}};
           content: {
@@ -6327,24 +6327,24 @@ Map {
       },
     },
     "imports": Map {
-      "Model" => Object {
+      "Context" => Object {
         "isDefault": true,
         "isType": true,
-        "name": "Model",
+        "name": "Context",
         "script": Script {
           "cache": Map {
-            "default" => "Model",
+            "default" => "Context",
           },
           "exports": Map {
-            "Model" => Object {
+            "Context" => Object {
               "code": Object {
                 "raw": "export { default } from \\"../$context.js\\"",
               },
               "done": true,
-              "id": "ModelCoder@petstore.yaml#/paths/~1user~1createWithList/post",
+              "id": "ContextCoder@petstore.yaml#/paths/~1user~1createWithList/post",
               "isDefault": true,
               "isType": true,
-              "name": "Model",
+              "name": "Context",
               "promise": Promise {},
               "typeDeclaration": "",
             },
@@ -6433,12 +6433,12 @@ Map {
         "script": Script {
           "cache": Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1user~1logout/get@[object Object]:true" => "HTTP_GET",
-            "ModelCoder@petstore.yaml#/paths/~1user~1logout/get@paths/user/$context.ts:true:true" => "Model",
+            "ContextCoder@petstore.yaml#/paths/~1user~1logout/get@paths/user/$context.ts:true:true" => "Context",
             "tools@internal/tools.ts:true:false" => "Tools",
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: never, header: never, body: undefined, context: Model, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context, tools }: { query: never, path: never, header: never, body: undefined, context: Context, response: ResponseBuilderBuilder<{
       [statusCode in HttpStatusCode]: {
           headers: {};
           content: {
@@ -6472,24 +6472,24 @@ Map {
             },
           },
           "imports": Map {
-            "Model" => Object {
+            "Context" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "Model",
+              "name": "Context",
               "script": Script {
                 "cache": Map {
-                  "default" => "Model",
+                  "default" => "Context",
                 },
                 "exports": Map {
-                  "Model" => Object {
+                  "Context" => Object {
                     "code": Object {
                       "raw": "export { default } from \\"../$context.js\\"",
                     },
                     "done": true,
-                    "id": "ModelCoder@petstore.yaml#/paths/~1user~1createWithList/post",
+                    "id": "ContextCoder@petstore.yaml#/paths/~1user~1createWithList/post",
                     "isDefault": true,
                     "isType": true,
-                    "name": "Model",
+                    "name": "Context",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -6564,12 +6564,12 @@ Map {
   "path-types/user/logout.types.ts" => Script {
     "cache": Map {
       "OperationTypeCoder@petstore.yaml#/paths/~1user~1logout/get@[object Object]:true" => "HTTP_GET",
-      "ModelCoder@petstore.yaml#/paths/~1user~1logout/get@paths/user/$context.ts:true:true" => "Model",
+      "ContextCoder@petstore.yaml#/paths/~1user~1logout/get@paths/user/$context.ts:true:true" => "Context",
       "tools@internal/tools.ts:true:false" => "Tools",
     },
     "exports": Map {
       "HTTP_GET" => Object {
-        "code": "({ query, path, header, body, context, tools }: { query: never, path: never, header: never, body: undefined, context: Model, response: ResponseBuilderBuilder<{
+        "code": "({ query, path, header, body, context, tools }: { query: never, path: never, header: never, body: undefined, context: Context, response: ResponseBuilderBuilder<{
       [statusCode in HttpStatusCode]: {
           headers: {};
           content: {
@@ -6603,24 +6603,24 @@ Map {
       },
     },
     "imports": Map {
-      "Model" => Object {
+      "Context" => Object {
         "isDefault": true,
         "isType": true,
-        "name": "Model",
+        "name": "Context",
         "script": Script {
           "cache": Map {
-            "default" => "Model",
+            "default" => "Context",
           },
           "exports": Map {
-            "Model" => Object {
+            "Context" => Object {
               "code": Object {
                 "raw": "export { default } from \\"../$context.js\\"",
               },
               "done": true,
-              "id": "ModelCoder@petstore.yaml#/paths/~1user~1createWithList/post",
+              "id": "ContextCoder@petstore.yaml#/paths/~1user~1createWithList/post",
               "isDefault": true,
               "isType": true,
-              "name": "Model",
+              "name": "Context",
               "promise": Promise {},
               "typeDeclaration": "",
             },
@@ -6737,15 +6737,15 @@ Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/get@[object Object]:true" => "HTTP_GET",
             "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/put@[object Object]:true" => "HTTP_PUT",
             "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/delete@[object Object]:true" => "HTTP_DELETE",
-            "ModelCoder@petstore.yaml#/paths/~1user~1{username}/get@paths/user/$context.ts:true:true" => "Model",
+            "ContextCoder@petstore.yaml#/paths/~1user~1{username}/get@paths/user/$context.ts:true:true" => "Context",
             "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
             "tools@internal/tools.ts:true:false" => "Tools",
-            "ModelCoder@petstore.yaml#/paths/~1user~1{username}/put@paths/user/$context.ts:true:true" => "Model2",
-            "ModelCoder@petstore.yaml#/paths/~1user~1{username}/delete@paths/user/$context.ts:true:true" => "Model3",
+            "ContextCoder@petstore.yaml#/paths/~1user~1{username}/put@paths/user/$context.ts:true:true" => "Context2",
+            "ContextCoder@petstore.yaml#/paths/~1user~1{username}/delete@paths/user/$context.ts:true:true" => "Context3",
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: undefined, context: Model, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: undefined, context: Context, response: ResponseBuilderBuilder<{
       200: {
           headers: {};
           content: {
@@ -6798,7 +6798,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_PUT" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: User, context: Model2, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: User, context: Context2, response: ResponseBuilderBuilder<{
       [statusCode in HttpStatusCode]: {
           headers: {};
           content: {
@@ -6821,7 +6821,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_DELETE" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: undefined, context: Model3, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: undefined, context: Context3, response: ResponseBuilderBuilder<{
       400: {
           headers: {};
           content: {
@@ -6865,24 +6865,24 @@ Map {
             },
           },
           "imports": Map {
-            "Model" => Object {
+            "Context" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "Model",
+              "name": "Context",
               "script": Script {
                 "cache": Map {
-                  "default" => "Model",
+                  "default" => "Context",
                 },
                 "exports": Map {
-                  "Model" => Object {
+                  "Context" => Object {
                     "code": Object {
                       "raw": "export { default } from \\"../$context.js\\"",
                     },
                     "done": true,
-                    "id": "ModelCoder@petstore.yaml#/paths/~1user~1createWithList/post",
+                    "id": "ContextCoder@petstore.yaml#/paths/~1user~1createWithList/post",
                     "isDefault": true,
                     "isType": true,
-                    "name": "Model",
+                    "name": "Context",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -6967,24 +6967,24 @@ Map {
                 "typeCache": Map {},
               },
             },
-            "Model2" => Object {
+            "Context2" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "Model",
+              "name": "Context",
               "script": Script {
                 "cache": Map {
-                  "default" => "Model",
+                  "default" => "Context",
                 },
                 "exports": Map {
-                  "Model" => Object {
+                  "Context" => Object {
                     "code": Object {
                       "raw": "export { default } from \\"../$context.js\\"",
                     },
                     "done": true,
-                    "id": "ModelCoder@petstore.yaml#/paths/~1user~1createWithList/post",
+                    "id": "ContextCoder@petstore.yaml#/paths/~1user~1createWithList/post",
                     "isDefault": true,
                     "isType": true,
-                    "name": "Model",
+                    "name": "Context",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -6999,24 +6999,24 @@ Map {
                 "typeCache": Map {},
               },
             },
-            "Model3" => Object {
+            "Context3" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "Model",
+              "name": "Context",
               "script": Script {
                 "cache": Map {
-                  "default" => "Model",
+                  "default" => "Context",
                 },
                 "exports": Map {
-                  "Model" => Object {
+                  "Context" => Object {
                     "code": Object {
                       "raw": "export { default } from \\"../$context.js\\"",
                     },
                     "done": true,
-                    "id": "ModelCoder@petstore.yaml#/paths/~1user~1createWithList/post",
+                    "id": "ContextCoder@petstore.yaml#/paths/~1user~1createWithList/post",
                     "isDefault": true,
                     "isType": true,
-                    "name": "Model",
+                    "name": "Context",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -7049,15 +7049,15 @@ Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/get@[object Object]:true" => "HTTP_GET",
             "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/put@[object Object]:true" => "HTTP_PUT",
             "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/delete@[object Object]:true" => "HTTP_DELETE",
-            "ModelCoder@petstore.yaml#/paths/~1user~1{username}/get@paths/user/$context.ts:true:true" => "Model",
+            "ContextCoder@petstore.yaml#/paths/~1user~1{username}/get@paths/user/$context.ts:true:true" => "Context",
             "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
             "tools@internal/tools.ts:true:false" => "Tools",
-            "ModelCoder@petstore.yaml#/paths/~1user~1{username}/put@paths/user/$context.ts:true:true" => "Model2",
-            "ModelCoder@petstore.yaml#/paths/~1user~1{username}/delete@paths/user/$context.ts:true:true" => "Model3",
+            "ContextCoder@petstore.yaml#/paths/~1user~1{username}/put@paths/user/$context.ts:true:true" => "Context2",
+            "ContextCoder@petstore.yaml#/paths/~1user~1{username}/delete@paths/user/$context.ts:true:true" => "Context3",
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: undefined, context: Model, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: undefined, context: Context, response: ResponseBuilderBuilder<{
       200: {
           headers: {};
           content: {
@@ -7110,7 +7110,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_PUT" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: User, context: Model2, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: User, context: Context2, response: ResponseBuilderBuilder<{
       [statusCode in HttpStatusCode]: {
           headers: {};
           content: {
@@ -7133,7 +7133,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_DELETE" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: undefined, context: Model3, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: undefined, context: Context3, response: ResponseBuilderBuilder<{
       400: {
           headers: {};
           content: {
@@ -7177,24 +7177,24 @@ Map {
             },
           },
           "imports": Map {
-            "Model" => Object {
+            "Context" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "Model",
+              "name": "Context",
               "script": Script {
                 "cache": Map {
-                  "default" => "Model",
+                  "default" => "Context",
                 },
                 "exports": Map {
-                  "Model" => Object {
+                  "Context" => Object {
                     "code": Object {
                       "raw": "export { default } from \\"../$context.js\\"",
                     },
                     "done": true,
-                    "id": "ModelCoder@petstore.yaml#/paths/~1user~1createWithList/post",
+                    "id": "ContextCoder@petstore.yaml#/paths/~1user~1createWithList/post",
                     "isDefault": true,
                     "isType": true,
-                    "name": "Model",
+                    "name": "Context",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -7279,24 +7279,24 @@ Map {
                 "typeCache": Map {},
               },
             },
-            "Model2" => Object {
+            "Context2" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "Model",
+              "name": "Context",
               "script": Script {
                 "cache": Map {
-                  "default" => "Model",
+                  "default" => "Context",
                 },
                 "exports": Map {
-                  "Model" => Object {
+                  "Context" => Object {
                     "code": Object {
                       "raw": "export { default } from \\"../$context.js\\"",
                     },
                     "done": true,
-                    "id": "ModelCoder@petstore.yaml#/paths/~1user~1createWithList/post",
+                    "id": "ContextCoder@petstore.yaml#/paths/~1user~1createWithList/post",
                     "isDefault": true,
                     "isType": true,
-                    "name": "Model",
+                    "name": "Context",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -7311,24 +7311,24 @@ Map {
                 "typeCache": Map {},
               },
             },
-            "Model3" => Object {
+            "Context3" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "Model",
+              "name": "Context",
               "script": Script {
                 "cache": Map {
-                  "default" => "Model",
+                  "default" => "Context",
                 },
                 "exports": Map {
-                  "Model" => Object {
+                  "Context" => Object {
                     "code": Object {
                       "raw": "export { default } from \\"../$context.js\\"",
                     },
                     "done": true,
-                    "id": "ModelCoder@petstore.yaml#/paths/~1user~1createWithList/post",
+                    "id": "ContextCoder@petstore.yaml#/paths/~1user~1createWithList/post",
                     "isDefault": true,
                     "isType": true,
-                    "name": "Model",
+                    "name": "Context",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -7361,15 +7361,15 @@ Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/get@[object Object]:true" => "HTTP_GET",
             "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/put@[object Object]:true" => "HTTP_PUT",
             "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/delete@[object Object]:true" => "HTTP_DELETE",
-            "ModelCoder@petstore.yaml#/paths/~1user~1{username}/get@paths/user/$context.ts:true:true" => "Model",
+            "ContextCoder@petstore.yaml#/paths/~1user~1{username}/get@paths/user/$context.ts:true:true" => "Context",
             "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
             "tools@internal/tools.ts:true:false" => "Tools",
-            "ModelCoder@petstore.yaml#/paths/~1user~1{username}/put@paths/user/$context.ts:true:true" => "Model2",
-            "ModelCoder@petstore.yaml#/paths/~1user~1{username}/delete@paths/user/$context.ts:true:true" => "Model3",
+            "ContextCoder@petstore.yaml#/paths/~1user~1{username}/put@paths/user/$context.ts:true:true" => "Context2",
+            "ContextCoder@petstore.yaml#/paths/~1user~1{username}/delete@paths/user/$context.ts:true:true" => "Context3",
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: undefined, context: Model, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: undefined, context: Context, response: ResponseBuilderBuilder<{
       200: {
           headers: {};
           content: {
@@ -7422,7 +7422,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_PUT" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: User, context: Model2, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: User, context: Context2, response: ResponseBuilderBuilder<{
       [statusCode in HttpStatusCode]: {
           headers: {};
           content: {
@@ -7445,7 +7445,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_DELETE" => Object {
-              "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: undefined, context: Model3, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: undefined, context: Context3, response: ResponseBuilderBuilder<{
       400: {
           headers: {};
           content: {
@@ -7489,24 +7489,24 @@ Map {
             },
           },
           "imports": Map {
-            "Model" => Object {
+            "Context" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "Model",
+              "name": "Context",
               "script": Script {
                 "cache": Map {
-                  "default" => "Model",
+                  "default" => "Context",
                 },
                 "exports": Map {
-                  "Model" => Object {
+                  "Context" => Object {
                     "code": Object {
                       "raw": "export { default } from \\"../$context.js\\"",
                     },
                     "done": true,
-                    "id": "ModelCoder@petstore.yaml#/paths/~1user~1createWithList/post",
+                    "id": "ContextCoder@petstore.yaml#/paths/~1user~1createWithList/post",
                     "isDefault": true,
                     "isType": true,
-                    "name": "Model",
+                    "name": "Context",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -7591,24 +7591,24 @@ Map {
                 "typeCache": Map {},
               },
             },
-            "Model2" => Object {
+            "Context2" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "Model",
+              "name": "Context",
               "script": Script {
                 "cache": Map {
-                  "default" => "Model",
+                  "default" => "Context",
                 },
                 "exports": Map {
-                  "Model" => Object {
+                  "Context" => Object {
                     "code": Object {
                       "raw": "export { default } from \\"../$context.js\\"",
                     },
                     "done": true,
-                    "id": "ModelCoder@petstore.yaml#/paths/~1user~1createWithList/post",
+                    "id": "ContextCoder@petstore.yaml#/paths/~1user~1createWithList/post",
                     "isDefault": true,
                     "isType": true,
-                    "name": "Model",
+                    "name": "Context",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -7623,24 +7623,24 @@ Map {
                 "typeCache": Map {},
               },
             },
-            "Model3" => Object {
+            "Context3" => Object {
               "isDefault": true,
               "isType": true,
-              "name": "Model",
+              "name": "Context",
               "script": Script {
                 "cache": Map {
-                  "default" => "Model",
+                  "default" => "Context",
                 },
                 "exports": Map {
-                  "Model" => Object {
+                  "Context" => Object {
                     "code": Object {
                       "raw": "export { default } from \\"../$context.js\\"",
                     },
                     "done": true,
-                    "id": "ModelCoder@petstore.yaml#/paths/~1user~1createWithList/post",
+                    "id": "ContextCoder@petstore.yaml#/paths/~1user~1createWithList/post",
                     "isDefault": true,
                     "isType": true,
-                    "name": "Model",
+                    "name": "Context",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -7677,15 +7677,15 @@ Map {
       "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/get@[object Object]:true" => "HTTP_GET",
       "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/put@[object Object]:true" => "HTTP_PUT",
       "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/delete@[object Object]:true" => "HTTP_DELETE",
-      "ModelCoder@petstore.yaml#/paths/~1user~1{username}/get@paths/user/$context.ts:true:true" => "Model",
+      "ContextCoder@petstore.yaml#/paths/~1user~1{username}/get@paths/user/$context.ts:true:true" => "Context",
       "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
       "tools@internal/tools.ts:true:false" => "Tools",
-      "ModelCoder@petstore.yaml#/paths/~1user~1{username}/put@paths/user/$context.ts:true:true" => "Model2",
-      "ModelCoder@petstore.yaml#/paths/~1user~1{username}/delete@paths/user/$context.ts:true:true" => "Model3",
+      "ContextCoder@petstore.yaml#/paths/~1user~1{username}/put@paths/user/$context.ts:true:true" => "Context2",
+      "ContextCoder@petstore.yaml#/paths/~1user~1{username}/delete@paths/user/$context.ts:true:true" => "Context3",
     },
     "exports": Map {
       "HTTP_GET" => Object {
-        "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: undefined, context: Model, response: ResponseBuilderBuilder<{
+        "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: undefined, context: Context, response: ResponseBuilderBuilder<{
       200: {
           headers: {};
           content: {
@@ -7738,7 +7738,7 @@ Map {
         "typeDeclaration": "",
       },
       "HTTP_PUT" => Object {
-        "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: User, context: Model2, response: ResponseBuilderBuilder<{
+        "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: User, context: Context2, response: ResponseBuilderBuilder<{
       [statusCode in HttpStatusCode]: {
           headers: {};
           content: {
@@ -7761,7 +7761,7 @@ Map {
         "typeDeclaration": "",
       },
       "HTTP_DELETE" => Object {
-        "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: undefined, context: Model3, response: ResponseBuilderBuilder<{
+        "code": "({ query, path, header, body, context, tools }: { query: never, path: {username: string}, header: never, body: undefined, context: Context3, response: ResponseBuilderBuilder<{
       400: {
           headers: {};
           content: {
@@ -7805,24 +7805,24 @@ Map {
       },
     },
     "imports": Map {
-      "Model" => Object {
+      "Context" => Object {
         "isDefault": true,
         "isType": true,
-        "name": "Model",
+        "name": "Context",
         "script": Script {
           "cache": Map {
-            "default" => "Model",
+            "default" => "Context",
           },
           "exports": Map {
-            "Model" => Object {
+            "Context" => Object {
               "code": Object {
                 "raw": "export { default } from \\"../$context.js\\"",
               },
               "done": true,
-              "id": "ModelCoder@petstore.yaml#/paths/~1user~1createWithList/post",
+              "id": "ContextCoder@petstore.yaml#/paths/~1user~1createWithList/post",
               "isDefault": true,
               "isType": true,
-              "name": "Model",
+              "name": "Context",
               "promise": Promise {},
               "typeDeclaration": "",
             },
@@ -7907,24 +7907,24 @@ Map {
           "typeCache": Map {},
         },
       },
-      "Model2" => Object {
+      "Context2" => Object {
         "isDefault": true,
         "isType": true,
-        "name": "Model",
+        "name": "Context",
         "script": Script {
           "cache": Map {
-            "default" => "Model",
+            "default" => "Context",
           },
           "exports": Map {
-            "Model" => Object {
+            "Context" => Object {
               "code": Object {
                 "raw": "export { default } from \\"../$context.js\\"",
               },
               "done": true,
-              "id": "ModelCoder@petstore.yaml#/paths/~1user~1createWithList/post",
+              "id": "ContextCoder@petstore.yaml#/paths/~1user~1createWithList/post",
               "isDefault": true,
               "isType": true,
-              "name": "Model",
+              "name": "Context",
               "promise": Promise {},
               "typeDeclaration": "",
             },
@@ -7939,24 +7939,24 @@ Map {
           "typeCache": Map {},
         },
       },
-      "Model3" => Object {
+      "Context3" => Object {
         "isDefault": true,
         "isType": true,
-        "name": "Model",
+        "name": "Context",
         "script": Script {
           "cache": Map {
-            "default" => "Model",
+            "default" => "Context",
           },
           "exports": Map {
-            "Model" => Object {
+            "Context" => Object {
               "code": Object {
                 "raw": "export { default } from \\"../$context.js\\"",
               },
               "done": true,
-              "id": "ModelCoder@petstore.yaml#/paths/~1user~1createWithList/post",
+              "id": "ContextCoder@petstore.yaml#/paths/~1user~1createWithList/post",
               "isDefault": true,
               "isType": true,
-              "name": "Model",
+              "name": "Context",
               "promise": Promise {},
               "typeDeclaration": "",
             },
@@ -7981,16 +7981,16 @@ Map {
   },
   "paths//$context.ts" => Script {
     "cache": Map {
-      "default" => "Model",
+      "default" => "Context",
     },
     "exports": Map {
-      "Model" => Object {
+      "Context" => Object {
         "code": "{}",
         "done": true,
-        "id": "ModelCoder@petstore.yaml#/paths/~1pet/post",
+        "id": "ContextCoder@petstore.yaml#/paths/~1pet/post",
         "isDefault": true,
         "isType": true,
-        "name": "Model",
+        "name": "Context",
         "promise": Promise {},
         "typeDeclaration": "",
       },
@@ -8129,18 +8129,18 @@ Map {
   },
   "paths/pet/$context.ts" => Script {
     "cache": Map {
-      "default" => "Model",
+      "default" => "Context",
     },
     "exports": Map {
-      "Model" => Object {
+      "Context" => Object {
         "code": Object {
           "raw": "export { default } from \\"../$context.js\\"",
         },
         "done": true,
-        "id": "ModelCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
+        "id": "ContextCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
         "isDefault": true,
         "isType": true,
-        "name": "Model",
+        "name": "Context",
         "promise": Promise {},
         "typeDeclaration": "",
       },
@@ -8156,18 +8156,18 @@ Map {
   },
   "paths/pet/{petId}/$context.ts" => Script {
     "cache": Map {
-      "default" => "Model",
+      "default" => "Context",
     },
     "exports": Map {
-      "Model" => Object {
+      "Context" => Object {
         "code": Object {
           "raw": "export { default } from \\"../$context.js\\"",
         },
         "done": true,
-        "id": "ModelCoder@petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post",
+        "id": "ContextCoder@petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post",
         "isDefault": true,
         "isType": true,
-        "name": "Model",
+        "name": "Context",
         "promise": Promise {},
         "typeDeclaration": "",
       },
@@ -8208,18 +8208,18 @@ Map {
   },
   "paths/store/$context.ts" => Script {
     "cache": Map {
-      "default" => "Model",
+      "default" => "Context",
     },
     "exports": Map {
-      "Model" => Object {
+      "Context" => Object {
         "code": Object {
           "raw": "export { default } from \\"../$context.js\\"",
         },
         "done": true,
-        "id": "ModelCoder@petstore.yaml#/paths/~1store~1inventory/get",
+        "id": "ContextCoder@petstore.yaml#/paths/~1store~1inventory/get",
         "isDefault": true,
         "isType": true,
-        "name": "Model",
+        "name": "Context",
         "promise": Promise {},
         "typeDeclaration": "",
       },
@@ -8260,18 +8260,18 @@ Map {
   },
   "paths/store/order/$context.ts" => Script {
     "cache": Map {
-      "default" => "Model",
+      "default" => "Context",
     },
     "exports": Map {
-      "Model" => Object {
+      "Context" => Object {
         "code": Object {
           "raw": "export { default } from \\"../$context.js\\"",
         },
         "done": true,
-        "id": "ModelCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get",
+        "id": "ContextCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get",
         "isDefault": true,
         "isType": true,
-        "name": "Model",
+        "name": "Context",
         "promise": Promise {},
         "typeDeclaration": "",
       },
@@ -8312,18 +8312,18 @@ Map {
   },
   "paths/user/$context.ts" => Script {
     "cache": Map {
-      "default" => "Model",
+      "default" => "Context",
     },
     "exports": Map {
-      "Model" => Object {
+      "Context" => Object {
         "code": Object {
           "raw": "export { default } from \\"../$context.js\\"",
         },
         "done": true,
-        "id": "ModelCoder@petstore.yaml#/paths/~1user~1createWithList/post",
+        "id": "ContextCoder@petstore.yaml#/paths/~1user~1createWithList/post",
         "isDefault": true,
         "isType": true,
-        "name": "Model",
+        "name": "Context",
         "promise": Promise {},
         "typeDeclaration": "",
       },
