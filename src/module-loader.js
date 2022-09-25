@@ -2,21 +2,10 @@ import fs from "node:fs/promises";
 import { existsSync } from "node:fs";
 import nodePath from "node:path";
 import { once } from "node:events";
-import vm from "node:vm";
 
 import chokidar from "chokidar";
 
 import { ContextRegistry } from "./context-registry.js";
-
-function escapePathForImport(path) {
-  // If --experimental-vm-modules is enabled
-  // (there may be a better way to detect this)
-  if (vm.Module) {
-    return path;
-  }
-
-  return escape(path);
-}
 
 export class ModuleLoader extends EventTarget {
   basePath;
@@ -57,7 +46,7 @@ export class ModuleLoader extends EventTarget {
         }
 
         // eslint-disable-next-line node/no-unsupported-features/es-syntax, import/no-dynamic-require
-        import(`${escape(pathName)}?cacheBust=${Date.now()}`)
+        import(`${pathName}?cacheBust=${Date.now()}`)
           // eslint-disable-next-line promise/prefer-await-to-then
           .then((endpoint) => {
             this.registry.add(url, endpoint);
@@ -101,7 +90,7 @@ export class ModuleLoader extends EventTarget {
 
       // eslint-disable-next-line node/no-unsupported-features/es-syntax, import/no-dynamic-require
       const endpoint = await import(
-        escapePathForImport(nodePath.join(this.basePath, directory, file.name))
+        nodePath.join(this.basePath, directory, file.name)
       );
 
       if (file.name.includes("$context")) {
