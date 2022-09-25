@@ -2,6 +2,7 @@ import fs from "node:fs/promises";
 import { existsSync } from "node:fs";
 import nodePath from "node:path";
 import { once } from "node:events";
+import { dir } from "node:console";
 
 import chokidar from "chokidar";
 
@@ -41,16 +42,19 @@ export class ModuleLoader extends EventTarget {
           this.dispatchEvent(new Event("remove"), pathName);
         }
 
-        if (pathName.includes("$context")) {
-          return;
-        }
-
         // eslint-disable-next-line node/no-unsupported-features/es-syntax, import/no-dynamic-require
         import(`${pathName}?cacheBust=${Date.now()}`)
           // eslint-disable-next-line promise/prefer-await-to-then
           .then((endpoint) => {
-            this.registry.add(url, endpoint);
             this.dispatchEvent(new Event(eventName), pathName);
+
+            if (pathName.includes("$context")) {
+              this.updateContext(parts.dir, endpoint);
+
+              return "context";
+            }
+
+            this.registry.add(url, endpoint);
 
             return "path";
           })
@@ -108,5 +112,11 @@ export class ModuleLoader extends EventTarget {
 
   addContext(directory, endpoint) {
     this.contextRegistry.add(`/${directory}`, endpoint.default);
+  }
+
+  updateContext(directory, endpoint) {
+    const context = this.contextRegistry.find(directory);
+
+    Object.assign(context, endpoint.default);
   }
 }
