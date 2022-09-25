@@ -2,7 +2,6 @@ import fs from "node:fs/promises";
 import { existsSync } from "node:fs";
 import nodePath from "node:path";
 import { once } from "node:events";
-import { dir } from "node:console";
 
 import chokidar from "chokidar";
 
@@ -116,7 +115,17 @@ export class ModuleLoader extends EventTarget {
 
   updateContext(directory, endpoint) {
     const context = this.contextRegistry.find(directory);
+    const updatedContext = endpoint.default;
 
-    Object.assign(context, endpoint.default);
+    for (const property in updatedContext) {
+      if (
+        Object.prototype.hasOwnProperty.call(updatedContext, property) &&
+        !Object.prototype.hasOwnProperty.call(context, property)
+      ) {
+        context[property] = updatedContext[property];
+      }
+    }
+
+    Object.setPrototypeOf(context, Object.getPrototypeOf(updatedContext));
   }
 }
