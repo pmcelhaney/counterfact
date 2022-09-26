@@ -12,6 +12,7 @@ import { Dispatcher } from "./dispatcher.js";
 import { koaMiddleware } from "./koa-middleware.js";
 import { ModuleLoader } from "./module-loader.js";
 import { Transpiler } from "./transpiler.js";
+import { ContextRegistry } from "./context-registry.js";
 
 async function loadOpenApiDocument(source) {
   try {
@@ -24,12 +25,11 @@ async function loadOpenApiDocument(source) {
 // eslint-disable-next-line max-statements
 export async function counterfact(
   basePath,
-  context = {},
   openApiPath = nodePath.join(basePath, "../openapi.yaml")
 ) {
   const openApiDocument = await loadOpenApiDocument(openApiPath);
 
-  const registry = new Registry(context);
+  const registry = new Registry();
 
   const modulesPath = `${await fs.mkdtemp(
     nodePath.join(os.tmpdir(), "counterfact-")
@@ -48,10 +48,13 @@ export async function counterfact(
 
   await transpiler.watch();
 
-  const dispatcher = new Dispatcher(registry, openApiDocument);
+  const contextRegistry = new ContextRegistry();
+
+  const dispatcher = new Dispatcher(registry, contextRegistry, openApiDocument);
   const moduleLoader = new ModuleLoader(
     nodePath.join(modulesPath, "paths"),
-    registry
+    registry,
+    contextRegistry
   );
 
   await moduleLoader.load();

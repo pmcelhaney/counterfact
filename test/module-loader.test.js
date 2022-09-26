@@ -2,6 +2,7 @@ import { once } from "node:events";
 
 import { ModuleLoader } from "../src/module-loader.js";
 import { Registry } from "../src/registry.js";
+import { ContextRegistry } from "../src/context-registry.js";
 
 import { withTemporaryFiles } from "./lib/with-temporary-files.js";
 
@@ -90,7 +91,6 @@ describe("a module loader", () => {
     const files = {
       "module.mjs": contents,
       "README.md": contents,
-      "#types.mjs": contents,
     };
 
     await withTemporaryFiles(files, async (basePath, { add }) => {
@@ -101,10 +101,9 @@ describe("a module loader", () => {
       await loader.watch();
 
       await add("other.txt", "should not be loaded");
-      await add("#other.mjs", "should not be loaded");
 
       expect(registry.exists("GET", "/module")).toBe(true);
-      expect(registry.exists("GET", "/README")).toBe(false);
+      expect(registry.exists("GET", "/READMEx")).toBe(false);
       expect(registry.exists("GET", "/other")).toBe(false);
       expect(registry.exists("GET", "/types")).toBe(false);
 
@@ -145,5 +144,26 @@ describe("a module loader", () => {
         await loader.stopWatching();
       }
     );
+  });
+
+  it("finds a context and adds it to the context registry", async () => {
+    const files = {
+      "$context.mjs": 'export default "main"',
+      "hello/$context.mjs": 'export default "hello"',
+    };
+
+    await withTemporaryFiles(files, async (basePath) => {
+      const registry = new Registry();
+
+      const contextRegistry = new ContextRegistry();
+
+      const loader = new ModuleLoader(basePath, registry, contextRegistry);
+
+      await loader.load();
+
+      expect(contextRegistry.find("/hello")).toBe("hello");
+      expect(contextRegistry.find("/hello/world")).toBe("hello");
+      expect(contextRegistry.find("/some/other/path")).toBe("main");
+    });
   });
 });

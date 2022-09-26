@@ -44,32 +44,6 @@ describe("integration test", () => {
     });
   });
 
-  it("loads the initial context", async () => {
-    const app = new Koa();
-    const request = supertest(app.callback());
-    const files = {
-      "paths/hello.mjs": `
-        export async function GET({context}) {
-          return await Promise.resolve({ body: "Hello " + context.name });
-        }
-      `,
-    };
-
-    await withTemporaryFiles(files, async (basePath) => {
-      const { koaMiddleware, moduleLoader } = await counterfact(basePath, {
-        name: "World",
-      });
-
-      app.use(koaMiddleware);
-
-      const getResponse = await request.get("/hello");
-
-      expect(getResponse.text).toBe("Hello World");
-
-      await moduleLoader.stopWatching();
-    });
-  });
-
   it("uses an OpenAPI document to generate a random response", async () => {
     const app = new Koa();
     const request = supertest(app.callback());
@@ -106,7 +80,6 @@ describe("integration test", () => {
     await withTemporaryFiles(files, async (basePath) => {
       const { koaMiddleware, moduleLoader } = await counterfact(
         basePath,
-        { name: "World" },
         `${basePath}/openapi.yaml`
       );
 

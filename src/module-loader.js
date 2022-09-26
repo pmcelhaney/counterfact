@@ -5,6 +5,8 @@ import { once } from "node:events";
 
 import chokidar from "chokidar";
 
+import { ContextRegistry } from "./context-registry.js";
+
 export class ModuleLoader extends EventTarget {
   basePath;
 
@@ -12,10 +14,13 @@ export class ModuleLoader extends EventTarget {
 
   watcher;
 
-  constructor(basePath, registry) {
+  contextRegistry;
+
+  constructor(basePath, registry, contextRegistry = new ContextRegistry()) {
     super();
     this.basePath = basePath;
     this.registry = registry;
+    this.contextRegistry = contextRegistry;
   }
 
   async watch() {
@@ -31,10 +36,6 @@ export class ModuleLoader extends EventTarget {
           `/${nodePath.join(parts.dir, parts.name)}`
         );
 
-        if (parts.name.includes("#")) {
-          return;
-        }
-
         if (eventName === "unlink") {
           this.registry.remove(url);
           this.dispatchEvent(new Event("remove"), pathName);
@@ -44,10 +45,17 @@ export class ModuleLoader extends EventTarget {
         import(`${pathName}?cacheBust=${Date.now()}`)
           // eslint-disable-next-line promise/prefer-await-to-then
           .then((endpoint) => {
-            this.registry.add(url, endpoint);
             this.dispatchEvent(new Event(eventName), pathName);
 
-            return "ok";
+            if (pathName.includes("$context")) {
+              this.contextRegistry.update(parts.dir, endpoint.default);
+
+              return "context";
+            }
+
+            this.registry.add(url, endpoint);
+
+            return "path";
           })
           // eslint-disable-next-line promise/prefer-await-to-then
           .catch((error) => {
@@ -71,10 +79,6 @@ export class ModuleLoader extends EventTarget {
     });
 
     const imports = files.flatMap(async (file) => {
-      if (file.name.includes("#")) {
-        return;
-      }
-
       const extension = file.name.split(".").at(-1);
 
       if (file.isDirectory()) {
@@ -92,10 +96,14 @@ export class ModuleLoader extends EventTarget {
         nodePath.join(this.basePath, directory, file.name)
       );
 
-      this.registry.add(
-        `/${nodePath.join(directory, nodePath.parse(file.name).name)}`,
-        endpoint
-      );
+      if (file.name.includes("$context")) {
+        this.contextRegistry.add(`/${directory}`, endpoint.default);
+      } else {
+        this.registry.add(
+          `/${nodePath.join(directory, nodePath.parse(file.name).name)}`,
+          endpoint
+        );
+      }
     });
 
     await Promise.all(imports);

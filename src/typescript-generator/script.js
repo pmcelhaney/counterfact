@@ -21,8 +21,10 @@ export class Script {
     throw new Error(`could not find a unique name for ${coder.id}`);
   }
 
-  export(coder, isType = false) {
-    const cacheKey = `${coder.id}@${nodePath}:${isType}`;
+  export(coder, isType = false, isDefault = false) {
+    const cacheKey = isDefault
+      ? "default"
+      : `${coder.id}@${nodePath}:${isType}`;
 
     if (this.cache.has(cacheKey)) {
       return this.cache.get(cacheKey);
@@ -36,6 +38,7 @@ export class Script {
       id: coder.id,
       done: false,
       isType,
+      isDefault,
       typeDeclaration: coder.typeDeclaration(this.exports, this),
     };
 
@@ -63,11 +66,14 @@ export class Script {
     return name;
   }
 
-  // eslint-disable-next-line max-statements
-  import(coder, isType = false) {
+  exportDefault(coder, isType = false) {
+    this.export(coder, isType, true);
+  }
+
+  import(coder, isType = false, isDefault = false) {
     const modulePath = coder.modulePath();
 
-    const cacheKey = `${coder.id}@${modulePath}:${isType}`;
+    const cacheKey = `${coder.id}@${modulePath}:${isType}:${isDefault}`;
 
     if (this.cache.has(cacheKey)) {
       return this.cache.get(cacheKey);
@@ -77,18 +83,19 @@ export class Script {
 
     this.cache.set(cacheKey, name);
 
-    if (name === "get") {
-      throw new Error(`name not working, ${coder.names().next().value}`);
-    }
-
     const scriptFromWhichToExport = this.repository.get(modulePath);
 
-    const exportedName = scriptFromWhichToExport.export(coder, isType);
+    const exportedName = scriptFromWhichToExport.export(
+      coder,
+      isType,
+      isDefault
+    );
 
     this.imports.set(name, {
       script: scriptFromWhichToExport,
       name: exportedName,
       isType,
+      isDefault,
     });
 
     return name;
@@ -96,6 +103,10 @@ export class Script {
 
   importType(coder) {
     return this.import(coder, true);
+  }
+
+  importDefault(coder, isType = true) {
+    return this.import(coder, isType, true);
   }
 
   importExternal(name, modulePath, isType = false) {
@@ -127,16 +138,20 @@ export class Script {
   externalImportsStatements() {
     return Array.from(
       this.externalImports,
-      ([name, { modulePath, isType }]) =>
-        `import${isType ? " type" : ""} { ${name} } from "${modulePath}";`
+      ([name, { modulePath, isType, isDefault }]) =>
+        `import${isType ? " type" : ""} ${
+          isDefault ? name : `{ ${name} }`
+        } from "${modulePath}";`
     );
   }
 
   importStatements() {
     return Array.from(
       this.imports,
-      ([name, { script, isType }]) =>
-        `import${isType ? " type" : ""} { ${name} } from "./${nodePath.relative(
+      ([name, { script, isType, isDefault }]) =>
+        `import${isType ? " type" : ""} ${
+          isDefault ? name : `{ ${name} }`
+        } from "./${nodePath.relative(
           nodePath.dirname(this.path),
           script.path.replace(/\.ts$/u, ".js")
         )}";`
@@ -146,7 +161,15 @@ export class Script {
   exportStatements() {
     return Array.from(
       this.exports.values(),
-      ({ name, isType, code, typeDeclaration }) => {
+      ({ name, isType, isDefault, code, typeDeclaration }) => {
+        if (code.raw) {
+          return code.raw;
+        }
+
+        if (isDefault) {
+          return `export default ${code};`;
+        }
+
         const keyword = isType ? "type" : "const";
         const typeAnnotation =
           typeDeclaration.length === 0 ? "" : `:${typeDeclaration}`;

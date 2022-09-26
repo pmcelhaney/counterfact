@@ -3,6 +3,8 @@ import { constants as fsConstants } from "node:fs";
 import os from "node:os";
 import nodePath from "node:path";
 
+const DEBUG = false;
+
 async function ensureDirectoryExists(filePath) {
   const directory = nodePath.dirname(filePath);
 
@@ -40,8 +42,12 @@ function createRemoveFunction(basePath) {
 }
 
 export async function withTemporaryFiles(files, ...callbacks) {
+  const baseDirectory = DEBUG
+    ? nodePath.resolve(process.cwd(), "./")
+    : os.tmpdir();
+
   const temporaryDirectory = `${await fs.mkdtemp(
-    nodePath.join(os.tmpdir(), "wtf-")
+    nodePath.join(baseDirectory, "wtf-")
   )}/`;
 
   try {
@@ -68,8 +74,8 @@ export async function withTemporaryFiles(files, ...callbacks) {
       });
     }
   } finally {
-    await fs.rm(temporaryDirectory, {
-      recursive: true,
-    });
+    if (!DEBUG) {
+      await fs.rm(temporaryDirectory, { recursive: true });
+    }
   }
 }

@@ -12,14 +12,11 @@ export async function start(
   port = DEFAULT_PORT,
   openApiPath = nodePath.join(basePath, "../openapi.yaml")
 ) {
-  // eslint-disable-next-line import/no-unresolved, node/no-unsupported-features/es-syntax
-  const context = await import("./context/context.js").catch(() => ({}));
-
   const app = new Koa();
 
   app.use(bodyParser());
 
-  const { koaMiddleware } = await counterfact(basePath, context, openApiPath);
+  const { koaMiddleware } = await counterfact(basePath, openApiPath);
 
   app.use(koaMiddleware);
 
