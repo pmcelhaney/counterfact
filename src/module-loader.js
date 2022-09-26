@@ -48,7 +48,7 @@ export class ModuleLoader extends EventTarget {
             this.dispatchEvent(new Event(eventName), pathName);
 
             if (pathName.includes("$context")) {
-              this.updateContext(parts.dir, endpoint);
+              this.contextRegistry.update(parts.dir, endpoint);
 
               return "context";
             }
@@ -107,21 +107,5 @@ export class ModuleLoader extends EventTarget {
     });
 
     await Promise.all(imports);
-  }
-
-  updateContext(directory, endpoint) {
-    const context = this.contextRegistry.find(directory);
-    const updatedContext = endpoint.default;
-
-    for (const property in updatedContext) {
-      if (
-        Object.prototype.hasOwnProperty.call(updatedContext, property) &&
-        !Object.prototype.hasOwnProperty.call(context, property)
-      ) {
-        context[property] = updatedContext[property];
-      }
-    }
-
-    Object.setPrototypeOf(context, Object.getPrototypeOf(updatedContext));
   }
 }

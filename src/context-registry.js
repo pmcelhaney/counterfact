@@ -20,4 +20,20 @@ export class ContextRegistry {
   find(path) {
     return this.entries.get(path) ?? this.find(parentPath(path));
   }
+
+  update(path, endpoint) {
+    const context = this.find(path);
+    const updatedContext = endpoint.default;
+
+    for (const property in updatedContext) {
+      if (
+        Object.prototype.hasOwnProperty.call(updatedContext, property) &&
+        !Object.prototype.hasOwnProperty.call(context, property)
+      ) {
+        context[property] = updatedContext[property];
+      }
+    }
+
+    Object.setPrototypeOf(context, Object.getPrototypeOf(updatedContext));
+  }
 }
