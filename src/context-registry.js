@@ -21,9 +21,8 @@ export class ContextRegistry {
     return this.entries.get(path) ?? this.find(parentPath(path));
   }
 
-  update(path, endpoint) {
+  update(path, updatedContext) {
     const context = this.find(path);
-    const updatedContext = endpoint.default;
 
     for (const property in updatedContext) {
       if (
