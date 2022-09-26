@@ -97,7 +97,7 @@ export class ModuleLoader extends EventTarget {
       );
 
       if (file.name.includes("$context")) {
-        this.addContext(directory, endpoint);
+        this.contextRegistry.add(`/${directory}`, endpoint.default);
       } else {
         this.registry.add(
           `/${nodePath.join(directory, nodePath.parse(file.name).name)}`,
@@ -107,10 +107,6 @@ export class ModuleLoader extends EventTarget {
     });
 
     await Promise.all(imports);
-  }
-
-  addContext(directory, endpoint) {
-    this.contextRegistry.add(`/${directory}`, endpoint.default);
   }
 
   updateContext(directory, endpoint) {
