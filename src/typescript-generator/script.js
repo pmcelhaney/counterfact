@@ -105,7 +105,7 @@ export class Script {
     return this.import(coder, true);
   }
 
-  importDefault(coder, isType = true) {
+  importDefault(coder, isType = false) {
     return this.import(coder, isType, true);
   }
 

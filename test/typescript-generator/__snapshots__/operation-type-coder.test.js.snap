@@ -7,13 +7,12 @@ exports[`an OperationTypeCoder generates a complex post operation 1`] = `
   header,
   body,
   context,
-  tools,
 }: {
   query: { name?: string };
   path: { id?: string };
   header: { name?: string };
   body: Type;
-  context: default;
+  context: typeof default;
   response: ResponseBuilderBuilder<{
     200: {
       headers: {};
@@ -40,7 +39,6 @@ exports[`an OperationTypeCoder generates a complex post operation 1`] = `
       };
     };
   }>;
-  tools: Type;
 }) =>
   | {
       status: 200;
@@ -69,13 +67,12 @@ exports[`an OperationTypeCoder generates a simple get operation 1`] = `
   header,
   body,
   context,
-  tools,
 }: {
   query: undefined;
   path: undefined;
   header: undefined;
   body: undefined;
-  context: default;
+  context: typeof default;
   response: ResponseBuilderBuilder<{
     [statusCode in HttpStatusCode]: {
       headers: {};
@@ -86,7 +83,6 @@ exports[`an OperationTypeCoder generates a simple get operation 1`] = `
       };
     };
   }>;
-  tools: Type;
 }) =>
   | {
       status: number | undefined;
