@@ -51,7 +51,7 @@ Map {
           },
           "exports": Map {
             "HTTP_POST" => Object {
-              "code": "({ query, path, header, body, context }: { query: undefined, path: undefined, header: undefined, body: Pet, context: typeof Context, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context }: { query: undefined, path: undefined, header: undefined, body: Pet, context: typeof Context, response: ResponseBuilderFactory<{
       200: {
           headers: {};
           content: {
@@ -94,7 +94,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_PUT" => Object {
-              "code": "({ query, path, header, body, context }: { query: undefined, path: undefined, header: undefined, body: Pet, context: typeof Context2, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context }: { query: undefined, path: undefined, header: undefined, body: Pet, context: typeof Context2, response: ResponseBuilderFactory<{
       200: {
           headers: {};
           content: {
@@ -158,13 +158,13 @@ Map {
             },
           },
           "externalImports": Map {
-            "ResponseBuilderBuilder" => Object {
+            "ResponseBuilderFactory" => Object {
               "isType": true,
-              "modulePath": "counterfact",
+              "modulePath": "../response-builder-factory.js",
             },
             "HttpStatusCode" => Object {
               "isType": true,
-              "modulePath": "counterfact",
+              "modulePath": "../response-builder-factory.js",
             },
           },
           "imports": Map {
@@ -344,7 +344,7 @@ Map {
           },
           "exports": Map {
             "HTTP_POST" => Object {
-              "code": "({ query, path, header, body, context }: { query: undefined, path: undefined, header: undefined, body: Pet, context: typeof Context, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context }: { query: undefined, path: undefined, header: undefined, body: Pet, context: typeof Context, response: ResponseBuilderFactory<{
       200: {
           headers: {};
           content: {
@@ -387,7 +387,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_PUT" => Object {
-              "code": "({ query, path, header, body, context }: { query: undefined, path: undefined, header: undefined, body: Pet, context: typeof Context2, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context }: { query: undefined, path: undefined, header: undefined, body: Pet, context: typeof Context2, response: ResponseBuilderFactory<{
       200: {
           headers: {};
           content: {
@@ -451,13 +451,13 @@ Map {
             },
           },
           "externalImports": Map {
-            "ResponseBuilderBuilder" => Object {
+            "ResponseBuilderFactory" => Object {
               "isType": true,
-              "modulePath": "counterfact",
+              "modulePath": "../response-builder-factory.js",
             },
             "HttpStatusCode" => Object {
               "isType": true,
-              "modulePath": "counterfact",
+              "modulePath": "../response-builder-factory.js",
             },
           },
           "imports": Map {
@@ -641,7 +641,7 @@ Map {
     },
     "exports": Map {
       "HTTP_POST" => Object {
-        "code": "({ query, path, header, body, context }: { query: undefined, path: undefined, header: undefined, body: Pet, context: typeof Context, response: ResponseBuilderBuilder<{
+        "code": "({ query, path, header, body, context }: { query: undefined, path: undefined, header: undefined, body: Pet, context: typeof Context, response: ResponseBuilderFactory<{
       200: {
           headers: {};
           content: {
@@ -684,7 +684,7 @@ Map {
         "typeDeclaration": "",
       },
       "HTTP_PUT" => Object {
-        "code": "({ query, path, header, body, context }: { query: undefined, path: undefined, header: undefined, body: Pet, context: typeof Context2, response: ResponseBuilderBuilder<{
+        "code": "({ query, path, header, body, context }: { query: undefined, path: undefined, header: undefined, body: Pet, context: typeof Context2, response: ResponseBuilderFactory<{
       200: {
           headers: {};
           content: {
@@ -748,13 +748,13 @@ Map {
       },
     },
     "externalImports": Map {
-      "ResponseBuilderBuilder" => Object {
+      "ResponseBuilderFactory" => Object {
         "isType": true,
-        "modulePath": "counterfact",
+        "modulePath": "../response-builder-factory.js",
       },
       "HttpStatusCode" => Object {
         "isType": true,
-        "modulePath": "counterfact",
+        "modulePath": "../response-builder-factory.js",
       },
     },
     "imports": Map {
@@ -952,7 +952,7 @@ Map {
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context }: { query: {status?: string}, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context }: { query: {status?: string}, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
       200: {
           headers: {};
           content: {
@@ -996,13 +996,13 @@ Map {
             },
           },
           "externalImports": Map {
-            "ResponseBuilderBuilder" => Object {
+            "ResponseBuilderFactory" => Object {
               "isType": true,
-              "modulePath": "counterfact",
+              "modulePath": "../../response-builder-factory.js",
             },
             "HttpStatusCode" => Object {
               "isType": true,
-              "modulePath": "counterfact",
+              "modulePath": "../../response-builder-factory.js",
             },
           },
           "imports": Map {
@@ -1156,7 +1156,7 @@ Map {
     },
     "exports": Map {
       "HTTP_GET" => Object {
-        "code": "({ query, path, header, body, context }: { query: {status?: string}, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderBuilder<{
+        "code": "({ query, path, header, body, context }: { query: {status?: string}, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
       200: {
           headers: {};
           content: {
@@ -1200,13 +1200,13 @@ Map {
       },
     },
     "externalImports": Map {
-      "ResponseBuilderBuilder" => Object {
+      "ResponseBuilderFactory" => Object {
         "isType": true,
-        "modulePath": "counterfact",
+        "modulePath": "../../response-builder-factory.js",
       },
       "HttpStatusCode" => Object {
         "isType": true,
-        "modulePath": "counterfact",
+        "modulePath": "../../response-builder-factory.js",
       },
     },
     "imports": Map {
@@ -1376,7 +1376,7 @@ Map {
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context }: { query: {tags?: Array<string>}, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context }: { query: {tags?: Array<string>}, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
       200: {
           headers: {};
           content: {
@@ -1420,13 +1420,13 @@ Map {
             },
           },
           "externalImports": Map {
-            "ResponseBuilderBuilder" => Object {
+            "ResponseBuilderFactory" => Object {
               "isType": true,
-              "modulePath": "counterfact",
+              "modulePath": "../../response-builder-factory.js",
             },
             "HttpStatusCode" => Object {
               "isType": true,
-              "modulePath": "counterfact",
+              "modulePath": "../../response-builder-factory.js",
             },
           },
           "imports": Map {
@@ -1580,7 +1580,7 @@ Map {
     },
     "exports": Map {
       "HTTP_GET" => Object {
-        "code": "({ query, path, header, body, context }: { query: {tags?: Array<string>}, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderBuilder<{
+        "code": "({ query, path, header, body, context }: { query: {tags?: Array<string>}, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
       200: {
           headers: {};
           content: {
@@ -1624,13 +1624,13 @@ Map {
       },
     },
     "externalImports": Map {
-      "ResponseBuilderBuilder" => Object {
+      "ResponseBuilderFactory" => Object {
         "isType": true,
-        "modulePath": "counterfact",
+        "modulePath": "../../response-builder-factory.js",
       },
       "HttpStatusCode" => Object {
         "isType": true,
-        "modulePath": "counterfact",
+        "modulePath": "../../response-builder-factory.js",
       },
     },
     "imports": Map {
@@ -1828,7 +1828,7 @@ Map {
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context }: { query: never, path: {petId: number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context }: { query: never, path: {petId: number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
       200: {
           headers: {};
           content: {
@@ -1881,7 +1881,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_POST" => Object {
-              "code": "({ query, path, header, body, context }: { query: {name?: number, status?: string}, path: {petId: number}, header: never, body: undefined, context: typeof Context2, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context }: { query: {name?: number, status?: string}, path: {petId: number}, header: never, body: undefined, context: typeof Context2, response: ResponseBuilderFactory<{
       405: {
           headers: {};
           content: {
@@ -1904,7 +1904,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_DELETE" => Object {
-              "code": "({ query, path, header, body, context }: { query: never, path: {petId: string}, header: {api_key?: string}, body: undefined, context: typeof Context3, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context }: { query: never, path: {petId: string}, header: {api_key?: string}, body: undefined, context: typeof Context3, response: ResponseBuilderFactory<{
       400: {
           headers: {};
           content: {
@@ -1928,13 +1928,13 @@ Map {
             },
           },
           "externalImports": Map {
-            "ResponseBuilderBuilder" => Object {
+            "ResponseBuilderFactory" => Object {
               "isType": true,
-              "modulePath": "counterfact",
+              "modulePath": "../../response-builder-factory.js",
             },
             "HttpStatusCode" => Object {
               "isType": true,
-              "modulePath": "counterfact",
+              "modulePath": "../../response-builder-factory.js",
             },
           },
           "imports": Map {
@@ -2152,7 +2152,7 @@ Map {
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context }: { query: never, path: {petId: number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context }: { query: never, path: {petId: number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
       200: {
           headers: {};
           content: {
@@ -2205,7 +2205,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_POST" => Object {
-              "code": "({ query, path, header, body, context }: { query: {name?: number, status?: string}, path: {petId: number}, header: never, body: undefined, context: typeof Context2, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context }: { query: {name?: number, status?: string}, path: {petId: number}, header: never, body: undefined, context: typeof Context2, response: ResponseBuilderFactory<{
       405: {
           headers: {};
           content: {
@@ -2228,7 +2228,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_DELETE" => Object {
-              "code": "({ query, path, header, body, context }: { query: never, path: {petId: string}, header: {api_key?: string}, body: undefined, context: typeof Context3, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context }: { query: never, path: {petId: string}, header: {api_key?: string}, body: undefined, context: typeof Context3, response: ResponseBuilderFactory<{
       400: {
           headers: {};
           content: {
@@ -2252,13 +2252,13 @@ Map {
             },
           },
           "externalImports": Map {
-            "ResponseBuilderBuilder" => Object {
+            "ResponseBuilderFactory" => Object {
               "isType": true,
-              "modulePath": "counterfact",
+              "modulePath": "../../response-builder-factory.js",
             },
             "HttpStatusCode" => Object {
               "isType": true,
-              "modulePath": "counterfact",
+              "modulePath": "../../response-builder-factory.js",
             },
           },
           "imports": Map {
@@ -2476,7 +2476,7 @@ Map {
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context }: { query: never, path: {petId: number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context }: { query: never, path: {petId: number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
       200: {
           headers: {};
           content: {
@@ -2529,7 +2529,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_POST" => Object {
-              "code": "({ query, path, header, body, context }: { query: {name?: number, status?: string}, path: {petId: number}, header: never, body: undefined, context: typeof Context2, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context }: { query: {name?: number, status?: string}, path: {petId: number}, header: never, body: undefined, context: typeof Context2, response: ResponseBuilderFactory<{
       405: {
           headers: {};
           content: {
@@ -2552,7 +2552,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_DELETE" => Object {
-              "code": "({ query, path, header, body, context }: { query: never, path: {petId: string}, header: {api_key?: string}, body: undefined, context: typeof Context3, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context }: { query: never, path: {petId: string}, header: {api_key?: string}, body: undefined, context: typeof Context3, response: ResponseBuilderFactory<{
       400: {
           headers: {};
           content: {
@@ -2576,13 +2576,13 @@ Map {
             },
           },
           "externalImports": Map {
-            "ResponseBuilderBuilder" => Object {
+            "ResponseBuilderFactory" => Object {
               "isType": true,
-              "modulePath": "counterfact",
+              "modulePath": "../../response-builder-factory.js",
             },
             "HttpStatusCode" => Object {
               "isType": true,
-              "modulePath": "counterfact",
+              "modulePath": "../../response-builder-factory.js",
             },
           },
           "imports": Map {
@@ -2804,7 +2804,7 @@ Map {
     },
     "exports": Map {
       "HTTP_GET" => Object {
-        "code": "({ query, path, header, body, context }: { query: never, path: {petId: number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderBuilder<{
+        "code": "({ query, path, header, body, context }: { query: never, path: {petId: number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
       200: {
           headers: {};
           content: {
@@ -2857,7 +2857,7 @@ Map {
         "typeDeclaration": "",
       },
       "HTTP_POST" => Object {
-        "code": "({ query, path, header, body, context }: { query: {name?: number, status?: string}, path: {petId: number}, header: never, body: undefined, context: typeof Context2, response: ResponseBuilderBuilder<{
+        "code": "({ query, path, header, body, context }: { query: {name?: number, status?: string}, path: {petId: number}, header: never, body: undefined, context: typeof Context2, response: ResponseBuilderFactory<{
       405: {
           headers: {};
           content: {
@@ -2880,7 +2880,7 @@ Map {
         "typeDeclaration": "",
       },
       "HTTP_DELETE" => Object {
-        "code": "({ query, path, header, body, context }: { query: never, path: {petId: string}, header: {api_key?: string}, body: undefined, context: typeof Context3, response: ResponseBuilderBuilder<{
+        "code": "({ query, path, header, body, context }: { query: never, path: {petId: string}, header: {api_key?: string}, body: undefined, context: typeof Context3, response: ResponseBuilderFactory<{
       400: {
           headers: {};
           content: {
@@ -2904,13 +2904,13 @@ Map {
       },
     },
     "externalImports": Map {
-      "ResponseBuilderBuilder" => Object {
+      "ResponseBuilderFactory" => Object {
         "isType": true,
-        "modulePath": "counterfact",
+        "modulePath": "../../response-builder-factory.js",
       },
       "HttpStatusCode" => Object {
         "isType": true,
-        "modulePath": "counterfact",
+        "modulePath": "../../response-builder-factory.js",
       },
     },
     "imports": Map {
@@ -3144,7 +3144,7 @@ Map {
           },
           "exports": Map {
             "HTTP_POST" => Object {
-              "code": "({ query, path, header, body, context }: { query: {additionalMetadata?: number}, path: {petId: number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context }: { query: {additionalMetadata?: number}, path: {petId: number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
       200: {
           headers: {};
           content: {
@@ -3170,13 +3170,13 @@ Map {
             },
           },
           "externalImports": Map {
-            "ResponseBuilderBuilder" => Object {
+            "ResponseBuilderFactory" => Object {
               "isType": true,
-              "modulePath": "counterfact",
+              "modulePath": "../../../response-builder-factory.js",
             },
             "HttpStatusCode" => Object {
               "isType": true,
-              "modulePath": "counterfact",
+              "modulePath": "../../../response-builder-factory.js",
             },
           },
           "imports": Map {
@@ -3267,7 +3267,7 @@ Map {
     },
     "exports": Map {
       "HTTP_POST" => Object {
-        "code": "({ query, path, header, body, context }: { query: {additionalMetadata?: number}, path: {petId: number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderBuilder<{
+        "code": "({ query, path, header, body, context }: { query: {additionalMetadata?: number}, path: {petId: number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
       200: {
           headers: {};
           content: {
@@ -3293,13 +3293,13 @@ Map {
       },
     },
     "externalImports": Map {
-      "ResponseBuilderBuilder" => Object {
+      "ResponseBuilderFactory" => Object {
         "isType": true,
-        "modulePath": "counterfact",
+        "modulePath": "../../../response-builder-factory.js",
       },
       "HttpStatusCode" => Object {
         "isType": true,
-        "modulePath": "counterfact",
+        "modulePath": "../../../response-builder-factory.js",
       },
     },
     "imports": Map {
@@ -3405,7 +3405,7 @@ Map {
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context }: { query: undefined, path: undefined, header: undefined, body: undefined, context: typeof Context, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context }: { query: undefined, path: undefined, header: undefined, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
       200: {
           headers: {};
           content: {
@@ -3431,13 +3431,13 @@ Map {
             },
           },
           "externalImports": Map {
-            "ResponseBuilderBuilder" => Object {
+            "ResponseBuilderFactory" => Object {
               "isType": true,
-              "modulePath": "counterfact",
+              "modulePath": "../../response-builder-factory.js",
             },
             "HttpStatusCode" => Object {
               "isType": true,
-              "modulePath": "counterfact",
+              "modulePath": "../../response-builder-factory.js",
             },
           },
           "imports": Map {
@@ -3497,7 +3497,7 @@ Map {
     },
     "exports": Map {
       "HTTP_GET" => Object {
-        "code": "({ query, path, header, body, context }: { query: undefined, path: undefined, header: undefined, body: undefined, context: typeof Context, response: ResponseBuilderBuilder<{
+        "code": "({ query, path, header, body, context }: { query: undefined, path: undefined, header: undefined, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
       200: {
           headers: {};
           content: {
@@ -3523,13 +3523,13 @@ Map {
       },
     },
     "externalImports": Map {
-      "ResponseBuilderBuilder" => Object {
+      "ResponseBuilderFactory" => Object {
         "isType": true,
-        "modulePath": "counterfact",
+        "modulePath": "../../response-builder-factory.js",
       },
       "HttpStatusCode" => Object {
         "isType": true,
-        "modulePath": "counterfact",
+        "modulePath": "../../response-builder-factory.js",
       },
     },
     "imports": Map {
@@ -3606,7 +3606,7 @@ Map {
           },
           "exports": Map {
             "HTTP_POST" => Object {
-              "code": "({ query, path, header, body, context }: { query: undefined, path: undefined, header: undefined, body: Order, context: typeof Context, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context }: { query: undefined, path: undefined, header: undefined, body: Order, context: typeof Context, response: ResponseBuilderFactory<{
       200: {
           headers: {};
           content: {
@@ -3642,13 +3642,13 @@ Map {
             },
           },
           "externalImports": Map {
-            "ResponseBuilderBuilder" => Object {
+            "ResponseBuilderFactory" => Object {
               "isType": true,
-              "modulePath": "counterfact",
+              "modulePath": "../../response-builder-factory.js",
             },
             "HttpStatusCode" => Object {
               "isType": true,
-              "modulePath": "counterfact",
+              "modulePath": "../../response-builder-factory.js",
             },
           },
           "imports": Map {
@@ -3739,7 +3739,7 @@ Map {
     },
     "exports": Map {
       "HTTP_POST" => Object {
-        "code": "({ query, path, header, body, context }: { query: undefined, path: undefined, header: undefined, body: Order, context: typeof Context, response: ResponseBuilderBuilder<{
+        "code": "({ query, path, header, body, context }: { query: undefined, path: undefined, header: undefined, body: Order, context: typeof Context, response: ResponseBuilderFactory<{
       200: {
           headers: {};
           content: {
@@ -3775,13 +3775,13 @@ Map {
       },
     },
     "externalImports": Map {
-      "ResponseBuilderBuilder" => Object {
+      "ResponseBuilderFactory" => Object {
         "isType": true,
-        "modulePath": "counterfact",
+        "modulePath": "../../response-builder-factory.js",
       },
       "HttpStatusCode" => Object {
         "isType": true,
-        "modulePath": "counterfact",
+        "modulePath": "../../response-builder-factory.js",
       },
     },
     "imports": Map {
@@ -3902,7 +3902,7 @@ Map {
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context }: { query: never, path: {orderId: number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context }: { query: never, path: {orderId: number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
       200: {
           headers: {};
           content: {
@@ -3955,7 +3955,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_DELETE" => Object {
-              "code": "({ query, path, header, body, context }: { query: never, path: {orderId: number}, header: never, body: undefined, context: typeof Context2, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context }: { query: never, path: {orderId: number}, header: never, body: undefined, context: typeof Context2, response: ResponseBuilderFactory<{
       400: {
           headers: {};
           content: {
@@ -3989,13 +3989,13 @@ Map {
             },
           },
           "externalImports": Map {
-            "ResponseBuilderBuilder" => Object {
+            "ResponseBuilderFactory" => Object {
               "isType": true,
-              "modulePath": "counterfact",
+              "modulePath": "../../../response-builder-factory.js",
             },
             "HttpStatusCode" => Object {
               "isType": true,
-              "modulePath": "counterfact",
+              "modulePath": "../../../response-builder-factory.js",
             },
           },
           "imports": Map {
@@ -4116,7 +4116,7 @@ Map {
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context }: { query: never, path: {orderId: number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context }: { query: never, path: {orderId: number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
       200: {
           headers: {};
           content: {
@@ -4169,7 +4169,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_DELETE" => Object {
-              "code": "({ query, path, header, body, context }: { query: never, path: {orderId: number}, header: never, body: undefined, context: typeof Context2, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context }: { query: never, path: {orderId: number}, header: never, body: undefined, context: typeof Context2, response: ResponseBuilderFactory<{
       400: {
           headers: {};
           content: {
@@ -4203,13 +4203,13 @@ Map {
             },
           },
           "externalImports": Map {
-            "ResponseBuilderBuilder" => Object {
+            "ResponseBuilderFactory" => Object {
               "isType": true,
-              "modulePath": "counterfact",
+              "modulePath": "../../../response-builder-factory.js",
             },
             "HttpStatusCode" => Object {
               "isType": true,
-              "modulePath": "counterfact",
+              "modulePath": "../../../response-builder-factory.js",
             },
           },
           "imports": Map {
@@ -4334,7 +4334,7 @@ Map {
     },
     "exports": Map {
       "HTTP_GET" => Object {
-        "code": "({ query, path, header, body, context }: { query: never, path: {orderId: number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderBuilder<{
+        "code": "({ query, path, header, body, context }: { query: never, path: {orderId: number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
       200: {
           headers: {};
           content: {
@@ -4387,7 +4387,7 @@ Map {
         "typeDeclaration": "",
       },
       "HTTP_DELETE" => Object {
-        "code": "({ query, path, header, body, context }: { query: never, path: {orderId: number}, header: never, body: undefined, context: typeof Context2, response: ResponseBuilderBuilder<{
+        "code": "({ query, path, header, body, context }: { query: never, path: {orderId: number}, header: never, body: undefined, context: typeof Context2, response: ResponseBuilderFactory<{
       400: {
           headers: {};
           content: {
@@ -4421,13 +4421,13 @@ Map {
       },
     },
     "externalImports": Map {
-      "ResponseBuilderBuilder" => Object {
+      "ResponseBuilderFactory" => Object {
         "isType": true,
-        "modulePath": "counterfact",
+        "modulePath": "../../../response-builder-factory.js",
       },
       "HttpStatusCode" => Object {
         "isType": true,
-        "modulePath": "counterfact",
+        "modulePath": "../../../response-builder-factory.js",
       },
     },
     "imports": Map {
@@ -4566,7 +4566,7 @@ Map {
           },
           "exports": Map {
             "HTTP_POST" => Object {
-              "code": "({ query, path, header, body, context }: { query: undefined, path: undefined, header: undefined, body: User, context: typeof Context, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context }: { query: undefined, path: undefined, header: undefined, body: User, context: typeof Context, response: ResponseBuilderFactory<{
       [statusCode in HttpStatusCode]: {
           headers: {};
           content: {
@@ -4600,13 +4600,13 @@ Map {
             },
           },
           "externalImports": Map {
-            "ResponseBuilderBuilder" => Object {
+            "ResponseBuilderFactory" => Object {
               "isType": true,
-              "modulePath": "counterfact",
+              "modulePath": "../response-builder-factory.js",
             },
             "HttpStatusCode" => Object {
               "isType": true,
-              "modulePath": "counterfact",
+              "modulePath": "../response-builder-factory.js",
             },
           },
           "imports": Map {
@@ -4695,7 +4695,7 @@ Map {
     },
     "exports": Map {
       "HTTP_POST" => Object {
-        "code": "({ query, path, header, body, context }: { query: undefined, path: undefined, header: undefined, body: User, context: typeof Context, response: ResponseBuilderBuilder<{
+        "code": "({ query, path, header, body, context }: { query: undefined, path: undefined, header: undefined, body: User, context: typeof Context, response: ResponseBuilderFactory<{
       [statusCode in HttpStatusCode]: {
           headers: {};
           content: {
@@ -4729,13 +4729,13 @@ Map {
       },
     },
     "externalImports": Map {
-      "ResponseBuilderBuilder" => Object {
+      "ResponseBuilderFactory" => Object {
         "isType": true,
-        "modulePath": "counterfact",
+        "modulePath": "../response-builder-factory.js",
       },
       "HttpStatusCode" => Object {
         "isType": true,
-        "modulePath": "counterfact",
+        "modulePath": "../response-builder-factory.js",
       },
     },
     "imports": Map {
@@ -4840,7 +4840,7 @@ Map {
           },
           "exports": Map {
             "HTTP_POST" => Object {
-              "code": "({ query, path, header, body, context }: { query: undefined, path: undefined, header: undefined, body: Array<User>, context: typeof Context, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context }: { query: undefined, path: undefined, header: undefined, body: Array<User>, context: typeof Context, response: ResponseBuilderFactory<{
       200: {
           headers: {};
           content: {
@@ -4884,13 +4884,13 @@ Map {
             },
           },
           "externalImports": Map {
-            "ResponseBuilderBuilder" => Object {
+            "ResponseBuilderFactory" => Object {
               "isType": true,
-              "modulePath": "counterfact",
+              "modulePath": "../../response-builder-factory.js",
             },
             "HttpStatusCode" => Object {
               "isType": true,
-              "modulePath": "counterfact",
+              "modulePath": "../../response-builder-factory.js",
             },
           },
           "imports": Map {
@@ -4981,7 +4981,7 @@ Map {
     },
     "exports": Map {
       "HTTP_POST" => Object {
-        "code": "({ query, path, header, body, context }: { query: undefined, path: undefined, header: undefined, body: Array<User>, context: typeof Context, response: ResponseBuilderBuilder<{
+        "code": "({ query, path, header, body, context }: { query: undefined, path: undefined, header: undefined, body: Array<User>, context: typeof Context, response: ResponseBuilderFactory<{
       200: {
           headers: {};
           content: {
@@ -5025,13 +5025,13 @@ Map {
       },
     },
     "externalImports": Map {
-      "ResponseBuilderBuilder" => Object {
+      "ResponseBuilderFactory" => Object {
         "isType": true,
-        "modulePath": "counterfact",
+        "modulePath": "../../response-builder-factory.js",
       },
       "HttpStatusCode" => Object {
         "isType": true,
-        "modulePath": "counterfact",
+        "modulePath": "../../response-builder-factory.js",
       },
     },
     "imports": Map {
@@ -5137,7 +5137,7 @@ Map {
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context }: { query: {username?: string, password?: string}, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context }: { query: {username?: string, password?: string}, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
       200: {
           headers: {\\"X-Rate-Limit\\": { schema: number};\\"X-Expires-After\\": { schema: string}};
           content: {
@@ -5181,13 +5181,13 @@ Map {
             },
           },
           "externalImports": Map {
-            "ResponseBuilderBuilder" => Object {
+            "ResponseBuilderFactory" => Object {
               "isType": true,
-              "modulePath": "counterfact",
+              "modulePath": "../../response-builder-factory.js",
             },
             "HttpStatusCode" => Object {
               "isType": true,
-              "modulePath": "counterfact",
+              "modulePath": "../../response-builder-factory.js",
             },
           },
           "imports": Map {
@@ -5247,7 +5247,7 @@ Map {
     },
     "exports": Map {
       "HTTP_GET" => Object {
-        "code": "({ query, path, header, body, context }: { query: {username?: string, password?: string}, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderBuilder<{
+        "code": "({ query, path, header, body, context }: { query: {username?: string, password?: string}, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
       200: {
           headers: {\\"X-Rate-Limit\\": { schema: number};\\"X-Expires-After\\": { schema: string}};
           content: {
@@ -5291,13 +5291,13 @@ Map {
       },
     },
     "externalImports": Map {
-      "ResponseBuilderBuilder" => Object {
+      "ResponseBuilderFactory" => Object {
         "isType": true,
-        "modulePath": "counterfact",
+        "modulePath": "../../response-builder-factory.js",
       },
       "HttpStatusCode" => Object {
         "isType": true,
-        "modulePath": "counterfact",
+        "modulePath": "../../response-builder-factory.js",
       },
     },
     "imports": Map {
@@ -5371,7 +5371,7 @@ Map {
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context }: { query: never, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context }: { query: never, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
       [statusCode in HttpStatusCode]: {
           headers: {};
           content: {
@@ -5395,13 +5395,13 @@ Map {
             },
           },
           "externalImports": Map {
-            "ResponseBuilderBuilder" => Object {
+            "ResponseBuilderFactory" => Object {
               "isType": true,
-              "modulePath": "counterfact",
+              "modulePath": "../../response-builder-factory.js",
             },
             "HttpStatusCode" => Object {
               "isType": true,
-              "modulePath": "counterfact",
+              "modulePath": "../../response-builder-factory.js",
             },
           },
           "imports": Map {
@@ -5461,7 +5461,7 @@ Map {
     },
     "exports": Map {
       "HTTP_GET" => Object {
-        "code": "({ query, path, header, body, context }: { query: never, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderBuilder<{
+        "code": "({ query, path, header, body, context }: { query: never, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
       [statusCode in HttpStatusCode]: {
           headers: {};
           content: {
@@ -5485,13 +5485,13 @@ Map {
       },
     },
     "externalImports": Map {
-      "ResponseBuilderBuilder" => Object {
+      "ResponseBuilderFactory" => Object {
         "isType": true,
-        "modulePath": "counterfact",
+        "modulePath": "../../response-builder-factory.js",
       },
       "HttpStatusCode" => Object {
         "isType": true,
-        "modulePath": "counterfact",
+        "modulePath": "../../response-builder-factory.js",
       },
     },
     "imports": Map {
@@ -5596,7 +5596,7 @@ Map {
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context }: { query: never, path: {username: string}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context }: { query: never, path: {username: string}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
       200: {
           headers: {};
           content: {
@@ -5649,7 +5649,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_PUT" => Object {
-              "code": "({ query, path, header, body, context }: { query: never, path: {username: string}, header: never, body: User, context: typeof Context2, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context }: { query: never, path: {username: string}, header: never, body: User, context: typeof Context2, response: ResponseBuilderFactory<{
       [statusCode in HttpStatusCode]: {
           headers: {};
           content: {
@@ -5672,7 +5672,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_DELETE" => Object {
-              "code": "({ query, path, header, body, context }: { query: never, path: {username: string}, header: never, body: undefined, context: typeof Context3, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context }: { query: never, path: {username: string}, header: never, body: undefined, context: typeof Context3, response: ResponseBuilderFactory<{
       400: {
           headers: {};
           content: {
@@ -5706,13 +5706,13 @@ Map {
             },
           },
           "externalImports": Map {
-            "ResponseBuilderBuilder" => Object {
+            "ResponseBuilderFactory" => Object {
               "isType": true,
-              "modulePath": "counterfact",
+              "modulePath": "../../response-builder-factory.js",
             },
             "HttpStatusCode" => Object {
               "isType": true,
-              "modulePath": "counterfact",
+              "modulePath": "../../response-builder-factory.js",
             },
           },
           "imports": Map {
@@ -5867,7 +5867,7 @@ Map {
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context }: { query: never, path: {username: string}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context }: { query: never, path: {username: string}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
       200: {
           headers: {};
           content: {
@@ -5920,7 +5920,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_PUT" => Object {
-              "code": "({ query, path, header, body, context }: { query: never, path: {username: string}, header: never, body: User, context: typeof Context2, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context }: { query: never, path: {username: string}, header: never, body: User, context: typeof Context2, response: ResponseBuilderFactory<{
       [statusCode in HttpStatusCode]: {
           headers: {};
           content: {
@@ -5943,7 +5943,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_DELETE" => Object {
-              "code": "({ query, path, header, body, context }: { query: never, path: {username: string}, header: never, body: undefined, context: typeof Context3, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context }: { query: never, path: {username: string}, header: never, body: undefined, context: typeof Context3, response: ResponseBuilderFactory<{
       400: {
           headers: {};
           content: {
@@ -5977,13 +5977,13 @@ Map {
             },
           },
           "externalImports": Map {
-            "ResponseBuilderBuilder" => Object {
+            "ResponseBuilderFactory" => Object {
               "isType": true,
-              "modulePath": "counterfact",
+              "modulePath": "../../response-builder-factory.js",
             },
             "HttpStatusCode" => Object {
               "isType": true,
-              "modulePath": "counterfact",
+              "modulePath": "../../response-builder-factory.js",
             },
           },
           "imports": Map {
@@ -6138,7 +6138,7 @@ Map {
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context }: { query: never, path: {username: string}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context }: { query: never, path: {username: string}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
       200: {
           headers: {};
           content: {
@@ -6191,7 +6191,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_PUT" => Object {
-              "code": "({ query, path, header, body, context }: { query: never, path: {username: string}, header: never, body: User, context: typeof Context2, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context }: { query: never, path: {username: string}, header: never, body: User, context: typeof Context2, response: ResponseBuilderFactory<{
       [statusCode in HttpStatusCode]: {
           headers: {};
           content: {
@@ -6214,7 +6214,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_DELETE" => Object {
-              "code": "({ query, path, header, body, context }: { query: never, path: {username: string}, header: never, body: undefined, context: typeof Context3, response: ResponseBuilderBuilder<{
+              "code": "({ query, path, header, body, context }: { query: never, path: {username: string}, header: never, body: undefined, context: typeof Context3, response: ResponseBuilderFactory<{
       400: {
           headers: {};
           content: {
@@ -6248,13 +6248,13 @@ Map {
             },
           },
           "externalImports": Map {
-            "ResponseBuilderBuilder" => Object {
+            "ResponseBuilderFactory" => Object {
               "isType": true,
-              "modulePath": "counterfact",
+              "modulePath": "../../response-builder-factory.js",
             },
             "HttpStatusCode" => Object {
               "isType": true,
-              "modulePath": "counterfact",
+              "modulePath": "../../response-builder-factory.js",
             },
           },
           "imports": Map {
@@ -6413,7 +6413,7 @@ Map {
     },
     "exports": Map {
       "HTTP_GET" => Object {
-        "code": "({ query, path, header, body, context }: { query: never, path: {username: string}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderBuilder<{
+        "code": "({ query, path, header, body, context }: { query: never, path: {username: string}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
       200: {
           headers: {};
           content: {
@@ -6466,7 +6466,7 @@ Map {
         "typeDeclaration": "",
       },
       "HTTP_PUT" => Object {
-        "code": "({ query, path, header, body, context }: { query: never, path: {username: string}, header: never, body: User, context: typeof Context2, response: ResponseBuilderBuilder<{
+        "code": "({ query, path, header, body, context }: { query: never, path: {username: string}, header: never, body: User, context: typeof Context2, response: ResponseBuilderFactory<{
       [statusCode in HttpStatusCode]: {
           headers: {};
           content: {
@@ -6489,7 +6489,7 @@ Map {
         "typeDeclaration": "",
       },
       "HTTP_DELETE" => Object {
-        "code": "({ query, path, header, body, context }: { query: never, path: {username: string}, header: never, body: undefined, context: typeof Context3, response: ResponseBuilderBuilder<{
+        "code": "({ query, path, header, body, context }: { query: never, path: {username: string}, header: never, body: undefined, context: typeof Context3, response: ResponseBuilderFactory<{
       400: {
           headers: {};
           content: {
@@ -6523,13 +6523,13 @@ Map {
       },
     },
     "externalImports": Map {
-      "ResponseBuilderBuilder" => Object {
+      "ResponseBuilderFactory" => Object {
         "isType": true,
-        "modulePath": "counterfact",
+        "modulePath": "../../response-builder-factory.js",
       },
       "HttpStatusCode" => Object {
         "isType": true,
-        "modulePath": "counterfact",
+        "modulePath": "../../response-builder-factory.js",
       },
     },
     "imports": Map {

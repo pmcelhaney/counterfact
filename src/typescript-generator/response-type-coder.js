@@ -1,3 +1,5 @@
+import nodePath from "node:path";
+
 import { Coder } from "./coder.js";
 import { SchemaTypeCoder } from "./schema-type-coder.js";
 
@@ -75,9 +77,21 @@ export class ResponseTypeCoder extends Coder {
   }
 
   write(script) {
-    script.importExternalType("ResponseBuilderBuilder", "counterfact");
-    script.importExternalType("HttpStatusCode", "counterfact");
+    const basePath = script.path
+      .split("/")
+      .slice(0, -1)
+      .map(() => "..")
+      .join("/");
 
-    return `ResponseBuilderBuilder<${this.buildResponseObjectType(script)}>`;
+    script.importExternalType(
+      "ResponseBuilderFactory",
+      nodePath.join(basePath, "response-builder-factory.js")
+    );
+    script.importExternalType(
+      "HttpStatusCode",
+      nodePath.join(basePath, "response-builder-factory.js")
+    );
+
+    return `ResponseBuilderFactory<${this.buildResponseObjectType(script)}>`;
   }
 }
