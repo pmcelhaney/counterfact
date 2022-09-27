@@ -1,5 +1,16 @@
 # counterfact
 
+## 0.10.0
+
+### Minor Changes
+
+- 7e6028c: reworked CLI: generate code then optionally start the server, Swagger UI, open a browser
+
+### Patch Changes
+
+- Updated dependencies [7e6028c]
+  - counterfact@0.10.0
+
 ## 0.9.0
 
 ### Minor Changes
