@@ -3,6 +3,7 @@
 import nodePath from "node:path";
 
 import { program } from "commander";
+import open from "open";
 
 import { generate } from "../src/typescript-generator/generate.js";
 import { start } from "../src/start.js";
@@ -21,10 +22,6 @@ async function main(source, destination) {
   const includeSwagger = options.swagger || openBrowser;
   const startServer = options.server || includeSwagger;
 
-  if (includeSwagger) {
-    console.log("TODO: swagger-ui");
-  }
-
   if (startServer) {
     await start(basePath, options.port, source);
 
@@ -34,7 +31,7 @@ async function main(source, destination) {
   }
 
   if (openBrowser) {
-    console.log("TODO: open a browser");
+    await open(`http://localhost:${options.port}/counterfact/swagger`);
   }
 }
 
