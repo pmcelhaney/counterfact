@@ -1,5 +1,16 @@
 # counterfact
 
+## 0.9.0
+
+### Minor Changes
+
+- 88ed486: new $context.ts files which are used to define the server context / state
+
+### Patch Changes
+
+- Updated dependencies [88ed486]
+  - counterfact@0.9.0
+
 ## 0.8.0
 
 ### Minor Changes
