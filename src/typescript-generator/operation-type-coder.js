@@ -1,7 +1,6 @@
 import nodePath from "node:path";
 
 import { Coder } from "./coder.js";
-import { ToolsCoder } from "./tools-coder.js";
 import { SchemaTypeCoder } from "./schema-type-coder.js";
 import { ParametersTypeCoder } from "./parameters-type-coder.js";
 import { ResponseTypeCoder } from "./response-type-coder.js";
@@ -100,10 +99,7 @@ export class OperationTypeCoder extends Coder {
       this.requirement.get("responses")
     ).write(script);
 
-    return `({ query, path, header, body, context, tools }: { query: ${queryType}, path: ${pathType}, header: ${headerType}, body: ${bodyType}, context: ${contextImportName}, response: ${responseType}, tools: ${script.importType(
-      new ToolsCoder(),
-      "internal/tools.ts"
-    )}}) => ${this.responseTypes(
+    return `({ query, path, header, body, context }: { query: ${queryType}, path: ${pathType}, header: ${headerType}, body: ${bodyType}, context: typeof ${contextImportName}, response: ${responseType} }) => ${this.responseTypes(
       script
     )} | { status: 415, contentType: "text/plain", body: string }
     | void`;
