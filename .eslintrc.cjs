@@ -36,14 +36,7 @@ const rules = {
 };
 
 module.exports = {
-  ignorePatterns: [
-    "/node_modules/",
-    "/coverage/",
-    "/reports/",
-    "/demo-ts",
-    "/templates/",
-    "/out/",
-  ],
+  ignorePatterns: ["/node_modules/", "/coverage/", "/reports/", "/out/"],
 
   extends: ["hardcore", "hardcore/ts", "hardcore/node"],
 
