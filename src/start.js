@@ -21,5 +21,4 @@ export async function start(
   app.use(koaMiddleware);
 
   app.listen(port);
-  process.stdout.write(`Counterfact is running on port ${port}.\n`);
 }
