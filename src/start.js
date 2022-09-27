@@ -3,40 +3,50 @@ import nodePath from "node:path";
 import Koa from "koa";
 import bodyParser from "koa-bodyparser";
 import { koaSwagger } from "koa2-swagger-ui";
+import yaml from "js-yaml";
 
 import { counterfact } from "./counterfact.js";
 import { readFile } from "./read-file.js";
 
 const DEFAULT_PORT = 3100;
 
-export async function start(
+export async function start({
   basePath = process.cwd(),
   port = DEFAULT_PORT,
-  openApiPath = nodePath.join(basePath, "../openapi.yaml")
-) {
+  openApiPath = nodePath.join(basePath, "../openapi.yaml"),
+  includeSwaggerUi = false,
+}) {
   const app = new Koa();
 
-  app.use(async (ctx, next) => {
-    if (ctx.URL.pathname === "/counterfact/openapi") {
-      // eslint-disable-next-line require-atomic-updates
-      ctx.body = await readFile(openApiPath);
+  if (includeSwaggerUi) {
+    app.use(async (ctx, next) => {
+      if (ctx.URL.pathname === "/counterfact/openapi") {
+        const openApiDocument = await yaml.load(await readFile(openApiPath));
 
-      return;
-    }
+        openApiDocument.servers ??= [];
 
-    // eslint-disable-next-line node/callback-return
-    await next();
-  });
+        openApiDocument.servers.unshift({ url: "/" });
 
-  app.use(
-    koaSwagger({
-      routePrefix: "/counterfact/swagger",
+        // eslint-disable-next-line require-atomic-updates
+        ctx.body = yaml.dump(openApiDocument);
 
-      swaggerOptions: {
-        url: "/counterfact/openapi",
-      },
-    })
-  );
+        return;
+      }
+
+      // eslint-disable-next-line node/callback-return
+      await next();
+    });
+
+    app.use(
+      koaSwagger({
+        routePrefix: "/counterfact/swagger",
+
+        swaggerOptions: {
+          url: "/counterfact/openapi",
+        },
+      })
+    );
+  }
 
   app.use(bodyParser());
 

@@ -23,7 +23,12 @@ async function main(source, destination) {
   const startServer = options.server || includeSwagger;
 
   if (startServer) {
-    await start(basePath, options.port, source);
+    await start({
+      basePath,
+      port: options.port,
+      openApiPath: source,
+      includeSwaggerUi: includeSwagger,
+    });
 
     process.stdout.write(
       `API is running at http://localhost:${options.port}.\n`
