@@ -1,5 +1,11 @@
 # counterfact
 
+## 0.10.1
+
+### Patch Changes
+
+- 02efcd5: fix so that Counterfact no longer depends on itself
+
 ## 0.10.0
 
 ### Minor Changes
