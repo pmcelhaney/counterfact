@@ -27,7 +27,11 @@ export class Coder {
     return new this.constructor(requirement);
   }
 
-  *names(name = this.requirement.url.split("/").at(-1)) {
+  *names(rawName = this.requirement.url.split("/").at(-1)) {
+    const name = rawName
+      .replace(/^\d/u, (digit) => `_${digit}`)
+      .replace(/[^\w$]/gu, "_");
+
     yield name;
 
     let index = 1;

@@ -11,6 +11,17 @@ describe("a Coder", () => {
     expect([one, two, three]).toStrictEqual(["Person", "Person2", "Person3"]);
   });
 
+  it("makes non-alphanumeric names valid variable names", () => {
+    const coder = new Coder({ url: "#/components/schemas/5i.am.strange.1$!" });
+
+    const [one, two] = coder.names();
+
+    expect([one, two]).toStrictEqual([
+      "_5i_am_strange_1$_",
+      "_5i_am_strange_1$_2",
+    ]);
+  });
+
   it("generates a list of potential names given a starting point", () => {
     const coder = new Coder({ url: "#/components/schemas/Person" });
 
