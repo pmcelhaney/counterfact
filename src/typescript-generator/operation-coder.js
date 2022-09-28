@@ -16,20 +16,6 @@ export class OperationCoder extends Coder {
   write() {
     const responses = this.requirement.get("responses");
 
-    const requestProperties = this.requirement.data.parameters
-      ? Array.from(
-          new Set(
-            this.requirement.data.parameters.map((parameter) => parameter.in)
-          )
-        )
-      : [];
-
-    if (this.requestMethod() !== "GET") {
-      requestProperties.push("body");
-    }
-
-    requestProperties.push("context", "tools");
-
     const [firstStatusCode] = responses.map(([statusCode]) => statusCode);
     const [firstResponse] = responses.map(([, response]) => response.data);
 
