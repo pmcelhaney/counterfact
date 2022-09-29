@@ -25,7 +25,10 @@ export async function start({
 
         openApiDocument.servers ??= [];
 
-        openApiDocument.servers.unshift({ url: "/" });
+        openApiDocument.servers.unshift({
+          description: "Counterfact",
+          url: `//localhost:${port}`,
+        });
 
         // eslint-disable-next-line require-atomic-updates
         ctx.body = yaml.dump(openApiDocument);
