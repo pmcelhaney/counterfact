@@ -1,5 +1,14 @@
 # counterfact
 
+## 0.10.2
+
+### Patch Changes
+
+- d8cbc41: fix swagger-ui when the openapi doc has a host property
+- d8cbc41: ensure a $context.ts file is created in every directory
+- 15270ed: remove dead code in operation-coder.js
+- c7a928f: encode non-alphanumeric name as valid variable names
+
 ## 0.10.1
 
 ### Patch Changes
