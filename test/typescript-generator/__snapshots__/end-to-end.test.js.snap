@@ -45,9 +45,9 @@ Map {
           "cache": Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1pet/post@[object Object]:true" => "HTTP_POST",
             "OperationTypeCoder@petstore.yaml#/paths/~1pet/put@[object Object]:true" => "HTTP_PUT",
-            "ContextCoder@petstore.yaml#/paths/~1pet/post@paths//$context.ts:false:true" => "Context",
+            "ContextCoder@petstore.yaml#/paths/~1pet/post@paths/$context.ts:false:true" => "Context",
             "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
-            "ContextCoder@petstore.yaml#/paths/~1pet/put@paths//$context.ts:false:true" => "Context2",
+            "ContextCoder@petstore.yaml#/paths/~1pet/put@paths/$context.ts:false:true" => "Context2",
           },
           "exports": Map {
             "HTTP_POST" => Object {
@@ -190,7 +190,7 @@ Map {
                 },
                 "externalImports": Map {},
                 "imports": Map {},
-                "path": "paths//$context.ts",
+                "path": "paths/$context.ts",
                 "repository": Repository {
                   "scripts": [Circular],
                   "writeFiles": [Function],
@@ -313,7 +313,7 @@ Map {
                 },
                 "externalImports": Map {},
                 "imports": Map {},
-                "path": "paths//$context.ts",
+                "path": "paths/$context.ts",
                 "repository": Repository {
                   "scripts": [Circular],
                   "writeFiles": [Function],
@@ -338,9 +338,9 @@ Map {
           "cache": Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1pet/post@[object Object]:true" => "HTTP_POST",
             "OperationTypeCoder@petstore.yaml#/paths/~1pet/put@[object Object]:true" => "HTTP_PUT",
-            "ContextCoder@petstore.yaml#/paths/~1pet/post@paths//$context.ts:false:true" => "Context",
+            "ContextCoder@petstore.yaml#/paths/~1pet/post@paths/$context.ts:false:true" => "Context",
             "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
-            "ContextCoder@petstore.yaml#/paths/~1pet/put@paths//$context.ts:false:true" => "Context2",
+            "ContextCoder@petstore.yaml#/paths/~1pet/put@paths/$context.ts:false:true" => "Context2",
           },
           "exports": Map {
             "HTTP_POST" => Object {
@@ -483,7 +483,7 @@ Map {
                 },
                 "externalImports": Map {},
                 "imports": Map {},
-                "path": "paths//$context.ts",
+                "path": "paths/$context.ts",
                 "repository": Repository {
                   "scripts": [Circular],
                   "writeFiles": [Function],
@@ -606,7 +606,7 @@ Map {
                 },
                 "externalImports": Map {},
                 "imports": Map {},
-                "path": "paths//$context.ts",
+                "path": "paths/$context.ts",
                 "repository": Repository {
                   "scripts": [Circular],
                   "writeFiles": [Function],
@@ -635,9 +635,9 @@ Map {
     "cache": Map {
       "OperationTypeCoder@petstore.yaml#/paths/~1pet/post@[object Object]:true" => "HTTP_POST",
       "OperationTypeCoder@petstore.yaml#/paths/~1pet/put@[object Object]:true" => "HTTP_PUT",
-      "ContextCoder@petstore.yaml#/paths/~1pet/post@paths//$context.ts:false:true" => "Context",
+      "ContextCoder@petstore.yaml#/paths/~1pet/post@paths/$context.ts:false:true" => "Context",
       "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
-      "ContextCoder@petstore.yaml#/paths/~1pet/put@paths//$context.ts:false:true" => "Context2",
+      "ContextCoder@petstore.yaml#/paths/~1pet/put@paths/$context.ts:false:true" => "Context2",
     },
     "exports": Map {
       "HTTP_POST" => Object {
@@ -780,7 +780,7 @@ Map {
           },
           "externalImports": Map {},
           "imports": Map {},
-          "path": "paths//$context.ts",
+          "path": "paths/$context.ts",
           "repository": Repository {
             "scripts": [Circular],
             "writeFiles": [Function],
@@ -903,7 +903,7 @@ Map {
           },
           "externalImports": Map {},
           "imports": Map {},
-          "path": "paths//$context.ts",
+          "path": "paths/$context.ts",
           "repository": Repository {
             "scripts": [Circular],
             "writeFiles": [Function],
@@ -4561,7 +4561,7 @@ Map {
         "script": Script {
           "cache": Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1user/post@[object Object]:true" => "HTTP_POST",
-            "ContextCoder@petstore.yaml#/paths/~1user/post@paths//$context.ts:false:true" => "Context",
+            "ContextCoder@petstore.yaml#/paths/~1user/post@paths/$context.ts:false:true" => "Context",
             "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
           },
           "exports": Map {
@@ -4632,7 +4632,7 @@ Map {
                 },
                 "externalImports": Map {},
                 "imports": Map {},
-                "path": "paths//$context.ts",
+                "path": "paths/$context.ts",
                 "repository": Repository {
                   "scripts": [Circular],
                   "writeFiles": [Function],
@@ -4690,7 +4690,7 @@ Map {
   "path-types/user.types.ts" => Script {
     "cache": Map {
       "OperationTypeCoder@petstore.yaml#/paths/~1user/post@[object Object]:true" => "HTTP_POST",
-      "ContextCoder@petstore.yaml#/paths/~1user/post@paths//$context.ts:false:true" => "Context",
+      "ContextCoder@petstore.yaml#/paths/~1user/post@paths/$context.ts:false:true" => "Context",
       "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
     },
     "exports": Map {
@@ -4761,7 +4761,7 @@ Map {
           },
           "externalImports": Map {},
           "imports": Map {},
-          "path": "paths//$context.ts",
+          "path": "paths/$context.ts",
           "repository": Repository {
             "scripts": [Circular],
             "writeFiles": [Function],
@@ -6667,7 +6667,7 @@ Map {
     },
     "typeCache": Map {},
   },
-  "paths//$context.ts" => Script {
+  "paths/$context.ts" => Script {
     "cache": Map {
       "default" => "Context",
     },
@@ -6685,7 +6685,7 @@ Map {
     },
     "externalImports": Map {},
     "imports": Map {},
-    "path": "paths//$context.ts",
+    "path": "paths/$context.ts",
     "repository": Repository {
       "scripts": [Circular],
       "writeFiles": [Function],
