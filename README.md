@@ -8,10 +8,10 @@ It reads an [OpenAPI](https://www.openapis.org/) document, then builds and runs 
 
 ## Quick Start
 
-Run this command to generate a server for the Swagger Pet Store.
+Run this command to generate a server for the Swagger Pet Store. You can replace the URL below with a link or file path pointing to your own OpenAPI v3 document.
 
 ```sh
-npx counterfact https://petstore3.swagger.io/api/v3/openapi.json out --open
+npx counterfact https://petstore3.swagger.io/api/v3/openapi.json api --open
 ```
 
 ---
