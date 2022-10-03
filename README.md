@@ -14,12 +14,12 @@ _Front end development without back end headaches_
 
 Counterfact is a stand-in REST server powered by Node and TypeScript. It simulates complex back end behavior without running the whole stack. Use it to:
 
-💪 build the front end before the back end or build both in parallel<br>
-🏎️ quickly and cheaply prototype UX workflows<br>
-🧑‍🔬 test front end code against hard-to-recreate edge cases<br>
-⛓️ write fast, repeatable UI integration tests<br>
-🎉 turn OpenAPI docs into functional code<br>
-🔌 plug into your existing toolchain<br>
+- 💪 [build the front end before the back end or build both in parallel](.)<br>
+- 🏎️ [quickly and cheaply prototype UX workflows](.)<br>
+- 🧑‍🔬 [test front end code against hard-to-recreate edge cases](.)<br>
+- ⛓️ [write fast, repeatable UI integration tests](.)<br>
+- 🎉 [turn OpenAPI docs into functional code](.)<br>
+- 🔌 [plug into your existing toolchain](.)<br>
 
 ## Quick Start
 
