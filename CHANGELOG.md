@@ -1,5 +1,11 @@
 # counterfact
 
+## 0.10.3
+
+### Patch Changes
+
+- f1360ba: made the generated code a bit cleaner
+
 ## 0.10.2
 
 ### Patch Changes
