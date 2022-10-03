@@ -1,20 +1,21 @@
-<center>
+<div align="center">
+
 [![Coverage Status](https://coveralls.io/repos/github/pmcelhaney/counterfact/badge.svg)](https://coveralls.io/github/pmcelhaney/counterfact) [![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fpmcelhaney%2Fcounterfact%2Fmain)](https://dashboard.stryker-mutator.io/reports/github.com/pmcelhaney/counterfact/main)
 
 # Counterfact
 
 _Front end development without back end headaches_
 
-</center>
+</div>
 
 Counterfact is a stand-in REST server powered by Node and TypeScript. It simulates complex back end behavior without running the whole stack. Use it to:
 
-💪 build the front end before the back end or build both in parallel
-🏎️ quickly and cheaply prototype UX workflows
-🧑‍🔬 test front end code against hard-to-recreate edge cases
-⛓️ write fast, repeatable UI integration tests
-🎉 turn OpenAPI docs into functional code
-🔌 plug into your existing toolchain
+💪 build the front end before the back end or build both in parallel<br>
+🏎️ quickly and cheaply prototype UX workflows<br>
+🧑‍🔬 test front end code against hard-to-recreate edge cases<br>
+⛓️ write fast, repeatable UI integration tests<br>
+🎉 turn OpenAPI docs into functional code<br>
+🔌 plug into your existing toolchain<br>
 
 ## Quick Start
 
