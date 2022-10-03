@@ -1,518 +1,182 @@
-# Usage
+# Counterfact: Usage
 
-_Warning: Do not try this at home. Most of the code snippets below depend on features that have not been completed yet. See the "depends on" list at the top of each section for current status._
+Counterfact is two complimentary tools in one:
 
-These features do not depend on TypeScript or the code generator. In order to get the most out of the code generator, you should first review this document to understand the basics.
+- a code generator that converts OpenAPI to TypeScript
+- a fast and flexible "fake" server that's optimized for making changes quickly
 
-## Hello World
+## Hello <del>World</del> Pet Store
 
-To get started, create a directory called `paths` and under that a file called `hello.js`.
+The easiest way to start is to copy and past this command in your terminal.
 
-```js
-// paths/hello.js
-export function GET() {
-  return "Hello, world!\n";
-}
+```sh copy
+npx counterfact@latest https://petstore3.swagger.io/api/v3/openapi.json api --open
 ```
 
-Now start Counterfact (from the base directory, not `./paths`).
+We're using the Swagger Pet Store example because it's well known and convenient. If you have your own OpenAPI 3 document handy, you can point to that instead. And you can change `api` to wherever you'd like to output the code.
 
-```console
-npx counterfact start
+<details>
+
+<summary>Here are the full details on CLI usage</summary>
+
+```txt
+Usage: counterfact [options] <openapi.yaml> [destination]
+
+Counterfact is a tool for generating a REST API from an OpenAPI document.
+
+Arguments:
+openapi.yaml path or URL to OpenAPI document
+destination path to generated code (default: ".")
+
+Options:
+--serve start the server after generating code
+--port <number> server port number (default: 3100)
+--swagger include swagger-ui (implies --serve)
+--open open a browser to swagger-ui (implies --swagger and --serve)
+-h, --help display help for command
+
 ```
 
-Point a browser to http://localhost:3100/hello to confirm that the server is running. You should see a page with the text "Hello, world!"
+</details>
 
-Going forward, you might want to use a tool like Postman or SwaggerUI to test the API. Or you can open another terminal or and use `curl`. Here's what the input and output should look like.
+## Generated Code
 
-```console
-> curl http://localhost:3100/hello
-Hello, world!
-```
+After using Counterfact to generate code you should have three directories:
 
-## Query string parameters
+- **components** contains the TypeScript types for the objects used in your REST API. These components correspond to the `/schema/components` section of the OpenAPI spec.
+- **paths** contains the implementation of each endpoint. These are commonly referred to as "routes". Counterfact uses the word "paths" because it corresponds to the `/paths` section of the API spec.
+- **path-types** contains the type information for paths.
 
-Change `hello.js` so that it reads a query string parameter in order to determine how many exclamation points to add.
+The code under `components` and `path-types` is be regenerated every time you run Counterfact, so that the types can stay in sync with any OpenAPI changes. The code under paths is scaffolding that you're meant to edit by hand. Counterfact will not overwrite your changes in the `paths` directory, but it will add new files when necessary.
 
-```js
-// paths/hello.js
-export function GET(request) {
-  const exclamationPoints = "!".repeat(request.query.excitementLevel);
-  return `Hello, world${exclamationPoints}`;
-}
-```
+## Reloading is so Hot Right Now
 
-```console
-> curl http://localhost:3100/hello?excitementLevel=3
-Hello, world!!!
+Changes you make will be picked up by the running server immediately. _There's no need to restart!_
 
-> curl http://localhost:3100/hello?excitementLevel=10
-Hello, world!!!!!!!!!!
-```
+That's one of the key goals of Counterfact. While developing and testing, we want to explore _counterfactuals_, such as
 
-## Destructuring the request object
+- What if I'm 8 clicks deep in my UI and _then_ the server responds with a 500 error?
+- What if there are no upcoming appointments?
+- What if there are 100 upcoming appointments and they're all next Tuesday?
 
-We can refactor this code to make it a bit more readable by destructuring the `request` parameter.
+In such cases, we want to be sure the front end code responds appropriately in these cases. Getting a real server to return such responses on whim is usually time consuming and tedious, if it's possible at all. Counterfact is optimized to make bending the server's behavior to suit a test case as painless as possible, in both manual and automated tests.
 
-```js
-// paths/hello.js
-export function GET({ query }) {
-  //                  ^^^^^^^^^ the request parameter is destructured
-  const exclamationPoints = "!".repeat(query.excitementLevel);
-  //                                   ^ we can delete "request."
-  return `Hello, world${exclamationPoints}`;
-}
-```
+Here's how it works:
 
-Destructuring allows us to pretend like JavaScript has named parameters. The reason for that will become clearer as we move through more complex examples.
+## Routing is where it's at
 
-## Paths
+In the `paths` directory, you should find TypeScript files with code like the following.
 
-Create a directory under `./paths` called `hello`. Under that directory add files named `Alice.js` and `Bob.js`.
-
-```js
-// paths/hello/Alice.js
-export function GET() {
-  return `Hello, Alice!`;
-}
-```
-
-```js
-// paths/hello/Bob.js
-export function GET() {
-  return `Hello, Bob!`;
-}
-```
-
-```console
-> curl http://localhost:3100/hello/Alice
-Hello, Alice!
-
-> curl http://localhost:3100/hello/Bob
-Hello, Bob!
-```
-
-## Path Parameters
-
-It would be silly to create a separate file for each of our friends. Let's create a file for a generic `/hello/{name}` path instead.
-
-```js
-// paths/hello/{name}.js
-export function GET({ path }) {
-  return `Hello, ${path.name}!`;
-}
-```
-
-```console
-> curl http://localhost:3100/hello/Alice
-Hello, Alice!
-
-> curl http://localhost:3100/hello/Bob
-Hello, Bob!
-
-> curl http://localhost:3100/hello/Eve
-Hello, Eve!
-```
-
-The word "hello" can also be parameterized if we rename the "hello" directory to `{greeting}`.
-
-```js
-// paths/{greeting}/{name}.js
-export function GET({ path }) {
-  return `${path.greeting}, ${path.name}!`;
-}
-```
-
-```console
-> curl http://localhost:3100/Hello/Alice
-Hello, Alice!
-
-> curl http://localhost:3100/Howdy/Bob
-Howdy, Bob!
-
-> curl http://localhost:3100/Yo/Eve
-Yo, Eve!
-```
-
-## Path _and_ Query Parameters
-
-Let's combine what we've learned so far.
-
-```js
-// paths/{greeting}/{name}.js
-export function GET({ path, query }) {
-  const exclamationPoints = "!".repeat(query.excitementLevel);
-  return `${path.greeting}, ${path.name}${exclamationPoints}`;
-}
-```
-
-```console
-> curl http://localhost:3100/Hello/Alice?excitementLevel=1
-Hello, Alice!
-
-> curl http://localhost:3100/Howdy/Bob?excitementLevel=3
-Howdy, Bob!!!
-
-> curl http://localhost:3100/Yo/Eve?excitementLevel=20
-Yo, Eve!!!!!!!!!!!!!!!!!!!!
-```
-
-## Response Headers
-
-So far we've only looked the _body_ of the HTTP response. What about the other parts, like status code and headers?
-
-```console
->  curl -v http://localhost:3100/hello
-*   Trying 127.0.0.1:3100...
-* Connected to localhost (127.0.0.1) port 3100 (#0)
-> GET /hello HTTP/1.1
-> Host: localhost:3100
-> User-Agent: curl/7.79.1
-> Accept: */*
->
-* Mark bundle as not supporting multiuse
-< HTTP/1.1 200 OK
-< Content-Type: text/plain; charset=utf-8
-< Content-Length: 14
-< Date: Thu, 28 Jul 2022 14:44:35 GMT
-< Connection: keep-alive
-< Keep-Alive: timeout=5
-<
-Hello, world!
-```
-
-So far our `GET` function has always returned a string. In that case Counterfact assumes with intend to send a response with status code `200`, media type `text/plain` and the standard headers. We can be more specific by returning an object instead of a string.
-
-```js
-// paths/hello.js
-export function GET() {
-  return {
-    status: 201,
-    contentType: "application/json",
-
-    headers: {
-      "X-Custom-Header": "cool",
-    },
-
-    body: { message: "Hello, world!" },
-  };
-}
-```
-
-```console
-❯ curl -v http://localhost:3100/hello
-*   Trying 127.0.0.1:3100...
-* Connected to localhost (127.0.0.1) port 3100 (#0)
-> GET /hello HTTP/1.1
-> Host: localhost:3100
-> User-Agent: curl/7.79.1
-> Accept: */*
->
-* Mark bundle as not supporting multiuse
-< HTTP/1.1 201 Created  # <--------------- from status: 201
-< Content-Type: application/json; charset=utf-8
-< Content-Length: 27
-< Date: Thu, 28 Jul 2022 15:02:17 GMT
-< Connection: keep-alive
-< Keep-Alive: timeout=5
-< X-Custom-Header: cool ## <-------------- from headers["X-Custom-Header"]
-<
-* Connection #0 to host localhost left intact
-{"message":"Hello, world!"} ## <---------- from body
-```
-
-## A Slightly More Realistic Example
-
-Enough with "hello world". Let's work our way toward something _useful_. The `/weather/{city}` endpoint returns the current temperature for a given city, or 404 if it doesn't recognize the city.
-
-```js
-// paths/{city}/weather.js
-const temperatures = {
-  chicago: 74,
-  "new-york": 83,
-  "san-francisco": 56,
+```ts
+export const GET: HTTP_GET = ($) => {
+  return $.response[200].random();
 };
 
-function fahrenheitToCelsius(temperature) {
-  return Math.round(((temperature - 32) * 5) / 9);
-}
-
-
-export function GET({ path, query }) {
-  if (!(path.city in temperatures)) {
-    return {
-      status: 404,
-      contentType: "text/plain"
-
-      body: `No temperature found for ${city}.`,
-    };
-  }
-
-  const f = temperatures[path.city];
-  const c = fahrenheitToCelsius(f);
-
-  const displayTemperature = query.unit === "C" ? `${c} C` : `${f} F`;
-
-  return {
-    status: 200,
-    contentType: "application/json",
-
-    headers: {
-      "X-Unit": ${query.unit},
-    },
-
-    body: {
-        city: path.city,
-        temperature: displayTemperature
-    },
-  };
-}
+export const POST: HTTP_POST = ($) => {
+  return $.response[200].random();
+};
 ```
 
-```console
-❯ curl -v http://localhost:3100/chicago/weather?unit=C
-*   Trying 127.0.0.1:3100...
-* Connected to localhost (127.0.0.1) port 3100 (#0)
-> GET /chicago/weather HTTP/1.1
-> Host: localhost:3100
-> User-Agent: curl/7.79.1
-> Accept: */*
->
-* Mark bundle as not supporting multiuse
-< HTTP/1.1 200 OK
-< Content-Type: text/plain; charset=utf-8
-< Content-Length: 34
-< Date: Thu, 28 Jul 2022 15:53:35 GMT
-< Connection: keep-alive
-< Keep-Alive: timeout=5
-< X-Unit: C
-<
-* Connection #0 to host localhost left intact
-{
-    "body": {
-        "city": "chicago",
-        "temperature": "23 C"
+The file's path corresponds to the endpoint's URL. Each of the exported functions implements an HTTP request method (GET, POST, PUT, etc.) Each of these functions takes one argument -- `$` -- which is used to access request information, build a response, and interact with the server's state.
+
+If you're familiar with Express, `$` is sort of a combination of `req` and `res` with type safety and extra super powers.
+
+### The `$.response` object
+
+The `$.response` object that is used to build a valid response for the endpoint and request method. It's designed to work with your IDE's autocomplete feature and help you build a valid response. Try typing `$.response.` in your IDE. You should see a list of numbers corresponding to HTTP response codes (200, 404, etc). Select one and then type another `.`. At this point the IDE should present you with one or more methods that can be called.
+
+- `.random()` returns random data, using examples and other metadata the OpenAPI document.
+- `.header(name, value)` allows you to add a response header. It will only show up when a response header is expected and you haven't already provided it.
+- `.match(contentType, content)` is used to return content which matches the content type. If the API is intend to serve one multiple content types, depending on the client's `Accepts:` header, you can chain multiple `match()` calls.
+- `.json(content)` is a shortcut for `.match("application/json", content)`
+- `.text(content)` is a shortcut for `.match("text/plain", content)`
+- `.html(content)` is a shortcut for `.match("text/html", content)`
+
+You can build a response by chaining one or more of these functions, e.g. `return $.response[200].header("x-coolness-level", 10).text("This is cool!")`.
+
+Your IDE can help you build a valid response via autocomplete. It can also help ensure you return a valid and complete response. For example, if you leave out a required header, the function won't type check.
+
+### The request objects: `$.path`, `$.query`, `$.headers`, and `$.body`
+
+Most of the time, the server's response depends on input from various parts of the request: the path, the query string, the headers, or the body. We can use them like so:
+
+```ts
+export const GET: HTTP_GET = ($) => {
+    if ($.headers['x-token'] !== 'super-secret') {
+       return $.response[401].text('unauthorized');
     }
-}
-```
+    const content = `TODO: output the results for "${query.keyword}" in ${$.path.groupName} that have the following tags: ${$.body.tags.join(',')}.`.
 
-```
-❯ curl -v http://localhost:3100/austin/weather
-*   Trying 127.0.0.1:3100...
-* Connected to localhost (127.0.0.1) port 3100 (#0)
-> GET /austin/weather HTTP/1.1
-> Host: localhost:3100
-> User-Agent: curl/7.79.1
-> Accept: */*
->
-* Mark bundle as not supporting multiuse
-< HTTP/1.1 404 Not Found
-< Content-Type: text/plain; charset=utf-8
-< Content-Length: 31
-< Date: Thu, 28 Jul 2022 15:44:06 GMT
-< Connection: keep-alive
-< Keep-Alive: timeout=5
-<
-* Connection #0 to host localhost left intact
-No temperature found for austin.
+    return $.response[200].text(content);
+};
 
 ```
 
-## HTTP Verbs
+Note that each of these objects is typed so you can use autocomplete to identify the parameters. For example, if you type `$.query.` you'll be presented with a list of expected query string parameters.
 
-At this point we've defined some hard-coded temperatures and use them in a mock GET request. This is the place where a lot mocking tools end. Counterfact is just getting started.
+The `$.path` parameters are identified by dynamic sections of the path, i.e. `/groups/{groupName}/user/{userId}.ts`.
 
-When we POST to /{city}/weather we want to store the temperature so that we can look it up later. To support that we will add a `POST()` function to the existing code.
+### Working with state: the `$.context` object and `$context.ts`
 
-```js
-// paths/{city}/weather.js
+There's one more parameter we need to explore, the `$.context` object. The `$.context` object stands in for microservices, databases, and other entities from which the real API gets its data. It looks something like this:
 
-/* ... existing code ... */
-
-export function POST({ body }) {
-  temperatures[body.city] = body.temperature;
-}
+```ts copy
+// pet.ts
+export const POST: HTTP_POST = ($) => {
+  return $.response.json($.context.addPet($.body));
+};
 ```
 
-`POST()` works exactly like `GET` except that in addition to `query` and `path` a `POST` request can have a `body`.
-
-Let's try it out.
-
-```
-> curl -X POST -d '{ "temperature": 100 }' http://localhost:3100/atlanta/weather
-> curl http://localhost:3100/atlanta/weather?unit=F
-{
-    "body": {
-        "city": "atlanta",
-        "temperature": "100 F"
-    }
-}
+```ts copy
+// pet/{id}.ts
+ export const GET: HTTP_GET ($) => {
+    const pet = $.context.getPetById(body);
+    if (pet === undefined) return response[404].text(`Pet ${$.path.id} not found.`);
+    return response.json(context.getPetById($.body));
+ };
 ```
 
-The other verbs (`PUT`, `PATCH`, `DELETE`) work the same way.
+The `context` object is defined in `$context.js` in the same directory as the file that uses it. It's up to you to define the API for a context object. For example, your `$context.js` file might look like this.
 
-## Context
+```ts
+class PetStore {
+  pets: Pet[] = [];
 
-So far we've seen a simple way to store state in the server. We created a JavaScript object within a module and set / get its properties. In order to support more complex business logic, Counterfact can pass around a singleton object named `context` to all of the request methods.
-
-We can refactor `weather.js` to use the context object.
-
-```js
-// paths/{city}/weather.js
-
-export function GET({ path, query }) {
-
-  if (!(context.hasTemperature(path.city))) {
-    return {
-      status: 404,
-      contentType: "text/plain"
-
-      body: `No temperature found for ${city}.`,
-    };
+  addPet(pet: Pet) {
+    const id = this.pets.length;
+    this.pets.push({ ...pet, id });
+    return this.getPetById(id);
   }
 
-
-  return {
-    status: 200,
-    contentType: "application/json",
-
-    headers: {
-      "X-Unit": query.unit,
-    },
-
-    body: {
-        city: path.city,
-        temperature: context.getTemperature(path.city, query.unit)
-    },
-  };
-
-}
-
-export function POST({ body, context }) {
-  context.setTemperature(path.city, body.temperature);
-}
-```
-
-And define the context object by creating a file at `./context/context.js`
-
-```js
-function fahrenheitToCelsius(temperature) {
-  return Math.round(((temperature - 32) * 5) / 9);
-}
-
-class Context {
-  setTemperature(city, temperature) {
-    this.temperatures[city] = temperature;
-  }
-
-  getTemperature(city, unit) {
-    const f = this.temperatures[city];
-    const c = fahrenheitToCelsius(f);
-
-    return unit === "C" ? `${c} C` : `${f} F`;
-  }
-
-  hasTemperature(city) {
-    return city in this.temperatures;
+  getPetById(id: number) {
+    return this.pets[id];
   }
 }
 
-export default new Context();
+export default new PetStore();
 ```
 
-The `GET()` and `POST()` functions are now simplified. The business logic has been moved to the `Context` class which is easy to unit test.
+You can define a new context at each level of the API if you like by rewriting the respective `$context.ts` files. Or you can leave the default implementations, which delegate to their parent directories.
 
-## Multiple Content Types
+## No Cap Recap
 
-Sometimes an endpoint can return a response body with one of multiple content types. It returns the best match per the client's `Accept:` header.
+That's Counterfact in a nutshell. Using convention over configuration and automatically generated types, it allows front-end developers to quickly build prototype / fake REST APIs for testing purposes.
 
-```js
-export function GET({ path, query }) {
-  // 404 handler elided
+- Given an OpenAPI document, you can generate working TypeScript code and start up a server in seconds.
+- By default, the server returns random responses based on metadata in the OpenAPI document (e.g. it uses examples where provided).
+- Each endpoint is represented by a TypeScript file where the path to the file corresponds to the path of the endpoint.
+- You can change the implementation at any time by changing these files.
+- You can and should commit the generated code to source control. Files you change will not be overwritten when you start the server again. (The _types_ will be updated if the OpenAPI document changes, but you shouldn't need to edit the type definitions by hand.)
+- Put behavior in `$context.ts` files. These are created for you, but you should rewrite them to suit your needs. (At least update the root `$context.ts` file.)
 
-  return {
-    status: 200,
+## We're Just Getting Started
 
-    headers: {
-      "X-Unit": query.unit,
-    },
+"Advanced" features are coming soon:
 
-    content: [
-      {
-        type: "application/json",
-        body: {
-          city: path.city,
-          temperature: context.getTemperature(path.city, query.unit),
-        },
-      },
-      {
-        type: "text/plain",
-        body: `It is ${context.getTemperature(path.city, query.unit)} in ${
-          path.city
-        }.`,
-      },
-    ],
-  };
-}
-```
-
-## Response Builder
-
-[Depends on https://github.com/pmcelhaney/counterfact/issues/133, https://github.com/pmcelhaney/counterfact/issues/134, https://github.com/pmcelhaney/counterfact/issues/135 ]
-
-The return value tends to be somewhat verbose and repetitive. As such, Counterfact provides a _response builder_ object called `response` to make the code a bit more tidy and readable. Let's update the `GET()` function to take advantage of `response`.
-
-<!-- prettier-ignore -->
-```js
-// paths/{city}/weather.js
-
-export function GET({ path, query, response }) {
-  if (!context.hasTemperature(path.city)) {
-    return response[404].match(
-      "text/plain",
-      `No temperature found for ${city}.`
-    );
-  }
-
-  return response[200]
-    .header("X-Unit", query.unit)
-    .match("application/json", {
-        city: path.city,
-        temperature: context.getTemperature(path.city, query.unit),
-    }).match("text/plain", `It is ${context.getTemperature(path.city, query.unit)} in ${path.city}.`);
-}
-```
-
-The `response` parameter has enough tricks up its sleeve that it's worthy of a document unto itself. We will link that document here when it's written. For now here's a teaser.
-
-```js
-response[responseCode]
-  .header("a-string-header", "value")
-  .header("a-number--header", 100)
-  .match("content/type", "body")
-  .match("another/type", "body")
-  .json({ isJson: true }) // shortcut for .match("application/json", ...)
-  .text("text") // shortcut for .match("text/plain", ...)
-  .html("<p>html</p>"); // shortcut for .match("text/html", ...)
-  .random() // a random, valid value (depends on Counterfact having been initialized with an OpenAPI document)
-```
-
-The `response` API was carefully designed to take advantage of TypeScript and IDEs that provide intellisense. [ Creating a context-sensitive type is going to take some work, starting with https://github.com/pmcelhaney/counterfact/issues/136 ]
-
-### Asynchronous Handlers
-
-If you need to do work asynchronously, return a promise or use async / await.
-
-```js
-export function PUT({ body, response }) {
-  return doSomeStuffWith(body).then(() =>
-    response[202].text("Successfully did an async PUT")
-  );
-}
-
-export async function DELETE() {
-  await deleteMe();
-
-  return response[200].text("Took a while but now it's deleted.");
-}
-```
+- Integrate Counterfact into your workflow (Express, Koa, Webpack Dev Server, etc.)
+- Use a REPL to interact with the context objects while the server is running
+- Use Counterfact in your automated tests
+- Record API calls while testing the front and manually and reuse those calls in automated tests
+- Use HAR files to recreate scenarios / bugs encountered by real users
+- Migration scripts to seed the server with test data or get it into a particular state
+- Toggle individual endpoints between using Counterfact or the "real" API via GUI
