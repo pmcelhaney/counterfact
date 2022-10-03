@@ -11,8 +11,8 @@ Map {
     },
     "exports": Map {
       "POST" => Object {
-        "code": "({ response}) => {
-      return response[200].random();
+        "code": "($) => {
+      return $.response[200].random();
     }",
         "done": true,
         "id": "OperationCoder@petstore.yaml#/paths/~1pet/post",
@@ -23,8 +23,8 @@ Map {
         "typeDeclaration": "HTTP_POST",
       },
       "PUT" => Object {
-        "code": "({ response}) => {
-      return response[200].random();
+        "code": "($) => {
+      return $.response[200].random();
     }",
         "done": true,
         "id": "OperationCoder@petstore.yaml#/paths/~1pet/put",
@@ -926,8 +926,8 @@ Map {
     },
     "exports": Map {
       "GET" => Object {
-        "code": "({ response}) => {
-      return response[200].random();
+        "code": "($) => {
+      return $.response[200].random();
     }",
         "done": true,
         "id": "OperationCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
@@ -1350,8 +1350,8 @@ Map {
     },
     "exports": Map {
       "GET" => Object {
-        "code": "({ response}) => {
-      return response[200].random();
+        "code": "($) => {
+      return $.response[200].random();
     }",
         "done": true,
         "id": "OperationCoder@petstore.yaml#/paths/~1pet~1findByTags/get",
@@ -1778,8 +1778,8 @@ Map {
     },
     "exports": Map {
       "GET" => Object {
-        "code": "({ response}) => {
-      return response[200].random();
+        "code": "($) => {
+      return $.response[200].random();
     }",
         "done": true,
         "id": "OperationCoder@petstore.yaml#/paths/~1pet~1{petId}/get",
@@ -3118,8 +3118,8 @@ Map {
     },
     "exports": Map {
       "POST" => Object {
-        "code": "({ response}) => {
-      return response[200].random();
+        "code": "($) => {
+      return $.response[200].random();
     }",
         "done": true,
         "id": "OperationCoder@petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post",
@@ -3380,8 +3380,8 @@ Map {
     },
     "exports": Map {
       "GET" => Object {
-        "code": "({ response}) => {
-      return response[200].random();
+        "code": "($) => {
+      return $.response[200].random();
     }",
         "done": true,
         "id": "OperationCoder@petstore.yaml#/paths/~1store~1inventory/get",
@@ -3580,8 +3580,8 @@ Map {
     },
     "exports": Map {
       "POST" => Object {
-        "code": "({ response}) => {
-      return response[200].random();
+        "code": "($) => {
+      return $.response[200].random();
     }",
         "done": true,
         "id": "OperationCoder@petstore.yaml#/paths/~1store~1order/post",
@@ -3864,8 +3864,8 @@ Map {
     },
     "exports": Map {
       "GET" => Object {
-        "code": "({ response}) => {
-      return response[200].random();
+        "code": "($) => {
+      return $.response[200].random();
     }",
         "done": true,
         "id": "OperationCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get",
@@ -4540,8 +4540,8 @@ Map {
     },
     "exports": Map {
       "POST" => Object {
-        "code": "({ response}) => {
-      return response[200].random();
+        "code": "($) => {
+      return $.response[200].random();
     }",
         "done": true,
         "id": "OperationCoder@petstore.yaml#/paths/~1user/post",
@@ -4814,8 +4814,8 @@ Map {
     },
     "exports": Map {
       "POST" => Object {
-        "code": "({ response}) => {
-      return response[200].random();
+        "code": "($) => {
+      return $.response[200].random();
     }",
         "done": true,
         "id": "OperationCoder@petstore.yaml#/paths/~1user~1createWithList/post",
@@ -5112,8 +5112,8 @@ Map {
     },
     "exports": Map {
       "GET" => Object {
-        "code": "({ response}) => {
-      return response[200].random();
+        "code": "($) => {
+      return $.response[200].random();
     }",
         "done": true,
         "id": "OperationCoder@petstore.yaml#/paths/~1user~1login/get",
@@ -5546,8 +5546,8 @@ Map {
     },
     "exports": Map {
       "GET" => Object {
-        "code": "({ response}) => {
-      return response[200].random();
+        "code": "($) => {
+      return $.response[200].random();
     }",
         "done": true,
         "id": "OperationCoder@petstore.yaml#/paths/~1user~1{username}/get",

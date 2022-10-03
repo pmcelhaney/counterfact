@@ -181,9 +181,10 @@ export class Script {
 
   contents() {
     return [
-      ...this.externalImportsStatements(),
-      ...this.importStatements(),
-      ...this.exportStatements(),
-    ].join("\n");
+      this.externalImportsStatements().join("\n"),
+      this.importStatements().join("\n"),
+      "\n\n",
+      this.exportStatements().join("\n\n"),
+    ].join("");
   }
 }

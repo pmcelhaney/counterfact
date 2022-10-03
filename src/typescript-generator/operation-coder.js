@@ -23,8 +23,8 @@ export class OperationCoder extends Coder {
       return "() => { /* no response content specified in the OpenAPI document */ }";
     }
 
-    return `({ response}) => {
-      return response[${
+    return `($) => {
+      return $.response[${
         firstStatusCode === "default" ? 200 : firstStatusCode
       }].random();
     }`;
