@@ -6,11 +6,11 @@
 
 _Front end development without back end headaches_
 
-[Uses](#uses) [Quick Start](#quick-start) | [Watch Demo](#watch-demo) | [Install](#install) | [Documentation](#documentation)
+[What is it?](#what-is-it) | [Quick Start](#quick-start) | [Watch Demo](#watch-demo) | [Documentation](#documentation)
 
 </div>
 
-## Uses
+## What is it?
 
 Counterfact is a stand-in REST server powered by Node and TypeScript. It simulates complex back end behavior without running the whole stack. Use it to:
 
@@ -42,3 +42,22 @@ The above command will:
 5. open your browser to Swagger-UI (`--open`)
 
 You can use Swagger to try out the auto-generated API. Out of the box, it returns random responses using metadata from the OpenAPI document. You can edit the files under `./api/paths` to add more realistic behavior. There's no need to restart the server.
+
+## Watch Demo
+
+```
+
+
+
+
+
+     video will go here
+
+
+
+
+```
+
+## Documentation
+
+See [./docs](./docs/usage.md)
