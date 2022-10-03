@@ -147,7 +147,7 @@ describe("a Script", () => {
     ];
 
     expect(script.contents()).toBe(
-      'import { foo } from \'./foo.js;\nexport const bar = "Bar";\nexport default class {};'
+      'import { foo } from \'./foo.js;\n\nexport const bar = "Bar";\n\nexport default class {};'
     );
   });
 });
