@@ -1,12 +1,16 @@
 <div align="center">
 
-[![Coverage Status](https://coveralls.io/repos/github/pmcelhaney/counterfact/badge.svg)](https://coveralls.io/github/pmcelhaney/counterfact) [![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fpmcelhaney%2Fcounterfact%2Fmain)](https://dashboard.stryker-mutator.io/reports/github.com/pmcelhaney/counterfact/main)
-
 # Counterfact
+
+[![Coverage Status](https://coveralls.io/repos/github/pmcelhaney/counterfact/badge.svg)](https://coveralls.io/github/pmcelhaney/counterfact) [![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fpmcelhaney%2Fcounterfact%2Fmain)](https://dashboard.stryker-mutator.io/reports/github.com/pmcelhaney/counterfact/main)
 
 _Front end development without back end headaches_
 
+[Uses](#uses) [Quick Start](#quick-start) | [Watch Demo](#watch-demo) | [Install](#install) | [Documentation](#documentation)
+
 </div>
+
+## Uses
 
 Counterfact is a stand-in REST server powered by Node and TypeScript. It simulates complex back end behavior without running the whole stack. Use it to:
 
