@@ -49,11 +49,11 @@ Options:
 
 After generating code you should have three directories:
 
-- 📂 **components** contains the TypeScript types for the objects used in your REST API. These components correspond to the `/schema/components` section of the OpenAPI spec.
-- 📂 **paths** contains the implementation of each endpoint, a.k.a. routes. Counterfact uses the word "paths" because it corresponds to the `/paths` section of the API spec.
+- 📂 **components** contains the TypeScript types for the objects used in your REST API. These components correspond to the `/schema/components` section of the [OpenAPI spec](https://swagger.io/specification/).
+- 📂 **paths** contains the implementation of each endpoint, a.k.a. routes. Counterfact uses the word "paths" because it corresponds to the `/paths` section of the spec.
 - 📂 **path-types** contains the type information for paths.
 
-The code under `components` and `path-types` is regenerated every time you run Counterfact, so that the types can stay in sync with any OpenAPI changes. The code under paths is scaffolding that you're meant to edit by hand. Counterfact will not overwrite your changes in the `paths` directory, but it will add new files when necessary.
+The code under `components` and `path-types` is regenerated every time you run Counterfact, so that the types can stay in sync with any OpenAPI changes. The code under paths is minimal boilerplate that you're meant to edit by hand. Counterfact will not overwrite your changes in the `paths` directory, but it will add new files when necessary.
 
 > You don't have to use the code generator. It wasn't even part of Counterfact originally. You can also create the files under `paths` by hand. The main benefit of generating code is all the type information that's managed for you and kept in sync with OpenAPI.
 
@@ -92,7 +92,7 @@ You can build a response by chaining one or more of these functions, e.g.
 return $.response[200].header("x-coolness-level", 10).text("This is cool!")`.
 ```
 
-> Your IDE can help you build a valid response via autocomplete. It can also help ensure the response matches the requirements in the OpenAPI document. For example, if you leave out a required header, the function won't type check. (That's particularly useful when there are API changes. Update the OpenAPI document, regenerate the types, and let TypeScript where to update the code.)
+> Your IDE can help you build a valid response via autocomplete. It can also help ensure the response matches the requirements in the OpenAPI document. For example, if you leave out a required header, the function won't type check. (That's particularly useful when there are API changes. Update the OpenAPI document, regenerate the types, and let TypeScript tell you where to update the code.)
 
 ### Request parameters: `$.path`, `$.query`, `$.headers`, and `$.body`
 
@@ -165,17 +165,18 @@ By default, each `$context.ts` delegates to its parent directory, so you can def
 
 Changes you make will be picked up by the running server immediately. _There's no need to restart!_
 
-One of Counterfact's key design goals is hot reloading on the server side. While developing and testing, we want to explore _counterfactuals_, such as
+Hot reloading supports one of Counterfact's key design goals. While developing and testing, we want to explore _counterfactuals_, such as
 
 - What if I'm 8 clicks deep in my UI and _then_ the server responds with a 500 error?
 - What if there are no upcoming appointments?
 - What if there are 100 upcoming appointments and they're all on a holiday?
+- What if run this report on a weekend?
 
-In such cases, we want to be sure the front end code responds appropriately. Getting a real server to return such responses on whim is usually difficult if not impossible. Counterfact is optimized to make bending the server's behavior to suit a test case as painless as possible, in both manual and automated tests.
+In such cases, we want to be sure the front end code responds appropriately. Getting a real server to do what we need to test front end code is usually difficult if not impossible. Counterfact is optimized to make bending the server's behavior to suit a test case as painless as possible, in both manual and automated tests.
 
 ## No Cap Recap 🧢
 
-That's basically everything you need to know about Counterfact. Using convention over configuration and automatically generated types, it allows front-end developers to quickly build fake REST APIs for prototype and testing purposes.
+That's everything you need to know about Counterfact. Using convention over configuration and automatically generated types, it allows front-end developers to quickly build fake REST APIs for prototype and testing purposes.
 
 - Given an OpenAPI document, you can generate working TypeScript code and start up a server in seconds.
 - By default, the server returns random responses based on metadata in the OpenAPI document (e.g. it uses examples where provided).
@@ -193,9 +194,9 @@ That's basically everything you need to know about Counterfact. Using convention
 - Use Counterfact in your automated tests
 - Record API calls while testing the front end manually and reuse those calls in automated tests (ala [Playwright](https://playwright.dev/))
 - Use [HAR](https://toolbox.googleapps.com/apps/har_analyzer/) files to recreate scenarios / bugs encountered by real users
-- Migration scripts to seed the server with test data or get it into a particular state
-- Toggle individual endpoints between fake and real APIs via a GUI
-
-And yes, contributions are welcome! An easy way to start is by [creating a CONTRIBUTING.md file](https://github.com/pmcelhaney/counterfact/issues/110). ;-)
+- Migration scripts to seed the server with test data or get it into a particular state, ala [Playwright](https://playwright.dev/).
+- Toggle between fake and real APIs, either the whole server or individual routes, at runtime, with a GUI
 
 Please send feedback / questions to pmcelhaney@gmail.com or [create a new issue](https://github.com/pmcelhaney/counterfact/issues/new).
+
+And yes, contributions are welcome! An easy way to start is by [creating a CONTRIBUTING.md file](https://github.com/pmcelhaney/counterfact/issues/110). ;-)
