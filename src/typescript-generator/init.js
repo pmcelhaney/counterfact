@@ -17,6 +17,13 @@ export async function init(source, destination) {
 
   await fs.copy(nodePath.join(rootPath, "templates/typescript"), destination);
 
+  process.stdout.write(
+    `Copying ${nodePath.join(
+      rootPath,
+      "templates/typescript"
+    )}to${destination}\n`
+  );
+
   const specification = await yaml.load(await fs.readFile(source, "utf8"));
 
   specification.servers.unshift({ url: "/" });

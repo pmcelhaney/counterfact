@@ -10,7 +10,7 @@
 
 _Front end development without back end headaches_
 
-[Watch Demo](#watch-demo) | [Quick Start](#quick-start) | [Documentation](#documentation) | [Support](#support)
+[Quick Start](#quick-start) | [Documentation](#documentation) | [Support](#support)
 
 </div>
 
@@ -43,26 +43,9 @@ Counterfact is a stand-in REST server powered by Node, TypeScript, and OpenAPI.<
 
 </table>
 
-<div id="watch-demo" align="center">
+<h2 id="quick-start">Got 60 Seconds? Try it!</h2>
 
-```
-
-
-
-
-
-     video will go here
-
-
-
-
-```
-
-</div>
-
-## Quick Start
-
-Try it now with one command. The only prequisite is Node 16+.
+Copy this into your terminal. The only prerequisite is Node 16+.
 
 ```sh copy
 npx counterfact@latest https://petstore3.swagger.io/api/v3/openapi.json api --open
@@ -76,7 +59,7 @@ npx counterfact@latest https://petstore3.swagger.io/api/v3/openapi.json api --op
 4. starts a server which implements the API
 5. opens your browser to [Swagger UI](https://swagger.io/tools/swagger-ui/) (`--open`)
 
-You can use Swagger to try out the auto-generated API. Out of the box, it returns random responses using metadata from the OpenAPI document. You can edit the files under `./api/paths` to add more realistic behavior. There's no need to restart the server.
+You can use Swagger to try out the auto-generated API. Out of the box, it returns random responses using metadata from the OpenAPI document. Edit the files under `./api/paths` to add more realistic behavior. There's no need to restart the server.
 
 ## Documentation
 
