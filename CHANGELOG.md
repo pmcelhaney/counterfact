@@ -1,5 +1,11 @@
 # counterfact
 
+## 0.11.0
+
+### Minor Changes
+
+- 5a7e12b: --open opens the browser to a landing page with pointers to the code, Swagger, and the docs
+
 ## 0.10.3
 
 ### Patch Changes
