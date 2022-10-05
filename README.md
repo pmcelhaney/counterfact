@@ -10,12 +10,10 @@
 
 _Front end development without back end headaches_
 
-[Quick Start](#quick-start) | [Documentation](#documentation) | [Support](#support)
-
 </div>
 
 <div align="center">
-Counterfact is a stand-in REST server powered by Node, TypeScript, and OpenAPI.<br>It simulates complex, stateful back end behavior without running the whole stack.
+Counterfact is a stand-in REST server powered by Node, TypeScript, and OpenAPI.<br>Write front end code and test the user experience without a complete back end.
 </div>
 
 <br>
@@ -51,7 +49,8 @@ Copy this into your terminal. The only prerequisite is Node 16+.
 npx counterfact@latest https://petstore3.swagger.io/api/v3/openapi.json api --open
 ```
 
-### What does it do?
+<details>
+<summary>What does that command do?</summary>
 
 1. installs the `@latest` version of `counterfact`
 2. reads an [OpenAPI 3](https://oai.github.io/Documentation/) document (`https://petstore3.swagger.io/api/v3/openapi.json`)
@@ -61,9 +60,13 @@ npx counterfact@latest https://petstore3.swagger.io/api/v3/openapi.json api --op
 
 You can use Swagger to try out the auto-generated API. Out of the box, it returns random responses using metadata from the OpenAPI document. Edit the files under `./api/paths` to add more realistic behavior. There's no need to restart the server.
 
-## Documentation
+</details>
 
-See [Usage](./docs/usage.md)
+<br>
+
+📗 See [Usage](./docs/usage.md) for detailed documentation.
+
+<br>
 
 ## Support
 
