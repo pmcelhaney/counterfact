@@ -1,5 +1,11 @@
 # counterfact
 
+## 0.11.1
+
+### Patch Changes
+
+- 0ae3ad0: (GH Actions is having issues. This is just to make sure the release workflow kicks off.)
+
 ## 0.11.0
 
 ### Minor Changes
