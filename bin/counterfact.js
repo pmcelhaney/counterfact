@@ -36,7 +36,7 @@ async function main(source, destination) {
   }
 
   if (openBrowser) {
-    await open(`http://localhost:${options.port}/counterfact/swagger`);
+    await open(`http://localhost:${options.port}/counterfact`);
   }
 }
 
