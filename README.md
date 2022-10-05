@@ -64,7 +64,7 @@ You can use Swagger to try out the auto-generated API. Out of the box, it return
 
 <br>
 
-See [Usage](./docs/usage.md) for detailed documentation.
+📗 See [Usage](./docs/usage.md) for detailed documentation.
 
 <br>
 
