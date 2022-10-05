@@ -10,10 +10,11 @@
 
 _Front end development without back end headaches_
 
-</div>
+[Quick Start](#quick-start) | [Documentation](./docs/usage.md) | [Contributing](CONTRIBUTING.md)
 
-<div align="center">
-Counterfact is a stand-in REST server powered by Node, TypeScript, and OpenAPI.<br>Write front end code and test the user experience without a complete back end.
+Counterfact is a stand-in REST server powered by Node, TypeScript, and OpenAPI.<br>
+It enables you to write front end code and test UX flows without a complete back end.
+
 </div>
 
 <br>
@@ -41,9 +42,9 @@ Counterfact is a stand-in REST server powered by Node, TypeScript, and OpenAPI.<
 
 </table>
 
-<h2 id="quick-start">Got 60 Seconds? Try it!</h2>
+<h2 id="quick-start">Got 60 Seconds? Try me!</h2>
 
-Copy this into your terminal. The only prerequisite is Node 16+.
+Copy the following command into your terminal. The only prerequisite is Node 16+.
 
 ```sh copy
 npx counterfact@latest https://petstore3.swagger.io/api/v3/openapi.json api --open
@@ -66,8 +67,6 @@ You can use Swagger to try out the auto-generated API. Out of the box, it return
 
 📗 See [Usage](./docs/usage.md) for detailed documentation.
 
-<br>
+---
 
-## Support
-
-Counterfact is brand new as of October 3, 2022. Please send feedback / questions to pmcelhaney@gmail.com or [create a new issue](https://github.com/pmcelhaney/counterfact/issues/new). If you like what you see, please give this project a star!
+Counterfact is brand new as of October 5, 2022. Please send feedback / questions to pmcelhaney@gmail.com or [create a new issue](https://github.com/pmcelhaney/counterfact/issues/new). If you like what you see, please give this project a star!
