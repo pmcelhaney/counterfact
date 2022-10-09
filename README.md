@@ -1,9 +1,6 @@
-<div align="right">
 
 
-</div>
-
-<div align="center">
+<div align="center" markdown="1">
 
 # Counterfact
 
@@ -18,7 +15,7 @@ It enables you to write front end code and test UX flows without a complete back
 
 <br>
 
-<table align="center" cols="2">
+<table align="center" cols="2"  markdown="1">
 
 <tr>
 <td>
@@ -41,7 +38,7 @@ It enables you to write front end code and test UX flows without a complete back
 
 </table>
 
-<div align="center">
+<div align="center"  markdown="1">
 
 [![Coverage Status](https://coveralls.io/repos/github/pmcelhaney/counterfact/badge.svg)](https://coveralls.io/github/pmcelhaney/counterfact) [![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fpmcelhaney%2Fcounterfact%2Fmain)](https://dashboard.stryker-mutator.io/reports/github.com/pmcelhaney/counterfact/main) ![MIT License](https://img.shields.io/badge/license-MIT-blue)
 
