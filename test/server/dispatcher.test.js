@@ -1,6 +1,6 @@
-import { Dispatcher } from "../src/dispatcher.js";
-import { ContextRegistry } from "../src/context-registry.js";
-import { Registry } from "../src/registry.js";
+import { Dispatcher } from "../../src/server/dispatcher.js";
+import { ContextRegistry } from "../../src/server/context-registry.js";
+import { Registry } from "../../src/server/registry.js";
 
 describe("a dispatcher", () => {
   it("dispatches a get request to a server and returns the response", async () => {
