@@ -5,8 +5,9 @@ import bodyParser from "koa-bodyparser";
 import { koaSwagger } from "koa2-swagger-ui";
 import yaml from "js-yaml";
 
+import { readFile } from "../util/read-file.js";
+
 import { counterfact } from "./counterfact.js";
-import { readFile } from "./read-file.js";
 
 const DEFAULT_PORT = 3100;
 
