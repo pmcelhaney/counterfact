@@ -1,4 +1,4 @@
-import { Registry } from "../src/registry.js";
+import { Registry } from "../../src/server/registry.js";
 
 describe("a scripted server", () => {
   it("knows if a handler exists for a request method at a path", () => {

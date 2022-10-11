@@ -6,7 +6,8 @@ import os from "node:os";
 import $RefParser from "json-schema-ref-parser";
 import yaml from "js-yaml";
 
-import { readFile } from "./read-file.js";
+import { readFile } from "../util/read-file.js";
+
 import { Registry } from "./registry.js";
 import { Dispatcher } from "./dispatcher.js";
 import { koaMiddleware } from "./koa-middleware.js";
@@ -39,7 +40,7 @@ export async function counterfact(
   )}/`;
 
   fs.copyFile(
-    nodePath.join(__dirname, "../templates/response-builder-factory.ts"),
+    nodePath.join(__dirname, "../../templates/response-builder-factory.ts"),
     nodePath.join(basePath, "response-builder-factory.ts")
   );
 

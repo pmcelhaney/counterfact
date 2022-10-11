@@ -1,7 +1,7 @@
-import { Registry } from "../src/registry.js";
-import { Dispatcher } from "../src/dispatcher.js";
-import { koaMiddleware } from "../src/koa-middleware.js";
-import { ContextRegistry } from "../src/context-registry.js";
+import { Registry } from "../../src/server/registry.js";
+import { Dispatcher } from "../../src/server/dispatcher.js";
+import { koaMiddleware } from "../../src/server/koa-middleware.js";
+import { ContextRegistry } from "../../src/server/context-registry.js";
 
 describe("koa middleware", () => {
   it("passes the request to the dispatcher and returns the response", async () => {
