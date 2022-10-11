@@ -36,7 +36,14 @@ const rules = {
 };
 
 module.exports = {
-  ignorePatterns: ["/node_modules/", "/coverage/", "/reports/", "/out/"],
+  ignorePatterns: [
+    "/node_modules/",
+    "/coverage/",
+    "/reports/",
+    "/out/",
+    "_includes",
+    ".stryker-tmp",
+  ],
 
   extends: ["hardcore", "hardcore/ts", "hardcore/node"],
 
