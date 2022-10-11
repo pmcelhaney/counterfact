@@ -1,4 +1,4 @@
-import { landingPageBody } from "../src/start.js";
+import { landingPageBody } from "../../src/server/start.js";
 
 describe("start", () => {
   it("renders the landing page", () => {

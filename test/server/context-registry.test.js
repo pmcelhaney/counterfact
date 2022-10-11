@@ -1,4 +1,7 @@
-import { ContextRegistry, parentPath } from "../src/context-registry.js";
+import {
+  ContextRegistry,
+  parentPath,
+} from "../../src/server/context-registry.js";
 
 describe("moduleRegistry", () => {
   it("finds a context that exactly matches the path", () => {

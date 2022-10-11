@@ -1,10 +1,9 @@
 import { once } from "node:events";
 
-import { ModuleLoader } from "../src/module-loader.js";
-import { Registry } from "../src/registry.js";
-import { ContextRegistry } from "../src/context-registry.js";
-
-import { withTemporaryFiles } from "./lib/with-temporary-files.js";
+import { ModuleLoader } from "../../src/server/module-loader.js";
+import { Registry } from "../../src/server/registry.js";
+import { ContextRegistry } from "../../src/server/context-registry.js";
+import { withTemporaryFiles } from "../lib/with-temporary-files.js";
 
 describe("a module loader", () => {
   it("finds a file and adds it to the registry", async () => {
