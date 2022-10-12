@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import nodePath from "node:path";
+import repl from "node:repl";
 
 import { program } from "commander";
 import open from "open";
@@ -23,7 +24,7 @@ async function main(source, destination) {
   const startServer = options.server || includeSwagger;
 
   if (startServer) {
-    await start({
+    const { contextRegistry } = await start({
       basePath,
       port: options.port,
       openApiPath: source,
@@ -33,6 +34,16 @@ async function main(source, destination) {
     process.stdout.write(
       `API is running at http://localhost:${options.port}.\n`
     );
+
+    process.stdout.write(
+      '\n\nStarting REPL... (start with `const context = loadContext("/")`)\n'
+    );
+
+    const replServer = repl.start("> ");
+
+    replServer.context.loadContext = (path) => contextRegistry.find(path);
+
+    replServer.output.write("const context = loadContext('/');");
   }
 
   if (openBrowser) {
