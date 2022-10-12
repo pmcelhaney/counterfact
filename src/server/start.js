@@ -9,6 +9,9 @@ import { readFile } from "../util/read-file.js";
 
 import { counterfact } from "./counterfact.js";
 
+// eslint-disable-next-line no-underscore-dangle
+const __dirname = nodePath.dirname(new URL(import.meta.url).pathname);
+
 const DEFAULT_PORT = 3100;
 
 function swaggerUi(app, openApiPath, port) {
@@ -44,46 +47,17 @@ function swaggerUi(app, openApiPath, port) {
   );
 }
 
-export function landingPageBody(basePath) {
-  return `
-  <html>
-    <head>
-      <title>Counterfact</title>
-      <style type="text/css">
-        body {
-          font-family: sans-serif;
-        
-          margin: 20vh;
-          font-size: 3vh;
-          text-align: center;
-        }
+export async function landingPageBody(basePath) {
+  const body = await readFile(nodePath.join(__dirname, "../client/index.html"));
 
-        ul {
-          list-style: none;
-          margin: 0;
-          line-height: 2em;
-        }
-
-       
-      </style>
-    </head>
-    <body>
-      <h1>Counterfact is running!</h1>
-      <ul> 
-        
-        <li>The generated code is at<br><a href="vscode://file${basePath}">${basePath}</a></li>
-        <li>You can explore the API using <a href="/counterfact/swagger">Swagger UI</a></li>
-        <li><a href="https://github.com/pmcelhaney/counterfact/blob/main/docs/usage.md#generated-code-">How does this work?</a></li>
-      </ul>  
-    </body>
-  </html>
-`;
+  return body.replaceAll("{{basePath}}", basePath);
 }
 
 export function landingPage(app, basePath) {
   app.use(async (ctx, next) => {
     if (ctx.URL.pathname === "/counterfact") {
-      ctx.body = landingPageBody(basePath);
+      // eslint-disable-next-line require-atomic-updates
+      ctx.body = await landingPageBody(basePath);
 
       return;
     }
