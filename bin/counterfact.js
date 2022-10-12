@@ -42,8 +42,6 @@ async function main(source, destination) {
     const replServer = repl.start("> ");
 
     replServer.context.loadContext = (path) => contextRegistry.find(path);
-
-    replServer.output.write("const context = loadContext('/');");
   }
 
   if (openBrowser) {
