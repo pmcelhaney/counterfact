@@ -70,5 +70,10 @@ export async function counterfact(
 
   await moduleLoader.watch();
 
-  return { koaMiddleware: koaMiddleware(dispatcher), registry, moduleLoader };
+  return {
+    koaMiddleware: koaMiddleware(dispatcher),
+    registry,
+    moduleLoader,
+    contextRegistry,
+  };
 }

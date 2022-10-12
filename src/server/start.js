@@ -83,9 +83,14 @@ export async function start({
 
   app.use(bodyParser());
 
-  const { koaMiddleware } = await counterfact(basePath, openApiPath);
+  const { koaMiddleware, contextRegistry } = await counterfact(
+    basePath,
+    openApiPath
+  );
 
   app.use(koaMiddleware);
 
   app.listen(port);
+
+  return { contextRegistry };
 }
