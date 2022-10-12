@@ -1,5 +1,11 @@
 # counterfact
 
+## 0.12.0
+
+### Minor Changes
+
+- 1a622d2: a REPL allows you to interact with the server's context programatically
+
 ## 0.11.0
 
 ### Minor Changes
