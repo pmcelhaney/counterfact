@@ -28,11 +28,8 @@ export class OperationTypeCoder extends Coder {
 
         if (!content?.data) {
           return `{  
-            status: ${responseCodeToStatus(responseCode)}, 
-          
-          
-          
-        }`;
+            status: ${responseCodeToStatus(responseCode)} 
+          }`;
         }
 
         return content.map(([contentType, contentForType]) => {
@@ -40,10 +37,9 @@ export class OperationTypeCoder extends Coder {
 
           return `{  
             status: ${responseCodeToStatus(responseCode)}, 
-          contentType?: "${contentType}",
-          body?: ${new SchemaTypeCoder(schema).write(script)}
-          
-        }`;
+            contentType?: "${contentType}",
+            body?: ${new SchemaTypeCoder(schema).write(script)}
+          }`;
         });
       })
 
