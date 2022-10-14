@@ -14,46 +14,29 @@ export class OperationTypeCoder extends Coder {
   }
 
   responseTypes(script) {
-    const responses = this.requirement.get("responses");
+    return this.requirement
+      .get("responses")
+      .flatMap(([responseCode, response]) => {
+        const status =
+          responseCode === "default"
+            ? "number | undefined"
+            : Number.parseInt(responseCode, 10);
 
-    return Object.entries(responses.data)
-      .flatMap(([responseCode, response]) =>
-        Object.entries(response.content ?? { contentType: "null" }).flatMap(
-          ([contentType, body]) => ({
-            contentType,
-            schema: JSON.stringify(body.schema),
-            responseCode,
-          })
-        )
-      )
-      .map((type) => {
-        const schema = responses
-          .get(type.responseCode)
-          .get("content")
-          ?.get(type.contentType)
-          ?.get("schema");
+        if (!response.has("content")) {
+          return `{  
+            status: ${status} 
+          }`;
+        }
 
-        const body = schema
-          ? new SchemaTypeCoder(schema).write(script)
-          : undefined;
-
-        const contentTypeLine = body
-          ? `contentType?: "${type.contentType}",`
-          : "";
-
-        const bodyLine = body ? `body?: ${body}` : "";
-
-        return `{  
-            status: ${
-              type.responseCode === "default"
-                ? "number | undefined"
-                : Number.parseInt(type.responseCode, 10)
-            }, 
-          ${contentTypeLine}
-          ${bodyLine}
-          
-        }`;
+        return response.get("content").map(
+          ([contentType, content]) => `{  
+            status: ${status}, 
+            contentType?: "${contentType}",
+            body?: ${new SchemaTypeCoder(content.get("schema")).write(script)}
+          }`
+        );
       })
+
       .join(" | ");
   }
 

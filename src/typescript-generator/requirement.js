@@ -17,8 +17,12 @@ export class Requirement {
     return this.specification.requirementAt(this.data.$ref, this.url);
   }
 
+  has(item) {
+    return item in this.data;
+  }
+
   get(item) {
-    if (!(item in this.data)) {
+    if (!this.has(item)) {
       return undefined;
     }
 
@@ -70,6 +74,11 @@ export class Requirement {
     this.forEach((entry) => result.push(callback(entry)));
 
     return result;
+  }
+
+  flatMap(callback) {
+    // eslint-disable-next-line unicorn/prefer-array-flat-map
+    return this.map(callback).flat();
   }
 
   escapeJsonPointer(string) {
