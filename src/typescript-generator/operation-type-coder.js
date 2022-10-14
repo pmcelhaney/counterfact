@@ -6,6 +6,12 @@ import { ParametersTypeCoder } from "./parameters-type-coder.js";
 import { ResponseTypeCoder } from "./response-type-coder.js";
 import { ContextCoder } from "./context-coder.js";
 
+function responseCodeToStatus(responseCode) {
+  return responseCode === "default"
+    ? "number | undefined"
+    : Number.parseInt(responseCode, 10);
+}
+
 export class OperationTypeCoder extends Coder {
   names() {
     return super.names(
@@ -21,41 +27,26 @@ export class OperationTypeCoder extends Coder {
         const content = response.get("content");
 
         if (!content?.data) {
-          return [
-            {
-              contentType: "null",
-              responseCode,
-            },
-          ];
-        }
-
-        return content.map(([contentType, body]) => ({
-          contentType,
-          responseCode,
-
-          schema: body.get("schema"),
-        }));
-      })
-      .map(({ responseCode, contentType, schema }) => {
-        const body = schema
-          ? new SchemaTypeCoder(schema).write(script)
-          : undefined;
-
-        const contentTypeLine = body ? `contentType?: "${contentType}",` : "";
-
-        const bodyLine = body ? `body?: ${body}` : "";
-
-        return `{  
-            status: ${
-              responseCode === "default"
-                ? "number | undefined"
-                : Number.parseInt(responseCode, 10)
-            }, 
-          ${contentTypeLine}
-          ${bodyLine}
+          return `{  
+            status: ${responseCodeToStatus(responseCode)}, 
+          
+          
           
         }`;
+        }
+
+        return content.map(([contentType, contentForType]) => {
+          const schema = contentForType.get("schema");
+
+          return `{  
+            status: ${responseCodeToStatus(responseCode)}, 
+          contentType?: "${contentType}",
+          body?: ${new SchemaTypeCoder(schema).write(script)}
+          
+        }`;
+        });
       })
+
       .join(" | ");
   }
 
