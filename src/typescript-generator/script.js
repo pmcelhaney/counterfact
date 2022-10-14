@@ -2,10 +2,6 @@ import nodePath from "node:path";
 
 import prettier from "prettier";
 
-function format(code) {
-  return prettier.format(code, { parser: "typescript" });
-}
-
 export class Script {
   constructor(repository, path) {
     this.repository = repository;
