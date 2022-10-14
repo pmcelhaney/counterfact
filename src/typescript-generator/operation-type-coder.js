@@ -18,36 +18,33 @@ export class OperationTypeCoder extends Coder {
 
     return Object.entries(responses.data)
       .flatMap(([responseCode, response]) =>
-        Object.entries(response.content ?? { contentType: "null" }).flatMap(
-          ([contentType, body]) => ({
+        Object.keys(response.content ?? { contentType: "null" }).flatMap(
+          (contentType) => ({
             contentType,
-            schema: JSON.stringify(body.schema),
             responseCode,
+
+            schema: responses
+              .get(responseCode)
+              .get("content")
+              ?.get(contentType)
+              ?.get("schema"),
           })
         )
       )
-      .map((type) => {
-        const schema = responses
-          .get(type.responseCode)
-          .get("content")
-          ?.get(type.contentType)
-          ?.get("schema");
-
+      .map(({ responseCode, contentType, schema }) => {
         const body = schema
           ? new SchemaTypeCoder(schema).write(script)
           : undefined;
 
-        const contentTypeLine = body
-          ? `contentType?: "${type.contentType}",`
-          : "";
+        const contentTypeLine = body ? `contentType?: "${contentType}",` : "";
 
         const bodyLine = body ? `body?: ${body}` : "";
 
         return `{  
             status: ${
-              type.responseCode === "default"
+              responseCode === "default"
                 ? "number | undefined"
-                : Number.parseInt(type.responseCode, 10)
+                : Number.parseInt(responseCode, 10)
             }, 
           ${contentTypeLine}
           ${bodyLine}
