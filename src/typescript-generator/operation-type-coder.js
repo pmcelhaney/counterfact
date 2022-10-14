@@ -6,12 +6,6 @@ import { ParametersTypeCoder } from "./parameters-type-coder.js";
 import { ResponseTypeCoder } from "./response-type-coder.js";
 import { ContextCoder } from "./context-coder.js";
 
-function responseCodeToStatus(responseCode) {
-  return responseCode === "default"
-    ? "number | undefined"
-    : Number.parseInt(responseCode, 10);
-}
-
 export class OperationTypeCoder extends Coder {
   names() {
     return super.names(
@@ -20,27 +14,27 @@ export class OperationTypeCoder extends Coder {
   }
 
   responseTypes(script) {
-    const responses = this.requirement.get("responses");
-
-    return responses
+    return this.requirement
+      .get("responses")
       .flatMap(([responseCode, response]) => {
-        const content = response.get("content");
+        const status =
+          responseCode === "default"
+            ? "number | undefined"
+            : Number.parseInt(responseCode, 10);
 
-        if (!content?.data) {
+        if (!response.has("content")) {
           return `{  
-            status: ${responseCodeToStatus(responseCode)} 
+            status: ${status} 
           }`;
         }
 
-        return content.map(([contentType, contentForType]) => {
-          const schema = contentForType.get("schema");
-
-          return `{  
-            status: ${responseCodeToStatus(responseCode)}, 
+        return response.get("content").map(
+          ([contentType, content]) => `{  
+            status: ${status}, 
             contentType?: "${contentType}",
-            body?: ${new SchemaTypeCoder(schema).write(script)}
-          }`;
-        });
+            body?: ${new SchemaTypeCoder(content.get("schema")).write(script)}
+          }`
+        );
       })
 
       .join(" | ");

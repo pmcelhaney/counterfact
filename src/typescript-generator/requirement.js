@@ -17,8 +17,12 @@ export class Requirement {
     return this.specification.requirementAt(this.data.$ref, this.url);
   }
 
+  has(item) {
+    return item in this.data;
+  }
+
   get(item) {
-    if (!(item in this.data)) {
+    if (!this.has(item)) {
       return undefined;
     }
 
