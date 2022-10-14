@@ -72,6 +72,11 @@ export class Requirement {
     return result;
   }
 
+  flatMap(callback) {
+    // eslint-disable-next-line unicorn/prefer-array-flat-map
+    return this.map(callback).flat();
+  }
+
   escapeJsonPointer(string) {
     return string.replaceAll("~", "~0").replaceAll("/", "~1");
   }

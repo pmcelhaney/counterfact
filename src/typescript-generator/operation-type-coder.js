@@ -16,21 +16,26 @@ export class OperationTypeCoder extends Coder {
   responseTypes(script) {
     const responses = this.requirement.get("responses");
 
-    return Object.entries(responses.data)
-      .flatMap(([responseCode, response]) =>
-        Object.keys(response.content ?? { contentType: "null" }).flatMap(
-          (contentType) => ({
-            contentType,
-            responseCode,
+    return responses
+      .flatMap(([responseCode, response]) => {
+        const content = response.get("content");
 
-            schema: responses
-              .get(responseCode)
-              .get("content")
-              ?.get(contentType)
-              ?.get("schema"),
-          })
-        )
-      )
+        if (!content?.data) {
+          return [
+            {
+              contentType: "null",
+              responseCode,
+            },
+          ];
+        }
+
+        return content.map(([contentType, body]) => ({
+          contentType,
+          responseCode,
+
+          schema: body.get("schema"),
+        }));
+      })
       .map(({ responseCode, contentType, schema }) => {
         const body = schema
           ? new SchemaTypeCoder(schema).write(script)

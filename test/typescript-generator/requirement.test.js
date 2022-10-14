@@ -71,4 +71,48 @@ describe("a Requirement", () => {
       ["foo/bar~baz", specialChars],
     ]);
   });
+
+  it("provides a map() method", () => {
+    const requirement = new Requirement({
+      phone: { type: "string" },
+      address: { type: "Address" },
+      "foo/bar~baz": { type: "SpecialChars" },
+    });
+
+    const phone = requirement.select("phone");
+    const address = requirement.select("address");
+    const specialChars = requirement.select("foo~1bar~0baz");
+
+    const result = requirement.map(([key, subRequirement]) => [
+      `${key}!`,
+      subRequirement,
+    ]);
+
+    expect(result).toStrictEqual([
+      ["phone!", phone],
+      ["address!", address],
+      ["foo/bar~baz!", specialChars],
+    ]);
+  });
+
+  it("provides a flatMap() method", () => {
+    const requirement = new Requirement({
+      a: "foo",
+
+      b: "bar",
+    });
+
+    const result = requirement.flatMap(([key, subRequirement]) => [
+      `${key}: ${subRequirement.data} 1`,
+
+      `${key}: ${subRequirement.data} 2`,
+    ]);
+
+    expect(result).toStrictEqual([
+      "a: foo 1",
+      "a: foo 2",
+      "b: bar 1",
+      "b: bar 2",
+    ]);
+  });
 });
