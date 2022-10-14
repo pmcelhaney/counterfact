@@ -139,7 +139,7 @@ describe("a Script", () => {
 
     const script = repository.get("script.ts");
 
-    script.importStatements = () => ["import { foo } from './foo.js;"];
+    script.importStatements = () => ["import { foo } from './foo.js';"];
 
     script.exportStatements = () => [
       'export const bar = "Bar";',
@@ -147,7 +147,7 @@ describe("a Script", () => {
     ];
 
     expect(script.contents()).toBe(
-      'import { foo } from \'./foo.js;\n\nexport const bar = "Bar";\n\nexport default class {};'
+      'import { foo } from "./foo.js";\n\nexport const bar = "Bar";\n\nexport default class {}\n'
     );
   });
 });

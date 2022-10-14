@@ -47,10 +47,10 @@ describe("integration Test", () => {
     await account.finished();
 
     expect(account.contents()).toBe(
-      "\n\nexport const HTTP_GET = () => {};\n\nexport const HTTP_POST = () => {};"
+      "export const HTTP_GET = () => {};\n\nexport const HTTP_POST = () => {};\n"
     );
     expect(accountId.contents()).toBe(
-      "\n\nexport const HTTP_GET = () => {};\n\nexport const HTTP_PUT = () => {};"
+      "export const HTTP_GET = () => {};\n\nexport const HTTP_PUT = () => {};\n"
     );
   });
 });

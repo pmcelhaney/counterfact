@@ -1,5 +1,11 @@
 import nodePath from "node:path";
 
+import prettier from "prettier";
+
+function format(code) {
+  return prettier.format(code, { parser: "typescript" });
+}
+
 export class Script {
   constructor(repository, path) {
     this.repository = repository;
@@ -180,11 +186,14 @@ export class Script {
   }
 
   contents() {
-    return [
-      this.externalImportsStatements().join("\n"),
-      this.importStatements().join("\n"),
-      "\n\n",
-      this.exportStatements().join("\n\n"),
-    ].join("");
+    return prettier.format(
+      [
+        this.externalImportsStatements().join("\n"),
+        this.importStatements().join("\n"),
+        "\n\n",
+        this.exportStatements().join("\n\n"),
+      ].join(""),
+      { parser: "typescript" }
+    );
   }
 }
