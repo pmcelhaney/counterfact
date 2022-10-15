@@ -56,17 +56,15 @@ Map {
           headers: {};
           content: {
       \\"application/xml\\": { 
-              schema:  Pet
-            },
+          schema:  Pet
+        },
 \\"application/json\\": { 
-              schema:  Pet
-            }
+          schema:  Pet
+        }
     };
         },405: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         }
       }> }) => {  
             status: 200, 
@@ -94,27 +92,21 @@ Map {
           headers: {};
           content: {
       \\"application/xml\\": { 
-              schema:  Pet
-            },
+          schema:  Pet
+        },
 \\"application/json\\": { 
-              schema:  Pet
-            }
+          schema:  Pet
+        }
     };
         },400: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         },404: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         },405: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         }
       }> }) => {  
             status: 200, 
@@ -333,17 +325,15 @@ Map {
           headers: {};
           content: {
       \\"application/xml\\": { 
-              schema:  Pet
-            },
+          schema:  Pet
+        },
 \\"application/json\\": { 
-              schema:  Pet
-            }
+          schema:  Pet
+        }
     };
         },405: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         }
       }> }) => {  
             status: 200, 
@@ -371,27 +361,21 @@ Map {
           headers: {};
           content: {
       \\"application/xml\\": { 
-              schema:  Pet
-            },
+          schema:  Pet
+        },
 \\"application/json\\": { 
-              schema:  Pet
-            }
+          schema:  Pet
+        }
     };
         },400: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         },404: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         },405: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         }
       }> }) => {  
             status: 200, 
@@ -614,17 +598,15 @@ Map {
           headers: {};
           content: {
       \\"application/xml\\": { 
-              schema:  Pet
-            },
+          schema:  Pet
+        },
 \\"application/json\\": { 
-              schema:  Pet
-            }
+          schema:  Pet
+        }
     };
         },405: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         }
       }> }) => {  
             status: 200, 
@@ -652,27 +634,21 @@ Map {
           headers: {};
           content: {
       \\"application/xml\\": { 
-              schema:  Pet
-            },
+          schema:  Pet
+        },
 \\"application/json\\": { 
-              schema:  Pet
-            }
+          schema:  Pet
+        }
     };
         },400: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         },404: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         },405: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         }
       }> }) => {  
             status: 200, 
@@ -909,17 +885,15 @@ Map {
           headers: {};
           content: {
       \\"application/xml\\": { 
-              schema:  Array<Pet>
-            },
+          schema:  Array<Pet>
+        },
 \\"application/json\\": { 
-              schema:  Array<Pet>
-            }
+          schema:  Array<Pet>
+        }
     };
         },400: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         }
       }> }) => {  
             status: 200, 
@@ -1108,17 +1082,15 @@ Map {
           headers: {};
           content: {
       \\"application/xml\\": { 
-              schema:  Array<Pet>
-            },
+          schema:  Array<Pet>
+        },
 \\"application/json\\": { 
-              schema:  Array<Pet>
-            }
+          schema:  Array<Pet>
+        }
     };
         },400: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         }
       }> }) => {  
             status: 200, 
@@ -1323,17 +1295,15 @@ Map {
           headers: {};
           content: {
       \\"application/xml\\": { 
-              schema:  Array<Pet>
-            },
+          schema:  Array<Pet>
+        },
 \\"application/json\\": { 
-              schema:  Array<Pet>
-            }
+          schema:  Array<Pet>
+        }
     };
         },400: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         }
       }> }) => {  
             status: 200, 
@@ -1522,17 +1492,15 @@ Map {
           headers: {};
           content: {
       \\"application/xml\\": { 
-              schema:  Array<Pet>
-            },
+          schema:  Array<Pet>
+        },
 \\"application/json\\": { 
-              schema:  Array<Pet>
-            }
+          schema:  Array<Pet>
+        }
     };
         },400: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         }
       }> }) => {  
             status: 200, 
@@ -1765,22 +1733,18 @@ Map {
           headers: {};
           content: {
       \\"application/xml\\": { 
-              schema:  Pet
-            },
+          schema:  Pet
+        },
 \\"application/json\\": { 
-              schema:  Pet
-            }
+          schema:  Pet
+        }
     };
         },400: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         },404: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         }
       }> }) => {  
             status: 200, 
@@ -1808,9 +1772,7 @@ Map {
               "code": "({ query, path, header, body, context }: { query: {name?: number, status?: string}, path: {petId: number}, header: never, body: undefined, context: typeof Context2, response: ResponseBuilderFactory<{
       405: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         }
       }> }) => {  
             status: 405 
@@ -1828,9 +1790,7 @@ Map {
               "code": "({ query, path, header, body, context }: { query: never, path: {petId: string}, header: {api_key?: string}, body: undefined, context: typeof Context3, response: ResponseBuilderFactory<{
       400: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         }
       }> }) => {  
             status: 400 
@@ -2075,22 +2035,18 @@ Map {
           headers: {};
           content: {
       \\"application/xml\\": { 
-              schema:  Pet
-            },
+          schema:  Pet
+        },
 \\"application/json\\": { 
-              schema:  Pet
-            }
+          schema:  Pet
+        }
     };
         },400: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         },404: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         }
       }> }) => {  
             status: 200, 
@@ -2118,9 +2074,7 @@ Map {
               "code": "({ query, path, header, body, context }: { query: {name?: number, status?: string}, path: {petId: number}, header: never, body: undefined, context: typeof Context2, response: ResponseBuilderFactory<{
       405: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         }
       }> }) => {  
             status: 405 
@@ -2138,9 +2092,7 @@ Map {
               "code": "({ query, path, header, body, context }: { query: never, path: {petId: string}, header: {api_key?: string}, body: undefined, context: typeof Context3, response: ResponseBuilderFactory<{
       400: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         }
       }> }) => {  
             status: 400 
@@ -2385,22 +2337,18 @@ Map {
           headers: {};
           content: {
       \\"application/xml\\": { 
-              schema:  Pet
-            },
+          schema:  Pet
+        },
 \\"application/json\\": { 
-              schema:  Pet
-            }
+          schema:  Pet
+        }
     };
         },400: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         },404: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         }
       }> }) => {  
             status: 200, 
@@ -2428,9 +2376,7 @@ Map {
               "code": "({ query, path, header, body, context }: { query: {name?: number, status?: string}, path: {petId: number}, header: never, body: undefined, context: typeof Context2, response: ResponseBuilderFactory<{
       405: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         }
       }> }) => {  
             status: 405 
@@ -2448,9 +2394,7 @@ Map {
               "code": "({ query, path, header, body, context }: { query: never, path: {petId: string}, header: {api_key?: string}, body: undefined, context: typeof Context3, response: ResponseBuilderFactory<{
       400: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         }
       }> }) => {  
             status: 400 
@@ -2699,22 +2643,18 @@ Map {
           headers: {};
           content: {
       \\"application/xml\\": { 
-              schema:  Pet
-            },
+          schema:  Pet
+        },
 \\"application/json\\": { 
-              schema:  Pet
-            }
+          schema:  Pet
+        }
     };
         },400: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         },404: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         }
       }> }) => {  
             status: 200, 
@@ -2742,9 +2682,7 @@ Map {
         "code": "({ query, path, header, body, context }: { query: {name?: number, status?: string}, path: {petId: number}, header: never, body: undefined, context: typeof Context2, response: ResponseBuilderFactory<{
       405: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         }
       }> }) => {  
             status: 405 
@@ -2762,9 +2700,7 @@ Map {
         "code": "({ query, path, header, body, context }: { query: never, path: {petId: string}, header: {api_key?: string}, body: undefined, context: typeof Context3, response: ResponseBuilderFactory<{
       400: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         }
       }> }) => {  
             status: 400 
@@ -3025,8 +2961,8 @@ Map {
           headers: {};
           content: {
       \\"application/json\\": { 
-              schema:  ApiResponse
-            }
+          schema:  ApiResponse
+        }
     };
         }
       }> }) => {  
@@ -3147,8 +3083,8 @@ Map {
           headers: {};
           content: {
       \\"application/json\\": { 
-              schema:  ApiResponse
-            }
+          schema:  ApiResponse
+        }
     };
         }
       }> }) => {  
@@ -3284,8 +3220,8 @@ Map {
           headers: {};
           content: {
       \\"application/json\\": { 
-              schema:  {[key: string]: number}
-            }
+          schema:  {[key: string]: number}
+        }
     };
         }
       }> }) => {  
@@ -3375,8 +3311,8 @@ Map {
           headers: {};
           content: {
       \\"application/json\\": { 
-              schema:  {[key: string]: number}
-            }
+          schema:  {[key: string]: number}
+        }
     };
         }
       }> }) => {  
@@ -3483,14 +3419,12 @@ Map {
           headers: {};
           content: {
       \\"application/json\\": { 
-              schema:  Order
-            }
+          schema:  Order
+        }
     };
         },405: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         }
       }> }) => {  
             status: 200, 
@@ -3612,14 +3546,12 @@ Map {
           headers: {};
           content: {
       \\"application/json\\": { 
-              schema:  Order
-            }
+          schema:  Order
+        }
     };
         },405: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         }
       }> }) => {  
             status: 200, 
@@ -3771,22 +3703,18 @@ Map {
           headers: {};
           content: {
       \\"application/xml\\": { 
-              schema:  Order
-            },
+          schema:  Order
+        },
 \\"application/json\\": { 
-              schema:  Order
-            }
+          schema:  Order
+        }
     };
         },400: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         },404: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         }
       }> }) => {  
             status: 200, 
@@ -3814,14 +3742,10 @@ Map {
               "code": "({ query, path, header, body, context }: { query: never, path: {orderId: number}, header: never, body: undefined, context: typeof Context2, response: ResponseBuilderFactory<{
       400: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         },404: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         }
       }> }) => {  
             status: 400 
@@ -3971,22 +3895,18 @@ Map {
           headers: {};
           content: {
       \\"application/xml\\": { 
-              schema:  Order
-            },
+          schema:  Order
+        },
 \\"application/json\\": { 
-              schema:  Order
-            }
+          schema:  Order
+        }
     };
         },400: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         },404: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         }
       }> }) => {  
             status: 200, 
@@ -4014,14 +3934,10 @@ Map {
               "code": "({ query, path, header, body, context }: { query: never, path: {orderId: number}, header: never, body: undefined, context: typeof Context2, response: ResponseBuilderFactory<{
       400: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         },404: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         }
       }> }) => {  
             status: 400 
@@ -4175,22 +4091,18 @@ Map {
           headers: {};
           content: {
       \\"application/xml\\": { 
-              schema:  Order
-            },
+          schema:  Order
+        },
 \\"application/json\\": { 
-              schema:  Order
-            }
+          schema:  Order
+        }
     };
         },400: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         },404: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         }
       }> }) => {  
             status: 200, 
@@ -4218,14 +4130,10 @@ Map {
         "code": "({ query, path, header, body, context }: { query: never, path: {orderId: number}, header: never, body: undefined, context: typeof Context2, response: ResponseBuilderFactory<{
       400: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         },404: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         }
       }> }) => {  
             status: 400 
@@ -4393,11 +4301,11 @@ Map {
           headers: {};
           content: {
       \\"application/json\\": { 
-              schema:  User
-            },
+          schema:  User
+        },
 \\"application/xml\\": { 
-              schema:  User
-            }
+          schema:  User
+        }
     };
         }
       }> }) => {  
@@ -4520,11 +4428,11 @@ Map {
           headers: {};
           content: {
       \\"application/json\\": { 
-              schema:  User
-            },
+          schema:  User
+        },
 \\"application/xml\\": { 
-              schema:  User
-            }
+          schema:  User
+        }
     };
         }
       }> }) => {  
@@ -4663,17 +4571,15 @@ Map {
           headers: {};
           content: {
       \\"application/xml\\": { 
-              schema:  User
-            },
+          schema:  User
+        },
 \\"application/json\\": { 
-              schema:  User
-            }
+          schema:  User
+        }
     };
         },[statusCode in Exclude<HttpStatusCode, 200>]: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         }
       }> }) => {  
             status: 200, 
@@ -4799,17 +4705,15 @@ Map {
           headers: {};
           content: {
       \\"application/xml\\": { 
-              schema:  User
-            },
+          schema:  User
+        },
 \\"application/json\\": { 
-              schema:  User
-            }
+          schema:  User
+        }
     };
         },[statusCode in Exclude<HttpStatusCode, 200>]: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         }
       }> }) => {  
             status: 200, 
@@ -4950,17 +4854,15 @@ Map {
           headers: {\\"X-Rate-Limit\\": { schema: number};\\"X-Expires-After\\": { schema: string}};
           content: {
       \\"application/xml\\": { 
-              schema:  string
-            },
+          schema:  string
+        },
 \\"application/json\\": { 
-              schema:  string
-            }
+          schema:  string
+        }
     };
         },400: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         }
       }> }) => {  
             status: 200, 
@@ -5055,17 +4957,15 @@ Map {
           headers: {\\"X-Rate-Limit\\": { schema: number};\\"X-Expires-After\\": { schema: string}};
           content: {
       \\"application/xml\\": { 
-              schema:  string
-            },
+          schema:  string
+        },
 \\"application/json\\": { 
-              schema:  string
-            }
+          schema:  string
+        }
     };
         },400: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         }
       }> }) => {  
             status: 200, 
@@ -5172,9 +5072,7 @@ Map {
               "code": "({ query, path, header, body, context }: { query: never, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
       [statusCode in HttpStatusCode]: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         }
       }> }) => {  
             status: number | undefined 
@@ -5259,9 +5157,7 @@ Map {
         "code": "({ query, path, header, body, context }: { query: never, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
       [statusCode in HttpStatusCode]: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         }
       }> }) => {  
             status: number | undefined 
@@ -5393,22 +5289,18 @@ Map {
           headers: {};
           content: {
       \\"application/xml\\": { 
-              schema:  User
-            },
+          schema:  User
+        },
 \\"application/json\\": { 
-              schema:  User
-            }
+          schema:  User
+        }
     };
         },400: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         },404: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         }
       }> }) => {  
             status: 200, 
@@ -5436,9 +5328,7 @@ Map {
               "code": "({ query, path, header, body, context }: { query: never, path: {username: string}, header: never, body: User, context: typeof Context2, response: ResponseBuilderFactory<{
       [statusCode in HttpStatusCode]: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         }
       }> }) => {  
             status: number | undefined 
@@ -5456,14 +5346,10 @@ Map {
               "code": "({ query, path, header, body, context }: { query: never, path: {username: string}, header: never, body: undefined, context: typeof Context3, response: ResponseBuilderFactory<{
       400: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         },404: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         }
       }> }) => {  
             status: 400 
@@ -5647,22 +5533,18 @@ Map {
           headers: {};
           content: {
       \\"application/xml\\": { 
-              schema:  User
-            },
+          schema:  User
+        },
 \\"application/json\\": { 
-              schema:  User
-            }
+          schema:  User
+        }
     };
         },400: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         },404: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         }
       }> }) => {  
             status: 200, 
@@ -5690,9 +5572,7 @@ Map {
               "code": "({ query, path, header, body, context }: { query: never, path: {username: string}, header: never, body: User, context: typeof Context2, response: ResponseBuilderFactory<{
       [statusCode in HttpStatusCode]: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         }
       }> }) => {  
             status: number | undefined 
@@ -5710,14 +5590,10 @@ Map {
               "code": "({ query, path, header, body, context }: { query: never, path: {username: string}, header: never, body: undefined, context: typeof Context3, response: ResponseBuilderFactory<{
       400: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         },404: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         }
       }> }) => {  
             status: 400 
@@ -5901,22 +5777,18 @@ Map {
           headers: {};
           content: {
       \\"application/xml\\": { 
-              schema:  User
-            },
+          schema:  User
+        },
 \\"application/json\\": { 
-              schema:  User
-            }
+          schema:  User
+        }
     };
         },400: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         },404: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         }
       }> }) => {  
             status: 200, 
@@ -5944,9 +5816,7 @@ Map {
               "code": "({ query, path, header, body, context }: { query: never, path: {username: string}, header: never, body: User, context: typeof Context2, response: ResponseBuilderFactory<{
       [statusCode in HttpStatusCode]: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         }
       }> }) => {  
             status: number | undefined 
@@ -5964,14 +5834,10 @@ Map {
               "code": "({ query, path, header, body, context }: { query: never, path: {username: string}, header: never, body: undefined, context: typeof Context3, response: ResponseBuilderFactory<{
       400: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         },404: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         }
       }> }) => {  
             status: 400 
@@ -6159,22 +6025,18 @@ Map {
           headers: {};
           content: {
       \\"application/xml\\": { 
-              schema:  User
-            },
+          schema:  User
+        },
 \\"application/json\\": { 
-              schema:  User
-            }
+          schema:  User
+        }
     };
         },400: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         },404: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         }
       }> }) => {  
             status: 200, 
@@ -6202,9 +6064,7 @@ Map {
         "code": "({ query, path, header, body, context }: { query: never, path: {username: string}, header: never, body: User, context: typeof Context2, response: ResponseBuilderFactory<{
       [statusCode in HttpStatusCode]: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         }
       }> }) => {  
             status: number | undefined 
@@ -6222,14 +6082,10 @@ Map {
         "code": "({ query, path, header, body, context }: { query: never, path: {username: string}, header: never, body: undefined, context: typeof Context3, response: ResponseBuilderFactory<{
       400: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         },404: {
           headers: {};
-          content: {
-      
-    };
+          content: {};
         }
       }> }) => {  
             status: 400 

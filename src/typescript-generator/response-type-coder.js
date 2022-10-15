@@ -26,22 +26,20 @@ export class ResponseTypeCoder extends Coder {
     return statusCode;
   }
 
-  buildContentObjectType(script, statusCode, response) {
+  buildContentObjectType(script, response) {
+    if (!response.has("content")) {
+      return "{}";
+    }
+
+    const keyValuePairs = response.get("content").map(
+      (content, mediaType) =>
+        `"${mediaType}": { 
+          schema:  ${new SchemaTypeCoder(content.get("schema")).write(script)}
+        }`
+    );
+
     return `{
-      ${Object.keys(response.content ?? {})
-        .map(
-          (mediaType) =>
-            `"${mediaType}": { 
-              schema:  ${new SchemaTypeCoder(
-                this.requirement
-                  .get(statusCode)
-                  .get("content")
-                  .get(mediaType)
-                  .get("schema")
-              ).write(script)}
-            }`
-        )
-        .join(",\n")}
+      ${keyValuePairs.join(",\n")}
     }`;
   }
 
@@ -62,18 +60,14 @@ export class ResponseTypeCoder extends Coder {
     const responses = this.requirement.data;
 
     return `{
-      ${Object.entries(responses)
+      ${this.requirement
         .map(
-          ([responseCode, response]) => `${this.normalizeStatusCode(
+          (response, responseCode) => `${this.normalizeStatusCode(
             responseCode,
             responses
           )}: {
           headers: ${this.buildHeaders(script, responseCode)};
-          content: ${this.buildContentObjectType(
-            script,
-            responseCode,
-            response
-          )};
+          content: ${this.buildContentObjectType(script, response)};
         }`
         )
         .join(",")}
