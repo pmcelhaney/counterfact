@@ -24,9 +24,9 @@ export class ResponseTypeCoder extends Coder {
     )}>]`;
   }
 
-  normalizeStatusCode(statusCode, responses) {
+  normalizeStatusCode(statusCode) {
     if (statusCode === "default") {
-      return this.typeForDefaultStatusCode(Object.keys(responses));
+      return this.typeForDefaultStatusCode(Object.keys(this.requirement.data));
     }
 
     return statusCode;
@@ -47,9 +47,7 @@ export class ResponseTypeCoder extends Coder {
     return printObjectFromEntries(entries);
   }
 
-  buildHeaders(script, responseCode) {
-    const response = this.requirement.get(responseCode);
-
+  buildHeaders(script, response) {
     if (!response.has("headers")) {
       return "{}";
     }
@@ -65,16 +63,13 @@ export class ResponseTypeCoder extends Coder {
   }
 
   buildResponseObjectType(script) {
-    const responses = this.requirement.data;
-
     return `{
       ${this.requirement
         .map(
           (response, responseCode) => `${this.normalizeStatusCode(
-            responseCode,
-            responses
+            responseCode
           )}: {
-          headers: ${this.buildHeaders(script, responseCode)};
+          headers: ${this.buildHeaders(script, response)};
           content: ${this.buildContentObjectType(script, response)};
         }`
         )
