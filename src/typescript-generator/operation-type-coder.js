@@ -16,7 +16,7 @@ export class OperationTypeCoder extends Coder {
   responseTypes(script) {
     return this.requirement
       .get("responses")
-      .flatMap(([responseCode, response]) => {
+      .flatMap((response, responseCode) => {
         const status =
           responseCode === "default"
             ? "number | undefined"
@@ -29,7 +29,7 @@ export class OperationTypeCoder extends Coder {
         }
 
         return response.get("content").map(
-          ([contentType, content]) => `{  
+          (content, contentType) => `{  
             status: ${status}, 
             contentType?: "${contentType}",
             body?: ${new SchemaTypeCoder(content.get("schema")).write(script)}

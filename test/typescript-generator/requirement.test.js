@@ -61,8 +61,8 @@ describe("a Requirement", () => {
 
     const result = [];
 
-    requirement.forEach((entry) => {
-      result.push(entry);
+    requirement.forEach((value, key) => {
+      result.push([key, value]);
     });
 
     expect(result).toStrictEqual([
@@ -83,7 +83,7 @@ describe("a Requirement", () => {
     const address = requirement.select("address");
     const specialChars = requirement.select("foo~1bar~0baz");
 
-    const result = requirement.map(([key, subRequirement]) => [
+    const result = requirement.map((subRequirement, key) => [
       `${key}!`,
       subRequirement,
     ]);
@@ -102,7 +102,7 @@ describe("a Requirement", () => {
       b: "bar",
     });
 
-    const result = requirement.flatMap(([key, subRequirement]) => [
+    const result = requirement.flatMap((subRequirement, key) => [
       `${key}: ${subRequirement.data} 1`,
 
       `${key}: ${subRequirement.data} 2`,
