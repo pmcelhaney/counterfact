@@ -71,7 +71,7 @@ export class Requirement {
     const result = [];
 
     // eslint-disable-next-line array-callback-return
-    this.forEach((entry) => result.push(callback(entry)));
+    this.forEach(([key, value]) => result.push(callback(value, key)));
 
     return result;
   }

@@ -16,8 +16,10 @@ export class OperationCoder extends Coder {
   write() {
     const responses = this.requirement.get("responses");
 
-    const [firstStatusCode] = responses.map(([statusCode]) => statusCode);
-    const [firstResponse] = responses.map(([, response]) => response.data);
+    const [firstStatusCode] = responses.map(
+      (response, statusCode) => statusCode
+    );
+    const [firstResponse] = responses.map((response) => response.data);
 
     if (!("content" in firstResponse)) {
       return "() => { /* no response content specified in the OpenAPI document */ }";

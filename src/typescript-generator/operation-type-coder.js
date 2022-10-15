@@ -29,7 +29,7 @@ export class OperationTypeCoder extends Coder {
         }
 
         return response.get("content").map(
-          ([contentType, content]) => `{  
+          (content, contentType) => `{  
             status: ${status}, 
             contentType?: "${contentType}",
             body?: ${new SchemaTypeCoder(content.get("schema")).write(script)}

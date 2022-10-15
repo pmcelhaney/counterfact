@@ -83,7 +83,7 @@ describe("a Requirement", () => {
     const address = requirement.select("address");
     const specialChars = requirement.select("foo~1bar~0baz");
 
-    const result = requirement.map(([key, subRequirement]) => [
+    const result = requirement.map((subRequirement, key) => [
       `${key}!`,
       subRequirement,
     ]);
