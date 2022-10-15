@@ -102,7 +102,7 @@ describe("a Requirement", () => {
       b: "bar",
     });
 
-    const result = requirement.flatMap(([key, subRequirement]) => [
+    const result = requirement.flatMap((subRequirement, key) => [
       `${key}: ${subRequirement.data} 1`,
 
       `${key}: ${subRequirement.data} 2`,

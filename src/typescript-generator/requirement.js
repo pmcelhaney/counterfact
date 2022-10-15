@@ -77,8 +77,12 @@ export class Requirement {
   }
 
   flatMap(callback) {
-    // eslint-disable-next-line unicorn/prefer-array-flat-map
-    return this.map(callback).flat();
+    const result = [];
+
+    // eslint-disable-next-line array-callback-return
+    this.forEach(([key, value]) => result.push(callback(value, key)));
+
+    return result.flat();
   }
 
   escapeJsonPointer(string) {

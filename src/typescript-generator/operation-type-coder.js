@@ -16,7 +16,7 @@ export class OperationTypeCoder extends Coder {
   responseTypes(script) {
     return this.requirement
       .get("responses")
-      .flatMap(([responseCode, response]) => {
+      .flatMap((response, responseCode) => {
         const status =
           responseCode === "default"
             ? "number | undefined"
