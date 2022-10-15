@@ -61,8 +61,8 @@ describe("a Requirement", () => {
 
     const result = [];
 
-    requirement.forEach((entry) => {
-      result.push(entry);
+    requirement.forEach((value, key) => {
+      result.push([key, value]);
     });
 
     expect(result).toStrictEqual([

@@ -35,8 +35,8 @@ describe("integration Test", () => {
       }
     }
 
-    requirement.forEach(([key, pathDefinition]) => {
-      pathDefinition.forEach(([, operation]) => {
+    requirement.forEach((pathDefinition, key) => {
+      pathDefinition.forEach((operation) => {
         repository.get(`paths${key}.ts`).export(new OperationCoder(operation));
       });
     });

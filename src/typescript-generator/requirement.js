@@ -63,7 +63,7 @@ export class Requirement {
 
   forEach(callback) {
     Object.keys(this.data).forEach((key) => {
-      callback([key, this.select(this.escapeJsonPointer(key))]);
+      callback(this.select(this.escapeJsonPointer(key)), key);
     });
   }
 
@@ -71,7 +71,7 @@ export class Requirement {
     const result = [];
 
     // eslint-disable-next-line array-callback-return
-    this.forEach(([key, value]) => result.push(callback(value, key)));
+    this.forEach((value, key) => result.push(callback(value, key)));
 
     return result;
   }
