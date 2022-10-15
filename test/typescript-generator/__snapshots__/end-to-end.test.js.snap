@@ -52,7 +52,7 @@ Map {
           "exports": Map {
             "HTTP_POST" => Object {
               "code": "({ query, path, header, body, context }: { query: undefined, path: undefined, header: undefined, body: Pet, context: typeof Context, response: ResponseBuilderFactory<{
-      200: {
+200: {
           headers: {};
           content: {
 \\"application/xml\\": { 
@@ -62,11 +62,12 @@ Map {
           schema:  Pet
        }
 };
-        },405: {
+        },
+405: {
           headers: {};
           content: {};
         }
-      }> }) => {  
+}> }) => {  
             status: 200, 
             contentType?: \\"application/xml\\",
             body?: Pet
@@ -88,7 +89,7 @@ Map {
             },
             "HTTP_PUT" => Object {
               "code": "({ query, path, header, body, context }: { query: undefined, path: undefined, header: undefined, body: Pet, context: typeof Context2, response: ResponseBuilderFactory<{
-      200: {
+200: {
           headers: {};
           content: {
 \\"application/xml\\": { 
@@ -98,17 +99,20 @@ Map {
           schema:  Pet
        }
 };
-        },400: {
+        },
+400: {
           headers: {};
           content: {};
-        },404: {
+        },
+404: {
           headers: {};
           content: {};
-        },405: {
+        },
+405: {
           headers: {};
           content: {};
         }
-      }> }) => {  
+}> }) => {  
             status: 200, 
             contentType?: \\"application/xml\\",
             body?: Pet
@@ -321,7 +325,7 @@ Map {
           "exports": Map {
             "HTTP_POST" => Object {
               "code": "({ query, path, header, body, context }: { query: undefined, path: undefined, header: undefined, body: Pet, context: typeof Context, response: ResponseBuilderFactory<{
-      200: {
+200: {
           headers: {};
           content: {
 \\"application/xml\\": { 
@@ -331,11 +335,12 @@ Map {
           schema:  Pet
        }
 };
-        },405: {
+        },
+405: {
           headers: {};
           content: {};
         }
-      }> }) => {  
+}> }) => {  
             status: 200, 
             contentType?: \\"application/xml\\",
             body?: Pet
@@ -357,7 +362,7 @@ Map {
             },
             "HTTP_PUT" => Object {
               "code": "({ query, path, header, body, context }: { query: undefined, path: undefined, header: undefined, body: Pet, context: typeof Context2, response: ResponseBuilderFactory<{
-      200: {
+200: {
           headers: {};
           content: {
 \\"application/xml\\": { 
@@ -367,17 +372,20 @@ Map {
           schema:  Pet
        }
 };
-        },400: {
+        },
+400: {
           headers: {};
           content: {};
-        },404: {
+        },
+404: {
           headers: {};
           content: {};
-        },405: {
+        },
+405: {
           headers: {};
           content: {};
         }
-      }> }) => {  
+}> }) => {  
             status: 200, 
             contentType?: \\"application/xml\\",
             body?: Pet
@@ -594,7 +602,7 @@ Map {
     "exports": Map {
       "HTTP_POST" => Object {
         "code": "({ query, path, header, body, context }: { query: undefined, path: undefined, header: undefined, body: Pet, context: typeof Context, response: ResponseBuilderFactory<{
-      200: {
+200: {
           headers: {};
           content: {
 \\"application/xml\\": { 
@@ -604,11 +612,12 @@ Map {
           schema:  Pet
        }
 };
-        },405: {
+        },
+405: {
           headers: {};
           content: {};
         }
-      }> }) => {  
+}> }) => {  
             status: 200, 
             contentType?: \\"application/xml\\",
             body?: Pet
@@ -630,7 +639,7 @@ Map {
       },
       "HTTP_PUT" => Object {
         "code": "({ query, path, header, body, context }: { query: undefined, path: undefined, header: undefined, body: Pet, context: typeof Context2, response: ResponseBuilderFactory<{
-      200: {
+200: {
           headers: {};
           content: {
 \\"application/xml\\": { 
@@ -640,17 +649,20 @@ Map {
           schema:  Pet
        }
 };
-        },400: {
+        },
+400: {
           headers: {};
           content: {};
-        },404: {
+        },
+404: {
           headers: {};
           content: {};
-        },405: {
+        },
+405: {
           headers: {};
           content: {};
         }
-      }> }) => {  
+}> }) => {  
             status: 200, 
             contentType?: \\"application/xml\\",
             body?: Pet
@@ -881,7 +893,7 @@ Map {
           "exports": Map {
             "HTTP_GET" => Object {
               "code": "({ query, path, header, body, context }: { query: {status?: string}, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
-      200: {
+200: {
           headers: {};
           content: {
 \\"application/xml\\": { 
@@ -891,11 +903,12 @@ Map {
           schema:  Array<Pet>
        }
 };
-        },400: {
+        },
+400: {
           headers: {};
           content: {};
         }
-      }> }) => {  
+}> }) => {  
             status: 200, 
             contentType?: \\"application/xml\\",
             body?: Array<Pet>
@@ -1078,7 +1091,7 @@ Map {
     "exports": Map {
       "HTTP_GET" => Object {
         "code": "({ query, path, header, body, context }: { query: {status?: string}, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
-      200: {
+200: {
           headers: {};
           content: {
 \\"application/xml\\": { 
@@ -1088,11 +1101,12 @@ Map {
           schema:  Array<Pet>
        }
 };
-        },400: {
+        },
+400: {
           headers: {};
           content: {};
         }
-      }> }) => {  
+}> }) => {  
             status: 200, 
             contentType?: \\"application/xml\\",
             body?: Array<Pet>
@@ -1291,7 +1305,7 @@ Map {
           "exports": Map {
             "HTTP_GET" => Object {
               "code": "({ query, path, header, body, context }: { query: {tags?: Array<string>}, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
-      200: {
+200: {
           headers: {};
           content: {
 \\"application/xml\\": { 
@@ -1301,11 +1315,12 @@ Map {
           schema:  Array<Pet>
        }
 };
-        },400: {
+        },
+400: {
           headers: {};
           content: {};
         }
-      }> }) => {  
+}> }) => {  
             status: 200, 
             contentType?: \\"application/xml\\",
             body?: Array<Pet>
@@ -1488,7 +1503,7 @@ Map {
     "exports": Map {
       "HTTP_GET" => Object {
         "code": "({ query, path, header, body, context }: { query: {tags?: Array<string>}, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
-      200: {
+200: {
           headers: {};
           content: {
 \\"application/xml\\": { 
@@ -1498,11 +1513,12 @@ Map {
           schema:  Array<Pet>
        }
 };
-        },400: {
+        },
+400: {
           headers: {};
           content: {};
         }
-      }> }) => {  
+}> }) => {  
             status: 200, 
             contentType?: \\"application/xml\\",
             body?: Array<Pet>
@@ -1729,7 +1745,7 @@ Map {
           "exports": Map {
             "HTTP_GET" => Object {
               "code": "({ query, path, header, body, context }: { query: never, path: {petId: number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
-      200: {
+200: {
           headers: {};
           content: {
 \\"application/xml\\": { 
@@ -1739,14 +1755,16 @@ Map {
           schema:  Pet
        }
 };
-        },400: {
+        },
+400: {
           headers: {};
           content: {};
-        },404: {
+        },
+404: {
           headers: {};
           content: {};
         }
-      }> }) => {  
+}> }) => {  
             status: 200, 
             contentType?: \\"application/xml\\",
             body?: Pet
@@ -1770,11 +1788,11 @@ Map {
             },
             "HTTP_POST" => Object {
               "code": "({ query, path, header, body, context }: { query: {name?: number, status?: string}, path: {petId: number}, header: never, body: undefined, context: typeof Context2, response: ResponseBuilderFactory<{
-      405: {
+405: {
           headers: {};
           content: {};
         }
-      }> }) => {  
+}> }) => {  
             status: 405 
           } | { status: 415, contentType: \\"text/plain\\", body: string }
     | void",
@@ -1788,11 +1806,11 @@ Map {
             },
             "HTTP_DELETE" => Object {
               "code": "({ query, path, header, body, context }: { query: never, path: {petId: string}, header: {api_key?: string}, body: undefined, context: typeof Context3, response: ResponseBuilderFactory<{
-      400: {
+400: {
           headers: {};
           content: {};
         }
-      }> }) => {  
+}> }) => {  
             status: 400 
           } | { status: 415, contentType: \\"text/plain\\", body: string }
     | void",
@@ -2031,7 +2049,7 @@ Map {
           "exports": Map {
             "HTTP_GET" => Object {
               "code": "({ query, path, header, body, context }: { query: never, path: {petId: number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
-      200: {
+200: {
           headers: {};
           content: {
 \\"application/xml\\": { 
@@ -2041,14 +2059,16 @@ Map {
           schema:  Pet
        }
 };
-        },400: {
+        },
+400: {
           headers: {};
           content: {};
-        },404: {
+        },
+404: {
           headers: {};
           content: {};
         }
-      }> }) => {  
+}> }) => {  
             status: 200, 
             contentType?: \\"application/xml\\",
             body?: Pet
@@ -2072,11 +2092,11 @@ Map {
             },
             "HTTP_POST" => Object {
               "code": "({ query, path, header, body, context }: { query: {name?: number, status?: string}, path: {petId: number}, header: never, body: undefined, context: typeof Context2, response: ResponseBuilderFactory<{
-      405: {
+405: {
           headers: {};
           content: {};
         }
-      }> }) => {  
+}> }) => {  
             status: 405 
           } | { status: 415, contentType: \\"text/plain\\", body: string }
     | void",
@@ -2090,11 +2110,11 @@ Map {
             },
             "HTTP_DELETE" => Object {
               "code": "({ query, path, header, body, context }: { query: never, path: {petId: string}, header: {api_key?: string}, body: undefined, context: typeof Context3, response: ResponseBuilderFactory<{
-      400: {
+400: {
           headers: {};
           content: {};
         }
-      }> }) => {  
+}> }) => {  
             status: 400 
           } | { status: 415, contentType: \\"text/plain\\", body: string }
     | void",
@@ -2333,7 +2353,7 @@ Map {
           "exports": Map {
             "HTTP_GET" => Object {
               "code": "({ query, path, header, body, context }: { query: never, path: {petId: number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
-      200: {
+200: {
           headers: {};
           content: {
 \\"application/xml\\": { 
@@ -2343,14 +2363,16 @@ Map {
           schema:  Pet
        }
 };
-        },400: {
+        },
+400: {
           headers: {};
           content: {};
-        },404: {
+        },
+404: {
           headers: {};
           content: {};
         }
-      }> }) => {  
+}> }) => {  
             status: 200, 
             contentType?: \\"application/xml\\",
             body?: Pet
@@ -2374,11 +2396,11 @@ Map {
             },
             "HTTP_POST" => Object {
               "code": "({ query, path, header, body, context }: { query: {name?: number, status?: string}, path: {petId: number}, header: never, body: undefined, context: typeof Context2, response: ResponseBuilderFactory<{
-      405: {
+405: {
           headers: {};
           content: {};
         }
-      }> }) => {  
+}> }) => {  
             status: 405 
           } | { status: 415, contentType: \\"text/plain\\", body: string }
     | void",
@@ -2392,11 +2414,11 @@ Map {
             },
             "HTTP_DELETE" => Object {
               "code": "({ query, path, header, body, context }: { query: never, path: {petId: string}, header: {api_key?: string}, body: undefined, context: typeof Context3, response: ResponseBuilderFactory<{
-      400: {
+400: {
           headers: {};
           content: {};
         }
-      }> }) => {  
+}> }) => {  
             status: 400 
           } | { status: 415, contentType: \\"text/plain\\", body: string }
     | void",
@@ -2639,7 +2661,7 @@ Map {
     "exports": Map {
       "HTTP_GET" => Object {
         "code": "({ query, path, header, body, context }: { query: never, path: {petId: number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
-      200: {
+200: {
           headers: {};
           content: {
 \\"application/xml\\": { 
@@ -2649,14 +2671,16 @@ Map {
           schema:  Pet
        }
 };
-        },400: {
+        },
+400: {
           headers: {};
           content: {};
-        },404: {
+        },
+404: {
           headers: {};
           content: {};
         }
-      }> }) => {  
+}> }) => {  
             status: 200, 
             contentType?: \\"application/xml\\",
             body?: Pet
@@ -2680,11 +2704,11 @@ Map {
       },
       "HTTP_POST" => Object {
         "code": "({ query, path, header, body, context }: { query: {name?: number, status?: string}, path: {petId: number}, header: never, body: undefined, context: typeof Context2, response: ResponseBuilderFactory<{
-      405: {
+405: {
           headers: {};
           content: {};
         }
-      }> }) => {  
+}> }) => {  
             status: 405 
           } | { status: 415, contentType: \\"text/plain\\", body: string }
     | void",
@@ -2698,11 +2722,11 @@ Map {
       },
       "HTTP_DELETE" => Object {
         "code": "({ query, path, header, body, context }: { query: never, path: {petId: string}, header: {api_key?: string}, body: undefined, context: typeof Context3, response: ResponseBuilderFactory<{
-      400: {
+400: {
           headers: {};
           content: {};
         }
-      }> }) => {  
+}> }) => {  
             status: 400 
           } | { status: 415, contentType: \\"text/plain\\", body: string }
     | void",
@@ -2957,7 +2981,7 @@ Map {
           "exports": Map {
             "HTTP_POST" => Object {
               "code": "({ query, path, header, body, context }: { query: {additionalMetadata?: number}, path: {petId: number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
-      200: {
+200: {
           headers: {};
           content: {
 \\"application/json\\": { 
@@ -2965,7 +2989,7 @@ Map {
        }
 };
         }
-      }> }) => {  
+}> }) => {  
             status: 200, 
             contentType?: \\"application/json\\",
             body?: ApiResponse
@@ -3079,7 +3103,7 @@ Map {
     "exports": Map {
       "HTTP_POST" => Object {
         "code": "({ query, path, header, body, context }: { query: {additionalMetadata?: number}, path: {petId: number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
-      200: {
+200: {
           headers: {};
           content: {
 \\"application/json\\": { 
@@ -3087,7 +3111,7 @@ Map {
        }
 };
         }
-      }> }) => {  
+}> }) => {  
             status: 200, 
             contentType?: \\"application/json\\",
             body?: ApiResponse
@@ -3216,7 +3240,7 @@ Map {
           "exports": Map {
             "HTTP_GET" => Object {
               "code": "({ query, path, header, body, context }: { query: undefined, path: undefined, header: undefined, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
-      200: {
+200: {
           headers: {};
           content: {
 \\"application/json\\": { 
@@ -3224,7 +3248,7 @@ Map {
        }
 };
         }
-      }> }) => {  
+}> }) => {  
             status: 200, 
             contentType?: \\"application/json\\",
             body?: {[key: string]: number}
@@ -3307,7 +3331,7 @@ Map {
     "exports": Map {
       "HTTP_GET" => Object {
         "code": "({ query, path, header, body, context }: { query: undefined, path: undefined, header: undefined, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
-      200: {
+200: {
           headers: {};
           content: {
 \\"application/json\\": { 
@@ -3315,7 +3339,7 @@ Map {
        }
 };
         }
-      }> }) => {  
+}> }) => {  
             status: 200, 
             contentType?: \\"application/json\\",
             body?: {[key: string]: number}
@@ -3415,18 +3439,19 @@ Map {
           "exports": Map {
             "HTTP_POST" => Object {
               "code": "({ query, path, header, body, context }: { query: undefined, path: undefined, header: undefined, body: Order, context: typeof Context, response: ResponseBuilderFactory<{
-      200: {
+200: {
           headers: {};
           content: {
 \\"application/json\\": { 
           schema:  Order
        }
 };
-        },405: {
+        },
+405: {
           headers: {};
           content: {};
         }
-      }> }) => {  
+}> }) => {  
             status: 200, 
             contentType?: \\"application/json\\",
             body?: Order
@@ -3542,18 +3567,19 @@ Map {
     "exports": Map {
       "HTTP_POST" => Object {
         "code": "({ query, path, header, body, context }: { query: undefined, path: undefined, header: undefined, body: Order, context: typeof Context, response: ResponseBuilderFactory<{
-      200: {
+200: {
           headers: {};
           content: {
 \\"application/json\\": { 
           schema:  Order
        }
 };
-        },405: {
+        },
+405: {
           headers: {};
           content: {};
         }
-      }> }) => {  
+}> }) => {  
             status: 200, 
             contentType?: \\"application/json\\",
             body?: Order
@@ -3699,7 +3725,7 @@ Map {
           "exports": Map {
             "HTTP_GET" => Object {
               "code": "({ query, path, header, body, context }: { query: never, path: {orderId: number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
-      200: {
+200: {
           headers: {};
           content: {
 \\"application/xml\\": { 
@@ -3709,14 +3735,16 @@ Map {
           schema:  Order
        }
 };
-        },400: {
+        },
+400: {
           headers: {};
           content: {};
-        },404: {
+        },
+404: {
           headers: {};
           content: {};
         }
-      }> }) => {  
+}> }) => {  
             status: 200, 
             contentType?: \\"application/xml\\",
             body?: Order
@@ -3740,14 +3768,15 @@ Map {
             },
             "HTTP_DELETE" => Object {
               "code": "({ query, path, header, body, context }: { query: never, path: {orderId: number}, header: never, body: undefined, context: typeof Context2, response: ResponseBuilderFactory<{
-      400: {
+400: {
           headers: {};
           content: {};
-        },404: {
+        },
+404: {
           headers: {};
           content: {};
         }
-      }> }) => {  
+}> }) => {  
             status: 400 
           } | {  
             status: 404 
@@ -3891,7 +3920,7 @@ Map {
           "exports": Map {
             "HTTP_GET" => Object {
               "code": "({ query, path, header, body, context }: { query: never, path: {orderId: number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
-      200: {
+200: {
           headers: {};
           content: {
 \\"application/xml\\": { 
@@ -3901,14 +3930,16 @@ Map {
           schema:  Order
        }
 };
-        },400: {
+        },
+400: {
           headers: {};
           content: {};
-        },404: {
+        },
+404: {
           headers: {};
           content: {};
         }
-      }> }) => {  
+}> }) => {  
             status: 200, 
             contentType?: \\"application/xml\\",
             body?: Order
@@ -3932,14 +3963,15 @@ Map {
             },
             "HTTP_DELETE" => Object {
               "code": "({ query, path, header, body, context }: { query: never, path: {orderId: number}, header: never, body: undefined, context: typeof Context2, response: ResponseBuilderFactory<{
-      400: {
+400: {
           headers: {};
           content: {};
-        },404: {
+        },
+404: {
           headers: {};
           content: {};
         }
-      }> }) => {  
+}> }) => {  
             status: 400 
           } | {  
             status: 404 
@@ -4087,7 +4119,7 @@ Map {
     "exports": Map {
       "HTTP_GET" => Object {
         "code": "({ query, path, header, body, context }: { query: never, path: {orderId: number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
-      200: {
+200: {
           headers: {};
           content: {
 \\"application/xml\\": { 
@@ -4097,14 +4129,16 @@ Map {
           schema:  Order
        }
 };
-        },400: {
+        },
+400: {
           headers: {};
           content: {};
-        },404: {
+        },
+404: {
           headers: {};
           content: {};
         }
-      }> }) => {  
+}> }) => {  
             status: 200, 
             contentType?: \\"application/xml\\",
             body?: Order
@@ -4128,14 +4162,15 @@ Map {
       },
       "HTTP_DELETE" => Object {
         "code": "({ query, path, header, body, context }: { query: never, path: {orderId: number}, header: never, body: undefined, context: typeof Context2, response: ResponseBuilderFactory<{
-      400: {
+400: {
           headers: {};
           content: {};
-        },404: {
+        },
+404: {
           headers: {};
           content: {};
         }
-      }> }) => {  
+}> }) => {  
             status: 400 
           } | {  
             status: 404 
@@ -4297,7 +4332,7 @@ Map {
           "exports": Map {
             "HTTP_POST" => Object {
               "code": "({ query, path, header, body, context }: { query: undefined, path: undefined, header: undefined, body: User, context: typeof Context, response: ResponseBuilderFactory<{
-      [statusCode in HttpStatusCode]: {
+[statusCode in HttpStatusCode]: {
           headers: {};
           content: {
 \\"application/json\\": { 
@@ -4308,7 +4343,7 @@ Map {
        }
 };
         }
-      }> }) => {  
+}> }) => {  
             status: number | undefined, 
             contentType?: \\"application/json\\",
             body?: User
@@ -4424,7 +4459,7 @@ Map {
     "exports": Map {
       "HTTP_POST" => Object {
         "code": "({ query, path, header, body, context }: { query: undefined, path: undefined, header: undefined, body: User, context: typeof Context, response: ResponseBuilderFactory<{
-      [statusCode in HttpStatusCode]: {
+[statusCode in HttpStatusCode]: {
           headers: {};
           content: {
 \\"application/json\\": { 
@@ -4435,7 +4470,7 @@ Map {
        }
 };
         }
-      }> }) => {  
+}> }) => {  
             status: number | undefined, 
             contentType?: \\"application/json\\",
             body?: User
@@ -4567,7 +4602,7 @@ Map {
           "exports": Map {
             "HTTP_POST" => Object {
               "code": "({ query, path, header, body, context }: { query: undefined, path: undefined, header: undefined, body: Array<User>, context: typeof Context, response: ResponseBuilderFactory<{
-      200: {
+200: {
           headers: {};
           content: {
 \\"application/xml\\": { 
@@ -4577,11 +4612,12 @@ Map {
           schema:  User
        }
 };
-        },[statusCode in Exclude<HttpStatusCode, 200>]: {
+        },
+[statusCode in Exclude<HttpStatusCode, 200>]: {
           headers: {};
           content: {};
         }
-      }> }) => {  
+}> }) => {  
             status: 200, 
             contentType?: \\"application/xml\\",
             body?: User
@@ -4701,7 +4737,7 @@ Map {
     "exports": Map {
       "HTTP_POST" => Object {
         "code": "({ query, path, header, body, context }: { query: undefined, path: undefined, header: undefined, body: Array<User>, context: typeof Context, response: ResponseBuilderFactory<{
-      200: {
+200: {
           headers: {};
           content: {
 \\"application/xml\\": { 
@@ -4711,11 +4747,12 @@ Map {
           schema:  User
        }
 };
-        },[statusCode in Exclude<HttpStatusCode, 200>]: {
+        },
+[statusCode in Exclude<HttpStatusCode, 200>]: {
           headers: {};
           content: {};
         }
-      }> }) => {  
+}> }) => {  
             status: 200, 
             contentType?: \\"application/xml\\",
             body?: User
@@ -4850,7 +4887,7 @@ Map {
           "exports": Map {
             "HTTP_GET" => Object {
               "code": "({ query, path, header, body, context }: { query: {username?: string, password?: string}, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
-      200: {
+200: {
           headers: {
 \\"X-Rate-Limit\\": { schema: number},
 \\"X-Expires-After\\": { schema: string}
@@ -4863,11 +4900,12 @@ Map {
           schema:  string
        }
 };
-        },400: {
+        },
+400: {
           headers: {};
           content: {};
         }
-      }> }) => {  
+}> }) => {  
             status: 200, 
             contentType?: \\"application/xml\\",
             body?: string
@@ -4956,7 +4994,7 @@ Map {
     "exports": Map {
       "HTTP_GET" => Object {
         "code": "({ query, path, header, body, context }: { query: {username?: string, password?: string}, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
-      200: {
+200: {
           headers: {
 \\"X-Rate-Limit\\": { schema: number},
 \\"X-Expires-After\\": { schema: string}
@@ -4969,11 +5007,12 @@ Map {
           schema:  string
        }
 };
-        },400: {
+        },
+400: {
           headers: {};
           content: {};
         }
-      }> }) => {  
+}> }) => {  
             status: 200, 
             contentType?: \\"application/xml\\",
             body?: string
@@ -5076,11 +5115,11 @@ Map {
           "exports": Map {
             "HTTP_GET" => Object {
               "code": "({ query, path, header, body, context }: { query: never, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
-      [statusCode in HttpStatusCode]: {
+[statusCode in HttpStatusCode]: {
           headers: {};
           content: {};
         }
-      }> }) => {  
+}> }) => {  
             status: number | undefined 
           } | { status: 415, contentType: \\"text/plain\\", body: string }
     | void",
@@ -5161,11 +5200,11 @@ Map {
     "exports": Map {
       "HTTP_GET" => Object {
         "code": "({ query, path, header, body, context }: { query: never, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
-      [statusCode in HttpStatusCode]: {
+[statusCode in HttpStatusCode]: {
           headers: {};
           content: {};
         }
-      }> }) => {  
+}> }) => {  
             status: number | undefined 
           } | { status: 415, contentType: \\"text/plain\\", body: string }
     | void",
@@ -5291,7 +5330,7 @@ Map {
           "exports": Map {
             "HTTP_GET" => Object {
               "code": "({ query, path, header, body, context }: { query: never, path: {username: string}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
-      200: {
+200: {
           headers: {};
           content: {
 \\"application/xml\\": { 
@@ -5301,14 +5340,16 @@ Map {
           schema:  User
        }
 };
-        },400: {
+        },
+400: {
           headers: {};
           content: {};
-        },404: {
+        },
+404: {
           headers: {};
           content: {};
         }
-      }> }) => {  
+}> }) => {  
             status: 200, 
             contentType?: \\"application/xml\\",
             body?: User
@@ -5332,11 +5373,11 @@ Map {
             },
             "HTTP_PUT" => Object {
               "code": "({ query, path, header, body, context }: { query: never, path: {username: string}, header: never, body: User, context: typeof Context2, response: ResponseBuilderFactory<{
-      [statusCode in HttpStatusCode]: {
+[statusCode in HttpStatusCode]: {
           headers: {};
           content: {};
         }
-      }> }) => {  
+}> }) => {  
             status: number | undefined 
           } | { status: 415, contentType: \\"text/plain\\", body: string }
     | void",
@@ -5350,14 +5391,15 @@ Map {
             },
             "HTTP_DELETE" => Object {
               "code": "({ query, path, header, body, context }: { query: never, path: {username: string}, header: never, body: undefined, context: typeof Context3, response: ResponseBuilderFactory<{
-      400: {
+400: {
           headers: {};
           content: {};
-        },404: {
+        },
+404: {
           headers: {};
           content: {};
         }
-      }> }) => {  
+}> }) => {  
             status: 400 
           } | {  
             status: 404 
@@ -5535,7 +5577,7 @@ Map {
           "exports": Map {
             "HTTP_GET" => Object {
               "code": "({ query, path, header, body, context }: { query: never, path: {username: string}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
-      200: {
+200: {
           headers: {};
           content: {
 \\"application/xml\\": { 
@@ -5545,14 +5587,16 @@ Map {
           schema:  User
        }
 };
-        },400: {
+        },
+400: {
           headers: {};
           content: {};
-        },404: {
+        },
+404: {
           headers: {};
           content: {};
         }
-      }> }) => {  
+}> }) => {  
             status: 200, 
             contentType?: \\"application/xml\\",
             body?: User
@@ -5576,11 +5620,11 @@ Map {
             },
             "HTTP_PUT" => Object {
               "code": "({ query, path, header, body, context }: { query: never, path: {username: string}, header: never, body: User, context: typeof Context2, response: ResponseBuilderFactory<{
-      [statusCode in HttpStatusCode]: {
+[statusCode in HttpStatusCode]: {
           headers: {};
           content: {};
         }
-      }> }) => {  
+}> }) => {  
             status: number | undefined 
           } | { status: 415, contentType: \\"text/plain\\", body: string }
     | void",
@@ -5594,14 +5638,15 @@ Map {
             },
             "HTTP_DELETE" => Object {
               "code": "({ query, path, header, body, context }: { query: never, path: {username: string}, header: never, body: undefined, context: typeof Context3, response: ResponseBuilderFactory<{
-      400: {
+400: {
           headers: {};
           content: {};
-        },404: {
+        },
+404: {
           headers: {};
           content: {};
         }
-      }> }) => {  
+}> }) => {  
             status: 400 
           } | {  
             status: 404 
@@ -5779,7 +5824,7 @@ Map {
           "exports": Map {
             "HTTP_GET" => Object {
               "code": "({ query, path, header, body, context }: { query: never, path: {username: string}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
-      200: {
+200: {
           headers: {};
           content: {
 \\"application/xml\\": { 
@@ -5789,14 +5834,16 @@ Map {
           schema:  User
        }
 };
-        },400: {
+        },
+400: {
           headers: {};
           content: {};
-        },404: {
+        },
+404: {
           headers: {};
           content: {};
         }
-      }> }) => {  
+}> }) => {  
             status: 200, 
             contentType?: \\"application/xml\\",
             body?: User
@@ -5820,11 +5867,11 @@ Map {
             },
             "HTTP_PUT" => Object {
               "code": "({ query, path, header, body, context }: { query: never, path: {username: string}, header: never, body: User, context: typeof Context2, response: ResponseBuilderFactory<{
-      [statusCode in HttpStatusCode]: {
+[statusCode in HttpStatusCode]: {
           headers: {};
           content: {};
         }
-      }> }) => {  
+}> }) => {  
             status: number | undefined 
           } | { status: 415, contentType: \\"text/plain\\", body: string }
     | void",
@@ -5838,14 +5885,15 @@ Map {
             },
             "HTTP_DELETE" => Object {
               "code": "({ query, path, header, body, context }: { query: never, path: {username: string}, header: never, body: undefined, context: typeof Context3, response: ResponseBuilderFactory<{
-      400: {
+400: {
           headers: {};
           content: {};
-        },404: {
+        },
+404: {
           headers: {};
           content: {};
         }
-      }> }) => {  
+}> }) => {  
             status: 400 
           } | {  
             status: 404 
@@ -6027,7 +6075,7 @@ Map {
     "exports": Map {
       "HTTP_GET" => Object {
         "code": "({ query, path, header, body, context }: { query: never, path: {username: string}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
-      200: {
+200: {
           headers: {};
           content: {
 \\"application/xml\\": { 
@@ -6037,14 +6085,16 @@ Map {
           schema:  User
        }
 };
-        },400: {
+        },
+400: {
           headers: {};
           content: {};
-        },404: {
+        },
+404: {
           headers: {};
           content: {};
         }
-      }> }) => {  
+}> }) => {  
             status: 200, 
             contentType?: \\"application/xml\\",
             body?: User
@@ -6068,11 +6118,11 @@ Map {
       },
       "HTTP_PUT" => Object {
         "code": "({ query, path, header, body, context }: { query: never, path: {username: string}, header: never, body: User, context: typeof Context2, response: ResponseBuilderFactory<{
-      [statusCode in HttpStatusCode]: {
+[statusCode in HttpStatusCode]: {
           headers: {};
           content: {};
         }
-      }> }) => {  
+}> }) => {  
             status: number | undefined 
           } | { status: 415, contentType: \\"text/plain\\", body: string }
     | void",
@@ -6086,14 +6136,15 @@ Map {
       },
       "HTTP_DELETE" => Object {
         "code": "({ query, path, header, body, context }: { query: never, path: {username: string}, header: never, body: undefined, context: typeof Context3, response: ResponseBuilderFactory<{
-      400: {
+400: {
           headers: {};
           content: {};
-        },404: {
+        },
+404: {
           headers: {};
           content: {};
         }
-      }> }) => {  
+}> }) => {  
             status: 400 
           } | {  
             status: 404 
