@@ -46,12 +46,18 @@ export class ResponseTypeCoder extends Coder {
   buildHeaders(script, responseCode) {
     const response = this.requirement.get(responseCode);
 
-    const properties = Object.keys(response.data.headers ?? {}).map(
-      (name) =>
-        `"${name}": { schema: ${new SchemaTypeCoder(
-          response.get("headers").get(name).get("schema")
-        ).write(script)}}`
-    );
+    if (!response.has("headers")) {
+      return "{}";
+    }
+
+    const properties = response
+      .get("headers")
+      .map(
+        (value, name) =>
+          `"${name}": { schema: ${new SchemaTypeCoder(
+            value.get("schema")
+          ).write(script)}}`
+      );
 
     return `{${properties.join(";")}}`;
   }
