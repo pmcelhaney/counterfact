@@ -4,19 +4,23 @@ import { Coder } from "./coder.js";
 import { SchemaTypeCoder } from "./schema-type-coder.js";
 
 export class ResponseTypeCoder extends Coder {
-  normalizeStatusCode(statusCode, responses) {
-    const definedStatusCodes = Object.keys(responses).filter(
+  typeForDefaultStatusCode(listedStatusCodes) {
+    const definedStatusCodes = listedStatusCodes.filter(
       (key) => key !== "default"
     );
 
-    if (statusCode === "default") {
-      if (definedStatusCodes.length === 0) {
-        return "[statusCode in HttpStatusCode]";
-      }
+    if (definedStatusCodes.length === 0) {
+      return "[statusCode in HttpStatusCode]";
+    }
 
-      return `[statusCode in Exclude<HttpStatusCode, ${definedStatusCodes.join(
-        " | "
-      )}>]`;
+    return `[statusCode in Exclude<HttpStatusCode, ${definedStatusCodes.join(
+      " | "
+    )}>]`;
+  }
+
+  normalizeStatusCode(statusCode, responses) {
+    if (statusCode === "default") {
+      return this.typeForDefaultStatusCode(Object.keys(responses));
     }
 
     return statusCode;
