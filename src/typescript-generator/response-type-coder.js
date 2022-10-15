@@ -31,7 +31,7 @@ export class ResponseTypeCoder extends Coder {
       return "{}";
     }
 
-    const keyValuePairs = response.get("content").map(
+    const properties = response.get("content").map(
       (content, mediaType) =>
         `"${mediaType}": { 
           schema:  ${new SchemaTypeCoder(content.get("schema")).write(script)}
@@ -39,7 +39,7 @@ export class ResponseTypeCoder extends Coder {
     );
 
     return `{
-      ${keyValuePairs.join(",\n")}
+      ${properties.join(",\n")}
     }`;
   }
 
