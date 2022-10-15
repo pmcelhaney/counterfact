@@ -55,13 +55,13 @@ Map {
       200: {
           headers: {};
           content: {
-      \\"application/xml\\": { 
+\\"application/xml\\": { 
           schema:  Pet
-        },
+       },
 \\"application/json\\": { 
           schema:  Pet
-        }
-    };
+       }
+};
         },405: {
           headers: {};
           content: {};
@@ -91,13 +91,13 @@ Map {
       200: {
           headers: {};
           content: {
-      \\"application/xml\\": { 
+\\"application/xml\\": { 
           schema:  Pet
-        },
+       },
 \\"application/json\\": { 
           schema:  Pet
-        }
-    };
+       }
+};
         },400: {
           headers: {};
           content: {};
@@ -324,13 +324,13 @@ Map {
       200: {
           headers: {};
           content: {
-      \\"application/xml\\": { 
+\\"application/xml\\": { 
           schema:  Pet
-        },
+       },
 \\"application/json\\": { 
           schema:  Pet
-        }
-    };
+       }
+};
         },405: {
           headers: {};
           content: {};
@@ -360,13 +360,13 @@ Map {
       200: {
           headers: {};
           content: {
-      \\"application/xml\\": { 
+\\"application/xml\\": { 
           schema:  Pet
-        },
+       },
 \\"application/json\\": { 
           schema:  Pet
-        }
-    };
+       }
+};
         },400: {
           headers: {};
           content: {};
@@ -597,13 +597,13 @@ Map {
       200: {
           headers: {};
           content: {
-      \\"application/xml\\": { 
+\\"application/xml\\": { 
           schema:  Pet
-        },
+       },
 \\"application/json\\": { 
           schema:  Pet
-        }
-    };
+       }
+};
         },405: {
           headers: {};
           content: {};
@@ -633,13 +633,13 @@ Map {
       200: {
           headers: {};
           content: {
-      \\"application/xml\\": { 
+\\"application/xml\\": { 
           schema:  Pet
-        },
+       },
 \\"application/json\\": { 
           schema:  Pet
-        }
-    };
+       }
+};
         },400: {
           headers: {};
           content: {};
@@ -884,13 +884,13 @@ Map {
       200: {
           headers: {};
           content: {
-      \\"application/xml\\": { 
+\\"application/xml\\": { 
           schema:  Array<Pet>
-        },
+       },
 \\"application/json\\": { 
           schema:  Array<Pet>
-        }
-    };
+       }
+};
         },400: {
           headers: {};
           content: {};
@@ -1081,13 +1081,13 @@ Map {
       200: {
           headers: {};
           content: {
-      \\"application/xml\\": { 
+\\"application/xml\\": { 
           schema:  Array<Pet>
-        },
+       },
 \\"application/json\\": { 
           schema:  Array<Pet>
-        }
-    };
+       }
+};
         },400: {
           headers: {};
           content: {};
@@ -1294,13 +1294,13 @@ Map {
       200: {
           headers: {};
           content: {
-      \\"application/xml\\": { 
+\\"application/xml\\": { 
           schema:  Array<Pet>
-        },
+       },
 \\"application/json\\": { 
           schema:  Array<Pet>
-        }
-    };
+       }
+};
         },400: {
           headers: {};
           content: {};
@@ -1491,13 +1491,13 @@ Map {
       200: {
           headers: {};
           content: {
-      \\"application/xml\\": { 
+\\"application/xml\\": { 
           schema:  Array<Pet>
-        },
+       },
 \\"application/json\\": { 
           schema:  Array<Pet>
-        }
-    };
+       }
+};
         },400: {
           headers: {};
           content: {};
@@ -1732,13 +1732,13 @@ Map {
       200: {
           headers: {};
           content: {
-      \\"application/xml\\": { 
+\\"application/xml\\": { 
           schema:  Pet
-        },
+       },
 \\"application/json\\": { 
           schema:  Pet
-        }
-    };
+       }
+};
         },400: {
           headers: {};
           content: {};
@@ -2034,13 +2034,13 @@ Map {
       200: {
           headers: {};
           content: {
-      \\"application/xml\\": { 
+\\"application/xml\\": { 
           schema:  Pet
-        },
+       },
 \\"application/json\\": { 
           schema:  Pet
-        }
-    };
+       }
+};
         },400: {
           headers: {};
           content: {};
@@ -2336,13 +2336,13 @@ Map {
       200: {
           headers: {};
           content: {
-      \\"application/xml\\": { 
+\\"application/xml\\": { 
           schema:  Pet
-        },
+       },
 \\"application/json\\": { 
           schema:  Pet
-        }
-    };
+       }
+};
         },400: {
           headers: {};
           content: {};
@@ -2642,13 +2642,13 @@ Map {
       200: {
           headers: {};
           content: {
-      \\"application/xml\\": { 
+\\"application/xml\\": { 
           schema:  Pet
-        },
+       },
 \\"application/json\\": { 
           schema:  Pet
-        }
-    };
+       }
+};
         },400: {
           headers: {};
           content: {};
@@ -2960,10 +2960,10 @@ Map {
       200: {
           headers: {};
           content: {
-      \\"application/json\\": { 
+\\"application/json\\": { 
           schema:  ApiResponse
-        }
-    };
+       }
+};
         }
       }> }) => {  
             status: 200, 
@@ -3082,10 +3082,10 @@ Map {
       200: {
           headers: {};
           content: {
-      \\"application/json\\": { 
+\\"application/json\\": { 
           schema:  ApiResponse
-        }
-    };
+       }
+};
         }
       }> }) => {  
             status: 200, 
@@ -3219,10 +3219,10 @@ Map {
       200: {
           headers: {};
           content: {
-      \\"application/json\\": { 
+\\"application/json\\": { 
           schema:  {[key: string]: number}
-        }
-    };
+       }
+};
         }
       }> }) => {  
             status: 200, 
@@ -3310,10 +3310,10 @@ Map {
       200: {
           headers: {};
           content: {
-      \\"application/json\\": { 
+\\"application/json\\": { 
           schema:  {[key: string]: number}
-        }
-    };
+       }
+};
         }
       }> }) => {  
             status: 200, 
@@ -3418,10 +3418,10 @@ Map {
       200: {
           headers: {};
           content: {
-      \\"application/json\\": { 
+\\"application/json\\": { 
           schema:  Order
-        }
-    };
+       }
+};
         },405: {
           headers: {};
           content: {};
@@ -3545,10 +3545,10 @@ Map {
       200: {
           headers: {};
           content: {
-      \\"application/json\\": { 
+\\"application/json\\": { 
           schema:  Order
-        }
-    };
+       }
+};
         },405: {
           headers: {};
           content: {};
@@ -3702,13 +3702,13 @@ Map {
       200: {
           headers: {};
           content: {
-      \\"application/xml\\": { 
+\\"application/xml\\": { 
           schema:  Order
-        },
+       },
 \\"application/json\\": { 
           schema:  Order
-        }
-    };
+       }
+};
         },400: {
           headers: {};
           content: {};
@@ -3894,13 +3894,13 @@ Map {
       200: {
           headers: {};
           content: {
-      \\"application/xml\\": { 
+\\"application/xml\\": { 
           schema:  Order
-        },
+       },
 \\"application/json\\": { 
           schema:  Order
-        }
-    };
+       }
+};
         },400: {
           headers: {};
           content: {};
@@ -4090,13 +4090,13 @@ Map {
       200: {
           headers: {};
           content: {
-      \\"application/xml\\": { 
+\\"application/xml\\": { 
           schema:  Order
-        },
+       },
 \\"application/json\\": { 
           schema:  Order
-        }
-    };
+       }
+};
         },400: {
           headers: {};
           content: {};
@@ -4300,13 +4300,13 @@ Map {
       [statusCode in HttpStatusCode]: {
           headers: {};
           content: {
-      \\"application/json\\": { 
+\\"application/json\\": { 
           schema:  User
-        },
+       },
 \\"application/xml\\": { 
           schema:  User
-        }
-    };
+       }
+};
         }
       }> }) => {  
             status: number | undefined, 
@@ -4427,13 +4427,13 @@ Map {
       [statusCode in HttpStatusCode]: {
           headers: {};
           content: {
-      \\"application/json\\": { 
+\\"application/json\\": { 
           schema:  User
-        },
+       },
 \\"application/xml\\": { 
           schema:  User
-        }
-    };
+       }
+};
         }
       }> }) => {  
             status: number | undefined, 
@@ -4570,13 +4570,13 @@ Map {
       200: {
           headers: {};
           content: {
-      \\"application/xml\\": { 
+\\"application/xml\\": { 
           schema:  User
-        },
+       },
 \\"application/json\\": { 
           schema:  User
-        }
-    };
+       }
+};
         },[statusCode in Exclude<HttpStatusCode, 200>]: {
           headers: {};
           content: {};
@@ -4704,13 +4704,13 @@ Map {
       200: {
           headers: {};
           content: {
-      \\"application/xml\\": { 
+\\"application/xml\\": { 
           schema:  User
-        },
+       },
 \\"application/json\\": { 
           schema:  User
-        }
-    };
+       }
+};
         },[statusCode in Exclude<HttpStatusCode, 200>]: {
           headers: {};
           content: {};
@@ -4851,15 +4851,18 @@ Map {
             "HTTP_GET" => Object {
               "code": "({ query, path, header, body, context }: { query: {username?: string, password?: string}, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
       200: {
-          headers: {\\"X-Rate-Limit\\": { schema: number};\\"X-Expires-After\\": { schema: string}};
+          headers: {
+\\"X-Rate-Limit\\": { schema: number},
+\\"X-Expires-After\\": { schema: string}
+};
           content: {
-      \\"application/xml\\": { 
+\\"application/xml\\": { 
           schema:  string
-        },
+       },
 \\"application/json\\": { 
           schema:  string
-        }
-    };
+       }
+};
         },400: {
           headers: {};
           content: {};
@@ -4954,15 +4957,18 @@ Map {
       "HTTP_GET" => Object {
         "code": "({ query, path, header, body, context }: { query: {username?: string, password?: string}, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
       200: {
-          headers: {\\"X-Rate-Limit\\": { schema: number};\\"X-Expires-After\\": { schema: string}};
+          headers: {
+\\"X-Rate-Limit\\": { schema: number},
+\\"X-Expires-After\\": { schema: string}
+};
           content: {
-      \\"application/xml\\": { 
+\\"application/xml\\": { 
           schema:  string
-        },
+       },
 \\"application/json\\": { 
           schema:  string
-        }
-    };
+       }
+};
         },400: {
           headers: {};
           content: {};
@@ -5288,13 +5294,13 @@ Map {
       200: {
           headers: {};
           content: {
-      \\"application/xml\\": { 
+\\"application/xml\\": { 
           schema:  User
-        },
+       },
 \\"application/json\\": { 
           schema:  User
-        }
-    };
+       }
+};
         },400: {
           headers: {};
           content: {};
@@ -5532,13 +5538,13 @@ Map {
       200: {
           headers: {};
           content: {
-      \\"application/xml\\": { 
+\\"application/xml\\": { 
           schema:  User
-        },
+       },
 \\"application/json\\": { 
           schema:  User
-        }
-    };
+       }
+};
         },400: {
           headers: {};
           content: {};
@@ -5776,13 +5782,13 @@ Map {
       200: {
           headers: {};
           content: {
-      \\"application/xml\\": { 
+\\"application/xml\\": { 
           schema:  User
-        },
+       },
 \\"application/json\\": { 
           schema:  User
-        }
-    };
+       }
+};
         },400: {
           headers: {};
           content: {};
@@ -6024,13 +6030,13 @@ Map {
       200: {
           headers: {};
           content: {
-      \\"application/xml\\": { 
+\\"application/xml\\": { 
           schema:  User
-        },
+       },
 \\"application/json\\": { 
           schema:  User
-        }
-    };
+       }
+};
         },400: {
           headers: {};
           content: {};

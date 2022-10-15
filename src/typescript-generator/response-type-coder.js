@@ -54,16 +54,14 @@ export class ResponseTypeCoder extends Coder {
       return "{}";
     }
 
-    const properties = response
+    const entries = response
       .get("headers")
-      .map(
-        (value, name) =>
-          `"${name}": { schema: ${new SchemaTypeCoder(
-            value.get("schema")
-          ).write(script)}}`
-      );
+      .map((value, name) => [
+        name,
+        `{ schema: ${new SchemaTypeCoder(value.get("schema")).write(script)}}`,
+      ]);
 
-    return `{${properties.join(";")}}`;
+    return printObjectFromEntries(entries);
   }
 
   buildResponseObjectType(script) {
