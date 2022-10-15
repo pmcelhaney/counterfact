@@ -3,6 +3,12 @@ import nodePath from "node:path";
 import { Coder } from "./coder.js";
 import { SchemaTypeCoder } from "./schema-type-coder.js";
 
+function printObjectFromEntries(entries) {
+  return `{\n${entries
+    .map(([key, value]) => `"${key}": ${value}`)
+    .join(",\n")}\n}`;
+}
+
 export class ResponseTypeCoder extends Coder {
   typeForDefaultStatusCode(listedStatusCodes) {
     const definedStatusCodes = listedStatusCodes.filter(
@@ -31,16 +37,14 @@ export class ResponseTypeCoder extends Coder {
       return "{}";
     }
 
-    const properties = response.get("content").map(
-      (content, mediaType) =>
-        `"${mediaType}": { 
+    const entries = response.get("content").map((content, mediaType) => [
+      mediaType,
+      `{ 
           schema:  ${new SchemaTypeCoder(content.get("schema")).write(script)}
-        }`
-    );
+       }`,
+    ]);
 
-    return `{
-      ${properties.join(",\n")}
-    }`;
+    return printObjectFromEntries(entries);
   }
 
   buildHeaders(script, responseCode) {
