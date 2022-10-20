@@ -32,6 +32,19 @@ export class OperationTypeCoder extends Coder {
           );
         }
 
+        if (response.has("schema")) {
+          return this.requirement
+            .get("produces")
+            .data.map(
+              (contentType) => `{
+            status: ${status},
+            contentType?: "${contentType}",
+            body?: ${new SchemaTypeCoder(response.get("schema")).write(script)}
+          }`
+            )
+            .join(" | ");
+        }
+
         return `{  
           status: ${status} 
         }`;
