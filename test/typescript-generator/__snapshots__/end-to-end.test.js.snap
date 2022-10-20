@@ -56,11 +56,11 @@ Map {
           headers: {};
           content: {
 \\"application/xml\\": { 
-          schema:  Pet
-       },
+            schema:  Pet
+         },
 \\"application/json\\": { 
-          schema:  Pet
-       }
+            schema:  Pet
+         }
 };
         },
 405: {
@@ -93,11 +93,11 @@ Map {
           headers: {};
           content: {
 \\"application/xml\\": { 
-          schema:  Pet
-       },
+            schema:  Pet
+         },
 \\"application/json\\": { 
-          schema:  Pet
-       }
+            schema:  Pet
+         }
 };
         },
 400: {
@@ -329,11 +329,11 @@ Map {
           headers: {};
           content: {
 \\"application/xml\\": { 
-          schema:  Pet
-       },
+            schema:  Pet
+         },
 \\"application/json\\": { 
-          schema:  Pet
-       }
+            schema:  Pet
+         }
 };
         },
 405: {
@@ -366,11 +366,11 @@ Map {
           headers: {};
           content: {
 \\"application/xml\\": { 
-          schema:  Pet
-       },
+            schema:  Pet
+         },
 \\"application/json\\": { 
-          schema:  Pet
-       }
+            schema:  Pet
+         }
 };
         },
 400: {
@@ -606,11 +606,11 @@ Map {
           headers: {};
           content: {
 \\"application/xml\\": { 
-          schema:  Pet
-       },
+            schema:  Pet
+         },
 \\"application/json\\": { 
-          schema:  Pet
-       }
+            schema:  Pet
+         }
 };
         },
 405: {
@@ -643,11 +643,11 @@ Map {
           headers: {};
           content: {
 \\"application/xml\\": { 
-          schema:  Pet
-       },
+            schema:  Pet
+         },
 \\"application/json\\": { 
-          schema:  Pet
-       }
+            schema:  Pet
+         }
 };
         },
 400: {
@@ -897,11 +897,11 @@ Map {
           headers: {};
           content: {
 \\"application/xml\\": { 
-          schema:  Array<Pet>
-       },
+            schema:  Array<Pet>
+         },
 \\"application/json\\": { 
-          schema:  Array<Pet>
-       }
+            schema:  Array<Pet>
+         }
 };
         },
 400: {
@@ -1095,11 +1095,11 @@ Map {
           headers: {};
           content: {
 \\"application/xml\\": { 
-          schema:  Array<Pet>
-       },
+            schema:  Array<Pet>
+         },
 \\"application/json\\": { 
-          schema:  Array<Pet>
-       }
+            schema:  Array<Pet>
+         }
 };
         },
 400: {
@@ -1309,11 +1309,11 @@ Map {
           headers: {};
           content: {
 \\"application/xml\\": { 
-          schema:  Array<Pet>
-       },
+            schema:  Array<Pet>
+         },
 \\"application/json\\": { 
-          schema:  Array<Pet>
-       }
+            schema:  Array<Pet>
+         }
 };
         },
 400: {
@@ -1507,11 +1507,11 @@ Map {
           headers: {};
           content: {
 \\"application/xml\\": { 
-          schema:  Array<Pet>
-       },
+            schema:  Array<Pet>
+         },
 \\"application/json\\": { 
-          schema:  Array<Pet>
-       }
+            schema:  Array<Pet>
+         }
 };
         },
 400: {
@@ -1749,11 +1749,11 @@ Map {
           headers: {};
           content: {
 \\"application/xml\\": { 
-          schema:  Pet
-       },
+            schema:  Pet
+         },
 \\"application/json\\": { 
-          schema:  Pet
-       }
+            schema:  Pet
+         }
 };
         },
 400: {
@@ -2053,11 +2053,11 @@ Map {
           headers: {};
           content: {
 \\"application/xml\\": { 
-          schema:  Pet
-       },
+            schema:  Pet
+         },
 \\"application/json\\": { 
-          schema:  Pet
-       }
+            schema:  Pet
+         }
 };
         },
 400: {
@@ -2357,11 +2357,11 @@ Map {
           headers: {};
           content: {
 \\"application/xml\\": { 
-          schema:  Pet
-       },
+            schema:  Pet
+         },
 \\"application/json\\": { 
-          schema:  Pet
-       }
+            schema:  Pet
+         }
 };
         },
 400: {
@@ -2665,11 +2665,11 @@ Map {
           headers: {};
           content: {
 \\"application/xml\\": { 
-          schema:  Pet
-       },
+            schema:  Pet
+         },
 \\"application/json\\": { 
-          schema:  Pet
-       }
+            schema:  Pet
+         }
 };
         },
 400: {
@@ -2985,8 +2985,8 @@ Map {
           headers: {};
           content: {
 \\"application/json\\": { 
-          schema:  ApiResponse
-       }
+            schema:  ApiResponse
+         }
 };
         }
 }> }) => {  
@@ -3107,8 +3107,8 @@ Map {
           headers: {};
           content: {
 \\"application/json\\": { 
-          schema:  ApiResponse
-       }
+            schema:  ApiResponse
+         }
 };
         }
 }> }) => {  
@@ -3244,8 +3244,8 @@ Map {
           headers: {};
           content: {
 \\"application/json\\": { 
-          schema:  {[key: string]: number}
-       }
+            schema:  {[key: string]: number}
+         }
 };
         }
 }> }) => {  
@@ -3335,8 +3335,8 @@ Map {
           headers: {};
           content: {
 \\"application/json\\": { 
-          schema:  {[key: string]: number}
-       }
+            schema:  {[key: string]: number}
+         }
 };
         }
 }> }) => {  
@@ -3443,8 +3443,8 @@ Map {
           headers: {};
           content: {
 \\"application/json\\": { 
-          schema:  Order
-       }
+            schema:  Order
+         }
 };
         },
 405: {
@@ -3571,8 +3571,8 @@ Map {
           headers: {};
           content: {
 \\"application/json\\": { 
-          schema:  Order
-       }
+            schema:  Order
+         }
 };
         },
 405: {
@@ -3729,11 +3729,11 @@ Map {
           headers: {};
           content: {
 \\"application/xml\\": { 
-          schema:  Order
-       },
+            schema:  Order
+         },
 \\"application/json\\": { 
-          schema:  Order
-       }
+            schema:  Order
+         }
 };
         },
 400: {
@@ -3924,11 +3924,11 @@ Map {
           headers: {};
           content: {
 \\"application/xml\\": { 
-          schema:  Order
-       },
+            schema:  Order
+         },
 \\"application/json\\": { 
-          schema:  Order
-       }
+            schema:  Order
+         }
 };
         },
 400: {
@@ -4123,11 +4123,11 @@ Map {
           headers: {};
           content: {
 \\"application/xml\\": { 
-          schema:  Order
-       },
+            schema:  Order
+         },
 \\"application/json\\": { 
-          schema:  Order
-       }
+            schema:  Order
+         }
 };
         },
 400: {
@@ -4336,11 +4336,11 @@ Map {
           headers: {};
           content: {
 \\"application/json\\": { 
-          schema:  User
-       },
+            schema:  User
+         },
 \\"application/xml\\": { 
-          schema:  User
-       }
+            schema:  User
+         }
 };
         }
 }> }) => {  
@@ -4463,11 +4463,11 @@ Map {
           headers: {};
           content: {
 \\"application/json\\": { 
-          schema:  User
-       },
+            schema:  User
+         },
 \\"application/xml\\": { 
-          schema:  User
-       }
+            schema:  User
+         }
 };
         }
 }> }) => {  
@@ -4606,11 +4606,11 @@ Map {
           headers: {};
           content: {
 \\"application/xml\\": { 
-          schema:  User
-       },
+            schema:  User
+         },
 \\"application/json\\": { 
-          schema:  User
-       }
+            schema:  User
+         }
 };
         },
 [statusCode in Exclude<HttpStatusCode, 200>]: {
@@ -4741,11 +4741,11 @@ Map {
           headers: {};
           content: {
 \\"application/xml\\": { 
-          schema:  User
-       },
+            schema:  User
+         },
 \\"application/json\\": { 
-          schema:  User
-       }
+            schema:  User
+         }
 };
         },
 [statusCode in Exclude<HttpStatusCode, 200>]: {
@@ -4894,11 +4894,11 @@ Map {
 };
           content: {
 \\"application/xml\\": { 
-          schema:  string
-       },
+            schema:  string
+         },
 \\"application/json\\": { 
-          schema:  string
-       }
+            schema:  string
+         }
 };
         },
 400: {
@@ -5001,11 +5001,11 @@ Map {
 };
           content: {
 \\"application/xml\\": { 
-          schema:  string
-       },
+            schema:  string
+         },
 \\"application/json\\": { 
-          schema:  string
-       }
+            schema:  string
+         }
 };
         },
 400: {
@@ -5334,11 +5334,11 @@ Map {
           headers: {};
           content: {
 \\"application/xml\\": { 
-          schema:  User
-       },
+            schema:  User
+         },
 \\"application/json\\": { 
-          schema:  User
-       }
+            schema:  User
+         }
 };
         },
 400: {
@@ -5581,11 +5581,11 @@ Map {
           headers: {};
           content: {
 \\"application/xml\\": { 
-          schema:  User
-       },
+            schema:  User
+         },
 \\"application/json\\": { 
-          schema:  User
-       }
+            schema:  User
+         }
 };
         },
 400: {
@@ -5828,11 +5828,11 @@ Map {
           headers: {};
           content: {
 \\"application/xml\\": { 
-          schema:  User
-       },
+            schema:  User
+         },
 \\"application/json\\": { 
-          schema:  User
-       }
+            schema:  User
+         }
 };
         },
 400: {
@@ -6079,11 +6079,11 @@ Map {
           headers: {};
           content: {
 \\"application/xml\\": { 
-          schema:  User
-       },
+            schema:  User
+         },
 \\"application/json\\": { 
-          schema:  User
-       }
+            schema:  User
+         }
 };
         },
 400: {

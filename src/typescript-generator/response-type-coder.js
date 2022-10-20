@@ -28,16 +28,16 @@ export class ResponseTypeCoder extends Coder {
   }
 
   buildContentObjectType(script, response) {
-    if (!response.has("content")) {
-      return "{}";
+    if (response.has("content")) {
+      return response.get("content").map((content, mediaType) => [
+        mediaType,
+        `{ 
+            schema:  ${new SchemaTypeCoder(content.get("schema")).write(script)}
+         }`,
+      ]);
     }
 
-    return response.get("content").map((content, mediaType) => [
-      mediaType,
-      `{ 
-          schema:  ${new SchemaTypeCoder(content.get("schema")).write(script)}
-       }`,
-    ]);
+    return "{}";
   }
 
   printContentObjectType(script, response) {
