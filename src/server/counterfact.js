@@ -15,9 +15,6 @@ import { ModuleLoader } from "./module-loader.js";
 import { Transpiler } from "./transpiler.js";
 import { ContextRegistry } from "./context-registry.js";
 
-// eslint-disable-next-line no-underscore-dangle
-const __dirname = nodePath.dirname(new URL(import.meta.url).pathname);
-
 async function loadOpenApiDocument(source) {
   try {
     return $RefParser.dereference(await yaml.load(await readFile(source)));
@@ -38,11 +35,6 @@ export async function counterfact(
   const modulesPath = `${await fs.mkdtemp(
     nodePath.join(os.tmpdir(), "counterfact-")
   )}/`;
-
-  fs.copyFile(
-    nodePath.join(__dirname, "../../templates/response-builder-factory.ts"),
-    nodePath.join(basePath, "response-builder-factory.ts")
-  );
 
   try {
     await fs.writeFile(
