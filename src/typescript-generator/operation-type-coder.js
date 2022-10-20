@@ -22,19 +22,19 @@ export class OperationTypeCoder extends Coder {
             ? "number | undefined"
             : Number.parseInt(responseCode, 10);
 
-        if (!response.has("content")) {
-          return `{  
-            status: ${status} 
-          }`;
+        if (response.has("content")) {
+          return response.get("content").map(
+            (content, contentType) => `{  
+              status: ${status}, 
+              contentType?: "${contentType}",
+              body?: ${new SchemaTypeCoder(content.get("schema")).write(script)}
+            }`
+          );
         }
 
-        return response.get("content").map(
-          (content, contentType) => `{  
-            status: ${status}, 
-            contentType?: "${contentType}",
-            body?: ${new SchemaTypeCoder(content.get("schema")).write(script)}
-          }`
-        );
+        return `{  
+          status: ${status} 
+        }`;
       })
 
       .join(" | ");
