@@ -55,6 +55,7 @@ export class OperationTypeCoder extends Coder {
     );
 
     const parameters = this.requirement.get("parameters");
+
     const queryType =
       parameters === undefined
         ? "undefined"

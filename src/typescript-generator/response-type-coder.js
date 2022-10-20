@@ -53,7 +53,9 @@ export class ResponseTypeCoder extends Coder {
       .get("headers")
       .map((value, name) => [
         name,
-        `{ schema: ${new SchemaTypeCoder(value.get("schema")).write(script)}}`,
+        `{ schema: ${new SchemaTypeCoder(value.get("schema") ?? value).write(
+          script
+        )}}`,
       ]);
   }
 

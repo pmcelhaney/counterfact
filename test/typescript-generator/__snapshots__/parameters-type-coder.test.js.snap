@@ -5,6 +5,21 @@ exports[`a ParametersTypeCoder generates type never when there is no match 1`] =
 "
 `;
 
+exports[`a ParametersTypeCoder generates types for parameters (OAS2): header 1`] = `
+"type TestType = { name?: string };
+"
+`;
+
+exports[`a ParametersTypeCoder generates types for parameters (OAS2): path 1`] = `
+"type TestType = { id: string };
+"
+`;
+
+exports[`a ParametersTypeCoder generates types for parameters (OAS2): query 1`] = `
+"type TestType = { name?: string; age?: string };
+"
+`;
+
 exports[`a ParametersTypeCoder generates types for parameters: header 1`] = `
 "type TestType = { name?: string };
 "
