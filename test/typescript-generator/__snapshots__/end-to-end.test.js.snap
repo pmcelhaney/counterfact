@@ -51,7 +51,7 @@ Map {
           },
           "exports": Map {
             "HTTP_POST" => Object {
-              "code": "({ query, path, header, body, context }: { query: undefined, path: undefined, header: undefined, body: Pet, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context }: { query: never, path: never, header: never, body: Pet, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -88,7 +88,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_PUT" => Object {
-              "code": "({ query, path, header, body, context }: { query: undefined, path: undefined, header: undefined, body: Pet, context: typeof Context2, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context }: { query: never, path: never, header: never, body: Pet, context: typeof Context2, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -324,7 +324,7 @@ Map {
           },
           "exports": Map {
             "HTTP_POST" => Object {
-              "code": "({ query, path, header, body, context }: { query: undefined, path: undefined, header: undefined, body: Pet, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context }: { query: never, path: never, header: never, body: Pet, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -361,7 +361,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_PUT" => Object {
-              "code": "({ query, path, header, body, context }: { query: undefined, path: undefined, header: undefined, body: Pet, context: typeof Context2, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context }: { query: never, path: never, header: never, body: Pet, context: typeof Context2, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -601,7 +601,7 @@ Map {
     },
     "exports": Map {
       "HTTP_POST" => Object {
-        "code": "({ query, path, header, body, context }: { query: undefined, path: undefined, header: undefined, body: Pet, context: typeof Context, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context }: { query: never, path: never, header: never, body: Pet, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -638,7 +638,7 @@ Map {
         "typeDeclaration": "",
       },
       "HTTP_PUT" => Object {
-        "code": "({ query, path, header, body, context }: { query: undefined, path: undefined, header: undefined, body: Pet, context: typeof Context2, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context }: { query: never, path: never, header: never, body: Pet, context: typeof Context2, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -3239,7 +3239,7 @@ Map {
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context }: { query: undefined, path: undefined, header: undefined, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context }: { query: never, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -3330,7 +3330,7 @@ Map {
     },
     "exports": Map {
       "HTTP_GET" => Object {
-        "code": "({ query, path, header, body, context }: { query: undefined, path: undefined, header: undefined, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context }: { query: never, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -3438,7 +3438,7 @@ Map {
           },
           "exports": Map {
             "HTTP_POST" => Object {
-              "code": "({ query, path, header, body, context }: { query: undefined, path: undefined, header: undefined, body: Order, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context }: { query: never, path: never, header: never, body: Order, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -3566,7 +3566,7 @@ Map {
     },
     "exports": Map {
       "HTTP_POST" => Object {
-        "code": "({ query, path, header, body, context }: { query: undefined, path: undefined, header: undefined, body: Order, context: typeof Context, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context }: { query: never, path: never, header: never, body: Order, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -4331,7 +4331,7 @@ Map {
           },
           "exports": Map {
             "HTTP_POST" => Object {
-              "code": "({ query, path, header, body, context }: { query: undefined, path: undefined, header: undefined, body: User, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context }: { query: never, path: never, header: never, body: User, context: typeof Context, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
           headers: {};
           content: {
@@ -4458,7 +4458,7 @@ Map {
     },
     "exports": Map {
       "HTTP_POST" => Object {
-        "code": "({ query, path, header, body, context }: { query: undefined, path: undefined, header: undefined, body: User, context: typeof Context, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context }: { query: never, path: never, header: never, body: User, context: typeof Context, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
           headers: {};
           content: {
@@ -4601,7 +4601,7 @@ Map {
           },
           "exports": Map {
             "HTTP_POST" => Object {
-              "code": "({ query, path, header, body, context }: { query: undefined, path: undefined, header: undefined, body: Array<User>, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context }: { query: never, path: never, header: never, body: Array<User>, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -4736,7 +4736,7 @@ Map {
     },
     "exports": Map {
       "HTTP_POST" => Object {
-        "code": "({ query, path, header, body, context }: { query: undefined, path: undefined, header: undefined, body: Array<User>, context: typeof Context, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context }: { query: never, path: never, header: never, body: Array<User>, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {

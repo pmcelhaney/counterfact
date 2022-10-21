@@ -16,7 +16,7 @@ export class ParametersTypeCoder extends Coder {
 
   write(script) {
     if (!this.requirement) {
-      return "undefined";
+      return "never";
     }
 
     const typeDefinitions = this.requirement.data
