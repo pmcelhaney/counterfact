@@ -93,7 +93,8 @@ export class OperationTypeCoder extends Coder {
       : "undefined";
 
     const responseType = new ResponseTypeCoder(
-      this.requirement.get("responses")
+      this.requirement.get("responses"),
+      this.requirement.get("produces")?.data
     ).write(script);
 
     return `({ query, path, header, body, context }: { query: ${queryType}, path: ${pathType}, header: ${headerType}, body: ${bodyType}, context: typeof ${contextImportName}, response: ${responseType} }) => ${this.responseTypes(

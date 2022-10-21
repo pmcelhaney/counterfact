@@ -5,6 +5,12 @@ import { SchemaTypeCoder } from "./schema-type-coder.js";
 import { printObject, printObjectWithoutQuotes } from "./printers.js";
 
 export class ResponseTypeCoder extends Coder {
+  constructor(requirement, openApi2MediaTypes = []) {
+    super(requirement);
+
+    this.openApi2MediaTypes = openApi2MediaTypes;
+  }
+
   typeForDefaultStatusCode(listedStatusCodes) {
     const definedStatusCodes = listedStatusCodes.filter(
       (key) => key !== "default"
@@ -37,15 +43,24 @@ export class ResponseTypeCoder extends Coder {
       ]);
     }
 
-    return "{}";
+    if (response.has("schema")) {
+      return this.openApi2MediaTypes.map((mediaType) => [
+        mediaType,
+        `{
+            schema: ${new SchemaTypeCoder(response.get("schema")).write(script)}
+         }`,
+      ]);
+    }
+
+    return [];
   }
 
   printContentObjectType(script, response) {
-    if (!response.has("content")) {
-      return "{}";
+    if (response.has("content") || response.has("schema")) {
+      return printObject(this.buildContentObjectType(script, response));
     }
 
-    return printObject(this.buildContentObjectType(script, response));
+    return "{}";
   }
 
   buildHeaders(script, response) {
