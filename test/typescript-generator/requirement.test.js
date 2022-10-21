@@ -115,4 +115,18 @@ describe("a Requirement", () => {
       "b: bar 2",
     ]);
   });
+
+  it("provides a find(fn) method", () => {
+    const requirement = new Requirement({
+      a: "foo",
+      b: "bar",
+    });
+
+    const result = requirement.find(
+      // eslint-disable-next-line jest/no-conditional-in-test
+      (subRequirement, key) => key === "b" && subRequirement.data === "bar"
+    );
+
+    expect(result).toStrictEqual(requirement.get("b"));
+  });
 });

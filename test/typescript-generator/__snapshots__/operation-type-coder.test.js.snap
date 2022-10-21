@@ -68,9 +68,9 @@ exports[`an OperationTypeCoder generates a simple get operation 1`] = `
   body,
   context,
 }: {
-  query: undefined;
-  path: undefined;
-  header: undefined;
+  query: never;
+  path: never;
+  header: never;
   body: undefined;
   context: typeof default;
   response: ResponseBuilderFactory<{

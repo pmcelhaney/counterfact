@@ -5,6 +5,12 @@ import { SchemaTypeCoder } from "./schema-type-coder.js";
 import { printObject, printObjectWithoutQuotes } from "./printers.js";
 
 export class ResponseTypeCoder extends Coder {
+  constructor(requirement, openApi2MediaTypes = []) {
+    super(requirement);
+
+    this.openApi2MediaTypes = openApi2MediaTypes;
+  }
+
   typeForDefaultStatusCode(listedStatusCodes) {
     const definedStatusCodes = listedStatusCodes.filter(
       (key) => key !== "default"
@@ -28,24 +34,33 @@ export class ResponseTypeCoder extends Coder {
   }
 
   buildContentObjectType(script, response) {
-    if (!response.has("content")) {
-      return "{}";
+    if (response.has("content")) {
+      return response.get("content").map((content, mediaType) => [
+        mediaType,
+        `{ 
+            schema:  ${new SchemaTypeCoder(content.get("schema")).write(script)}
+         }`,
+      ]);
     }
 
-    return response.get("content").map((content, mediaType) => [
-      mediaType,
-      `{ 
-          schema:  ${new SchemaTypeCoder(content.get("schema")).write(script)}
-       }`,
-    ]);
+    if (response.has("schema")) {
+      return this.openApi2MediaTypes.map((mediaType) => [
+        mediaType,
+        `{
+            schema: ${new SchemaTypeCoder(response.get("schema")).write(script)}
+         }`,
+      ]);
+    }
+
+    return [];
   }
 
   printContentObjectType(script, response) {
-    if (!response.has("content")) {
-      return "{}";
+    if (response.has("content") || response.has("schema")) {
+      return printObject(this.buildContentObjectType(script, response));
     }
 
-    return printObject(this.buildContentObjectType(script, response));
+    return "{}";
   }
 
   buildHeaders(script, response) {
@@ -53,7 +68,9 @@ export class ResponseTypeCoder extends Coder {
       .get("headers")
       .map((value, name) => [
         name,
-        `{ schema: ${new SchemaTypeCoder(value.get("schema")).write(script)}}`,
+        `{ schema: ${new SchemaTypeCoder(value.get("schema") ?? value).write(
+          script
+        )}}`,
       ]);
   }
 

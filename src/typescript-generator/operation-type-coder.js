@@ -22,19 +22,32 @@ export class OperationTypeCoder extends Coder {
             ? "number | undefined"
             : Number.parseInt(responseCode, 10);
 
-        if (!response.has("content")) {
-          return `{  
-            status: ${status} 
-          }`;
+        if (response.has("content")) {
+          return response.get("content").map(
+            (content, contentType) => `{  
+              status: ${status}, 
+              contentType?: "${contentType}",
+              body?: ${new SchemaTypeCoder(content.get("schema")).write(script)}
+            }`
+          );
         }
 
-        return response.get("content").map(
-          (content, contentType) => `{  
-            status: ${status}, 
+        if (response.has("schema")) {
+          return this.requirement
+            .get("produces")
+            .data.map(
+              (contentType) => `{
+            status: ${status},
             contentType?: "${contentType}",
-            body?: ${new SchemaTypeCoder(content.get("schema")).write(script)}
+            body?: ${new SchemaTypeCoder(response.get("schema")).write(script)}
           }`
-        );
+            )
+            .join(" | ");
+        }
+
+        return `{  
+          status: ${status} 
+        }`;
       })
 
       .join(" | ");
@@ -55,31 +68,38 @@ export class OperationTypeCoder extends Coder {
     );
 
     const parameters = this.requirement.get("parameters");
+
     const queryType =
       parameters === undefined
-        ? "undefined"
+        ? "never"
         : new ParametersTypeCoder(parameters, "query").write(script);
 
     const pathType =
       parameters === undefined
-        ? "undefined"
+        ? "never"
         : new ParametersTypeCoder(parameters, "path").write(script);
 
     const headerType =
       parameters === undefined
-        ? "undefined"
+        ? "never"
         : new ParametersTypeCoder(parameters, "header").write(script);
 
-    const bodyRequirement = this.requirement.select(
-      "requestBody/content/application~1json/schema"
-    );
+    const bodyRequirement = this.requirement.get("consumes")
+      ? this.requirement
+          .get("parameters")
+          .find((parameter) =>
+            ["body", "formData"].includes(parameter.get("in").data)
+          )
+          .get("schema")
+      : this.requirement.select("requestBody/content/application~1json/schema");
 
     const bodyType = bodyRequirement
       ? new SchemaTypeCoder(bodyRequirement).write(script)
       : "undefined";
 
     const responseType = new ResponseTypeCoder(
-      this.requirement.get("responses")
+      this.requirement.get("responses"),
+      this.requirement.get("produces")?.data
     ).write(script);
 
     return `({ query, path, header, body, context }: { query: ${queryType}, path: ${pathType}, header: ${headerType}, body: ${bodyType}, context: typeof ${contextImportName}, response: ${responseType} }) => ${this.responseTypes(

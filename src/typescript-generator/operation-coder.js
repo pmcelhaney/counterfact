@@ -21,7 +21,7 @@ export class OperationCoder extends Coder {
     );
     const [firstResponse] = responses.map((response) => response.data);
 
-    if (!("content" in firstResponse)) {
+    if (!("content" in firstResponse || "schema" in firstResponse)) {
       return "() => { /* no response content specified in the OpenAPI document */ }";
     }
 

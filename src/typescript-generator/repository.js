@@ -6,6 +6,9 @@ import prettier from "prettier";
 
 import { Script } from "./script.js";
 
+// eslint-disable-next-line no-underscore-dangle
+const __dirname = nodePath.dirname(new URL(import.meta.url).pathname);
+
 async function ensureDirectoryExists(filePath) {
   const directory = nodePath.dirname(filePath);
 
@@ -44,6 +47,17 @@ export class Repository {
     }
   }
 
+  copyCoreFiles(destination) {
+    const path = nodePath.join(destination, "response-builder-factory.ts");
+
+    process.stdout.write(`writing ${path}\n`);
+
+    return fs.copyFile(
+      nodePath.join(__dirname, "../../templates/response-builder-factory.ts"),
+      path
+    );
+  }
+
   async writeFiles(destination) {
     await this.finished();
 
@@ -77,5 +91,7 @@ export class Repository {
     );
 
     await Promise.all(writeFiles);
+
+    await this.copyCoreFiles(destination);
   }
 }

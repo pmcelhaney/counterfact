@@ -44,6 +44,29 @@ describe("a ParametersTypeCoder", () => {
     );
   });
 
+  it("generates types for parameters (OAS2)", () => {
+    const requirement = new Requirement([
+      { name: "id", in: "path", type: "string", required: true },
+      { name: "name", in: "query", type: "string" },
+      { name: "age", in: "query", type: "number" },
+      { name: "name", in: "header", type: "string" },
+    ]);
+
+    const pathCoder = new ParametersTypeCoder(requirement, "path");
+    const queryCoder = new ParametersTypeCoder(requirement, "query");
+    const headerCoder = new ParametersTypeCoder(requirement, "header");
+
+    expect(format(`type TestType =${pathCoder.write({})}`)).toMatchSnapshot(
+      "path"
+    );
+    expect(format(`type TestType =${queryCoder.write({})}`)).toMatchSnapshot(
+      "query"
+    );
+    expect(format(`type TestType =${headerCoder.write({})}`)).toMatchSnapshot(
+      "header"
+    );
+  });
+
   it("generates type never when there is no match", () => {
     const requirement = new Requirement([
       { name: "id", in: "path", schema: { type: "string" }, required: true },

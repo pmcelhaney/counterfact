@@ -16,7 +16,7 @@ export class ParametersTypeCoder extends Coder {
 
   write(script) {
     if (!this.requirement) {
-      return "undefined";
+      return "never";
     }
 
     const typeDefinitions = this.requirement.data
@@ -28,9 +28,13 @@ export class ParametersTypeCoder extends Coder {
 
         const optionalFlag = required ? "" : "?";
 
-        return `${name}${optionalFlag}: ${new SchemaTypeCoder(
-          requirement.get("schema")
-        ).write(script)}`;
+        const schema = requirement.has("schema")
+          ? requirement.get("schema")
+          : requirement;
+
+        return `${name}${optionalFlag}: ${new SchemaTypeCoder(schema).write(
+          script
+        )}`;
       });
 
     if (typeDefinitions.length === 0) {
