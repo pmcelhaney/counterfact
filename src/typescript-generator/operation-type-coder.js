@@ -84,9 +84,14 @@ export class OperationTypeCoder extends Coder {
         ? "undefined"
         : new ParametersTypeCoder(parameters, "header").write(script);
 
-    const bodyRequirement = this.requirement.select(
-      "requestBody/content/application~1json/schema"
-    );
+    const bodyRequirement = this.requirement.get("consumes")
+      ? this.requirement
+          .get("parameters")
+          .find((parameter) =>
+            ["body", "formData"].includes(parameter.get("in").data)
+          )
+          .get("schema")
+      : this.requirement.select("requestBody/content/application~1json/schema");
 
     const bodyType = bodyRequirement
       ? new SchemaTypeCoder(bodyRequirement).write(script)

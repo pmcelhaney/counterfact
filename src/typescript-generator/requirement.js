@@ -81,6 +81,20 @@ export class Requirement {
     return this.map(callback).flat();
   }
 
+  find(callback) {
+    // eslint-disable-next-line init-declarations
+    let result;
+
+    this.forEach((value, key) => {
+      // eslint-disable-next-line node/callback-return
+      if (result === undefined && callback(value, key)) {
+        result = value;
+      }
+    });
+
+    return result;
+  }
+
   escapeJsonPointer(string) {
     return string.replaceAll("~", "~0").replaceAll("/", "~1");
   }
