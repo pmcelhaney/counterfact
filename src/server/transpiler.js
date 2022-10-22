@@ -1,3 +1,5 @@
+// Stryker disable all
+
 import fs from "node:fs/promises";
 import nodePath from "node:path";
 import { constants as fsConstants } from "node:fs";

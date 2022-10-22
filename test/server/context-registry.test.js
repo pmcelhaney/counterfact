@@ -3,7 +3,7 @@ import {
   parentPath,
 } from "../../src/server/context-registry.js";
 
-describe("moduleRegistry", () => {
+describe("a context registry", () => {
   it("finds a context that exactly matches the path", () => {
     const helloContext = { name: "hello" };
 
