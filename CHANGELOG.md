@@ -1,5 +1,11 @@
 # counterfact
 
+## 0.13.0
+
+### Minor Changes
+
+- e141c46: Experimental support for OpenAPI 2
+
 ## 0.12.0
 
 ### Minor Changes
