@@ -121,4 +121,14 @@ describe("a SchemaCoder", () => {
       path: "json-schema",
     });
   });
+
+  it("calculates the modulePath", () => {
+    const coder = new SchemaCoder(
+      new Requirement({
+        $ref: "foo/bar/baz",
+      })
+    );
+
+    expect(coder.modulePath()).toBe("components/baz.ts");
+  });
 });
