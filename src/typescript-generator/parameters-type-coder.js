@@ -15,10 +15,6 @@ export class ParametersTypeCoder extends Coder {
   }
 
   write(script) {
-    if (!this.requirement) {
-      return "never";
-    }
-
     const typeDefinitions = this.requirement.data
       .filter((parameter) => parameter.in === this.placement)
       .map((parameter, index) => {
