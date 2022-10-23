@@ -49,14 +49,6 @@ export class Requirement {
     return this.select(tail.join("/"), branch, `${basePath}${head}/`);
   }
 
-  toJSON() {
-    return {
-      specification: this.specification,
-      url: this.url,
-      data: this.data,
-    };
-  }
-
   forEach(callback) {
     Object.keys(this.data).forEach((key) => {
       callback(this.select(this.escapeJsonPointer(key)), key);
