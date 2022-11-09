@@ -17,9 +17,13 @@ export class Dispatcher {
   }
 
   async request({ method, path, headers, body, query }) {
+    const { matchedPath } = this.registry.handler(path);
+    const operation = this.operationForPathAndMethod(matchedPath, method);
+
     const response = await this.registry.endpoint(
       method,
-      path
+      path,
+      operation?.parameters
     )({
       tools: new Tools({ headers }),
       body,

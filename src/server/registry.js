@@ -1,3 +1,30 @@
+function castParameter(value, schema) {
+  if (!schema) {
+    return value;
+  }
+
+  if (schema.type === "integer" || schema.type === "number") {
+    return Number.parseInt(value, 10);
+  }
+
+  return value;
+}
+
+function castParameters(parameters, openApiParameterDefinitions, scope) {
+  const copy = { ...parameters };
+
+  for (const definition of openApiParameterDefinitions.filter(
+    (item) => item.in === scope
+  )) {
+    copy[definition.name] = castParameter(
+      copy[definition.name],
+      definition.schema
+    );
+  }
+
+  return copy;
+}
+
 export class Registry {
   modules = {};
 
@@ -69,7 +96,7 @@ export class Registry {
     return { module: node.module, path, matchedPath: matchedParts.join("/") };
   }
 
-  endpoint(httpRequestMethod, url) {
+  endpoint(httpRequestMethod, url, openApiParameterDefinitions = []) {
     const handler = this.handler(url);
     const execute = handler?.module?.[httpRequestMethod];
 
@@ -83,7 +110,20 @@ export class Registry {
     return ({ ...requestData }) =>
       execute({
         ...requestData,
-        path: handler.path,
+
+        header: castParameters(
+          requestData.query,
+          openApiParameterDefinitions,
+          "header"
+        ),
+
+        query: castParameters(
+          requestData.query,
+          openApiParameterDefinitions,
+          "query"
+        ),
+
+        path: castParameters(handler.path, openApiParameterDefinitions, "path"),
         matchedPath: handler.matchedPath ?? "none",
       });
   }
