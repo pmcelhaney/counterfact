@@ -85,8 +85,7 @@ export class OperationTypeCoder extends Coder {
         : new ParametersTypeCoder(parameters, "header").write(script);
 
     const bodyRequirement = this.requirement.get("consumes")
-      ? this.requirement
-          .get("parameters")
+      ? parameters
           .find((parameter) =>
             ["body", "formData"].includes(parameter.get("in").data)
           )
