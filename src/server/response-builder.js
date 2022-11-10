@@ -80,7 +80,7 @@ export function createResponseBuilder(operation) {
             return unknownStatusCodeResponse(this.status);
           }
 
-          const content = response.content ?? {};
+          const { content } = response;
 
           return {
             ...this,
