@@ -14,7 +14,7 @@ const __dirname = nodePath.dirname(new URL(import.meta.url).pathname);
 
 const DEFAULT_PORT = 3100;
 
-function swaggerUi(app, openApiPath, port) {
+export function swaggerUi(app, openApiPath, port) {
   app.use(async (ctx, next) => {
     if (ctx.URL.pathname === "/counterfact/openapi") {
       const openApiDocument = await yaml.load(await readFile(openApiPath));
