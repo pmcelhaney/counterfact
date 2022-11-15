@@ -15,6 +15,8 @@ import { ModuleLoader } from "./module-loader.js";
 import { Transpiler } from "./transpiler.js";
 import { ContextRegistry } from "./context-registry.js";
 
+export { swaggerUi } from "./start.js";
+
 async function loadOpenApiDocument(source) {
   try {
     return $RefParser.dereference(await yaml.load(await readFile(source)));
