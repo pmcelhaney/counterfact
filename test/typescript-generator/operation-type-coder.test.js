@@ -186,54 +186,6 @@ describe("an OperationTypeCoder", () => {
     ).toMatchSnapshot();
   });
 
-  it("generates a complex post operation (OpenAPI 2)", () => {
-    const requirement = new Requirement(
-      {
-        produces: ["application/json"],
-
-        consumes: ["application/json"],
-
-        parameters: [
-          { name: "id", in: "path", schema: { type: "string" } },
-          { name: "name", in: "query", schema: { type: "string" } },
-          { name: "name", in: "header", schema: { type: "string" } },
-          { in: "body", schema: { $ref: "#/components/schemas/Example" } },
-        ],
-
-        responses: {
-          200: {
-            schema: { $ref: "#/components/schemas/Example" },
-
-            examples: {
-              "first-example": {
-                value: "first",
-              },
-
-              "second-example": {
-                value: "second",
-              },
-            },
-          },
-
-          400: {
-            schema: { $ref: "#/components/schemas/Error" },
-          },
-
-          default: {
-            schema: { $ref: "#/components/schemas/Error" },
-          },
-        },
-      },
-      "#/paths/hello/post"
-    );
-
-    const coder = new OperationTypeCoder(requirement);
-
-    expect(
-      format(`type TestType = ${coder.write(dummyScript)}`)
-    ).toMatchSnapshot();
-  });
-
   it("generates a simple get operation (OpenAPI 2)", () => {
     const requirement = new Requirement(
       {
