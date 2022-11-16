@@ -120,6 +120,40 @@ exports[`an OperationTypeCoder generates a complex post operation 1`] = `
 "
 `;
 
+exports[`an OperationTypeCoder generates a simple get operation (OpenAPI 2) 1`] = `
+"type TestType = ({
+  query,
+  path,
+  header,
+  body,
+  context,
+}: {
+  query: never;
+  path: never;
+  header: never;
+  body: undefined;
+  context: typeof default;
+  response: ResponseBuilderFactory<{
+    [statusCode in HttpStatusCode]: {
+      headers: {};
+      content: {
+        \\"application/json\\": {
+          schema: Type;
+        };
+      };
+    };
+  }>;
+}) =>
+  | {
+      status: number | undefined;
+      contentType?: \\"application/json\\";
+      body?: Type;
+    }
+  | { status: 415; contentType: \\"text/plain\\"; body: string }
+  | void;
+"
+`;
+
 exports[`an OperationTypeCoder generates a simple get operation 1`] = `
 "type TestType = ({
   query,

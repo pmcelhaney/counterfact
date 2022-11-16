@@ -185,4 +185,25 @@ describe("an OperationTypeCoder", () => {
       format(`type TestType =${coder.write(dummyScript)}`)
     ).toMatchSnapshot();
   });
+
+  it("generates a simple get operation (OpenAPI 2)", () => {
+    const requirement = new Requirement(
+      {
+        produces: ["application/json"],
+
+        responses: {
+          default: {
+            schema: { $ref: "#/components/schemas/Example" },
+          },
+        },
+      },
+      "#/paths/hello/get"
+    );
+
+    const coder = new OperationTypeCoder(requirement);
+
+    expect(
+      format(`type TestType =${coder.write(dummyScript)}`)
+    ).toMatchSnapshot();
+  });
 });
