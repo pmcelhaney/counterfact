@@ -1,3 +1,14 @@
+function castParameters(parameters, parameterTypes) {
+  const copy = { ...parameters };
+
+  Object.entries(copy).forEach(([key, value]) => {
+    copy[key] =
+      parameterTypes?.[key] === "number" ? Number.parseInt(value, 10) : value;
+  });
+
+  return copy;
+}
+
 export class Registry {
   modules = {};
 
@@ -69,7 +80,7 @@ export class Registry {
     return { module: node.module, path, matchedPath: matchedParts.join("/") };
   }
 
-  endpoint(httpRequestMethod, url) {
+  endpoint(httpRequestMethod, url, parameterTypes = {}) {
     const handler = this.handler(url);
     const execute = handler?.module?.[httpRequestMethod];
 
@@ -83,7 +94,13 @@ export class Registry {
     return ({ ...requestData }) =>
       execute({
         ...requestData,
-        path: handler.path,
+
+        header: castParameters(requestData.query, parameterTypes.header),
+
+        query: castParameters(requestData.query, parameterTypes.query),
+
+        path: castParameters(handler.path, parameterTypes.path),
+
         matchedPath: handler.matchedPath ?? "none",
       });
   }

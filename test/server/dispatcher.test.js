@@ -2,6 +2,7 @@ import { Dispatcher } from "../../src/server/dispatcher.js";
 import { ContextRegistry } from "../../src/server/context-registry.js";
 import { Registry } from "../../src/server/registry.js";
 
+// eslint-disable-next-line max-statements
 describe("a dispatcher", () => {
   it("dispatches a get request to a server and returns the response", async () => {
     const registry = new Registry();
@@ -412,6 +413,102 @@ describe("a dispatcher", () => {
     });
 
     expect(result.body).toBe("test context");
+  });
+
+  it("converts query, path, and header parameters to numbers if necessary", async () => {
+    const registry = new Registry();
+
+    registry.add("/a/{integerInPath}/{stringInPath}", {
+      GET({ response, path, query, headers }) {
+        return response[200].text({
+          integerInPath: path.integerInPath,
+          stringInPath: path.stringInPath,
+          numberInQuery: query.numberInQuery,
+          stringInQuery: query.stringInQuery,
+          numberInHeader: headers.numberInHeader,
+          stringInHeader: headers.stringInHeader,
+        });
+      },
+    });
+
+    const openApiDocument = {
+      paths: {
+        "/a/{integerInPath}/{stringInPath}": {
+          get: {
+            parameters: [
+              {
+                name: "integerInPath",
+                in: "path",
+                schema: { type: "integer" },
+              },
+              { name: "stringInPath", in: "path", schema: { type: "string" } },
+              {
+                name: "numberInQuery",
+                in: "query",
+                schema: { type: "number" },
+              },
+              {
+                name: "stringInQuery",
+                in: "query",
+                schema: { type: "string" },
+              },
+              {
+                name: "numberInHeader",
+                in: "header",
+                schema: { type: "number" },
+              },
+              {
+                name: "stringInHeader",
+                in: "header",
+                schema: { type: "string" },
+              },
+            ],
+
+            responses: {
+              200: {
+                content: {
+                  "application/json": {
+                    schema: {
+                      integerInPath: "number",
+                      stringInPath: "string",
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    };
+
+    const dispatcher = new Dispatcher(
+      registry,
+      new ContextRegistry(),
+      openApiDocument
+    );
+    const htmlResponse = await dispatcher.request({
+      method: "GET",
+      path: "/a/1/2",
+
+      query: {
+        numberInQuery: "3",
+        stringInQuery: "4",
+      },
+
+      headers: {
+        numberInHeader: 5,
+        stringInHeader: "6",
+      },
+    });
+
+    expect(htmlResponse.body).toStrictEqual({
+      integerInPath: 1,
+      stringInPath: "2",
+      numberInQuery: 3,
+      stringInQuery: "4",
+      numberInHeader: 5,
+      stringInHeader: "6",
+    });
   });
 });
 
