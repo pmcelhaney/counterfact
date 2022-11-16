@@ -1,5 +1,65 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2) 1`] = `
+"type TestType = ({
+  query,
+  path,
+  header,
+  body,
+  context,
+}: {
+  query: { name?: string };
+  path: { id?: string };
+  header: { name?: string };
+  body: Type;
+  context: typeof default;
+  response: ResponseBuilderFactory<{
+    200: {
+      headers: {};
+      content: {
+        \\"application/json\\": {
+          schema: Type;
+        };
+      };
+    };
+    400: {
+      headers: {};
+      content: {
+        \\"application/json\\": {
+          schema: Type;
+        };
+      };
+    };
+    [statusCode in Exclude<HttpStatusCode, 200 | 400>]: {
+      headers: {};
+      content: {
+        \\"application/json\\": {
+          schema: Type;
+        };
+      };
+    };
+  }>;
+}) =>
+  | {
+      status: 200;
+      contentType?: \\"application/json\\";
+      body?: Type;
+    }
+  | {
+      status: 400;
+      contentType?: \\"application/json\\";
+      body?: Type;
+    }
+  | {
+      status: number | undefined;
+      contentType?: \\"application/json\\";
+      body?: Type;
+    }
+  | { status: 415; contentType: \\"text/plain\\"; body: string }
+  | void;
+"
+`;
+
 exports[`an OperationTypeCoder generates a complex post operation 1`] = `
 "type TestType = ({
   query,

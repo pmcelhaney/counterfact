@@ -19,7 +19,7 @@ The easiest way to start is to copy and paste this command into your terminal.
 npx counterfact@latest https://petstore3.swagger.io/api/v3/openapi.json api --open
 ```
 
-It will generate TypeScript code for the Swagger Pet Store, start a server, and a `--open` a browser running Swagger UI. We're using the pet store example because it's well known and convenient. If you have your own OpenAPI 3 document handy, you can point to that instead. You can also change `api` to wherever you'd like to output the code.
+It will generate TypeScript code for the Swagger Pet Store, start a server, and `--open` a browser running Swagger UI. We're using the pet store example because it's well known and convenient. If you have your own OpenAPI document handy, you can point to that instead. You can also change `api` to wherever you'd like to output the code.
 
 <details>
 
@@ -199,4 +199,4 @@ That's everything you need to know about Counterfact. Using convention over conf
 
 Please send feedback / questions to pmcelhaney@gmail.com or [create a new issue](https://github.com/pmcelhaney/counterfact/issues/new).
 
-And yes, contributions are welcome! An easy way to start is by [creating a CONTRIBUTING.md file](https://github.com/pmcelhaney/counterfact/issues/110). ;-)
+And yes, [contributions](../CONTRIBUTING.md) are welcome!

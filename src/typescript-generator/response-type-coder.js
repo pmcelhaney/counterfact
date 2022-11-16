@@ -43,16 +43,12 @@ export class ResponseTypeCoder extends Coder {
       ]);
     }
 
-    if (response.has("schema")) {
-      return this.openApi2MediaTypes.map((mediaType) => [
-        mediaType,
-        `{
+    return this.openApi2MediaTypes.map((mediaType) => [
+      mediaType,
+      `{
             schema: ${new SchemaTypeCoder(response.get("schema")).write(script)}
          }`,
-      ]);
-    }
-
-    return [];
+    ]);
   }
 
   printContentObjectType(script, response) {
