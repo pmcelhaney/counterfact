@@ -1,6 +1,6 @@
-import jsf from "json-schema-faker";
+import { JSONSchemaFaker } from "json-schema-faker";
 
-jsf.option("useExamplesValue", true);
+JSONSchemaFaker.option("useExamplesValue", true);
 
 function oneOf(items) {
   if (Array.isArray(items)) {
@@ -90,7 +90,7 @@ export function createResponseBuilder(operation) {
 
               body: content[type].examples
                 ? oneOf(content[type].examples)
-                : jsf.generate(content[type].schema),
+                : JSONSchemaFaker.generate(content[type].schema),
             })),
           };
         },
@@ -105,7 +105,7 @@ export function createResponseBuilder(operation) {
 
           const body = response.examples
             ? oneOf(response.examples)
-            : jsf.generate(response.schema);
+            : JSONSchemaFaker.generate(response.schema);
 
           return {
             ...this,
