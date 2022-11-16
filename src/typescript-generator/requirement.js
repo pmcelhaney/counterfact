@@ -1,9 +1,5 @@
 export class Requirement {
   constructor(data, url = "", specification = undefined) {
-    if (data === undefined) {
-      throw new Error("cannot create requirement without data");
-    }
-
     this.data = data;
     this.url = url;
     this.specification = specification;
@@ -51,14 +47,6 @@ export class Requirement {
     }
 
     return this.select(tail.join("/"), branch, `${basePath}${head}/`);
-  }
-
-  toJSON() {
-    return {
-      specification: this.specification,
-      url: this.url,
-      data: this.data,
-    };
   }
 
   forEach(callback) {
