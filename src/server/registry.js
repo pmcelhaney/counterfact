@@ -1,26 +1,10 @@
-function castParameter(value, schema) {
-  if (!schema) {
-    return value;
-  }
-
-  if (schema.type === "integer" || schema.type === "number") {
-    return Number.parseInt(value, 10);
-  }
-
-  return value;
-}
-
-function castParameters(parameters, openApiParameterDefinitions, scope) {
+function castParameters(parameters, parameterTypes) {
   const copy = { ...parameters };
 
-  for (const definition of openApiParameterDefinitions.filter(
-    (item) => item.in === scope
-  )) {
-    copy[definition.name] = castParameter(
-      copy[definition.name],
-      definition.schema
-    );
-  }
+  Object.entries(copy).forEach(([key, value]) => {
+    copy[key] =
+      parameterTypes?.[key] === "number" ? Number.parseInt(value, 10) : value;
+  });
 
   return copy;
 }
@@ -96,7 +80,7 @@ export class Registry {
     return { module: node.module, path, matchedPath: matchedParts.join("/") };
   }
 
-  endpoint(httpRequestMethod, url, openApiParameterDefinitions = []) {
+  endpoint(httpRequestMethod, url, parameterTypes = {}) {
     const handler = this.handler(url);
     const execute = handler?.module?.[httpRequestMethod];
 
@@ -111,19 +95,12 @@ export class Registry {
       execute({
         ...requestData,
 
-        header: castParameters(
-          requestData.query,
-          openApiParameterDefinitions,
-          "header"
-        ),
+        header: castParameters(requestData.query, parameterTypes.header),
 
-        query: castParameters(
-          requestData.query,
-          openApiParameterDefinitions,
-          "query"
-        ),
+        query: castParameters(requestData.query, parameterTypes.query),
 
-        path: castParameters(handler.path, openApiParameterDefinitions, "path"),
+        path: castParameters(handler.path, parameterTypes.path),
+
         matchedPath: handler.matchedPath ?? "none",
       });
   }
