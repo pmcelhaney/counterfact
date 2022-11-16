@@ -1,6 +1,6 @@
-import jsf from "json-schema-faker";
+import { JSONSchemaFaker } from "json-schema-faker";
 
-jsf.option("useExamplesValue", true);
+JSONSchemaFaker.option("useExamplesValue", true);
 
 function oneOf(items) {
   if (Array.isArray(items)) {
@@ -10,10 +10,24 @@ function oneOf(items) {
   return oneOf(Object.values(items));
 }
 
+function unknownStatusCodeResponse(statusCode) {
+  return {
+    status: 500,
+
+    content: [
+      {
+        type: "text/plain",
+        body: `The Open API document does not specify a response for status code ${statusCode}`,
+      },
+    ],
+  };
+}
+
 export function createResponseBuilder(operation) {
   return new Proxy(
     {},
     {
+      // eslint-disable-next-line sonarjs/cognitive-complexity
       get: (target, name) => ({
         status: Number.parseInt(name, 10),
 
@@ -55,20 +69,15 @@ export function createResponseBuilder(operation) {
         },
 
         random() {
+          if (operation.produces) {
+            return this.randomLegacy();
+          }
+
           const response =
             operation.responses[this.status] ?? operation.responses.default;
 
           if (response === undefined) {
-            return {
-              status: 500,
-
-              content: [
-                {
-                  type: "text/plain",
-                  body: `The Open API document does not specify a response for status code ${this.status}`,
-                },
-              ],
-            };
+            return unknownStatusCodeResponse(this.status);
           }
 
           const { content } = response;
@@ -81,7 +90,29 @@ export function createResponseBuilder(operation) {
 
               body: content[type].examples
                 ? oneOf(content[type].examples)
-                : jsf.generate(content[type].schema),
+                : JSONSchemaFaker.generate(content[type].schema),
+            })),
+          };
+        },
+
+        randomLegacy() {
+          const response =
+            operation.responses[this.status] ?? operation.responses.default;
+
+          if (response === undefined) {
+            return unknownStatusCodeResponse(this.status);
+          }
+
+          const body = response.examples
+            ? oneOf(response.examples)
+            : JSONSchemaFaker.generate(response.schema);
+
+          return {
+            ...this,
+
+            content: operation.produces.map((type) => ({
+              type,
+              body,
             })),
           };
         },
