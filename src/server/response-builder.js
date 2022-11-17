@@ -1,4 +1,4 @@
-import { JSONSchemaFaker } from "json-schema-faker";
+import JSONSchemaFaker from "json-schema-faker";
 
 JSONSchemaFaker.option("useExamplesValue", true);
 
