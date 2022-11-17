@@ -1,5 +1,12 @@
 # counterfact
 
+## 0.13.1
+
+### Patch Changes
+
+- 30baae9: a couple of fixes to improve OpenAPI 2 support
+- b212793: use OpenAPI to convert strings in path/query/header to numbers at runtime
+
 ## 0.13.0
 
 ### Minor Changes
