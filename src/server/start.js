@@ -25,6 +25,9 @@ export function swaggerUi(app, openApiPath, port) {
         description: "Counterfact",
         url: `//localhost:${port}`,
       });
+      // OpenApi 2 support: 
+      openApiDocument.host = `//localhost:${port}`;
+
 
       // eslint-disable-next-line require-atomic-updates
       ctx.body = yaml.dump(openApiDocument);
