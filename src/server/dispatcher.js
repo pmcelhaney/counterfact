@@ -3,6 +3,30 @@ import Accept from "@hapi/accept";
 import { createResponseBuilder } from "./response-builder.js";
 import { Tools } from "./tools.js";
 
+function parameterTypes(parameters) {
+  if (!parameters) {
+    return {};
+  }
+
+  const types = {
+    path: {},
+    query: {},
+    header: {},
+    cookie: {},
+    formData: {},
+    body: {},
+  };
+
+  for (const parameter of parameters) {
+    if (parameter.schema) {
+      types[parameter.in][parameter.name] =
+        parameter.schema.type === "integer" ? "number" : parameter.schema.type;
+    }
+  }
+
+  return types;
+}
+
 export class Dispatcher {
   registry;
 
@@ -17,9 +41,13 @@ export class Dispatcher {
   }
 
   async request({ method, path, headers, body, query }) {
+    const { matchedPath } = this.registry.handler(path);
+    const operation = this.operationForPathAndMethod(matchedPath, method);
+
     const response = await this.registry.endpoint(
       method,
-      path
+      path,
+      parameterTypes(operation?.parameters)
     )({
       tools: new Tools({ headers }),
       body,
