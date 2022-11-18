@@ -1,5 +1,11 @@
 # counterfact
 
+## 0.13.2
+
+### Patch Changes
+
+- 8f472c9: change the way JSONSchemaFaker is imported to avoid CJS -> ESM issues
+
 ## 0.13.1
 
 ### Patch Changes
