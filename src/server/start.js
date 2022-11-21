@@ -1,9 +1,9 @@
 import nodePath from "node:path";
 
+import yaml from "js-yaml";
 import Koa from "koa";
 import bodyParser from "koa-bodyparser";
 import { koaSwagger } from "koa2-swagger-ui";
-import yaml from "js-yaml";
 
 import { readFile } from "../util/read-file.js";
 
@@ -25,6 +25,9 @@ function swaggerUi(app, openApiPath, port) {
         description: "Counterfact",
         url: `//localhost:${port}`,
       });
+
+      // OpenApi 2 support:
+      openApiDocument.host = `//localhost:${port}`;
 
       // eslint-disable-next-line require-atomic-updates
       ctx.body = yaml.dump(openApiDocument);
