@@ -1,5 +1,11 @@
 # counterfact
 
+## 0.13.3
+
+### Patch Changes
+
+- 9e457bd: Add OpenApi2 host property support
+
 ## 0.13.2
 
 ### Patch Changes
