@@ -1,6 +1,6 @@
 import { Registry } from "../../src/server/registry.js";
 
-describe("a scripted server", () => {
+describe("a registry", () => {
   it("knows if a handler exists for a request method at a path", () => {
     const registry = new Registry();
 
@@ -101,5 +101,31 @@ describe("a scripted server", () => {
     ).toStrictEqual({
       body: "page 2 of alice's friends in acme",
     });
+  });
+
+  it("lists all of the routes", () => {
+    const registry = new Registry();
+
+    registry.add("/a", {});
+    registry.add("/b", {});
+    registry.add("/c", {});
+    registry.add("/c/d", {});
+    registry.add("/c/d/e/f/g", {});
+    registry.add("/a/in/order", {});
+    registry.add("/c/a", {});
+    registry.add("/c/{b}", {});
+    registry.add("/c/c", {});
+
+    expect(registry.routes).toStrictEqual([
+      "/a",
+      "/a/in/order",
+      "/b",
+      "/c",
+      "/c/a",
+      "/c/{b}",
+      "/c/c",
+      "/c/d",
+      "/c/d/e/f/g",
+    ]);
   });
 });

@@ -1,10 +1,11 @@
-import { landingPageBody } from "../../src/server/start.js";
+import { landingPageTemplate } from "../../src/server/start.js";
+
+// not great but better than nothing
 
 describe("start", () => {
   it("renders the landing page", async () => {
-    const basePath = "/home/user/counterfact";
-    const result = await landingPageBody(basePath);
+    const result = await landingPageTemplate({ routes: ["/hello/world"] });
 
-    expect(result).toContain(basePath);
+    expect(result).toContain("/hello/world");
   });
 });
