@@ -2,9 +2,8 @@ import { landingPageTemplate } from "../../src/server/start.js";
 
 describe("start", () => {
   it("renders the landing page", async () => {
-    const basePath = "/home/user/counterfact";
-    const result = await landingPageTemplate({ basePath });
+    const result = await landingPageTemplate({ routes: ["/hello/world"] });
 
-    expect(result).toContain(basePath);
+    expect(result).toContain("/hello/world");
   });
 });
