@@ -51,7 +51,7 @@ Map {
           },
           "exports": Map {
             "HTTP_POST" => Object {
-              "code": "({ query, path, header, body, context }: { query: never, path: never, header: never, body: Pet, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Pet, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -67,7 +67,7 @@ Map {
           headers: {};
           content: {};
         }
-}> }) => {  
+}>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: \\"application/xml\\",
               body?: Pet
@@ -77,8 +77,7 @@ Map {
               body?: Pet
             } | {  
           status: 405 
-        } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | void",
+        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet/post",
               "isDefault": false,
@@ -88,7 +87,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_PUT" => Object {
-              "code": "({ query, path, header, body, context }: { query: never, path: never, header: never, body: Pet, context: typeof Context2, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Pet, context: typeof Context2, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -112,7 +111,7 @@ Map {
           headers: {};
           content: {};
         }
-}> }) => {  
+}>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: \\"application/xml\\",
               body?: Pet
@@ -126,8 +125,7 @@ Map {
           status: 404 
         } | {  
           status: 405 
-        } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | void",
+        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet/put",
               "isDefault": false,
@@ -324,7 +322,7 @@ Map {
           },
           "exports": Map {
             "HTTP_POST" => Object {
-              "code": "({ query, path, header, body, context }: { query: never, path: never, header: never, body: Pet, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Pet, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -340,7 +338,7 @@ Map {
           headers: {};
           content: {};
         }
-}> }) => {  
+}>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: \\"application/xml\\",
               body?: Pet
@@ -350,8 +348,7 @@ Map {
               body?: Pet
             } | {  
           status: 405 
-        } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | void",
+        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet/post",
               "isDefault": false,
@@ -361,7 +358,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_PUT" => Object {
-              "code": "({ query, path, header, body, context }: { query: never, path: never, header: never, body: Pet, context: typeof Context2, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Pet, context: typeof Context2, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -385,7 +382,7 @@ Map {
           headers: {};
           content: {};
         }
-}> }) => {  
+}>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: \\"application/xml\\",
               body?: Pet
@@ -399,8 +396,7 @@ Map {
           status: 404 
         } | {  
           status: 405 
-        } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | void",
+        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet/put",
               "isDefault": false,
@@ -601,7 +597,7 @@ Map {
     },
     "exports": Map {
       "HTTP_POST" => Object {
-        "code": "({ query, path, header, body, context }: { query: never, path: never, header: never, body: Pet, context: typeof Context, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Pet, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -617,7 +613,7 @@ Map {
           headers: {};
           content: {};
         }
-}> }) => {  
+}>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: \\"application/xml\\",
               body?: Pet
@@ -627,8 +623,7 @@ Map {
               body?: Pet
             } | {  
           status: 405 
-        } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | void",
+        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet/post",
         "isDefault": false,
@@ -638,7 +633,7 @@ Map {
         "typeDeclaration": "",
       },
       "HTTP_PUT" => Object {
-        "code": "({ query, path, header, body, context }: { query: never, path: never, header: never, body: Pet, context: typeof Context2, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Pet, context: typeof Context2, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -662,7 +657,7 @@ Map {
           headers: {};
           content: {};
         }
-}> }) => {  
+}>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: \\"application/xml\\",
               body?: Pet
@@ -676,8 +671,7 @@ Map {
           status: 404 
         } | {  
           status: 405 
-        } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | void",
+        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet/put",
         "isDefault": false,
@@ -892,7 +886,7 @@ Map {
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context }: { query: {status?: string}, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: {status?: string}, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -908,7 +902,7 @@ Map {
           headers: {};
           content: {};
         }
-}> }) => {  
+}>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: \\"application/xml\\",
               body?: Array<Pet>
@@ -918,8 +912,7 @@ Map {
               body?: Array<Pet>
             } | {  
           status: 400 
-        } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | void",
+        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
               "isDefault": false,
@@ -1090,7 +1083,7 @@ Map {
     },
     "exports": Map {
       "HTTP_GET" => Object {
-        "code": "({ query, path, header, body, context }: { query: {status?: string}, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context, proxy }: { query: {status?: string}, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -1106,7 +1099,7 @@ Map {
           headers: {};
           content: {};
         }
-}> }) => {  
+}>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: \\"application/xml\\",
               body?: Array<Pet>
@@ -1116,8 +1109,7 @@ Map {
               body?: Array<Pet>
             } | {  
           status: 400 
-        } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | void",
+        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
         "isDefault": false,
@@ -1304,7 +1296,7 @@ Map {
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context }: { query: {tags?: Array<string>}, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: {tags?: Array<string>}, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -1320,7 +1312,7 @@ Map {
           headers: {};
           content: {};
         }
-}> }) => {  
+}>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: \\"application/xml\\",
               body?: Array<Pet>
@@ -1330,8 +1322,7 @@ Map {
               body?: Array<Pet>
             } | {  
           status: 400 
-        } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | void",
+        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1findByTags/get",
               "isDefault": false,
@@ -1502,7 +1493,7 @@ Map {
     },
     "exports": Map {
       "HTTP_GET" => Object {
-        "code": "({ query, path, header, body, context }: { query: {tags?: Array<string>}, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context, proxy }: { query: {tags?: Array<string>}, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -1518,7 +1509,7 @@ Map {
           headers: {};
           content: {};
         }
-}> }) => {  
+}>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: \\"application/xml\\",
               body?: Array<Pet>
@@ -1528,8 +1519,7 @@ Map {
               body?: Array<Pet>
             } | {  
           status: 400 
-        } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | void",
+        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1findByTags/get",
         "isDefault": false,
@@ -1744,7 +1734,7 @@ Map {
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context }: { query: never, path: {petId: number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {petId: number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -1764,7 +1754,7 @@ Map {
           headers: {};
           content: {};
         }
-}> }) => {  
+}>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: \\"application/xml\\",
               body?: Pet
@@ -1776,8 +1766,7 @@ Map {
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | void",
+        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/get",
               "isDefault": false,
@@ -1787,15 +1776,14 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_POST" => Object {
-              "code": "({ query, path, header, body, context }: { query: {name?: number, status?: string}, path: {petId: number}, header: never, body: undefined, context: typeof Context2, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: {name?: number, status?: string}, path: {petId: number}, header: never, body: undefined, context: typeof Context2, response: ResponseBuilderFactory<{
 405: {
           headers: {};
           content: {};
         }
-}> }) => {  
+}>, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: 405 
-        } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | void",
+        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/post",
               "isDefault": false,
@@ -1805,15 +1793,14 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_DELETE" => Object {
-              "code": "({ query, path, header, body, context }: { query: never, path: {petId: string}, header: {api_key?: string}, body: undefined, context: typeof Context3, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {petId: string}, header: {api_key?: string}, body: undefined, context: typeof Context3, response: ResponseBuilderFactory<{
 400: {
           headers: {};
           content: {};
         }
-}> }) => {  
+}>, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: 400 
-        } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | void",
+        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/delete",
               "isDefault": false,
@@ -2048,7 +2035,7 @@ Map {
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context }: { query: never, path: {petId: number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {petId: number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -2068,7 +2055,7 @@ Map {
           headers: {};
           content: {};
         }
-}> }) => {  
+}>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: \\"application/xml\\",
               body?: Pet
@@ -2080,8 +2067,7 @@ Map {
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | void",
+        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/get",
               "isDefault": false,
@@ -2091,15 +2077,14 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_POST" => Object {
-              "code": "({ query, path, header, body, context }: { query: {name?: number, status?: string}, path: {petId: number}, header: never, body: undefined, context: typeof Context2, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: {name?: number, status?: string}, path: {petId: number}, header: never, body: undefined, context: typeof Context2, response: ResponseBuilderFactory<{
 405: {
           headers: {};
           content: {};
         }
-}> }) => {  
+}>, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: 405 
-        } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | void",
+        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/post",
               "isDefault": false,
@@ -2109,15 +2094,14 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_DELETE" => Object {
-              "code": "({ query, path, header, body, context }: { query: never, path: {petId: string}, header: {api_key?: string}, body: undefined, context: typeof Context3, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {petId: string}, header: {api_key?: string}, body: undefined, context: typeof Context3, response: ResponseBuilderFactory<{
 400: {
           headers: {};
           content: {};
         }
-}> }) => {  
+}>, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: 400 
-        } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | void",
+        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/delete",
               "isDefault": false,
@@ -2352,7 +2336,7 @@ Map {
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context }: { query: never, path: {petId: number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {petId: number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -2372,7 +2356,7 @@ Map {
           headers: {};
           content: {};
         }
-}> }) => {  
+}>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: \\"application/xml\\",
               body?: Pet
@@ -2384,8 +2368,7 @@ Map {
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | void",
+        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/get",
               "isDefault": false,
@@ -2395,15 +2378,14 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_POST" => Object {
-              "code": "({ query, path, header, body, context }: { query: {name?: number, status?: string}, path: {petId: number}, header: never, body: undefined, context: typeof Context2, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: {name?: number, status?: string}, path: {petId: number}, header: never, body: undefined, context: typeof Context2, response: ResponseBuilderFactory<{
 405: {
           headers: {};
           content: {};
         }
-}> }) => {  
+}>, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: 405 
-        } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | void",
+        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/post",
               "isDefault": false,
@@ -2413,15 +2395,14 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_DELETE" => Object {
-              "code": "({ query, path, header, body, context }: { query: never, path: {petId: string}, header: {api_key?: string}, body: undefined, context: typeof Context3, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {petId: string}, header: {api_key?: string}, body: undefined, context: typeof Context3, response: ResponseBuilderFactory<{
 400: {
           headers: {};
           content: {};
         }
-}> }) => {  
+}>, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: 400 
-        } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | void",
+        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/delete",
               "isDefault": false,
@@ -2660,7 +2641,7 @@ Map {
     },
     "exports": Map {
       "HTTP_GET" => Object {
-        "code": "({ query, path, header, body, context }: { query: never, path: {petId: number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context, proxy }: { query: never, path: {petId: number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -2680,7 +2661,7 @@ Map {
           headers: {};
           content: {};
         }
-}> }) => {  
+}>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: \\"application/xml\\",
               body?: Pet
@@ -2692,8 +2673,7 @@ Map {
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | void",
+        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/get",
         "isDefault": false,
@@ -2703,15 +2683,14 @@ Map {
         "typeDeclaration": "",
       },
       "HTTP_POST" => Object {
-        "code": "({ query, path, header, body, context }: { query: {name?: number, status?: string}, path: {petId: number}, header: never, body: undefined, context: typeof Context2, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context, proxy }: { query: {name?: number, status?: string}, path: {petId: number}, header: never, body: undefined, context: typeof Context2, response: ResponseBuilderFactory<{
 405: {
           headers: {};
           content: {};
         }
-}> }) => {  
+}>, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: 405 
-        } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | void",
+        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/post",
         "isDefault": false,
@@ -2721,15 +2700,14 @@ Map {
         "typeDeclaration": "",
       },
       "HTTP_DELETE" => Object {
-        "code": "({ query, path, header, body, context }: { query: never, path: {petId: string}, header: {api_key?: string}, body: undefined, context: typeof Context3, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context, proxy }: { query: never, path: {petId: string}, header: {api_key?: string}, body: undefined, context: typeof Context3, response: ResponseBuilderFactory<{
 400: {
           headers: {};
           content: {};
         }
-}> }) => {  
+}>, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: 400 
-        } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | void",
+        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/delete",
         "isDefault": false,
@@ -2980,7 +2958,7 @@ Map {
           },
           "exports": Map {
             "HTTP_POST" => Object {
-              "code": "({ query, path, header, body, context }: { query: {additionalMetadata?: number}, path: {petId: number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: {additionalMetadata?: number}, path: {petId: number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -2989,12 +2967,11 @@ Map {
          }
 };
         }
-}> }) => {  
+}>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: \\"application/json\\",
               body?: ApiResponse
-            } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | void",
+            } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post",
               "isDefault": false,
@@ -3102,7 +3079,7 @@ Map {
     },
     "exports": Map {
       "HTTP_POST" => Object {
-        "code": "({ query, path, header, body, context }: { query: {additionalMetadata?: number}, path: {petId: number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context, proxy }: { query: {additionalMetadata?: number}, path: {petId: number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -3111,12 +3088,11 @@ Map {
          }
 };
         }
-}> }) => {  
+}>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: \\"application/json\\",
               body?: ApiResponse
-            } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | void",
+            } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post",
         "isDefault": false,
@@ -3239,7 +3215,7 @@ Map {
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context }: { query: never, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -3248,12 +3224,11 @@ Map {
          }
 };
         }
-}> }) => {  
+}>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: \\"application/json\\",
               body?: {[key: string]: number}
-            } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | void",
+            } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1store~1inventory/get",
               "isDefault": false,
@@ -3330,7 +3305,7 @@ Map {
     },
     "exports": Map {
       "HTTP_GET" => Object {
-        "code": "({ query, path, header, body, context }: { query: never, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -3339,12 +3314,11 @@ Map {
          }
 };
         }
-}> }) => {  
+}>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: \\"application/json\\",
               body?: {[key: string]: number}
-            } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | void",
+            } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1store~1inventory/get",
         "isDefault": false,
@@ -3438,7 +3412,7 @@ Map {
           },
           "exports": Map {
             "HTTP_POST" => Object {
-              "code": "({ query, path, header, body, context }: { query: never, path: never, header: never, body: Order, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Order, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -3451,14 +3425,13 @@ Map {
           headers: {};
           content: {};
         }
-}> }) => {  
+}>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: \\"application/json\\",
               body?: Order
             } | {  
           status: 405 
-        } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | void",
+        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1store~1order/post",
               "isDefault": false,
@@ -3566,7 +3539,7 @@ Map {
     },
     "exports": Map {
       "HTTP_POST" => Object {
-        "code": "({ query, path, header, body, context }: { query: never, path: never, header: never, body: Order, context: typeof Context, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Order, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -3579,14 +3552,13 @@ Map {
           headers: {};
           content: {};
         }
-}> }) => {  
+}>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: \\"application/json\\",
               body?: Order
             } | {  
           status: 405 
-        } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | void",
+        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1store~1order/post",
         "isDefault": false,
@@ -3724,7 +3696,7 @@ Map {
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context }: { query: never, path: {orderId: number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {orderId: number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -3744,7 +3716,7 @@ Map {
           headers: {};
           content: {};
         }
-}> }) => {  
+}>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: \\"application/xml\\",
               body?: Order
@@ -3756,8 +3728,7 @@ Map {
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | void",
+        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get",
               "isDefault": false,
@@ -3767,7 +3738,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_DELETE" => Object {
-              "code": "({ query, path, header, body, context }: { query: never, path: {orderId: number}, header: never, body: undefined, context: typeof Context2, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {orderId: number}, header: never, body: undefined, context: typeof Context2, response: ResponseBuilderFactory<{
 400: {
           headers: {};
           content: {};
@@ -3776,12 +3747,11 @@ Map {
           headers: {};
           content: {};
         }
-}> }) => {  
+}>, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | void",
+        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete",
               "isDefault": false,
@@ -3919,7 +3889,7 @@ Map {
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context }: { query: never, path: {orderId: number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {orderId: number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -3939,7 +3909,7 @@ Map {
           headers: {};
           content: {};
         }
-}> }) => {  
+}>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: \\"application/xml\\",
               body?: Order
@@ -3951,8 +3921,7 @@ Map {
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | void",
+        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get",
               "isDefault": false,
@@ -3962,7 +3931,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_DELETE" => Object {
-              "code": "({ query, path, header, body, context }: { query: never, path: {orderId: number}, header: never, body: undefined, context: typeof Context2, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {orderId: number}, header: never, body: undefined, context: typeof Context2, response: ResponseBuilderFactory<{
 400: {
           headers: {};
           content: {};
@@ -3971,12 +3940,11 @@ Map {
           headers: {};
           content: {};
         }
-}> }) => {  
+}>, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | void",
+        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete",
               "isDefault": false,
@@ -4118,7 +4086,7 @@ Map {
     },
     "exports": Map {
       "HTTP_GET" => Object {
-        "code": "({ query, path, header, body, context }: { query: never, path: {orderId: number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context, proxy }: { query: never, path: {orderId: number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -4138,7 +4106,7 @@ Map {
           headers: {};
           content: {};
         }
-}> }) => {  
+}>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: \\"application/xml\\",
               body?: Order
@@ -4150,8 +4118,7 @@ Map {
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | void",
+        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get",
         "isDefault": false,
@@ -4161,7 +4128,7 @@ Map {
         "typeDeclaration": "",
       },
       "HTTP_DELETE" => Object {
-        "code": "({ query, path, header, body, context }: { query: never, path: {orderId: number}, header: never, body: undefined, context: typeof Context2, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context, proxy }: { query: never, path: {orderId: number}, header: never, body: undefined, context: typeof Context2, response: ResponseBuilderFactory<{
 400: {
           headers: {};
           content: {};
@@ -4170,12 +4137,11 @@ Map {
           headers: {};
           content: {};
         }
-}> }) => {  
+}>, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | void",
+        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete",
         "isDefault": false,
@@ -4331,7 +4297,7 @@ Map {
           },
           "exports": Map {
             "HTTP_POST" => Object {
-              "code": "({ query, path, header, body, context }: { query: never, path: never, header: never, body: User, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: User, context: typeof Context, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
           headers: {};
           content: {
@@ -4343,7 +4309,7 @@ Map {
          }
 };
         }
-}> }) => {  
+}>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: number | undefined, 
               contentType?: \\"application/json\\",
               body?: User
@@ -4351,8 +4317,7 @@ Map {
               status: number | undefined, 
               contentType?: \\"application/xml\\",
               body?: User
-            } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | void",
+            } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user/post",
               "isDefault": false,
@@ -4458,7 +4423,7 @@ Map {
     },
     "exports": Map {
       "HTTP_POST" => Object {
-        "code": "({ query, path, header, body, context }: { query: never, path: never, header: never, body: User, context: typeof Context, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: User, context: typeof Context, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
           headers: {};
           content: {
@@ -4470,7 +4435,7 @@ Map {
          }
 };
         }
-}> }) => {  
+}>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: number | undefined, 
               contentType?: \\"application/json\\",
               body?: User
@@ -4478,8 +4443,7 @@ Map {
               status: number | undefined, 
               contentType?: \\"application/xml\\",
               body?: User
-            } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | void",
+            } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1user/post",
         "isDefault": false,
@@ -4601,7 +4565,7 @@ Map {
           },
           "exports": Map {
             "HTTP_POST" => Object {
-              "code": "({ query, path, header, body, context }: { query: never, path: never, header: never, body: Array<User>, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Array<User>, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -4617,7 +4581,7 @@ Map {
           headers: {};
           content: {};
         }
-}> }) => {  
+}>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: \\"application/xml\\",
               body?: User
@@ -4627,8 +4591,7 @@ Map {
               body?: User
             } | {  
           status: number | undefined 
-        } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | void",
+        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1createWithList/post",
               "isDefault": false,
@@ -4736,7 +4699,7 @@ Map {
     },
     "exports": Map {
       "HTTP_POST" => Object {
-        "code": "({ query, path, header, body, context }: { query: never, path: never, header: never, body: Array<User>, context: typeof Context, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Array<User>, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -4752,7 +4715,7 @@ Map {
           headers: {};
           content: {};
         }
-}> }) => {  
+}>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: \\"application/xml\\",
               body?: User
@@ -4762,8 +4725,7 @@ Map {
               body?: User
             } | {  
           status: number | undefined 
-        } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | void",
+        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1createWithList/post",
         "isDefault": false,
@@ -4886,7 +4848,7 @@ Map {
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context }: { query: {username?: string, password?: string}, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: {username?: string, password?: string}, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {
 \\"X-Rate-Limit\\": { schema: number},
@@ -4905,7 +4867,7 @@ Map {
           headers: {};
           content: {};
         }
-}> }) => {  
+}>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: \\"application/xml\\",
               body?: string
@@ -4915,8 +4877,7 @@ Map {
               body?: string
             } | {  
           status: 400 
-        } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | void",
+        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1login/get",
               "isDefault": false,
@@ -4993,7 +4954,7 @@ Map {
     },
     "exports": Map {
       "HTTP_GET" => Object {
-        "code": "({ query, path, header, body, context }: { query: {username?: string, password?: string}, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context, proxy }: { query: {username?: string, password?: string}, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {
 \\"X-Rate-Limit\\": { schema: number},
@@ -5012,7 +4973,7 @@ Map {
           headers: {};
           content: {};
         }
-}> }) => {  
+}>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: \\"application/xml\\",
               body?: string
@@ -5022,8 +4983,7 @@ Map {
               body?: string
             } | {  
           status: 400 
-        } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | void",
+        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1login/get",
         "isDefault": false,
@@ -5114,15 +5074,14 @@ Map {
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context }: { query: never, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
           headers: {};
           content: {};
         }
-}> }) => {  
+}>, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: number | undefined 
-        } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | void",
+        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1logout/get",
               "isDefault": false,
@@ -5199,15 +5158,14 @@ Map {
     },
     "exports": Map {
       "HTTP_GET" => Object {
-        "code": "({ query, path, header, body, context }: { query: never, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
           headers: {};
           content: {};
         }
-}> }) => {  
+}>, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: number | undefined 
-        } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | void",
+        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1logout/get",
         "isDefault": false,
@@ -5329,7 +5287,7 @@ Map {
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context }: { query: never, path: {username: string}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {username: string}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -5349,7 +5307,7 @@ Map {
           headers: {};
           content: {};
         }
-}> }) => {  
+}>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: \\"application/xml\\",
               body?: User
@@ -5361,8 +5319,7 @@ Map {
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | void",
+        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/get",
               "isDefault": false,
@@ -5372,15 +5329,14 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_PUT" => Object {
-              "code": "({ query, path, header, body, context }: { query: never, path: {username: string}, header: never, body: User, context: typeof Context2, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {username: string}, header: never, body: User, context: typeof Context2, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
           headers: {};
           content: {};
         }
-}> }) => {  
+}>, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: number | undefined 
-        } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | void",
+        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/put",
               "isDefault": false,
@@ -5390,7 +5346,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_DELETE" => Object {
-              "code": "({ query, path, header, body, context }: { query: never, path: {username: string}, header: never, body: undefined, context: typeof Context3, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {username: string}, header: never, body: undefined, context: typeof Context3, response: ResponseBuilderFactory<{
 400: {
           headers: {};
           content: {};
@@ -5399,12 +5355,11 @@ Map {
           headers: {};
           content: {};
         }
-}> }) => {  
+}>, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | void",
+        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/delete",
               "isDefault": false,
@@ -5576,7 +5531,7 @@ Map {
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context }: { query: never, path: {username: string}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {username: string}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -5596,7 +5551,7 @@ Map {
           headers: {};
           content: {};
         }
-}> }) => {  
+}>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: \\"application/xml\\",
               body?: User
@@ -5608,8 +5563,7 @@ Map {
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | void",
+        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/get",
               "isDefault": false,
@@ -5619,15 +5573,14 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_PUT" => Object {
-              "code": "({ query, path, header, body, context }: { query: never, path: {username: string}, header: never, body: User, context: typeof Context2, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {username: string}, header: never, body: User, context: typeof Context2, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
           headers: {};
           content: {};
         }
-}> }) => {  
+}>, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: number | undefined 
-        } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | void",
+        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/put",
               "isDefault": false,
@@ -5637,7 +5590,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_DELETE" => Object {
-              "code": "({ query, path, header, body, context }: { query: never, path: {username: string}, header: never, body: undefined, context: typeof Context3, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {username: string}, header: never, body: undefined, context: typeof Context3, response: ResponseBuilderFactory<{
 400: {
           headers: {};
           content: {};
@@ -5646,12 +5599,11 @@ Map {
           headers: {};
           content: {};
         }
-}> }) => {  
+}>, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | void",
+        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/delete",
               "isDefault": false,
@@ -5823,7 +5775,7 @@ Map {
           },
           "exports": Map {
             "HTTP_GET" => Object {
-              "code": "({ query, path, header, body, context }: { query: never, path: {username: string}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {username: string}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -5843,7 +5795,7 @@ Map {
           headers: {};
           content: {};
         }
-}> }) => {  
+}>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: \\"application/xml\\",
               body?: User
@@ -5855,8 +5807,7 @@ Map {
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | void",
+        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/get",
               "isDefault": false,
@@ -5866,15 +5817,14 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_PUT" => Object {
-              "code": "({ query, path, header, body, context }: { query: never, path: {username: string}, header: never, body: User, context: typeof Context2, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {username: string}, header: never, body: User, context: typeof Context2, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
           headers: {};
           content: {};
         }
-}> }) => {  
+}>, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: number | undefined 
-        } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | void",
+        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/put",
               "isDefault": false,
@@ -5884,7 +5834,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_DELETE" => Object {
-              "code": "({ query, path, header, body, context }: { query: never, path: {username: string}, header: never, body: undefined, context: typeof Context3, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {username: string}, header: never, body: undefined, context: typeof Context3, response: ResponseBuilderFactory<{
 400: {
           headers: {};
           content: {};
@@ -5893,12 +5843,11 @@ Map {
           headers: {};
           content: {};
         }
-}> }) => {  
+}>, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | void",
+        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/delete",
               "isDefault": false,
@@ -6074,7 +6023,7 @@ Map {
     },
     "exports": Map {
       "HTTP_GET" => Object {
-        "code": "({ query, path, header, body, context }: { query: never, path: {username: string}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context, proxy }: { query: never, path: {username: string}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -6094,7 +6043,7 @@ Map {
           headers: {};
           content: {};
         }
-}> }) => {  
+}>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: \\"application/xml\\",
               body?: User
@@ -6106,8 +6055,7 @@ Map {
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | void",
+        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/get",
         "isDefault": false,
@@ -6117,15 +6065,14 @@ Map {
         "typeDeclaration": "",
       },
       "HTTP_PUT" => Object {
-        "code": "({ query, path, header, body, context }: { query: never, path: {username: string}, header: never, body: User, context: typeof Context2, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context, proxy }: { query: never, path: {username: string}, header: never, body: User, context: typeof Context2, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
           headers: {};
           content: {};
         }
-}> }) => {  
+}>, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: number | undefined 
-        } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | void",
+        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/put",
         "isDefault": false,
@@ -6135,7 +6082,7 @@ Map {
         "typeDeclaration": "",
       },
       "HTTP_DELETE" => Object {
-        "code": "({ query, path, header, body, context }: { query: never, path: {username: string}, header: never, body: undefined, context: typeof Context3, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context, proxy }: { query: never, path: {username: string}, header: never, body: undefined, context: typeof Context3, response: ResponseBuilderFactory<{
 400: {
           headers: {};
           content: {};
@@ -6144,12 +6091,11 @@ Map {
           headers: {};
           content: {};
         }
-}> }) => {  
+}>, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: \\"text/plain\\", body: string }
-    | void",
+        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
         "done": true,
         "id": "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/delete",
         "isDefault": false,
