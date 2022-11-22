@@ -1,5 +1,11 @@
 # counterfact
 
+## 0.14.0
+
+### Minor Changes
+
+- b177d1d: rebuilt (but very rough) landing page using rapidoc
+
 ## 0.13.3
 
 ### Patch Changes
