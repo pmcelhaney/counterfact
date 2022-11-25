@@ -21,28 +21,23 @@ async function main(source, destination) {
 
   const openBrowser = options.open;
   const includeSwagger = options.swagger || openBrowser;
-  const startServer = options.server || includeSwagger;
 
-  if (startServer) {
-    const { contextRegistry } = await start({
-      basePath,
-      port: options.port,
-      openApiPath: source,
-      includeSwaggerUi: includeSwagger,
-    });
+  const { contextRegistry } = await start({
+    basePath,
+    port: options.port,
+    openApiPath: source,
+    includeSwaggerUi: includeSwagger,
+  });
 
-    process.stdout.write(
-      `API is running at http://localhost:${options.port}.\n`
-    );
+  process.stdout.write(`API is running at http://localhost:${options.port}.\n`);
 
-    process.stdout.write(
-      '\n\nStarting REPL... (start with `const context = loadContext("/")`)\n'
-    );
+  process.stdout.write(
+    '\n\nStarting REPL... (start with `const context = loadContext("/")`)\n'
+  );
 
-    const replServer = repl.start("> ");
+  const replServer = repl.start("> ");
 
-    replServer.context.loadContext = (path) => contextRegistry.find(path);
-  }
+  replServer.context.loadContext = (path) => contextRegistry.find(path);
 
   if (openBrowser) {
     await open(`http://localhost:${options.port}/counterfact`);
@@ -56,12 +51,8 @@ program
   )
   .argument("<openapi.yaml>", "path or URL to OpenAPI document")
   .argument("[destination]", "path to generated code", ".")
-  .option("--serve", "start the server after generating code")
   .option("--port <number>", "server port number", DEFAULT_PORT)
-  .option("--swagger", "include swagger-ui (implies --serve)")
-  .option(
-    "--open",
-    "open a browser to swagger-ui (implies --swagger and --serve)"
-  )
+  .option("--swagger", "include swagger-ui")
+  .option("--open", "open a browser")
   .action(main)
   .parse(process.argv);
