@@ -1,4 +1,6 @@
 import Accept from "@hapi/accept";
+// eslint-disable-next-line no-shadow
+import fetch, { Headers } from "node-fetch";
 
 import { createResponseBuilder } from "./response-builder.js";
 import { Tools } from "./tools.js";
@@ -29,6 +31,9 @@ function parameterTypes(parameters) {
 
 export class Dispatcher {
   registry;
+
+  // alias the fetch function so we can mock it in tests
+  fetch = fetch;
 
   constructor(registry, contextRegistry, openApiDocument) {
     this.registry = registry;
@@ -61,6 +66,32 @@ export class Dispatcher {
           method
         )
       ),
+
+      proxy: async (hostOrOptions) => {
+        const options =
+          typeof hostOrOptions === "string"
+            ? { host: hostOrOptions }
+            : hostOrOptions;
+
+        const fetchResponse = await this.fetch(options.host, {
+          method,
+          path,
+          headers: new Headers(headers),
+          query,
+          ...options,
+        });
+
+        const responseHeaders = Object.fromEntries(
+          fetchResponse.headers.entries()
+        );
+
+        return {
+          status: fetchResponse.status,
+          contentType: responseHeaders["content-type"] ?? "unknown/unknown",
+          headers: responseHeaders,
+          body: await fetchResponse.text(),
+        };
+      },
     });
 
     const normalizedResponse = this.normalizeResponse(

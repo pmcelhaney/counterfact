@@ -3,6 +3,12 @@ import { Dispatcher } from "../../src/server/dispatcher.js";
 import { koaMiddleware } from "../../src/server/koa-middleware.js";
 import { ContextRegistry } from "../../src/server/context-registry.js";
 
+function mockKoaProxy(options) {
+  return function proxy(ctx) {
+    ctx.mockProxyHost = options.host;
+  };
+}
+
 describe("koa middleware", () => {
   it("passes the request to the dispatcher and returns the response", async () => {
     const registry = new Registry();
@@ -47,5 +53,29 @@ describe("koa middleware", () => {
     await middleware(ctx);
 
     expect(ctx.status).toBe(304);
+  });
+
+  it("proxies when the response says to use a proxy", async () => {
+    const registry = new Registry();
+
+    registry.add("/proxy", {
+      GET() {
+        throw new Error("should not be called because the proxy is used");
+      },
+    });
+
+    const dispatcher = new Dispatcher(registry, new ContextRegistry());
+    const middleware = koaMiddleware(
+      dispatcher,
+      { proxyUrl: "https://example.com" },
+      mockKoaProxy
+    );
+    const ctx = {
+      request: { path: "/proxy", method: "GET" },
+    };
+
+    await middleware(ctx);
+
+    expect(ctx.mockProxyHost).toBe("https://example.com");
   });
 });

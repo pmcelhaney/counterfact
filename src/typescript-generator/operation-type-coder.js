@@ -101,9 +101,10 @@ export class OperationTypeCoder extends Coder {
       this.requirement.get("produces")?.data
     ).write(script);
 
-    return `({ query, path, header, body, context }: { query: ${queryType}, path: ${pathType}, header: ${headerType}, body: ${bodyType}, context: typeof ${contextImportName}, response: ${responseType} }) => ${this.responseTypes(
+    const proxyType = "(url: string) => { proxyUrl: string }";
+
+    return `({ query, path, header, body, context, proxy }: { query: ${queryType}, path: ${pathType}, header: ${headerType}, body: ${bodyType}, context: typeof ${contextImportName}, response: ${responseType}, proxy: ${proxyType} }) => ${this.responseTypes(
       script
-    )} | { status: 415, contentType: "text/plain", body: string }
-    | void`;
+    )} | { status: 415, contentType: "text/plain", body: string } | void`;
   }
 }
