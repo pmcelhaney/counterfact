@@ -21,6 +21,8 @@
     "Deno",
     "openapi",
     "Petstore",
+    "counterfactuals",
+    "openapi",
     "transpiles"
   ]
 }

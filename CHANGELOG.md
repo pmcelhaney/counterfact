@@ -1,5 +1,23 @@
 # counterfact
 
+## 0.14.0
+
+### Minor Changes
+
+- b177d1d: rebuilt (but very rough) landing page using rapidoc
+
+## 0.13.3
+
+### Patch Changes
+
+- 9e457bd: Add OpenApi2 host property support
+
+## 0.13.2
+
+### Patch Changes
+
+- 8f472c9: change the way JSONSchemaFaker is imported to avoid CJS -> ESM issues
+
 ## 0.13.1
 
 ### Patch Changes

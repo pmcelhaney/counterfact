@@ -1,9 +1,10 @@
 import nodePath from "node:path";
 
+import yaml from "js-yaml";
 import Koa from "koa";
 import bodyParser from "koa-bodyparser";
 import { koaSwagger } from "koa2-swagger-ui";
-import yaml from "js-yaml";
+import Handlebars from "handlebars";
 
 import { readFile } from "../util/read-file.js";
 
@@ -14,7 +15,11 @@ const __dirname = nodePath.dirname(new URL(import.meta.url).pathname);
 
 const DEFAULT_PORT = 3100;
 
-function swaggerUi(app, openApiPath, port) {
+Handlebars.registerHelper("escape_route", (route) =>
+  route.replace(/[^\w/]/gu, "-")
+);
+
+function swaggerUi(app, openApiPath, url) {
   app.use(async (ctx, next) => {
     if (ctx.URL.pathname === "/counterfact/openapi") {
       const openApiDocument = await yaml.load(await readFile(openApiPath));
@@ -23,8 +28,11 @@ function swaggerUi(app, openApiPath, port) {
 
       openApiDocument.servers.unshift({
         description: "Counterfact",
-        url: `//localhost:${port}`,
+        url,
       });
+
+      // OpenApi 2 support:
+      openApiDocument.host = url;
 
       // eslint-disable-next-line require-atomic-updates
       ctx.body = yaml.dump(openApiDocument);
@@ -47,25 +55,9 @@ function swaggerUi(app, openApiPath, port) {
   );
 }
 
-export async function landingPageBody(basePath) {
-  const body = await readFile(nodePath.join(__dirname, "../client/index.html"));
-
-  return body.replaceAll("{{basePath}}", basePath);
-}
-
-export function landingPage(app, basePath) {
-  app.use(async (ctx, next) => {
-    if (ctx.URL.pathname === "/counterfact") {
-      // eslint-disable-next-line require-atomic-updates
-      ctx.body = await landingPageBody(basePath);
-
-      return;
-    }
-
-    // eslint-disable-next-line node/callback-return
-    await next();
-  });
-}
+export const landingPageTemplate = Handlebars.compile(
+  await readFile(nodePath.join(__dirname, "../client/index.html.hbs"))
+);
 
 export async function start({
   basePath = process.cwd(),
@@ -75,18 +67,32 @@ export async function start({
 }) {
   const app = new Koa();
 
-  if (includeSwaggerUi) {
-    swaggerUi(app, openApiPath, port);
-  }
-
-  landingPage(app, basePath);
-
-  app.use(bodyParser());
-
-  const { koaMiddleware, contextRegistry } = await counterfact(
+  const { koaMiddleware, contextRegistry, registry } = await counterfact(
     basePath,
     openApiPath
   );
+
+  if (includeSwaggerUi) {
+    swaggerUi(app, openApiPath, `//localhost:${port}`);
+  }
+
+  app.use(async (ctx, next) => {
+    if (ctx.URL.pathname === "/counterfact") {
+      // eslint-disable-next-line require-atomic-updates
+      ctx.body = await landingPageTemplate({
+        basePath,
+        routes: registry.routes,
+        methods: ["get", "post", "put", "delete", "patch"],
+      });
+
+      return;
+    }
+
+    // eslint-disable-next-line node/callback-return
+    await next();
+  });
+
+  app.use(bodyParser());
 
   app.use(koaMiddleware);
 

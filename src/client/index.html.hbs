@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Counterfact</title>
+    <meta charset="utf-8">
+    <meta name="description" content="Counterfact dashboard" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script type="module" src="https://unpkg.com/rapidoc/dist/rapidoc-min.js"></script>
+
+
+     
+  </head>
+  <body>
+
+
+
+     <rapi-doc spec-url="/counterfact/openapi" show-method-in-nav-bar="as-colored-block" nav-active-item-marker="left-bar" use-path-in-nav-bar="true"> 
+
+      <div slot="overview" style="background-color: #eee">
+        <p>Put an explanation of Counterfact here.</p>
+         <a
+            href="https://github.com/pmcelhaney/counterfact/blob/main/docs/usage.md#generated-code-"
+            >How does this work?</a
+          > 
+      </div>
+      {{#each routes as |route|}}
+        <a slot="get-{{escape_route route}}" href="vscode://file/{{../basePath}}/paths/{{.}}.ts">Edit in VSCode</a>
+        <a slot="put-{{escape_route route}}" href="vscode://file/{{../basePath}}/paths/{{.}}.ts">Edit in VSCode</a>
+        <a slot="post-{{escape_route route}}" href="vscode://file/{{../basePath}}/paths/{{.}}.ts">Edit in VSCode</a>
+        <a slot="delete-{{escape_route route}}" href="vscode://file/{{../basePath}}/paths/{{.}}.ts">Edit in VSCode</a>
+        <a slot="patch-{{escape_route route}}" href="vscode://file/{{../basePath}}/paths/{{.}}.ts">Edit in VSCode</a>
+
+      {{/each}}
+      </rapi-doc>
+
+
+
+  </body>
+</html>

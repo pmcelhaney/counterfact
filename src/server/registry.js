@@ -9,12 +9,39 @@ function castParameters(parameters, parameterTypes) {
   return copy;
 }
 
+function maybe(flag, value) {
+  return flag ? [value] : [];
+}
+
+function stripBrackets(string) {
+  return string.replaceAll(/\{|\}/gu, "");
+}
+
+function routesForNode(node) {
+  if (!node.children) {
+    return [];
+  }
+
+  return Object.entries(node.children)
+    .flatMap(([segment, child]) => [
+      ...maybe(child.module, `/${segment}`),
+      ...routesForNode(child).map((route) => `/${segment}${route}`),
+    ])
+    .sort((segment1, segment2) =>
+      stripBrackets(segment1).localeCompare(stripBrackets(segment2))
+    );
+}
+
 export class Registry {
   modules = {};
 
   moduleTree = {
     children: {},
   };
+
+  get routes() {
+    return routesForNode(this.moduleTree);
+  }
 
   add(url, module) {
     let node = this.moduleTree;
