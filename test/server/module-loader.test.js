@@ -147,8 +147,8 @@ describe("a module loader", () => {
 
   it("finds a context and adds it to the context registry", async () => {
     const files = {
-      "$context.mjs": 'export default "main"',
-      "hello/$context.mjs": 'export default "hello"',
+      "$.context.mjs": 'export default "main"',
+      "hello/$.context.mjs": 'export default "hello"',
     };
 
     await withTemporaryFiles(files, async (basePath) => {
