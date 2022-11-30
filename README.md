@@ -44,7 +44,7 @@ As a front end dev, when you have **complete and granular control over the back 
 <summary><code>GET /hello/world</code></summary>
 
 ```js
-// ./path/hello/world.js
+// ./paths/hello/world.js
 export const GET = () => "Hello World!";
 ```
 
@@ -77,7 +77,7 @@ export const POST = ({ context, response, body }) => {
 ```
 
 ```js
-// ./paths/$context.js
+// ./paths/$.context.js
 class PetStore () {
     pets = {};
 
