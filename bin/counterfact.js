@@ -38,7 +38,7 @@ async function main(source, destination) {
       basePath,
       "paths"
     )} (no need to restart)`,
-    `Use the GUI at http://localhost:${options.port}/counterfact`,
+    `Use the GUI at ${guiUrl}`,
     "Use the REPL below (type .counterfact for more information)",
   ];
 
