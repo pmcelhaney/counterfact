@@ -117,7 +117,9 @@ Note that each of these objects is typed so you can use autocomplete to identify
 
 The `$.path` parameters are identified by dynamic sections of the path, i.e. `/groups/{groupName}/user/{userId}.ts`.
 
-### Working with state: the `$.context` object and `$context.ts`
+<a id="context-object"></a>
+
+### Working with state: the `$.context` object and `$.context.ts`
 
 There's one more parameter we need to explore, the `$.context` object. It stands in for microservices, databases, and other entities with which the real API interacts. It looks something like this:
 
@@ -137,7 +139,7 @@ export const POST: HTTP_POST = ($) => {
  };
 ```
 
-The `context` object is defined in `$context.js` in the same directory as the file that uses it. It's up to you to define the API for a context object. For example, your `$context.js` file might look like this.
+The `context` object is defined in `$.context.js` in the same directory as the file that uses it. It's up to you to define the API for a context object. For example, your `$.context.js` file might look like this.
 
 ```ts
 class PetStore {
@@ -157,7 +159,7 @@ class PetStore {
 export default new PetStore();
 ```
 
-By default, each `$context.ts` delegates to its parent directory, so you can define one context object in the root `$context.ts` and use it everywhere.
+By default, each `$.context.ts` delegates to its parent directory, so you can define one context object in the root `$.context.ts` and use it everywhere.
 
 > You can make the context objects do whatever you want, including things like writing to databases. But remember that Counterfact is meant for testing, so holding on to data between sessions is an anti-pattern. Keeping everything in memory also makes it fast.
 
@@ -174,23 +176,61 @@ Hot reloading supports one of Counterfact's key design goals. While developing a
 
 In such cases, we want to be sure the front end code responds appropriately. Getting a real server to do what we need to test front end code is usually difficult if not impossible. Counterfact is optimized to make bending the server's behavior to suit a test case as painless as possible, in both manual and automated tests.
 
+## REPL without a Pause ⏯
+
+Another way to explore counterfactuals in real time is to interact with the running server via the read-eval-print loop (REPL), in the same way that you interact with running UI code in your browser's developer tools console. If you look in the terminal after starting Counterfact you should see a prompt like this:
+
+```txt
+Welcome to Counterfact!
+
+Counterfact is a mock server used to develop and test your front end app.
+There are several ways to poke and prod the server in order to make it behave the way you need for testing.
+
+1. Call the REST APIs at http://localhost:3100 (with your front end app, curl, Postman, etc.)
+2. Change the implementation of the APIs by editing files under /Users/pmcelhaney/code/counterfact/out/paths (no need to restart)
+3. Use the GUI at http://localhost:3100
+4. Use the REPL below (type .counterfact for more information)
+
+>
+```
+
+At the `> ` prompt, you can enter JavaScript code to interact with the live [context object](#context-object). For example, here's a quick way to add a pet to the store.
+
+```js
+context.addPet({ name: "Fluffy", photoUrls: [] });
+```
+
+Or add 100 pets:
+
+```js
+for (i = 0; i < 100; i++) context.addPet({ name: `Pet ${i}`, photoUrls: [] });
+```
+
+Or get a list of pets whose names start with "F"
+
+```js
+context.pets.find((pet) => pet.name.startsWith("F"));
+```
+
+Using the REPL is a lot faster (and more fun) than wrangling config files and SQL and whatever else it takes to a real back end into the states you need to test your UI flows.
+
 ## No Cap Recap 🧢
 
-That's everything you need to know about Counterfact. Using convention over configuration and automatically generated types, it allows front-end developers to quickly build fake REST APIs for prototype and testing purposes.
+Using convention over configuration and automatically generated types, Counterfact allows front-end developers to quickly build fake REST APIs for prototype and testing purposes.
 
 - Given an OpenAPI document, you can generate working TypeScript code and start up a server in seconds.
 - By default, the server returns random responses based on metadata in the OpenAPI document (e.g. it uses examples where provided).
 - Each endpoint is represented by a TypeScript file where the path to the file corresponds to the path of the endpoint.
 - You can change the implementation at any time by changing these files.
 - You can and should commit the generated code to source control. Files you change will not be overwritten when you start the server again. (The _types_ will be updated if the OpenAPI document changes, but you shouldn't need to edit the type definitions by hand.)
-- Put behavior in `$context.ts` files. These are created for you, but you should rewrite them to suit your needs. (At least update the root `$context.ts` file.)
+- Put behavior in `$.context.ts` files. These are created for you, but you should rewrite them to suit your needs. (At least update the root `$.context.ts` file.)
+- Use the REPL to manipulate the server's state at runtime
 
 ## We're Just Getting Started 🐣
 
-"Advanced" features are coming soon:
+More features are coming soon:
 
 - Integrate Counterfact into your workflow (Express, Koa, Webpack Dev Server, etc.)
-- Use a REPL to interact with the context objects while the server is running
 - Use Counterfact in your automated tests
 - Record API calls while testing the front end manually and reuse those calls in automated tests (ala [Playwright](https://playwright.dev/))
 - Use [HAR](https://toolbox.googleapps.com/apps/har_analyzer/) files to recreate scenarios / bugs encountered by real users
