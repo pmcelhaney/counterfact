@@ -47,7 +47,7 @@ export class ModuleLoader extends EventTarget {
           .then((endpoint) => {
             this.dispatchEvent(new Event(eventName), pathName);
 
-            if (pathName.includes("$context")) {
+            if (pathName.includes("$.context")) {
               this.contextRegistry.update(parts.dir, endpoint.default);
 
               return "context";
@@ -96,7 +96,7 @@ export class ModuleLoader extends EventTarget {
         nodePath.join(this.basePath, directory, file.name)
       );
 
-      if (file.name.includes("$context")) {
+      if (file.name.includes("$.context")) {
         this.contextRegistry.add(`/${directory}`, endpoint.default);
       } else {
         this.registry.add(

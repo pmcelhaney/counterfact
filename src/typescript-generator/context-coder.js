@@ -15,25 +15,42 @@ export class ContextCoder extends Coder {
     return super.names("Context");
   }
 
+  beforeExport(path) {
+    return `/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + "\\n\\n ^ This is the default context object. You can edit its definition at ${path}";
+  }
+}
+`;
+  }
+
   write(script) {
-    if (script.path === "paths/$context.ts") {
-      return "{}";
+    if (script.path === "paths/$.context.ts") {
+      return "new Context()";
     }
 
     const parentPath = nodePath.normalize(
-      nodePath.join(script.path, "../../$context.ts")
+      nodePath.join(script.path, "../../$.context.ts")
     );
 
     script.repository.get(parentPath).exportDefault(this);
 
-    return { raw: 'export { default } from "../$context.js"' };
+    return { raw: 'export { default } from "../$.context.js"' };
   }
 
   modulePath() {
     return nodePath.join(
       "paths",
       nodePath.dirname(this.pathString()),
-      "$context.ts"
+      "$.context.ts"
     );
   }
 }

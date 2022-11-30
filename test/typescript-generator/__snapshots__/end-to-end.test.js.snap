@@ -11,6 +11,7 @@ Map {
     },
     "exports": Map {
       "POST" => Object {
+        "beforeExport": "",
         "code": "($) => {
       return $.response[200].random();
     }",
@@ -23,6 +24,7 @@ Map {
         "typeDeclaration": "HTTP_POST",
       },
       "PUT" => Object {
+        "beforeExport": "",
         "code": "($) => {
       return $.response[200].random();
     }",
@@ -45,12 +47,13 @@ Map {
           "cache": Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1pet/post@[object Object]:true" => "HTTP_POST",
             "OperationTypeCoder@petstore.yaml#/paths/~1pet/put@[object Object]:true" => "HTTP_PUT",
-            "ContextCoder@petstore.yaml#/paths/~1pet/post@paths/$context.ts:false:true" => "Context",
+            "ContextCoder@petstore.yaml#/paths/~1pet/post@paths/$.context.ts:false:true" => "Context",
             "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
-            "ContextCoder@petstore.yaml#/paths/~1pet/put@paths/$context.ts:false:true" => "Context2",
+            "ContextCoder@petstore.yaml#/paths/~1pet/put@paths/$.context.ts:false:true" => "Context2",
           },
           "exports": Map {
             "HTTP_POST" => Object {
+              "beforeExport": "",
               "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Pet, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
@@ -87,6 +90,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_PUT" => Object {
+              "beforeExport": "",
               "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Pet, context: typeof Context2, response: ResponseBuilderFactory<{
 200: {
           headers: {};
@@ -156,7 +160,21 @@ Map {
                 },
                 "exports": Map {
                   "Context" => Object {
-                    "code": "{}",
+                    "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/$.context.ts\\";
+  }
+}
+",
+                    "code": "new Context()",
                     "done": true,
                     "id": "ContextCoder@petstore.yaml#/paths/~1pet/post",
                     "isDefault": true,
@@ -168,7 +186,7 @@ Map {
                 },
                 "externalImports": Map {},
                 "imports": Map {},
-                "path": "paths/$context.ts",
+                "path": "paths/$.context.ts",
                 "repository": Repository {
                   "scripts": [Circular],
                   "writeFiles": [Function],
@@ -188,6 +206,7 @@ Map {
                 },
                 "exports": Map {
                   "Pet" => Object {
+                    "beforeExport": "",
                     "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
@@ -210,6 +229,7 @@ Map {
                       },
                       "exports": Map {
                         "Category" => Object {
+                          "beforeExport": "",
                           "code": "{id?: number,name?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
@@ -240,6 +260,7 @@ Map {
                       },
                       "exports": Map {
                         "Tag" => Object {
+                          "beforeExport": "",
                           "code": "{id?: number,name?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
@@ -279,7 +300,21 @@ Map {
                 },
                 "exports": Map {
                   "Context" => Object {
-                    "code": "{}",
+                    "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/$.context.ts\\";
+  }
+}
+",
+                    "code": "new Context()",
                     "done": true,
                     "id": "ContextCoder@petstore.yaml#/paths/~1pet/post",
                     "isDefault": true,
@@ -291,7 +326,7 @@ Map {
                 },
                 "externalImports": Map {},
                 "imports": Map {},
-                "path": "paths/$context.ts",
+                "path": "paths/$.context.ts",
                 "repository": Repository {
                   "scripts": [Circular],
                   "writeFiles": [Function],
@@ -316,12 +351,13 @@ Map {
           "cache": Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1pet/post@[object Object]:true" => "HTTP_POST",
             "OperationTypeCoder@petstore.yaml#/paths/~1pet/put@[object Object]:true" => "HTTP_PUT",
-            "ContextCoder@petstore.yaml#/paths/~1pet/post@paths/$context.ts:false:true" => "Context",
+            "ContextCoder@petstore.yaml#/paths/~1pet/post@paths/$.context.ts:false:true" => "Context",
             "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
-            "ContextCoder@petstore.yaml#/paths/~1pet/put@paths/$context.ts:false:true" => "Context2",
+            "ContextCoder@petstore.yaml#/paths/~1pet/put@paths/$.context.ts:false:true" => "Context2",
           },
           "exports": Map {
             "HTTP_POST" => Object {
+              "beforeExport": "",
               "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Pet, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
@@ -358,6 +394,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_PUT" => Object {
+              "beforeExport": "",
               "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Pet, context: typeof Context2, response: ResponseBuilderFactory<{
 200: {
           headers: {};
@@ -427,7 +464,21 @@ Map {
                 },
                 "exports": Map {
                   "Context" => Object {
-                    "code": "{}",
+                    "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/$.context.ts\\";
+  }
+}
+",
+                    "code": "new Context()",
                     "done": true,
                     "id": "ContextCoder@petstore.yaml#/paths/~1pet/post",
                     "isDefault": true,
@@ -439,7 +490,7 @@ Map {
                 },
                 "externalImports": Map {},
                 "imports": Map {},
-                "path": "paths/$context.ts",
+                "path": "paths/$.context.ts",
                 "repository": Repository {
                   "scripts": [Circular],
                   "writeFiles": [Function],
@@ -459,6 +510,7 @@ Map {
                 },
                 "exports": Map {
                   "Pet" => Object {
+                    "beforeExport": "",
                     "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
@@ -481,6 +533,7 @@ Map {
                       },
                       "exports": Map {
                         "Category" => Object {
+                          "beforeExport": "",
                           "code": "{id?: number,name?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
@@ -511,6 +564,7 @@ Map {
                       },
                       "exports": Map {
                         "Tag" => Object {
+                          "beforeExport": "",
                           "code": "{id?: number,name?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
@@ -550,7 +604,21 @@ Map {
                 },
                 "exports": Map {
                   "Context" => Object {
-                    "code": "{}",
+                    "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/$.context.ts\\";
+  }
+}
+",
+                    "code": "new Context()",
                     "done": true,
                     "id": "ContextCoder@petstore.yaml#/paths/~1pet/post",
                     "isDefault": true,
@@ -562,7 +630,7 @@ Map {
                 },
                 "externalImports": Map {},
                 "imports": Map {},
-                "path": "paths/$context.ts",
+                "path": "paths/$.context.ts",
                 "repository": Repository {
                   "scripts": [Circular],
                   "writeFiles": [Function],
@@ -591,12 +659,13 @@ Map {
     "cache": Map {
       "OperationTypeCoder@petstore.yaml#/paths/~1pet/post@[object Object]:true" => "HTTP_POST",
       "OperationTypeCoder@petstore.yaml#/paths/~1pet/put@[object Object]:true" => "HTTP_PUT",
-      "ContextCoder@petstore.yaml#/paths/~1pet/post@paths/$context.ts:false:true" => "Context",
+      "ContextCoder@petstore.yaml#/paths/~1pet/post@paths/$.context.ts:false:true" => "Context",
       "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
-      "ContextCoder@petstore.yaml#/paths/~1pet/put@paths/$context.ts:false:true" => "Context2",
+      "ContextCoder@petstore.yaml#/paths/~1pet/put@paths/$.context.ts:false:true" => "Context2",
     },
     "exports": Map {
       "HTTP_POST" => Object {
+        "beforeExport": "",
         "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Pet, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
@@ -633,6 +702,7 @@ Map {
         "typeDeclaration": "",
       },
       "HTTP_PUT" => Object {
+        "beforeExport": "",
         "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Pet, context: typeof Context2, response: ResponseBuilderFactory<{
 200: {
           headers: {};
@@ -702,7 +772,21 @@ Map {
           },
           "exports": Map {
             "Context" => Object {
-              "code": "{}",
+              "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/$.context.ts\\";
+  }
+}
+",
+              "code": "new Context()",
               "done": true,
               "id": "ContextCoder@petstore.yaml#/paths/~1pet/post",
               "isDefault": true,
@@ -714,7 +798,7 @@ Map {
           },
           "externalImports": Map {},
           "imports": Map {},
-          "path": "paths/$context.ts",
+          "path": "paths/$.context.ts",
           "repository": Repository {
             "scripts": [Circular],
             "writeFiles": [Function],
@@ -734,6 +818,7 @@ Map {
           },
           "exports": Map {
             "Pet" => Object {
+              "beforeExport": "",
               "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
@@ -756,6 +841,7 @@ Map {
                 },
                 "exports": Map {
                   "Category" => Object {
+                    "beforeExport": "",
                     "code": "{id?: number,name?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
@@ -786,6 +872,7 @@ Map {
                 },
                 "exports": Map {
                   "Tag" => Object {
+                    "beforeExport": "",
                     "code": "{id?: number,name?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
@@ -825,7 +912,21 @@ Map {
           },
           "exports": Map {
             "Context" => Object {
-              "code": "{}",
+              "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/$.context.ts\\";
+  }
+}
+",
+              "code": "new Context()",
               "done": true,
               "id": "ContextCoder@petstore.yaml#/paths/~1pet/post",
               "isDefault": true,
@@ -837,7 +938,7 @@ Map {
           },
           "externalImports": Map {},
           "imports": Map {},
-          "path": "paths/$context.ts",
+          "path": "paths/$.context.ts",
           "repository": Repository {
             "scripts": [Circular],
             "writeFiles": [Function],
@@ -860,6 +961,7 @@ Map {
     },
     "exports": Map {
       "GET" => Object {
+        "beforeExport": "",
         "code": "($) => {
       return $.response[200].random();
     }",
@@ -881,11 +983,12 @@ Map {
         "script": Script {
           "cache": Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1findByStatus/get@[object Object]:true" => "HTTP_GET",
-            "ContextCoder@petstore.yaml#/paths/~1pet~1findByStatus/get@paths/pet/$context.ts:false:true" => "Context",
+            "ContextCoder@petstore.yaml#/paths/~1pet~1findByStatus/get@paths/pet/$.context.ts:false:true" => "Context",
             "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
           },
           "exports": Map {
             "HTTP_GET" => Object {
+              "beforeExport": "",
               "code": "({ query, path, header, body, context, proxy }: { query: {status?: string}, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
@@ -943,8 +1046,22 @@ Map {
                 },
                 "exports": Map {
                   "Context" => Object {
+                    "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/pet/$.context.ts\\";
+  }
+}
+",
                     "code": Object {
-                      "raw": "export { default } from \\"../$context.js\\"",
+                      "raw": "export { default } from \\"../$.context.js\\"",
                     },
                     "done": true,
                     "id": "ContextCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
@@ -957,7 +1074,7 @@ Map {
                 },
                 "externalImports": Map {},
                 "imports": Map {},
-                "path": "paths/pet/$context.ts",
+                "path": "paths/pet/$.context.ts",
                 "repository": Repository {
                   "scripts": [Circular],
                   "writeFiles": [Function],
@@ -977,6 +1094,7 @@ Map {
                 },
                 "exports": Map {
                   "Pet" => Object {
+                    "beforeExport": "",
                     "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
@@ -999,6 +1117,7 @@ Map {
                       },
                       "exports": Map {
                         "Category" => Object {
+                          "beforeExport": "",
                           "code": "{id?: number,name?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
@@ -1029,6 +1148,7 @@ Map {
                       },
                       "exports": Map {
                         "Tag" => Object {
+                          "beforeExport": "",
                           "code": "{id?: number,name?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
@@ -1078,11 +1198,12 @@ Map {
   "path-types/pet/findByStatus.types.ts" => Script {
     "cache": Map {
       "OperationTypeCoder@petstore.yaml#/paths/~1pet~1findByStatus/get@[object Object]:true" => "HTTP_GET",
-      "ContextCoder@petstore.yaml#/paths/~1pet~1findByStatus/get@paths/pet/$context.ts:false:true" => "Context",
+      "ContextCoder@petstore.yaml#/paths/~1pet~1findByStatus/get@paths/pet/$.context.ts:false:true" => "Context",
       "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
     },
     "exports": Map {
       "HTTP_GET" => Object {
+        "beforeExport": "",
         "code": "({ query, path, header, body, context, proxy }: { query: {status?: string}, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
@@ -1140,8 +1261,22 @@ Map {
           },
           "exports": Map {
             "Context" => Object {
+              "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/pet/$.context.ts\\";
+  }
+}
+",
               "code": Object {
-                "raw": "export { default } from \\"../$context.js\\"",
+                "raw": "export { default } from \\"../$.context.js\\"",
               },
               "done": true,
               "id": "ContextCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
@@ -1154,7 +1289,7 @@ Map {
           },
           "externalImports": Map {},
           "imports": Map {},
-          "path": "paths/pet/$context.ts",
+          "path": "paths/pet/$.context.ts",
           "repository": Repository {
             "scripts": [Circular],
             "writeFiles": [Function],
@@ -1174,6 +1309,7 @@ Map {
           },
           "exports": Map {
             "Pet" => Object {
+              "beforeExport": "",
               "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
@@ -1196,6 +1332,7 @@ Map {
                 },
                 "exports": Map {
                   "Category" => Object {
+                    "beforeExport": "",
                     "code": "{id?: number,name?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
@@ -1226,6 +1363,7 @@ Map {
                 },
                 "exports": Map {
                   "Tag" => Object {
+                    "beforeExport": "",
                     "code": "{id?: number,name?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
@@ -1270,6 +1408,7 @@ Map {
     },
     "exports": Map {
       "GET" => Object {
+        "beforeExport": "",
         "code": "($) => {
       return $.response[200].random();
     }",
@@ -1291,11 +1430,12 @@ Map {
         "script": Script {
           "cache": Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1findByTags/get@[object Object]:true" => "HTTP_GET",
-            "ContextCoder@petstore.yaml#/paths/~1pet~1findByTags/get@paths/pet/$context.ts:false:true" => "Context",
+            "ContextCoder@petstore.yaml#/paths/~1pet~1findByTags/get@paths/pet/$.context.ts:false:true" => "Context",
             "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
           },
           "exports": Map {
             "HTTP_GET" => Object {
+              "beforeExport": "",
               "code": "({ query, path, header, body, context, proxy }: { query: {tags?: Array<string>}, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
@@ -1353,8 +1493,22 @@ Map {
                 },
                 "exports": Map {
                   "Context" => Object {
+                    "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/pet/$.context.ts\\";
+  }
+}
+",
                     "code": Object {
-                      "raw": "export { default } from \\"../$context.js\\"",
+                      "raw": "export { default } from \\"../$.context.js\\"",
                     },
                     "done": true,
                     "id": "ContextCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
@@ -1367,7 +1521,7 @@ Map {
                 },
                 "externalImports": Map {},
                 "imports": Map {},
-                "path": "paths/pet/$context.ts",
+                "path": "paths/pet/$.context.ts",
                 "repository": Repository {
                   "scripts": [Circular],
                   "writeFiles": [Function],
@@ -1387,6 +1541,7 @@ Map {
                 },
                 "exports": Map {
                   "Pet" => Object {
+                    "beforeExport": "",
                     "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
@@ -1409,6 +1564,7 @@ Map {
                       },
                       "exports": Map {
                         "Category" => Object {
+                          "beforeExport": "",
                           "code": "{id?: number,name?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
@@ -1439,6 +1595,7 @@ Map {
                       },
                       "exports": Map {
                         "Tag" => Object {
+                          "beforeExport": "",
                           "code": "{id?: number,name?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
@@ -1488,11 +1645,12 @@ Map {
   "path-types/pet/findByTags.types.ts" => Script {
     "cache": Map {
       "OperationTypeCoder@petstore.yaml#/paths/~1pet~1findByTags/get@[object Object]:true" => "HTTP_GET",
-      "ContextCoder@petstore.yaml#/paths/~1pet~1findByTags/get@paths/pet/$context.ts:false:true" => "Context",
+      "ContextCoder@petstore.yaml#/paths/~1pet~1findByTags/get@paths/pet/$.context.ts:false:true" => "Context",
       "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
     },
     "exports": Map {
       "HTTP_GET" => Object {
+        "beforeExport": "",
         "code": "({ query, path, header, body, context, proxy }: { query: {tags?: Array<string>}, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
@@ -1550,8 +1708,22 @@ Map {
           },
           "exports": Map {
             "Context" => Object {
+              "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/pet/$.context.ts\\";
+  }
+}
+",
               "code": Object {
-                "raw": "export { default } from \\"../$context.js\\"",
+                "raw": "export { default } from \\"../$.context.js\\"",
               },
               "done": true,
               "id": "ContextCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
@@ -1564,7 +1736,7 @@ Map {
           },
           "externalImports": Map {},
           "imports": Map {},
-          "path": "paths/pet/$context.ts",
+          "path": "paths/pet/$.context.ts",
           "repository": Repository {
             "scripts": [Circular],
             "writeFiles": [Function],
@@ -1584,6 +1756,7 @@ Map {
           },
           "exports": Map {
             "Pet" => Object {
+              "beforeExport": "",
               "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
@@ -1606,6 +1779,7 @@ Map {
                 },
                 "exports": Map {
                   "Category" => Object {
+                    "beforeExport": "",
                     "code": "{id?: number,name?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
@@ -1636,6 +1810,7 @@ Map {
                 },
                 "exports": Map {
                   "Tag" => Object {
+                    "beforeExport": "",
                     "code": "{id?: number,name?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
@@ -1684,6 +1859,7 @@ Map {
     },
     "exports": Map {
       "GET" => Object {
+        "beforeExport": "",
         "code": "($) => {
       return $.response[200].random();
     }",
@@ -1696,6 +1872,7 @@ Map {
         "typeDeclaration": "HTTP_GET",
       },
       "POST" => Object {
+        "beforeExport": "",
         "code": "() => { /* no response content specified in the OpenAPI document */ }",
         "done": true,
         "id": "OperationCoder@petstore.yaml#/paths/~1pet~1{petId}/post",
@@ -1706,6 +1883,7 @@ Map {
         "typeDeclaration": "HTTP_POST",
       },
       "DELETE" => Object {
+        "beforeExport": "",
         "code": "() => { /* no response content specified in the OpenAPI document */ }",
         "done": true,
         "id": "OperationCoder@petstore.yaml#/paths/~1pet~1{petId}/delete",
@@ -1727,13 +1905,14 @@ Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/get@[object Object]:true" => "HTTP_GET",
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/post@[object Object]:true" => "HTTP_POST",
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/delete@[object Object]:true" => "HTTP_DELETE",
-            "ContextCoder@petstore.yaml#/paths/~1pet~1{petId}/get@paths/pet/$context.ts:false:true" => "Context",
+            "ContextCoder@petstore.yaml#/paths/~1pet~1{petId}/get@paths/pet/$.context.ts:false:true" => "Context",
             "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
-            "ContextCoder@petstore.yaml#/paths/~1pet~1{petId}/post@paths/pet/$context.ts:false:true" => "Context2",
-            "ContextCoder@petstore.yaml#/paths/~1pet~1{petId}/delete@paths/pet/$context.ts:false:true" => "Context3",
+            "ContextCoder@petstore.yaml#/paths/~1pet~1{petId}/post@paths/pet/$.context.ts:false:true" => "Context2",
+            "ContextCoder@petstore.yaml#/paths/~1pet~1{petId}/delete@paths/pet/$.context.ts:false:true" => "Context3",
           },
           "exports": Map {
             "HTTP_GET" => Object {
+              "beforeExport": "",
               "code": "({ query, path, header, body, context, proxy }: { query: never, path: {petId: number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
@@ -1776,6 +1955,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_POST" => Object {
+              "beforeExport": "",
               "code": "({ query, path, header, body, context, proxy }: { query: {name?: number, status?: string}, path: {petId: number}, header: never, body: undefined, context: typeof Context2, response: ResponseBuilderFactory<{
 405: {
           headers: {};
@@ -1793,6 +1973,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_DELETE" => Object {
+              "beforeExport": "",
               "code": "({ query, path, header, body, context, proxy }: { query: never, path: {petId: string}, header: {api_key?: string}, body: undefined, context: typeof Context3, response: ResponseBuilderFactory<{
 400: {
           headers: {};
@@ -1831,8 +2012,22 @@ Map {
                 },
                 "exports": Map {
                   "Context" => Object {
+                    "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/pet/$.context.ts\\";
+  }
+}
+",
                     "code": Object {
-                      "raw": "export { default } from \\"../$context.js\\"",
+                      "raw": "export { default } from \\"../$.context.js\\"",
                     },
                     "done": true,
                     "id": "ContextCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
@@ -1845,7 +2040,7 @@ Map {
                 },
                 "externalImports": Map {},
                 "imports": Map {},
-                "path": "paths/pet/$context.ts",
+                "path": "paths/pet/$.context.ts",
                 "repository": Repository {
                   "scripts": [Circular],
                   "writeFiles": [Function],
@@ -1865,6 +2060,7 @@ Map {
                 },
                 "exports": Map {
                   "Pet" => Object {
+                    "beforeExport": "",
                     "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
@@ -1887,6 +2083,7 @@ Map {
                       },
                       "exports": Map {
                         "Category" => Object {
+                          "beforeExport": "",
                           "code": "{id?: number,name?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
@@ -1917,6 +2114,7 @@ Map {
                       },
                       "exports": Map {
                         "Tag" => Object {
+                          "beforeExport": "",
                           "code": "{id?: number,name?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
@@ -1956,8 +2154,22 @@ Map {
                 },
                 "exports": Map {
                   "Context" => Object {
+                    "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/pet/$.context.ts\\";
+  }
+}
+",
                     "code": Object {
-                      "raw": "export { default } from \\"../$context.js\\"",
+                      "raw": "export { default } from \\"../$.context.js\\"",
                     },
                     "done": true,
                     "id": "ContextCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
@@ -1970,7 +2182,7 @@ Map {
                 },
                 "externalImports": Map {},
                 "imports": Map {},
-                "path": "paths/pet/$context.ts",
+                "path": "paths/pet/$.context.ts",
                 "repository": Repository {
                   "scripts": [Circular],
                   "writeFiles": [Function],
@@ -1988,8 +2200,22 @@ Map {
                 },
                 "exports": Map {
                   "Context" => Object {
+                    "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/pet/$.context.ts\\";
+  }
+}
+",
                     "code": Object {
-                      "raw": "export { default } from \\"../$context.js\\"",
+                      "raw": "export { default } from \\"../$.context.js\\"",
                     },
                     "done": true,
                     "id": "ContextCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
@@ -2002,7 +2228,7 @@ Map {
                 },
                 "externalImports": Map {},
                 "imports": Map {},
-                "path": "paths/pet/$context.ts",
+                "path": "paths/pet/$.context.ts",
                 "repository": Repository {
                   "scripts": [Circular],
                   "writeFiles": [Function],
@@ -2028,13 +2254,14 @@ Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/get@[object Object]:true" => "HTTP_GET",
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/post@[object Object]:true" => "HTTP_POST",
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/delete@[object Object]:true" => "HTTP_DELETE",
-            "ContextCoder@petstore.yaml#/paths/~1pet~1{petId}/get@paths/pet/$context.ts:false:true" => "Context",
+            "ContextCoder@petstore.yaml#/paths/~1pet~1{petId}/get@paths/pet/$.context.ts:false:true" => "Context",
             "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
-            "ContextCoder@petstore.yaml#/paths/~1pet~1{petId}/post@paths/pet/$context.ts:false:true" => "Context2",
-            "ContextCoder@petstore.yaml#/paths/~1pet~1{petId}/delete@paths/pet/$context.ts:false:true" => "Context3",
+            "ContextCoder@petstore.yaml#/paths/~1pet~1{petId}/post@paths/pet/$.context.ts:false:true" => "Context2",
+            "ContextCoder@petstore.yaml#/paths/~1pet~1{petId}/delete@paths/pet/$.context.ts:false:true" => "Context3",
           },
           "exports": Map {
             "HTTP_GET" => Object {
+              "beforeExport": "",
               "code": "({ query, path, header, body, context, proxy }: { query: never, path: {petId: number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
@@ -2077,6 +2304,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_POST" => Object {
+              "beforeExport": "",
               "code": "({ query, path, header, body, context, proxy }: { query: {name?: number, status?: string}, path: {petId: number}, header: never, body: undefined, context: typeof Context2, response: ResponseBuilderFactory<{
 405: {
           headers: {};
@@ -2094,6 +2322,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_DELETE" => Object {
+              "beforeExport": "",
               "code": "({ query, path, header, body, context, proxy }: { query: never, path: {petId: string}, header: {api_key?: string}, body: undefined, context: typeof Context3, response: ResponseBuilderFactory<{
 400: {
           headers: {};
@@ -2132,8 +2361,22 @@ Map {
                 },
                 "exports": Map {
                   "Context" => Object {
+                    "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/pet/$.context.ts\\";
+  }
+}
+",
                     "code": Object {
-                      "raw": "export { default } from \\"../$context.js\\"",
+                      "raw": "export { default } from \\"../$.context.js\\"",
                     },
                     "done": true,
                     "id": "ContextCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
@@ -2146,7 +2389,7 @@ Map {
                 },
                 "externalImports": Map {},
                 "imports": Map {},
-                "path": "paths/pet/$context.ts",
+                "path": "paths/pet/$.context.ts",
                 "repository": Repository {
                   "scripts": [Circular],
                   "writeFiles": [Function],
@@ -2166,6 +2409,7 @@ Map {
                 },
                 "exports": Map {
                   "Pet" => Object {
+                    "beforeExport": "",
                     "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
@@ -2188,6 +2432,7 @@ Map {
                       },
                       "exports": Map {
                         "Category" => Object {
+                          "beforeExport": "",
                           "code": "{id?: number,name?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
@@ -2218,6 +2463,7 @@ Map {
                       },
                       "exports": Map {
                         "Tag" => Object {
+                          "beforeExport": "",
                           "code": "{id?: number,name?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
@@ -2257,8 +2503,22 @@ Map {
                 },
                 "exports": Map {
                   "Context" => Object {
+                    "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/pet/$.context.ts\\";
+  }
+}
+",
                     "code": Object {
-                      "raw": "export { default } from \\"../$context.js\\"",
+                      "raw": "export { default } from \\"../$.context.js\\"",
                     },
                     "done": true,
                     "id": "ContextCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
@@ -2271,7 +2531,7 @@ Map {
                 },
                 "externalImports": Map {},
                 "imports": Map {},
-                "path": "paths/pet/$context.ts",
+                "path": "paths/pet/$.context.ts",
                 "repository": Repository {
                   "scripts": [Circular],
                   "writeFiles": [Function],
@@ -2289,8 +2549,22 @@ Map {
                 },
                 "exports": Map {
                   "Context" => Object {
+                    "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/pet/$.context.ts\\";
+  }
+}
+",
                     "code": Object {
-                      "raw": "export { default } from \\"../$context.js\\"",
+                      "raw": "export { default } from \\"../$.context.js\\"",
                     },
                     "done": true,
                     "id": "ContextCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
@@ -2303,7 +2577,7 @@ Map {
                 },
                 "externalImports": Map {},
                 "imports": Map {},
-                "path": "paths/pet/$context.ts",
+                "path": "paths/pet/$.context.ts",
                 "repository": Repository {
                   "scripts": [Circular],
                   "writeFiles": [Function],
@@ -2329,13 +2603,14 @@ Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/get@[object Object]:true" => "HTTP_GET",
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/post@[object Object]:true" => "HTTP_POST",
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/delete@[object Object]:true" => "HTTP_DELETE",
-            "ContextCoder@petstore.yaml#/paths/~1pet~1{petId}/get@paths/pet/$context.ts:false:true" => "Context",
+            "ContextCoder@petstore.yaml#/paths/~1pet~1{petId}/get@paths/pet/$.context.ts:false:true" => "Context",
             "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
-            "ContextCoder@petstore.yaml#/paths/~1pet~1{petId}/post@paths/pet/$context.ts:false:true" => "Context2",
-            "ContextCoder@petstore.yaml#/paths/~1pet~1{petId}/delete@paths/pet/$context.ts:false:true" => "Context3",
+            "ContextCoder@petstore.yaml#/paths/~1pet~1{petId}/post@paths/pet/$.context.ts:false:true" => "Context2",
+            "ContextCoder@petstore.yaml#/paths/~1pet~1{petId}/delete@paths/pet/$.context.ts:false:true" => "Context3",
           },
           "exports": Map {
             "HTTP_GET" => Object {
+              "beforeExport": "",
               "code": "({ query, path, header, body, context, proxy }: { query: never, path: {petId: number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
@@ -2378,6 +2653,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_POST" => Object {
+              "beforeExport": "",
               "code": "({ query, path, header, body, context, proxy }: { query: {name?: number, status?: string}, path: {petId: number}, header: never, body: undefined, context: typeof Context2, response: ResponseBuilderFactory<{
 405: {
           headers: {};
@@ -2395,6 +2671,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_DELETE" => Object {
+              "beforeExport": "",
               "code": "({ query, path, header, body, context, proxy }: { query: never, path: {petId: string}, header: {api_key?: string}, body: undefined, context: typeof Context3, response: ResponseBuilderFactory<{
 400: {
           headers: {};
@@ -2433,8 +2710,22 @@ Map {
                 },
                 "exports": Map {
                   "Context" => Object {
+                    "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/pet/$.context.ts\\";
+  }
+}
+",
                     "code": Object {
-                      "raw": "export { default } from \\"../$context.js\\"",
+                      "raw": "export { default } from \\"../$.context.js\\"",
                     },
                     "done": true,
                     "id": "ContextCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
@@ -2447,7 +2738,7 @@ Map {
                 },
                 "externalImports": Map {},
                 "imports": Map {},
-                "path": "paths/pet/$context.ts",
+                "path": "paths/pet/$.context.ts",
                 "repository": Repository {
                   "scripts": [Circular],
                   "writeFiles": [Function],
@@ -2467,6 +2758,7 @@ Map {
                 },
                 "exports": Map {
                   "Pet" => Object {
+                    "beforeExport": "",
                     "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
@@ -2489,6 +2781,7 @@ Map {
                       },
                       "exports": Map {
                         "Category" => Object {
+                          "beforeExport": "",
                           "code": "{id?: number,name?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
@@ -2519,6 +2812,7 @@ Map {
                       },
                       "exports": Map {
                         "Tag" => Object {
+                          "beforeExport": "",
                           "code": "{id?: number,name?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
@@ -2558,8 +2852,22 @@ Map {
                 },
                 "exports": Map {
                   "Context" => Object {
+                    "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/pet/$.context.ts\\";
+  }
+}
+",
                     "code": Object {
-                      "raw": "export { default } from \\"../$context.js\\"",
+                      "raw": "export { default } from \\"../$.context.js\\"",
                     },
                     "done": true,
                     "id": "ContextCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
@@ -2572,7 +2880,7 @@ Map {
                 },
                 "externalImports": Map {},
                 "imports": Map {},
-                "path": "paths/pet/$context.ts",
+                "path": "paths/pet/$.context.ts",
                 "repository": Repository {
                   "scripts": [Circular],
                   "writeFiles": [Function],
@@ -2590,8 +2898,22 @@ Map {
                 },
                 "exports": Map {
                   "Context" => Object {
+                    "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/pet/$.context.ts\\";
+  }
+}
+",
                     "code": Object {
-                      "raw": "export { default } from \\"../$context.js\\"",
+                      "raw": "export { default } from \\"../$.context.js\\"",
                     },
                     "done": true,
                     "id": "ContextCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
@@ -2604,7 +2926,7 @@ Map {
                 },
                 "externalImports": Map {},
                 "imports": Map {},
-                "path": "paths/pet/$context.ts",
+                "path": "paths/pet/$.context.ts",
                 "repository": Repository {
                   "scripts": [Circular],
                   "writeFiles": [Function],
@@ -2634,13 +2956,14 @@ Map {
       "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/get@[object Object]:true" => "HTTP_GET",
       "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/post@[object Object]:true" => "HTTP_POST",
       "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}/delete@[object Object]:true" => "HTTP_DELETE",
-      "ContextCoder@petstore.yaml#/paths/~1pet~1{petId}/get@paths/pet/$context.ts:false:true" => "Context",
+      "ContextCoder@petstore.yaml#/paths/~1pet~1{petId}/get@paths/pet/$.context.ts:false:true" => "Context",
       "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
-      "ContextCoder@petstore.yaml#/paths/~1pet~1{petId}/post@paths/pet/$context.ts:false:true" => "Context2",
-      "ContextCoder@petstore.yaml#/paths/~1pet~1{petId}/delete@paths/pet/$context.ts:false:true" => "Context3",
+      "ContextCoder@petstore.yaml#/paths/~1pet~1{petId}/post@paths/pet/$.context.ts:false:true" => "Context2",
+      "ContextCoder@petstore.yaml#/paths/~1pet~1{petId}/delete@paths/pet/$.context.ts:false:true" => "Context3",
     },
     "exports": Map {
       "HTTP_GET" => Object {
+        "beforeExport": "",
         "code": "({ query, path, header, body, context, proxy }: { query: never, path: {petId: number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
@@ -2683,6 +3006,7 @@ Map {
         "typeDeclaration": "",
       },
       "HTTP_POST" => Object {
+        "beforeExport": "",
         "code": "({ query, path, header, body, context, proxy }: { query: {name?: number, status?: string}, path: {petId: number}, header: never, body: undefined, context: typeof Context2, response: ResponseBuilderFactory<{
 405: {
           headers: {};
@@ -2700,6 +3024,7 @@ Map {
         "typeDeclaration": "",
       },
       "HTTP_DELETE" => Object {
+        "beforeExport": "",
         "code": "({ query, path, header, body, context, proxy }: { query: never, path: {petId: string}, header: {api_key?: string}, body: undefined, context: typeof Context3, response: ResponseBuilderFactory<{
 400: {
           headers: {};
@@ -2738,8 +3063,22 @@ Map {
           },
           "exports": Map {
             "Context" => Object {
+              "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/pet/$.context.ts\\";
+  }
+}
+",
               "code": Object {
-                "raw": "export { default } from \\"../$context.js\\"",
+                "raw": "export { default } from \\"../$.context.js\\"",
               },
               "done": true,
               "id": "ContextCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
@@ -2752,7 +3091,7 @@ Map {
           },
           "externalImports": Map {},
           "imports": Map {},
-          "path": "paths/pet/$context.ts",
+          "path": "paths/pet/$.context.ts",
           "repository": Repository {
             "scripts": [Circular],
             "writeFiles": [Function],
@@ -2772,6 +3111,7 @@ Map {
           },
           "exports": Map {
             "Pet" => Object {
+              "beforeExport": "",
               "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
@@ -2794,6 +3134,7 @@ Map {
                 },
                 "exports": Map {
                   "Category" => Object {
+                    "beforeExport": "",
                     "code": "{id?: number,name?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
@@ -2824,6 +3165,7 @@ Map {
                 },
                 "exports": Map {
                   "Tag" => Object {
+                    "beforeExport": "",
                     "code": "{id?: number,name?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
@@ -2863,8 +3205,22 @@ Map {
           },
           "exports": Map {
             "Context" => Object {
+              "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/pet/$.context.ts\\";
+  }
+}
+",
               "code": Object {
-                "raw": "export { default } from \\"../$context.js\\"",
+                "raw": "export { default } from \\"../$.context.js\\"",
               },
               "done": true,
               "id": "ContextCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
@@ -2877,7 +3233,7 @@ Map {
           },
           "externalImports": Map {},
           "imports": Map {},
-          "path": "paths/pet/$context.ts",
+          "path": "paths/pet/$.context.ts",
           "repository": Repository {
             "scripts": [Circular],
             "writeFiles": [Function],
@@ -2895,8 +3251,22 @@ Map {
           },
           "exports": Map {
             "Context" => Object {
+              "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/pet/$.context.ts\\";
+  }
+}
+",
               "code": Object {
-                "raw": "export { default } from \\"../$context.js\\"",
+                "raw": "export { default } from \\"../$.context.js\\"",
               },
               "done": true,
               "id": "ContextCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
@@ -2909,7 +3279,7 @@ Map {
           },
           "externalImports": Map {},
           "imports": Map {},
-          "path": "paths/pet/$context.ts",
+          "path": "paths/pet/$.context.ts",
           "repository": Repository {
             "scripts": [Circular],
             "writeFiles": [Function],
@@ -2932,6 +3302,7 @@ Map {
     },
     "exports": Map {
       "POST" => Object {
+        "beforeExport": "",
         "code": "($) => {
       return $.response[200].random();
     }",
@@ -2953,11 +3324,12 @@ Map {
         "script": Script {
           "cache": Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post@[object Object]:true" => "HTTP_POST",
-            "ContextCoder@petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post@paths/pet/{petId}/$context.ts:false:true" => "Context",
+            "ContextCoder@petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post@paths/pet/{petId}/$.context.ts:false:true" => "Context",
             "SchemaTypeCoder@undefined@components/ApiResponse.ts:true:false" => "ApiResponse",
           },
           "exports": Map {
             "HTTP_POST" => Object {
+              "beforeExport": "",
               "code": "({ query, path, header, body, context, proxy }: { query: {additionalMetadata?: number}, path: {petId: number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
@@ -3002,8 +3374,22 @@ Map {
                 },
                 "exports": Map {
                   "Context" => Object {
+                    "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/pet/{petId}/$.context.ts\\";
+  }
+}
+",
                     "code": Object {
-                      "raw": "export { default } from \\"../$context.js\\"",
+                      "raw": "export { default } from \\"../$.context.js\\"",
                     },
                     "done": true,
                     "id": "ContextCoder@petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post",
@@ -3016,7 +3402,7 @@ Map {
                 },
                 "externalImports": Map {},
                 "imports": Map {},
-                "path": "paths/pet/{petId}/$context.ts",
+                "path": "paths/pet/{petId}/$.context.ts",
                 "repository": Repository {
                   "scripts": [Circular],
                   "writeFiles": [Function],
@@ -3034,6 +3420,7 @@ Map {
                 },
                 "exports": Map {
                   "ApiResponse" => Object {
+                    "beforeExport": "",
                     "code": "{code?: number,type?: string,message?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
@@ -3074,11 +3461,12 @@ Map {
   "path-types/pet/{petId}/uploadImage.types.ts" => Script {
     "cache": Map {
       "OperationTypeCoder@petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post@[object Object]:true" => "HTTP_POST",
-      "ContextCoder@petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post@paths/pet/{petId}/$context.ts:false:true" => "Context",
+      "ContextCoder@petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post@paths/pet/{petId}/$.context.ts:false:true" => "Context",
       "SchemaTypeCoder@undefined@components/ApiResponse.ts:true:false" => "ApiResponse",
     },
     "exports": Map {
       "HTTP_POST" => Object {
+        "beforeExport": "",
         "code": "({ query, path, header, body, context, proxy }: { query: {additionalMetadata?: number}, path: {petId: number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
@@ -3123,8 +3511,22 @@ Map {
           },
           "exports": Map {
             "Context" => Object {
+              "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/pet/{petId}/$.context.ts\\";
+  }
+}
+",
               "code": Object {
-                "raw": "export { default } from \\"../$context.js\\"",
+                "raw": "export { default } from \\"../$.context.js\\"",
               },
               "done": true,
               "id": "ContextCoder@petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post",
@@ -3137,7 +3539,7 @@ Map {
           },
           "externalImports": Map {},
           "imports": Map {},
-          "path": "paths/pet/{petId}/$context.ts",
+          "path": "paths/pet/{petId}/$.context.ts",
           "repository": Repository {
             "scripts": [Circular],
             "writeFiles": [Function],
@@ -3155,6 +3557,7 @@ Map {
           },
           "exports": Map {
             "ApiResponse" => Object {
+              "beforeExport": "",
               "code": "{code?: number,type?: string,message?: string}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
@@ -3190,6 +3593,7 @@ Map {
     },
     "exports": Map {
       "GET" => Object {
+        "beforeExport": "",
         "code": "($) => {
       return $.response[200].random();
     }",
@@ -3211,10 +3615,11 @@ Map {
         "script": Script {
           "cache": Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1store~1inventory/get@[object Object]:true" => "HTTP_GET",
-            "ContextCoder@petstore.yaml#/paths/~1store~1inventory/get@paths/store/$context.ts:false:true" => "Context",
+            "ContextCoder@petstore.yaml#/paths/~1store~1inventory/get@paths/store/$.context.ts:false:true" => "Context",
           },
           "exports": Map {
             "HTTP_GET" => Object {
+              "beforeExport": "",
               "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
@@ -3259,8 +3664,22 @@ Map {
                 },
                 "exports": Map {
                   "Context" => Object {
+                    "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/store/$.context.ts\\";
+  }
+}
+",
                     "code": Object {
-                      "raw": "export { default } from \\"../$context.js\\"",
+                      "raw": "export { default } from \\"../$.context.js\\"",
                     },
                     "done": true,
                     "id": "ContextCoder@petstore.yaml#/paths/~1store~1inventory/get",
@@ -3273,7 +3692,7 @@ Map {
                 },
                 "externalImports": Map {},
                 "imports": Map {},
-                "path": "paths/store/$context.ts",
+                "path": "paths/store/$.context.ts",
                 "repository": Repository {
                   "scripts": [Circular],
                   "writeFiles": [Function],
@@ -3301,10 +3720,11 @@ Map {
   "path-types/store/inventory.types.ts" => Script {
     "cache": Map {
       "OperationTypeCoder@petstore.yaml#/paths/~1store~1inventory/get@[object Object]:true" => "HTTP_GET",
-      "ContextCoder@petstore.yaml#/paths/~1store~1inventory/get@paths/store/$context.ts:false:true" => "Context",
+      "ContextCoder@petstore.yaml#/paths/~1store~1inventory/get@paths/store/$.context.ts:false:true" => "Context",
     },
     "exports": Map {
       "HTTP_GET" => Object {
+        "beforeExport": "",
         "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
@@ -3349,8 +3769,22 @@ Map {
           },
           "exports": Map {
             "Context" => Object {
+              "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/store/$.context.ts\\";
+  }
+}
+",
               "code": Object {
-                "raw": "export { default } from \\"../$context.js\\"",
+                "raw": "export { default } from \\"../$.context.js\\"",
               },
               "done": true,
               "id": "ContextCoder@petstore.yaml#/paths/~1store~1inventory/get",
@@ -3363,7 +3797,7 @@ Map {
           },
           "externalImports": Map {},
           "imports": Map {},
-          "path": "paths/store/$context.ts",
+          "path": "paths/store/$.context.ts",
           "repository": Repository {
             "scripts": [Circular],
             "writeFiles": [Function],
@@ -3386,6 +3820,7 @@ Map {
     },
     "exports": Map {
       "POST" => Object {
+        "beforeExport": "",
         "code": "($) => {
       return $.response[200].random();
     }",
@@ -3407,11 +3842,12 @@ Map {
         "script": Script {
           "cache": Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1store~1order/post@[object Object]:true" => "HTTP_POST",
-            "ContextCoder@petstore.yaml#/paths/~1store~1order/post@paths/store/$context.ts:false:true" => "Context",
+            "ContextCoder@petstore.yaml#/paths/~1store~1order/post@paths/store/$.context.ts:false:true" => "Context",
             "SchemaTypeCoder@undefined@components/Order.ts:true:false" => "Order",
           },
           "exports": Map {
             "HTTP_POST" => Object {
+              "beforeExport": "",
               "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Order, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
@@ -3462,8 +3898,22 @@ Map {
                 },
                 "exports": Map {
                   "Context" => Object {
+                    "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/store/$.context.ts\\";
+  }
+}
+",
                     "code": Object {
-                      "raw": "export { default } from \\"../$context.js\\"",
+                      "raw": "export { default } from \\"../$.context.js\\"",
                     },
                     "done": true,
                     "id": "ContextCoder@petstore.yaml#/paths/~1store~1inventory/get",
@@ -3476,7 +3926,7 @@ Map {
                 },
                 "externalImports": Map {},
                 "imports": Map {},
-                "path": "paths/store/$context.ts",
+                "path": "paths/store/$.context.ts",
                 "repository": Repository {
                   "scripts": [Circular],
                   "writeFiles": [Function],
@@ -3494,6 +3944,7 @@ Map {
                 },
                 "exports": Map {
                   "Order" => Object {
+                    "beforeExport": "",
                     "code": "{id?: number,petId?: number,quantity?: number,shipDate?: string,status?: string,complete?: boolean}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
@@ -3534,11 +3985,12 @@ Map {
   "path-types/store/order.types.ts" => Script {
     "cache": Map {
       "OperationTypeCoder@petstore.yaml#/paths/~1store~1order/post@[object Object]:true" => "HTTP_POST",
-      "ContextCoder@petstore.yaml#/paths/~1store~1order/post@paths/store/$context.ts:false:true" => "Context",
+      "ContextCoder@petstore.yaml#/paths/~1store~1order/post@paths/store/$.context.ts:false:true" => "Context",
       "SchemaTypeCoder@undefined@components/Order.ts:true:false" => "Order",
     },
     "exports": Map {
       "HTTP_POST" => Object {
+        "beforeExport": "",
         "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Order, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
@@ -3589,8 +4041,22 @@ Map {
           },
           "exports": Map {
             "Context" => Object {
+              "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/store/$.context.ts\\";
+  }
+}
+",
               "code": Object {
-                "raw": "export { default } from \\"../$context.js\\"",
+                "raw": "export { default } from \\"../$.context.js\\"",
               },
               "done": true,
               "id": "ContextCoder@petstore.yaml#/paths/~1store~1inventory/get",
@@ -3603,7 +4069,7 @@ Map {
           },
           "externalImports": Map {},
           "imports": Map {},
-          "path": "paths/store/$context.ts",
+          "path": "paths/store/$.context.ts",
           "repository": Repository {
             "scripts": [Circular],
             "writeFiles": [Function],
@@ -3621,6 +4087,7 @@ Map {
           },
           "exports": Map {
             "Order" => Object {
+              "beforeExport": "",
               "code": "{id?: number,petId?: number,quantity?: number,shipDate?: string,status?: string,complete?: boolean}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
@@ -3658,6 +4125,7 @@ Map {
     },
     "exports": Map {
       "GET" => Object {
+        "beforeExport": "",
         "code": "($) => {
       return $.response[200].random();
     }",
@@ -3670,6 +4138,7 @@ Map {
         "typeDeclaration": "HTTP_GET",
       },
       "DELETE" => Object {
+        "beforeExport": "",
         "code": "() => { /* no response content specified in the OpenAPI document */ }",
         "done": true,
         "id": "OperationCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete",
@@ -3690,12 +4159,13 @@ Map {
           "cache": Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get@[object Object]:true" => "HTTP_GET",
             "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete@[object Object]:true" => "HTTP_DELETE",
-            "ContextCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get@paths/store/order/$context.ts:false:true" => "Context",
+            "ContextCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get@paths/store/order/$.context.ts:false:true" => "Context",
             "SchemaTypeCoder@undefined@components/Order.ts:true:false" => "Order",
-            "ContextCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete@paths/store/order/$context.ts:false:true" => "Context2",
+            "ContextCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete@paths/store/order/$.context.ts:false:true" => "Context2",
           },
           "exports": Map {
             "HTTP_GET" => Object {
+              "beforeExport": "",
               "code": "({ query, path, header, body, context, proxy }: { query: never, path: {orderId: number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
@@ -3738,6 +4208,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_DELETE" => Object {
+              "beforeExport": "",
               "code": "({ query, path, header, body, context, proxy }: { query: never, path: {orderId: number}, header: never, body: undefined, context: typeof Context2, response: ResponseBuilderFactory<{
 400: {
           headers: {};
@@ -3782,8 +4253,22 @@ Map {
                 },
                 "exports": Map {
                   "Context" => Object {
+                    "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/store/order/$.context.ts\\";
+  }
+}
+",
                     "code": Object {
-                      "raw": "export { default } from \\"../$context.js\\"",
+                      "raw": "export { default } from \\"../$.context.js\\"",
                     },
                     "done": true,
                     "id": "ContextCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get",
@@ -3796,7 +4281,7 @@ Map {
                 },
                 "externalImports": Map {},
                 "imports": Map {},
-                "path": "paths/store/order/$context.ts",
+                "path": "paths/store/order/$.context.ts",
                 "repository": Repository {
                   "scripts": [Circular],
                   "writeFiles": [Function],
@@ -3814,6 +4299,7 @@ Map {
                 },
                 "exports": Map {
                   "Order" => Object {
+                    "beforeExport": "",
                     "code": "{id?: number,petId?: number,quantity?: number,shipDate?: string,status?: string,complete?: boolean}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
@@ -3844,8 +4330,22 @@ Map {
                 },
                 "exports": Map {
                   "Context" => Object {
+                    "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/store/order/$.context.ts\\";
+  }
+}
+",
                     "code": Object {
-                      "raw": "export { default } from \\"../$context.js\\"",
+                      "raw": "export { default } from \\"../$.context.js\\"",
                     },
                     "done": true,
                     "id": "ContextCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get",
@@ -3858,7 +4358,7 @@ Map {
                 },
                 "externalImports": Map {},
                 "imports": Map {},
-                "path": "paths/store/order/$context.ts",
+                "path": "paths/store/order/$.context.ts",
                 "repository": Repository {
                   "scripts": [Circular],
                   "writeFiles": [Function],
@@ -3883,12 +4383,13 @@ Map {
           "cache": Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get@[object Object]:true" => "HTTP_GET",
             "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete@[object Object]:true" => "HTTP_DELETE",
-            "ContextCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get@paths/store/order/$context.ts:false:true" => "Context",
+            "ContextCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get@paths/store/order/$.context.ts:false:true" => "Context",
             "SchemaTypeCoder@undefined@components/Order.ts:true:false" => "Order",
-            "ContextCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete@paths/store/order/$context.ts:false:true" => "Context2",
+            "ContextCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete@paths/store/order/$.context.ts:false:true" => "Context2",
           },
           "exports": Map {
             "HTTP_GET" => Object {
+              "beforeExport": "",
               "code": "({ query, path, header, body, context, proxy }: { query: never, path: {orderId: number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
@@ -3931,6 +4432,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_DELETE" => Object {
+              "beforeExport": "",
               "code": "({ query, path, header, body, context, proxy }: { query: never, path: {orderId: number}, header: never, body: undefined, context: typeof Context2, response: ResponseBuilderFactory<{
 400: {
           headers: {};
@@ -3975,8 +4477,22 @@ Map {
                 },
                 "exports": Map {
                   "Context" => Object {
+                    "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/store/order/$.context.ts\\";
+  }
+}
+",
                     "code": Object {
-                      "raw": "export { default } from \\"../$context.js\\"",
+                      "raw": "export { default } from \\"../$.context.js\\"",
                     },
                     "done": true,
                     "id": "ContextCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get",
@@ -3989,7 +4505,7 @@ Map {
                 },
                 "externalImports": Map {},
                 "imports": Map {},
-                "path": "paths/store/order/$context.ts",
+                "path": "paths/store/order/$.context.ts",
                 "repository": Repository {
                   "scripts": [Circular],
                   "writeFiles": [Function],
@@ -4007,6 +4523,7 @@ Map {
                 },
                 "exports": Map {
                   "Order" => Object {
+                    "beforeExport": "",
                     "code": "{id?: number,petId?: number,quantity?: number,shipDate?: string,status?: string,complete?: boolean}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
@@ -4037,8 +4554,22 @@ Map {
                 },
                 "exports": Map {
                   "Context" => Object {
+                    "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/store/order/$.context.ts\\";
+  }
+}
+",
                     "code": Object {
-                      "raw": "export { default } from \\"../$context.js\\"",
+                      "raw": "export { default } from \\"../$.context.js\\"",
                     },
                     "done": true,
                     "id": "ContextCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get",
@@ -4051,7 +4582,7 @@ Map {
                 },
                 "externalImports": Map {},
                 "imports": Map {},
-                "path": "paths/store/order/$context.ts",
+                "path": "paths/store/order/$.context.ts",
                 "repository": Repository {
                   "scripts": [Circular],
                   "writeFiles": [Function],
@@ -4080,12 +4611,13 @@ Map {
     "cache": Map {
       "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get@[object Object]:true" => "HTTP_GET",
       "OperationTypeCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete@[object Object]:true" => "HTTP_DELETE",
-      "ContextCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get@paths/store/order/$context.ts:false:true" => "Context",
+      "ContextCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get@paths/store/order/$.context.ts:false:true" => "Context",
       "SchemaTypeCoder@undefined@components/Order.ts:true:false" => "Order",
-      "ContextCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete@paths/store/order/$context.ts:false:true" => "Context2",
+      "ContextCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/delete@paths/store/order/$.context.ts:false:true" => "Context2",
     },
     "exports": Map {
       "HTTP_GET" => Object {
+        "beforeExport": "",
         "code": "({ query, path, header, body, context, proxy }: { query: never, path: {orderId: number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
@@ -4128,6 +4660,7 @@ Map {
         "typeDeclaration": "",
       },
       "HTTP_DELETE" => Object {
+        "beforeExport": "",
         "code": "({ query, path, header, body, context, proxy }: { query: never, path: {orderId: number}, header: never, body: undefined, context: typeof Context2, response: ResponseBuilderFactory<{
 400: {
           headers: {};
@@ -4172,8 +4705,22 @@ Map {
           },
           "exports": Map {
             "Context" => Object {
+              "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/store/order/$.context.ts\\";
+  }
+}
+",
               "code": Object {
-                "raw": "export { default } from \\"../$context.js\\"",
+                "raw": "export { default } from \\"../$.context.js\\"",
               },
               "done": true,
               "id": "ContextCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get",
@@ -4186,7 +4733,7 @@ Map {
           },
           "externalImports": Map {},
           "imports": Map {},
-          "path": "paths/store/order/$context.ts",
+          "path": "paths/store/order/$.context.ts",
           "repository": Repository {
             "scripts": [Circular],
             "writeFiles": [Function],
@@ -4204,6 +4751,7 @@ Map {
           },
           "exports": Map {
             "Order" => Object {
+              "beforeExport": "",
               "code": "{id?: number,petId?: number,quantity?: number,shipDate?: string,status?: string,complete?: boolean}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
@@ -4234,8 +4782,22 @@ Map {
           },
           "exports": Map {
             "Context" => Object {
+              "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/store/order/$.context.ts\\";
+  }
+}
+",
               "code": Object {
-                "raw": "export { default } from \\"../$context.js\\"",
+                "raw": "export { default } from \\"../$.context.js\\"",
               },
               "done": true,
               "id": "ContextCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get",
@@ -4248,7 +4810,7 @@ Map {
           },
           "externalImports": Map {},
           "imports": Map {},
-          "path": "paths/store/order/$context.ts",
+          "path": "paths/store/order/$.context.ts",
           "repository": Repository {
             "scripts": [Circular],
             "writeFiles": [Function],
@@ -4271,6 +4833,7 @@ Map {
     },
     "exports": Map {
       "POST" => Object {
+        "beforeExport": "",
         "code": "($) => {
       return $.response[200].random();
     }",
@@ -4292,11 +4855,12 @@ Map {
         "script": Script {
           "cache": Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1user/post@[object Object]:true" => "HTTP_POST",
-            "ContextCoder@petstore.yaml#/paths/~1user/post@paths/$context.ts:false:true" => "Context",
+            "ContextCoder@petstore.yaml#/paths/~1user/post@paths/$.context.ts:false:true" => "Context",
             "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
           },
           "exports": Map {
             "HTTP_POST" => Object {
+              "beforeExport": "",
               "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: User, context: typeof Context, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
           headers: {};
@@ -4348,7 +4912,21 @@ Map {
                 },
                 "exports": Map {
                   "Context" => Object {
-                    "code": "{}",
+                    "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/$.context.ts\\";
+  }
+}
+",
+                    "code": "new Context()",
                     "done": true,
                     "id": "ContextCoder@petstore.yaml#/paths/~1pet/post",
                     "isDefault": true,
@@ -4360,7 +4938,7 @@ Map {
                 },
                 "externalImports": Map {},
                 "imports": Map {},
-                "path": "paths/$context.ts",
+                "path": "paths/$.context.ts",
                 "repository": Repository {
                   "scripts": [Circular],
                   "writeFiles": [Function],
@@ -4378,6 +4956,7 @@ Map {
                 },
                 "exports": Map {
                   "User" => Object {
+                    "beforeExport": "",
                     "code": "{id?: number,username?: string,firstName?: string,lastName?: string,email?: string,password?: string,phone?: string,userStatus?: number}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
@@ -4418,11 +4997,12 @@ Map {
   "path-types/user.types.ts" => Script {
     "cache": Map {
       "OperationTypeCoder@petstore.yaml#/paths/~1user/post@[object Object]:true" => "HTTP_POST",
-      "ContextCoder@petstore.yaml#/paths/~1user/post@paths/$context.ts:false:true" => "Context",
+      "ContextCoder@petstore.yaml#/paths/~1user/post@paths/$.context.ts:false:true" => "Context",
       "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
     },
     "exports": Map {
       "HTTP_POST" => Object {
+        "beforeExport": "",
         "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: User, context: typeof Context, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
           headers: {};
@@ -4474,7 +5054,21 @@ Map {
           },
           "exports": Map {
             "Context" => Object {
-              "code": "{}",
+              "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/$.context.ts\\";
+  }
+}
+",
+              "code": "new Context()",
               "done": true,
               "id": "ContextCoder@petstore.yaml#/paths/~1pet/post",
               "isDefault": true,
@@ -4486,7 +5080,7 @@ Map {
           },
           "externalImports": Map {},
           "imports": Map {},
-          "path": "paths/$context.ts",
+          "path": "paths/$.context.ts",
           "repository": Repository {
             "scripts": [Circular],
             "writeFiles": [Function],
@@ -4504,6 +5098,7 @@ Map {
           },
           "exports": Map {
             "User" => Object {
+              "beforeExport": "",
               "code": "{id?: number,username?: string,firstName?: string,lastName?: string,email?: string,password?: string,phone?: string,userStatus?: number}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
@@ -4539,6 +5134,7 @@ Map {
     },
     "exports": Map {
       "POST" => Object {
+        "beforeExport": "",
         "code": "($) => {
       return $.response[200].random();
     }",
@@ -4560,11 +5156,12 @@ Map {
         "script": Script {
           "cache": Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1user~1createWithList/post@[object Object]:true" => "HTTP_POST",
-            "ContextCoder@petstore.yaml#/paths/~1user~1createWithList/post@paths/user/$context.ts:false:true" => "Context",
+            "ContextCoder@petstore.yaml#/paths/~1user~1createWithList/post@paths/user/$.context.ts:false:true" => "Context",
             "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
           },
           "exports": Map {
             "HTTP_POST" => Object {
+              "beforeExport": "",
               "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Array<User>, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
@@ -4622,8 +5219,22 @@ Map {
                 },
                 "exports": Map {
                   "Context" => Object {
+                    "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/user/$.context.ts\\";
+  }
+}
+",
                     "code": Object {
-                      "raw": "export { default } from \\"../$context.js\\"",
+                      "raw": "export { default } from \\"../$.context.js\\"",
                     },
                     "done": true,
                     "id": "ContextCoder@petstore.yaml#/paths/~1user~1createWithList/post",
@@ -4636,7 +5247,7 @@ Map {
                 },
                 "externalImports": Map {},
                 "imports": Map {},
-                "path": "paths/user/$context.ts",
+                "path": "paths/user/$.context.ts",
                 "repository": Repository {
                   "scripts": [Circular],
                   "writeFiles": [Function],
@@ -4654,6 +5265,7 @@ Map {
                 },
                 "exports": Map {
                   "User" => Object {
+                    "beforeExport": "",
                     "code": "{id?: number,username?: string,firstName?: string,lastName?: string,email?: string,password?: string,phone?: string,userStatus?: number}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
@@ -4694,11 +5306,12 @@ Map {
   "path-types/user/createWithList.types.ts" => Script {
     "cache": Map {
       "OperationTypeCoder@petstore.yaml#/paths/~1user~1createWithList/post@[object Object]:true" => "HTTP_POST",
-      "ContextCoder@petstore.yaml#/paths/~1user~1createWithList/post@paths/user/$context.ts:false:true" => "Context",
+      "ContextCoder@petstore.yaml#/paths/~1user~1createWithList/post@paths/user/$.context.ts:false:true" => "Context",
       "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
     },
     "exports": Map {
       "HTTP_POST" => Object {
+        "beforeExport": "",
         "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Array<User>, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
@@ -4756,8 +5369,22 @@ Map {
           },
           "exports": Map {
             "Context" => Object {
+              "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/user/$.context.ts\\";
+  }
+}
+",
               "code": Object {
-                "raw": "export { default } from \\"../$context.js\\"",
+                "raw": "export { default } from \\"../$.context.js\\"",
               },
               "done": true,
               "id": "ContextCoder@petstore.yaml#/paths/~1user~1createWithList/post",
@@ -4770,7 +5397,7 @@ Map {
           },
           "externalImports": Map {},
           "imports": Map {},
-          "path": "paths/user/$context.ts",
+          "path": "paths/user/$.context.ts",
           "repository": Repository {
             "scripts": [Circular],
             "writeFiles": [Function],
@@ -4788,6 +5415,7 @@ Map {
           },
           "exports": Map {
             "User" => Object {
+              "beforeExport": "",
               "code": "{id?: number,username?: string,firstName?: string,lastName?: string,email?: string,password?: string,phone?: string,userStatus?: number}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
@@ -4823,6 +5451,7 @@ Map {
     },
     "exports": Map {
       "GET" => Object {
+        "beforeExport": "",
         "code": "($) => {
       return $.response[200].random();
     }",
@@ -4844,10 +5473,11 @@ Map {
         "script": Script {
           "cache": Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1user~1login/get@[object Object]:true" => "HTTP_GET",
-            "ContextCoder@petstore.yaml#/paths/~1user~1login/get@paths/user/$context.ts:false:true" => "Context",
+            "ContextCoder@petstore.yaml#/paths/~1user~1login/get@paths/user/$.context.ts:false:true" => "Context",
           },
           "exports": Map {
             "HTTP_GET" => Object {
+              "beforeExport": "",
               "code": "({ query, path, header, body, context, proxy }: { query: {username?: string, password?: string}, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {
@@ -4908,8 +5538,22 @@ Map {
                 },
                 "exports": Map {
                   "Context" => Object {
+                    "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/user/$.context.ts\\";
+  }
+}
+",
                     "code": Object {
-                      "raw": "export { default } from \\"../$context.js\\"",
+                      "raw": "export { default } from \\"../$.context.js\\"",
                     },
                     "done": true,
                     "id": "ContextCoder@petstore.yaml#/paths/~1user~1createWithList/post",
@@ -4922,7 +5566,7 @@ Map {
                 },
                 "externalImports": Map {},
                 "imports": Map {},
-                "path": "paths/user/$context.ts",
+                "path": "paths/user/$.context.ts",
                 "repository": Repository {
                   "scripts": [Circular],
                   "writeFiles": [Function],
@@ -4950,10 +5594,11 @@ Map {
   "path-types/user/login.types.ts" => Script {
     "cache": Map {
       "OperationTypeCoder@petstore.yaml#/paths/~1user~1login/get@[object Object]:true" => "HTTP_GET",
-      "ContextCoder@petstore.yaml#/paths/~1user~1login/get@paths/user/$context.ts:false:true" => "Context",
+      "ContextCoder@petstore.yaml#/paths/~1user~1login/get@paths/user/$.context.ts:false:true" => "Context",
     },
     "exports": Map {
       "HTTP_GET" => Object {
+        "beforeExport": "",
         "code": "({ query, path, header, body, context, proxy }: { query: {username?: string, password?: string}, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {
@@ -5014,8 +5659,22 @@ Map {
           },
           "exports": Map {
             "Context" => Object {
+              "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/user/$.context.ts\\";
+  }
+}
+",
               "code": Object {
-                "raw": "export { default } from \\"../$context.js\\"",
+                "raw": "export { default } from \\"../$.context.js\\"",
               },
               "done": true,
               "id": "ContextCoder@petstore.yaml#/paths/~1user~1createWithList/post",
@@ -5028,7 +5687,7 @@ Map {
           },
           "externalImports": Map {},
           "imports": Map {},
-          "path": "paths/user/$context.ts",
+          "path": "paths/user/$.context.ts",
           "repository": Repository {
             "scripts": [Circular],
             "writeFiles": [Function],
@@ -5051,6 +5710,7 @@ Map {
     },
     "exports": Map {
       "GET" => Object {
+        "beforeExport": "",
         "code": "() => { /* no response content specified in the OpenAPI document */ }",
         "done": true,
         "id": "OperationCoder@petstore.yaml#/paths/~1user~1logout/get",
@@ -5070,10 +5730,11 @@ Map {
         "script": Script {
           "cache": Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1user~1logout/get@[object Object]:true" => "HTTP_GET",
-            "ContextCoder@petstore.yaml#/paths/~1user~1logout/get@paths/user/$context.ts:false:true" => "Context",
+            "ContextCoder@petstore.yaml#/paths/~1user~1logout/get@paths/user/$.context.ts:false:true" => "Context",
           },
           "exports": Map {
             "HTTP_GET" => Object {
+              "beforeExport": "",
               "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
           headers: {};
@@ -5112,8 +5773,22 @@ Map {
                 },
                 "exports": Map {
                   "Context" => Object {
+                    "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/user/$.context.ts\\";
+  }
+}
+",
                     "code": Object {
-                      "raw": "export { default } from \\"../$context.js\\"",
+                      "raw": "export { default } from \\"../$.context.js\\"",
                     },
                     "done": true,
                     "id": "ContextCoder@petstore.yaml#/paths/~1user~1createWithList/post",
@@ -5126,7 +5801,7 @@ Map {
                 },
                 "externalImports": Map {},
                 "imports": Map {},
-                "path": "paths/user/$context.ts",
+                "path": "paths/user/$.context.ts",
                 "repository": Repository {
                   "scripts": [Circular],
                   "writeFiles": [Function],
@@ -5154,10 +5829,11 @@ Map {
   "path-types/user/logout.types.ts" => Script {
     "cache": Map {
       "OperationTypeCoder@petstore.yaml#/paths/~1user~1logout/get@[object Object]:true" => "HTTP_GET",
-      "ContextCoder@petstore.yaml#/paths/~1user~1logout/get@paths/user/$context.ts:false:true" => "Context",
+      "ContextCoder@petstore.yaml#/paths/~1user~1logout/get@paths/user/$.context.ts:false:true" => "Context",
     },
     "exports": Map {
       "HTTP_GET" => Object {
+        "beforeExport": "",
         "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
           headers: {};
@@ -5196,8 +5872,22 @@ Map {
           },
           "exports": Map {
             "Context" => Object {
+              "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/user/$.context.ts\\";
+  }
+}
+",
               "code": Object {
-                "raw": "export { default } from \\"../$context.js\\"",
+                "raw": "export { default } from \\"../$.context.js\\"",
               },
               "done": true,
               "id": "ContextCoder@petstore.yaml#/paths/~1user~1createWithList/post",
@@ -5210,7 +5900,7 @@ Map {
           },
           "externalImports": Map {},
           "imports": Map {},
-          "path": "paths/user/$context.ts",
+          "path": "paths/user/$.context.ts",
           "repository": Repository {
             "scripts": [Circular],
             "writeFiles": [Function],
@@ -5237,6 +5927,7 @@ Map {
     },
     "exports": Map {
       "GET" => Object {
+        "beforeExport": "",
         "code": "($) => {
       return $.response[200].random();
     }",
@@ -5249,6 +5940,7 @@ Map {
         "typeDeclaration": "HTTP_GET",
       },
       "PUT" => Object {
+        "beforeExport": "",
         "code": "() => { /* no response content specified in the OpenAPI document */ }",
         "done": true,
         "id": "OperationCoder@petstore.yaml#/paths/~1user~1{username}/put",
@@ -5259,6 +5951,7 @@ Map {
         "typeDeclaration": "HTTP_PUT",
       },
       "DELETE" => Object {
+        "beforeExport": "",
         "code": "() => { /* no response content specified in the OpenAPI document */ }",
         "done": true,
         "id": "OperationCoder@petstore.yaml#/paths/~1user~1{username}/delete",
@@ -5280,13 +5973,14 @@ Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/get@[object Object]:true" => "HTTP_GET",
             "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/put@[object Object]:true" => "HTTP_PUT",
             "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/delete@[object Object]:true" => "HTTP_DELETE",
-            "ContextCoder@petstore.yaml#/paths/~1user~1{username}/get@paths/user/$context.ts:false:true" => "Context",
+            "ContextCoder@petstore.yaml#/paths/~1user~1{username}/get@paths/user/$.context.ts:false:true" => "Context",
             "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
-            "ContextCoder@petstore.yaml#/paths/~1user~1{username}/put@paths/user/$context.ts:false:true" => "Context2",
-            "ContextCoder@petstore.yaml#/paths/~1user~1{username}/delete@paths/user/$context.ts:false:true" => "Context3",
+            "ContextCoder@petstore.yaml#/paths/~1user~1{username}/put@paths/user/$.context.ts:false:true" => "Context2",
+            "ContextCoder@petstore.yaml#/paths/~1user~1{username}/delete@paths/user/$.context.ts:false:true" => "Context3",
           },
           "exports": Map {
             "HTTP_GET" => Object {
+              "beforeExport": "",
               "code": "({ query, path, header, body, context, proxy }: { query: never, path: {username: string}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
@@ -5329,6 +6023,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_PUT" => Object {
+              "beforeExport": "",
               "code": "({ query, path, header, body, context, proxy }: { query: never, path: {username: string}, header: never, body: User, context: typeof Context2, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
           headers: {};
@@ -5346,6 +6041,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_DELETE" => Object {
+              "beforeExport": "",
               "code": "({ query, path, header, body, context, proxy }: { query: never, path: {username: string}, header: never, body: undefined, context: typeof Context3, response: ResponseBuilderFactory<{
 400: {
           headers: {};
@@ -5390,8 +6086,22 @@ Map {
                 },
                 "exports": Map {
                   "Context" => Object {
+                    "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/user/$.context.ts\\";
+  }
+}
+",
                     "code": Object {
-                      "raw": "export { default } from \\"../$context.js\\"",
+                      "raw": "export { default } from \\"../$.context.js\\"",
                     },
                     "done": true,
                     "id": "ContextCoder@petstore.yaml#/paths/~1user~1createWithList/post",
@@ -5404,7 +6114,7 @@ Map {
                 },
                 "externalImports": Map {},
                 "imports": Map {},
-                "path": "paths/user/$context.ts",
+                "path": "paths/user/$.context.ts",
                 "repository": Repository {
                   "scripts": [Circular],
                   "writeFiles": [Function],
@@ -5422,6 +6132,7 @@ Map {
                 },
                 "exports": Map {
                   "User" => Object {
+                    "beforeExport": "",
                     "code": "{id?: number,username?: string,firstName?: string,lastName?: string,email?: string,password?: string,phone?: string,userStatus?: number}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
@@ -5452,8 +6163,22 @@ Map {
                 },
                 "exports": Map {
                   "Context" => Object {
+                    "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/user/$.context.ts\\";
+  }
+}
+",
                     "code": Object {
-                      "raw": "export { default } from \\"../$context.js\\"",
+                      "raw": "export { default } from \\"../$.context.js\\"",
                     },
                     "done": true,
                     "id": "ContextCoder@petstore.yaml#/paths/~1user~1createWithList/post",
@@ -5466,7 +6191,7 @@ Map {
                 },
                 "externalImports": Map {},
                 "imports": Map {},
-                "path": "paths/user/$context.ts",
+                "path": "paths/user/$.context.ts",
                 "repository": Repository {
                   "scripts": [Circular],
                   "writeFiles": [Function],
@@ -5484,8 +6209,22 @@ Map {
                 },
                 "exports": Map {
                   "Context" => Object {
+                    "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/user/$.context.ts\\";
+  }
+}
+",
                     "code": Object {
-                      "raw": "export { default } from \\"../$context.js\\"",
+                      "raw": "export { default } from \\"../$.context.js\\"",
                     },
                     "done": true,
                     "id": "ContextCoder@petstore.yaml#/paths/~1user~1createWithList/post",
@@ -5498,7 +6237,7 @@ Map {
                 },
                 "externalImports": Map {},
                 "imports": Map {},
-                "path": "paths/user/$context.ts",
+                "path": "paths/user/$.context.ts",
                 "repository": Repository {
                   "scripts": [Circular],
                   "writeFiles": [Function],
@@ -5524,13 +6263,14 @@ Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/get@[object Object]:true" => "HTTP_GET",
             "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/put@[object Object]:true" => "HTTP_PUT",
             "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/delete@[object Object]:true" => "HTTP_DELETE",
-            "ContextCoder@petstore.yaml#/paths/~1user~1{username}/get@paths/user/$context.ts:false:true" => "Context",
+            "ContextCoder@petstore.yaml#/paths/~1user~1{username}/get@paths/user/$.context.ts:false:true" => "Context",
             "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
-            "ContextCoder@petstore.yaml#/paths/~1user~1{username}/put@paths/user/$context.ts:false:true" => "Context2",
-            "ContextCoder@petstore.yaml#/paths/~1user~1{username}/delete@paths/user/$context.ts:false:true" => "Context3",
+            "ContextCoder@petstore.yaml#/paths/~1user~1{username}/put@paths/user/$.context.ts:false:true" => "Context2",
+            "ContextCoder@petstore.yaml#/paths/~1user~1{username}/delete@paths/user/$.context.ts:false:true" => "Context3",
           },
           "exports": Map {
             "HTTP_GET" => Object {
+              "beforeExport": "",
               "code": "({ query, path, header, body, context, proxy }: { query: never, path: {username: string}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
@@ -5573,6 +6313,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_PUT" => Object {
+              "beforeExport": "",
               "code": "({ query, path, header, body, context, proxy }: { query: never, path: {username: string}, header: never, body: User, context: typeof Context2, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
           headers: {};
@@ -5590,6 +6331,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_DELETE" => Object {
+              "beforeExport": "",
               "code": "({ query, path, header, body, context, proxy }: { query: never, path: {username: string}, header: never, body: undefined, context: typeof Context3, response: ResponseBuilderFactory<{
 400: {
           headers: {};
@@ -5634,8 +6376,22 @@ Map {
                 },
                 "exports": Map {
                   "Context" => Object {
+                    "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/user/$.context.ts\\";
+  }
+}
+",
                     "code": Object {
-                      "raw": "export { default } from \\"../$context.js\\"",
+                      "raw": "export { default } from \\"../$.context.js\\"",
                     },
                     "done": true,
                     "id": "ContextCoder@petstore.yaml#/paths/~1user~1createWithList/post",
@@ -5648,7 +6404,7 @@ Map {
                 },
                 "externalImports": Map {},
                 "imports": Map {},
-                "path": "paths/user/$context.ts",
+                "path": "paths/user/$.context.ts",
                 "repository": Repository {
                   "scripts": [Circular],
                   "writeFiles": [Function],
@@ -5666,6 +6422,7 @@ Map {
                 },
                 "exports": Map {
                   "User" => Object {
+                    "beforeExport": "",
                     "code": "{id?: number,username?: string,firstName?: string,lastName?: string,email?: string,password?: string,phone?: string,userStatus?: number}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
@@ -5696,8 +6453,22 @@ Map {
                 },
                 "exports": Map {
                   "Context" => Object {
+                    "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/user/$.context.ts\\";
+  }
+}
+",
                     "code": Object {
-                      "raw": "export { default } from \\"../$context.js\\"",
+                      "raw": "export { default } from \\"../$.context.js\\"",
                     },
                     "done": true,
                     "id": "ContextCoder@petstore.yaml#/paths/~1user~1createWithList/post",
@@ -5710,7 +6481,7 @@ Map {
                 },
                 "externalImports": Map {},
                 "imports": Map {},
-                "path": "paths/user/$context.ts",
+                "path": "paths/user/$.context.ts",
                 "repository": Repository {
                   "scripts": [Circular],
                   "writeFiles": [Function],
@@ -5728,8 +6499,22 @@ Map {
                 },
                 "exports": Map {
                   "Context" => Object {
+                    "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/user/$.context.ts\\";
+  }
+}
+",
                     "code": Object {
-                      "raw": "export { default } from \\"../$context.js\\"",
+                      "raw": "export { default } from \\"../$.context.js\\"",
                     },
                     "done": true,
                     "id": "ContextCoder@petstore.yaml#/paths/~1user~1createWithList/post",
@@ -5742,7 +6527,7 @@ Map {
                 },
                 "externalImports": Map {},
                 "imports": Map {},
-                "path": "paths/user/$context.ts",
+                "path": "paths/user/$.context.ts",
                 "repository": Repository {
                   "scripts": [Circular],
                   "writeFiles": [Function],
@@ -5768,13 +6553,14 @@ Map {
             "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/get@[object Object]:true" => "HTTP_GET",
             "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/put@[object Object]:true" => "HTTP_PUT",
             "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/delete@[object Object]:true" => "HTTP_DELETE",
-            "ContextCoder@petstore.yaml#/paths/~1user~1{username}/get@paths/user/$context.ts:false:true" => "Context",
+            "ContextCoder@petstore.yaml#/paths/~1user~1{username}/get@paths/user/$.context.ts:false:true" => "Context",
             "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
-            "ContextCoder@petstore.yaml#/paths/~1user~1{username}/put@paths/user/$context.ts:false:true" => "Context2",
-            "ContextCoder@petstore.yaml#/paths/~1user~1{username}/delete@paths/user/$context.ts:false:true" => "Context3",
+            "ContextCoder@petstore.yaml#/paths/~1user~1{username}/put@paths/user/$.context.ts:false:true" => "Context2",
+            "ContextCoder@petstore.yaml#/paths/~1user~1{username}/delete@paths/user/$.context.ts:false:true" => "Context3",
           },
           "exports": Map {
             "HTTP_GET" => Object {
+              "beforeExport": "",
               "code": "({ query, path, header, body, context, proxy }: { query: never, path: {username: string}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
@@ -5817,6 +6603,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_PUT" => Object {
+              "beforeExport": "",
               "code": "({ query, path, header, body, context, proxy }: { query: never, path: {username: string}, header: never, body: User, context: typeof Context2, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
           headers: {};
@@ -5834,6 +6621,7 @@ Map {
               "typeDeclaration": "",
             },
             "HTTP_DELETE" => Object {
+              "beforeExport": "",
               "code": "({ query, path, header, body, context, proxy }: { query: never, path: {username: string}, header: never, body: undefined, context: typeof Context3, response: ResponseBuilderFactory<{
 400: {
           headers: {};
@@ -5878,8 +6666,22 @@ Map {
                 },
                 "exports": Map {
                   "Context" => Object {
+                    "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/user/$.context.ts\\";
+  }
+}
+",
                     "code": Object {
-                      "raw": "export { default } from \\"../$context.js\\"",
+                      "raw": "export { default } from \\"../$.context.js\\"",
                     },
                     "done": true,
                     "id": "ContextCoder@petstore.yaml#/paths/~1user~1createWithList/post",
@@ -5892,7 +6694,7 @@ Map {
                 },
                 "externalImports": Map {},
                 "imports": Map {},
-                "path": "paths/user/$context.ts",
+                "path": "paths/user/$.context.ts",
                 "repository": Repository {
                   "scripts": [Circular],
                   "writeFiles": [Function],
@@ -5910,6 +6712,7 @@ Map {
                 },
                 "exports": Map {
                   "User" => Object {
+                    "beforeExport": "",
                     "code": "{id?: number,username?: string,firstName?: string,lastName?: string,email?: string,password?: string,phone?: string,userStatus?: number}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
@@ -5940,8 +6743,22 @@ Map {
                 },
                 "exports": Map {
                   "Context" => Object {
+                    "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/user/$.context.ts\\";
+  }
+}
+",
                     "code": Object {
-                      "raw": "export { default } from \\"../$context.js\\"",
+                      "raw": "export { default } from \\"../$.context.js\\"",
                     },
                     "done": true,
                     "id": "ContextCoder@petstore.yaml#/paths/~1user~1createWithList/post",
@@ -5954,7 +6771,7 @@ Map {
                 },
                 "externalImports": Map {},
                 "imports": Map {},
-                "path": "paths/user/$context.ts",
+                "path": "paths/user/$.context.ts",
                 "repository": Repository {
                   "scripts": [Circular],
                   "writeFiles": [Function],
@@ -5972,8 +6789,22 @@ Map {
                 },
                 "exports": Map {
                   "Context" => Object {
+                    "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/user/$.context.ts\\";
+  }
+}
+",
                     "code": Object {
-                      "raw": "export { default } from \\"../$context.js\\"",
+                      "raw": "export { default } from \\"../$.context.js\\"",
                     },
                     "done": true,
                     "id": "ContextCoder@petstore.yaml#/paths/~1user~1createWithList/post",
@@ -5986,7 +6817,7 @@ Map {
                 },
                 "externalImports": Map {},
                 "imports": Map {},
-                "path": "paths/user/$context.ts",
+                "path": "paths/user/$.context.ts",
                 "repository": Repository {
                   "scripts": [Circular],
                   "writeFiles": [Function],
@@ -6016,13 +6847,14 @@ Map {
       "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/get@[object Object]:true" => "HTTP_GET",
       "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/put@[object Object]:true" => "HTTP_PUT",
       "OperationTypeCoder@petstore.yaml#/paths/~1user~1{username}/delete@[object Object]:true" => "HTTP_DELETE",
-      "ContextCoder@petstore.yaml#/paths/~1user~1{username}/get@paths/user/$context.ts:false:true" => "Context",
+      "ContextCoder@petstore.yaml#/paths/~1user~1{username}/get@paths/user/$.context.ts:false:true" => "Context",
       "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
-      "ContextCoder@petstore.yaml#/paths/~1user~1{username}/put@paths/user/$context.ts:false:true" => "Context2",
-      "ContextCoder@petstore.yaml#/paths/~1user~1{username}/delete@paths/user/$context.ts:false:true" => "Context3",
+      "ContextCoder@petstore.yaml#/paths/~1user~1{username}/put@paths/user/$.context.ts:false:true" => "Context2",
+      "ContextCoder@petstore.yaml#/paths/~1user~1{username}/delete@paths/user/$.context.ts:false:true" => "Context3",
     },
     "exports": Map {
       "HTTP_GET" => Object {
+        "beforeExport": "",
         "code": "({ query, path, header, body, context, proxy }: { query: never, path: {username: string}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
@@ -6065,6 +6897,7 @@ Map {
         "typeDeclaration": "",
       },
       "HTTP_PUT" => Object {
+        "beforeExport": "",
         "code": "({ query, path, header, body, context, proxy }: { query: never, path: {username: string}, header: never, body: User, context: typeof Context2, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
           headers: {};
@@ -6082,6 +6915,7 @@ Map {
         "typeDeclaration": "",
       },
       "HTTP_DELETE" => Object {
+        "beforeExport": "",
         "code": "({ query, path, header, body, context, proxy }: { query: never, path: {username: string}, header: never, body: undefined, context: typeof Context3, response: ResponseBuilderFactory<{
 400: {
           headers: {};
@@ -6126,8 +6960,22 @@ Map {
           },
           "exports": Map {
             "Context" => Object {
+              "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/user/$.context.ts\\";
+  }
+}
+",
               "code": Object {
-                "raw": "export { default } from \\"../$context.js\\"",
+                "raw": "export { default } from \\"../$.context.js\\"",
               },
               "done": true,
               "id": "ContextCoder@petstore.yaml#/paths/~1user~1createWithList/post",
@@ -6140,7 +6988,7 @@ Map {
           },
           "externalImports": Map {},
           "imports": Map {},
-          "path": "paths/user/$context.ts",
+          "path": "paths/user/$.context.ts",
           "repository": Repository {
             "scripts": [Circular],
             "writeFiles": [Function],
@@ -6158,6 +7006,7 @@ Map {
           },
           "exports": Map {
             "User" => Object {
+              "beforeExport": "",
               "code": "{id?: number,username?: string,firstName?: string,lastName?: string,email?: string,password?: string,phone?: string,userStatus?: number}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
@@ -6188,8 +7037,22 @@ Map {
           },
           "exports": Map {
             "Context" => Object {
+              "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/user/$.context.ts\\";
+  }
+}
+",
               "code": Object {
-                "raw": "export { default } from \\"../$context.js\\"",
+                "raw": "export { default } from \\"../$.context.js\\"",
               },
               "done": true,
               "id": "ContextCoder@petstore.yaml#/paths/~1user~1createWithList/post",
@@ -6202,7 +7065,7 @@ Map {
           },
           "externalImports": Map {},
           "imports": Map {},
-          "path": "paths/user/$context.ts",
+          "path": "paths/user/$.context.ts",
           "repository": Repository {
             "scripts": [Circular],
             "writeFiles": [Function],
@@ -6220,8 +7083,22 @@ Map {
           },
           "exports": Map {
             "Context" => Object {
+              "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/user/$.context.ts\\";
+  }
+}
+",
               "code": Object {
-                "raw": "export { default } from \\"../$context.js\\"",
+                "raw": "export { default } from \\"../$.context.js\\"",
               },
               "done": true,
               "id": "ContextCoder@petstore.yaml#/paths/~1user~1createWithList/post",
@@ -6234,7 +7111,7 @@ Map {
           },
           "externalImports": Map {},
           "imports": Map {},
-          "path": "paths/user/$context.ts",
+          "path": "paths/user/$.context.ts",
           "repository": Repository {
             "scripts": [Circular],
             "writeFiles": [Function],
@@ -6250,13 +7127,27 @@ Map {
     },
     "typeCache": Map {},
   },
-  "paths/$context.ts" => Script {
+  "paths/$.context.ts" => Script {
     "cache": Map {
       "default" => "Context",
     },
     "exports": Map {
       "Context" => Object {
-        "code": "{}",
+        "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/$.context.ts\\";
+  }
+}
+",
+        "code": "new Context()",
         "done": true,
         "id": "ContextCoder@petstore.yaml#/paths/~1pet/post",
         "isDefault": true,
@@ -6268,7 +7159,7 @@ Map {
     },
     "externalImports": Map {},
     "imports": Map {},
-    "path": "paths/$context.ts",
+    "path": "paths/$.context.ts",
     "repository": Repository {
       "scripts": [Circular],
       "writeFiles": [Function],
@@ -6283,6 +7174,7 @@ Map {
     },
     "exports": Map {
       "Pet" => Object {
+        "beforeExport": "",
         "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
         "done": true,
         "id": "SchemaTypeCoder@undefined",
@@ -6305,6 +7197,7 @@ Map {
           },
           "exports": Map {
             "Category" => Object {
+              "beforeExport": "",
               "code": "{id?: number,name?: string}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
@@ -6335,6 +7228,7 @@ Map {
           },
           "exports": Map {
             "Tag" => Object {
+              "beforeExport": "",
               "code": "{id?: number,name?: string}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
@@ -6363,14 +7257,28 @@ Map {
     },
     "typeCache": Map {},
   },
-  "paths/pet/$context.ts" => Script {
+  "paths/pet/$.context.ts" => Script {
     "cache": Map {
       "default" => "Context",
     },
     "exports": Map {
       "Context" => Object {
+        "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/pet/$.context.ts\\";
+  }
+}
+",
         "code": Object {
-          "raw": "export { default } from \\"../$context.js\\"",
+          "raw": "export { default } from \\"../$.context.js\\"",
         },
         "done": true,
         "id": "ContextCoder@petstore.yaml#/paths/~1pet~1findByStatus/get",
@@ -6383,21 +7291,35 @@ Map {
     },
     "externalImports": Map {},
     "imports": Map {},
-    "path": "paths/pet/$context.ts",
+    "path": "paths/pet/$.context.ts",
     "repository": Repository {
       "scripts": [Circular],
       "writeFiles": [Function],
     },
     "typeCache": Map {},
   },
-  "paths/pet/{petId}/$context.ts" => Script {
+  "paths/pet/{petId}/$.context.ts" => Script {
     "cache": Map {
       "default" => "Context",
     },
     "exports": Map {
       "Context" => Object {
+        "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/pet/{petId}/$.context.ts\\";
+  }
+}
+",
         "code": Object {
-          "raw": "export { default } from \\"../$context.js\\"",
+          "raw": "export { default } from \\"../$.context.js\\"",
         },
         "done": true,
         "id": "ContextCoder@petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post",
@@ -6410,7 +7332,7 @@ Map {
     },
     "externalImports": Map {},
     "imports": Map {},
-    "path": "paths/pet/{petId}/$context.ts",
+    "path": "paths/pet/{petId}/$.context.ts",
     "repository": Repository {
       "scripts": [Circular],
       "writeFiles": [Function],
@@ -6423,6 +7345,7 @@ Map {
     },
     "exports": Map {
       "ApiResponse" => Object {
+        "beforeExport": "",
         "code": "{code?: number,type?: string,message?: string}",
         "done": true,
         "id": "SchemaTypeCoder@undefined",
@@ -6442,14 +7365,28 @@ Map {
     },
     "typeCache": Map {},
   },
-  "paths/store/$context.ts" => Script {
+  "paths/store/$.context.ts" => Script {
     "cache": Map {
       "default" => "Context",
     },
     "exports": Map {
       "Context" => Object {
+        "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/store/$.context.ts\\";
+  }
+}
+",
         "code": Object {
-          "raw": "export { default } from \\"../$context.js\\"",
+          "raw": "export { default } from \\"../$.context.js\\"",
         },
         "done": true,
         "id": "ContextCoder@petstore.yaml#/paths/~1store~1inventory/get",
@@ -6462,7 +7399,7 @@ Map {
     },
     "externalImports": Map {},
     "imports": Map {},
-    "path": "paths/store/$context.ts",
+    "path": "paths/store/$.context.ts",
     "repository": Repository {
       "scripts": [Circular],
       "writeFiles": [Function],
@@ -6475,6 +7412,7 @@ Map {
     },
     "exports": Map {
       "Order" => Object {
+        "beforeExport": "",
         "code": "{id?: number,petId?: number,quantity?: number,shipDate?: string,status?: string,complete?: boolean}",
         "done": true,
         "id": "SchemaTypeCoder@undefined",
@@ -6494,14 +7432,28 @@ Map {
     },
     "typeCache": Map {},
   },
-  "paths/store/order/$context.ts" => Script {
+  "paths/store/order/$.context.ts" => Script {
     "cache": Map {
       "default" => "Context",
     },
     "exports": Map {
       "Context" => Object {
+        "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/store/order/$.context.ts\\";
+  }
+}
+",
         "code": Object {
-          "raw": "export { default } from \\"../$context.js\\"",
+          "raw": "export { default } from \\"../$.context.js\\"",
         },
         "done": true,
         "id": "ContextCoder@petstore.yaml#/paths/~1store~1order~1{orderId}/get",
@@ -6514,7 +7466,7 @@ Map {
     },
     "externalImports": Map {},
     "imports": Map {},
-    "path": "paths/store/order/$context.ts",
+    "path": "paths/store/order/$.context.ts",
     "repository": Repository {
       "scripts": [Circular],
       "writeFiles": [Function],
@@ -6527,6 +7479,7 @@ Map {
     },
     "exports": Map {
       "User" => Object {
+        "beforeExport": "",
         "code": "{id?: number,username?: string,firstName?: string,lastName?: string,email?: string,password?: string,phone?: string,userStatus?: number}",
         "done": true,
         "id": "SchemaTypeCoder@undefined",
@@ -6546,14 +7499,28 @@ Map {
     },
     "typeCache": Map {},
   },
-  "paths/user/$context.ts" => Script {
+  "paths/user/$.context.ts" => Script {
     "cache": Map {
       "default" => "Context",
     },
     "exports": Map {
       "Context" => Object {
+        "beforeExport": "/**
+* This is the default context for Counterfact.
+* Change the code to suit your needs.
+*/
+class Context {
+  // delete this line to make the class type safe
+  [key: string]: any; 
+
+  // A helper when you accessing the context object via the REPL. You can delete it if you like.
+  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
+    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/user/$.context.ts\\";
+  }
+}
+",
         "code": Object {
-          "raw": "export { default } from \\"../$context.js\\"",
+          "raw": "export { default } from \\"../$.context.js\\"",
         },
         "done": true,
         "id": "ContextCoder@petstore.yaml#/paths/~1user~1createWithList/post",
@@ -6566,7 +7533,7 @@ Map {
     },
     "externalImports": Map {},
     "imports": Map {},
-    "path": "paths/user/$context.ts",
+    "path": "paths/user/$.context.ts",
     "repository": Repository {
       "scripts": [Circular],
       "writeFiles": [Function],
@@ -6579,6 +7546,7 @@ Map {
     },
     "exports": Map {
       "Category" => Object {
+        "beforeExport": "",
         "code": "{id?: number,name?: string}",
         "done": true,
         "id": "SchemaTypeCoder@undefined",
@@ -6604,6 +7572,7 @@ Map {
     },
     "exports": Map {
       "Tag" => Object {
+        "beforeExport": "",
         "code": "{id?: number,name?: string}",
         "done": true,
         "id": "SchemaTypeCoder@undefined",

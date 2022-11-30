@@ -42,6 +42,7 @@ export class Script {
       isType,
       isDefault,
       typeDeclaration: coder.typeDeclaration(this.exports, this),
+      beforeExport: coder.beforeExport(this.path),
     };
 
     exportStatement.promise = coder
@@ -163,20 +164,20 @@ export class Script {
   exportStatements() {
     return Array.from(
       this.exports.values(),
-      ({ name, isType, isDefault, code, typeDeclaration }) => {
+      ({ name, isType, isDefault, code, typeDeclaration, beforeExport }) => {
         if (code.raw) {
           return code.raw;
         }
 
         if (isDefault) {
-          return `export default ${code};`;
+          return `${beforeExport}export default ${code};`;
         }
 
         const keyword = isType ? "type" : "const";
         const typeAnnotation =
           typeDeclaration.length === 0 ? "" : `:${typeDeclaration}`;
 
-        return `export ${keyword} ${name}${typeAnnotation} = ${code};`;
+        return `${beforeExport}export ${keyword} ${name}${typeAnnotation} = ${code};`;
       }
     );
   }

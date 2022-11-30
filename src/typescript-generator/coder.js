@@ -11,6 +11,10 @@ export class Coder {
     return `${this.constructor.name}@${this.requirement.url}`;
   }
 
+  beforeExport() {
+    return "";
+  }
+
   write() {
     // This method should be overridden by a subclass.
 
