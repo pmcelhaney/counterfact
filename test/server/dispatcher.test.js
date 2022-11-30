@@ -535,9 +535,7 @@ describe("given an invalid path", () => {
     expect(response.status).toBe(404);
 
     expect(response.body).toBe(
-      "Could not find a PUT method at " +
-        "/your/left/foot/in/and/your/right/foot/out\n" +
-        "Got as far as /your/{side}/{bodyPart}/in/and/your"
+      "Could not find a PUT method matching /your/left/foot/in/and/your/right/foot/out\n"
     );
   });
 });
