@@ -15,5 +15,12 @@
   "[typescript]": {
     "editor.defaultFormatter": "dbaeumer.vscode-eslint"
   },
-  "cSpell.words": ["bodyparser", "counterfact", "Deno", "openapi", "transpiles"]
+  "cSpell.words": [
+    "bodyparser",
+    "counterfact",
+    "Deno",
+    "openapi",
+    "Petstore",
+    "transpiles"
+  ]
 }
