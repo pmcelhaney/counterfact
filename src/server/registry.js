@@ -114,7 +114,8 @@ export class Registry {
     if (!execute) {
       return () => ({
         status: 404,
-        body: `Could not find a ${httpRequestMethod} method at ${url}\nGot as far as ${handler.matchedPath}`,
+        body: `Could not find a ${httpRequestMethod} method matching ${url}\n`,
+        contentType: "text/plain",
       });
     }
 
