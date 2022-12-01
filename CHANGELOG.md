@@ -1,5 +1,20 @@
 # counterfact
 
+## 0.15.0
+
+### Minor Changes
+
+- 78c0c31: return $.proxy(url) to proxy to another server
+- 6bf3d42: $context.ts -> $.context.ts
+- 7c2893a: change rapidoc configuration to show paths in the nav bar
+- 033c067: new landing page with links to Rapidoc and Swagger UI
+- 6bf3d42: improve and document the REPL
+
+### Patch Changes
+
+- a2d6bf0: always start the server regardless of which command line options are present
+- 4a96dfa: fix crash when a path is not found
+
 ## 0.14.0
 
 ### Minor Changes
