@@ -77,7 +77,7 @@ export const POST = ({ context, response, body }) => {
 ```
 
 ```js
-// ./paths/$context.js
+// ./paths/$context.ts
 class PetStore () {
     pets = {};
 

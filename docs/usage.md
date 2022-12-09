@@ -139,7 +139,7 @@ export const POST: HTTP_POST = ($) => {
  };
 ```
 
-The `context` object is defined in `$.context.js` in the same directory as the file that uses it. It's up to you to define the API for a context object. For example, your `$.context.js` file might look like this.
+The `context` object is defined in `$.context.ts` in the same directory as the file that uses it. It's up to you to define the API for a context object. For example, your `$.context.ts` file might look like this.
 
 ```ts
 class PetStore {
