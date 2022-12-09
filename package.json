@@ -1,6 +1,6 @@
 {
   "name": "counterfact",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "description": "a library for building a fake REST API for testing",
   "type": "module",
   "main": "./src/server/counterfact.js",
@@ -41,7 +41,7 @@
     "@stryker-mutator/jest-runner": "6.3.0",
     "@types/koa": "2.13.5",
     "@types/koa-static": "^4.0.2",
-    "eslint": "8.28.0",
+    "eslint": "8.29.0",
     "eslint-config-hardcore": "25.1.0",
     "eslint-formatter-github-annotations": "0.1.0",
     "eslint-import-resolver-typescript": "^3.2.5",
@@ -54,7 +54,7 @@
     "jest": "28.1.2",
     "nodemon": "2.0.20",
     "stryker-cli": "1.0.2",
-    "supertest": "6.3.1"
+    "supertest": "6.3.2"
   },
   "dependencies": {
     "@hapi/accept": "^6.0.0",
@@ -62,7 +62,7 @@
     "chokidar": "^3.5.3",
     "commander": "^9.4.0",
     "fetch": "^1.1.0",
-    "fs-extra": "^10.1.0",
+    "fs-extra": "^11.0.0",
     "handlebars": "^4.7.7",
     "js-yaml": "^4.1.0",
     "json-schema-faker": "^0.5.0-rcv.44",

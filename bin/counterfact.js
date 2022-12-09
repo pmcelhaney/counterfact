@@ -23,7 +23,7 @@ async function main(source, destination) {
 
   const url = `http://localhost:${options.port}`;
 
-  const guiUrl = `${url}/counterfact`;
+  const guiUrl = `${url}/counterfact/`;
 
   const { contextRegistry } = await start({
     basePath,

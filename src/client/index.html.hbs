@@ -3,37 +3,43 @@
   <head>
     <title>Counterfact</title>
     <meta charset="utf-8">
-    <meta name="description" content="Counterfact dashboard" />
+    <meta name="description" content="Counterfact Dashboard" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <script type="module" src="https://unpkg.com/rapidoc/dist/rapidoc-min.js"></script>
 
-
-     
-  </head>
+    <style type="text/css">
+        body { 
+            font-family: Helvetica, Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+    </style>
   <body>
 
+    <h1>Counterfact</h1>
+
+    <p>
+        This server implements the OpenAPI spec at <a href="{{openApiHref}}">{{openApiPath}}</a>. 
+        You can try it out using your favorite REST client (curl, Postman, etc.) or browse the interactive API documentation in <a href="./swagger">Swagger UI</a> or <a href="./rapidoc">Rapidoc</a>. 
+
+    </p>
+
+    <p>
+        The TypeScript code for each path can be found under <code>{{basePath}}</code>. 
+        Click on a path below to edit its corresponding TypeScript file in VSCode.
+        For more information, see the <a href="https://counterfact.dev/docs/usage.html">usage guide</a>.
+    </p>
+    
+    <ul>
+    {{#each routes as |route|}}
+        <li><a href="vscode://file/{{../basePath}}/paths/{{route}}.ts">{{route}}</a></li>
+    {{/each}}
+    </ul>
 
 
-     <rapi-doc spec-url="/counterfact/openapi" show-method-in-nav-bar="as-colored-block" nav-active-item-marker="left-bar" use-path-in-nav-bar="true"> 
+    <hr>
 
-      <div slot="overview" style="background-color: #eee">
-        <p>Put an explanation of Counterfact here.</p>
-         <a
-            href="https://github.com/pmcelhaney/counterfact/blob/main/docs/usage.md#generated-code-"
-            >How does this work?</a
-          > 
-      </div>
-      {{#each routes as |route|}}
-        <a slot="get-{{escape_route route}}" href="vscode://file/{{../basePath}}/paths/{{.}}.ts">Edit in VSCode</a>
-        <a slot="put-{{escape_route route}}" href="vscode://file/{{../basePath}}/paths/{{.}}.ts">Edit in VSCode</a>
-        <a slot="post-{{escape_route route}}" href="vscode://file/{{../basePath}}/paths/{{.}}.ts">Edit in VSCode</a>
-        <a slot="delete-{{escape_route route}}" href="vscode://file/{{../basePath}}/paths/{{.}}.ts">Edit in VSCode</a>
-        <a slot="patch-{{escape_route route}}" href="vscode://file/{{../basePath}}/paths/{{.}}.ts">Edit in VSCode</a>
+    <p>👋 Thanks for trying <a href="https://github.com/pmcelhaney/counterfact/">Counterfact</a>! Let me know how it goes at <a href="mailto:pmcelhaney@gmail.com">pmcelhaney@gmail.com</a> or <a href="https://github.com/pmcelhaney/counterfact/issues/new">Github</a> - <a href="https://patrickmcelhaney.com">Patrick</a></p>
 
-      {{/each}}
-      </rapi-doc>
-
-
-
+  
   </body>
 </html>

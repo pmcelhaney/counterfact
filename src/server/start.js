@@ -1,4 +1,5 @@
 import nodePath from "node:path";
+import { pathToFileURL } from "node:url";
 
 import yaml from "js-yaml";
 import Koa from "koa";
@@ -19,8 +20,8 @@ Handlebars.registerHelper("escape_route", (route) =>
   route.replace(/[^\w/]/gu, "-")
 );
 
-function swaggerUi(app, openApiPath, url) {
-  app.use(async (ctx, next) => {
+function openapi(openApiPath, url) {
+  return async (ctx, next) => {
     if (ctx.URL.pathname === "/counterfact/openapi") {
       const openApiDocument = await yaml.load(await readFile(openApiPath));
 
@@ -42,7 +43,42 @@ function swaggerUi(app, openApiPath, url) {
 
     // eslint-disable-next-line node/callback-return
     await next();
-  });
+  };
+}
+
+function page(pathname, templateName, locals) {
+  return async (ctx, next) => {
+    const render = Handlebars.compile(
+      await readFile(
+        nodePath.join(__dirname, `../client/${templateName}.html.hbs`)
+      )
+    );
+
+    if (ctx.URL.pathname === pathname) {
+      // eslint-disable-next-line require-atomic-updates
+      ctx.body = await render(locals);
+
+      return;
+    }
+
+    // eslint-disable-next-line node/callback-return
+    await next();
+  };
+}
+
+export async function start({
+  basePath = process.cwd(),
+  port = DEFAULT_PORT,
+  openApiPath = nodePath.join(basePath, "../openapi.yaml"),
+}) {
+  const app = new Koa();
+
+  const { koaMiddleware, contextRegistry, registry } = await counterfact(
+    basePath,
+    openApiPath
+  );
+
+  app.use(openapi(openApiPath, `//localhost:${port}`));
 
   app.use(
     koaSwagger({
@@ -53,44 +89,26 @@ function swaggerUi(app, openApiPath, url) {
       },
     })
   );
-}
 
-export const landingPageTemplate = Handlebars.compile(
-  await readFile(nodePath.join(__dirname, "../client/index.html.hbs"))
-);
+  app.use(
+    page("/counterfact/", "index", {
+      basePath,
+      routes: registry.routes,
+      methods: ["get", "post", "put", "delete", "patch"],
+      openApiPath,
 
-export async function start({
-  basePath = process.cwd(),
-  port = DEFAULT_PORT,
-  openApiPath = nodePath.join(basePath, "../openapi.yaml"),
-  includeSwaggerUi = false,
-}) {
-  const app = new Koa();
-
-  const { koaMiddleware, contextRegistry, registry } = await counterfact(
-    basePath,
-    openApiPath
+      openApiHref: openApiPath.includes("://")
+        ? openApiPath
+        : pathToFileURL(openApiPath).href,
+    })
   );
 
-  if (includeSwaggerUi) {
-    swaggerUi(app, openApiPath, `//localhost:${port}`);
-  }
-
-  app.use(async (ctx, next) => {
-    if (ctx.URL.pathname === "/counterfact") {
-      // eslint-disable-next-line require-atomic-updates
-      ctx.body = await landingPageTemplate({
-        basePath,
-        routes: registry.routes,
-        methods: ["get", "post", "put", "delete", "patch"],
-      });
-
-      return;
-    }
-
-    // eslint-disable-next-line node/callback-return
-    await next();
-  });
+  app.use(
+    page("/counterfact/rapidoc", "rapi-doc", {
+      basePath,
+      routes: registry.routes,
+    })
+  );
 
   app.use(bodyParser());
 
