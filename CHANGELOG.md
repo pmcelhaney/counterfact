@@ -1,5 +1,11 @@
 # counterfact
 
+## 0.15.1
+
+### Patch Changes
+
+- b7509d9: fix an issue where importing from $.context.ts did not work
+
 ## 0.15.0
 
 ### Minor Changes
