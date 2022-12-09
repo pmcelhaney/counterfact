@@ -27,7 +27,7 @@ describe("a Transpiler", () => {
 
       await transpiler.watch();
 
-      await expect(fs.readFile(path("dist/found.js"), "utf8")).resolves.toBe(
+      await expect(fs.readFile(path("dist/found.mjs"), "utf8")).resolves.toBe(
         JAVASCRIPT_SOURCE
       );
 
@@ -50,7 +50,7 @@ describe("a Transpiler", () => {
         await add("src/added.ts", TYPESCRIPT_SOURCE);
         await write;
 
-        await expect(fs.readFile(path("dist/added.js"), "utf8")).resolves.toBe(
+        await expect(fs.readFile(path("dist/added.mjs"), "utf8")).resolves.toBe(
           JAVASCRIPT_SOURCE
         );
 
@@ -78,7 +78,7 @@ describe("a Transpiler", () => {
       await overwrite;
 
       await expect(
-        fs.readFile(path("dist/update-me.js"), "utf8")
+        fs.readFile(path("dist/update-me.mjs"), "utf8")
       ).resolves.toBe(JAVASCRIPT_SOURCE);
 
       transpiler.stopWatching();

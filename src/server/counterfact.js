@@ -40,7 +40,7 @@ export async function counterfact(
 
   const registry = new Registry();
 
-  const modulesPath = nodePath.join(basePath, "js");
+  const modulesPath = `${nodePath.join(basePath, "js")}/`;
 
   await ensureDirectoryExists(modulesPath);
 
