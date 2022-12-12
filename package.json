@@ -21,7 +21,7 @@
     "node": ">=16.9.0"
   },
   "bin": {
-    "counterfact": "./bin/counterfact.js"
+    "counterfact": "./bin/counterfact.sh"
   },
   "scripts": {
     "test": "yarn node --experimental-vm-modules $(yarn bin jest)",
@@ -33,7 +33,7 @@
     "go:petstore": "yarn counterfact https://petstore3.swagger.io/api/v3/openapi.json out",
     "go:petstore2": "yarn counterfact  https://petstore.swagger.io/v2/swagger.json out",
     "go:example": "yarn counterfact ./openapi-example.yaml out --open",
-    "counterfact": "./bin/counterfact.js"
+    "counterfact": "node --experimental-loader esbuild-node-loader ./bin/counterfact.js"
   },
   "devDependencies": {
     "@changesets/cli": "2.25.2",
@@ -61,6 +61,7 @@
     "@types/json-schema": "^7.0.11",
     "chokidar": "^3.5.3",
     "commander": "^9.4.0",
+    "esbuild-node-loader": "^0.8.0",
     "fetch": "^1.1.0",
     "fs-extra": "^11.0.0",
     "handlebars": "^4.7.7",

@@ -59,7 +59,7 @@ export class ModuleLoader extends EventTarget {
           })
           // eslint-disable-next-line promise/prefer-await-to-then
           .catch((error) => {
-            throw error;
+            process.stdout.write(`\nError loading ${pathName}:\n${error}\n`);
           });
       });
     await once(this.watcher, "ready");
@@ -78,6 +78,7 @@ export class ModuleLoader extends EventTarget {
       withFileTypes: true,
     });
 
+    // eslint-disable-next-line max-statements
     const imports = files.flatMap(async (file) => {
       const extension = file.name.split(".").at(-1);
 
@@ -91,18 +92,22 @@ export class ModuleLoader extends EventTarget {
         return;
       }
 
-      // eslint-disable-next-line node/no-unsupported-features/es-syntax, import/no-dynamic-require
-      const endpoint = await import(
-        nodePath.join(this.basePath, directory, file.name)
-      );
+      const fullPath = nodePath.join(this.basePath, directory, file.name);
 
-      if (file.name.includes("$.context")) {
-        this.contextRegistry.add(`/${directory}`, endpoint.default);
-      } else {
-        this.registry.add(
-          `/${nodePath.join(directory, nodePath.parse(file.name).name)}`,
-          endpoint
-        );
+      try {
+        // eslint-disable-next-line node/no-unsupported-features/es-syntax, import/no-dynamic-require
+        const endpoint = await import(fullPath);
+
+        if (file.name.includes("$.context")) {
+          this.contextRegistry.add(`/${directory}`, endpoint.default);
+        } else {
+          this.registry.add(
+            `/${nodePath.join(directory, nodePath.parse(file.name).name)}`,
+            endpoint
+          );
+        }
+      } catch (error) {
+        process.stderr.write(`\nError loading ${fullPath}:\n${error}\n`);
       }
     });
 
