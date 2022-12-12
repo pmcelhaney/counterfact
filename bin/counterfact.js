@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 import nodePath from "node:path";
 import repl from "node:repl";
 
