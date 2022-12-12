@@ -1,3 +1,5 @@
+#!/usr/bin/env node --experimental-loader ts-node/esm
+
 import nodePath from "node:path";
 import repl from "node:repl";
 
