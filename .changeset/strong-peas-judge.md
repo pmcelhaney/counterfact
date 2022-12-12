@@ -2,4 +2,4 @@
 "counterfact": minor
 ---
 
-run TypeScript directly via esbuild loader instead of putting JS files on disk
+run TypeScript directly via ts-node loader instead of putting JS files on disk

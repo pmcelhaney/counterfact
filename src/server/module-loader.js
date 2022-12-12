@@ -107,7 +107,7 @@ export class ModuleLoader extends EventTarget {
           );
         }
       } catch (error) {
-        process.stderr.write(`\nError loading ${fullPath}:\n${error}\n`);
+        process.stdout.write(`\nError loading ${fullPath}:\n${error}\n`);
       }
     });
 
