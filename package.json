@@ -21,7 +21,7 @@
     "node": ">=16.9.0"
   },
   "bin": {
-    "counterfact": "./bin/counterfact.sh"
+    "counterfact": "./bin/counterfact.js"
   },
   "scripts": {
     "test": "yarn node --experimental-vm-modules $(yarn bin jest)",
