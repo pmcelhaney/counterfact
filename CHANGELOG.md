@@ -1,5 +1,12 @@
 # counterfact
 
+## 0.16.0
+
+### Minor Changes
+
+- b99a1ed: fault tolerance: the server will not crash due to a syntax error
+- b99a1ed: run TypeScript directly via ts-node loader instead of putting JS files on disk
+
 ## 0.15.1
 
 ### Patch Changes
