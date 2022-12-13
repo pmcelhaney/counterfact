@@ -1,5 +1,6 @@
-#!/usr/bin/env node --experimental-loader ts-node/esm
+#!/usr/bin/env ts-node --esm --transpileOnly
 
+// eslint-disable-next-line node/shebang
 import nodePath from "node:path";
 import repl from "node:repl";
 
