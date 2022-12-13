@@ -1,5 +1,11 @@
 # counterfact
 
+## 0.17.0
+
+### Minor Changes
+
+- 052db18: requires ts-node to be installed globally (for now)
+
 ## 0.16.0
 
 ### Minor Changes
