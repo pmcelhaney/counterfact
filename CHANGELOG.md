@@ -1,5 +1,15 @@
 # counterfact
 
+## 0.18.0
+
+### Minor Changes
+
+- 1244b6e: support for allOf, anyOf, oneOf, and not
+
+### Patch Changes
+
+- 1d360bd: OpenAPI 2 -- fall back to top-level produces and consumes
+
 ## 0.17.0
 
 ### Minor Changes
