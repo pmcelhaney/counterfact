@@ -7,9 +7,9 @@ export async function generate(
   destination,
   repository = new Repository()
 ) {
-  const specification = new Specification();
+  const specification = new Specification(source);
 
-  const requirement = await specification.requirementAt(`${source}#/paths`);
+  const requirement = await specification.requirementAt("#/paths");
 
   requirement.forEach((pathDefinition, key) => {
     pathDefinition.forEach((operation) => {

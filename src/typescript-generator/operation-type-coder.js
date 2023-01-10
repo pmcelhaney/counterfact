@@ -33,9 +33,12 @@ export class OperationTypeCoder extends Coder {
         }
 
         if (response.has("schema")) {
-          return this.requirement
-            .get("produces")
-            .data.map(
+          const produces =
+            this.requirement?.get("produces")?.data ??
+            this.requirement.specification.requirementAt("#/produces").data;
+
+          return produces
+            .map(
               (contentType) => `{
             status: ${status},
             contentType?: "${contentType}",

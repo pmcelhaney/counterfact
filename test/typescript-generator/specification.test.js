@@ -101,4 +101,46 @@ describe("a Specification", () => {
 
     expect(requirement).toStrictEqual(person);
   });
+
+  it("looks for requirements in the root document if no path is provided", async () => {
+    const specification = new Specification("openapi.yaml");
+
+    specification.cache.set(
+      "openapi.yaml",
+      Promise.resolve({
+        components: {
+          schemas: {
+            Person: {
+              type: "object",
+
+              properties: {
+                name: { type: "string" },
+                phone: { type: "string" },
+              },
+            },
+          },
+        },
+      })
+    );
+
+    const person = new Requirement(
+      {
+        type: "object",
+
+        properties: {
+          name: { type: "string" },
+          phone: { type: "string" },
+        },
+      },
+
+      "openapi.yaml#/components/schemas/Person",
+      specification
+    );
+
+    const requirement = await specification.requirementAt(
+      "#/components/schemas/Person"
+    );
+
+    expect(requirement).toStrictEqual(person);
+  });
 });
