@@ -55,17 +55,7 @@ export class SchemaTypeCoder extends Coder {
     )}>`;
   }
 
-  modulePath() {
-    return `components/${this.requirement.data.$ref.split("/").at(-1)}.ts`;
-  }
-
-  write(script) {
-    if (this.requirement.isReference) {
-      return script.importType(this);
-    }
-
-    const { type } = this.requirement.data;
-
+  writeType(script, type) {
     if (type === "object") {
       return this.objectSchema(script);
     }
@@ -78,6 +68,46 @@ export class SchemaTypeCoder extends Coder {
       return "number";
     }
 
-    return type;
+    return type ?? "unknown";
+  }
+
+  writeGroup(script, { allOf, anyOf, oneOf }) {
+    function matchingKey() {
+      if (allOf) {
+        return "allOf";
+      }
+
+      if (anyOf) {
+        return "anyOf";
+      }
+
+      return "oneOf";
+    }
+
+    const types = (allOf ?? anyOf ?? oneOf).map((item, index) =>
+      new SchemaTypeCoder(this.requirement.get(matchingKey()).get(index)).write(
+        script
+      )
+    );
+
+    return types.join(allOf ? " & " : " | ");
+  }
+
+  modulePath() {
+    return `components/${this.requirement.data.$ref.split("/").at(-1)}.ts`;
+  }
+
+  write(script) {
+    if (this.requirement.isReference) {
+      return script.importType(this);
+    }
+
+    const { type, allOf, anyOf, oneOf } = this.requirement.data;
+
+    if (allOf ?? anyOf ?? oneOf) {
+      return this.writeGroup(script, { allOf, anyOf, oneOf });
+    }
+
+    return this.writeType(script, type);
   }
 }
