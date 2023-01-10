@@ -1,3 +1,4 @@
+/* eslint-disable max-statements */
 import prettier from "prettier";
 
 import { SchemaTypeCoder } from "../../src/typescript-generator/schema-type-coder.js";
@@ -204,6 +205,56 @@ describe("a SchemaTypeCoder", () => {
     );
 
     const expected = format("type x = Array<string>;");
+
+    expect(format(`type x = ${coder.write()}`)).toStrictEqual(expected);
+  });
+
+  it("generates a type declaration for allOf", () => {
+    const coder = new SchemaTypeCoder(
+      new Requirement({
+        allOf: [{ type: "string" }, { type: "number" }],
+      })
+    );
+
+    const expected = format("type x = string & number;");
+
+    expect(format(`type x = ${coder.write()}`)).toStrictEqual(expected);
+  });
+
+  it("generates a type declaration for anyOf", () => {
+    const coder = new SchemaTypeCoder(
+      new Requirement({
+        anyOf: [{ type: "string" }, { type: "number" }],
+      })
+    );
+
+    const expected = format("type x = string | number;");
+
+    expect(format(`type x = ${coder.write()}`)).toStrictEqual(expected);
+  });
+
+  it("generates a type declaration for oneOf", () => {
+    const coder = new SchemaTypeCoder(
+      new Requirement({
+        oneOf: [{ type: "string" }, { type: "number" }],
+      })
+    );
+
+    const expected = format("type x = string | number;");
+
+    expect(format(`type x = ${coder.write()}`)).toStrictEqual(expected);
+  });
+
+  it("generates a type declaration for not (unknown)", () => {
+    const coder = new SchemaTypeCoder(
+      new Requirement({
+        not: { type: "string" },
+      })
+    );
+
+    // not is not expressible in TypeScript
+    // The best we could do is Exclude<any, string>, but that doesn't actually exclude strings
+    const expected = format("type x = unknown;");
 
     expect(format(`type x = ${coder.write()}`)).toStrictEqual(expected);
   });
