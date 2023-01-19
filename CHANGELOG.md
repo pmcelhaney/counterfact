@@ -1,5 +1,11 @@
 # counterfact
 
+## 0.19.1
+
+### Patch Changes
+
+- ab730a8: fix an issue where top-level produces in OpenAPI 2 was not working
+
 ## 0.19.0
 
 ### Minor Changes
