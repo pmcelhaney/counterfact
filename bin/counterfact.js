@@ -2,13 +2,13 @@
 
 // eslint-disable-next-line node/shebang
 import nodePath from "node:path";
-import repl from "node:repl";
 
 import { program } from "commander";
 import open from "open";
 
 import { generate } from "../src/typescript-generator/generate.js";
 import { start } from "../src/server/start.js";
+import { startRepl } from "../src/server/repl.js";
 
 const DEFAULT_PORT = 3100;
 
@@ -63,35 +63,7 @@ async function main(source, destination) {
 
   process.stdout.write("Starting REPL...\n");
 
-  const replServer = repl.start("> ");
-
-  replServer.defineCommand("counterfact", {
-    help: "Get help with Counterfact",
-
-    action() {
-      process.stdout.write(
-        "This is a read-eval-print loop (REPL), the same as the one you get when you run node with no arguments.\n"
-      );
-      process.stdout.write(
-        "Except that it's connected to the running server, which you can access with the following globals:\n\n"
-      );
-      process.stdout.write(
-        "- loadContext('/some/path'): to access the context object for a given path\n"
-      );
-      process.stdout.write(
-        "- context: the root context ( same as loadContext('/') )\n"
-      );
-      process.stdout.write(
-        "\nFor more information, see https://counterfact.dev/docs/usage.html\n\n"
-      );
-
-      this.clearBufferedCommand();
-      this.displayPrompt();
-    },
-  });
-
-  replServer.context.loadContext = (path) => contextRegistry.find(path);
-  replServer.context.context = replServer.context.loadContext("/");
+  startRepl(contextRegistry);
 
   if (openBrowser) {
     await open(guiUrl);
