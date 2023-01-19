@@ -70,12 +70,14 @@ export async function start({
   basePath = process.cwd(),
   port = DEFAULT_PORT,
   openApiPath = nodePath.join(basePath, "../openapi.yaml"),
+  proxyUrl = undefined,
 }) {
   const app = new Koa();
 
   const { koaMiddleware, contextRegistry, registry } = await counterfact(
     basePath,
-    openApiPath
+    openApiPath,
+    { proxyUrl }
   );
 
   app.use(openapi(openApiPath, `//localhost:${port}`));

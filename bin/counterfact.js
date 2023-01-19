@@ -31,6 +31,7 @@ async function main(source, destination) {
     port: options.port,
     openApiPath: source,
     includeSwaggerUi: true,
+    proxyUrl: options.proxyUrl,
   });
 
   const waysToInteract = [
@@ -107,5 +108,6 @@ program
   .option("--port <number>", "server port number", DEFAULT_PORT)
   .option("--swagger", "include swagger-ui")
   .option("--open", "open a browser")
+  .option("--proxyUrl <string>", "proxy URL")
   .action(main)
   .parse(process.argv);

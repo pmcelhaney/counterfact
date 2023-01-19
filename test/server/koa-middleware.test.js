@@ -55,7 +55,7 @@ describe("koa middleware", () => {
     expect(ctx.status).toBe(304);
   });
 
-  it("proxies when the response says to use a proxy", async () => {
+  it("proxies when a proxyURL is passed in the options", async () => {
     const registry = new Registry();
 
     registry.add("/proxy", {

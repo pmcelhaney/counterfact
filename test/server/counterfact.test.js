@@ -1,3 +1,5 @@
+import http from "node:http";
+
 import supertest from "supertest";
 import Koa from "koa";
 
@@ -87,6 +89,46 @@ describe("integration test", () => {
       const getResponse = await request.get("/hello");
 
       expect(getResponse.text).toBe("hello");
+
+      await moduleLoader.stopWatching();
+    });
+  });
+
+  it("proxies when a proxyUrl is present", async () => {
+    const proxyTarget = http.createServer((req, res) => {
+      res.writeHead(200, {
+        "Content-Type": "text/plain",
+      });
+
+      res.end("I am proxy!\n");
+    });
+
+    proxyTarget.listen(8121);
+
+    const app = new Koa();
+    const request = supertest(app.callback());
+    const files = {
+      "paths/hello.mjs": `
+        export async function GET() {
+          return await Promise.resolve({ body: "GET /hello" });
+        }
+      `,
+    };
+
+    await withTemporaryFiles(files, async (basePath) => {
+      const { koaMiddleware, moduleLoader } = await counterfact(
+        basePath,
+        `${basePath}/openapi.yaml`,
+        {
+          proxyUrl: `http://localhost:${proxyTarget.address().port}`,
+        }
+      );
+
+      app.use(koaMiddleware);
+
+      const getResponse = await request.get("/hello");
+
+      expect(getResponse.text).toBe("I am proxy!\n");
 
       await moduleLoader.stopWatching();
     });
