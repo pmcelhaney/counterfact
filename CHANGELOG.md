@@ -1,5 +1,11 @@
 # counterfact
 
+## 0.19.0
+
+### Minor Changes
+
+- 196f7f4: new `--proxyURL <url>` CLI option and `.proxy [on|off]` command in the REPL
+
 ## 0.18.0
 
 ### Minor Changes
