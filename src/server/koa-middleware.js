@@ -6,7 +6,7 @@ export function koaMiddleware(dispatcher, options = {}, proxy = koaProxy) {
   return async function middleware(ctx, next) {
     const { method, path, headers, body, query } = ctx.request;
 
-    if (options.proxyUrl) {
+    if (options.proxyEnabled && options.proxyUrl) {
       return proxy({ host: options.proxyUrl })(ctx, next);
     }
 

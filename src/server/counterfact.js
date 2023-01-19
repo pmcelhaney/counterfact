@@ -21,7 +21,8 @@ async function loadOpenApiDocument(source) {
 
 export async function counterfact(
   basePath,
-  openApiPath = nodePath.join(basePath, "../openapi.yaml")
+  openApiPath = nodePath.join(basePath, "../openapi.yaml"),
+  options = {}
 ) {
   const openApiDocument = await loadOpenApiDocument(openApiPath);
 
@@ -43,7 +44,7 @@ export async function counterfact(
   await moduleLoader.watch();
 
   return {
-    koaMiddleware: koaMiddleware(dispatcher),
+    koaMiddleware: koaMiddleware(dispatcher, options),
     registry,
     moduleLoader,
     contextRegistry,
