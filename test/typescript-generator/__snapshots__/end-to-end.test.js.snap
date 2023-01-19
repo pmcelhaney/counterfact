@@ -143,10 +143,6 @@ Map {
               "isType": true,
               "modulePath": "../response-builder-factory.js",
             },
-            "HttpStatusCode" => Object {
-              "isType": true,
-              "modulePath": "../response-builder-factory.js",
-            },
           },
           "imports": Map {
             "Context" => Object {
@@ -399,10 +395,6 @@ class Context {
           },
           "externalImports": Map {
             "ResponseBuilderFactory" => Object {
-              "isType": true,
-              "modulePath": "../response-builder-factory.js",
-            },
-            "HttpStatusCode" => Object {
               "isType": true,
               "modulePath": "../response-builder-factory.js",
             },
@@ -665,10 +657,6 @@ class Context {
         "isType": true,
         "modulePath": "../response-builder-factory.js",
       },
-      "HttpStatusCode" => Object {
-        "isType": true,
-        "modulePath": "../response-builder-factory.js",
-      },
     },
     "imports": Map {
       "Context" => Object {
@@ -895,10 +883,6 @@ class Context {
               "isType": true,
               "modulePath": "../../response-builder-factory.js",
             },
-            "HttpStatusCode" => Object {
-              "isType": true,
-              "modulePath": "../../response-builder-factory.js",
-            },
           },
           "imports": Map {
             "Context" => Object {
@@ -1107,10 +1091,6 @@ class Context {
     },
     "externalImports": Map {
       "ResponseBuilderFactory" => Object {
-        "isType": true,
-        "modulePath": "../../response-builder-factory.js",
-      },
-      "HttpStatusCode" => Object {
         "isType": true,
         "modulePath": "../../response-builder-factory.js",
       },
@@ -1342,10 +1322,6 @@ class Context {
               "isType": true,
               "modulePath": "../../response-builder-factory.js",
             },
-            "HttpStatusCode" => Object {
-              "isType": true,
-              "modulePath": "../../response-builder-factory.js",
-            },
           },
           "imports": Map {
             "Context" => Object {
@@ -1554,10 +1530,6 @@ class Context {
     },
     "externalImports": Map {
       "ResponseBuilderFactory" => Object {
-        "isType": true,
-        "modulePath": "../../response-builder-factory.js",
-      },
-      "HttpStatusCode" => Object {
         "isType": true,
         "modulePath": "../../response-builder-factory.js",
       },
@@ -1859,10 +1831,6 @@ class Context {
               "isType": true,
               "modulePath": "../../response-builder-factory.js",
             },
-            "HttpStatusCode" => Object {
-              "isType": true,
-              "modulePath": "../../response-builder-factory.js",
-            },
           },
           "imports": Map {
             "Context" => Object {
@@ -2114,10 +2082,6 @@ class Context {
               "isType": true,
               "modulePath": "../../response-builder-factory.js",
             },
-            "HttpStatusCode" => Object {
-              "isType": true,
-              "modulePath": "../../response-builder-factory.js",
-            },
           },
           "imports": Map {
             "Context" => Object {
@@ -2366,10 +2330,6 @@ class Context {
           },
           "externalImports": Map {
             "ResponseBuilderFactory" => Object {
-              "isType": true,
-              "modulePath": "../../response-builder-factory.js",
-            },
-            "HttpStatusCode" => Object {
               "isType": true,
               "modulePath": "../../response-builder-factory.js",
             },
@@ -2628,10 +2588,6 @@ class Context {
         "isType": true,
         "modulePath": "../../response-builder-factory.js",
       },
-      "HttpStatusCode" => Object {
-        "isType": true,
-        "modulePath": "../../response-builder-factory.js",
-      },
     },
     "imports": Map {
       "Context" => Object {
@@ -2847,10 +2803,6 @@ class Context {
               "isType": true,
               "modulePath": "../../../response-builder-factory.js",
             },
-            "HttpStatusCode" => Object {
-              "isType": true,
-              "modulePath": "../../../response-builder-factory.js",
-            },
           },
           "imports": Map {
             "Context" => Object {
@@ -2981,10 +2933,6 @@ class Context {
     },
     "externalImports": Map {
       "ResponseBuilderFactory" => Object {
-        "isType": true,
-        "modulePath": "../../../response-builder-factory.js",
-      },
-      "HttpStatusCode" => Object {
         "isType": true,
         "modulePath": "../../../response-builder-factory.js",
       },
@@ -3137,10 +3085,6 @@ class Context {
               "isType": true,
               "modulePath": "../../response-builder-factory.js",
             },
-            "HttpStatusCode" => Object {
-              "isType": true,
-              "modulePath": "../../response-builder-factory.js",
-            },
           },
           "imports": Map {
             "Context" => Object {
@@ -3239,10 +3183,6 @@ class Context {
     },
     "externalImports": Map {
       "ResponseBuilderFactory" => Object {
-        "isType": true,
-        "modulePath": "../../response-builder-factory.js",
-      },
-      "HttpStatusCode" => Object {
         "isType": true,
         "modulePath": "../../response-builder-factory.js",
       },
@@ -3368,10 +3308,6 @@ class Context {
           },
           "externalImports": Map {
             "ResponseBuilderFactory" => Object {
-              "isType": true,
-              "modulePath": "../../response-builder-factory.js",
-            },
-            "HttpStatusCode" => Object {
               "isType": true,
               "modulePath": "../../response-builder-factory.js",
             },
@@ -3511,10 +3447,6 @@ class Context {
     },
     "externalImports": Map {
       "ResponseBuilderFactory" => Object {
-        "isType": true,
-        "modulePath": "../../response-builder-factory.js",
-      },
-      "HttpStatusCode" => Object {
         "isType": true,
         "modulePath": "../../response-builder-factory.js",
       },
@@ -3725,10 +3657,6 @@ class Context {
               "isType": true,
               "modulePath": "../../../response-builder-factory.js",
             },
-            "HttpStatusCode" => Object {
-              "isType": true,
-              "modulePath": "../../../response-builder-factory.js",
-            },
           },
           "imports": Map {
             "Context" => Object {
@@ -3899,10 +3827,6 @@ class Context {
           },
           "externalImports": Map {
             "ResponseBuilderFactory" => Object {
-              "isType": true,
-              "modulePath": "../../../response-builder-factory.js",
-            },
-            "HttpStatusCode" => Object {
               "isType": true,
               "modulePath": "../../../response-builder-factory.js",
             },
@@ -4083,10 +4007,6 @@ class Context {
         "isType": true,
         "modulePath": "../../../response-builder-factory.js",
       },
-      "HttpStatusCode" => Object {
-        "isType": true,
-        "modulePath": "../../../response-builder-factory.js",
-      },
     },
     "imports": Map {
       "Context" => Object {
@@ -4244,10 +4164,6 @@ class Context {
               "isType": true,
               "modulePath": "../response-builder-factory.js",
             },
-            "HttpStatusCode" => Object {
-              "isType": true,
-              "modulePath": "../response-builder-factory.js",
-            },
           },
           "imports": Map {
             "Context" => Object {
@@ -4383,10 +4299,6 @@ class Context {
     },
     "externalImports": Map {
       "ResponseBuilderFactory" => Object {
-        "isType": true,
-        "modulePath": "../response-builder-factory.js",
-      },
-      "HttpStatusCode" => Object {
         "isType": true,
         "modulePath": "../response-builder-factory.js",
       },
@@ -4551,10 +4463,6 @@ class Context {
               "isType": true,
               "modulePath": "../../response-builder-factory.js",
             },
-            "HttpStatusCode" => Object {
-              "isType": true,
-              "modulePath": "../../response-builder-factory.js",
-            },
           },
           "imports": Map {
             "Context" => Object {
@@ -4698,10 +4606,6 @@ class Context {
     },
     "externalImports": Map {
       "ResponseBuilderFactory" => Object {
-        "isType": true,
-        "modulePath": "../../response-builder-factory.js",
-      },
-      "HttpStatusCode" => Object {
         "isType": true,
         "modulePath": "../../response-builder-factory.js",
       },
@@ -4870,10 +4774,6 @@ class Context {
               "isType": true,
               "modulePath": "../../response-builder-factory.js",
             },
-            "HttpStatusCode" => Object {
-              "isType": true,
-              "modulePath": "../../response-builder-factory.js",
-            },
           },
           "imports": Map {
             "Context" => Object {
@@ -4991,10 +4891,6 @@ class Context {
         "isType": true,
         "modulePath": "../../response-builder-factory.js",
       },
-      "HttpStatusCode" => Object {
-        "isType": true,
-        "modulePath": "../../response-builder-factory.js",
-      },
     },
     "imports": Map {
       "Context" => Object {
@@ -5105,10 +5001,6 @@ class Context {
               "isType": true,
               "modulePath": "../../response-builder-factory.js",
             },
-            "HttpStatusCode" => Object {
-              "isType": true,
-              "modulePath": "../../response-builder-factory.js",
-            },
           },
           "imports": Map {
             "Context" => Object {
@@ -5201,10 +5093,6 @@ class Context {
     },
     "externalImports": Map {
       "ResponseBuilderFactory" => Object {
-        "isType": true,
-        "modulePath": "../../response-builder-factory.js",
-      },
-      "HttpStatusCode" => Object {
         "isType": true,
         "modulePath": "../../response-builder-factory.js",
       },
@@ -5416,10 +5304,6 @@ class Context {
               "isType": true,
               "modulePath": "../../response-builder-factory.js",
             },
-            "HttpStatusCode" => Object {
-              "isType": true,
-              "modulePath": "../../response-builder-factory.js",
-            },
           },
           "imports": Map {
             "Context" => Object {
@@ -5612,10 +5496,6 @@ class Context {
               "isType": true,
               "modulePath": "../../response-builder-factory.js",
             },
-            "HttpStatusCode" => Object {
-              "isType": true,
-              "modulePath": "../../response-builder-factory.js",
-            },
           },
           "imports": Map {
             "Context" => Object {
@@ -5805,10 +5685,6 @@ class Context {
           },
           "externalImports": Map {
             "ResponseBuilderFactory" => Object {
-              "isType": true,
-              "modulePath": "../../response-builder-factory.js",
-            },
-            "HttpStatusCode" => Object {
               "isType": true,
               "modulePath": "../../response-builder-factory.js",
             },
@@ -6005,10 +5881,6 @@ class Context {
     },
     "externalImports": Map {
       "ResponseBuilderFactory" => Object {
-        "isType": true,
-        "modulePath": "../../response-builder-factory.js",
-      },
-      "HttpStatusCode" => Object {
         "isType": true,
         "modulePath": "../../response-builder-factory.js",
       },
