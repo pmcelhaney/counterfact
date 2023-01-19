@@ -11,6 +11,10 @@ export class ContextCoder extends Coder {
       .replaceAll("~0", "~");
   }
 
+  get id() {
+    return "ContextCoder";
+  }
+
   names() {
     return super.names("Context");
   }
