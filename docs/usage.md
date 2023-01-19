@@ -228,7 +228,7 @@ To proxy an individual endpoint, you can use the `$.proxy()` function.
  };
 ```
 
-To toggle globally between Counterfact and a proxy server, pass `--proxy-url <url>` in he CLI.
+To toggle globally between Counterfact and a proxy server, pass `--proxyUrl <url>` in he CLI.
 
 Then type `.proxy on` / `.proxy off` in the REPL to turn it on and off. When the global proxy is on, all requests will be sent to the proxy URL instead of the mock implementations in Counterfact.
 
