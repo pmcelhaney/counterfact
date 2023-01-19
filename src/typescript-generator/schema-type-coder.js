@@ -93,6 +93,12 @@ export class SchemaTypeCoder extends Coder {
     return types.join(allOf ? " & " : " | ");
   }
 
+  writeEnum(script, requirement) {
+    return requirement.data
+      .map((item) => (typeof item === "string" ? `"${item}"` : item))
+      .join(" | ");
+  }
+
   modulePath() {
     return `components/${this.requirement.data.$ref.split("/").at(-1)}.ts`;
   }
@@ -106,6 +112,10 @@ export class SchemaTypeCoder extends Coder {
 
     if (allOf ?? anyOf ?? oneOf) {
       return this.writeGroup(script, { allOf, anyOf, oneOf });
+    }
+
+    if (this.requirement.has("enum")) {
+      return this.writeEnum(script, this.requirement.get("enum"));
     }
 
     return this.writeType(script, type);

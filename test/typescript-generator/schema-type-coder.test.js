@@ -259,6 +259,18 @@ describe("a SchemaTypeCoder", () => {
     expect(format(`type x = ${coder.write()}`)).toStrictEqual(expected);
   });
 
+  it("generates a type declaration for enum", () => {
+    const coder = new SchemaTypeCoder(
+      new Requirement({
+        enum: [1, "two"],
+      })
+    );
+
+    const expected = format('type x = 1 | "two";');
+
+    expect(format(`type x = ${coder.write()}`)).toStrictEqual(expected);
+  });
+
   it("has type JSONSchema6", () => {
     const coder = new SchemaTypeCoder(
       new Requirement({
