@@ -1,3 +1,4 @@
+/* eslint-disable max-statements */
 import nodePath from "node:path";
 import { pathToFileURL } from "node:url";
 
@@ -104,6 +105,16 @@ export async function start({
         : pathToFileURL(openApiPath).href,
     })
   );
+
+  app.use((ctx, next) => {
+    if (ctx.URL.pathname === "/counterfact") {
+      ctx.redirect("/counterfact/");
+
+      return;
+    }
+
+    next();
+  });
 
   app.use(
     page("/counterfact/rapidoc", "rapi-doc", {
