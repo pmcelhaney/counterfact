@@ -36,6 +36,8 @@ export class Specification {
 
     this.cache.set(urlOrPath, data);
 
+    this.rootRequirement = new Requirement(data, `${urlOrPath}#`, this);
+
     return data;
   }
 }
