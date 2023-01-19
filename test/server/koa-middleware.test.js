@@ -67,7 +67,7 @@ describe("koa middleware", () => {
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
     const middleware = koaMiddleware(
       dispatcher,
-      { proxyUrl: "https://example.com" },
+      { proxyUrl: "https://example.com", proxyEnabled: true },
       mockKoaProxy
     );
     const ctx = {

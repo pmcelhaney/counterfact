@@ -18,11 +18,11 @@
   "cSpell.words": [
     "bodyparser",
     "counterfact",
+    "counterfactuals",
     "Deno",
     "openapi",
     "Petstore",
-    "counterfactuals",
-    "openapi",
+    "proxied",
     "transpiles"
   ]
 }

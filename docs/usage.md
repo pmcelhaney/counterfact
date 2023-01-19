@@ -215,6 +215,25 @@ context.pets.find((pet) => pet.name.startsWith("F"));
 
 Using the REPL is a lot faster (and more fun) than wrangling config files and SQL and whatever else it takes to a real back end into the states you need to test your UI flows.
 
+## Proxy Peek-a-boo 🫣
+
+At some point you're going to want to test your code against a real server. Or maybe you want to use Counterfact for newer endpoints that don't exist in the real server yet and a real server for everything else. Counterfact has a couple of facilities that allow you to _proxy_ to the real server on a case-by-case basis.
+
+To proxy an individual endpoint, you can use the `$.proxy()` function.
+
+```ts copy
+// pet/{id}.ts
+ export const GET: HTTP_GET ($) => {
+    return $.proxy("http://uat.petstore.example.com/pet")
+ };
+```
+
+To toggle globally between Counterfact and a proxy server, pass `--proxy-url <url>` in he CLI.
+
+Then type `.proxy on` / `.proxy off` in the REPL to turn it on and off. When the global proxy is on, all requests will be sent to the proxy URL instead of the mock implementations in Counterfact.
+
+This feature is hot off the presses and somewhat experimental. We have plans to introduce more granular controls over what gets proxied when, but we want to see how this works first. Please send feedback!
+
 ## No Cap Recap 🧢
 
 Using convention over configuration and automatically generated types, Counterfact allows front-end developers to quickly build fake REST APIs for prototype and testing purposes.

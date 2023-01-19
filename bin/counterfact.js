@@ -26,13 +26,15 @@ async function main(source, destination) {
 
   const guiUrl = `${url}/counterfact/`;
 
-  const { contextRegistry } = await start({
+  const config = {
     basePath,
     port: options.port,
     openApiPath: source,
     includeSwaggerUi: true,
     proxyUrl: options.proxyUrl,
-  });
+  };
+
+  const { contextRegistry } = await start(config);
 
   const waysToInteract = [
     `Call the REST APIs at ${url} (with your front end app, curl, Postman, etc.)`,
@@ -63,7 +65,7 @@ async function main(source, destination) {
 
   process.stdout.write("Starting REPL...\n");
 
-  startRepl(contextRegistry);
+  startRepl(contextRegistry, config);
 
   if (openBrowser) {
     await open(guiUrl);

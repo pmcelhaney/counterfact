@@ -1,6 +1,6 @@
 import repl from "node:repl";
 
-export function startRepl(contextRegistry) {
+export function startRepl(contextRegistry, config) {
   const replServer = repl.start("> ");
 
   replServer.defineCommand("counterfact", {
@@ -21,6 +21,29 @@ export function startRepl(contextRegistry) {
       );
       process.stdout.write(
         "\nFor more information, see https://counterfact.dev/docs/usage.html\n\n"
+      );
+
+      this.clearBufferedCommand();
+      this.displayPrompt();
+    },
+  });
+
+  replServer.defineCommand("proxy", {
+    help: "proxy [on|off] - turn the proxy on or off; proxy - print proxy info",
+
+    action(state) {
+      if (state === "on") {
+        // eslint-disable-next-line no-param-reassign
+        config.enableProxy = true;
+      }
+
+      if (state === "off") {
+        // eslint-disable-next-line no-param-reassign
+        config.enableProxy = false;
+      }
+
+      process.stdout.write(
+        `Proxy is ${config.enableProxy ? "on" : "off"}: ${config.proxyUrl}\n`
       );
 
       this.clearBufferedCommand();

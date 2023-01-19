@@ -94,7 +94,7 @@ describe("integration test", () => {
     });
   });
 
-  it("proxies when a proxyUrl is present", async () => {
+  it("proxies when a proxyUrl is present and the proxy is enabled", async () => {
     const proxyTarget = http.createServer((req, res) => {
       res.writeHead(200, {
         "Content-Type": "text/plain",
@@ -121,6 +121,7 @@ describe("integration test", () => {
         `${basePath}/openapi.yaml`,
         {
           proxyUrl: `http://localhost:${proxyTarget.address().port}`,
+          proxyEnabled: true,
         }
       );
 
