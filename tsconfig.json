@@ -8,5 +8,5 @@
     "strict": true,
     "noUncheckedIndexedAccess": true
   },
-  "include": ["src", "demo-ts", "templates"]
+  "include": ["src", "demo-ts", "templates", "test"]
 }
