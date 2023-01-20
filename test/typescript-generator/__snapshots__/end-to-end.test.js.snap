@@ -202,7 +202,7 @@ class Context {
                 "exports": Map {
                   "Pet" => Object {
                     "beforeExport": "",
-                    "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
+                    "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: \\"available\\" | \\"pending\\" | \\"sold\\"}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isDefault": false,
@@ -457,7 +457,7 @@ class Context {
                 "exports": Map {
                   "Pet" => Object {
                     "beforeExport": "",
-                    "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
+                    "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: \\"available\\" | \\"pending\\" | \\"sold\\"}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isDefault": false,
@@ -716,7 +716,7 @@ class Context {
           "exports": Map {
             "Pet" => Object {
               "beforeExport": "",
-              "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
+              "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: \\"available\\" | \\"pending\\" | \\"sold\\"}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
               "isDefault": false,
@@ -842,7 +842,7 @@ class Context {
           "exports": Map {
             "HTTP_GET" => Object {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: {status?: string}, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: {status?: \\"available\\" | \\"pending\\" | \\"sold\\"}, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -944,7 +944,7 @@ class Context {
                 "exports": Map {
                   "Pet" => Object {
                     "beforeExport": "",
-                    "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
+                    "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: \\"available\\" | \\"pending\\" | \\"sold\\"}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isDefault": false,
@@ -1053,7 +1053,7 @@ class Context {
     "exports": Map {
       "HTTP_GET" => Object {
         "beforeExport": "",
-        "code": "({ query, path, header, body, context, proxy }: { query: {status?: string}, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context, proxy }: { query: {status?: \\"available\\" | \\"pending\\" | \\"sold\\"}, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -1155,7 +1155,7 @@ class Context {
           "exports": Map {
             "Pet" => Object {
               "beforeExport": "",
-              "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
+              "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: \\"available\\" | \\"pending\\" | \\"sold\\"}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
               "isDefault": false,
@@ -1383,7 +1383,7 @@ class Context {
                 "exports": Map {
                   "Pet" => Object {
                     "beforeExport": "",
-                    "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
+                    "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: \\"available\\" | \\"pending\\" | \\"sold\\"}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isDefault": false,
@@ -1594,7 +1594,7 @@ class Context {
           "exports": Map {
             "Pet" => Object {
               "beforeExport": "",
-              "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
+              "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: \\"available\\" | \\"pending\\" | \\"sold\\"}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
               "isDefault": false,
@@ -1892,7 +1892,7 @@ class Context {
                 "exports": Map {
                   "Pet" => Object {
                     "beforeExport": "",
-                    "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
+                    "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: \\"available\\" | \\"pending\\" | \\"sold\\"}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isDefault": false,
@@ -2143,7 +2143,7 @@ class Context {
                 "exports": Map {
                   "Pet" => Object {
                     "beforeExport": "",
-                    "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
+                    "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: \\"available\\" | \\"pending\\" | \\"sold\\"}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isDefault": false,
@@ -2394,7 +2394,7 @@ class Context {
                 "exports": Map {
                   "Pet" => Object {
                     "beforeExport": "",
-                    "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
+                    "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: \\"available\\" | \\"pending\\" | \\"sold\\"}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isDefault": false,
@@ -2649,7 +2649,7 @@ class Context {
           "exports": Map {
             "Pet" => Object {
               "beforeExport": "",
-              "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
+              "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: \\"available\\" | \\"pending\\" | \\"sold\\"}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
               "isDefault": false,
@@ -3370,7 +3370,7 @@ class Context {
                 "exports": Map {
                   "Order" => Object {
                     "beforeExport": "",
-                    "code": "{id?: number,petId?: number,quantity?: number,shipDate?: string,status?: string,complete?: boolean}",
+                    "code": "{id?: number,petId?: number,quantity?: number,shipDate?: string,status?: \\"placed\\" | \\"approved\\" | \\"delivered\\",complete?: boolean}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isDefault": false,
@@ -3509,7 +3509,7 @@ class Context {
           "exports": Map {
             "Order" => Object {
               "beforeExport": "",
-              "code": "{id?: number,petId?: number,quantity?: number,shipDate?: string,status?: string,complete?: boolean}",
+              "code": "{id?: number,petId?: number,quantity?: number,shipDate?: string,status?: \\"placed\\" | \\"approved\\" | \\"delivered\\",complete?: boolean}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
               "isDefault": false,
@@ -3716,7 +3716,7 @@ class Context {
                 "exports": Map {
                   "Order" => Object {
                     "beforeExport": "",
-                    "code": "{id?: number,petId?: number,quantity?: number,shipDate?: string,status?: string,complete?: boolean}",
+                    "code": "{id?: number,petId?: number,quantity?: number,shipDate?: string,status?: \\"placed\\" | \\"approved\\" | \\"delivered\\",complete?: boolean}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isDefault": false,
@@ -3889,7 +3889,7 @@ class Context {
                 "exports": Map {
                   "Order" => Object {
                     "beforeExport": "",
-                    "code": "{id?: number,petId?: number,quantity?: number,shipDate?: string,status?: string,complete?: boolean}",
+                    "code": "{id?: number,petId?: number,quantity?: number,shipDate?: string,status?: \\"placed\\" | \\"approved\\" | \\"delivered\\",complete?: boolean}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isDefault": false,
@@ -4066,7 +4066,7 @@ class Context {
           "exports": Map {
             "Order" => Object {
               "beforeExport": "",
-              "code": "{id?: number,petId?: number,quantity?: number,shipDate?: string,status?: string,complete?: boolean}",
+              "code": "{id?: number,petId?: number,quantity?: number,shipDate?: string,status?: \\"placed\\" | \\"approved\\" | \\"delivered\\",complete?: boolean}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
               "isDefault": false,
@@ -6019,7 +6019,7 @@ class Context {
     "exports": Map {
       "Pet" => Object {
         "beforeExport": "",
-        "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
+        "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: \\"available\\" | \\"pending\\" | \\"sold\\"}",
         "done": true,
         "id": "SchemaTypeCoder@undefined",
         "isDefault": false,
@@ -6257,7 +6257,7 @@ class Context {
     "exports": Map {
       "Order" => Object {
         "beforeExport": "",
-        "code": "{id?: number,petId?: number,quantity?: number,shipDate?: string,status?: string,complete?: boolean}",
+        "code": "{id?: number,petId?: number,quantity?: number,shipDate?: string,status?: \\"placed\\" | \\"approved\\" | \\"delivered\\",complete?: boolean}",
         "done": true,
         "id": "SchemaTypeCoder@undefined",
         "isDefault": false,
