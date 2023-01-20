@@ -1,15 +1,27 @@
-export function parentPath(path) {
+interface Context {
+  [key: string]: unknown;
+}
+
+function objectHasOwnProperty(
+  object: { [key: string]: unknown },
+  key: string
+): boolean {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+  return Object.prototype.hasOwnProperty.call(object, key);
+}
+
+export function parentPath(path: string) {
   return String(path.split("/").slice(0, -1).join("/")) || "/";
 }
 
 export class ContextRegistry {
-  entries = new Map();
+  private readonly entries = new Map<string, Context>();
 
-  constructor() {
+  public constructor() {
     this.add("/", {});
   }
 
-  add(path, context) {
+  public add(path: string, context: Context | undefined) {
     if (context === undefined) {
       throw new Error("context cannot be undefined");
     }
@@ -17,22 +29,26 @@ export class ContextRegistry {
     this.entries.set(path, context);
   }
 
-  find(path) {
+  public find(path: string): Context {
     return this.entries.get(path) ?? this.find(parentPath(path));
   }
 
-  update(path, updatedContext) {
+  public update(path: string, updatedContext: Context) {
     const context = this.find(path);
 
     for (const property in updatedContext) {
       if (
-        Object.prototype.hasOwnProperty.call(updatedContext, property) &&
-        !Object.prototype.hasOwnProperty.call(context, property)
+        objectHasOwnProperty(updatedContext, property) &&
+        !objectHasOwnProperty(context, property)
       ) {
         context[property] = updatedContext[property];
       }
     }
 
-    Object.setPrototypeOf(context, Object.getPrototypeOf(updatedContext));
+    Object.setPrototypeOf(
+      context,
+      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+      Object.getPrototypeOf(updatedContext) as Context
+    );
   }
 }
