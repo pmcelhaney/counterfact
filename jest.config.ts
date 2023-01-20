@@ -1,4 +1,5 @@
-{
+// eslint-disable-next-line import/no-anonymous-default-export
+export default {
   "testEnvironment": "node",
   "collectCoverage": true,
 
@@ -16,5 +17,11 @@
       "lines": 80,
       "statements": 80
     }
-  }
+  },
+  "transform": {
+    "^.+\\.(t|j|mj)s?$": "@swc/jest"
+  },
+  moduleNameMapper: {
+    '^(\\.{1,2}/.*)\\.js$': '$1',
+  },
 }
