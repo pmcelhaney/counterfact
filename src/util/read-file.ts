@@ -2,16 +2,16 @@ import fs from "node:fs/promises";
 
 import nodeFetch from "node-fetch";
 
-export async function readFile(urlOrPath) {
+export async function readFile(urlOrPath: string): Promise<string> {
   if (urlOrPath.startsWith("http")) {
     const response = await nodeFetch(urlOrPath);
 
-    return response.text();
+    return await response.text();
   }
 
   if (urlOrPath.startsWith("file")) {
-    return fs.readFile(new URL(urlOrPath), "utf8");
+    return await fs.readFile(new URL(urlOrPath), "utf8");
   }
 
-  return fs.readFile(urlOrPath, "utf8");
+  return await fs.readFile(urlOrPath, "utf8");
 }

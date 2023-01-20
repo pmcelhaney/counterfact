@@ -1,5 +1,6 @@
 import nodePath from "node:path";
 
+import type { JSONSchema } from "json-schema-ref-parser";
 import $RefParser from "json-schema-ref-parser";
 import yaml from "js-yaml";
 
@@ -11,16 +12,19 @@ import { koaMiddleware } from "./koa-middleware.js";
 import { ModuleLoader } from "./module-loader.js";
 import { ContextRegistry } from "./context-registry.js";
 
-async function loadOpenApiDocument(source) {
+async function loadOpenApiDocument(source: string) {
   try {
-    return $RefParser.dereference(await yaml.load(await readFile(source)));
+    return await $RefParser.dereference(
+      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+      (await yaml.load(await readFile(source))) as JSONSchema
+    );
   } catch {
     return undefined;
   }
 }
 
 export async function counterfact(
-  basePath,
+  basePath: string,
   openApiPath = nodePath.join(basePath, "../openapi.yaml"),
   options = {}
 ) {
