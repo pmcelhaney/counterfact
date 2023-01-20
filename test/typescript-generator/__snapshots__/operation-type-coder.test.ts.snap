@@ -1,0 +1,233 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`an OperationTypeCoder falls back to root level produces (OpenAPI 2) 1`] = `
+"type TestType = ({
+  query,
+  path,
+  header,
+  body,
+  context,
+  proxy,
+}: {
+  query: never;
+  path: never;
+  header: never;
+  body: undefined;
+  context: typeof default;
+  response: ResponseBuilderFactory<{
+    [statusCode in HttpStatusCode]: {
+      headers: {};
+      content: {
+        \\"text/plain\\": {
+          schema: Type;
+        };
+      };
+    };
+  }>;
+  proxy: (url: string) => { proxyUrl: string };
+}) =>
+  | {
+      status: number | undefined;
+      contentType?: \\"text/plain\\";
+      body?: Type;
+    }
+  | { status: 415; contentType: \\"text/plain\\"; body: string }
+  | void;
+"
+`;
+
+exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2) 1`] = `
+"type TestType = ({
+  query,
+  path,
+  header,
+  body,
+  context,
+  proxy,
+}: {
+  query: { name?: string };
+  path: { id?: string };
+  header: { name?: string };
+  body: Type;
+  context: typeof default;
+  response: ResponseBuilderFactory<{
+    200: {
+      headers: {};
+      content: {
+        \\"application/json\\": {
+          schema: Type;
+        };
+      };
+    };
+    400: {
+      headers: {};
+      content: {
+        \\"application/json\\": {
+          schema: Type;
+        };
+      };
+    };
+    [statusCode in Exclude<HttpStatusCode, 200 | 400>]: {
+      headers: {};
+      content: {
+        \\"application/json\\": {
+          schema: Type;
+        };
+      };
+    };
+  }>;
+  proxy: (url: string) => { proxyUrl: string };
+}) =>
+  | {
+      status: 200;
+      contentType?: \\"application/json\\";
+      body?: Type;
+    }
+  | {
+      status: 400;
+      contentType?: \\"application/json\\";
+      body?: Type;
+    }
+  | {
+      status: number | undefined;
+      contentType?: \\"application/json\\";
+      body?: Type;
+    }
+  | { status: 415; contentType: \\"text/plain\\"; body: string }
+  | void;
+"
+`;
+
+exports[`an OperationTypeCoder generates a complex post operation 1`] = `
+"type TestType = ({
+  query,
+  path,
+  header,
+  body,
+  context,
+  proxy,
+}: {
+  query: { name?: string };
+  path: { id?: string };
+  header: { name?: string };
+  body: Type;
+  context: typeof default;
+  response: ResponseBuilderFactory<{
+    200: {
+      headers: {};
+      content: {
+        \\"application/json\\": {
+          schema: Type;
+        };
+      };
+    };
+    400: {
+      headers: {};
+      content: {
+        \\"application/json\\": {
+          schema: Type;
+        };
+      };
+    };
+    [statusCode in Exclude<HttpStatusCode, 200 | 400>]: {
+      headers: {};
+      content: {
+        \\"application/json\\": {
+          schema: Type;
+        };
+      };
+    };
+  }>;
+  proxy: (url: string) => { proxyUrl: string };
+}) =>
+  | {
+      status: 200;
+      contentType?: \\"application/json\\";
+      body?: Type;
+    }
+  | {
+      status: 400;
+      contentType?: \\"application/json\\";
+      body?: Type;
+    }
+  | {
+      status: number | undefined;
+      contentType?: \\"application/json\\";
+      body?: Type;
+    }
+  | { status: 415; contentType: \\"text/plain\\"; body: string }
+  | void;
+"
+`;
+
+exports[`an OperationTypeCoder generates a simple get operation (OpenAPI 2) 1`] = `
+"type TestType = ({
+  query,
+  path,
+  header,
+  body,
+  context,
+  proxy,
+}: {
+  query: never;
+  path: never;
+  header: never;
+  body: undefined;
+  context: typeof default;
+  response: ResponseBuilderFactory<{
+    [statusCode in HttpStatusCode]: {
+      headers: {};
+      content: {
+        \\"application/json\\": {
+          schema: Type;
+        };
+      };
+    };
+  }>;
+  proxy: (url: string) => { proxyUrl: string };
+}) =>
+  | {
+      status: number | undefined;
+      contentType?: \\"application/json\\";
+      body?: Type;
+    }
+  | { status: 415; contentType: \\"text/plain\\"; body: string }
+  | void;
+"
+`;
+
+exports[`an OperationTypeCoder generates a simple get operation 1`] = `
+"type TestType = ({
+  query,
+  path,
+  header,
+  body,
+  context,
+  proxy,
+}: {
+  query: never;
+  path: never;
+  header: never;
+  body: undefined;
+  context: typeof default;
+  response: ResponseBuilderFactory<{
+    [statusCode in HttpStatusCode]: {
+      headers: {};
+      content: {
+        \\"application/json\\": {
+          schema: Type;
+        };
+      };
+    };
+  }>;
+  proxy: (url: string) => { proxyUrl: string };
+}) =>
+  | {
+      status: number | undefined;
+      contentType?: \\"application/json\\";
+      body?: Type;
+    }
+  | { status: 415; contentType: \\"text/plain\\"; body: string }
+  | void;
+"
+`;
