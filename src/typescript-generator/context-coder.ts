@@ -1,8 +1,11 @@
 import nodePath from "node:path";
 
 import { Coder } from "./coder.js";
+import type { Requirement } from "./requirement.js";
 
 export class ContextCoder extends Coder {
+  private readonly requirement: Requirement;
+
   public pathString() {
     return this.requirement.url
       .split("/")

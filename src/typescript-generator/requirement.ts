@@ -1,16 +1,28 @@
+import type { Specification } from "./specification";
+
+interface RequirementData {
+  [key: string]: unknown;
+}
+
 export class Requirement {
-  public constructor(data, url = "", specification = undefined) {
+  private readonly data: RequirementData;
+
+  private readonly url: string;
+
+  private readonly specification: Specification | undefined;
+
+  public constructor(
+    data: RequirementData,
+    url = "",
+    specification: Specification | undefined = undefined
+  ) {
     this.data = data;
     this.url = url;
     this.specification = specification;
   }
 
-  get isReference() {
-    return this.data?.$ref !== undefined;
-  }
-
-  public reference() {
-    return this.specification.requirementAt(this.data.$ref, this.url);
+  public get isReference(): boolean {
+    return this.data.$ref !== undefined;
   }
 
   public has(item) {
@@ -29,12 +41,12 @@ export class Requirement {
     );
   }
 
-  public select(path, data = this.data, basePath = "") {
+  public select(path: string, data = this.data, basePath = "") {
     const [head, ...tail] = path.split("/");
 
     const branch = data[this.unescapeJsonPointer(head)];
 
-    if (!branch) {
+    if (branch === undefined || branch === null) {
       return undefined;
     }
 
@@ -70,7 +82,7 @@ export class Requirement {
   }
 
   public find(callback) {
-    let result;
+    let result: unknown;
 
     this.forEach((value, key) => {
       // eslint-disable-next-line node/callback-return
@@ -82,11 +94,15 @@ export class Requirement {
     return result;
   }
 
-  public escapeJsonPointer(string) {
+  public escapeJsonPointer(string: string): string {
     return string.replaceAll("~", "~0").replaceAll("/", "~1");
   }
 
-  public unescapeJsonPointer(pointer) {
+  public unescapeJsonPointer(pointer: string): string {
     return pointer.replaceAll("~1", "/").replaceAll("~0", "~");
+  }
+
+  public async reference(): Requirement {
+    return await this.specification.requirementAt(this.data.$ref, this.url);
   }
 }
