@@ -25,7 +25,10 @@ export class Coder {
     return `/* ${this.id} */`;
   }
 
-  public *names(rawName = this.requirement.url.split("/").at(-1)) {
+  public *names(
+    rawName = this.requirement.url.split("/").at(-1) ??
+      "THIS_SHOULD_BE_IMPOSSIBLE"
+  ) {
     const name = rawName
       .replace(/^\d/u, (digit) => `_${digit}`)
       .replace(/[^\w$]/gu, "_");
@@ -38,7 +41,7 @@ export class Coder {
 
     while (index < MAX_NAMES_TO_GENERATE_BEFORE_GIVING_UP) {
       index += 1;
-      yield name + index;
+      yield name + String(index);
     }
   }
 
