@@ -2,6 +2,7 @@ import nodePath from "node:path";
 
 import { Coder } from "./coder.js";
 import type { Requirement } from "./requirement.js";
+import type { Script } from "./script.js";
 
 export class ContextCoder extends Coder {
   private readonly requirement: Requirement;
@@ -40,7 +41,7 @@ class Context {
 `;
   }
 
-  public write(script) {
+  public write(script: Script) {
     if (script.path === "paths/$.context.ts") {
       return "new Context()";
     }

@@ -35,7 +35,7 @@ export class Script {
 
   private readonly typeCache: Map<string, unknown>;
 
-  private readonly path: string;
+  public path: string;
 
   public constructor(repository: Repository, path: string) {
     this.repository = repository;
