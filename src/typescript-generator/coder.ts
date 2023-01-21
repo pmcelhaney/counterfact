@@ -1,5 +1,9 @@
+import type { Requirement } from "./requirement";
+
 export class Coder {
-  public constructor(requirement) {
+  private readonly requirement: Requirement;
+
+  public constructor(requirement: Requirement) {
     this.requirement = requirement;
   }
 

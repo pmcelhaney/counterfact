@@ -34,7 +34,7 @@ export class OperationTypeCoder extends Coder {
 
         if (response.has("schema")) {
           const produces =
-            this.requirement?.get("produces")?.data ??
+            this.requirement.get("produces")?.data ??
             this.requirement.rootRequirement.get("produces").data;
 
           return produces

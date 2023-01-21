@@ -7,7 +7,7 @@ interface RequirementData {
 export class Requirement {
   private readonly data: RequirementData;
 
-  private readonly url: string;
+  public readonly url: string;
 
   private readonly specification: Specification | undefined;
 
@@ -102,7 +102,7 @@ export class Requirement {
     return pointer.replaceAll("~1", "/").replaceAll("~0", "~");
   }
 
-  public async reference(): Requirement {
+  public async reference(): Promise<Requirement> {
     return await this.specification.requirementAt(this.data.$ref, this.url);
   }
 }
