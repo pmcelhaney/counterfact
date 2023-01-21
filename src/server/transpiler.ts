@@ -19,13 +19,13 @@ async function ensureDirectoryExists(filePath) {
 }
 
 export class Transpiler extends EventTarget {
-  constructor(sourcePath, destinationPath) {
+  public constructor(sourcePath, destinationPath) {
     super();
     this.sourcePath = sourcePath;
     this.destinationPath = destinationPath;
   }
 
-  async watch() {
+  public async watch() {
     this.watcher = chokidar.watch(`${this.sourcePath}/**/*.{ts,mts,js,mjs}`, {
       ignored: `${this.sourcePath}/js`,
     });
@@ -60,11 +60,11 @@ export class Transpiler extends EventTarget {
     await Promise.all(transpiles);
   }
 
-  async stopWatching() {
+  public async stopWatching() {
     await this.watcher?.close();
   }
 
-  async transpileFile(eventName, sourcePath, destinationPath) {
+  public async transpileFile(eventName, sourcePath, destinationPath) {
     await ensureDirectoryExists(destinationPath);
 
     const source = await fs.readFile(sourcePath, "utf8");

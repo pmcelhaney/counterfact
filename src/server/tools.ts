@@ -3,15 +3,15 @@ import JSONSchemaFaker from "json-schema-faker";
 JSONSchemaFaker.option("useExamplesValue", true);
 
 export class Tools {
-  constructor({ headers = {} } = {}) {
+  public constructor({ headers = {} } = {}) {
     this.headers = headers;
   }
 
-  oneOf(array) {
+  public oneOf(array) {
     return array[Math.floor(Math.random() * array.length)];
   }
 
-  accepts(contentType) {
+  public accepts(contentType) {
     const acceptHeader = this.headers.Accept;
 
     if (!acceptHeader) {
@@ -30,7 +30,7 @@ export class Tools {
     });
   }
 
-  randomFromSchema(schema) {
+  public randomFromSchema(schema) {
     return JSONSchemaFaker.generate(schema);
   }
 }

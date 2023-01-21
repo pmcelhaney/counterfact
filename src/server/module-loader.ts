@@ -16,14 +16,18 @@ export class ModuleLoader extends EventTarget {
 
   contextRegistry;
 
-  constructor(basePath, registry, contextRegistry = new ContextRegistry()) {
+  public constructor(
+    basePath,
+    registry,
+    contextRegistry = new ContextRegistry()
+  ) {
     super();
     this.basePath = basePath;
     this.registry = registry;
     this.contextRegistry = contextRegistry;
   }
 
-  async watch() {
+  public async watch() {
     this.watcher = chokidar
       .watch(`${this.basePath}/**/*.{js,mjs,ts,mts}`)
       .on("all", (eventName, pathName) => {
@@ -58,18 +62,18 @@ export class ModuleLoader extends EventTarget {
             return "path";
           })
           // eslint-disable-next-line promise/prefer-await-to-then
-          .catch((error) => {
+          .catch((error: unknown) => {
             process.stdout.write(`\nError loading ${pathName}:\n${error}\n`);
           });
       });
     await once(this.watcher, "ready");
   }
 
-  async stopWatching() {
+  public async stopWatching() {
     await this.watcher?.close();
   }
 
-  async load(directory = "") {
+  public async load(directory = "") {
     if (!existsSync(nodePath.join(this.basePath, directory))) {
       throw new Error(`Directory does not exist ${this.basePath}`);
     }

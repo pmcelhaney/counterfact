@@ -39,11 +39,11 @@ export class Registry {
     children: {},
   };
 
-  get routes() {
+  private get routes() {
     return routesForNode(this.moduleTree);
   }
 
-  add(url, module) {
+  public add(url, module) {
     let node = this.moduleTree;
 
     for (const segment of url.split("/").slice(1)) {
@@ -55,11 +55,11 @@ export class Registry {
     node.module = module;
   }
 
-  remove(url) {
+  public remove(url) {
     let node = this.moduleTree;
 
     for (const segment of url.split("/").slice(1)) {
-      node = node?.children?.[segment];
+      node = node.children[segment];
 
       if (!node) {
         return false;
@@ -71,12 +71,12 @@ export class Registry {
     return true;
   }
 
-  exists(method, url) {
-    return Boolean(this.handler(url)?.module?.[method]);
+  private exists(method, url) {
+    return Boolean(this.handler(url).module?.[method]);
   }
 
   // eslint-disable-next-line max-statements
-  handler(url) {
+  public handler(url) {
     let node = this.moduleTree;
 
     const path = {};
@@ -107,9 +107,9 @@ export class Registry {
     return { module: node.module, path, matchedPath: matchedParts.join("/") };
   }
 
-  endpoint(httpRequestMethod, url, parameterTypes = {}) {
+  public endpoint(httpRequestMethod, url, parameterTypes = {}) {
     const handler = this.handler(url);
-    const execute = handler?.module?.[httpRequestMethod];
+    const execute = handler.module?.[httpRequestMethod];
 
     if (!execute) {
       return () => ({
