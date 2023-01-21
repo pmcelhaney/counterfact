@@ -1,6 +1,7 @@
 import type { Requirement } from "./requirement";
+import type { Script } from "./script";
 
-export class Coder {
+export abstract class Coder {
   private readonly requirement: Requirement;
 
   public constructor(requirement: Requirement) {
@@ -19,11 +20,7 @@ export class Coder {
     return "";
   }
 
-  public write() {
-    // This method should be overridden by a subclass.
-
-    return `/* ${this.id} */`;
-  }
+  public abstract write(script: Script);
 
   public *names(
     rawName = this.requirement.url.split("/").at(-1) ??
@@ -45,7 +42,8 @@ export class Coder {
     }
   }
 
-  public typeDeclaration(): string {
+  public typeDeclaration(script: Script): string {
+    void script;
     return "";
   }
 

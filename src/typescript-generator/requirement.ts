@@ -2,11 +2,13 @@ import type { Specification } from "./specification";
 
 export interface RequirementData {
   $ref?: string;
+  properties?: { [key: string]: unknown };
+  additionalProperties?: { [key: string]: unknown };
   [key: string]: unknown;
 }
 
 export class Requirement {
-  private readonly data: RequirementData;
+  public readonly data: RequirementData;
 
   public readonly url: string;
 

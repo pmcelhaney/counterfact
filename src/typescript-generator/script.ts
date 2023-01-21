@@ -13,7 +13,7 @@ interface Export {
   isDefault: boolean;
   typeDeclaration: unknown;
   beforeExport: string;
-  promise?: Promise<Coder>;
+  promise?: Promise<Coder | undefined>;
   code?: string & { raw?: string };
   error?: unknown;
 }

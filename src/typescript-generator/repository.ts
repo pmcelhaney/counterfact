@@ -9,7 +9,7 @@ import { Script } from "./script.js";
 // eslint-disable-next-line no-underscore-dangle
 const __dirname = nodePath.dirname(new URL(import.meta.url).pathname);
 
-async function ensureDirectoryExists(filePath) {
+async function ensureDirectoryExists(filePath: string) {
   const directory = nodePath.dirname(filePath);
 
   try {
@@ -39,7 +39,7 @@ export class Repository {
     return script;
   }
 
-  public async copyCoreFiles(destination) {
+  public async copyCoreFiles(destination: string) {
     const path = nodePath.join(destination, "response-builder-factory.ts");
 
     process.stdout.write(`writing ${path}\n`);
@@ -64,7 +64,7 @@ export class Repository {
     }
   }
 
-  async writeFiles(destination) {
+  public async writeFiles(destination: string) {
     await this.finished();
 
     const writeFiles = Array.from(

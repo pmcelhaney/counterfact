@@ -21,16 +21,27 @@ export class SchemaCoder extends Coder {
   private readonly requirement: Requirement;
 
   public names() {
-    return super.names(`${this.requirement.data.$ref.split("/").at(-1)}Schema`);
+    const componentName = this.requirement.data.$ref?.split("/").at(-1);
+
+    if (componentName === undefined) {
+      throw new Error("missing or invalid $ref");
+    }
+
+    return super.names(`${componentName}Schema`);
   }
 
-  private objectSchema(script) {
+  private objectSchema(script: Script) {
     const { required, properties } = this.requirement.data;
 
     const propertyLines = Object.keys(properties ?? {}).map((name) => {
-      const schemaCoder = new SchemaCoder(
-        this.requirement.select(`properties/${name}`)
-      );
+      const requirement = this.requirement.select(`properties/${name}`);
+
+      if (requirement === undefined) {
+        throw new Error(
+          `Could not find a property named ${name}. This technically should not be possible.`
+        );
+      }
+      const schemaCoder = new SchemaCoder(requirement);
 
       return `"${name}": ${schemaCoder.write(script)}`;
     });
