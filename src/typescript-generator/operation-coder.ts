@@ -1,19 +1,18 @@
-/* eslint-disable no-magic-numbers */
 import nodePath from "node:path";
 
 import { Coder } from "./coder.js";
 import { OperationTypeCoder } from "./operation-type-coder.js";
 
 export class OperationCoder extends Coder {
-  requestMethod() {
+  public requestMethod() {
     return this.requirement.url.split("/").at(-1).toUpperCase();
   }
 
-  names() {
+  public names() {
     return super.names(this.requestMethod());
   }
 
-  write() {
+  public write() {
     const responses = this.requirement.get("responses");
 
     const [firstStatusCode] = responses.map(
@@ -32,13 +31,13 @@ export class OperationCoder extends Coder {
     }`;
   }
 
-  typeDeclaration(namespace, script) {
+  public typeDeclaration(namespace, script) {
     const operationTypeCoder = new OperationTypeCoder(this.requirement);
 
     return script.importType(operationTypeCoder);
   }
 
-  modulePath() {
+  public modulePath() {
     const pathString = this.requirement.url
       .split("/")
       .at(-2)

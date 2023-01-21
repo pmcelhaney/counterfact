@@ -7,12 +7,12 @@ import { readFile } from "../util/read-file.js";
 import { Requirement } from "./requirement.js";
 
 export class Specification {
-  constructor(rootUrl) {
+  public constructor(rootUrl) {
     this.cache = new Map();
     this.rootUrl = rootUrl;
   }
 
-  async requirementAt(url, fromUrl = "") {
+  public async requirementAt(url, fromUrl = "") {
     const [file, path] = url.split("#");
 
     const filePath = nodePath.join(fromUrl.split("#").at(0), file);
@@ -25,7 +25,7 @@ export class Specification {
     return rootRequirement.select(path.slice(1));
   }
 
-  async loadFile(urlOrPath) {
+  public async loadFile(urlOrPath) {
     if (this.cache.has(urlOrPath)) {
       return this.cache.get(urlOrPath);
     }

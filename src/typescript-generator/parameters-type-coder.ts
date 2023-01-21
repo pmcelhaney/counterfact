@@ -4,17 +4,17 @@ import { Coder } from "./coder.js";
 import { SchemaTypeCoder } from "./schema-type-coder.js";
 
 export class ParametersTypeCoder extends Coder {
-  constructor(requirement, placement) {
+  public constructor(requirement, placement) {
     super(requirement);
 
     this.placement = placement;
   }
 
-  names() {
+  public names() {
     return super.names("parameters");
   }
 
-  write(script) {
+  public write(script) {
     const typeDefinitions = this.requirement.data
       .filter((parameter) => parameter.in === this.placement)
       .map((parameter, index) => {
@@ -40,7 +40,7 @@ export class ParametersTypeCoder extends Coder {
     return `{${typeDefinitions.join(", ")}}`;
   }
 
-  modulePath() {
+  public modulePath() {
     const pathString = this.requirement.url
       .split("/")
       .at(-2)

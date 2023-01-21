@@ -1,9 +1,9 @@
 export class Coder {
-  constructor(requirement) {
+  public constructor(requirement) {
     this.requirement = requirement;
   }
 
-  get id() {
+  public get id() {
     if (this.requirement.isReference) {
       return `${this.constructor.name}@${this.requirement.$ref}`;
     }
@@ -11,27 +11,17 @@ export class Coder {
     return `${this.constructor.name}@${this.requirement.url}`;
   }
 
-  beforeExport() {
+  public beforeExport() {
     return "";
   }
 
-  write() {
+  public write() {
     // This method should be overridden by a subclass.
 
     return `/* ${this.id} */`;
   }
 
-  async delegate() {
-    if (!this.requirement.isReference) {
-      return this;
-    }
-
-    const requirement = await this.requirement.reference();
-
-    return new this.constructor(requirement);
-  }
-
-  *names(rawName = this.requirement.url.split("/").at(-1)) {
+  public *names(rawName = this.requirement.url.split("/").at(-1)) {
     const name = rawName
       .replace(/^\d/u, (digit) => `_${digit}`)
       .replace(/[^\w$]/gu, "_");
@@ -48,11 +38,21 @@ export class Coder {
     }
   }
 
-  typeDeclaration() {
+  public typeDeclaration() {
     return "";
   }
 
-  modulePath() {
+  public modulePath() {
     return "did-not-override-coder-modulePath.ts";
+  }
+
+  public async delegate() {
+    if (!this.requirement.isReference) {
+      return this;
+    }
+
+    const requirement = await this.requirement.reference();
+
+    return new this.constructor(requirement);
   }
 }

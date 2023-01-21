@@ -12,11 +12,11 @@ function scrubSchema(schema) {
 }
 
 export class SchemaCoder extends Coder {
-  names() {
+  public names() {
     return super.names(`${this.requirement.data.$ref.split("/").at(-1)}Schema`);
   }
 
-  objectSchema(script) {
+  private objectSchema(script) {
     const { required, properties } = this.requirement.data;
 
     const propertyLines = Object.keys(properties ?? {}).map((name) => {
@@ -36,22 +36,22 @@ export class SchemaCoder extends Coder {
     `;
   }
 
-  arraySchema(script) {
+  private arraySchema(script) {
     return `{
         type: "array",     
         items: ${new SchemaCoder(this.requirement.get("items")).write(script)}
       }`;
   }
 
-  typeDeclaration(namespace, script) {
+  private typeDeclaration(namespace, script) {
     return script.importExternalType("JSONSchema6", "json-schema");
   }
 
-  modulePath() {
+  public modulePath() {
     return `components/${this.requirement.data.$ref.split("/").at(-1)}.ts`;
   }
 
-  write(script) {
+  public write(script) {
     if (this.requirement.isReference) {
       return script.import(this);
     }

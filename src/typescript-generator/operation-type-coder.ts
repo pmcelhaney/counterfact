@@ -7,13 +7,13 @@ import { ResponseTypeCoder } from "./response-type-coder.js";
 import { ContextCoder } from "./context-coder.js";
 
 export class OperationTypeCoder extends Coder {
-  names() {
+  public names() {
     return super.names(
       `HTTP_${this.requirement.url.split("/").at(-1).toUpperCase()}`
     );
   }
 
-  responseTypes(script) {
+  public responseTypes(script) {
     return this.requirement
       .get("responses")
       .flatMap((response, responseCode) => {
@@ -56,7 +56,7 @@ export class OperationTypeCoder extends Coder {
       .join(" | ");
   }
 
-  modulePath() {
+  public modulePath() {
     const pathString = this.requirement.url
       .split("/")
       .at(-2)
@@ -65,7 +65,7 @@ export class OperationTypeCoder extends Coder {
     return `${nodePath.join("path-types", pathString)}.types.ts`;
   }
 
-  write(script) {
+  public write(script) {
     const contextImportName = script.importDefault(
       new ContextCoder(this.requirement)
     );

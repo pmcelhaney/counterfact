@@ -1,11 +1,11 @@
 import { Coder } from "./coder.js";
 
 export class SchemaTypeCoder extends Coder {
-  names() {
+  public names() {
     return super.names(this.requirement.data.$ref.split("/").at(-1));
   }
 
-  additionalPropertiesType(script) {
+  private additionalPropertiesType(script) {
     const { properties, additionalProperties } = this.requirement.data;
 
     if (!additionalProperties.type) {
@@ -25,7 +25,7 @@ export class SchemaTypeCoder extends Coder {
     return new SchemaTypeCoder(requirement).write(script);
   }
 
-  objectSchema(script) {
+  private objectSchema(script) {
     const { data } = this.requirement;
 
     const properties = Object.keys(data.properties ?? {}).map((name) => {
@@ -49,13 +49,13 @@ export class SchemaTypeCoder extends Coder {
     return `{${properties.join(",")}}`;
   }
 
-  arraySchema(script) {
+  private arraySchema(script) {
     return `Array<${new SchemaTypeCoder(this.requirement.get("items")).write(
       script
     )}>`;
   }
 
-  writeType(script, type) {
+  private writeType(script, type) {
     if (type === "object") {
       return this.objectSchema(script);
     }
@@ -71,7 +71,7 @@ export class SchemaTypeCoder extends Coder {
     return type ?? "unknown";
   }
 
-  writeGroup(script, { allOf, anyOf, oneOf }) {
+  private writeGroup(script, { allOf, anyOf, oneOf }) {
     function matchingKey() {
       if (allOf) {
         return "allOf";
@@ -99,11 +99,11 @@ export class SchemaTypeCoder extends Coder {
       .join(" | ");
   }
 
-  modulePath() {
+  public modulePath() {
     return `components/${this.requirement.data.$ref.split("/").at(-1)}.ts`;
   }
 
-  write(script) {
+  public write(script) {
     if (this.requirement.isReference) {
       return script.importType(this);
     }

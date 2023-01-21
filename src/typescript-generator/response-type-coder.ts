@@ -5,13 +5,13 @@ import { SchemaTypeCoder } from "./schema-type-coder.js";
 import { printObject, printObjectWithoutQuotes } from "./printers.js";
 
 export class ResponseTypeCoder extends Coder {
-  constructor(requirement, openApi2MediaTypes = []) {
+  public constructor(requirement, openApi2MediaTypes = []) {
     super(requirement);
 
     this.openApi2MediaTypes = openApi2MediaTypes;
   }
 
-  typeForDefaultStatusCode(listedStatusCodes) {
+  public typeForDefaultStatusCode(listedStatusCodes) {
     this.needsHttpStatusCodeImport = true;
 
     const definedStatusCodes = listedStatusCodes.filter(
@@ -27,7 +27,7 @@ export class ResponseTypeCoder extends Coder {
     )}>]`;
   }
 
-  normalizeStatusCode(statusCode) {
+  public normalizeStatusCode(statusCode) {
     if (statusCode === "default") {
       return this.typeForDefaultStatusCode(Object.keys(this.requirement.data));
     }
@@ -35,7 +35,7 @@ export class ResponseTypeCoder extends Coder {
     return statusCode;
   }
 
-  buildContentObjectType(script, response) {
+  public buildContentObjectType(script, response) {
     if (response.has("content")) {
       return response.get("content").map((content, mediaType) => [
         mediaType,
@@ -53,7 +53,7 @@ export class ResponseTypeCoder extends Coder {
     ]);
   }
 
-  printContentObjectType(script, response) {
+  public printContentObjectType(script, response) {
     if (response.has("content") || response.has("schema")) {
       return printObject(this.buildContentObjectType(script, response));
     }
@@ -61,7 +61,7 @@ export class ResponseTypeCoder extends Coder {
     return "{}";
   }
 
-  buildHeaders(script, response) {
+  public buildHeaders(script, response) {
     return response
       .get("headers")
       .map((value, name) => [
@@ -72,7 +72,7 @@ export class ResponseTypeCoder extends Coder {
       ]);
   }
 
-  printHeaders(script, response) {
+  public printHeaders(script, response) {
     if (!response.has("headers")) {
       return "{}";
     }
@@ -80,7 +80,7 @@ export class ResponseTypeCoder extends Coder {
     return printObject(this.buildHeaders(script, response));
   }
 
-  buildResponseObjectType(script) {
+  public buildResponseObjectType(script) {
     return printObjectWithoutQuotes(
       this.requirement.map((response, responseCode) => [
         this.normalizeStatusCode(responseCode),
@@ -92,7 +92,7 @@ export class ResponseTypeCoder extends Coder {
     );
   }
 
-  write(script) {
+  public write(script) {
     const basePath = script.path
       .split("/")
       .slice(0, -1)

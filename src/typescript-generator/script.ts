@@ -3,7 +3,7 @@ import nodePath from "node:path";
 import prettier from "prettier";
 
 export class Script {
-  constructor(repository, path) {
+  public constructor(repository, path) {
     this.repository = repository;
     this.exports = new Map();
     this.imports = new Map();
@@ -13,7 +13,7 @@ export class Script {
     this.path = path;
   }
 
-  firstUniqueName(coder) {
+  public firstUniqueName(coder) {
     for (const name of coder.names()) {
       if (!this.imports.has(name) && !this.exports.has(name)) {
         return name;
@@ -23,7 +23,7 @@ export class Script {
     throw new Error(`could not find a unique name for ${coder.id}`);
   }
 
-  export(coder, isType = false, isDefault = false) {
+  public export(coder, isType = false, isDefault = false) {
     const cacheKey = isDefault
       ? "default"
       : `${coder.id}@${nodePath}:${isType}`;
@@ -69,11 +69,11 @@ export class Script {
     return name;
   }
 
-  exportDefault(coder, isType = false) {
+  public exportDefault(coder, isType = false) {
     this.export(coder, isType, true);
   }
 
-  import(coder, isType = false, isDefault = false) {
+  public import(coder, isType = false, isDefault = false) {
     const modulePath = coder.modulePath();
 
     const cacheKey = `${coder.id}@${modulePath}:${isType}:${isDefault}`;
@@ -104,41 +104,35 @@ export class Script {
     return name;
   }
 
-  importType(coder) {
+  public importType(coder) {
     return this.import(coder, true);
   }
 
-  importDefault(coder, isType = false) {
+  public importDefault(coder, isType = false) {
     return this.import(coder, isType, true);
   }
 
-  importExternal(name, modulePath, isType = false) {
+  public importExternal(name, modulePath, isType = false) {
     this.externalImports.set(name, { modulePath, isType });
 
     return name;
   }
 
-  importExternalType(name, modulePath) {
+  public importExternalType(name, modulePath) {
     return this.importExternal(name, modulePath, true);
   }
 
-  exportType(coder) {
+  public exportType(coder) {
     return this.export(coder, true);
   }
 
-  isInProgress() {
+  public isInProgress() {
     return Array.from(this.exports.values()).some(
       (exportStatement) => !exportStatement.done
     );
   }
 
-  finished() {
-    return Promise.all(
-      Array.from(this.exports.values(), (value) => value.promise)
-    );
-  }
-
-  externalImportsStatements() {
+  private externalImportsStatements() {
     return Array.from(
       this.externalImports,
       ([name, { modulePath, isType, isDefault }]) =>
@@ -148,7 +142,7 @@ export class Script {
     );
   }
 
-  importStatements() {
+  private importStatements() {
     return Array.from(
       this.imports,
       ([name, { script, isType, isDefault }]) =>
@@ -161,7 +155,7 @@ export class Script {
     );
   }
 
-  exportStatements() {
+  private exportStatements() {
     return Array.from(
       this.exports.values(),
       ({ name, isType, isDefault, code, typeDeclaration, beforeExport }) => {
@@ -182,7 +176,7 @@ export class Script {
     );
   }
 
-  contents() {
+  public contents() {
     return prettier.format(
       [
         this.externalImportsStatements().join("\n"),
@@ -191,6 +185,12 @@ export class Script {
         this.exportStatements().join("\n\n"),
       ].join(""),
       { parser: "typescript" }
+    );
+  }
+
+  public async finished() {
+    return await Promise.all(
+      Array.from(this.exports.values(), (value) => value.promise)
     );
   }
 }

@@ -20,11 +20,11 @@ async function ensureDirectoryExists(filePath) {
 }
 
 export class Repository {
-  constructor() {
+  public constructor() {
     this.scripts = new Map();
   }
 
-  get(path) {
+  public get(path) {
     if (this.scripts.has(path)) {
       return this.scripts.get(path);
     }
@@ -36,7 +36,18 @@ export class Repository {
     return script;
   }
 
-  async finished() {
+  public async copyCoreFiles(destination) {
+    const path = nodePath.join(destination, "response-builder-factory.ts");
+
+    process.stdout.write(`writing ${path}\n`);
+
+    await fs.copyFile(
+      nodePath.join(__dirname, "../../templates/response-builder-factory.ts"),
+      path
+    );
+  }
+
+  public async finished() {
     while (
       Array.from(this.scripts.values()).some((script) => script.isInProgress())
     ) {
@@ -45,17 +56,6 @@ export class Repository {
         Array.from(this.scripts.values(), (script) => script.finished())
       );
     }
-  }
-
-  copyCoreFiles(destination) {
-    const path = nodePath.join(destination, "response-builder-factory.ts");
-
-    process.stdout.write(`writing ${path}\n`);
-
-    return fs.copyFile(
-      nodePath.join(__dirname, "../../templates/response-builder-factory.ts"),
-      path
-    );
   }
 
   async writeFiles(destination) {

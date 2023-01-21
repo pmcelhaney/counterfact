@@ -3,7 +3,7 @@ import nodePath from "node:path";
 import { Coder } from "./coder.js";
 
 export class ContextCoder extends Coder {
-  pathString() {
+  public pathString() {
     return this.requirement.url
       .split("/")
       .at(-2)
@@ -11,15 +11,16 @@ export class ContextCoder extends Coder {
       .replaceAll("~0", "~");
   }
 
-  get id() {
+  // eslint-disable-next-line @typescript-eslint/class-literal-property-style
+  public get id() {
     return "ContextCoder";
   }
 
-  names() {
+  public names() {
     return super.names("Context");
   }
 
-  beforeExport(path) {
+  public beforeExport(path) {
     return `/**
 * This is the default context for Counterfact.
 * Change the code to suit your needs.
@@ -36,7 +37,7 @@ class Context {
 `;
   }
 
-  write(script) {
+  public write(script) {
     if (script.path === "paths/$.context.ts") {
       return "new Context()";
     }
@@ -50,7 +51,7 @@ class Context {
     return { raw: 'export { default } from "../$.context.js"' };
   }
 
-  modulePath() {
+  public modulePath() {
     return nodePath.join(
       "paths",
       nodePath.dirname(this.pathString()),

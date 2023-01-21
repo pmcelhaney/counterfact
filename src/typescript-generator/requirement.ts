@@ -1,5 +1,5 @@
 export class Requirement {
-  constructor(data, url = "", specification = undefined) {
+  public constructor(data, url = "", specification = undefined) {
     this.data = data;
     this.url = url;
     this.specification = specification;
@@ -9,15 +9,15 @@ export class Requirement {
     return this.data?.$ref !== undefined;
   }
 
-  reference() {
+  public reference() {
     return this.specification.requirementAt(this.data.$ref, this.url);
   }
 
-  has(item) {
+  public has(item) {
     return item in this.data;
   }
 
-  get(item) {
+  public get(item) {
     if (!this.has(item)) {
       return undefined;
     }
@@ -29,7 +29,7 @@ export class Requirement {
     );
   }
 
-  select(path, data = this.data, basePath = "") {
+  public select(path, data = this.data, basePath = "") {
     const [head, ...tail] = path.split("/");
 
     const branch = data[this.unescapeJsonPointer(head)];
@@ -49,13 +49,13 @@ export class Requirement {
     return this.select(tail.join("/"), branch, `${basePath}${head}/`);
   }
 
-  forEach(callback) {
+  public forEach(callback) {
     Object.keys(this.data).forEach((key) => {
       callback(this.select(this.escapeJsonPointer(key)), key);
     });
   }
 
-  map(callback) {
+  public map(callback) {
     const result = [];
 
     // eslint-disable-next-line array-callback-return
@@ -64,13 +64,12 @@ export class Requirement {
     return result;
   }
 
-  flatMap(callback) {
+  public flatMap(callback) {
     // eslint-disable-next-line unicorn/prefer-array-flat-map
     return this.map(callback).flat();
   }
 
-  find(callback) {
-    // eslint-disable-next-line init-declarations
+  public find(callback) {
     let result;
 
     this.forEach((value, key) => {
@@ -83,11 +82,11 @@ export class Requirement {
     return result;
   }
 
-  escapeJsonPointer(string) {
+  public escapeJsonPointer(string) {
     return string.replaceAll("~", "~0").replaceAll("/", "~1");
   }
 
-  unescapeJsonPointer(pointer) {
+  public unescapeJsonPointer(pointer) {
     return pointer.replaceAll("~1", "/").replaceAll("~0", "~");
   }
 }
