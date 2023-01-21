@@ -114,7 +114,7 @@ describe("a SchemaCoder", () => {
       },
     };
 
-    expect(coder.typeDeclaration(undefined, script)).toBe("JSONSchema6");
+    expect(coder.typeDeclaration(script)).toBe("JSONSchema6");
 
     expect(script.imported).toStrictEqual({
       name: "JSONSchema6",

@@ -31,7 +31,7 @@ export class OperationCoder extends Coder {
     }`;
   }
 
-  public typeDeclaration(namespace, script) {
+  public typeDeclaration(script) {
     const operationTypeCoder = new OperationTypeCoder(this.requirement);
 
     return script.importType(operationTypeCoder);

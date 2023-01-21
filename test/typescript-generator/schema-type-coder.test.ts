@@ -280,6 +280,6 @@ describe("a SchemaTypeCoder", () => {
       })
     );
 
-    expect(coder.typeDeclaration(undefined, {})).toBe("");
+    expect(coder.typeDeclaration({})).toBe("");
   });
 });

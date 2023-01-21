@@ -43,7 +43,7 @@ export class SchemaCoder extends Coder {
       }`;
   }
 
-  private typeDeclaration(namespace, script) {
+  private typeDeclaration(script) {
     return script.importExternalType("JSONSchema6", "json-schema");
   }
 

@@ -47,7 +47,7 @@ describe("an OperationTypeCoder", () => {
       new Requirement({}, "#/paths/hello/get")
     );
 
-    expect(coder.typeDeclaration(undefined, dummyScript)).toBe("");
+    expect(coder.typeDeclaration(dummyScript)).toBe("");
   });
 
   it("returns the module path", () => {

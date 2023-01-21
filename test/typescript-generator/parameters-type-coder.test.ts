@@ -79,7 +79,7 @@ describe("a ParametersTypeCoder", () => {
   it("has no type", () => {
     const coder = new ParametersTypeCoder(new Requirement({}));
 
-    expect(coder.typeDeclaration(undefined, {})).toBe("");
+    expect(coder.typeDeclaration({})).toBe("");
   });
 
   it("calculates the modulePath", () => {

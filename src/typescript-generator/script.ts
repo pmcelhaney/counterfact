@@ -73,7 +73,7 @@ export class Script {
       done: false,
       isType,
       isDefault,
-      typeDeclaration: coder.typeDeclaration(this.exports, this),
+      typeDeclaration: coder.typeDeclaration(this),
       beforeExport: coder.beforeExport(this.path),
     };
 

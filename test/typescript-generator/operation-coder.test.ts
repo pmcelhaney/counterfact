@@ -33,7 +33,7 @@ describe("an OperationCoder", () => {
       },
     };
 
-    expect(coder.typeDeclaration(undefined, script)).toBe("HTTP_GET");
+    expect(coder.typeDeclaration(script)).toBe("HTTP_GET");
   });
 
   it("returns the module path", () => {
