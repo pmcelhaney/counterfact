@@ -2,8 +2,25 @@ import nodePath from "node:path";
 
 import prettier from "prettier";
 
+import type { Coder } from "./coder";
+import type { Repository } from "./repository";
+
 export class Script {
-  public constructor(repository, path) {
+  private readonly repository: Repository;
+
+  private readonly exports: Map<string, unknown>;
+
+  private readonly imports: Map<string, unknown>;
+
+  private readonly externalImports: Map<string, unknown>;
+
+  private readonly cache: Map<string, unknown>;
+
+  private readonly typeCache: Map<string, unknown>;
+
+  private readonly path: string;
+
+  public constructor(repository: Repository, path: string) {
     this.repository = repository;
     this.exports = new Map();
     this.imports = new Map();
@@ -13,7 +30,7 @@ export class Script {
     this.path = path;
   }
 
-  public firstUniqueName(coder) {
+  public firstUniqueName(coder: Coder): string {
     for (const name of coder.names()) {
       if (!this.imports.has(name) && !this.exports.has(name)) {
         return name;
@@ -23,10 +40,10 @@ export class Script {
     throw new Error(`could not find a unique name for ${coder.id}`);
   }
 
-  public export(coder, isType = false, isDefault = false) {
+  public export(coder: Coder, isType = false, isDefault = false) {
     const cacheKey = isDefault
       ? "default"
-      : `${coder.id}@${nodePath}:${isType}`;
+      : `${coder.id}@${nodePath}:${String(isType)}`;
 
     if (this.cache.has(cacheKey)) {
       return this.cache.get(cacheKey);
@@ -55,7 +72,7 @@ export class Script {
         return availableCoder;
       })
       // eslint-disable-next-line promise/prefer-await-to-then
-      .catch((error) => {
+      .catch((error: unknown) => {
         exportStatement.code = `{/* error creating export "${name}" for ${this.path}: ${error.stack} */}`;
         exportStatement.error = error;
       })
@@ -69,14 +86,16 @@ export class Script {
     return name;
   }
 
-  public exportDefault(coder, isType = false) {
+  public exportDefault(coder: Coder, isType = false) {
     this.export(coder, isType, true);
   }
 
-  public import(coder, isType = false, isDefault = false) {
-    const modulePath = coder.modulePath();
+  public import(coder: Coder, isType = false, isDefault = false) {
+    const modulePath: string = coder.modulePath();
 
-    const cacheKey = `${coder.id}@${modulePath}:${isType}:${isDefault}`;
+    const cacheKey = `${coder.id}@${modulePath}:${String(isType)}:${String(
+      isDefault
+    )}`;
 
     if (this.cache.has(cacheKey)) {
       return this.cache.get(cacheKey);
