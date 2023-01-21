@@ -48,7 +48,7 @@ Map {
             "OperationTypeCoder@./petstore.yaml#/paths/~1pet/post:true" => "HTTP_POST",
             "OperationTypeCoder@./petstore.yaml#/paths/~1pet/put:true" => "HTTP_PUT",
             "ContextCoder@paths/$.context.ts:false:true" => "Context",
-            "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
+            "SchemaTypeCoder@components/Pet.ts:true:false" => "Pet",
           },
           "exports": Map {
             "HTTP_POST" => Object {
@@ -195,16 +195,16 @@ class Context {
               "name": "Pet",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined:true" => "Pet",
-                  "SchemaTypeCoder@undefined@components/Category.ts:true:false" => "Category",
-                  "SchemaTypeCoder@undefined@components/Tag.ts:true:false" => "Tag",
+                  "SchemaTypeCoder:true" => "Pet",
+                  "SchemaTypeCoder@components/Category.ts:true:false" => "Category",
+                  "SchemaTypeCoder@components/Tag.ts:true:false" => "Tag",
                 },
                 "exports": Map {
                   "Pet" => Object {
                     "beforeExport": "",
                     "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
                     "done": true,
-                    "id": "SchemaTypeCoder@undefined",
+                    "id": "SchemaTypeCoder",
                     "isDefault": false,
                     "isType": true,
                     "name": "Pet",
@@ -220,14 +220,14 @@ class Context {
                     "name": "Category",
                     "script": Script {
                       "cache": Map {
-                        "SchemaTypeCoder@undefined:true" => "Category",
+                        "SchemaTypeCoder:true" => "Category",
                       },
                       "exports": Map {
                         "Category" => Object {
                           "beforeExport": "",
                           "code": "{id?: number,name?: string}",
                           "done": true,
-                          "id": "SchemaTypeCoder@undefined",
+                          "id": "SchemaTypeCoder",
                           "isDefault": false,
                           "isType": true,
                           "name": "Category",
@@ -251,14 +251,14 @@ class Context {
                     "name": "Tag",
                     "script": Script {
                       "cache": Map {
-                        "SchemaTypeCoder@undefined:true" => "Tag",
+                        "SchemaTypeCoder:true" => "Tag",
                       },
                       "exports": Map {
                         "Tag" => Object {
                           "beforeExport": "",
                           "code": "{id?: number,name?: string}",
                           "done": true,
-                          "id": "SchemaTypeCoder@undefined",
+                          "id": "SchemaTypeCoder",
                           "isDefault": false,
                           "isType": true,
                           "name": "Tag",
@@ -303,7 +303,7 @@ class Context {
             "OperationTypeCoder@./petstore.yaml#/paths/~1pet/post:true" => "HTTP_POST",
             "OperationTypeCoder@./petstore.yaml#/paths/~1pet/put:true" => "HTTP_PUT",
             "ContextCoder@paths/$.context.ts:false:true" => "Context",
-            "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
+            "SchemaTypeCoder@components/Pet.ts:true:false" => "Pet",
           },
           "exports": Map {
             "HTTP_POST" => Object {
@@ -450,16 +450,16 @@ class Context {
               "name": "Pet",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined:true" => "Pet",
-                  "SchemaTypeCoder@undefined@components/Category.ts:true:false" => "Category",
-                  "SchemaTypeCoder@undefined@components/Tag.ts:true:false" => "Tag",
+                  "SchemaTypeCoder:true" => "Pet",
+                  "SchemaTypeCoder@components/Category.ts:true:false" => "Category",
+                  "SchemaTypeCoder@components/Tag.ts:true:false" => "Tag",
                 },
                 "exports": Map {
                   "Pet" => Object {
                     "beforeExport": "",
                     "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
                     "done": true,
-                    "id": "SchemaTypeCoder@undefined",
+                    "id": "SchemaTypeCoder",
                     "isDefault": false,
                     "isType": true,
                     "name": "Pet",
@@ -475,14 +475,14 @@ class Context {
                     "name": "Category",
                     "script": Script {
                       "cache": Map {
-                        "SchemaTypeCoder@undefined:true" => "Category",
+                        "SchemaTypeCoder:true" => "Category",
                       },
                       "exports": Map {
                         "Category" => Object {
                           "beforeExport": "",
                           "code": "{id?: number,name?: string}",
                           "done": true,
-                          "id": "SchemaTypeCoder@undefined",
+                          "id": "SchemaTypeCoder",
                           "isDefault": false,
                           "isType": true,
                           "name": "Category",
@@ -506,14 +506,14 @@ class Context {
                     "name": "Tag",
                     "script": Script {
                       "cache": Map {
-                        "SchemaTypeCoder@undefined:true" => "Tag",
+                        "SchemaTypeCoder:true" => "Tag",
                       },
                       "exports": Map {
                         "Tag" => Object {
                           "beforeExport": "",
                           "code": "{id?: number,name?: string}",
                           "done": true,
-                          "id": "SchemaTypeCoder@undefined",
+                          "id": "SchemaTypeCoder",
                           "isDefault": false,
                           "isType": true,
                           "name": "Tag",
@@ -562,7 +562,7 @@ class Context {
       "OperationTypeCoder@./petstore.yaml#/paths/~1pet/post:true" => "HTTP_POST",
       "OperationTypeCoder@./petstore.yaml#/paths/~1pet/put:true" => "HTTP_PUT",
       "ContextCoder@paths/$.context.ts:false:true" => "Context",
-      "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
+      "SchemaTypeCoder@components/Pet.ts:true:false" => "Pet",
     },
     "exports": Map {
       "HTTP_POST" => Object {
@@ -709,16 +709,16 @@ class Context {
         "name": "Pet",
         "script": Script {
           "cache": Map {
-            "SchemaTypeCoder@undefined:true" => "Pet",
-            "SchemaTypeCoder@undefined@components/Category.ts:true:false" => "Category",
-            "SchemaTypeCoder@undefined@components/Tag.ts:true:false" => "Tag",
+            "SchemaTypeCoder:true" => "Pet",
+            "SchemaTypeCoder@components/Category.ts:true:false" => "Category",
+            "SchemaTypeCoder@components/Tag.ts:true:false" => "Tag",
           },
           "exports": Map {
             "Pet" => Object {
               "beforeExport": "",
               "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
               "done": true,
-              "id": "SchemaTypeCoder@undefined",
+              "id": "SchemaTypeCoder",
               "isDefault": false,
               "isType": true,
               "name": "Pet",
@@ -734,14 +734,14 @@ class Context {
               "name": "Category",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined:true" => "Category",
+                  "SchemaTypeCoder:true" => "Category",
                 },
                 "exports": Map {
                   "Category" => Object {
                     "beforeExport": "",
                     "code": "{id?: number,name?: string}",
                     "done": true,
-                    "id": "SchemaTypeCoder@undefined",
+                    "id": "SchemaTypeCoder",
                     "isDefault": false,
                     "isType": true,
                     "name": "Category",
@@ -765,14 +765,14 @@ class Context {
               "name": "Tag",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined:true" => "Tag",
+                  "SchemaTypeCoder:true" => "Tag",
                 },
                 "exports": Map {
                   "Tag" => Object {
                     "beforeExport": "",
                     "code": "{id?: number,name?: string}",
                     "done": true,
-                    "id": "SchemaTypeCoder@undefined",
+                    "id": "SchemaTypeCoder",
                     "isDefault": false,
                     "isType": true,
                     "name": "Tag",
@@ -837,7 +837,7 @@ class Context {
           "cache": Map {
             "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1findByStatus/get:true" => "HTTP_GET",
             "ContextCoder@paths/pet/$.context.ts:false:true" => "Context",
-            "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
+            "SchemaTypeCoder@components/Pet.ts:true:false" => "Pet",
           },
           "exports": Map {
             "HTTP_GET" => Object {
@@ -937,16 +937,16 @@ class Context {
               "name": "Pet",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined:true" => "Pet",
-                  "SchemaTypeCoder@undefined@components/Category.ts:true:false" => "Category",
-                  "SchemaTypeCoder@undefined@components/Tag.ts:true:false" => "Tag",
+                  "SchemaTypeCoder:true" => "Pet",
+                  "SchemaTypeCoder@components/Category.ts:true:false" => "Category",
+                  "SchemaTypeCoder@components/Tag.ts:true:false" => "Tag",
                 },
                 "exports": Map {
                   "Pet" => Object {
                     "beforeExport": "",
                     "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
                     "done": true,
-                    "id": "SchemaTypeCoder@undefined",
+                    "id": "SchemaTypeCoder",
                     "isDefault": false,
                     "isType": true,
                     "name": "Pet",
@@ -962,14 +962,14 @@ class Context {
                     "name": "Category",
                     "script": Script {
                       "cache": Map {
-                        "SchemaTypeCoder@undefined:true" => "Category",
+                        "SchemaTypeCoder:true" => "Category",
                       },
                       "exports": Map {
                         "Category" => Object {
                           "beforeExport": "",
                           "code": "{id?: number,name?: string}",
                           "done": true,
-                          "id": "SchemaTypeCoder@undefined",
+                          "id": "SchemaTypeCoder",
                           "isDefault": false,
                           "isType": true,
                           "name": "Category",
@@ -993,14 +993,14 @@ class Context {
                     "name": "Tag",
                     "script": Script {
                       "cache": Map {
-                        "SchemaTypeCoder@undefined:true" => "Tag",
+                        "SchemaTypeCoder:true" => "Tag",
                       },
                       "exports": Map {
                         "Tag" => Object {
                           "beforeExport": "",
                           "code": "{id?: number,name?: string}",
                           "done": true,
-                          "id": "SchemaTypeCoder@undefined",
+                          "id": "SchemaTypeCoder",
                           "isDefault": false,
                           "isType": true,
                           "name": "Tag",
@@ -1048,7 +1048,7 @@ class Context {
     "cache": Map {
       "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1findByStatus/get:true" => "HTTP_GET",
       "ContextCoder@paths/pet/$.context.ts:false:true" => "Context",
-      "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
+      "SchemaTypeCoder@components/Pet.ts:true:false" => "Pet",
     },
     "exports": Map {
       "HTTP_GET" => Object {
@@ -1148,16 +1148,16 @@ class Context {
         "name": "Pet",
         "script": Script {
           "cache": Map {
-            "SchemaTypeCoder@undefined:true" => "Pet",
-            "SchemaTypeCoder@undefined@components/Category.ts:true:false" => "Category",
-            "SchemaTypeCoder@undefined@components/Tag.ts:true:false" => "Tag",
+            "SchemaTypeCoder:true" => "Pet",
+            "SchemaTypeCoder@components/Category.ts:true:false" => "Category",
+            "SchemaTypeCoder@components/Tag.ts:true:false" => "Tag",
           },
           "exports": Map {
             "Pet" => Object {
               "beforeExport": "",
               "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
               "done": true,
-              "id": "SchemaTypeCoder@undefined",
+              "id": "SchemaTypeCoder",
               "isDefault": false,
               "isType": true,
               "name": "Pet",
@@ -1173,14 +1173,14 @@ class Context {
               "name": "Category",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined:true" => "Category",
+                  "SchemaTypeCoder:true" => "Category",
                 },
                 "exports": Map {
                   "Category" => Object {
                     "beforeExport": "",
                     "code": "{id?: number,name?: string}",
                     "done": true,
-                    "id": "SchemaTypeCoder@undefined",
+                    "id": "SchemaTypeCoder",
                     "isDefault": false,
                     "isType": true,
                     "name": "Category",
@@ -1204,14 +1204,14 @@ class Context {
               "name": "Tag",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined:true" => "Tag",
+                  "SchemaTypeCoder:true" => "Tag",
                 },
                 "exports": Map {
                   "Tag" => Object {
                     "beforeExport": "",
                     "code": "{id?: number,name?: string}",
                     "done": true,
-                    "id": "SchemaTypeCoder@undefined",
+                    "id": "SchemaTypeCoder",
                     "isDefault": false,
                     "isType": true,
                     "name": "Tag",
@@ -1276,7 +1276,7 @@ class Context {
           "cache": Map {
             "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1findByTags/get:true" => "HTTP_GET",
             "ContextCoder@paths/pet/$.context.ts:false:true" => "Context",
-            "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
+            "SchemaTypeCoder@components/Pet.ts:true:false" => "Pet",
           },
           "exports": Map {
             "HTTP_GET" => Object {
@@ -1376,16 +1376,16 @@ class Context {
               "name": "Pet",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined:true" => "Pet",
-                  "SchemaTypeCoder@undefined@components/Category.ts:true:false" => "Category",
-                  "SchemaTypeCoder@undefined@components/Tag.ts:true:false" => "Tag",
+                  "SchemaTypeCoder:true" => "Pet",
+                  "SchemaTypeCoder@components/Category.ts:true:false" => "Category",
+                  "SchemaTypeCoder@components/Tag.ts:true:false" => "Tag",
                 },
                 "exports": Map {
                   "Pet" => Object {
                     "beforeExport": "",
                     "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
                     "done": true,
-                    "id": "SchemaTypeCoder@undefined",
+                    "id": "SchemaTypeCoder",
                     "isDefault": false,
                     "isType": true,
                     "name": "Pet",
@@ -1401,14 +1401,14 @@ class Context {
                     "name": "Category",
                     "script": Script {
                       "cache": Map {
-                        "SchemaTypeCoder@undefined:true" => "Category",
+                        "SchemaTypeCoder:true" => "Category",
                       },
                       "exports": Map {
                         "Category" => Object {
                           "beforeExport": "",
                           "code": "{id?: number,name?: string}",
                           "done": true,
-                          "id": "SchemaTypeCoder@undefined",
+                          "id": "SchemaTypeCoder",
                           "isDefault": false,
                           "isType": true,
                           "name": "Category",
@@ -1432,14 +1432,14 @@ class Context {
                     "name": "Tag",
                     "script": Script {
                       "cache": Map {
-                        "SchemaTypeCoder@undefined:true" => "Tag",
+                        "SchemaTypeCoder:true" => "Tag",
                       },
                       "exports": Map {
                         "Tag" => Object {
                           "beforeExport": "",
                           "code": "{id?: number,name?: string}",
                           "done": true,
-                          "id": "SchemaTypeCoder@undefined",
+                          "id": "SchemaTypeCoder",
                           "isDefault": false,
                           "isType": true,
                           "name": "Tag",
@@ -1487,7 +1487,7 @@ class Context {
     "cache": Map {
       "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1findByTags/get:true" => "HTTP_GET",
       "ContextCoder@paths/pet/$.context.ts:false:true" => "Context",
-      "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
+      "SchemaTypeCoder@components/Pet.ts:true:false" => "Pet",
     },
     "exports": Map {
       "HTTP_GET" => Object {
@@ -1587,16 +1587,16 @@ class Context {
         "name": "Pet",
         "script": Script {
           "cache": Map {
-            "SchemaTypeCoder@undefined:true" => "Pet",
-            "SchemaTypeCoder@undefined@components/Category.ts:true:false" => "Category",
-            "SchemaTypeCoder@undefined@components/Tag.ts:true:false" => "Tag",
+            "SchemaTypeCoder:true" => "Pet",
+            "SchemaTypeCoder@components/Category.ts:true:false" => "Category",
+            "SchemaTypeCoder@components/Tag.ts:true:false" => "Tag",
           },
           "exports": Map {
             "Pet" => Object {
               "beforeExport": "",
               "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
               "done": true,
-              "id": "SchemaTypeCoder@undefined",
+              "id": "SchemaTypeCoder",
               "isDefault": false,
               "isType": true,
               "name": "Pet",
@@ -1612,14 +1612,14 @@ class Context {
               "name": "Category",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined:true" => "Category",
+                  "SchemaTypeCoder:true" => "Category",
                 },
                 "exports": Map {
                   "Category" => Object {
                     "beforeExport": "",
                     "code": "{id?: number,name?: string}",
                     "done": true,
-                    "id": "SchemaTypeCoder@undefined",
+                    "id": "SchemaTypeCoder",
                     "isDefault": false,
                     "isType": true,
                     "name": "Category",
@@ -1643,14 +1643,14 @@ class Context {
               "name": "Tag",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined:true" => "Tag",
+                  "SchemaTypeCoder:true" => "Tag",
                 },
                 "exports": Map {
                   "Tag" => Object {
                     "beforeExport": "",
                     "code": "{id?: number,name?: string}",
                     "done": true,
-                    "id": "SchemaTypeCoder@undefined",
+                    "id": "SchemaTypeCoder",
                     "isDefault": false,
                     "isType": true,
                     "name": "Tag",
@@ -1743,7 +1743,7 @@ class Context {
             "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/post:true" => "HTTP_POST",
             "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/delete:true" => "HTTP_DELETE",
             "ContextCoder@paths/pet/$.context.ts:false:true" => "Context",
-            "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
+            "SchemaTypeCoder@components/Pet.ts:true:false" => "Pet",
           },
           "exports": Map {
             "HTTP_GET" => Object {
@@ -1885,16 +1885,16 @@ class Context {
               "name": "Pet",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined:true" => "Pet",
-                  "SchemaTypeCoder@undefined@components/Category.ts:true:false" => "Category",
-                  "SchemaTypeCoder@undefined@components/Tag.ts:true:false" => "Tag",
+                  "SchemaTypeCoder:true" => "Pet",
+                  "SchemaTypeCoder@components/Category.ts:true:false" => "Category",
+                  "SchemaTypeCoder@components/Tag.ts:true:false" => "Tag",
                 },
                 "exports": Map {
                   "Pet" => Object {
                     "beforeExport": "",
                     "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
                     "done": true,
-                    "id": "SchemaTypeCoder@undefined",
+                    "id": "SchemaTypeCoder",
                     "isDefault": false,
                     "isType": true,
                     "name": "Pet",
@@ -1910,14 +1910,14 @@ class Context {
                     "name": "Category",
                     "script": Script {
                       "cache": Map {
-                        "SchemaTypeCoder@undefined:true" => "Category",
+                        "SchemaTypeCoder:true" => "Category",
                       },
                       "exports": Map {
                         "Category" => Object {
                           "beforeExport": "",
                           "code": "{id?: number,name?: string}",
                           "done": true,
-                          "id": "SchemaTypeCoder@undefined",
+                          "id": "SchemaTypeCoder",
                           "isDefault": false,
                           "isType": true,
                           "name": "Category",
@@ -1941,14 +1941,14 @@ class Context {
                     "name": "Tag",
                     "script": Script {
                       "cache": Map {
-                        "SchemaTypeCoder@undefined:true" => "Tag",
+                        "SchemaTypeCoder:true" => "Tag",
                       },
                       "exports": Map {
                         "Tag" => Object {
                           "beforeExport": "",
                           "code": "{id?: number,name?: string}",
                           "done": true,
-                          "id": "SchemaTypeCoder@undefined",
+                          "id": "SchemaTypeCoder",
                           "isDefault": false,
                           "isType": true,
                           "name": "Tag",
@@ -1994,7 +1994,7 @@ class Context {
             "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/post:true" => "HTTP_POST",
             "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/delete:true" => "HTTP_DELETE",
             "ContextCoder@paths/pet/$.context.ts:false:true" => "Context",
-            "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
+            "SchemaTypeCoder@components/Pet.ts:true:false" => "Pet",
           },
           "exports": Map {
             "HTTP_GET" => Object {
@@ -2136,16 +2136,16 @@ class Context {
               "name": "Pet",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined:true" => "Pet",
-                  "SchemaTypeCoder@undefined@components/Category.ts:true:false" => "Category",
-                  "SchemaTypeCoder@undefined@components/Tag.ts:true:false" => "Tag",
+                  "SchemaTypeCoder:true" => "Pet",
+                  "SchemaTypeCoder@components/Category.ts:true:false" => "Category",
+                  "SchemaTypeCoder@components/Tag.ts:true:false" => "Tag",
                 },
                 "exports": Map {
                   "Pet" => Object {
                     "beforeExport": "",
                     "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
                     "done": true,
-                    "id": "SchemaTypeCoder@undefined",
+                    "id": "SchemaTypeCoder",
                     "isDefault": false,
                     "isType": true,
                     "name": "Pet",
@@ -2161,14 +2161,14 @@ class Context {
                     "name": "Category",
                     "script": Script {
                       "cache": Map {
-                        "SchemaTypeCoder@undefined:true" => "Category",
+                        "SchemaTypeCoder:true" => "Category",
                       },
                       "exports": Map {
                         "Category" => Object {
                           "beforeExport": "",
                           "code": "{id?: number,name?: string}",
                           "done": true,
-                          "id": "SchemaTypeCoder@undefined",
+                          "id": "SchemaTypeCoder",
                           "isDefault": false,
                           "isType": true,
                           "name": "Category",
@@ -2192,14 +2192,14 @@ class Context {
                     "name": "Tag",
                     "script": Script {
                       "cache": Map {
-                        "SchemaTypeCoder@undefined:true" => "Tag",
+                        "SchemaTypeCoder:true" => "Tag",
                       },
                       "exports": Map {
                         "Tag" => Object {
                           "beforeExport": "",
                           "code": "{id?: number,name?: string}",
                           "done": true,
-                          "id": "SchemaTypeCoder@undefined",
+                          "id": "SchemaTypeCoder",
                           "isDefault": false,
                           "isType": true,
                           "name": "Tag",
@@ -2245,7 +2245,7 @@ class Context {
             "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/post:true" => "HTTP_POST",
             "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/delete:true" => "HTTP_DELETE",
             "ContextCoder@paths/pet/$.context.ts:false:true" => "Context",
-            "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
+            "SchemaTypeCoder@components/Pet.ts:true:false" => "Pet",
           },
           "exports": Map {
             "HTTP_GET" => Object {
@@ -2387,16 +2387,16 @@ class Context {
               "name": "Pet",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined:true" => "Pet",
-                  "SchemaTypeCoder@undefined@components/Category.ts:true:false" => "Category",
-                  "SchemaTypeCoder@undefined@components/Tag.ts:true:false" => "Tag",
+                  "SchemaTypeCoder:true" => "Pet",
+                  "SchemaTypeCoder@components/Category.ts:true:false" => "Category",
+                  "SchemaTypeCoder@components/Tag.ts:true:false" => "Tag",
                 },
                 "exports": Map {
                   "Pet" => Object {
                     "beforeExport": "",
                     "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
                     "done": true,
-                    "id": "SchemaTypeCoder@undefined",
+                    "id": "SchemaTypeCoder",
                     "isDefault": false,
                     "isType": true,
                     "name": "Pet",
@@ -2412,14 +2412,14 @@ class Context {
                     "name": "Category",
                     "script": Script {
                       "cache": Map {
-                        "SchemaTypeCoder@undefined:true" => "Category",
+                        "SchemaTypeCoder:true" => "Category",
                       },
                       "exports": Map {
                         "Category" => Object {
                           "beforeExport": "",
                           "code": "{id?: number,name?: string}",
                           "done": true,
-                          "id": "SchemaTypeCoder@undefined",
+                          "id": "SchemaTypeCoder",
                           "isDefault": false,
                           "isType": true,
                           "name": "Category",
@@ -2443,14 +2443,14 @@ class Context {
                     "name": "Tag",
                     "script": Script {
                       "cache": Map {
-                        "SchemaTypeCoder@undefined:true" => "Tag",
+                        "SchemaTypeCoder:true" => "Tag",
                       },
                       "exports": Map {
                         "Tag" => Object {
                           "beforeExport": "",
                           "code": "{id?: number,name?: string}",
                           "done": true,
-                          "id": "SchemaTypeCoder@undefined",
+                          "id": "SchemaTypeCoder",
                           "isDefault": false,
                           "isType": true,
                           "name": "Tag",
@@ -2500,7 +2500,7 @@ class Context {
       "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/post:true" => "HTTP_POST",
       "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/delete:true" => "HTTP_DELETE",
       "ContextCoder@paths/pet/$.context.ts:false:true" => "Context",
-      "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
+      "SchemaTypeCoder@components/Pet.ts:true:false" => "Pet",
     },
     "exports": Map {
       "HTTP_GET" => Object {
@@ -2642,16 +2642,16 @@ class Context {
         "name": "Pet",
         "script": Script {
           "cache": Map {
-            "SchemaTypeCoder@undefined:true" => "Pet",
-            "SchemaTypeCoder@undefined@components/Category.ts:true:false" => "Category",
-            "SchemaTypeCoder@undefined@components/Tag.ts:true:false" => "Tag",
+            "SchemaTypeCoder:true" => "Pet",
+            "SchemaTypeCoder@components/Category.ts:true:false" => "Category",
+            "SchemaTypeCoder@components/Tag.ts:true:false" => "Tag",
           },
           "exports": Map {
             "Pet" => Object {
               "beforeExport": "",
               "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
               "done": true,
-              "id": "SchemaTypeCoder@undefined",
+              "id": "SchemaTypeCoder",
               "isDefault": false,
               "isType": true,
               "name": "Pet",
@@ -2667,14 +2667,14 @@ class Context {
               "name": "Category",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined:true" => "Category",
+                  "SchemaTypeCoder:true" => "Category",
                 },
                 "exports": Map {
                   "Category" => Object {
                     "beforeExport": "",
                     "code": "{id?: number,name?: string}",
                     "done": true,
-                    "id": "SchemaTypeCoder@undefined",
+                    "id": "SchemaTypeCoder",
                     "isDefault": false,
                     "isType": true,
                     "name": "Category",
@@ -2698,14 +2698,14 @@ class Context {
               "name": "Tag",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined:true" => "Tag",
+                  "SchemaTypeCoder:true" => "Tag",
                 },
                 "exports": Map {
                   "Tag" => Object {
                     "beforeExport": "",
                     "code": "{id?: number,name?: string}",
                     "done": true,
-                    "id": "SchemaTypeCoder@undefined",
+                    "id": "SchemaTypeCoder",
                     "isDefault": false,
                     "isType": true,
                     "name": "Tag",
@@ -2770,7 +2770,7 @@ class Context {
           "cache": Map {
             "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post:true" => "HTTP_POST",
             "ContextCoder@paths/pet/{petId}/$.context.ts:false:true" => "Context",
-            "SchemaTypeCoder@undefined@components/ApiResponse.ts:true:false" => "ApiResponse",
+            "SchemaTypeCoder@components/ApiResponse.ts:true:false" => "ApiResponse",
           },
           "exports": Map {
             "HTTP_POST" => Object {
@@ -2857,14 +2857,14 @@ class Context {
               "name": "ApiResponse",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined:true" => "ApiResponse",
+                  "SchemaTypeCoder:true" => "ApiResponse",
                 },
                 "exports": Map {
                   "ApiResponse" => Object {
                     "beforeExport": "",
                     "code": "{code?: number,type?: string,message?: string}",
                     "done": true,
-                    "id": "SchemaTypeCoder@undefined",
+                    "id": "SchemaTypeCoder",
                     "isDefault": false,
                     "isType": true,
                     "name": "ApiResponse",
@@ -2903,7 +2903,7 @@ class Context {
     "cache": Map {
       "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post:true" => "HTTP_POST",
       "ContextCoder@paths/pet/{petId}/$.context.ts:false:true" => "Context",
-      "SchemaTypeCoder@undefined@components/ApiResponse.ts:true:false" => "ApiResponse",
+      "SchemaTypeCoder@components/ApiResponse.ts:true:false" => "ApiResponse",
     },
     "exports": Map {
       "HTTP_POST" => Object {
@@ -2990,14 +2990,14 @@ class Context {
         "name": "ApiResponse",
         "script": Script {
           "cache": Map {
-            "SchemaTypeCoder@undefined:true" => "ApiResponse",
+            "SchemaTypeCoder:true" => "ApiResponse",
           },
           "exports": Map {
             "ApiResponse" => Object {
               "beforeExport": "",
               "code": "{code?: number,type?: string,message?: string}",
               "done": true,
-              "id": "SchemaTypeCoder@undefined",
+              "id": "SchemaTypeCoder",
               "isDefault": false,
               "isType": true,
               "name": "ApiResponse",
@@ -3272,7 +3272,7 @@ class Context {
           "cache": Map {
             "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order/post:true" => "HTTP_POST",
             "ContextCoder@paths/store/$.context.ts:false:true" => "Context",
-            "SchemaTypeCoder@undefined@components/Order.ts:true:false" => "Order",
+            "SchemaTypeCoder@components/Order.ts:true:false" => "Order",
           },
           "exports": Map {
             "HTTP_POST" => Object {
@@ -3365,14 +3365,14 @@ class Context {
               "name": "Order",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined:true" => "Order",
+                  "SchemaTypeCoder:true" => "Order",
                 },
                 "exports": Map {
                   "Order" => Object {
                     "beforeExport": "",
                     "code": "{id?: number,petId?: number,quantity?: number,shipDate?: string,status?: string,complete?: boolean}",
                     "done": true,
-                    "id": "SchemaTypeCoder@undefined",
+                    "id": "SchemaTypeCoder",
                     "isDefault": false,
                     "isType": true,
                     "name": "Order",
@@ -3411,7 +3411,7 @@ class Context {
     "cache": Map {
       "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order/post:true" => "HTTP_POST",
       "ContextCoder@paths/store/$.context.ts:false:true" => "Context",
-      "SchemaTypeCoder@undefined@components/Order.ts:true:false" => "Order",
+      "SchemaTypeCoder@components/Order.ts:true:false" => "Order",
     },
     "exports": Map {
       "HTTP_POST" => Object {
@@ -3504,14 +3504,14 @@ class Context {
         "name": "Order",
         "script": Script {
           "cache": Map {
-            "SchemaTypeCoder@undefined:true" => "Order",
+            "SchemaTypeCoder:true" => "Order",
           },
           "exports": Map {
             "Order" => Object {
               "beforeExport": "",
               "code": "{id?: number,petId?: number,quantity?: number,shipDate?: string,status?: string,complete?: boolean}",
               "done": true,
-              "id": "SchemaTypeCoder@undefined",
+              "id": "SchemaTypeCoder",
               "isDefault": false,
               "isType": true,
               "name": "Order",
@@ -3581,7 +3581,7 @@ class Context {
             "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order~1{orderId}/get:true" => "HTTP_GET",
             "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order~1{orderId}/delete:true" => "HTTP_DELETE",
             "ContextCoder@paths/store/order/$.context.ts:false:true" => "Context",
-            "SchemaTypeCoder@undefined@components/Order.ts:true:false" => "Order",
+            "SchemaTypeCoder@components/Order.ts:true:false" => "Order",
           },
           "exports": Map {
             "HTTP_GET" => Object {
@@ -3711,14 +3711,14 @@ class Context {
               "name": "Order",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined:true" => "Order",
+                  "SchemaTypeCoder:true" => "Order",
                 },
                 "exports": Map {
                   "Order" => Object {
                     "beforeExport": "",
                     "code": "{id?: number,petId?: number,quantity?: number,shipDate?: string,status?: string,complete?: boolean}",
                     "done": true,
-                    "id": "SchemaTypeCoder@undefined",
+                    "id": "SchemaTypeCoder",
                     "isDefault": false,
                     "isType": true,
                     "name": "Order",
@@ -3754,7 +3754,7 @@ class Context {
             "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order~1{orderId}/get:true" => "HTTP_GET",
             "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order~1{orderId}/delete:true" => "HTTP_DELETE",
             "ContextCoder@paths/store/order/$.context.ts:false:true" => "Context",
-            "SchemaTypeCoder@undefined@components/Order.ts:true:false" => "Order",
+            "SchemaTypeCoder@components/Order.ts:true:false" => "Order",
           },
           "exports": Map {
             "HTTP_GET" => Object {
@@ -3884,14 +3884,14 @@ class Context {
               "name": "Order",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined:true" => "Order",
+                  "SchemaTypeCoder:true" => "Order",
                 },
                 "exports": Map {
                   "Order" => Object {
                     "beforeExport": "",
                     "code": "{id?: number,petId?: number,quantity?: number,shipDate?: string,status?: string,complete?: boolean}",
                     "done": true,
-                    "id": "SchemaTypeCoder@undefined",
+                    "id": "SchemaTypeCoder",
                     "isDefault": false,
                     "isType": true,
                     "name": "Order",
@@ -3931,7 +3931,7 @@ class Context {
       "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order~1{orderId}/get:true" => "HTTP_GET",
       "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order~1{orderId}/delete:true" => "HTTP_DELETE",
       "ContextCoder@paths/store/order/$.context.ts:false:true" => "Context",
-      "SchemaTypeCoder@undefined@components/Order.ts:true:false" => "Order",
+      "SchemaTypeCoder@components/Order.ts:true:false" => "Order",
     },
     "exports": Map {
       "HTTP_GET" => Object {
@@ -4061,14 +4061,14 @@ class Context {
         "name": "Order",
         "script": Script {
           "cache": Map {
-            "SchemaTypeCoder@undefined:true" => "Order",
+            "SchemaTypeCoder:true" => "Order",
           },
           "exports": Map {
             "Order" => Object {
               "beforeExport": "",
               "code": "{id?: number,petId?: number,quantity?: number,shipDate?: string,status?: string,complete?: boolean}",
               "done": true,
-              "id": "SchemaTypeCoder@undefined",
+              "id": "SchemaTypeCoder",
               "isDefault": false,
               "isType": true,
               "name": "Order",
@@ -4124,7 +4124,7 @@ class Context {
           "cache": Map {
             "OperationTypeCoder@./petstore.yaml#/paths/~1user/post:true" => "HTTP_POST",
             "ContextCoder@paths/$.context.ts:false:true" => "Context",
-            "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
+            "SchemaTypeCoder@components/User.ts:true:false" => "User",
           },
           "exports": Map {
             "HTTP_POST" => Object {
@@ -4216,14 +4216,14 @@ class Context {
               "name": "User",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined:true" => "User",
+                  "SchemaTypeCoder:true" => "User",
                 },
                 "exports": Map {
                   "User" => Object {
                     "beforeExport": "",
                     "code": "{id?: number,username?: string,firstName?: string,lastName?: string,email?: string,password?: string,phone?: string,userStatus?: number}",
                     "done": true,
-                    "id": "SchemaTypeCoder@undefined",
+                    "id": "SchemaTypeCoder",
                     "isDefault": false,
                     "isType": true,
                     "name": "User",
@@ -4262,7 +4262,7 @@ class Context {
     "cache": Map {
       "OperationTypeCoder@./petstore.yaml#/paths/~1user/post:true" => "HTTP_POST",
       "ContextCoder@paths/$.context.ts:false:true" => "Context",
-      "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
+      "SchemaTypeCoder@components/User.ts:true:false" => "User",
     },
     "exports": Map {
       "HTTP_POST" => Object {
@@ -4354,14 +4354,14 @@ class Context {
         "name": "User",
         "script": Script {
           "cache": Map {
-            "SchemaTypeCoder@undefined:true" => "User",
+            "SchemaTypeCoder:true" => "User",
           },
           "exports": Map {
             "User" => Object {
               "beforeExport": "",
               "code": "{id?: number,username?: string,firstName?: string,lastName?: string,email?: string,password?: string,phone?: string,userStatus?: number}",
               "done": true,
-              "id": "SchemaTypeCoder@undefined",
+              "id": "SchemaTypeCoder",
               "isDefault": false,
               "isType": true,
               "name": "User",
@@ -4417,7 +4417,7 @@ class Context {
           "cache": Map {
             "OperationTypeCoder@./petstore.yaml#/paths/~1user~1createWithList/post:true" => "HTTP_POST",
             "ContextCoder@paths/user/$.context.ts:false:true" => "Context",
-            "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
+            "SchemaTypeCoder@components/User.ts:true:false" => "User",
           },
           "exports": Map {
             "HTTP_POST" => Object {
@@ -4517,14 +4517,14 @@ class Context {
               "name": "User",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined:true" => "User",
+                  "SchemaTypeCoder:true" => "User",
                 },
                 "exports": Map {
                   "User" => Object {
                     "beforeExport": "",
                     "code": "{id?: number,username?: string,firstName?: string,lastName?: string,email?: string,password?: string,phone?: string,userStatus?: number}",
                     "done": true,
-                    "id": "SchemaTypeCoder@undefined",
+                    "id": "SchemaTypeCoder",
                     "isDefault": false,
                     "isType": true,
                     "name": "User",
@@ -4563,7 +4563,7 @@ class Context {
     "cache": Map {
       "OperationTypeCoder@./petstore.yaml#/paths/~1user~1createWithList/post:true" => "HTTP_POST",
       "ContextCoder@paths/user/$.context.ts:false:true" => "Context",
-      "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
+      "SchemaTypeCoder@components/User.ts:true:false" => "User",
     },
     "exports": Map {
       "HTTP_POST" => Object {
@@ -4663,14 +4663,14 @@ class Context {
         "name": "User",
         "script": Script {
           "cache": Map {
-            "SchemaTypeCoder@undefined:true" => "User",
+            "SchemaTypeCoder:true" => "User",
           },
           "exports": Map {
             "User" => Object {
               "beforeExport": "",
               "code": "{id?: number,username?: string,firstName?: string,lastName?: string,email?: string,password?: string,phone?: string,userStatus?: number}",
               "done": true,
-              "id": "SchemaTypeCoder@undefined",
+              "id": "SchemaTypeCoder",
               "isDefault": false,
               "isType": true,
               "name": "User",
@@ -5210,7 +5210,7 @@ class Context {
             "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/put:true" => "HTTP_PUT",
             "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/delete:true" => "HTTP_DELETE",
             "ContextCoder@paths/user/$.context.ts:false:true" => "Context",
-            "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
+            "SchemaTypeCoder@components/User.ts:true:false" => "User",
           },
           "exports": Map {
             "HTTP_GET" => Object {
@@ -5358,14 +5358,14 @@ class Context {
               "name": "User",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined:true" => "User",
+                  "SchemaTypeCoder:true" => "User",
                 },
                 "exports": Map {
                   "User" => Object {
                     "beforeExport": "",
                     "code": "{id?: number,username?: string,firstName?: string,lastName?: string,email?: string,password?: string,phone?: string,userStatus?: number}",
                     "done": true,
-                    "id": "SchemaTypeCoder@undefined",
+                    "id": "SchemaTypeCoder",
                     "isDefault": false,
                     "isType": true,
                     "name": "User",
@@ -5402,7 +5402,7 @@ class Context {
             "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/put:true" => "HTTP_PUT",
             "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/delete:true" => "HTTP_DELETE",
             "ContextCoder@paths/user/$.context.ts:false:true" => "Context",
-            "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
+            "SchemaTypeCoder@components/User.ts:true:false" => "User",
           },
           "exports": Map {
             "HTTP_GET" => Object {
@@ -5550,14 +5550,14 @@ class Context {
               "name": "User",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined:true" => "User",
+                  "SchemaTypeCoder:true" => "User",
                 },
                 "exports": Map {
                   "User" => Object {
                     "beforeExport": "",
                     "code": "{id?: number,username?: string,firstName?: string,lastName?: string,email?: string,password?: string,phone?: string,userStatus?: number}",
                     "done": true,
-                    "id": "SchemaTypeCoder@undefined",
+                    "id": "SchemaTypeCoder",
                     "isDefault": false,
                     "isType": true,
                     "name": "User",
@@ -5594,7 +5594,7 @@ class Context {
             "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/put:true" => "HTTP_PUT",
             "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/delete:true" => "HTTP_DELETE",
             "ContextCoder@paths/user/$.context.ts:false:true" => "Context",
-            "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
+            "SchemaTypeCoder@components/User.ts:true:false" => "User",
           },
           "exports": Map {
             "HTTP_GET" => Object {
@@ -5742,14 +5742,14 @@ class Context {
               "name": "User",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined:true" => "User",
+                  "SchemaTypeCoder:true" => "User",
                 },
                 "exports": Map {
                   "User" => Object {
                     "beforeExport": "",
                     "code": "{id?: number,username?: string,firstName?: string,lastName?: string,email?: string,password?: string,phone?: string,userStatus?: number}",
                     "done": true,
-                    "id": "SchemaTypeCoder@undefined",
+                    "id": "SchemaTypeCoder",
                     "isDefault": false,
                     "isType": true,
                     "name": "User",
@@ -5790,7 +5790,7 @@ class Context {
       "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/put:true" => "HTTP_PUT",
       "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/delete:true" => "HTTP_DELETE",
       "ContextCoder@paths/user/$.context.ts:false:true" => "Context",
-      "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
+      "SchemaTypeCoder@components/User.ts:true:false" => "User",
     },
     "exports": Map {
       "HTTP_GET" => Object {
@@ -5938,14 +5938,14 @@ class Context {
         "name": "User",
         "script": Script {
           "cache": Map {
-            "SchemaTypeCoder@undefined:true" => "User",
+            "SchemaTypeCoder:true" => "User",
           },
           "exports": Map {
             "User" => Object {
               "beforeExport": "",
               "code": "{id?: number,username?: string,firstName?: string,lastName?: string,email?: string,password?: string,phone?: string,userStatus?: number}",
               "done": true,
-              "id": "SchemaTypeCoder@undefined",
+              "id": "SchemaTypeCoder",
               "isDefault": false,
               "isType": true,
               "name": "User",
@@ -6012,16 +6012,16 @@ class Context {
   },
   "components/Pet.ts" => Script {
     "cache": Map {
-      "SchemaTypeCoder@undefined:true" => "Pet",
-      "SchemaTypeCoder@undefined@components/Category.ts:true:false" => "Category",
-      "SchemaTypeCoder@undefined@components/Tag.ts:true:false" => "Tag",
+      "SchemaTypeCoder:true" => "Pet",
+      "SchemaTypeCoder@components/Category.ts:true:false" => "Category",
+      "SchemaTypeCoder@components/Tag.ts:true:false" => "Tag",
     },
     "exports": Map {
       "Pet" => Object {
         "beforeExport": "",
         "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: string}",
         "done": true,
-        "id": "SchemaTypeCoder@undefined",
+        "id": "SchemaTypeCoder",
         "isDefault": false,
         "isType": true,
         "name": "Pet",
@@ -6037,14 +6037,14 @@ class Context {
         "name": "Category",
         "script": Script {
           "cache": Map {
-            "SchemaTypeCoder@undefined:true" => "Category",
+            "SchemaTypeCoder:true" => "Category",
           },
           "exports": Map {
             "Category" => Object {
               "beforeExport": "",
               "code": "{id?: number,name?: string}",
               "done": true,
-              "id": "SchemaTypeCoder@undefined",
+              "id": "SchemaTypeCoder",
               "isDefault": false,
               "isType": true,
               "name": "Category",
@@ -6068,14 +6068,14 @@ class Context {
         "name": "Tag",
         "script": Script {
           "cache": Map {
-            "SchemaTypeCoder@undefined:true" => "Tag",
+            "SchemaTypeCoder:true" => "Tag",
           },
           "exports": Map {
             "Tag" => Object {
               "beforeExport": "",
               "code": "{id?: number,name?: string}",
               "done": true,
-              "id": "SchemaTypeCoder@undefined",
+              "id": "SchemaTypeCoder",
               "isDefault": false,
               "isType": true,
               "name": "Tag",
@@ -6185,14 +6185,14 @@ class Context {
   },
   "components/ApiResponse.ts" => Script {
     "cache": Map {
-      "SchemaTypeCoder@undefined:true" => "ApiResponse",
+      "SchemaTypeCoder:true" => "ApiResponse",
     },
     "exports": Map {
       "ApiResponse" => Object {
         "beforeExport": "",
         "code": "{code?: number,type?: string,message?: string}",
         "done": true,
-        "id": "SchemaTypeCoder@undefined",
+        "id": "SchemaTypeCoder",
         "isDefault": false,
         "isType": true,
         "name": "ApiResponse",
@@ -6252,14 +6252,14 @@ class Context {
   },
   "components/Order.ts" => Script {
     "cache": Map {
-      "SchemaTypeCoder@undefined:true" => "Order",
+      "SchemaTypeCoder:true" => "Order",
     },
     "exports": Map {
       "Order" => Object {
         "beforeExport": "",
         "code": "{id?: number,petId?: number,quantity?: number,shipDate?: string,status?: string,complete?: boolean}",
         "done": true,
-        "id": "SchemaTypeCoder@undefined",
+        "id": "SchemaTypeCoder",
         "isDefault": false,
         "isType": true,
         "name": "Order",
@@ -6319,14 +6319,14 @@ class Context {
   },
   "components/User.ts" => Script {
     "cache": Map {
-      "SchemaTypeCoder@undefined:true" => "User",
+      "SchemaTypeCoder:true" => "User",
     },
     "exports": Map {
       "User" => Object {
         "beforeExport": "",
         "code": "{id?: number,username?: string,firstName?: string,lastName?: string,email?: string,password?: string,phone?: string,userStatus?: number}",
         "done": true,
-        "id": "SchemaTypeCoder@undefined",
+        "id": "SchemaTypeCoder",
         "isDefault": false,
         "isType": true,
         "name": "User",
@@ -6386,14 +6386,14 @@ class Context {
   },
   "components/Category.ts" => Script {
     "cache": Map {
-      "SchemaTypeCoder@undefined:true" => "Category",
+      "SchemaTypeCoder:true" => "Category",
     },
     "exports": Map {
       "Category" => Object {
         "beforeExport": "",
         "code": "{id?: number,name?: string}",
         "done": true,
-        "id": "SchemaTypeCoder@undefined",
+        "id": "SchemaTypeCoder",
         "isDefault": false,
         "isType": true,
         "name": "Category",
@@ -6412,14 +6412,14 @@ class Context {
   },
   "components/Tag.ts" => Script {
     "cache": Map {
-      "SchemaTypeCoder@undefined:true" => "Tag",
+      "SchemaTypeCoder:true" => "Tag",
     },
     "exports": Map {
       "Tag" => Object {
         "beforeExport": "",
         "code": "{id?: number,name?: string}",
         "done": true,
-        "id": "SchemaTypeCoder@undefined",
+        "id": "SchemaTypeCoder",
         "isDefault": false,
         "isType": true,
         "name": "Tag",

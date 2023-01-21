@@ -9,7 +9,7 @@ export class Coder {
 
   public get id() {
     if (this.requirement.isReference) {
-      return `${this.constructor.name}@${this.requirement.$ref}`;
+      return String(this.constructor.name);
     }
 
     return `${this.constructor.name}@${this.requirement.url}`;
