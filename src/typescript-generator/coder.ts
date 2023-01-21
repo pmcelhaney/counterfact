@@ -45,7 +45,7 @@ export class Coder {
     }
   }
 
-  public typeDeclaration() {
+  public typeDeclaration(): string {
     return "";
   }
 
@@ -53,13 +53,14 @@ export class Coder {
     return "did-not-override-coder-modulePath.ts";
   }
 
-  public async delegate() {
+  public async delegate(): Promise<Coder> {
     if (!this.requirement.isReference) {
       return this;
     }
 
     const requirement = await this.requirement.reference();
 
-    return new this.constructor(requirement);
+    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+    return new this.constructor(requirement) as Coder;
   }
 }

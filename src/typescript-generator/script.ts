@@ -5,16 +5,33 @@ import prettier from "prettier";
 import type { Coder } from "./coder";
 import type { Repository } from "./repository";
 
+interface Export {
+  name?: string;
+  id: string;
+  done: boolean;
+  isType: boolean;
+  isDefault: boolean;
+  typeDeclaration: unknown;
+  beforeExport: string;
+  promise?: Promise<Coder>;
+  code?: string & { raw?: string };
+  error?: unknown;
+}
+
+interface Import {
+  name?: string;
+}
+
 export class Script {
   private readonly repository: Repository;
 
-  private readonly exports: Map<string, unknown>;
+  private readonly exports: Map<string, Export>;
 
-  private readonly imports: Map<string, unknown>;
+  private readonly imports: Map<string, Import>;
 
-  private readonly externalImports: Map<string, unknown>;
+  private readonly externalImports: Map<string, Import>;
 
-  private readonly cache: Map<string, unknown>;
+  private readonly cache: Map<string, string>;
 
   private readonly typeCache: Map<string, unknown>;
 
@@ -51,7 +68,7 @@ export class Script {
 
     this.cache.set(cacheKey, name);
 
-    const exportStatement = {
+    const exportStatement: Export = {
       id: coder.id,
       done: false,
       isType,
@@ -121,25 +138,25 @@ export class Script {
     return name;
   }
 
-  public importType(coder) {
+  public importType(coder: Coder) {
     return this.import(coder, true);
   }
 
-  public importDefault(coder, isType = false) {
+  public importDefault(coder: Coder, isType = false) {
     return this.import(coder, isType, true);
   }
 
-  public importExternal(name, modulePath, isType = false) {
+  public importExternal(name: string, modulePath: string, isType = false) {
     this.externalImports.set(name, { modulePath, isType });
 
     return name;
   }
 
-  public importExternalType(name, modulePath) {
+  public importExternalType(name: string, modulePath: string) {
     return this.importExternal(name, modulePath, true);
   }
 
-  public exportType(coder) {
+  public exportType(coder: Coder) {
     return this.export(coder, true);
   }
 
@@ -175,20 +192,29 @@ export class Script {
   private exportStatements() {
     return Array.from(
       this.exports.values(),
-      ({ name, isType, isDefault, code, typeDeclaration, beforeExport }) => {
-        if (code.raw) {
+      ({
+        name,
+        isType,
+        isDefault,
+        code,
+        typeDeclaration,
+        beforeExport,
+      }): string => {
+        if (code?.raw !== undefined) {
           return code.raw;
         }
 
         if (isDefault) {
-          return `${beforeExport}export default ${code};`;
+          return `${beforeExport}export default ${String(code)};`;
         }
 
         const keyword = isType ? "type" : "const";
         const typeAnnotation =
           typeDeclaration.length === 0 ? "" : `:${typeDeclaration}`;
 
-        return `${beforeExport}export ${keyword} ${name}${typeAnnotation} = ${code};`;
+        return `${beforeExport}export ${keyword} ${String(
+          name
+        )}${typeAnnotation} = ${String(code)};`;
       }
     );
   }
@@ -207,7 +233,7 @@ export class Script {
 
   public async finished() {
     return await Promise.all(
-      Array.from(this.exports.values(), (value) => value.promise)
+      Array.from(this.exports.values(), async (value) => await value.promise)
     );
   }
 }

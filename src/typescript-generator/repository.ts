@@ -20,13 +20,16 @@ async function ensureDirectoryExists(filePath) {
 }
 
 export class Repository {
+  private readonly scripts: Map<string, Script>;
+
   public constructor() {
     this.scripts = new Map();
   }
 
-  public get(path) {
+  public get(path: string): Script {
     if (this.scripts.has(path)) {
-      return this.scripts.get(path);
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      return this.scripts.get(path)!;
     }
 
     const script = new Script(this, path);
@@ -53,7 +56,10 @@ export class Repository {
     ) {
       // eslint-disable-next-line no-await-in-loop
       await Promise.all(
-        Array.from(this.scripts.values(), (script) => script.finished())
+        Array.from(
+          this.scripts.values(),
+          async (script) => await script.finished()
+        )
       );
     }
   }
