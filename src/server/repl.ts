@@ -33,12 +33,10 @@ export function startRepl(contextRegistry, config) {
 
     action(state) {
       if (state === "on") {
-        // eslint-disable-next-line no-param-reassign
         config.enableProxy = true;
       }
 
       if (state === "off") {
-        // eslint-disable-next-line no-param-reassign
         config.enableProxy = false;
       }
 

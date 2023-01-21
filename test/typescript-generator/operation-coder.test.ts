@@ -1,4 +1,3 @@
-/* eslint-disable jest/no-restricted-matchers */
 import prettier from "prettier";
 
 import { OperationCoder } from "../../src/typescript-generator/operation-coder.js";

@@ -114,7 +114,6 @@ describe("a module loader", () => {
   // module cache when running through Jest (which uses the
   // experimental module API).
 
-  // eslint-disable-next-line jest/no-disabled-tests
   it.skip("updates the registry when a file is changed", async () => {
     await withTemporaryFiles(
       {

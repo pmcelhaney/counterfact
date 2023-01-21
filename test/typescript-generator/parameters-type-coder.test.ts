@@ -1,4 +1,3 @@
-/* eslint-disable jest/no-restricted-matchers */
 import prettier from "prettier";
 
 import { ParametersTypeCoder } from "../../src/typescript-generator/parameters-type-coder.js";

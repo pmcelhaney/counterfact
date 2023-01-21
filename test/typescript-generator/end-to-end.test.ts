@@ -1,5 +1,3 @@
-/* eslint-disable jest/no-restricted-matchers */
-
 import { generate } from "../../src/typescript-generator/generate.js";
 import { Repository } from "../../src/typescript-generator/repository.js";
 

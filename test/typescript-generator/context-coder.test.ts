@@ -1,4 +1,3 @@
-/* eslint-disable jest/no-restricted-matchers */
 import prettier from "prettier";
 
 import { ContextCoder } from "../../src/typescript-generator/context-coder.js";

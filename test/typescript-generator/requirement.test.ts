@@ -123,7 +123,6 @@ describe("a Requirement", () => {
     });
 
     const result = requirement.find(
-      // eslint-disable-next-line jest/no-conditional-in-test
       (subRequirement, key) => key === "b" && subRequirement.data === "bar"
     );
 

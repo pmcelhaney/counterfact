@@ -9,10 +9,8 @@ const TYPESCRIPT_SOURCE = "const x:number = 1;\n";
 const JAVASCRIPT_SOURCE = "var x = 1;\n";
 
 describe("a Transpiler", () => {
-  // eslint-disable-next-line init-declarations
   let transpiler;
 
-  // eslint-disable-next-line jest/no-hooks
   afterEach(() => {
     transpiler.stopWatching();
   });
@@ -97,9 +95,9 @@ describe("a Transpiler", () => {
       await remove("src/delete-me.ts");
       await once(transpiler, "delete");
 
-      await expect(() =>
-        fs.access(path("dist/delete-me.js"), fsConstants.F_OK)
-      ).rejects.toThrow(/ENOENT/u);
+      await expect(async () => {
+        await fs.access(path("dist/delete-me.js"), fsConstants.F_OK);
+      }).rejects.toThrow(/ENOENT/u);
 
       transpiler.stopWatching();
     });
