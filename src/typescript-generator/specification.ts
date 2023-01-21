@@ -19,7 +19,10 @@ export class Specification {
     this.rootUrl = rootUrl;
   }
 
-  public async requirementAt(url: string, fromUrl = "") {
+  public async requirementAt(url: string | undefined, fromUrl = "") {
+    if (url === undefined) {
+      throw new Error("url is undefined");
+    }
     const [file, path] = url.split("#");
 
     const filePath = nodePath.join(fromUrl.split("#").at(0) ?? "", file);

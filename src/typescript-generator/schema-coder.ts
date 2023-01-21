@@ -1,6 +1,12 @@
 import { Coder } from "./coder.js";
+import type { Requirement } from "./requirement.js";
+import type { Script } from "./script.js";
 
-function scrubSchema(schema) {
+interface Schema {
+  [key: string]: unknown;
+}
+
+function scrubSchema(schema: Schema) {
   // remove properties that are not valid in JSON Schema 6 and not useful anyway
 
   const cleaned = { ...schema };
@@ -12,6 +18,8 @@ function scrubSchema(schema) {
 }
 
 export class SchemaCoder extends Coder {
+  private readonly requirement: Requirement;
+
   public names() {
     return super.names(`${this.requirement.data.$ref.split("/").at(-1)}Schema`);
   }
@@ -43,7 +51,7 @@ export class SchemaCoder extends Coder {
       }`;
   }
 
-  private typeDeclaration(script) {
+  private typeDeclaration(script: Script) {
     return script.importExternalType("JSONSchema6", "json-schema");
   }
 
@@ -51,7 +59,7 @@ export class SchemaCoder extends Coder {
     return `components/${this.requirement.data.$ref.split("/").at(-1)}.ts`;
   }
 
-  public write(script) {
+  public write(script: Script) {
     if (this.requirement.isReference) {
       return script.import(this);
     }

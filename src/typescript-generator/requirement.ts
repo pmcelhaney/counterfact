@@ -1,6 +1,7 @@
 import type { Specification } from "./specification";
 
 export interface RequirementData {
+  $ref?: string;
   [key: string]: unknown;
 }
 
@@ -41,10 +42,15 @@ export class Requirement {
     );
   }
 
-  public select(path: string, data = this.data, basePath = "") {
+  public select(
+    path: string,
+    data = this.data,
+    basePath = ""
+  ): Requirement | undefined {
     const [head, ...tail] = path.split("/");
 
-    const branch = data[this.unescapeJsonPointer(head)];
+    const branch: RequirementData | null | undefined =
+      data[this.unescapeJsonPointer(head)];
 
     if (branch === undefined || branch === null) {
       return undefined;
