@@ -8,13 +8,13 @@ import chokidar from "chokidar";
 import { ContextRegistry } from "./context-registry.js";
 
 export class ModuleLoader extends EventTarget {
-  basePath;
+  private readonly basePath;
 
-  registry;
+  private readonly registry;
 
-  watcher;
+  private readonly watcher;
 
-  contextRegistry;
+  private readonly contextRegistry;
 
   public constructor(
     basePath,
