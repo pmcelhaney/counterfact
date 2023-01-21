@@ -1,6 +1,6 @@
 import type { Specification } from "./specification";
 
-interface RequirementData {
+export interface RequirementData {
   [key: string]: unknown;
 }
 
