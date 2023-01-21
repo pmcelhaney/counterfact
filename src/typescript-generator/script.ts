@@ -41,9 +41,7 @@ export class Script {
   }
 
   public export(coder: Coder, isType = false, isDefault = false) {
-    const cacheKey = isDefault
-      ? "default"
-      : `${coder.id}@${nodePath}:${String(isType)}`;
+    const cacheKey = isDefault ? "default" : `${coder.id}:${String(isType)}`;
 
     if (this.cache.has(cacheKey)) {
       return this.cache.get(cacheKey);
