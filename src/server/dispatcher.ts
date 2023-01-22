@@ -1,10 +1,20 @@
 import Accept from "@hapi/accept";
+import type { JSONSchema } from "json-schema-ref-parser";
 import nodeFetch, { Headers as NodeFetchHeaders } from "node-fetch";
+import type { OpenAPI } from "openapi-types";
 
+import type { ContextRegistry } from "./context-registry.js";
+import type { Registry } from "./registry.js";
 import { createResponseBuilder } from "./response-builder.js";
 import { Tools } from "./tools.js";
 
-function parameterTypes(parameters) {
+interface Parameter {
+  in: "body" | "cookie" | "formData" | "header" | "path" | "query";
+  name: "string";
+  schema?: JSONSchema;
+}
+
+function parameterTypes(parameters: Parameter[] | undefined) {
   if (!parameters) {
     return {};
   }
@@ -29,12 +39,16 @@ function parameterTypes(parameters) {
 }
 
 export class Dispatcher {
-  registry;
+  private readonly registry: Registry;
 
   // alias the fetch function so we can mock it in tests
-  fetch = nodeFetch;
+  public fetch = nodeFetch;
 
-  public constructor(registry, contextRegistry, openApiDocument) {
+  public constructor(
+    registry: Registry,
+    contextRegistry: ContextRegistry,
+    openApiDocument: OpenAPI.Document
+  ) {
     this.registry = registry;
     this.contextRegistry = contextRegistry;
     this.openApiDocument = openApiDocument;
