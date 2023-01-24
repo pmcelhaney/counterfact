@@ -1,5 +1,17 @@
 # counterfact
 
+## 0.20.0
+
+### Minor Changes
+
+- 3c78a07: support for enum values in schemas
+
+### Patch Changes
+
+- b2bf1db: fix duplicate imports of Context object
+- 0f4ead6: don't import HTTPStatusCode if not needed
+- 8e4410c: redirect /counterfact to counterfact/
+
 ## 0.19.1
 
 ### Patch Changes
