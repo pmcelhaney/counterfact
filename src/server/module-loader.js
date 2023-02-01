@@ -6,6 +6,7 @@ import { once } from "node:events";
 import chokidar from "chokidar";
 
 import { ContextRegistry } from "./context-registry.js";
+import { CHOKIDAR_OPTIONS } from "./constants.js";
 
 export class ModuleLoader extends EventTarget {
   basePath;
@@ -25,7 +26,7 @@ export class ModuleLoader extends EventTarget {
 
   async watch() {
     this.watcher = chokidar
-      .watch(`${this.basePath}/**/*.{js,mjs,ts,mts}`)
+      .watch(`${this.basePath}/**/*.{js,mjs,ts,mts}`, CHOKIDAR_OPTIONS)
       .on("all", (eventName, pathName) => {
         if (!["add", "change", "unlink"].includes(eventName)) {
           return;

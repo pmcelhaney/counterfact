@@ -8,6 +8,8 @@ import { once } from "node:events";
 import ts from "typescript";
 import chokidar from "chokidar";
 
+import { CHOKIDAR_OPTIONS } from "./constants.js";
+
 async function ensureDirectoryExists(filePath) {
   const directory = nodePath.dirname(filePath);
 
@@ -28,6 +30,7 @@ export class Transpiler extends EventTarget {
   async watch() {
     this.watcher = chokidar.watch(`${this.sourcePath}/**/*.{ts,mts,js,mjs}`, {
       ignored: `${this.sourcePath}/js`,
+      CHOKIDAR_OPTIONS,
     });
 
     const transpiles = [];
