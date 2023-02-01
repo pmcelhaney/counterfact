@@ -11,7 +11,10 @@ concurrency: ${{ github.workflow }}-${{ github.ref }}
 jobs:
   ci-checks:
     name: CI Checks 
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: ['windows-latest', 'ubuntu-latest']
+    runs-on: ${{ matrix.os }}
     steps:
       - name: Check out repo
         uses: actions/checkout@v3
