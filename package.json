@@ -24,7 +24,7 @@
     "counterfact": "./bin/counterfact.js"
   },
   "scripts": {
-    "test": "yarn node --experimental-vm-modules ./node_modules/.bin/jest",
+    "test": "yarn node --experimental-vm-modules ./node_modules/jest-cli/bin/jest",
     "test:mutants": "stryker run stryker.config.json",
     "release": "npx changeset publish",
     "prepare": "husky install",
