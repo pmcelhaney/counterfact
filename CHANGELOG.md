@@ -1,5 +1,11 @@
 # counterfact
 
+## 0.20.1
+
+### Patch Changes
+
+- bb8f5f4: fix an issue causing all endpoints to return 404
+
 ## 0.20.0
 
 ### Minor Changes
