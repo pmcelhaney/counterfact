@@ -48,14 +48,18 @@ export class Repository {
   }
 
   copyCoreFiles(destination) {
-    const path = nodePath.join(destination, "response-builder-factory.ts");
+    const files = ["package.json", "response-builder-factory.ts"];
 
-    process.stdout.write(`writing ${path}\n`);
+    return files.map((file) => {
+      const path = nodePath.join(destination, file);
 
-    return fs.copyFile(
-      nodePath.join(__dirname, "../../templates/response-builder-factory.ts"),
-      path
-    );
+      process.stdout.write(`writing ${path}\n`);
+
+      return fs.copyFile(
+        nodePath.join(__dirname, `../../templates/${file}`),
+        path
+      );
+    });
   }
 
   async writeFiles(destination) {
