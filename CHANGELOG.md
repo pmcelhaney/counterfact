@@ -1,5 +1,11 @@
 # counterfact
 
+## 0.20.2
+
+### Patch Changes
+
+- 120eb52: fixes an issue where files may not be treated as ESM
+
 ## 0.20.1
 
 ### Patch Changes
