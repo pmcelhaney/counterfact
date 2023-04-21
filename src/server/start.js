@@ -106,14 +106,15 @@ export async function start({
     })
   );
 
-  app.use((ctx, next) => {
+  app.use(async (ctx, next) => {
     if (ctx.URL.pathname === "/counterfact") {
       ctx.redirect("/counterfact/");
 
       return;
     }
 
-    next();
+    // eslint-disable-next-line node/callback-return
+    await next();
   });
 
   app.use(
