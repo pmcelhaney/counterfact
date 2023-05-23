@@ -32,6 +32,7 @@ async function main(source, destination) {
     openApiPath: source,
     includeSwaggerUi: true,
     proxyUrl: options.proxyUrl,
+    proxyEnabled: Boolean(options.proxyUrl),
   };
 
   const { contextRegistry } = await start(config);
