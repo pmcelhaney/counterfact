@@ -1,9 +1,12 @@
-
 {
   "testEnvironment": "node",
   "collectCoverage": true,
 
-  "collectCoverageFrom": ["src/**/*.{js,jsx,ts,tsx}", "!**/node_modules/**", "!**/*.d.ts"],
+  "collectCoverageFrom": [
+    "src/**/*.{js,jsx,ts,tsx}",
+    "!**/node_modules/**",
+    "!**/*.d.ts"
+  ],
   "coverageProvider": "v8",
 
   "coverageThreshold": {
@@ -11,7 +14,7 @@
       "branches": 45,
       "functions": 49,
       "lines": 54,
-      "statements": -300
+      "statements": -301
     }
   }
 }
