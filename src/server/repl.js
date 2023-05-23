@@ -34,16 +34,16 @@ export function startRepl(contextRegistry, config) {
     action(state) {
       if (state === "on") {
         // eslint-disable-next-line no-param-reassign
-        config.enableProxy = true;
+        config.proxyEnabled = true;
       }
 
       if (state === "off") {
         // eslint-disable-next-line no-param-reassign
-        config.enableProxy = false;
+        config.proxyEnabled = false;
       }
 
       process.stdout.write(
-        `Proxy is ${config.enableProxy ? "on" : "off"}: ${config.proxyUrl}\n`
+        `Proxy is ${config.proxyEnabled ? "on" : "off"}: ${config.proxyUrl}\n`
       );
 
       this.clearBufferedCommand();

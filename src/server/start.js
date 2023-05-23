@@ -67,18 +67,19 @@ function page(pathname, templateName, locals) {
   };
 }
 
-export async function start({
-  basePath = process.cwd(),
-  port = DEFAULT_PORT,
-  openApiPath = nodePath.join(basePath, "../openapi.yaml"),
-  proxyUrl = undefined,
-}) {
+export async function start(config) {
+  const {
+    basePath = process.cwd(),
+    openApiPath = nodePath.join(basePath, "../openapi.yaml"),
+    port = DEFAULT_PORT,
+  } = config;
+
   const app = new Koa();
 
   const { koaMiddleware, contextRegistry, registry } = await counterfact(
     basePath,
     openApiPath,
-    { proxyUrl }
+    config
   );
 
   app.use(openapi(openApiPath, `//localhost:${port}`));

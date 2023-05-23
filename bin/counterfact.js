@@ -32,6 +32,7 @@ async function main(source, destination) {
     openApiPath: source,
     includeSwaggerUi: true,
     proxyUrl: options.proxyUrl,
+    proxyEnabled: Boolean(options.proxyUrl),
   };
 
   const { contextRegistry } = await start(config);
@@ -82,6 +83,6 @@ program
   .option("--port <number>", "server port number", DEFAULT_PORT)
   .option("--swagger", "include swagger-ui")
   .option("--open", "open a browser")
-  .option("--proxyUrl <string>", "proxy URL")
+  .option("--proxy-url <string>", "proxy URL")
   .action(main)
   .parse(process.argv);
