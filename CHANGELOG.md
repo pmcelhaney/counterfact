@@ -1,5 +1,11 @@
 # counterfact
 
+## 0.20.3
+
+### Patch Changes
+
+- d2a3023: fix issues which made --proxy-url completely broken
+
 ## 0.20.2
 
 ### Patch Changes
