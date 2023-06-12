@@ -6,7 +6,8 @@
     "strictNullChecks": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
-    "noUncheckedIndexedAccess": true
+    "noUncheckedIndexedAccess": true,
+    "allowJs": true
   },
-  "include": ["src", "demo-ts", "templates", "test"]
+  "include": ["src", "demo-ts", "templates", "test", "jest.config.ts"]
 }
