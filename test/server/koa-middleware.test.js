@@ -1,7 +1,7 @@
 import { Registry } from "../../src/server/registry.js";
 import { Dispatcher } from "../../src/server/dispatcher.js";
 import { koaMiddleware } from "../../src/server/koa-middleware.js";
-import { ContextRegistry } from "../../src/server/context-registry.js";
+import { ContextRegistry } from "../../src/server/context-registry.ts";
 
 function mockKoaProxy(options) {
   return function proxy(ctx) {

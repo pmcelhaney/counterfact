@@ -9,7 +9,7 @@ import { Registry } from "./registry.js";
 import { Dispatcher } from "./dispatcher.js";
 import { koaMiddleware } from "./koa-middleware.js";
 import { ModuleLoader } from "./module-loader.ts";
-import { ContextRegistry } from "./context-registry.js";
+import { ContextRegistry } from "./context-registry.ts";
 
 async function loadOpenApiDocument(source) {
   try {

@@ -1,15 +1,19 @@
-export function parentPath(path) {
+interface Context {
+  [key: string]: unknown;
+}
+
+export function parentPath(path: string): string {
   return String(path.split("/").slice(0, -1).join("/")) || "/";
 }
 
 export class ContextRegistry {
-  entries = new Map();
+  private readonly entries = new Map<string, Context>();
 
-  constructor() {
+  public constructor() {
     this.add("/", {});
   }
 
-  add(path, context) {
+  public add(path: string, context?: Context): void {
     if (context === undefined) {
       throw new Error("context cannot be undefined");
     }
@@ -17,11 +21,14 @@ export class ContextRegistry {
     this.entries.set(path, context);
   }
 
-  find(path) {
+  public find(path: string): Context {
     return this.entries.get(path) ?? this.find(parentPath(path));
   }
 
-  update(path, updatedContext) {
+  public update(
+    path: string,
+    updatedContext: { [key: string]: unknown }
+  ): void {
     const context = this.find(path);
 
     for (const property in updatedContext) {
@@ -33,6 +40,7 @@ export class ContextRegistry {
       }
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     Object.setPrototypeOf(context, Object.getPrototypeOf(updatedContext));
   }
 }

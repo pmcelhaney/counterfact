@@ -1,7 +1,7 @@
 import {
   ContextRegistry,
   parentPath,
-} from "../../src/server/context-registry.js";
+} from "../../src/server/context-registry.ts";
 
 describe("a context registry", () => {
   it("finds a context that exactly matches the path", () => {
