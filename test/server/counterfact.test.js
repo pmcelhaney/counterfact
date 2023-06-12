@@ -1,5 +1,6 @@
 import http from "node:http";
 
+// eslint-disable-next-line n/no-unpublished-import
 import supertest from "supertest";
 import Koa from "koa";
 

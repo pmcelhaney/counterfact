@@ -41,7 +41,7 @@ export class ModuleLoader extends EventTarget {
           this.dispatchEvent(new Event("remove"), pathName);
         }
 
-        // eslint-disable-next-line node/no-unsupported-features/es-syntax, import/no-dynamic-require
+        // eslint-disable-next-line  import/no-dynamic-require, no-unsanitized/method
         import(`${pathName}?cacheBust=${Date.now()}`)
           // eslint-disable-next-line promise/prefer-await-to-then
           .then((endpoint) => {
@@ -95,7 +95,7 @@ export class ModuleLoader extends EventTarget {
       const fullPath = nodePath.join(this.basePath, directory, file.name);
 
       try {
-        // eslint-disable-next-line node/no-unsupported-features/es-syntax, import/no-dynamic-require
+        // eslint-disable-next-line  import/no-dynamic-require, no-unsanitized/method
         const endpoint = await import(fullPath);
 
         if (file.name.includes("$.context")) {

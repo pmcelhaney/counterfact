@@ -4,7 +4,9 @@
     "module": "es2022",
     "target": "es2022",
     "strictNullChecks": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "noUncheckedIndexedAccess": true
   },
   "include": ["src", "demo-ts", "templates"]
 }
