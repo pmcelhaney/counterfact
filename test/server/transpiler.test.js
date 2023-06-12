@@ -2,7 +2,7 @@ import { once } from "node:events";
 import fs from "node:fs/promises";
 import { constants as fsConstants } from "node:fs";
 
-import { Transpiler } from "../../src/server/transpiler.js";
+import { Transpiler } from "../../src/server/transpiler.ts";
 import { withTemporaryFiles } from "../lib/with-temporary-files.js";
 
 const TYPESCRIPT_SOURCE = "const x:number = 1;\n";

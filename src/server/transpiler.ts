@@ -8,7 +8,7 @@ import { once } from "node:events";
 import ts from "typescript";
 import chokidar from "chokidar";
 
-async function ensureDirectoryExists(filePath) {
+async function ensureDirectoryExists(filePath: string): Promise<void> {
   const directory = nodePath.dirname(filePath);
 
   try {
@@ -19,20 +19,27 @@ async function ensureDirectoryExists(filePath) {
 }
 
 export class Transpiler extends EventTarget {
-  constructor(sourcePath, destinationPath) {
+  private readonly sourcePath: string;
+
+  private readonly destinationPath: string;
+
+  private watcher?: chokidar.FSWatcher;
+
+  public constructor(sourcePath: string, destinationPath: string) {
     super();
     this.sourcePath = sourcePath;
     this.destinationPath = destinationPath;
   }
 
-  async watch() {
+  public async watch(): Promise<void> {
     this.watcher = chokidar.watch(`${this.sourcePath}/**/*.{ts,mts,js,mjs}`, {
       ignored: `${this.sourcePath}/js`,
     });
 
-    const transpiles = [];
+    const transpiles: Promise<void>[] = [];
 
-    this.watcher.on("all", async (eventName, sourcePath) => {
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
+    this.watcher.on("all", async (eventName: string, sourcePath: string) => {
       const destinationPath = sourcePath
         .replace(this.sourcePath, this.destinationPath)
         .replace(".ts", ".js");
@@ -47,7 +54,9 @@ export class Transpiler extends EventTarget {
         try {
           await fs.rm(destinationPath);
         } catch (error) {
-          if (error.code !== "ENOENT") {
+          // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+          if ((error as { code: string }).code !== "ENOENT") {
+            // eslint-disable-next-line @typescript-eslint/no-throw-literal
             throw error;
           }
         }
@@ -60,16 +69,20 @@ export class Transpiler extends EventTarget {
     await Promise.all(transpiles);
   }
 
-  async stopWatching() {
+  public async stopWatching(): Promise<void> {
     await this.watcher?.close();
   }
 
-  async transpileFile(eventName, sourcePath, destinationPath) {
+  private async transpileFile(
+    eventName: string,
+    sourcePath: string,
+    destinationPath: string
+  ): Promise<void> {
     await ensureDirectoryExists(destinationPath);
 
     const source = await fs.readFile(sourcePath, "utf8");
 
-    const result = ts.transpileModule(source, {
+    const result: string = ts.transpileModule(source, {
       compilerOptions: { module: ts.ModuleKind.ES2022 },
     }).outputText;
 
@@ -80,6 +93,7 @@ export class Transpiler extends EventTarget {
             .replace(this.sourcePath, this.destinationPath)
             .replace(".ts", ".mjs")
         ),
+        // eslint-disable-next-line total-functions/no-unsafe-readonly-mutable-assignment
         result
       );
     } catch {
