@@ -7,7 +7,7 @@ import open from "open";
 
 import { generate } from "../src/typescript-generator/generate.js";
 import { start } from "../src/server/start.js";
-import { startRepl } from "../src/server/repl.js";
+import { startRepl } from "../src/server/repl.ts";
 
 const DEFAULT_PORT = 3100;
 
