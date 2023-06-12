@@ -153,6 +153,8 @@ module.exports = {
         "@typescript-eslint/prefer-readonly-parameter-types": "off",
         "eslint-comments/no-unused-disable": "off",
         "@typescript-eslint/no-magic-numbers": "off",
+        "import/extensions": "off",
+        "n/file-extension-in-import": "off",
       },
 
       settings: {

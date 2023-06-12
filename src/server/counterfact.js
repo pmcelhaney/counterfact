@@ -8,7 +8,7 @@ import { readFile } from "../util/read-file.js";
 import { Registry } from "./registry.js";
 import { Dispatcher } from "./dispatcher.js";
 import { koaMiddleware } from "./koa-middleware.js";
-import { ModuleLoader } from "./module-loader.js";
+import { ModuleLoader } from "./module-loader.ts";
 import { ContextRegistry } from "./context-registry.js";
 
 async function loadOpenApiDocument(source) {
