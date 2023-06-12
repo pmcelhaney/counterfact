@@ -74,7 +74,7 @@ export class Requirement {
     let result;
 
     this.forEach((value, key) => {
-      // eslint-disable-next-line node/callback-return
+      // eslint-disable-next-line  n/callback-return
       if (result === undefined && callback(value, key)) {
         result = value;
       }

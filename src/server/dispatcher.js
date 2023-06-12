@@ -1,4 +1,6 @@
+// eslint-disable-next-line import/order
 import Accept from "@hapi/accept";
+
 // eslint-disable-next-line no-shadow
 import fetch, { Headers } from "node-fetch";
 

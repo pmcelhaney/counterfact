@@ -18,7 +18,7 @@ const __dirname = nodePath.dirname(new URL(import.meta.url).pathname);
 const DEFAULT_PORT = 3100;
 
 Handlebars.registerHelper("escape_route", (route) =>
-  route.replace(/[^\w/]/gu, "-")
+  route.replaceAll(/[^\w/]/gu, "-")
 );
 
 function openapi(openApiPath, url) {
@@ -42,7 +42,7 @@ function openapi(openApiPath, url) {
       return;
     }
 
-    // eslint-disable-next-line node/callback-return
+    // eslint-disable-next-line  n/callback-return
     await next();
   };
 }
@@ -62,7 +62,7 @@ function page(pathname, templateName, locals) {
       return;
     }
 
-    // eslint-disable-next-line node/callback-return
+    // eslint-disable-next-line  n/callback-return
     await next();
   };
 }
@@ -114,7 +114,7 @@ export async function start(config) {
       return;
     }
 
-    // eslint-disable-next-line node/callback-return
+    // eslint-disable-next-line  n/callback-return
     await next();
   });
 

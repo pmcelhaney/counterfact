@@ -62,7 +62,7 @@ export async function withTemporaryFiles(files, ...callbacks) {
     await Promise.all(writes);
 
     for (const callback of callbacks) {
-      // eslint-disable-next-line no-await-in-loop, node/callback-return
+      // eslint-disable-next-line no-await-in-loop, n/callback-return
       await callback(temporaryDirectory, {
         add: createAddFunction(temporaryDirectory),
         remove: createRemoveFunction(temporaryDirectory),

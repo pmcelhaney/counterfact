@@ -33,6 +33,8 @@ const rules = {
   "import/no-deprecated": "off",
   "import/default": "off",
   "import/no-named-as-default-member": "off",
+  "@microsoft/sdl/no-html-method": "off",
+  "@typescript-eslint/lines-around-comment": "off",
 };
 
 module.exports = {
