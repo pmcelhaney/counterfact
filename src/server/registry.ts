@@ -33,13 +33,13 @@ interface Node {
 
 function castParameters(
   parameters: { [key: string]: number | string },
-  parameterTypes: { [key: string]: string }
+  parameterTypes?: { [key: string]: string }
 ) {
   const copy: { [key: string]: number | string } = { ...parameters };
 
   Object.entries(copy).forEach(([key, value]) => {
     copy[key] =
-      parameterTypes[key] === "number"
+      parameterTypes?.[key] === "number"
         ? // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
           Number.parseInt(value as string, 10)
         : value;
