@@ -62,9 +62,10 @@ function routesForNode(node: Node): string[] {
   }
 
   return Object.entries(node.children)
-    .flatMap(([segment, child]) =>
-      Array.from(maybe(child.module, `/${segment}`))
-    )
+    .flatMap(([segment, child]) => [
+      ...maybe(child.module, `/${segment}`),
+      ...routesForNode(child).map((route) => `/${segment}${route}`),
+    ])
     .sort((segment1, segment2) =>
       stripBrackets(segment1).localeCompare(stripBrackets(segment2))
     );
