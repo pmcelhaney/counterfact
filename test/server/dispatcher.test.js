@@ -206,7 +206,7 @@ describe("a dispatcher", () => {
       headers: authHeader,
     });
 
-    expect(response.headers).toBe(authHeader);
+    expect(response.headers).toStrictEqual(authHeader);
   });
 
   it("passes the query params", async () => {
@@ -496,7 +496,7 @@ describe("a dispatcher", () => {
       },
 
       headers: {
-        numberInHeader: 5,
+        numberInHeader: "5",
         stringInHeader: "6",
       },
     });

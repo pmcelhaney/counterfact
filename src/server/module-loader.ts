@@ -15,7 +15,7 @@ interface ContextModule {
 export class ModuleLoader extends EventTarget {
   private readonly basePath: string;
 
-  private readonly registry: Registry;
+  public readonly registry: Registry;
 
   private watcher: chokidar.FSWatcher | undefined;
 

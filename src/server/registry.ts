@@ -10,7 +10,7 @@ type HttpMethods =
 
 interface RequestData {
   query: { [key: string]: number | string };
-  header: { [key: string]: number | string };
+  headers: { [key: string]: number | string };
   path: { [key: string]: number | string };
   matchedPath: string;
 }
@@ -95,7 +95,7 @@ export class Registry {
     node.module = module;
   }
 
-  private remove(url: string) {
+  public remove(url: string) {
     let node: Node | undefined = this.moduleTree;
 
     for (const segment of url.split("/").slice(1)) {
@@ -158,10 +158,14 @@ export class Registry {
     return { module: node.module, path, matchedPath: matchedParts.join("/") };
   }
 
-  private endpoint(
+  public endpoint(
     httpRequestMethod: HttpMethods,
     url: string,
-    parameterTypes: { [key: string]: string } = {}
+    parameterTypes: {
+      header?: { [key: string]: string };
+      query?: { [key: string]: string };
+      path?: { [key: string]: string };
+    } = {}
   ) {
     const handler = this.handler(url);
     const execute = handler.module?.[httpRequestMethod];
@@ -178,7 +182,7 @@ export class Registry {
       execute({
         ...requestData,
 
-        header: castParameters(requestData.query, parameterTypes.header),
+        headers: castParameters(requestData.headers, parameterTypes.header),
 
         query: castParameters(requestData.query, parameterTypes.query),
 
