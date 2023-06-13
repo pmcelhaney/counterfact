@@ -5,7 +5,7 @@ import Accept from "@hapi/accept";
 import fetch, { Headers } from "node-fetch";
 
 import { createResponseBuilder } from "./response-builder.js";
-import { Tools } from "./tools.js";
+import { Tools } from "./tools.ts";
 
 function parameterTypes(parameters) {
   if (!parameters) {

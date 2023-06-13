@@ -1,4 +1,4 @@
-import { Tools } from "../../src/server/tools.js";
+import { Tools } from "../../src/server/tools.ts";
 
 describe("tools", () => {
   it("oneOf()", () => {
