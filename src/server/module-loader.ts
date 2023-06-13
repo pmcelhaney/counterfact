@@ -5,11 +5,11 @@ import { once } from "node:events";
 
 import chokidar from "chokidar";
 
-import { ContextRegistry } from "./context-registry.ts";
-import type { Registry } from "./registry.ts";
+import { ContextRegistry, type Context } from "./context-registry.js";
+import type { Registry, Module } from "./registry.js";
 
-interface Module {
-  default: unknown;
+interface ContextModule {
+  default?: Context;
 }
 
 export class ModuleLoader extends EventTarget {
@@ -53,16 +53,21 @@ export class ModuleLoader extends EventTarget {
         // eslint-disable-next-line import/no-dynamic-require, no-unsanitized/method
         import(`${pathName}?cacheBust=${Date.now()}`)
           // eslint-disable-next-line promise/prefer-await-to-then
-          .then((endpoint: Module) => {
+          .then((endpoint: ContextModule | Module) => {
             this.dispatchEvent(new Event(eventName));
 
             if (pathName.includes("$.context")) {
-              this.contextRegistry.update(parts.dir, endpoint.default);
+              this.contextRegistry.update(
+                parts.dir,
+                // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+                (endpoint as ContextModule).default
+              );
 
               return "context";
             }
 
-            this.registry.add(url, endpoint);
+            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+            this.registry.add(url, endpoint as Module);
 
             return "path";
           })
@@ -116,14 +121,22 @@ export class ModuleLoader extends EventTarget {
   ) {
     try {
       // eslint-disable-next-line import/no-dynamic-require, no-unsanitized/method, @typescript-eslint/consistent-type-assertions
-      const endpoint: Module = (await import(fullPath)) as Module;
+      const endpoint: ContextModule | Module = (await import(fullPath)) as
+        | ContextModule
+        | Module;
 
       if (file.name.includes("$.context")) {
-        this.contextRegistry.add(`/${directory}`, endpoint.default);
+        this.contextRegistry.add(
+          `/${directory}`,
+
+          // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+          (endpoint as ContextModule).default
+        );
       } else {
         this.registry.add(
           `/${nodePath.join(directory, nodePath.parse(file.name).name)}`,
-          endpoint
+          // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+          endpoint as Module
         );
       }
     } catch (error: unknown) {

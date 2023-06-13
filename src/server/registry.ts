@@ -80,7 +80,7 @@ export class Registry {
     return routesForNode(this.moduleTree);
   }
 
-  private add(url: string, module: Module) {
+  public add(url: string, module: Module) {
     let node: Node = this.moduleTree;
 
     for (const segment of url.split("/").slice(1)) {
@@ -188,3 +188,5 @@ export class Registry {
       });
   }
 }
+
+export type { Module };

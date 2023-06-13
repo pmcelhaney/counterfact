@@ -1,4 +1,4 @@
-interface Context {
+export interface Context {
   [key: string]: unknown;
 }
 
@@ -25,10 +25,11 @@ export class ContextRegistry {
     return this.entries.get(path) ?? this.find(parentPath(path));
   }
 
-  public update(
-    path: string,
-    updatedContext: { [key: string]: unknown }
-  ): void {
+  public update(path: string, updatedContext?: Context): void {
+    if (updatedContext === undefined) {
+      return;
+    }
+
     const context = this.find(path);
 
     for (const property in updatedContext) {
