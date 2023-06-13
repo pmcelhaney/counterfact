@@ -6,7 +6,7 @@ import { once } from "node:events";
 import chokidar from "chokidar";
 
 import { ContextRegistry } from "./context-registry.ts";
-import type { Registry } from "./registry.js";
+import type { Registry } from "./registry.ts";
 
 interface Module {
   default: unknown;

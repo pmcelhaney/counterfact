@@ -1,4 +1,4 @@
-import { Registry } from "../../src/server/registry.js";
+import { Registry } from "../../src/server/registry.ts";
 
 describe("a registry", () => {
   it("knows if a handler exists for a request method at a path", () => {

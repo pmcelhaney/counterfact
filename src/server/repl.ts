@@ -1,6 +1,6 @@
 import repl from "node:repl";
 
-import type { ContextRegistry } from "./context-registry.js";
+import type { ContextRegistry } from "./context-registry.ts";
 
 interface Config {
   proxyEnabled: boolean;

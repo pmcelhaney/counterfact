@@ -1,7 +1,7 @@
 import { once } from "node:events";
 
 import { ModuleLoader } from "../../src/server/module-loader.ts";
-import { Registry } from "../../src/server/registry.js";
+import { Registry } from "../../src/server/registry.ts";
 import { ContextRegistry } from "../../src/server/context-registry.ts";
 import { withTemporaryFiles } from "../lib/with-temporary-files.js";
 

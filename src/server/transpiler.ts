@@ -93,7 +93,7 @@ export class Transpiler extends EventTarget {
             .replace(this.sourcePath, this.destinationPath)
             .replace(".ts", ".mjs")
         ),
-        // eslint-disable-next-line total-functions/no-unsafe-readonly-mutable-assignment
+
         result
       );
     } catch {

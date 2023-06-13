@@ -1,4 +1,4 @@
-import { Registry } from "../../src/server/registry.js";
+import { Registry } from "../../src/server/registry.ts";
 import { Dispatcher } from "../../src/server/dispatcher.js";
 import { koaMiddleware } from "../../src/server/koa-middleware.js";
 import { ContextRegistry } from "../../src/server/context-registry.ts";

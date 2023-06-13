@@ -1,6 +1,6 @@
 import { Dispatcher } from "../../src/server/dispatcher.js";
 import { ContextRegistry } from "../../src/server/context-registry.ts";
-import { Registry } from "../../src/server/registry.js";
+import { Registry } from "../../src/server/registry.ts";
 
 // eslint-disable-next-line max-statements
 describe("a dispatcher", () => {

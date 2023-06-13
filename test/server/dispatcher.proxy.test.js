@@ -1,6 +1,6 @@
 import { Dispatcher } from "../../src/server/dispatcher.js";
 import { ContextRegistry } from "../../src/server/context-registry.ts";
-import { Registry } from "../../src/server/registry.js";
+import { Registry } from "../../src/server/registry.ts";
 
 describe("a dispatcher passes a proxy function to the operation", () => {
   it("passes a proxy function", async () => {
