@@ -7,7 +7,8 @@
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "noUncheckedIndexedAccess": true,
-    "allowJs": true
+    "allowJs": true,
+    "outDir": "dist"
   },
   "include": ["src", "demo-ts", "templates", "test", "jest.config.ts"]
 }

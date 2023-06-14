@@ -23,6 +23,7 @@
     "openapi",
     "Petstore",
     "proxied",
+    "sonarjs",
     "transpiles"
   ]
 }
