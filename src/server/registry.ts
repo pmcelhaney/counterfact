@@ -16,19 +16,25 @@ interface RequestData {
 }
 
 interface Module {
-  GET: (requestData: RequestData) => unknown;
-  PUT: (requestData: RequestData) => unknown;
-  POST: (requestData: RequestData) => unknown;
-  DELETE: (requestData: RequestData) => unknown;
-  OPTIONS: (requestData: RequestData) => unknown;
-  HEAD: (requestData: RequestData) => unknown;
-  PATCH: (requestData: RequestData) => unknown;
-  TRACE: (requestData: RequestData) => unknown;
+  GET: (requestData: RequestData) => CounterfactResponse;
+  PUT: (requestData: RequestData) => CounterfactResponse;
+  POST: (requestData: RequestData) => CounterfactResponse;
+  DELETE: (requestData: RequestData) => CounterfactResponse;
+  OPTIONS: (requestData: RequestData) => CounterfactResponse;
+  HEAD: (requestData: RequestData) => CounterfactResponse;
+  PATCH: (requestData: RequestData) => CounterfactResponse;
+  TRACE: (requestData: RequestData) => CounterfactResponse;
 }
 
 interface Node {
   children?: { [key: string]: Node };
   module?: Module;
+}
+
+interface CounterfactResponse {
+  status: number;
+  headers: { [key: string]: string };
+  body?: string;
 }
 
 function castParameters(
@@ -111,7 +117,7 @@ export class Registry {
     return true;
   }
 
-  private exists(method: HttpMethods, url: string) {
+  public exists(method: HttpMethods, url: string) {
     return Boolean(this.handler(url).module?.[method]);
   }
 
