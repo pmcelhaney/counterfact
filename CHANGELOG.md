@@ -1,5 +1,11 @@
 # counterfact
 
+## 0.20.5
+
+### Patch Changes
+
+- 7d05529: fix $.proxy() -- it's better but still experimental
+
 ## 0.20.4
 
 ### Patch Changes
