@@ -1,5 +1,11 @@
 # counterfact
 
+## 0.20.4
+
+### Patch Changes
+
+- 74c98aa: Fix: Found an error when headers name contains `-`
+
 ## 0.20.3
 
 ### Patch Changes
