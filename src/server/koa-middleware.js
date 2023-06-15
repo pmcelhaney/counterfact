@@ -16,6 +16,7 @@ export function koaMiddleware(dispatcher, options = {}, proxy = koaProxy) {
       headers,
       body,
       query,
+      req: ctx.req,
     });
 
     /* eslint-disable require-atomic-updates */

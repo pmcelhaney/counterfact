@@ -47,7 +47,7 @@ export class Dispatcher {
     return this.openApiDocument?.paths?.[path]?.[method.toLowerCase()];
   }
 
-  async request({ method, path, headers, body, query }) {
+  async request({ method, path, headers, body, query, req }) {
     const { matchedPath } = this.registry.handler(path);
     const operation = this.operationForPathAndMethod(matchedPath, method);
 
@@ -69,18 +69,21 @@ export class Dispatcher {
         )
       ),
 
-      proxy: async (hostOrOptions) => {
-        const options =
-          typeof hostOrOptions === "string"
-            ? { host: hostOrOptions }
-            : hostOrOptions;
+      proxy: async (url) => {
+        if (
+          body &&
+          headers.contentType &&
+          headers.contentType !== "application/json"
+        ) {
+          throw new Error(
+            `$.proxy() is currently limited to application/json requests. You tried to proxy to ${url} with a Content-Type of ${headers.contentType}. Please open an issue at https://github.com/pmcelhaney/counterfact/issues and prod me to fix this limitation.`
+          );
+        }
 
-        const fetchResponse = await this.fetch(options.host, {
+        const fetchResponse = await this.fetch(url + req.path, {
           method,
-          path,
           headers: new Headers(headers),
-          query,
-          ...options,
+          body: body ? JSON.stringify(body) : undefined,
         });
 
         const responseHeaders = Object.fromEntries(

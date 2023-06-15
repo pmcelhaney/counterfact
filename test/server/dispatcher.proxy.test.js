@@ -16,25 +16,29 @@ describe("a dispatcher passes a proxy function to the operation", () => {
 
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
 
-    dispatcher.fetch = (url, options) => ({
+    dispatcher.fetch = (url) => ({
       status: 200,
-      headers: new Headers([["content-type", "application/test"]]),
+      headers: new Headers([["content-type", "application/json"]]),
 
       text() {
-        return `body from ${url}${options.path}`;
+        return `body from ${url}`;
       },
     });
 
     const response = await dispatcher.request({
       method: "GET",
       path: "/a",
+
+      req: {
+        path: "/a?x=1",
+      },
     });
 
-    expect(response.body).toBe("body from https://example.com/a");
+    expect(response.body).toBe("body from https://example.com/a?x=1");
     expect(response.headers).toStrictEqual({
-      "content-type": "application/test",
+      "content-type": "application/json",
     });
-    expect(response.contentType).toBe("application/test");
+    expect(response.contentType).toBe("application/json");
     expect(response.status).toBe(200);
   });
 });
