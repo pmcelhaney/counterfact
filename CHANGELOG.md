@@ -4,7 +4,7 @@
 
 ### Patch Changes
 
-- 74c98aa: Fix: Found an error when headers name contains `-`
+- 74c98aa: Fix: Found an error when headers name contains `-` (thanks [@hireza](https://github.com/hireza)!)
 
 ## 0.20.3
 
