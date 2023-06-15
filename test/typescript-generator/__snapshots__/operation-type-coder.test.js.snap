@@ -45,9 +45,9 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2) 1`
   context,
   proxy,
 }: {
-  query: { name?: string };
-  path: { id?: string };
-  header: { name?: string };
+  query: { \\"name?\\": string };
+  path: { \\"id?\\": string };
+  header: { \\"name?\\": string };
   body: Type;
   context: typeof default;
   response: ResponseBuilderFactory<{
@@ -107,9 +107,9 @@ exports[`an OperationTypeCoder generates a complex post operation 1`] = `
   context,
   proxy,
 }: {
-  query: { name?: string };
-  path: { id?: string };
-  header: { name?: string };
+  query: { \\"name?\\": string };
+  path: { \\"id?\\": string };
+  header: { \\"name?\\": string };
   body: Type;
   context: typeof default;
   response: ResponseBuilderFactory<{
