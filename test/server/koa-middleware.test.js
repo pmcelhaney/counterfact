@@ -25,6 +25,10 @@ describe("koa middleware", () => {
     const middleware = koaMiddleware(dispatcher);
     const ctx = {
       request: { path: "/hello", method: "POST", body: { name: "Homer" } },
+
+      req: {
+        path: "/hello",
+      },
     };
 
     await middleware(ctx);
