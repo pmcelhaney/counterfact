@@ -28,7 +28,7 @@ export class ParametersTypeCoder extends Coder {
           ? requirement.get("schema")
           : requirement;
 
-        return `${name}${optionalFlag}: ${new SchemaTypeCoder(schema).write(
+        return `"${name}${optionalFlag}": ${new SchemaTypeCoder(schema).write(
           script
         )}`;
       });
