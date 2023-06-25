@@ -102,6 +102,15 @@
     eslint-visitor-keys "^2.1.0"
     semver "^6.3.0"
 
+"@babel/eslint-parser@^7.22.5":
+  version "7.22.5"
+  resolved "https://registry.yarnpkg.com/@babel/eslint-parser/-/eslint-parser-7.22.5.tgz#fa032503b9e2d188e25b1b95d29e8b8431042d78"
+  integrity sha512-C69RWYNYtrgIRE5CmTd77ZiLDXqgBipahJc/jHP3sLcAGj6AJzxNIuKNpVnICqbyK7X3pFUfEvL++rvtbQpZkQ==
+  dependencies:
+    "@nicolo-ribaudo/eslint-scope-5-internals" "5.1.1-v1"
+    eslint-visitor-keys "^2.1.0"
+    semver "^6.3.0"
+
 "@babel/eslint-plugin@^7.14.5":
   version "7.18.10"
   resolved "https://registry.yarnpkg.com/@babel/eslint-plugin/-/eslint-plugin-7.18.10.tgz#11f454b5d1aa64c42fcfd64abe93071c15ebea3c"
@@ -1536,6 +1545,13 @@
     eslint-plugin-node "11.1.0"
     eslint-plugin-react "7.24.0"
     eslint-plugin-security "1.4.0"
+
+"@nicolo-ribaudo/eslint-scope-5-internals@5.1.1-v1":
+  version "5.1.1-v1"
+  resolved "https://registry.yarnpkg.com/@nicolo-ribaudo/eslint-scope-5-internals/-/eslint-scope-5-internals-5.1.1-v1.tgz#dbf733a965ca47b1973177dc0bb6c889edcfb129"
+  integrity sha512-54/JRvkLIzzDWshCWfuhadfrfZVPiElY8Fcgmg1HroEly/EDSszzhBAsarCux+D/kOslTRquNzuyGSmUSTTHGg==
+  dependencies:
+    eslint-scope "5.1.1"
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
@@ -3805,7 +3821,7 @@ bundle-name@^3.0.0:
   dependencies:
     run-applescript "^5.0.0"
 
-bytes@3.1.2:
+bytes@3.1.2, bytes@^3.1.2:
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/bytes/-/bytes-3.1.2.tgz#8b0beeb98605adf1b128fa4386403c009e0221a5"
   integrity sha512-/Nf7TyzTx6S3yRJObOAV7956r8cr2+Oj8AC5dt8wSP3BQAoeX58NoHyCU8P8zGkNXStjTSi6fzO6F0pBdcYbEg==
@@ -4802,10 +4818,10 @@ eslint-ast-utils@^1.0.0:
     lodash.get "^4.4.2"
     lodash.zip "^4.2.0"
 
-eslint-config-hardcore@36.4.0:
-  version "36.4.0"
-  resolved "https://registry.yarnpkg.com/eslint-config-hardcore/-/eslint-config-hardcore-36.4.0.tgz#086b2ff494307bc9d590df2020d1b382857035a0"
-  integrity sha512-FrYbwp7le2LNOZxGxG8JhWTvzvHNRmQNfI+KzSz0adu1eeKE1KAmInZhVal7IElf8Q8xHz2eUwInq3tQEilZLQ==
+eslint-config-hardcore@37.0.0:
+  version "37.0.0"
+  resolved "https://registry.yarnpkg.com/eslint-config-hardcore/-/eslint-config-hardcore-37.0.0.tgz#ee2b10f1fdca1ed0f6f7e0a62d45c3a611d54fee"
+  integrity sha512-RrLLbcLeL6puLUJS0Rv/pArV3BJzFeBpuikUxz6JNO8aLdDz3sstnUcfCXFWzkcTA74ZV2NK8y4bDykXHxYKug==
   dependencies:
     "@html-eslint/eslint-plugin" "^0.19.0"
     "@html-eslint/parser" "^0.19.0"
@@ -4846,6 +4862,7 @@ eslint-config-hardcore@36.4.0:
     eslint-plugin-react-perf "^3.3.1"
     eslint-plugin-regexp "^1.15.0"
     eslint-plugin-security "^1.7.1"
+    eslint-plugin-sonar "^0.12.0"
     eslint-plugin-sonarjs "^0.19.0"
     eslint-plugin-sort-class-members "^1.18.0"
     eslint-plugin-ssr-friendly "^1.2.0"
@@ -5331,6 +5348,23 @@ eslint-plugin-security@^1.7.1:
   dependencies:
     safe-regex "^2.1.1"
 
+eslint-plugin-sonar@^0.12.0:
+  version "0.12.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-sonar/-/eslint-plugin-sonar-0.12.0.tgz#3227ea8e7e9d21eab4eb104b4aa26105de633262"
+  integrity sha512-49linjQRXazFXZR4PXHwgMkkrnLavZTeSkxJ5+k3PoNqGm/shgJCVmdQAki3AJNqM+huZSwYxwsWS+LSpB48cQ==
+  dependencies:
+    "@babel/eslint-parser" "^7.22.5"
+    "@typescript-eslint/eslint-plugin" "^5.60.0"
+    builtin-modules "^3.3.0"
+    bytes "^3.1.2"
+    eslint-plugin-react "^7.32.2"
+    eslint-plugin-react-hooks "^4.6.0"
+    eslint-plugin-sonarjs "^0.19.0"
+    functional-red-black-tree "^1.0.1"
+    regexpp "^3.2.0"
+    scslre "^0.2.0"
+    tmp "^0.2.1"
+
 eslint-plugin-sonarjs@^0.19.0:
   version "0.19.0"
   resolved "https://registry.yarnpkg.com/eslint-plugin-sonarjs/-/eslint-plugin-sonarjs-0.19.0.tgz#6654bc1c6d24c2183891b8bfe1175004dbba1e3c"
@@ -5466,7 +5500,7 @@ eslint-rule-composer@^0.3.0:
   resolved "https://registry.yarnpkg.com/eslint-rule-composer/-/eslint-rule-composer-0.3.0.tgz#79320c927b0c5c0d3d3d2b76c8b4a488f25bbaf9"
   integrity sha512-bt+Sh8CtDmn2OajxvNO+BX7Wn4CIWMpTRm3MaiKPCQcnnlm0CS2mhui6QaoeQugs+3Kj2ESKEEGJUdVafwhiCg==
 
-eslint-scope@^5.0.0, eslint-scope@^5.1.1:
+eslint-scope@5.1.1, eslint-scope@^5.0.0, eslint-scope@^5.1.1:
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/eslint-scope/-/eslint-scope-5.1.1.tgz#e786e59a66cb92b3f6c1fb0d508aab174848f48c"
   integrity sha512-2NxwbF/hZ0KpepYN0cNbo+FN6XoK7GaHlQhgx/hIZl6Va0bF45RQOOwhLIy8lQDbuCiadSLCBnH2CFYquit5bw==
@@ -10579,6 +10613,13 @@ tmp@^0.0.33:
   integrity sha512-jRCJlojKnZ3addtTOjdIqoRuPEKBvNXcGYqzO6zWZX8KfKEpnGY5jfggJQ3EjKuu8D4bJRr0y+cYJFmYbImXGw==
   dependencies:
     os-tmpdir "~1.0.2"
+
+tmp@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/tmp/-/tmp-0.2.1.tgz#8457fc3037dcf4719c251367a1af6500ee1ccf14"
+  integrity sha512-76SUhtfqR2Ijn+xllcI5P1oyannHNHByD80W1q447gU3mp9G9PSpGdWmjUOHRDPiHYacIk66W7ubDTuPF3BEtQ==
+  dependencies:
+    rimraf "^3.0.0"
 
 tmpl@1.0.5:
   version "1.0.5"
