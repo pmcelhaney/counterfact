@@ -36,7 +36,7 @@
     "counterfact": "ts-node --esm --transpileOnly ./bin/counterfact.js"
   },
   "devDependencies": {
-    "@changesets/cli": "2.26.1",
+    "@changesets/cli": "2.26.2",
     "@stryker-mutator/core": "7.1.0",
     "@stryker-mutator/jest-runner": "7.1.0",
     "@testing-library/dom": "^9.3.0",
