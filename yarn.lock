@@ -5477,6 +5477,13 @@ eslint-plugin-unused-imports@^2.0.0:
   dependencies:
     eslint-rule-composer "^0.3.0"
 
+eslint-plugin-unused-imports@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-unused-imports/-/eslint-plugin-unused-imports-3.0.0.tgz#d25175b0072ff16a91892c3aa72a09ca3a9e69e7"
+  integrity sha512-sduiswLJfZHeeBJ+MQaG+xYzSWdRXoSw61DpU13mzWumCkR0ufD0HmO4kdNokjrkluMHpj/7PJeN35pgbhW3kw==
+  dependencies:
+    eslint-rule-composer "^0.3.0"
+
 eslint-plugin-validate-jsx-nesting@^0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/eslint-plugin-validate-jsx-nesting/-/eslint-plugin-validate-jsx-nesting-0.1.1.tgz#1b46b240fda3c740ba10d44f511ca05baaaafd31"
