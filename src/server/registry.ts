@@ -13,10 +13,12 @@ type HttpMethods =
 interface RequestData {
   query: { [key: string]: number | string };
   headers: { [key: string]: number | string };
-  path: { [key: string]: number | string };
-  matchedPath: string;
+  path?: { [key: string]: number | string };
+  matchedPath?: string;
   tools: unknown;
-  body?: unknown;
+  context: unknown;
+  response: unknown;
+  proxy: unknown;
 }
 
 interface RequestDataWithBody extends RequestData {
@@ -199,10 +201,11 @@ export class Registry {
         status: 404,
         body: `Could not find a ${httpRequestMethod} method matching ${url}\n`,
         contentType: "text/plain",
+        headers: {},
       });
     }
 
-    return async ({ ...requestData }: RequestData) =>
+    return async ({ ...requestData }: RequestDataWithBody) =>
       await execute({
         ...requestData,
 

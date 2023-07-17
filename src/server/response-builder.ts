@@ -1,5 +1,7 @@
 import JSONSchemaFaker, { type Schema } from "json-schema-faker";
 
+import type { OpenApiParameters } from "./dispatcher.js";
+
 interface ResponseBuilder {
   status?: number;
   [status: number | `${number} ${string}`]: ResponseBuilder;
@@ -69,6 +71,7 @@ export interface OpenApiOperation {
       schema?: Schema;
     };
   };
+  parameters?: OpenApiParameters[];
 }
 
 export function createResponseBuilder(

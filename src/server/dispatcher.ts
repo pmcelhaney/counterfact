@@ -35,7 +35,7 @@ interface ParameterTypes {
   };
 }
 
-interface Parameters {
+interface OpenApiParameters {
   in: "body" | "cookie" | "formData" | "header" | "path" | "query";
   name: string;
   schema?: {
@@ -47,7 +47,7 @@ interface OpenApiDocument {
   paths: {
     [key: string]: {
       [key in HttpMethods]?: {
-        parameters?: Parameters[];
+        parameters?: OpenApiParameters[];
         responses: {
           [key: string]: CounterfactResponseObject;
         };
@@ -76,7 +76,9 @@ export class Dispatcher {
     this.fetch = fetch;
   }
 
-  private parameterTypes(parameters: Parameters[] | undefined): ParameterTypes {
+  private parameterTypes(
+    parameters: OpenApiParameters[] | undefined
+  ): ParameterTypes {
     const types: ParameterTypes = {
       path: {},
       query: {},
@@ -220,12 +222,7 @@ export class Dispatcher {
       headers,
       context: this.contextRegistry.find(path),
 
-      response: createResponseBuilder(
-        this.operationForPathAndMethod(
-          this.registry.handler(path).matchedPath,
-          method
-        )
-      ),
+      response: createResponseBuilder(operation ?? { responses: {} }),
 
       proxy: async (url: string) => {
         if (body !== undefined && headers.contentType !== "application/json") {
@@ -271,3 +268,5 @@ export class Dispatcher {
     return normalizedResponse;
   }
 }
+
+export type { OpenApiParameters };
