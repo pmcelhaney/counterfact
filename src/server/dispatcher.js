@@ -4,7 +4,7 @@ import Accept from "@hapi/accept";
 // eslint-disable-next-line no-shadow
 import fetch, { Headers } from "node-fetch";
 
-import { createResponseBuilder } from "./response-builder.js";
+import { createResponseBuilder } from "./response-builder.ts";
 import { Tools } from "./tools.ts";
 
 function parameterTypes(parameters) {

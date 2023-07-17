@@ -5,7 +5,7 @@ import supertest from "supertest";
 import Koa from "koa";
 
 import { counterfact } from "../../src/server/counterfact.js";
-import { withTemporaryFiles } from "../lib/with-temporary-files.js";
+import { withTemporaryFiles } from "../lib/with-temporary-files.ts";
 
 describe("integration test", () => {
   it("finds a path", async () => {

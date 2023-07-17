@@ -2,7 +2,7 @@ import { pathToFileURL } from "node:url";
 
 import Koa from "koa";
 
-import { withTemporaryFiles } from "../lib/with-temporary-files.js";
+import { withTemporaryFiles } from "../lib/with-temporary-files.ts";
 import { Requirement } from "../../src/typescript-generator/requirement.js";
 import { Specification } from "../../src/typescript-generator/specification.js";
 
