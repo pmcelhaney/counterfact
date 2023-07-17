@@ -1,31 +1,25 @@
 import JSONSchemaFaker, { type Schema } from "json-schema-faker";
 
-interface OpenApiOperation {
-  produces?: string[];
-  responses: {
-    [status: string]: {
-      content: {
-        [type: string]: {
-          examples?: unknown[];
-          schema: unknown;
-        };
-      };
-      examples?: unknown[];
-      schema: Schema;
-    };
-  };
-}
-
 interface ResponseBuilder {
   status?: number;
-  [status: number]: unknown;
+  [status: number | `${number} ${string}`]: ResponseBuilder;
   headers: { [name: string]: string };
   match: (contentType: string, body: unknown) => ResponseBuilder;
   content?: { type: string; body: unknown }[];
   html: (body: unknown) => ResponseBuilder;
   json: (body: unknown) => ResponseBuilder;
+  text: (body: unknown) => ResponseBuilder;
   random: () => ResponseBuilder;
   randomLegacy: () => ResponseBuilder;
+  header: (name: string, value: string) => ResponseBuilder;
+}
+
+interface OpenApiHeader {
+  schema: unknown;
+}
+
+interface OpenApiContent {
+  schema: unknown;
 }
 
 JSONSchemaFaker.option("useExamplesValue", true);
@@ -51,6 +45,29 @@ function unknownStatusCodeResponse(statusCode: number | undefined) {
         }`,
       },
     ],
+  };
+}
+
+export type MediaType = `${string}/${string}`;
+
+export interface OpenApiResponse {
+  headers: { [key: string]: OpenApiHeader };
+  content: { [key: MediaType]: OpenApiContent };
+}
+
+export interface OpenApiOperation {
+  produces?: string[];
+  responses: {
+    [status: string]: {
+      content?: {
+        [type: number | string]: {
+          examples?: unknown[];
+          schema: unknown;
+        };
+      };
+      examples?: { [key: string]: unknown };
+      schema?: Schema;
+    };
   };
 }
 
@@ -117,7 +134,7 @@ export function createResponseBuilder(
           operation.responses[this.status ?? "default"] ??
           operation.responses.default;
 
-        if (response === undefined) {
+        if (response === undefined || response.content === undefined) {
           return unknownStatusCodeResponse(this.status);
         }
 
@@ -150,7 +167,7 @@ export function createResponseBuilder(
 
         const body = response.examples
           ? oneOf(response.examples)
-          : JSONSchemaFaker.generate(response.schema);
+          : JSONSchemaFaker.generate(response.schema ?? { type: "object" });
 
         return {
           ...this,

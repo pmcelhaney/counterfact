@@ -1,10 +1,5 @@
-interface OpenApiHeader {
-  schema: unknown;
-}
-
-interface OpenApiContent {
-  schema: unknown;
-}
+// eslint-disable-next-line n/no-unpublished-import
+import type { OpenApiResponse } from "../src/server/response-builder.js";
 
 type OmitValueWhenNever<Base> = Pick<
   Base,
@@ -14,11 +9,6 @@ type OmitValueWhenNever<Base> = Pick<
 >;
 
 type MediaType = `${string}/${string}`;
-
-interface OpenApiResponse {
-  headers: { [key: string]: OpenApiHeader };
-  content: { [key: MediaType]: OpenApiContent };
-}
 
 interface OpenApiResponses {
   [key: string]: OpenApiResponse;
