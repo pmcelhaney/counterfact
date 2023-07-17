@@ -104,7 +104,7 @@ describe("integration test", () => {
       res.end("I am proxy!\n");
     });
 
-    proxyTarget.listen(8121);
+    proxyTarget.listen(0);
 
     const app = new Koa();
     const request = supertest(app.callback());
