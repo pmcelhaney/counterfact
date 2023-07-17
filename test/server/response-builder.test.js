@@ -1,4 +1,4 @@
-import { createResponseBuilder } from "../../src/server/response-builder.js";
+import { createResponseBuilder } from "../../src/server/response-builder.ts";
 
 describe("a response builder", () => {
   it("starts building a response object when the status is selected", () => {
