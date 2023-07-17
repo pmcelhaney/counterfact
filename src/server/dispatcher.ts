@@ -2,8 +2,10 @@
 import fetch, { Headers } from "node-fetch";
 import Accept from "@hapi/accept";
 
-import type { OpenApiOperation } from "./response-builder.js";
-import { createResponseBuilder } from "./response-builder.js";
+import {
+  type OpenApiOperation,
+  createResponseBuilder,
+} from "./response-builder.js";
 import { Tools } from "./tools.js";
 import type {
   CounterfactResponseObject,
@@ -226,7 +228,7 @@ export class Dispatcher {
       ),
 
       proxy: async (url: string) => {
-        if (body && headers.contentType !== "application/json") {
+        if (body !== undefined && headers.contentType !== "application/json") {
           throw new Error(
             `$.proxy() is currently limited to application/json requests. You tried to proxy to ${url} with a Content-Type of ${
               headers.contentType ?? "[unknown]"
@@ -237,7 +239,7 @@ export class Dispatcher {
         const fetchResponse = await this.fetch(url + req.path, {
           method,
           headers: new Headers(headers),
-          body: body ? JSON.stringify(body) : undefined,
+          body: body === undefined ? undefined : JSON.stringify(body),
         });
 
         const responseHeaders = Object.fromEntries(
