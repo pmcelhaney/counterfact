@@ -2,6 +2,7 @@
 import fetch, { Headers } from "node-fetch";
 import Accept from "@hapi/accept";
 
+import type { OpenApiOperation } from "./response-builder.js";
 import { createResponseBuilder } from "./response-builder.js";
 import { Tools } from "./tools.js";
 import type {
@@ -40,17 +41,32 @@ interface Parameters {
   };
 }
 
+interface OpenApiDocument {
+  paths: {
+    [key: string]: {
+      [key in HttpMethods]?: {
+        parameters?: Parameters[];
+        responses: {
+          [key: string]: CounterfactResponseObject;
+        };
+      };
+    };
+  };
+}
+
 export class Dispatcher {
   public registry: Registry;
 
   public contextRegistry: ContextRegistry;
+
+  public openApiDocument: unknown;
 
   public fetch: typeof fetch;
 
   public constructor(
     registry: Registry,
     contextRegistry: ContextRegistry,
-    openApiDocument: any
+    openApiDocument: OpenApiDocument
   ) {
     this.registry = registry;
     this.contextRegistry = contextRegistry;
@@ -84,7 +100,10 @@ export class Dispatcher {
     return types;
   }
 
-  private operationForPathAndMethod(path: string, method: string): unknown {
+  private operationForPathAndMethod(
+    path: string,
+    method: string
+  ): OpenApiOperation | undefined {
     return this.openApiDocument?.paths?.[path]?.[method.toLowerCase()];
   }
 
