@@ -8,9 +8,9 @@ import bodyParser from "koa-bodyparser";
 import { koaSwagger } from "koa2-swagger-ui";
 import Handlebars from "handlebars";
 
-import { readFile } from "../util/read-file.js";
+import { readFile } from "../util/read-file.ts";
 
-import { counterfact } from "./counterfact.js";
+import { counterfact } from "./counterfact.ts";
 
 // eslint-disable-next-line no-underscore-dangle
 const __dirname = nodePath.dirname(new URL(import.meta.url).pathname);

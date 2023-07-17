@@ -4,7 +4,7 @@ import http from "node:http";
 import supertest from "supertest";
 import Koa from "koa";
 
-import { counterfact } from "../../src/server/counterfact.js";
+import { counterfact } from "../../src/server/counterfact.ts";
 import { withTemporaryFiles } from "../lib/with-temporary-files.ts";
 
 describe("integration test", () => {

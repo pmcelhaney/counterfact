@@ -41,6 +41,7 @@
     "@stryker-mutator/jest-runner": "7.0.2",
     "@testing-library/dom": "^9.3.0",
     "@types/jest": "^29.5.2",
+    "@types/js-yaml": "^4.0.5",
     "@types/koa": "2.13.6",
     "@types/koa-static": "^4.0.2",
     "eslint": "8.42.0",

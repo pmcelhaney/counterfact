@@ -5,22 +5,27 @@ import yaml from "js-yaml";
 
 import { readFile } from "../util/read-file.js";
 
-import { Registry } from "./registry.ts";
-import { Dispatcher } from "./dispatcher.ts";
+import { Registry } from "./registry.js";
+import { type OpenApiDocument, Dispatcher } from "./dispatcher.js";
 import { koaMiddleware } from "./koa-middleware.js";
-import { ModuleLoader } from "./module-loader.ts";
-import { ContextRegistry } from "./context-registry.ts";
+import { ModuleLoader } from "./module-loader.js";
+import { ContextRegistry } from "./context-registry.js";
 
-async function loadOpenApiDocument(source) {
+async function loadOpenApiDocument(source: string) {
   try {
-    return $RefParser.dereference(await yaml.load(await readFile(source)));
+    const text = await readFile(source);
+    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+    const openApiDocument = (await yaml.load(text)) as $RefParser.JSONSchema;
+
+    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+    return (await $RefParser.dereference(openApiDocument)) as OpenApiDocument;
   } catch {
     return undefined;
   }
 }
 
 export async function counterfact(
-  basePath,
+  basePath: string,
   openApiPath = nodePath.join(basePath, "../openapi.yaml"),
   options = {}
 ) {
