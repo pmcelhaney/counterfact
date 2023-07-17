@@ -15,10 +15,14 @@ interface RequestData {
   matchedPath: string;
 }
 
+interface RequestDataWithBody extends RequestData {
+  body?: unknown;
+}
+
 interface Module {
   GET?: (requestData: RequestData) => CounterfactResponse;
-  PUT?: (requestData: RequestData) => CounterfactResponse;
-  POST?: (requestData: RequestData) => CounterfactResponse;
+  PUT?: (requestData: RequestDataWithBody) => CounterfactResponse;
+  POST?: (requestData: RequestDataWithBody) => CounterfactResponse;
   DELETE?: (requestData: RequestData) => CounterfactResponse;
   OPTIONS?: (requestData: RequestData) => CounterfactResponse;
   HEAD?: (requestData: RequestData) => CounterfactResponse;
