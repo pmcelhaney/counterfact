@@ -1,4 +1,3 @@
-/* eslint-disable total-functions/no-unsafe-readonly-mutable-assignment */
 import fs from "node:fs/promises";
 import { constants as fsConstants } from "node:fs";
 import os from "node:os";

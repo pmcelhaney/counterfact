@@ -51,9 +51,9 @@ type HeaderFunction<Response extends OpenApiResponse> = <
   headers: Omit<Response["headers"], Header>;
 }>;
 
-type ResponseBuilder<Response extends OpenApiResponse> = [
-  keyof Response["content"]
-] extends [never]
+export type ResponseBuilder<
+  Response extends OpenApiResponse = OpenApiResponse
+> = [keyof Response["content"]] extends [never]
   ? // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
     void
   : OmitValueWhenNever<{
@@ -69,7 +69,9 @@ type ResponseBuilder<Response extends OpenApiResponse> = [
       random: [keyof Response["content"]] extends [never] ? never : () => void;
     }>;
 
-export type ResponseBuilderFactory<Responses extends OpenApiResponses> = {
+export type ResponseBuilderFactory<
+  Responses extends OpenApiResponses = OpenApiResponses
+> = {
   [StatusCode in keyof Responses]: ResponseBuilder<Responses[StatusCode]>;
 } & { [key: string]: ResponseBuilder<Responses["default"]> };
 

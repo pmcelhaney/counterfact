@@ -1,6 +1,14 @@
-import { Dispatcher } from "../../src/server/dispatcher.ts";
-import { ContextRegistry } from "../../src/server/context-registry.ts";
-import { Registry } from "../../src/server/registry.ts";
+/* eslint-disable max-lines */
+
+// Note: I cut a few corners here on type checking. Since these are tests, I'm more
+// concerned about the tests passing at runtime than lining up the types perfectly.
+
+import {
+  Dispatcher,
+  type OpenApiDocument,
+} from "../../src/server/dispatcher.js";
+import { ContextRegistry } from "../../src/server/context-registry.js";
+import { Registry } from "../../src/server/registry.js";
 
 // eslint-disable-next-line max-statements
 describe("a dispatcher", () => {
@@ -19,6 +27,10 @@ describe("a dispatcher", () => {
     const response = await dispatcher.request({
       method: "GET",
       path: "/hello",
+      headers: {},
+      body: "",
+      req: { path: "/hello" },
+      query: {},
     });
 
     expect(response.body).toBe("hello");
@@ -37,6 +49,10 @@ describe("a dispatcher", () => {
     const response = await dispatcher.request({
       method: "GET",
       path: "/hello",
+      headers: {},
+      body: "",
+      req: { path: "/hello" },
+      query: {},
     });
 
     expect(response).toStrictEqual({
@@ -48,7 +64,7 @@ describe("a dispatcher", () => {
   });
 
   it("finds the best content item for an accept header", () => {
-    const dispatcher = new Dispatcher();
+    const dispatcher = new Dispatcher(new Registry(), new ContextRegistry());
 
     const html = dispatcher.selectContent("text/html", [
       {
@@ -61,7 +77,7 @@ describe("a dispatcher", () => {
       },
     ]);
 
-    expect(html.type).toBe("text/html");
+    expect(html?.type).toBe("text/html");
   });
 
   it("returns HTTP 406 if it can't return content matching the accept header", async () => {
@@ -85,6 +101,10 @@ describe("a dispatcher", () => {
       headers: {
         accept: "application/json",
       },
+
+      body: "",
+      req: { path: "/hello" },
+      query: {},
     });
 
     expect(response.status).toBe(406);
@@ -103,11 +123,11 @@ describe("a dispatcher", () => {
   ])(
     'given accept header "%s" and content types: %s, select %s',
     (acceptHeader, types, expected) => {
-      const dispatcher = new Dispatcher();
+      const dispatcher = new Dispatcher(new Registry(), new ContextRegistry());
 
-      const content = types.map((type) => ({ type }));
+      const content = types.map((type) => ({ type, body: "" }));
 
-      expect(dispatcher.selectContent(acceptHeader, content).type).toBe(
+      expect(dispatcher.selectContent(acceptHeader, content)?.type).toBe(
         expected
       );
     }
@@ -145,6 +165,10 @@ describe("a dispatcher", () => {
       headers: {
         accept: "text/html",
       },
+
+      body: "",
+      req: { path: "/hello" },
+      query: {},
     });
 
     expect(html).toStrictEqual({
@@ -159,7 +183,7 @@ describe("a dispatcher", () => {
     const registry = new Registry();
 
     registry.add("/a", {
-      GET({ body }) {
+      POST({ body }) {
         return {
           body: `Hello ${body.name} of ${body.place}!`,
         };
@@ -168,13 +192,17 @@ describe("a dispatcher", () => {
 
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
     const response = await dispatcher.request({
-      method: "GET",
+      method: "POST",
       path: "/a",
 
       body: {
         name: "Catherine",
         place: "Aragon",
       },
+
+      req: { path: "/a" },
+      query: {},
+      headers: {},
     });
 
     expect(response.body).toBe("Hello Catherine of Aragon!");
@@ -204,7 +232,15 @@ describe("a dispatcher", () => {
       path: "/a",
 
       headers: authHeader,
+      body: "",
+      req: { path: "/a" },
+      query: {},
     });
+
+    if (!("headers" in response)) {
+      // TypeScript thinks the response object might not have a headers property. Can't figure out why.
+      throw new Error("response.headers not defined");
+    }
 
     expect(response.headers).toStrictEqual(authHeader);
   });
@@ -215,7 +251,7 @@ describe("a dispatcher", () => {
     registry.add("/a", {
       GET({ query }) {
         return {
-          body: `Searching for stores near ${query.zip}!`,
+          body: `Searching for stores near ${String(query.zip)}!`,
         };
       },
     });
@@ -228,6 +264,10 @@ describe("a dispatcher", () => {
       query: {
         zip: "90210",
       },
+
+      body: "",
+      req: { path: "/a" },
+      headers: {},
     });
 
     expect(response.body).toBe("Searching for stores near 90210!");
@@ -250,6 +290,10 @@ describe("a dispatcher", () => {
       headers: {
         Accept: "text/html",
       },
+
+      body: "",
+      req: { path: "/a" },
+      query: {},
     });
 
     expect(htmlResponse.body).toBe(true);
@@ -261,6 +305,10 @@ describe("a dispatcher", () => {
       headers: {
         Accept: "text/plain",
       },
+
+      body: "",
+      req: { path: "/a" },
+      query: {},
     });
 
     expect(textResponse.body).toBe(false);
@@ -271,6 +319,7 @@ describe("a dispatcher", () => {
 
     registry.add("/a", {
       GET({ response }) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
         return response[200].text("hello").html("<h1>hello</h1>");
       },
     });
@@ -283,6 +332,10 @@ describe("a dispatcher", () => {
       headers: {
         accept: "text/html",
       },
+
+      body: "",
+      req: { path: "/a" },
+      query: {},
     });
 
     expect(htmlResponse.body).toBe("<h1>hello</h1>");
@@ -293,7 +346,8 @@ describe("a dispatcher", () => {
 
     registry.add("/a", {
       GET({ response }) {
-        return response[200].random();
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+        return response[200]?.random();
       },
     });
 
@@ -330,6 +384,10 @@ describe("a dispatcher", () => {
       headers: {
         accept: "text/plain",
       },
+
+      body: "",
+      req: { path: "/a" },
+      query: {},
     });
 
     expect(htmlResponse.body).toBe("hello");
@@ -351,6 +409,10 @@ describe("a dispatcher", () => {
     const response = await dispatcher.request({
       method: "PUT",
       path: "/stuff",
+      body: "",
+      req: { path: "/stuff" },
+      query: {},
+      headers: {},
     });
 
     expect(response.status).toBe(201);
@@ -364,7 +426,13 @@ describe("a dispatcher", () => {
     contextRegistry.add("/", rootContext);
 
     registry.add("/increment/{value}", {
-      GET({ context, path }) {
+      GET({
+        context,
+        path,
+      }: {
+        context: { value: number };
+        path: { value: string };
+      }) {
         const amountToIncrement = Number.parseInt(path.value, 10);
 
         context.value += amountToIncrement;
@@ -379,6 +447,9 @@ describe("a dispatcher", () => {
       method: "GET",
       path: "/increment/1",
       body: "",
+      req: { path: "/increment/1" },
+      query: {},
+      headers: {},
     });
 
     expect(result.body).toBe("incremented");
@@ -389,6 +460,9 @@ describe("a dispatcher", () => {
       method: "GET",
       path: "/increment/2",
       body: "",
+      req: { path: "/increment/2" },
+      query: {},
+      headers: {},
     });
 
     expect(rootContext.value).toBe(3);
@@ -398,10 +472,11 @@ describe("a dispatcher", () => {
     const registry = new Registry();
     const contextRegistry = new ContextRegistry();
 
-    contextRegistry.add("/", "test context");
+    contextRegistry.add("/", { id: "test context" });
     registry.add("/echo", {
       GET({ context }) {
-        return { body: context };
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        return { body: context.id };
       },
     });
 
@@ -410,6 +485,10 @@ describe("a dispatcher", () => {
     const result = await dispatcher.request({
       method: "GET",
       path: "/echo",
+      body: "",
+      req: { path: "/echo" },
+      query: {},
+      headers: {},
     });
 
     expect(result.body).toBe("test context");
@@ -420,6 +499,11 @@ describe("a dispatcher", () => {
 
     registry.add("/a/{integerInPath}/{stringInPath}", {
       GET({ response, path, query, headers }) {
+        if (path === undefined) {
+          throw new Error("path is undefined");
+        }
+
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
         return response[200].text({
           integerInPath: path.integerInPath,
           stringInPath: path.stringInPath,
@@ -431,7 +515,7 @@ describe("a dispatcher", () => {
       },
     });
 
-    const openApiDocument = {
+    const openApiDocument: OpenApiDocument = {
       paths: {
         "/a/{integerInPath}/{stringInPath}": {
           get: {
@@ -499,6 +583,9 @@ describe("a dispatcher", () => {
         numberInHeader: "5",
         stringInHeader: "6",
       },
+
+      body: "",
+      req: { path: "/a/1/2" },
     });
 
     expect(htmlResponse.body).toStrictEqual({
@@ -530,6 +617,10 @@ describe("given an invalid path", () => {
     const response = await dispatcher.request({
       method: "PUT",
       path: "/your/left/foot/in/and/your/right/foot/out",
+      body: "",
+      req: { path: "/your/left/foot/in/and/your/right/foot/out" },
+      query: {},
+      headers: {},
     });
 
     expect(response.status).toBe(404);

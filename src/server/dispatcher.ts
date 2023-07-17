@@ -43,15 +43,10 @@ interface OpenApiParameters {
   };
 }
 
-interface OpenApiDocument {
+export interface OpenApiDocument {
   paths: {
     [key: string]: {
-      [key in HttpMethods]?: {
-        parameters?: OpenApiParameters[];
-        responses: {
-          [key: string]: CounterfactResponseObject;
-        };
-      };
+      [key in Lowercase<HttpMethods>]?: OpenApiOperation;
     };
   };
 }
@@ -61,14 +56,14 @@ export class Dispatcher {
 
   public contextRegistry: ContextRegistry;
 
-  public openApiDocument: unknown;
+  public openApiDocument: OpenApiDocument | undefined;
 
   public fetch: typeof fetch;
 
   public constructor(
     registry: Registry,
     contextRegistry: ContextRegistry,
-    openApiDocument: OpenApiDocument
+    openApiDocument?: OpenApiDocument
   ) {
     this.registry = registry;
     this.contextRegistry = contextRegistry;
@@ -106,9 +101,12 @@ export class Dispatcher {
 
   private operationForPathAndMethod(
     path: string,
-    method: string
+    method: HttpMethods
   ): OpenApiOperation | undefined {
-    return this.openApiDocument?.paths?.[path]?.[method.toLowerCase()];
+    return this.openApiDocument?.paths[path]?.[
+      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+      method.toLowerCase() as Lowercase<HttpMethods>
+    ];
   }
 
   private normalizeResponse(
@@ -131,6 +129,7 @@ export class Dispatcher {
         return {
           status: 406,
           body: `Not Acceptable: could not produce a response matching any of the following content types: ${acceptHeader}`,
+          contentType: "text/plain",
         };
       }
 
@@ -145,10 +144,13 @@ export class Dispatcher {
       return normalizedResponse;
     }
 
-    return response;
+    return {
+      ...response,
+      contentType: response.headers?.["content-type"] ?? "unknown/unknown",
+    };
   }
 
-  private selectContent(
+  public selectContent(
     acceptHeader: string,
     content: { type: string; body: unknown }[]
   ) {
@@ -187,6 +189,7 @@ export class Dispatcher {
     return false;
   }
 
+  // eslint-disable-next-line sonarjs/cognitive-complexity
   public async request({
     method,
     path,
@@ -222,6 +225,7 @@ export class Dispatcher {
       headers,
       context: this.contextRegistry.find(path),
 
+      // @ts-expect-error - Might be pushing the limits of what TypeScript can do here
       response: createResponseBuilder(operation ?? { responses: {} }),
 
       proxy: async (url: string) => {

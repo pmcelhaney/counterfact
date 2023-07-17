@@ -1,4 +1,7 @@
+import type { ResponseBuilder } from "../../templates/response-builder-factory.js";
+
 import type { MediaType } from "./response-builder.js";
+import type { Tools } from "./tools.js";
 
 type HttpMethods =
   | "DELETE"
@@ -12,12 +15,12 @@ type HttpMethods =
 
 interface RequestData {
   query: { [key: string]: number | string };
-  headers: { [key: string]: number | string };
+  headers: { [key: string]: string };
   path?: { [key: string]: number | string };
   matchedPath?: string;
-  tools: unknown;
+  tools: Tools;
   context: unknown;
-  response: unknown;
+  response: ResponseBuilder;
   proxy: unknown;
 }
 
@@ -44,8 +47,8 @@ interface Node {
 type CounterfactResponseObject =
   | string
   | {
-      status: number;
-      headers: { [key: string]: string };
+      status?: number;
+      headers?: { [key: string]: string };
       body?: string;
       content?: {
         type: MediaType;
