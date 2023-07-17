@@ -6,7 +6,7 @@ import yaml from "js-yaml";
 import { readFile } from "../util/read-file.js";
 
 import { Registry } from "./registry.ts";
-import { Dispatcher } from "./dispatcher.js";
+import { Dispatcher } from "./dispatcher.ts";
 import { koaMiddleware } from "./koa-middleware.js";
 import { ModuleLoader } from "./module-loader.ts";
 import { ContextRegistry } from "./context-registry.ts";

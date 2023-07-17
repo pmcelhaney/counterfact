@@ -1,3 +1,5 @@
+import type { MediaType } from "./response-builder.js";
+
 type HttpMethods =
   | "DELETE"
   | "GET"
@@ -13,6 +15,8 @@ interface RequestData {
   headers: { [key: string]: number | string };
   path: { [key: string]: number | string };
   matchedPath: string;
+  tools: unknown;
+  body?: unknown;
 }
 
 interface RequestDataWithBody extends RequestData {
@@ -41,6 +45,10 @@ type CounterfactResponseObject =
       status: number;
       headers: { [key: string]: string };
       body?: string;
+      content?: {
+        type: MediaType;
+        body: unknown;
+      }[];
     };
 
 type CounterfactResponse =
@@ -132,7 +140,7 @@ export class Registry {
   }
 
   // eslint-disable-next-line max-statements, sonarjs/cognitive-complexity
-  private handler(url: string) {
+  public handler(url: string) {
     let node: Node | undefined = this.moduleTree;
 
     const path: { [key: string]: string } = {};
@@ -209,4 +217,4 @@ export class Registry {
   }
 }
 
-export type { Module };
+export type { Module, CounterfactResponseObject, HttpMethods };

@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-shadow, no-shadow
 import { Headers } from "node-fetch";
 
-import { Dispatcher } from "../../src/server/dispatcher.js";
+import { Dispatcher } from "../../src/server/dispatcher.ts";
 import { ContextRegistry } from "../../src/server/context-registry.ts";
 import { Registry } from "../../src/server/registry.ts";
 

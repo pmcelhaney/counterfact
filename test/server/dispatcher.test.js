@@ -1,4 +1,4 @@
-import { Dispatcher } from "../../src/server/dispatcher.js";
+import { Dispatcher } from "../../src/server/dispatcher.ts";
 import { ContextRegistry } from "../../src/server/context-registry.ts";
 import { Registry } from "../../src/server/registry.ts";
 
