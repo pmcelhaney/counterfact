@@ -2,19 +2,17 @@ import { once } from "node:events";
 import fs from "node:fs/promises";
 import { constants as fsConstants } from "node:fs";
 
-import { Transpiler } from "../../src/server/transpiler.ts";
+import { Transpiler } from "../../src/server/transpiler.js";
 import { withTemporaryFiles } from "../lib/with-temporary-files.js";
 
 const TYPESCRIPT_SOURCE = "const x:number = 1;\n";
 const JAVASCRIPT_SOURCE = "var x = 1;\n";
 
 describe("a Transpiler", () => {
-  // eslint-disable-next-line init-declarations
-  let transpiler;
+  let transpiler: Transpiler = new Transpiler("src", "dist");
 
-  // eslint-disable-next-line jest/no-hooks
-  afterEach(() => {
-    transpiler.stopWatching();
+  afterEach(async () => {
+    await transpiler.stopWatching();
   });
 
   it("finds a file and transpiles it", async () => {
@@ -31,7 +29,7 @@ describe("a Transpiler", () => {
         JAVASCRIPT_SOURCE
       );
 
-      transpiler.stopWatching();
+      await transpiler.stopWatching();
     });
   });
 
@@ -54,7 +52,7 @@ describe("a Transpiler", () => {
           JAVASCRIPT_SOURCE
         );
 
-        transpiler.stopWatching();
+        await transpiler.stopWatching();
       }
     );
   });
@@ -74,14 +72,14 @@ describe("a Transpiler", () => {
 
       const overwrite = once(transpiler, "write");
 
-      add("src/update-me.ts", TYPESCRIPT_SOURCE);
+      await add("src/update-me.ts", TYPESCRIPT_SOURCE);
       await overwrite;
 
       await expect(
         fs.readFile(path("dist/update-me.mjs"), "utf8")
       ).resolves.toBe(JAVASCRIPT_SOURCE);
 
-      transpiler.stopWatching();
+      await transpiler.stopWatching();
     });
   }, 10_000);
 
@@ -97,11 +95,11 @@ describe("a Transpiler", () => {
       await remove("src/delete-me.ts");
       await once(transpiler, "delete");
 
-      await expect(() =>
-        fs.access(path("dist/delete-me.js"), fsConstants.F_OK)
-      ).rejects.toThrow(/ENOENT/u);
+      await expect(async () => {
+        await fs.access(path("dist/delete-me.js"), fsConstants.F_OK);
+      }).rejects.toThrow(/ENOENT/u);
 
-      transpiler.stopWatching();
+      await transpiler.stopWatching();
     });
   });
 });
