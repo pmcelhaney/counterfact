@@ -16,14 +16,14 @@ interface RequestData {
 }
 
 interface Module {
-  GET: (requestData: RequestData) => CounterfactResponse;
-  PUT: (requestData: RequestData) => CounterfactResponse;
-  POST: (requestData: RequestData) => CounterfactResponse;
-  DELETE: (requestData: RequestData) => CounterfactResponse;
-  OPTIONS: (requestData: RequestData) => CounterfactResponse;
-  HEAD: (requestData: RequestData) => CounterfactResponse;
-  PATCH: (requestData: RequestData) => CounterfactResponse;
-  TRACE: (requestData: RequestData) => CounterfactResponse;
+  GET?: (requestData: RequestData) => CounterfactResponse;
+  PUT?: (requestData: RequestData) => CounterfactResponse;
+  POST?: (requestData: RequestData) => CounterfactResponse;
+  DELETE?: (requestData: RequestData) => CounterfactResponse;
+  OPTIONS?: (requestData: RequestData) => CounterfactResponse;
+  HEAD?: (requestData: RequestData) => CounterfactResponse;
+  PATCH?: (requestData: RequestData) => CounterfactResponse;
+  TRACE?: (requestData: RequestData) => CounterfactResponse;
 }
 
 interface Node {
@@ -31,11 +31,17 @@ interface Node {
   module?: Module;
 }
 
-interface CounterfactResponse {
-  status: number;
-  headers: { [key: string]: string };
-  body?: string;
-}
+type CounterfactResponseObject =
+  | string
+  | {
+      status: number;
+      headers: { [key: string]: string };
+      body?: string;
+    };
+
+type CounterfactResponse =
+  | CounterfactResponseObject
+  | Promise<CounterfactResponseObject>;
 
 function castParameters(
   parameters: { [key: string]: number | string },
@@ -80,9 +86,9 @@ function routesForNode(node: Node): string[] {
 export class Registry {
   private readonly modules: { [key: string]: Module } = {};
 
-  private readonly moduleTree: Node = { children: {} };
+  public readonly moduleTree: Node = { children: {} };
 
-  private get routes() {
+  public get routes() {
     return routesForNode(this.moduleTree);
   }
 
@@ -184,8 +190,8 @@ export class Registry {
       });
     }
 
-    return ({ ...requestData }: RequestData) =>
-      execute({
+    return async ({ ...requestData }: RequestData) =>
+      await execute({
         ...requestData,
 
         headers: castParameters(requestData.headers, parameterTypes.header),

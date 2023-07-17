@@ -1,4 +1,24 @@
-import { Registry } from "../../src/server/registry.ts";
+import { Registry, type Module } from "../../src/server/registry.js";
+
+function makeModule(name: string): Module {
+  return {
+    GET() {
+      return name;
+    },
+  };
+}
+
+async function identifyModule(
+  node: { module?: Module } | undefined
+): Promise<unknown> {
+  // eslint-disable-next-line new-cap
+  return await node?.module?.GET?.({
+    query: {},
+    headers: {},
+    path: {},
+    matchedPath: "",
+  });
+}
 
 describe("a registry", () => {
   it("knows if a handler exists for a request method at a path", () => {
@@ -8,7 +28,7 @@ describe("a registry", () => {
       async GET() {
         await Promise.resolve("noop");
 
-        return { body: "hello" };
+        return { status: 200, headers: {}, body: "hello" };
       },
     });
 
@@ -26,35 +46,35 @@ describe("a registry", () => {
       async GET() {
         await Promise.resolve("noop");
 
-        return { body: "GET a" };
+        return "GET a";
       },
 
       async POST() {
         await Promise.resolve("noop");
 
-        return { body: "POST a" };
+        return "POST a";
       },
     });
     registry.add("/b", {
       async GET() {
         await Promise.resolve("noop");
 
-        return { body: "GET b" };
+        return "GET b";
       },
 
       async POST() {
         await Promise.resolve("noop");
 
-        return { body: "POST b" };
+        return "POST b";
       },
     });
 
     const props = {
-      path: "",
+      path: {},
 
-      reduce(foo) {
-        return foo;
-      },
+      query: {},
+      headers: {},
+      matchedPath: "",
 
       context: {},
     };
@@ -63,42 +83,60 @@ describe("a registry", () => {
     const postA = await registry.endpoint("POST", "/a")(props);
     const postB = await registry.endpoint("POST", "/b")(props);
 
-    expect(getA.body).toBe("GET a");
-    expect(getB.body).toBe("GET b");
-    expect(postA.body).toBe("POST a");
-    expect(postB.body).toBe("POST b");
+    expect(getA).toBe("GET a");
+    expect(getB).toBe("GET b");
+    expect(postA).toBe("POST a");
+    expect(postB).toBe("POST b");
   });
 
-  it("constructs a tree of the registered modules", () => {
+  it("constructs a tree of the registered modules", async () => {
     const registry = new Registry();
 
-    registry.add("/nc", "North Carolina");
-    registry.add("/nc/charlotte/south-park", "South Park");
-    registry.add("/nc/charlotte", "Charlotte, NC");
+    registry.add("/nc", makeModule("North Carolina"));
+    registry.add("/nc/charlotte/south-park", makeModule("South Park"));
+    registry.add("/nc/charlotte", makeModule("Charlotte"));
 
-    const { nc } = registry.moduleTree.children;
-    const { charlotte } = nc.children;
-    const southPark = charlotte.children["south-park"];
-
-    expect(nc.module).toBe("North Carolina");
-    expect(charlotte.module).toBe("Charlotte, NC");
-    expect(southPark.module).toBe("South Park");
+    expect(await identifyModule(registry.moduleTree.children?.nc)).toBe(
+      "North Carolina"
+    );
+    expect(
+      await identifyModule(
+        registry.moduleTree.children?.nc?.children?.charlotte
+      )
+    ).toBe("Charlotte");
+    expect(
+      await identifyModule(
+        registry.moduleTree.children?.nc?.children?.charlotte?.children?.[
+          "south-park"
+        ]
+      )
+    ).toBe("South Park");
   });
 
-  it("handles a dynamic path", () => {
+  it("handles a dynamic path", async () => {
     const registry = new Registry();
 
     registry.add("/{organization}/users/{username}/friends/{page}", {
       GET({ path }) {
         return {
-          body: `page ${path.page} of ${path.username}'s friends in ${path.organization}`,
+          headers: { "content-type": "text/plain" },
+          status: 200,
+
+          body: `page ${String(path.page)} of ${String(
+            path.username
+          )}'s friends in ${String(path.organization)}`,
         };
       },
     });
 
     expect(
-      registry.endpoint("GET", "/acme/users/alice/friends/2")({})
+      await registry.endpoint(
+        "GET",
+        "/acme/users/alice/friends/2"
+      )({ path: {}, query: {}, headers: {}, matchedPath: "" })
     ).toStrictEqual({
+      headers: { "content-type": "text/plain" },
+      status: 200,
       body: "page 2 of alice's friends in acme",
     });
   });
