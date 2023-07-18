@@ -208,7 +208,7 @@ export class Dispatcher {
       [key: string]: string;
     };
     req: {
-      path: string;
+      path?: string;
     };
   }) {
     const { matchedPath } = this.registry.handler(path);
@@ -237,7 +237,7 @@ export class Dispatcher {
           );
         }
 
-        const fetchResponse = await this.fetch(url + req.path, {
+        const fetchResponse = await this.fetch(`${url}${req.path ?? ""}`, {
           method,
           headers: new Headers(headers),
           body: body === undefined ? undefined : JSON.stringify(body),

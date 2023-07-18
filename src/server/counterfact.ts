@@ -49,6 +49,7 @@ export async function counterfact(
   await moduleLoader.watch();
 
   return {
+    // eslint-disable-next-line total-functions/no-unsafe-readonly-mutable-assignment
     koaMiddleware: koaMiddleware(dispatcher, options),
     registry,
     moduleLoader,
