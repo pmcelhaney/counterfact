@@ -1,9 +1,9 @@
-// eslint-disable-next-line @typescript-eslint/no-shadow, no-shadow
+// eslint-disable-next-line @typescript-eslint/no-shadow
 import { Headers } from "node-fetch";
 
-import { Dispatcher } from "../../src/server/dispatcher.ts";
-import { ContextRegistry } from "../../src/server/context-registry.ts";
-import { Registry } from "../../src/server/registry.ts";
+import { Dispatcher } from "../../src/server/dispatcher.js";
+import { ContextRegistry } from "../../src/server/context-registry.js";
+import { Registry } from "../../src/server/registry.js";
 
 describe("a dispatcher passes a proxy function to the operation", () => {
   it("passes a proxy function", async () => {
@@ -11,21 +11,25 @@ describe("a dispatcher passes a proxy function to the operation", () => {
 
     registry.add("/a", {
       GET({ proxy }) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
         return proxy("https://example.com");
       },
     });
 
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
 
-    dispatcher.fetch = (url) => ({
-      status: 200,
-      headers: new Headers([["content-type", "application/json"]]),
+    dispatcher.fetch = async (url: string) =>
+      /* @ts-expect-error not mocking all properties of fetch response */
+      await Promise.resolve({
+        status: 200,
+        headers: new Headers([["content-type", "application/json"]]),
 
-      text() {
-        return `body from ${url}`;
-      },
-    });
+        async text() {
+          return await Promise.resolve(`body from ${url}`);
+        },
+      });
 
+    /* @ts-expect-error not including all properties of request */
     const response = await dispatcher.request({
       method: "GET",
       path: "/a",
