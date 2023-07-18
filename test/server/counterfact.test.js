@@ -133,6 +133,8 @@ describe("integration test", () => {
       expect(getResponse.text).toBe("I am proxy!\n");
 
       await moduleLoader.stopWatching();
+
+      await proxyTarget.unref();
     });
   });
 });
