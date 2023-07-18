@@ -8,23 +8,29 @@ import bodyParser from "koa-bodyparser";
 import { koaSwagger } from "koa2-swagger-ui";
 import Handlebars from "handlebars";
 
-import { readFile } from "../util/read-file.ts";
+import { readFile } from "../util/read-file.js";
 
-import { counterfact } from "./counterfact.ts";
+import { counterfact } from "./counterfact.js";
 
-// eslint-disable-next-line no-underscore-dangle
+// eslint-disable-next-line no-underscore-dangle, total-functions/no-partial-url-constructor
 const __dirname = nodePath.dirname(new URL(import.meta.url).pathname);
 
 const DEFAULT_PORT = 3100;
 
-Handlebars.registerHelper("escape_route", (route) =>
+Handlebars.registerHelper("escape_route", (route: string) =>
   route.replaceAll(/[^\w/]/gu, "-")
 );
 
-function openapi(openApiPath, url) {
-  return async (ctx, next) => {
+function openapi(openApiPath: string, url: string) {
+  return async (ctx: Koa.ExtendableContext, next: Koa.Next) => {
     if (ctx.URL.pathname === "/counterfact/openapi") {
-      const openApiDocument = await yaml.load(await readFile(openApiPath));
+      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+      const openApiDocument = (await yaml.load(
+        await readFile(openApiPath)
+      )) as {
+        host?: string;
+        servers?: { url: string; description: string }[];
+      };
 
       openApiDocument.servers ??= [];
 
@@ -47,8 +53,12 @@ function openapi(openApiPath, url) {
   };
 }
 
-function page(pathname, templateName, locals) {
-  return async (ctx, next) => {
+function page(
+  pathname: string,
+  templateName: string,
+  locals: { [key: string]: unknown }
+) {
+  return async (ctx: Koa.ExtendableContext, next: Koa.Next) => {
     const render = Handlebars.compile(
       await readFile(
         nodePath.join(__dirname, `../client/${templateName}.html.hbs`)
@@ -56,8 +66,7 @@ function page(pathname, templateName, locals) {
     );
 
     if (ctx.URL.pathname === pathname) {
-      // eslint-disable-next-line require-atomic-updates
-      ctx.body = await render(locals);
+      ctx.body = render(locals);
 
       return;
     }
@@ -67,7 +76,11 @@ function page(pathname, templateName, locals) {
   };
 }
 
-export async function start(config) {
+export async function start(config: {
+  basePath: string;
+  openApiPath: string;
+  port: number;
+}) {
   const {
     basePath = process.cwd(),
     openApiPath = nodePath.join(basePath, "../openapi.yaml"),

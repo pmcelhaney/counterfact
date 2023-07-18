@@ -6,7 +6,7 @@ import { program } from "commander";
 import open from "open";
 
 import { generate } from "../src/typescript-generator/generate.js";
-import { start } from "../src/server/start.js";
+import { start } from "../src/server/start.ts";
 import { startRepl } from "../src/server/repl.ts";
 
 const DEFAULT_PORT = 3100;
