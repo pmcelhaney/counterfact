@@ -1,10 +1,10 @@
-import { Registry } from "../../src/server/registry.ts";
-import { Dispatcher } from "../../src/server/dispatcher.ts";
-import { koaMiddleware } from "../../src/server/koa-middleware.ts";
-import { ContextRegistry } from "../../src/server/context-registry.ts";
+import { Registry } from "../../src/server/registry.js";
+import { Dispatcher } from "../../src/server/dispatcher.js";
+import { koaMiddleware } from "../../src/server/koa-middleware.js";
+import { ContextRegistry } from "../../src/server/context-registry.js";
 
-function mockKoaProxy(options) {
-  return function proxy(ctx) {
+function mockKoaProxy(options: { host: string }) {
+  return function proxy(ctx: { mockProxyHost: string }) {
     ctx.mockProxyHost = options.host;
   };
 }
@@ -14,7 +14,7 @@ describe("koa middleware", () => {
     const registry = new Registry();
 
     registry.add("/hello", {
-      POST({ body }) {
+      POST({ body }: { body: { name: string } }) {
         return {
           body: `Hello, ${body.name}!`,
         };
@@ -31,7 +31,7 @@ describe("koa middleware", () => {
       },
     };
 
-    await middleware(ctx);
+    await middleware(ctx, () => undefined);
 
     expect(ctx.status).toBe(200);
     expect(ctx.body).toBe("Hello, Homer!");
