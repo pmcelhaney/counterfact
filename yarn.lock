@@ -1229,9 +1229,9 @@
   integrity sha512-6SWlXpWU5AvId8Ac7zjzmIOqMOba/JWY8XZ4A7q7Gn1Vlfg/SFFIlrtHXt9nPn4op9ZPAkl91Jao+QQv3r/ukw==
 
 "@hapi/accept@^6.0.0":
-  version "6.0.1"
-  resolved "https://registry.yarnpkg.com/@hapi/accept/-/accept-6.0.1.tgz#36378307a67fe38a626fbfaf7f130cdb654d0385"
-  integrity sha512-aLkYj7zzgC3CSlEVOs84eBOEE3i9xZK2tdQEP+TOj2OFzMWCi9zjkRet82V3GGjecE//zFrCLKIykuaE0uM4bg==
+  version "6.0.2"
+  resolved "https://registry.yarnpkg.com/@hapi/accept/-/accept-6.0.2.tgz#1d3120601b26136f340a73cefa918c7d5324cb07"
+  integrity sha512-xaTLf29Zeph/B32hekmgxLFsEPuX1xQYyZu0gJ4ZCHKU6nXmBRXfBymtWNEK0souOJcX2XHWUaZU6JzccuuMpg==
   dependencies:
     "@hapi/boom" "^10.0.1"
     "@hapi/hoek" "^11.0.2"
