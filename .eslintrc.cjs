@@ -1,6 +1,7 @@
 "use strict";
 
 const rules = {
+  "n/shebang": "off",
   "putout/putout": "off",
   "import/prefer-default-export": "off",
   "@typescript-eslint/naming-convention": "off",
