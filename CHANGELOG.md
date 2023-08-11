@@ -1,5 +1,11 @@
 # counterfact
 
+## 0.20.6
+
+### Patch Changes
+
+- d975833: fix an issue where ts-node was not being used, which basically broke everything
+
 ## 0.20.5
 
 ### Patch Changes
