@@ -33,7 +33,7 @@
     "go:petstore": "yarn counterfact https://petstore3.swagger.io/api/v3/openapi.json out",
     "go:petstore2": "yarn counterfact  https://petstore.swagger.io/v2/swagger.json out",
     "go:example": "yarn counterfact ./openapi-example.yaml out --open",
-    "counterfact": "ts-node --esm --transpileOnly ./bin/counterfact.js"
+    "counterfact": "./bin/counterfact.js"
   },
   "devDependencies": {
     "@changesets/cli": "2.26.2",
