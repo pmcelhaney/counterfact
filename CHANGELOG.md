@@ -1,5 +1,11 @@
 # counterfact
 
+## 0.21.0
+
+### Minor Changes
+
+- 9e0e4d3: it's Friday ¯\_(ツ)\_/¯
+
 ## 0.20.6
 
 ### Patch Changes
