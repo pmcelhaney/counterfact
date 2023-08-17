@@ -1,5 +1,11 @@
 # counterfact
 
+## 0.21.3
+
+### Patch Changes
+
+- 1d13668: fix an issue where the random() function doesn't recognize it should use OpenAPI2
+
 ## 0.21.2
 
 ### Patch Changes
