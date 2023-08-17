@@ -1,5 +1,11 @@
 # counterfact
 
+## 0.21.2
+
+### Patch Changes
+
+- 9ca754f: fix another bug where OpenAPI2 puts the produces proprty in the root
+
 ## 0.21.1
 
 ### Patch Changes
