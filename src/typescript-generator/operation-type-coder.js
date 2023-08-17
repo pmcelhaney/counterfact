@@ -101,7 +101,8 @@ export class OperationTypeCoder extends Coder {
 
     const responseType = new ResponseTypeCoder(
       this.requirement.get("responses"),
-      this.requirement.get("produces")?.data
+      this.requirement.get("produces")?.data ??
+        this.requirement.specification?.rootRequirement?.get("produces")?.data
     ).write(script);
 
     const proxyType = "(url: string) => { proxyUrl: string }";
