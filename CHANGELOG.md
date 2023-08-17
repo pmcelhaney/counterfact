@@ -1,5 +1,11 @@
 # counterfact
 
+## 0.21.1
+
+### Patch Changes
+
+- 65f081b: fix error when the produces content type is defined at the root
+
 ## 0.21.0
 
 ### Minor Changes
