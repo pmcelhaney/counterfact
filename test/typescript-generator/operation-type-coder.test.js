@@ -3,6 +3,7 @@ import prettier from "prettier";
 
 import { OperationTypeCoder } from "../../src/typescript-generator/operation-type-coder.js";
 import { Requirement } from "../../src/typescript-generator/requirement.js";
+import { Specification } from "../../src/typescript-generator/specification.js";
 
 function format(code) {
   return prettier.format(code, { parser: "typescript" });
@@ -154,6 +155,53 @@ describe("an OperationTypeCoder", () => {
         },
       },
       "#/paths/hello/post"
+    );
+
+    const coder = new OperationTypeCoder(requirement);
+
+    expect(
+      format(`type TestType = ${coder.write(dummyScript)}`)
+    ).toMatchSnapshot();
+  });
+
+  it("generates a complex post operation (OpenAPI 2 with produces at the root)", () => {
+    const specification = new Specification();
+
+    specification.rootRequirement = new Requirement({
+      produces: ["application/json"],
+    });
+
+    const requirement = new Requirement(
+      {
+        consumes: ["application/json"],
+
+        parameters: [
+          { name: "id", in: "path", type: "string" },
+          { name: "name", in: "query", type: "string" },
+          { name: "name", in: "header", type: "string" },
+          {
+            name: "body",
+            in: "body",
+            schema: { $ref: "#/components/schemas/Example" },
+          },
+        ],
+
+        responses: {
+          200: {
+            schema: { $ref: "#/components/schemas/Example" },
+          },
+
+          400: {
+            schema: { $ref: "#/components/schemas/Error" },
+          },
+
+          default: {
+            schema: { $ref: "#/components/schemas/Error" },
+          },
+        },
+      },
+      "#/paths/hello/post",
+      specification
     );
 
     const coder = new OperationTypeCoder(requirement);
