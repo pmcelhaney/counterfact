@@ -44,7 +44,17 @@ export class Dispatcher {
   }
 
   operationForPathAndMethod(path, method) {
-    return this.openApiDocument?.paths?.[path]?.[method.toLowerCase()];
+    const operation =
+      this.openApiDocument?.paths?.[path]?.[method.toLowerCase()];
+
+    if (this.openApiDocument?.produces) {
+      return {
+        produces: this.openApiDocument.produces,
+        ...operation,
+      };
+    }
+
+    return operation;
   }
 
   async request({ method, path, headers, body, query, req }) {
