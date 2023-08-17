@@ -53,15 +53,27 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2 wit
   response: ResponseBuilderFactory<{
     200: {
       headers: {};
-      content: {};
+      content: {
+        \\"application/json\\": {
+          schema: Type;
+        };
+      };
     };
     400: {
       headers: {};
-      content: {};
+      content: {
+        \\"application/json\\": {
+          schema: Type;
+        };
+      };
     };
     [statusCode in Exclude<HttpStatusCode, 200 | 400>]: {
       headers: {};
-      content: {};
+      content: {
+        \\"application/json\\": {
+          schema: Type;
+        };
+      };
     };
   }>;
   proxy: (url: string) => { proxyUrl: string };
