@@ -29,6 +29,8 @@ describe("koa middleware", () => {
       req: {
         path: "/hello",
       },
+
+      set: () => jest.fn(),
     };
 
     await middleware(ctx);
@@ -52,6 +54,7 @@ describe("koa middleware", () => {
     const middleware = koaMiddleware(dispatcher);
     const ctx = {
       request: { path: "/not-modified", method: "GET" },
+      set: () => jest.fn(),
     };
 
     await middleware(ctx);

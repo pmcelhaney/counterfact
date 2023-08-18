@@ -11,7 +11,7 @@ export function koaMiddleware(dispatcher, options = {}, proxy = koaProxy) {
     }
 
     // Always append CORS headers
-    ctx.set("Access-Control-Allow-Origin", ctx.request.headers.origin);
+    ctx.set("Access-Control-Allow-Origin", ctx.request?.headers?.origin || "*");
     ctx.set("Access-Control-Allow-Methods", "GET,HEAD,PUT,POST,DELETE,PATCH");
     ctx.set(
       "Access-Control-Allow-Headers",
