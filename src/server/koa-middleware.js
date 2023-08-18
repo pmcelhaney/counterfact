@@ -10,6 +10,26 @@ export function koaMiddleware(dispatcher, options = {}, proxy = koaProxy) {
       return proxy({ host: options.proxyUrl })(ctx, next);
     }
 
+    // Always append CORS headers
+    ctx.set("Access-Control-Allow-Origin", ctx.request.headers.origin);
+    ctx.set("Access-Control-Allow-Methods", "GET,HEAD,PUT,POST,DELETE,PATCH");
+    ctx.set(
+      "Access-Control-Allow-Headers",
+      ctx.request.headers["access-control-request-headers"]
+    );
+    ctx.set(
+      "Access-Control-Expose-Headers",
+      ctx.request.headers["access-control-request-headers"]
+    );
+    ctx.set("Access-Control-Allow-Credentials", "true");
+
+    // If the method is OPTIONS then always return OK
+    if (method === "OPTIONS") {
+      ctx.status = HTTP_STATUS_CODE_OK;
+
+      return undefined;
+    }
+
     const response = await dispatcher.request({
       method,
       path,
