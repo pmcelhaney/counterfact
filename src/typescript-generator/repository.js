@@ -51,7 +51,7 @@ export class Repository {
     const files = ["package.json", "response-builder-factory.ts"];
 
     return files.map((file) => {
-      const path = nodePath.join(destination, file);
+      const path = nodePath.join(destination, file).replaceAll("\\", "/");
 
       process.stdout.write(`writing ${path}\n`);
 
@@ -74,7 +74,7 @@ export class Repository {
           parser: "typescript",
         });
 
-        const fullPath = nodePath.join(destination, path);
+        const fullPath = nodePath.join(destination, path).replaceAll("\\", "/");
 
         await ensureDirectoryExists(fullPath);
 
