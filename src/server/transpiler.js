@@ -82,7 +82,7 @@ export class Transpiler extends EventTarget {
 
   // eslint-disable-next-line max-statements
   async transpileFile(eventName, sourcePath, destinationPath) {
-    log("transpiling", sourcePath, "to", destinationPath);
+    log("transpiling", sourcePath, "to", destinationPath, "because", eventName);
     log("first make sure the directory exists for", destinationPath);
     await ensureDirectoryExists(destinationPath);
     log("the directory does exist for", destinationPath);
