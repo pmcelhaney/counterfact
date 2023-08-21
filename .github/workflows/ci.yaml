@@ -38,4 +38,4 @@ jobs:
       - name: ESlint
         run: yarn eslint -f github-annotations .
       - name: Unit tests
-        run: yarn test --runInBand
+        run: yarn test --runInBand --forceExit
