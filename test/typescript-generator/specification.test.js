@@ -57,7 +57,10 @@ describe("a Specification", () => {
       hello: "world",
     });
 
-    await server.close();
+    // eslint-disable-next-line promise/avoid-new
+    await new Promise((resolve) => {
+      server.close(resolve);
+    });
   });
 
   it("returns a requirement for a URL", async () => {
