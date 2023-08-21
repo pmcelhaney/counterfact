@@ -43,6 +43,7 @@ export class Transpiler extends EventTarget {
       log("chokidar", eventName, sourcePath);
 
       const destinationPath = sourcePath
+        .replaceAll("\\", "/")
         .replace(this.sourcePath, this.destinationPath)
         .replace(".ts", ".js");
 

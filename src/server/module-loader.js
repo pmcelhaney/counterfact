@@ -31,7 +31,9 @@ export class ModuleLoader extends EventTarget {
   async watch() {
     this.watcher = chokidar
       .watch(`${this.basePath}/**/*.{js,mjs,ts,mts}`, CHOKIDAR_OPTIONS)
-      .on("all", (eventName, pathName) => {
+      .on("all", (eventName, pathNameOriginal) => {
+        const pathName = pathNameOriginal.replaceAll("\\", "/");
+
         log("chokidar", eventName, pathName);
 
         if (!["add", "change", "unlink"].includes(eventName)) {
