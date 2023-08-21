@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 // Stryker disable all
 
 import fs from "node:fs/promises";
@@ -36,6 +37,8 @@ export class Transpiler extends EventTarget {
     const transpiles = [];
 
     this.watcher.on("all", async (eventName, sourcePath) => {
+      console.log("[transpiler] chokidar", eventName, sourcePath);
+
       const destinationPath = sourcePath
         .replace(this.sourcePath, this.destinationPath)
         .replace(".ts", ".js");
@@ -58,7 +61,10 @@ export class Transpiler extends EventTarget {
         this.dispatchEvent(new Event("delete"));
       }
     });
+
+    console.log("[transpiler] waiting for watcher to be ready");
     await once(this.watcher, "ready");
+    console.log("[transpiler] watcher is ready");
 
     await Promise.all(transpiles);
   }

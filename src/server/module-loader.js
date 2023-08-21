@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import fs from "node:fs/promises";
 import { existsSync } from "node:fs";
 import nodePath from "node:path";
@@ -28,6 +29,8 @@ export class ModuleLoader extends EventTarget {
     this.watcher = chokidar
       .watch(`${this.basePath}/**/*.{js,mjs,ts,mts}`, CHOKIDAR_OPTIONS)
       .on("all", (eventName, pathName) => {
+        console.log("chokidar", eventName, pathName);
+
         if (!["add", "change", "unlink"].includes(eventName)) {
           return;
         }
@@ -63,7 +66,10 @@ export class ModuleLoader extends EventTarget {
             process.stdout.write(`\nError loading ${pathName}:\n${error}\n`);
           });
       });
+
+    console.log("waiting for ready event");
     await once(this.watcher, "ready");
+    console.log("received ready event");
   }
 
   async stopWatching() {
