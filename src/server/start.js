@@ -70,7 +70,9 @@ function page(pathname, templateName, locals) {
 export async function start(config) {
   const {
     basePath = process.cwd(),
-    openApiPath = nodePath.join(basePath, "../openapi.yaml"),
+    openApiPath = nodePath
+      .join(basePath, "../openapi.yaml")
+      .replaceAll("\\", "/"),
     port = DEFAULT_PORT,
   } = config;
 

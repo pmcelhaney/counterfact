@@ -109,7 +109,9 @@ export class ModuleLoader extends EventTarget {
           this.contextRegistry.add(`/${directory}`, endpoint.default);
         } else {
           this.registry.add(
-            `/${nodePath.join(directory, nodePath.parse(file.name).name)}`,
+            `/${nodePath
+              .join(directory, nodePath.parse(file.name).name)
+              .replaceAll("\\", "/")}`,
             endpoint
           );
         }
