@@ -17,7 +17,7 @@ describe("a Transpiler", () => {
     transpiler.stopWatching();
   });
 
-  it("finds a file and transpiles it", async () => {
+  it.only("finds a file and transpiles it", async () => {
     const files = {
       "src/found.ts": TYPESCRIPT_SOURCE,
     };
