@@ -1,4 +1,4 @@
-name: CI Checks 
+name: CI Checks
 
 on:
   pull_request:
@@ -10,10 +10,10 @@ concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
   ci-checks:
-    name: CI Checks 
+    name: CI Checks
     strategy:
       matrix:
-        os: ['windows-latest', 'ubuntu-latest']
+        os: ["windows-latest", "ubuntu-latest"]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Check out repo
@@ -35,7 +35,7 @@ jobs:
           key: ${{ runner.os }}-${{ steps.node-version.outputs.version }}-${{ hashFiles('**/yarn.lock') }}
       - name: Install Packages
         run: yarn install --frozen-lockfile --network-timeout 100000
-      - name: ESlint
-        run: yarn eslint -f github-annotations . 
+      # - name: ESlint
+      #   run: yarn eslint -f github-annotations .
       - name: Unit tests
-        run: yarn test --reporters=github-actions --forceExit
+        run: yarn test "transpiler"

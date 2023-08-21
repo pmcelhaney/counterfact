@@ -69,21 +69,31 @@ export class Transpiler extends EventTarget {
     await once(this.watcher, "ready");
     log("watcher is ready");
 
+    log("waiting until", transpiles.length, "files are transpiled");
+
     await Promise.all(transpiles);
+
+    log("done transpiling", transpiles.length, "files");
   }
 
   async stopWatching() {
     await this.watcher?.close();
   }
 
+  // eslint-disable-next-line max-statements
   async transpileFile(eventName, sourcePath, destinationPath) {
+    log("transpiling", sourcePath, "to", destinationPath);
+    log("first make sure the directory exists for", destinationPath);
     await ensureDirectoryExists(destinationPath);
+    log("the directory does exist for", destinationPath);
 
     const source = await fs.readFile(sourcePath, "utf8");
 
     const result = ts.transpileModule(source, {
       compilerOptions: { module: ts.ModuleKind.ES2022 },
     }).outputText;
+
+    log("starting transpilation for", destinationPath);
 
     try {
       await fs.writeFile(
@@ -96,10 +106,13 @@ export class Transpiler extends EventTarget {
           .replaceAll("\\", "/"),
         result
       );
-    } catch {
+    } catch (error) {
+      log("ERROR: could not transpile", destinationPath, error);
+
       throw new Error("could not transpile");
     }
 
+    log("finished transpilation for", destinationPath);
     this.dispatchEvent(new Event("write"));
   }
 }
