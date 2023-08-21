@@ -2,7 +2,7 @@
 
 import fs from "node:fs/promises";
 import nodePath from "node:path";
-import { constants as fsConstants } from "node:fs";
+import { existsSync, constants as fsConstants } from "node:fs";
 import { once } from "node:events";
 
 import ts from "typescript";
@@ -95,24 +95,25 @@ export class Transpiler extends EventTarget {
 
     log("starting transpilation for", destinationPath);
 
+    const fullDestination = nodePath
+      .join(
+        sourcePath
+          .replace(this.sourcePath, this.destinationPath)
+          .replace(".ts", ".mjs")
+      )
+      .replaceAll("\\", "/");
+
     try {
-      await fs.writeFile(
-        nodePath
-          .join(
-            sourcePath
-              .replace(this.sourcePath, this.destinationPath)
-              .replace(".ts", ".mjs")
-          )
-          .replaceAll("\\", "/"),
-        result
-      );
+      await fs.writeFile(fullDestination, result);
     } catch (error) {
-      log("ERROR: could not transpile", destinationPath, error);
+      log("ERROR: could not transpile", fullDestination, error);
 
       throw new Error("could not transpile");
     }
 
-    log("finished transpilation for", destinationPath);
+    log("finished transpilation for", fullDestination);
+
+    log("is the file there?", existsSync(fullDestination));
     this.dispatchEvent(new Event("write"));
   }
 }

@@ -27,8 +27,16 @@ describe("a Transpiler", () => {
 
       await transpiler.watch();
 
+      process.stdout.write(
+        `this file should exist: ${path("dist/found.mjs")})\n`
+      );
+      process.stdout.write("wait a second\n");
       // eslint-disable-next-line promise/avoid-new, no-promise-executor-return
       await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      process.stdout.write(
+        `this file should exist: ${path("dist/found.mjs")})\n`
+      );
 
       expect(fs.existsSync(path("dist/found.mjs"))).toBe(true);
 
