@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 // Stryker disable all
 
 import fs from "node:fs/promises";
@@ -10,6 +9,10 @@ import ts from "typescript";
 import chokidar from "chokidar";
 
 import { CHOKIDAR_OPTIONS } from "./constants.js";
+
+function log(...strings) {
+  process.stdout.write(`[transpiler] ${strings.join("\t")}\n`);
+}
 
 async function ensureDirectoryExists(filePath) {
   const directory = nodePath.dirname(filePath);
@@ -37,7 +40,7 @@ export class Transpiler extends EventTarget {
     const transpiles = [];
 
     this.watcher.on("all", async (eventName, sourcePath) => {
-      console.log("[transpiler] chokidar", eventName, sourcePath);
+      log("chokidar", eventName, sourcePath);
 
       const destinationPath = sourcePath
         .replace(this.sourcePath, this.destinationPath)
@@ -62,9 +65,9 @@ export class Transpiler extends EventTarget {
       }
     });
 
-    console.log("[transpiler] waiting for watcher to be ready");
+    log("waiting for watcher to be ready");
     await once(this.watcher, "ready");
-    console.log("[transpiler] watcher is ready");
+    log("watcher is ready");
 
     await Promise.all(transpiles);
   }
