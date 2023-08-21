@@ -11,7 +11,10 @@ import chokidar from "chokidar";
 import { CHOKIDAR_OPTIONS } from "./constants.js";
 
 function log(...strings) {
-  process.stdout.write(`[transpiler] ${strings.join("\t")}\n`);
+  // eslint-disable-next-line n/no-process-env
+  if (process.env.DEBUG || process.platform === "win32") {
+    process.stdout.write(`[transpiler] ${strings.join("\t")}\n`);
+  }
 }
 
 async function ensureDirectoryExists(filePath) {

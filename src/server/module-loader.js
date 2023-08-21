@@ -9,7 +9,10 @@ import { ContextRegistry } from "./context-registry.js";
 import { CHOKIDAR_OPTIONS } from "./constants.js";
 
 function log(...strings) {
-  process.stdout.write(`[module-loader] ${strings.join("\t")}\n`);
+  // eslint-disable-next-line n/no-process-env
+  if (process.env.DEBUG || process.platform === "win32") {
+    process.stdout.write(`[module-loader] ${strings.join("\t")}\n`);
+  }
 }
 
 export class ModuleLoader extends EventTarget {

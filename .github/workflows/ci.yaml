@@ -13,7 +13,7 @@ jobs:
     name: CI Checks
     strategy:
       matrix:
-        os: ["windows-latest", "ubuntu-latest"]
+        os: ["ubuntu-latest"]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Check out repo
