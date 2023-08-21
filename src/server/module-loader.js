@@ -40,7 +40,7 @@ export class ModuleLoader extends EventTarget {
 
         const parts = nodePath.parse(pathName.replace(this.basePath, ""));
         const url = nodePath.normalize(
-          `/${nodePath.join(parts.dir, parts.name)}`
+          `/${nodePath.join(parts.dir, parts.name).replaceAll("\\", "/")}`
         );
 
         if (eventName === "unlink") {
@@ -80,20 +80,27 @@ export class ModuleLoader extends EventTarget {
   }
 
   async load(directory = "") {
-    if (!existsSync(nodePath.join(this.basePath, directory))) {
+    if (
+      !existsSync(nodePath.join(this.basePath, directory).replaceAll("\\", "/"))
+    ) {
       throw new Error(`Directory does not exist ${this.basePath}`);
     }
 
-    const files = await fs.readdir(nodePath.join(this.basePath, directory), {
-      withFileTypes: true,
-    });
+    const files = await fs.readdir(
+      nodePath.join(this.basePath, directory).replaceAll("\\", "/"),
+      {
+        withFileTypes: true,
+      }
+    );
 
     // eslint-disable-next-line max-statements
     const imports = files.flatMap(async (file) => {
       const extension = file.name.split(".").at(-1);
 
       if (file.isDirectory()) {
-        await this.load(nodePath.join(directory, file.name));
+        await this.load(
+          nodePath.join(directory, file.name).replaceAll("\\", "/")
+        );
 
         return;
       }
@@ -102,7 +109,9 @@ export class ModuleLoader extends EventTarget {
         return;
       }
 
-      const fullPath = nodePath.join(this.basePath, directory, file.name);
+      const fullPath = nodePath
+        .join(this.basePath, directory, file.name)
+        .replaceAll("\\", "/");
 
       try {
         // eslint-disable-next-line  import/no-dynamic-require, no-unsanitized/method

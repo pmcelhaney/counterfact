@@ -17,7 +17,7 @@ async function ensureDirectoryExists(filePath) {
 
 function createAddFunction(basePath) {
   return async function add(filePath, content) {
-    const fullPath = nodePath.join(basePath, filePath);
+    const fullPath = nodePath.join(basePath, filePath).replaceAll("\\", "/");
 
     await ensureDirectoryExists(fullPath);
     await fs.writeFile(fullPath, content);
@@ -26,7 +26,7 @@ function createAddFunction(basePath) {
 
 function createAddDirectoryFunction(basePath) {
   return async function addDirectory(filePath) {
-    const fullPath = nodePath.join(basePath, filePath);
+    const fullPath = nodePath.join(basePath, filePath).replaceAll("\\", "/");
 
     await fs.mkdir(fullPath, { recursive: true });
   };
@@ -34,7 +34,7 @@ function createAddDirectoryFunction(basePath) {
 
 function createRemoveFunction(basePath) {
   return async function remove(filePath) {
-    const fullPath = nodePath.join(basePath, filePath);
+    const fullPath = nodePath.join(basePath, filePath).replaceAll("\\", "/");
 
     await ensureDirectoryExists(fullPath);
     await fs.rm(fullPath);
@@ -53,7 +53,9 @@ export async function withTemporaryFiles(files, ...callbacks) {
   try {
     const writes = Object.entries(files).map(async (entry) => {
       const [filename, contents] = entry;
-      const filePath = nodePath.join(temporaryDirectory, filename);
+      const filePath = nodePath
+        .join(temporaryDirectory, filename)
+        .replaceAll("\\", "/");
 
       await ensureDirectoryExists(filePath);
       await fs.writeFile(filePath, contents);
@@ -69,7 +71,9 @@ export async function withTemporaryFiles(files, ...callbacks) {
         addDirectory: createAddDirectoryFunction(temporaryDirectory),
 
         path(relativePath) {
-          return nodePath.join(temporaryDirectory, relativePath);
+          return nodePath
+            .join(temporaryDirectory, relativePath)
+            .replaceAll("\\", "/");
         },
       });
     }

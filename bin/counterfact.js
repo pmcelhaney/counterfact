@@ -20,7 +20,9 @@ async function main(source, destination) {
     nodePath.join(process.cwd(), destination).replaceAll("\\", "/")
   );
 
-  const basePath = nodePath.resolve(nodePath.join(process.cwd(), destination));
+  const basePath = nodePath.resolve(
+    nodePath.join(process.cwd(), destination).replaceAll("\\", "/")
+  );
 
   const openBrowser = options.open;
 
@@ -41,10 +43,9 @@ async function main(source, destination) {
 
   const waysToInteract = [
     `Call the REST APIs at ${url} (with your front end app, curl, Postman, etc.)`,
-    `Change the implementation of the APIs by editing files under ${nodePath.join(
-      basePath,
-      "paths"
-    )} (no need to restart)`,
+    `Change the implementation of the APIs by editing files under ${nodePath
+      .join(basePath, "paths")
+      .replaceAll("\\", "/")} (no need to restart)`,
     `Use the GUI at ${guiUrl}`,
     "Use the REPL below (type .counterfact for more information)",
   ];
