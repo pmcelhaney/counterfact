@@ -1,4 +1,3 @@
-/* eslint-disable no-only-tests/no-only-tests */
 import { once } from "node:events";
 import fs from "node:fs/promises";
 import { constants as fsConstants } from "node:fs";
@@ -18,8 +17,7 @@ describe("a Transpiler", () => {
     transpiler.stopWatching();
   });
 
-  // eslint-disable-next-line jest/no-focused-tests
-  it.only("finds a file and transpiles it", async () => {
+  it("finds a file and transpiles it", async () => {
     const files = {
       "src/found.ts": TYPESCRIPT_SOURCE,
     };
