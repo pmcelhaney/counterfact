@@ -134,5 +134,10 @@ describe("integration test", () => {
 
       await moduleLoader.stopWatching();
     });
+
+    // eslint-disable-next-line promise/avoid-new
+    await new Promise((resolve) => {
+      proxyTarget.close(resolve);
+    });
   });
 });
