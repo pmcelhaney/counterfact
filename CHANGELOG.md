@@ -1,5 +1,15 @@
 # counterfact
 
+## 0.22.0
+
+### Minor Changes
+
+- 4dcfa06: add CORS headers to support local development (Thanks, [dethell-jh](https://github.com/dethell-jh)!)
+
+### Patch Changes
+
+- dec64f4: Add CORS headers
+
 ## 0.21.3
 
 ### Patch Changes
