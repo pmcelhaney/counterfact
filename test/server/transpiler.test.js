@@ -27,6 +27,9 @@ describe("a Transpiler", () => {
 
       await transpiler.watch();
 
+      // eslint-disable-next-line promise/avoid-new, no-promise-executor-return
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
       expect(fs.existsSync(path("dist/found.mjs"))).toBe(true);
 
       await expect(fs.readFileSync(path("dist/found.mjs"), "utf8")).toBe(
