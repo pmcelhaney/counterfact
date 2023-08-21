@@ -21,7 +21,9 @@ async function loadOpenApiDocument(source) {
 
 export async function counterfact(
   basePath,
-  openApiPath = nodePath.join(basePath, "../openapi.yaml"),
+  openApiPath = nodePath
+    .join(basePath, "../openapi.yaml")
+    .replaceAll("\\", "/"),
   options = {}
 ) {
   const openApiDocument = await loadOpenApiDocument(openApiPath);
@@ -34,7 +36,7 @@ export async function counterfact(
 
   const dispatcher = new Dispatcher(registry, contextRegistry, openApiDocument);
   const moduleLoader = new ModuleLoader(
-    nodePath.join(modulesPath, "paths"),
+    nodePath.join(modulesPath, "paths").replaceAll("\\", "/"),
     registry,
     contextRegistry
   );

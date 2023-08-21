@@ -84,11 +84,13 @@ export class Transpiler extends EventTarget {
 
     try {
       await fs.writeFile(
-        nodePath.join(
-          sourcePath
-            .replace(this.sourcePath, this.destinationPath)
-            .replace(".ts", ".mjs")
-        ),
+        nodePath
+          .join(
+            sourcePath
+              .replace(this.sourcePath, this.destinationPath)
+              .replace(".ts", ".mjs")
+          )
+          .replaceAll("\\", "/"),
         result
       );
     } catch {

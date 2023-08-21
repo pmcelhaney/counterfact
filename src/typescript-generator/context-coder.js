@@ -51,10 +51,8 @@ class Context {
   }
 
   modulePath() {
-    return nodePath.join(
-      "paths",
-      nodePath.dirname(this.pathString()),
-      "$.context.ts"
-    );
+    return nodePath
+      .join("paths", nodePath.dirname(this.pathString()), "$.context.ts")
+      .replaceAll("\\", "/");
   }
 }

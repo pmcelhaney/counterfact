@@ -15,7 +15,10 @@ const DEFAULT_PORT = 3100;
 async function main(source, destination) {
   const options = program.opts();
 
-  await generate(source, nodePath.join(process.cwd(), destination));
+  await generate(
+    source,
+    nodePath.join(process.cwd(), destination).replaceAll("\\", "/")
+  );
 
   const basePath = nodePath.resolve(nodePath.join(process.cwd(), destination));
 

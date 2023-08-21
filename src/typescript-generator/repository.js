@@ -56,7 +56,9 @@ export class Repository {
       process.stdout.write(`writing ${path}\n`);
 
       return fs.copyFile(
-        nodePath.join(__dirname, `../../templates/${file}`),
+        nodePath
+          .join(__dirname, `../../templates/${file}`)
+          .replaceAll("\\", "/"),
         path
       );
     });
