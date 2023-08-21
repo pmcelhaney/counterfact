@@ -1,3 +1,6 @@
+// eslint-disable-next-line import/no-extraneous-dependencies, node/no-extraneous-import, @typescript-eslint/no-shadow, no-shadow
+import { jest } from "@jest/globals";
+
 import { Registry } from "../../src/server/registry.js";
 import { Dispatcher } from "../../src/server/dispatcher.js";
 import { koaMiddleware } from "../../src/server/koa-middleware.js";
@@ -24,13 +27,17 @@ describe("koa middleware", () => {
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
     const middleware = koaMiddleware(dispatcher);
     const ctx = {
-      request: { path: "/hello", method: "POST", body: { name: "Homer" } },
+      request: {
+        path: "/hello",
+        method: "POST",
+        body: { name: "Homer" },
+      },
 
       req: {
         path: "/hello",
       },
 
-      set: () => jest.fn(),
+      set: jest.fn(),
     };
 
     await middleware(ctx);
@@ -54,7 +61,8 @@ describe("koa middleware", () => {
     const middleware = koaMiddleware(dispatcher);
     const ctx = {
       request: { path: "/not-modified", method: "GET" },
-      set: () => jest.fn(),
+      // eslint-disable-next-line no-empty-function
+      set: () => {},
     };
 
     await middleware(ctx);
@@ -84,5 +92,105 @@ describe("koa middleware", () => {
     await middleware(ctx);
 
     expect(ctx.mockProxyHost).toBe("https://example.com");
+  });
+
+  it("adds default CORS headers if none are requested", async () => {
+    const registry = new Registry();
+
+    registry.add("/hello", {
+      POST({ body }) {
+        return {
+          body: `Hello, ${body.name}!`,
+        };
+      },
+    });
+
+    const dispatcher = new Dispatcher(registry, new ContextRegistry());
+    const middleware = koaMiddleware(dispatcher);
+    const ctx = {
+      request: {
+        path: "/hello",
+        method: "POST",
+        body: { name: "Homer" },
+      },
+
+      req: {
+        path: "/hello",
+      },
+
+      set: jest.fn(),
+    };
+
+    await middleware(ctx);
+
+    expect(ctx.status).toBe(200);
+    expect(ctx.body).toBe("Hello, Homer!");
+    expect(ctx.set).toHaveBeenCalledWith("Access-Control-Allow-Origin", "*");
+    expect(ctx.set).toHaveBeenCalledWith(
+      "Access-Control-Allow-Methods",
+      "GET,HEAD,PUT,POST,DELETE,PATCH"
+    );
+    expect(ctx.set).toHaveBeenCalledWith(
+      "Access-Control-Allow-Headers",
+      undefined
+    );
+    expect(ctx.set).toHaveBeenCalledWith(
+      "Access-Control-Expose-Headers",
+      undefined
+    );
+  });
+
+  it("reflects desired CORS headers if specific headers are requested", async () => {
+    const registry = new Registry();
+
+    registry.add("/hello", {
+      POST({ body }) {
+        return {
+          body: `Hello, ${body.name}!`,
+        };
+      },
+    });
+
+    const dispatcher = new Dispatcher(registry, new ContextRegistry());
+    const middleware = koaMiddleware(dispatcher);
+    const ctx = {
+      request: {
+        path: "/hello",
+        method: "POST",
+        body: { name: "Homer" },
+
+        headers: {
+          origin: "http://my.local.app:3000",
+          "access-control-request-headers": "X-My-Header,X-Another-Header",
+        },
+      },
+
+      req: {
+        path: "/hello",
+      },
+
+      set: jest.fn(),
+    };
+
+    await middleware(ctx);
+
+    expect(ctx.status).toBe(200);
+    expect(ctx.body).toBe("Hello, Homer!");
+    expect(ctx.set).toHaveBeenCalledWith(
+      "Access-Control-Allow-Origin",
+      "http://my.local.app:3000"
+    );
+    expect(ctx.set).toHaveBeenCalledWith(
+      "Access-Control-Allow-Methods",
+      "GET,HEAD,PUT,POST,DELETE,PATCH"
+    );
+    expect(ctx.set).toHaveBeenCalledWith(
+      "Access-Control-Allow-Headers",
+      "X-My-Header,X-Another-Header"
+    );
+    expect(ctx.set).toHaveBeenCalledWith(
+      "Access-Control-Expose-Headers",
+      "X-My-Header,X-Another-Header"
+    );
   });
 });

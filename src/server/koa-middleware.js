@@ -15,11 +15,11 @@ export function koaMiddleware(dispatcher, options = {}, proxy = koaProxy) {
     ctx.set("Access-Control-Allow-Methods", "GET,HEAD,PUT,POST,DELETE,PATCH");
     ctx.set(
       "Access-Control-Allow-Headers",
-      ctx.request.headers["access-control-request-headers"]
+      ctx.request?.headers?.["access-control-request-headers"]
     );
     ctx.set(
       "Access-Control-Expose-Headers",
-      ctx.request.headers["access-control-request-headers"]
+      ctx.request?.headers?.["access-control-request-headers"]
     );
     ctx.set("Access-Control-Allow-Credentials", "true");
 
