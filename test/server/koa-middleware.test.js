@@ -1,4 +1,4 @@
-// eslint-disable-next-line import/no-extraneous-dependencies, node/no-extraneous-import, @typescript-eslint/no-shadow, no-shadow
+// eslint-disable-next-line import/no-extraneous-dependencies, n/no-extraneous-import, @typescript-eslint/no-shadow, no-shadow
 import { jest } from "@jest/globals";
 
 import { Registry } from "../../src/server/registry.js";
@@ -160,7 +160,7 @@ describe("koa middleware", () => {
         body: { name: "Homer" },
 
         headers: {
-          origin: "http://my.local.app:3000",
+          origin: "https://my.local.app:3000",
           "access-control-request-headers": "X-My-Header,X-Another-Header",
         },
       },
@@ -178,7 +178,7 @@ describe("koa middleware", () => {
     expect(ctx.body).toBe("Hello, Homer!");
     expect(ctx.set).toHaveBeenCalledWith(
       "Access-Control-Allow-Origin",
-      "http://my.local.app:3000"
+      "https://my.local.app:3000"
     );
     expect(ctx.set).toHaveBeenCalledWith(
       "Access-Control-Allow-Methods",
