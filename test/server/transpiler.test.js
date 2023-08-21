@@ -1,6 +1,6 @@
+/* eslint-disable n/no-sync */
 import { once } from "node:events";
-import fs from "node:fs/promises";
-import { constants as fsConstants } from "node:fs";
+import fs, { constants as fsConstants } from "node:fs";
 
 import { Transpiler } from "../../src/server/transpiler.js";
 import { withTemporaryFiles } from "../lib/with-temporary-files.js";
@@ -27,7 +27,9 @@ describe("a Transpiler", () => {
 
       await transpiler.watch();
 
-      await expect(fs.readFile(path("dist/found.mjs"), "utf8")).resolves.toBe(
+      expect(fs.existsSync(path("dist/found.mjs"))).toBe(true);
+
+      await expect(fs.readFileSync(path("dist/found.mjs"), "utf8")).toBe(
         JAVASCRIPT_SOURCE
       );
 
@@ -50,7 +52,7 @@ describe("a Transpiler", () => {
         await add("src/added.ts", TYPESCRIPT_SOURCE);
         await write;
 
-        await expect(fs.readFile(path("dist/added.mjs"), "utf8")).resolves.toBe(
+        await expect(fs.readFileSync(path("dist/added.mjs"), "utf8")).toBe(
           JAVASCRIPT_SOURCE
         );
 
@@ -77,9 +79,9 @@ describe("a Transpiler", () => {
       add("src/update-me.ts", TYPESCRIPT_SOURCE);
       await overwrite;
 
-      await expect(
-        fs.readFile(path("dist/update-me.mjs"), "utf8")
-      ).resolves.toBe(JAVASCRIPT_SOURCE);
+      await expect(fs.readFileSync(path("dist/update-me.mjs"), "utf8")).toBe(
+        JAVASCRIPT_SOURCE
+      );
 
       transpiler.stopWatching();
     });
@@ -98,8 +100,8 @@ describe("a Transpiler", () => {
       await once(transpiler, "delete");
 
       await expect(() =>
-        fs.access(path("dist/delete-me.js"), fsConstants.F_OK)
-      ).rejects.toThrow(/ENOENT/u);
+        fs.accessSync(path("dist/delete-me.js"), fsConstants.F_OK)
+      ).toThrow(/ENOENT/u);
 
       transpiler.stopWatching();
     });
