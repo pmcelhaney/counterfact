@@ -39,8 +39,11 @@ export class Transpiler extends EventTarget {
 
     const transpiles = [];
 
-    this.watcher.on("all", async (eventName, sourcePath) => {
-      log("chokidar", eventName, sourcePath);
+    // eslint-disable-next-line max-statements
+    this.watcher.on("all", async (eventName, sourcePathOriginal) => {
+      log("chokidar", eventName, sourcePathOriginal);
+
+      const sourcePath = sourcePathOriginal.replaceAll("\\", "/");
 
       const destinationPath = sourcePath
         .replace(this.sourcePath, this.destinationPath)
@@ -94,8 +97,6 @@ export class Transpiler extends EventTarget {
       compilerOptions: { module: ts.ModuleKind.ES2022 },
     }).outputText;
 
-    log("starting transpilation for", destinationPath);
-
     const fullDestination = nodePath
       .join(
         sourcePath
@@ -103,6 +104,8 @@ export class Transpiler extends EventTarget {
           .replace(".ts", ".mjs")
       )
       .replaceAll("\\", "/");
+
+    log("starting transpilation for", fullDestination);
 
     try {
       await fs.writeFile(fullDestination, result);
