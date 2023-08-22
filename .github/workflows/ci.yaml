@@ -82,14 +82,10 @@ jobs:
         timeout-minutes: 2
         continue-on-error: true
         run: yarn test --runInBand --forceExit "dispatcher.proxy" --verbose --no-watchman
-      - name: Unit tests - everything but end-to-end
+      - name: Unit tests - everything but module-loader
         timeout-minutes: 2
         continue-on-error: true
-        run: yarn test --runInBand --forceExit --verbose --no-watchman --testPathIgnorePatterns="/end-to-end/"
-      - name: Unit tests - all of the others
-        timeout-minutes: 2
-        continue-on-error: true
-        run: yarn test --runInBand --forceExit --verbose --no-watchman --testPathIgnorePatterns="/transpiler|specification|module-loader|repository|dispatcher\.proxy|end-to-end/"
+        run: yarn test --runInBand --forceExit --verbose --no-watchman --testPathIgnorePatterns="/module-loader/"
       - name: Unit tests - everything
         timeout-minutes: 2
         continue-on-error: true
