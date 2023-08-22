@@ -43,12 +43,12 @@ export class Transpiler extends EventTarget {
     this.watcher.on("all", async (eventName, sourcePathOriginal) => {
       const sourcePath = sourcePathOriginal.replaceAll("\\", "/");
 
-      log("chokidar", eventName, sourcePath);
-
       const destinationPath = sourcePath
         .replace(this.sourcePath, this.destinationPath)
         .replaceAll("\\", "/")
         .replace(".ts", ".js");
+
+      log("chokidar", eventName, sourcePath, destinationPath);
 
       if (["add", "change"].includes(eventName)) {
         transpiles.push(
@@ -58,9 +58,12 @@ export class Transpiler extends EventTarget {
 
       if (eventName === "unlink") {
         try {
+          log("removing", destinationPath);
           await fs.rm(destinationPath);
         } catch (error) {
           if (error.code !== "ENOENT") {
+            log("ERROR: could not remove", destinationPath, error);
+
             throw error;
           }
         }
