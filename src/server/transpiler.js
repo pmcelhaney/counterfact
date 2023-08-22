@@ -8,6 +8,8 @@ import { once } from "node:events";
 import ts from "typescript";
 import chokidar from "chokidar";
 
+import { CHOKIDAR_OPTIONS } from "./constants.js";
+
 async function ensureDirectoryExists(filePath) {
   const directory = nodePath.dirname(filePath);
 
@@ -28,13 +30,17 @@ export class Transpiler extends EventTarget {
   async watch() {
     this.watcher = chokidar.watch(`${this.sourcePath}/**/*.{ts,mts,js,mjs}`, {
       ignored: `${this.sourcePath}/js`,
+      CHOKIDAR_OPTIONS,
     });
 
     const transpiles = [];
 
-    this.watcher.on("all", async (eventName, sourcePath) => {
+    this.watcher.on("all", async (eventName, sourcePathOriginal) => {
+      const sourcePath = sourcePathOriginal.replaceAll("\\", "/");
+
       const destinationPath = sourcePath
         .replace(this.sourcePath, this.destinationPath)
+        .replaceAll("\\", "/")
         .replace(".ts", ".js");
 
       if (["add", "change"].includes(eventName)) {
@@ -55,6 +61,7 @@ export class Transpiler extends EventTarget {
         this.dispatchEvent(new Event("delete"));
       }
     });
+
     await once(this.watcher, "ready");
 
     await Promise.all(transpiles);
@@ -73,15 +80,16 @@ export class Transpiler extends EventTarget {
       compilerOptions: { module: ts.ModuleKind.ES2022 },
     }).outputText;
 
+    const fullDestination = nodePath
+      .join(
+        sourcePath
+          .replace(this.sourcePath, this.destinationPath)
+          .replace(".ts", ".mjs")
+      )
+      .replaceAll("\\", "/");
+
     try {
-      await fs.writeFile(
-        nodePath.join(
-          sourcePath
-            .replace(this.sourcePath, this.destinationPath)
-            .replace(".ts", ".mjs")
-        ),
-        result
-      );
+      await fs.writeFile(fullDestination, result);
     } catch {
       throw new Error("could not transpile");
     }

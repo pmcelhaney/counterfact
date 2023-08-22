@@ -26,6 +26,13 @@ const rules = {
   "node/file-extension-in-import": "off",
   "node/no-missing-import": "off",
 
+  "prettier/prettier": [
+    "error",
+    {
+      endOfLine: "auto",
+    },
+  ],
+
   // too slow
   "import/no-cycle": "off",
   "import/no-unused-modules": "off",
