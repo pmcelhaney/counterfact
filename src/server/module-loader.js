@@ -48,7 +48,7 @@ export class ModuleLoader extends EventTarget {
           .replaceAll("\\", "/");
 
         if (eventName === "unlink") {
-          log("removing a module from registry", url);
+          log("removing a module from registry at runtime", url);
           this.registry.remove(url);
           log("did remove a module from registry", url);
           this.dispatchEvent(new Event("remove"), pathName);
@@ -66,9 +66,9 @@ export class ModuleLoader extends EventTarget {
               return "context";
             }
 
-            log("adding module to registry", url);
+            log("adding module to registry at runtime", url);
             this.registry.add(url, endpoint);
-            log("did remove a module from registry", url);
+            log("did add a module to the registry", url);
 
             return "path";
           })
