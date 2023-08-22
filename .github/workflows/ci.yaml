@@ -62,6 +62,10 @@ jobs:
         timeout-minutes: 2
         continue-on-error: true
         run: yarn test --runInBand --detectOpenHandles "dispatcher.proxy" --verbose --no-watchman
+      - name: Unit tests - everything but end-to-end
+        timeout-minutes: 2
+        continue-on-error: true
+        run: yarn test --runInBand --detectOpenHandles --verbose --no-watchman --testPathIgnorePatterns="/end-to-end/"
       - name: Unit tests - all of the others
         timeout-minutes: 2
         continue-on-error: true
