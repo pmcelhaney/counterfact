@@ -58,3 +58,7 @@ jobs:
         timeout-minutes: 2
         continue-on-error: true
         run: yarn test --runInBand --forceExit "dispatcher.proxy" --verbose --no-watchman
+      - name: Unit tests - all
+        timeout-minutes: 2
+        continue-on-error: true
+        run: yarn test --runInBand --forceExit --verbose --no-watchman

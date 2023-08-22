@@ -37,8 +37,7 @@ describe("a module loader", () => {
     });
   });
 
-  // eslint-disable-next-line jest/no-disabled-tests
-  it.skip("updates the registry when a file is added", async () => {
+  it("updates the registry when a file is added", async () => {
     await withTemporaryFiles({}, async (basePath, { add }) => {
       const registry = new Registry();
       const loader = new ModuleLoader(basePath, registry);
@@ -60,8 +59,7 @@ describe("a module loader", () => {
     });
   });
 
-  // eslint-disable-next-line jest/no-disabled-tests
-  it.skip("updates the registry when a file is deleted", async () => {
+  it("updates the registry when a file is deleted", async () => {
     await withTemporaryFiles(
       {
         "delete-me.mjs":
