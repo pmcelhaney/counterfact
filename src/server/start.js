@@ -51,7 +51,9 @@ function page(pathname, templateName, locals) {
   return async (ctx, next) => {
     const render = Handlebars.compile(
       await readFile(
-        nodePath.join(__dirname, `../client/${templateName}.html.hbs`)
+        nodePath
+          .join(__dirname, `../client/${templateName}.html.hbs`)
+          .replaceAll("\\", "/")
       )
     );
 
@@ -70,7 +72,9 @@ function page(pathname, templateName, locals) {
 export async function start(config) {
   const {
     basePath = process.cwd(),
-    openApiPath = nodePath.join(basePath, "../openapi.yaml"),
+    openApiPath = nodePath
+      .join(basePath, "../openapi.yaml")
+      .replaceAll("\\", "/"),
     port = DEFAULT_PORT,
   } = config;
 

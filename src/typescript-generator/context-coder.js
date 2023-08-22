@@ -42,7 +42,7 @@ class Context {
     }
 
     const parentPath = nodePath.normalize(
-      nodePath.join(script.path, "../../$.context.ts")
+      nodePath.join(script.path, "../../$.context.ts").replaceAll("\\", "/")
     );
 
     script.repository.get(parentPath).exportDefault(this);
@@ -51,10 +51,8 @@ class Context {
   }
 
   modulePath() {
-    return nodePath.join(
-      "paths",
-      nodePath.dirname(this.pathString()),
-      "$.context.ts"
-    );
+    return nodePath
+      .join("paths", nodePath.dirname(this.pathString()), "$.context.ts")
+      .replaceAll("\\", "/");
   }
 }

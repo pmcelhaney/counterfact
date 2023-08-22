@@ -62,7 +62,9 @@ export class OperationTypeCoder extends Coder {
       .at(-2)
       .replaceAll("~1", "/");
 
-    return `${nodePath.join("path-types", pathString)}.types.ts`;
+    return `${nodePath
+      .join("path-types", pathString)
+      .replaceAll("\\", "/")}.types.ts`;
   }
 
   write(script) {

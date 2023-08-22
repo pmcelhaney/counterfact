@@ -6,6 +6,7 @@ import { once } from "node:events";
 import chokidar from "chokidar";
 
 import { ContextRegistry } from "./context-registry.js";
+import { CHOKIDAR_OPTIONS } from "./constants.js";
 
 export class ModuleLoader extends EventTarget {
   basePath;
@@ -18,27 +19,32 @@ export class ModuleLoader extends EventTarget {
 
   constructor(basePath, registry, contextRegistry = new ContextRegistry()) {
     super();
-    this.basePath = basePath;
+    this.basePath = basePath.replaceAll("\\", "/");
     this.registry = registry;
     this.contextRegistry = contextRegistry;
   }
 
   async watch() {
     this.watcher = chokidar
-      .watch(`${this.basePath}/**/*.{js,mjs,ts,mts}`)
-      .on("all", (eventName, pathName) => {
+      .watch(`${this.basePath}/**/*.{js,mjs,ts,mts}`, CHOKIDAR_OPTIONS)
+
+      .on("all", (eventName, pathNameOriginal) => {
+        const pathName = pathNameOriginal.replaceAll("\\", "/");
+
         if (!["add", "change", "unlink"].includes(eventName)) {
           return;
         }
 
         const parts = nodePath.parse(pathName.replace(this.basePath, ""));
-        const url = nodePath.normalize(
-          `/${nodePath.join(parts.dir, parts.name)}`
-        );
+        const url = nodePath
+          .normalize(`/${nodePath.join(parts.dir, parts.name)}`)
+          .replaceAll("\\", "/");
 
         if (eventName === "unlink") {
           this.registry.remove(url);
           this.dispatchEvent(new Event("remove"), pathName);
+
+          return;
         }
 
         // eslint-disable-next-line  import/no-dynamic-require, no-unsanitized/method
@@ -62,6 +68,7 @@ export class ModuleLoader extends EventTarget {
             process.stdout.write(`\nError loading ${pathName}:\n${error}\n`);
           });
       });
+
     await once(this.watcher, "ready");
   }
 
@@ -70,20 +77,27 @@ export class ModuleLoader extends EventTarget {
   }
 
   async load(directory = "") {
-    if (!existsSync(nodePath.join(this.basePath, directory))) {
+    if (
+      !existsSync(nodePath.join(this.basePath, directory).replaceAll("\\", "/"))
+    ) {
       throw new Error(`Directory does not exist ${this.basePath}`);
     }
 
-    const files = await fs.readdir(nodePath.join(this.basePath, directory), {
-      withFileTypes: true,
-    });
+    const files = await fs.readdir(
+      nodePath.join(this.basePath, directory).replaceAll("\\", "/"),
+      {
+        withFileTypes: true,
+      }
+    );
 
     // eslint-disable-next-line max-statements
     const imports = files.flatMap(async (file) => {
       const extension = file.name.split(".").at(-1);
 
       if (file.isDirectory()) {
-        await this.load(nodePath.join(directory, file.name));
+        await this.load(
+          nodePath.join(directory, file.name).replaceAll("\\", "/")
+        );
 
         return;
       }
@@ -92,7 +106,9 @@ export class ModuleLoader extends EventTarget {
         return;
       }
 
-      const fullPath = nodePath.join(this.basePath, directory, file.name);
+      const fullPath = nodePath
+        .join(this.basePath, directory, file.name)
+        .replaceAll("\\", "/");
 
       try {
         // eslint-disable-next-line  import/no-dynamic-require, no-unsanitized/method
@@ -102,12 +118,14 @@ export class ModuleLoader extends EventTarget {
           this.contextRegistry.add(`/${directory}`, endpoint.default);
         } else {
           this.registry.add(
-            `/${nodePath.join(directory, nodePath.parse(file.name).name)}`,
+            `/${nodePath
+              .join(directory, nodePath.parse(file.name).name)
+              .replaceAll("\\", "/")}`,
             endpoint
           );
         }
       } catch (error) {
-        process.stdout.write(`\nError loading ${fullPath}:\n${error}\n`);
+        process.stdout.write(["Error loading", fullPath, error].join("\n"));
       }
     });
 

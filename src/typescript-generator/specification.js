@@ -15,9 +15,12 @@ export class Specification {
   async requirementAt(url, fromUrl = "") {
     const [file, path] = url.split("#");
 
-    const filePath = nodePath.join(fromUrl.split("#").at(0), file);
+    const filePath = nodePath
+      .join(fromUrl.split("#").at(0), file)
+      .replaceAll("\\", "/");
 
     const fileUrl = filePath === "." ? this.rootUrl : filePath;
+
     const data = await this.loadFile(fileUrl);
 
     const rootRequirement = new Requirement(data, `${fileUrl}#`, this);
