@@ -1,3 +1,4 @@
+/* eslint-disable no-magic-numbers */
 import fs from "node:fs/promises";
 
 import nodeFetch from "node-fetch";
@@ -41,7 +42,12 @@ export async function readFile(urlOrPath) {
 
   log("waiting for result to resolve");
 
-  const text = await result;
+  // eslint-disable-next-line promise/avoid-new
+  const timeout = new Promise((resolve) => {
+    setTimeout(() => resolve("COULD NOT READ FILE IN A REASONABLE TIME"), 1000);
+  });
+
+  const text = await Promise.race([timeout, result]);
 
   log("returning result", text);
 
