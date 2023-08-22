@@ -47,18 +47,35 @@ export class Specification {
     return result;
   }
 
+  // eslint-disable-next-line max-statements
   async loadFile(urlOrPath) {
+    log("check cache for", urlOrPath);
+
     if (this.cache.has(urlOrPath)) {
+      log("cache hit for", urlOrPath);
+
       return this.cache.get(urlOrPath);
     }
 
+    log("cache miss for", urlOrPath, "do readFile()");
+
     const source = await readFile(urlOrPath, "utf8");
+
+    log("finshed readFile() for", urlOrPath);
+
+    log("now doing yaml.load() for", urlOrPath);
 
     const data = await yaml.load(source);
 
+    log("finished yaml.load() for", urlOrPath);
+
     this.cache.set(urlOrPath, data);
 
+    log("getting rootRequirement for", urlOrPath);
+
     this.rootRequirement = new Requirement(data, `${urlOrPath}#`, this);
+
+    log("got rootRequirement for", urlOrPath);
 
     return data;
   }
