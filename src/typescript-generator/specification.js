@@ -42,7 +42,7 @@ export class Specification {
 
     const result = rootRequirement.select(path.slice(1));
 
-    log("got requirement", JSON.stringify(result));
+    log("got requirement");
 
     return result;
   }
