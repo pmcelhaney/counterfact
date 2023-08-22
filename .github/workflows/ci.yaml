@@ -12,7 +12,6 @@ jobs:
   ci-checks:
     name: CI Checks
     strategy:
-      fail-fast: false
       matrix:
         os: ["windows-latest", "ubuntu-latest"]
     runs-on: ${{ matrix.os }}
@@ -40,5 +39,4 @@ jobs:
         run: yarn eslint -f github-annotations .
       - name: Unit tests
         timeout-minutes: 2
-        continue-on-error: true
         run: yarn test --runInBand --forceExit --verbose --no-watchman
