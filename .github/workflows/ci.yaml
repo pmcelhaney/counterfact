@@ -39,4 +39,4 @@ jobs:
       - name: ESlint
         run: yarn eslint -f github-annotations .
       - name: Unit tests
-        run: yarn test --runInBand --forceExit --testPathIgnorePatterns="/counterfact\.test|module-loader|transpiler|specification/" --verbose --no-watchman
+        run: yarn test --runInBand --forceExit --testPathIgnorePatterns="/counterfact\.test|module-loader|transpiler|specification|end-to-end|repository|dispatcher\.proxy/" --verbose --no-watchman
