@@ -93,9 +93,9 @@ describe("a Script", () => {
     script.importDefault(coder);
 
     expect(script.importStatements()).toStrictEqual([
-      'import { Account0 } from "./export-from-me.js";',
-      'import type { Account1 } from "./export-from-me.js";',
-      'import Account2 from "./export-from-me.js";',
+      'import { Account0 } from "export-from-me.js";',
+      'import type { Account1 } from "export-from-me.js";',
+      'import Account2 from "export-from-me.js";',
     ]);
   });
 
