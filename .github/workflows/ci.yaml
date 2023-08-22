@@ -38,10 +38,6 @@ jobs:
         run: yarn install --frozen-lockfile --network-timeout 100000
       - name: ESlint
         run: yarn eslint -f github-annotations .
-      - name: Unit tests - module-loader
-        timeout-minutes: 2
-        continue-on-error: true
-        run: yarn test --runInBand --forceExit "module-loader" --verbose --no-watchman
       - name: Unit tests
         timeout-minutes: 2
         continue-on-error: true
