@@ -32,6 +32,7 @@ export class ModuleLoader extends EventTarget {
     log("watching", this.basePath);
     this.watcher = chokidar
       .watch(`${this.basePath}/**/*.{js,mjs,ts,mts}`, CHOKIDAR_OPTIONS)
+      // eslint-disable-next-line max-statements
       .on("all", (eventName, pathNameOriginal) => {
         const pathName = pathNameOriginal.replaceAll("\\", "/");
 
@@ -47,7 +48,9 @@ export class ModuleLoader extends EventTarget {
           .replaceAll("\\", "/");
 
         if (eventName === "unlink") {
+          log("removing a module from registry", url);
           this.registry.remove(url);
+          log("did remove a module from registry", url);
           this.dispatchEvent(new Event("remove"), pathName);
         }
 
@@ -63,7 +66,9 @@ export class ModuleLoader extends EventTarget {
               return "context";
             }
 
+            log("adding module to registry", url);
             this.registry.add(url, endpoint);
+            log("did remove a module from registry", url);
 
             return "path";
           })

@@ -36,65 +36,13 @@ jobs:
           key: ${{ runner.os }}-${{ steps.node-version.outputs.version }}-${{ hashFiles('**/yarn.lock') }}
       - name: Install Packages
         run: yarn install --frozen-lockfile --network-timeout 100000
-      - name: just read the petstore file
-        timeout-minutes: 2
-        continue-on-error: true
-        run: yarn test --runInBand --forceExit "just-read" --verbose --no-watchman
       - name: ESlint
         run: yarn eslint -f github-annotations .
-      - name: Unit tests - all typescript-generator tests
-        timeout-minutes: 2
-        continue-on-error: true
-        run: yarn test --runInBand --forceExit "typescript-generator" --verbose --no-watchman
-      - name: Unit tests - all server tests
-        timeout-minutes: 2
-        continue-on-error: true
-        run: yarn test --runInBand --forceExit "server" --verbose --no-watchman
-      - name: Unit tests - all coder tests
-        timeout-minutes: 2
-        continue-on-error: true
-        run: yarn test --runInBand --forceExit "coder" --verbose --no-watchman
-      - name: Unit tests - integration
-        timeout-minutes: 2
-        continue-on-error: true
-        run: yarn test --runInBand --forceExit "integration" --verbose --no-watchman
-      - name: Unit tests - requirement
-        timeout-minutes: 2
-        continue-on-error: true
-        run: yarn test --runInBand --forceExit "requirement" --verbose --no-watchman
-      - name: Unit tests - script
-        timeout-minutes: 2
-        continue-on-error: true
-        run: yarn test --runInBand --forceExit "script\.test" --verbose --no-watchman
-      - name: Unit tests - transpiler
-        timeout-minutes: 2
-        continue-on-error: true
-        run: yarn test --runInBand --forceExit "transpiler" --verbose --no-watchman
       - name: Unit tests - module-loader
         timeout-minutes: 2
         continue-on-error: true
         run: yarn test --runInBand --forceExit "module-loader" --verbose --no-watchman
-      - name: Unit tests - specification
-        timeout-minutes: 2
-        continue-on-error: true
-        run: yarn test --runInBand --forceExit "specification" --verbose --no-watchman
-      - name: Unit tests - repository
-        timeout-minutes: 2
-        continue-on-error: true
-        run: yarn test --runInBand --forceExit "repository" --verbose --no-watchman
-      - name: Unit tests - end-to-end
-        timeout-minutes: 2
-        continue-on-error: true
-        run: yarn test --runInBand --forceExit "end-to-end" --verbose --no-watchman
-      - name: Unit tests - dispatcher.proxy
-        timeout-minutes: 2
-        continue-on-error: true
-        run: yarn test --runInBand --forceExit "dispatcher.proxy" --verbose --no-watchman
-      - name: Unit tests - everything but end-to-end
-        timeout-minutes: 2
-        continue-on-error: true
-        run: yarn test --runInBand --forceExit --verbose --no-watchman --testPathIgnorePatterns="/end-to-end/"
-      - name: Unit tests - everything
+      - name: Unit tests
         timeout-minutes: 2
         continue-on-error: true
         run: yarn test --runInBand --forceExit --verbose --no-watchman
