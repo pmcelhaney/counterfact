@@ -26,11 +26,18 @@ export async function readFile(urlOrPath) {
 
   log("reading plain old file", urlOrPath);
 
+  // eslint-disable-next-line init-declarations
+  let result;
+
   try {
-    return fs.readFile(urlOrPath, "utf8");
+    result = fs.readFile(urlOrPath, "utf8");
+
+    log("did read plain old file", urlOrPath);
   } catch (error) {
     log("error reading file", urlOrPath, error);
 
     return `ERROR: ${error}`;
   }
+
+  return result;
 }
