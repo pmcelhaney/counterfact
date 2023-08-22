@@ -54,7 +54,7 @@ jobs:
         timeout-minutes: 2
         continue-on-error: true
         run: yarn test --runInBand --detectOpenHandles "repository" --verbose --no-watchman
-      - name: Unit tests - specification
+      - name: Unit tests - end-to-end
         timeout-minutes: 2
         continue-on-error: true
         run: yarn test --runInBand --detectOpenHandles "end-to-end" --verbose --no-watchman
