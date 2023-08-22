@@ -41,9 +41,9 @@ export class Transpiler extends EventTarget {
 
     // eslint-disable-next-line max-statements
     this.watcher.on("all", async (eventName, sourcePathOriginal) => {
-      log("chokidar", eventName, sourcePathOriginal);
-
       const sourcePath = sourcePathOriginal.replaceAll("\\", "/");
+
+      log("chokidar", eventName, sourcePath);
 
       const destinationPath = sourcePath
         .replace(this.sourcePath, this.destinationPath)
