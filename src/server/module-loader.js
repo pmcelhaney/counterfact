@@ -85,6 +85,8 @@ export class ModuleLoader extends EventTarget {
     if (
       !existsSync(nodePath.join(this.basePath, directory).replaceAll("\\", "/"))
     ) {
+      log("Directory does not exist", this.basePath, directory);
+
       throw new Error(`Directory does not exist ${this.basePath}`);
     }
 
@@ -130,7 +132,7 @@ export class ModuleLoader extends EventTarget {
           );
         }
       } catch (error) {
-        process.stdout.write(`\nError loading ${fullPath}:\n${error}\n`);
+        log("Error loading", fullPath, error);
       }
     });
 
