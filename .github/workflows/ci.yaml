@@ -41,24 +41,28 @@ jobs:
       - name: Unit tests - transpiler
         timeout-minutes: 2
         continue-on-error: true
-        run: yarn test --runInBand --forceExit "transpiler" --verbose --no-watchman
+        run: yarn test --runInBand --detectOpenHandles "transpiler" --verbose --no-watchman
       - name: Unit tests - module-loader
         timeout-minutes: 2
         continue-on-error: true
-        run: yarn test --runInBand --forceExit "module-loader" --verbose --no-watchman
+        run: yarn test --runInBand --detectOpenHandles "module-loader" --verbose --no-watchman
       - name: Unit tests - specification
         timeout-minutes: 2
         continue-on-error: true
-        run: yarn test --runInBand --forceExit "specification" --verbose --no-watchman
+        run: yarn test --runInBand --detectOpenHandles "specification" --verbose --no-watchman
       - name: Unit tests - repository
         timeout-minutes: 2
         continue-on-error: true
-        run: yarn test --runInBand --forceExit "repository" --verbose --no-watchman
+        run: yarn test --runInBand --detectOpenHandles "repository" --verbose --no-watchman
       - name: Unit tests - dispatcher.proxy
         timeout-minutes: 2
         continue-on-error: true
-        run: yarn test --runInBand --forceExit "dispatcher.proxy" --verbose --no-watchman
-      - name: Unit tests - all
+        run: yarn test --runInBand --detectOpenHandles "dispatcher.proxy" --verbose --no-watchman
+      - name: Unit tests - all of the others
         timeout-minutes: 2
         continue-on-error: true
-        run: yarn test --runInBand --forceExit --verbose --no-watchman
+        run: yarn test --runInBand --detectOpenHandles --verbose --no-watchman --testPathIgnorePatterns="/transpiler|specification|module-loader|repository|dispatcher\.proxy/"
+      - name: Unit tests - everything
+        timeout-minutes: 2
+        continue-on-error: true
+        run: yarn test --runInBand --detectOpenHandles --verbose --no-watchman

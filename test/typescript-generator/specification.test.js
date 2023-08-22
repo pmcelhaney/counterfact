@@ -65,7 +65,7 @@ describe("a Specification", () => {
     // The server still might not be completely shut down at this point so wait a bit longer
     // eslint-disable-next-line promise/avoid-new
     await new Promise((resolve) => {
-      setTimeout(resolve, 100);
+      setTimeout(resolve, 1000);
     });
   });
 
