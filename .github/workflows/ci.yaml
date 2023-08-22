@@ -45,7 +45,7 @@ jobs:
       - name: Unit tests - all coder tests
         timeout-minutes: 2
         continue-on-error: true
-        run: yarn test --runInBand --forceExit "server" --verbose --no-watchman
+        run: yarn test --runInBand --forceExit "coder" --verbose --no-watchman
       - name: Unit tests - integration
         timeout-minutes: 2
         continue-on-error: true

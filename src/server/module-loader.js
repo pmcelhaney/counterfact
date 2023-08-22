@@ -29,6 +29,7 @@ export class ModuleLoader extends EventTarget {
   }
 
   async watch() {
+    log("watching", this.basePath);
     this.watcher = chokidar
       .watch(`${this.basePath}/**/*.{js,mjs,ts,mts}`, CHOKIDAR_OPTIONS)
       .on("all", (eventName, pathNameOriginal) => {
@@ -72,13 +73,15 @@ export class ModuleLoader extends EventTarget {
           });
       });
 
-    log("waiting for ready event");
+    log("waiting for ready event", this.basePath);
     await once(this.watcher, "ready");
-    log("received ready event");
+    log("received ready event", this.basePath);
   }
 
   async stopWatching() {
+    log("stopping the watcher...", this.basePath);
     await this.watcher?.close();
+    log("stopped the watcher", this.basePath);
   }
 
   async load(directory = "") {
@@ -122,8 +125,15 @@ export class ModuleLoader extends EventTarget {
         const endpoint = await import(fullPath);
 
         if (file.name.includes("$.context")) {
+          log("adding context to registry", directory, endpoint.default);
           this.contextRegistry.add(`/${directory}`, endpoint.default);
         } else {
+          log(
+            "adding module to registry",
+            directory,
+            file.name,
+            endpoint.default
+          );
           this.registry.add(
             `/${nodePath
               .join(directory, nodePath.parse(file.name).name)
