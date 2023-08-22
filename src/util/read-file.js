@@ -39,5 +39,11 @@ export async function readFile(urlOrPath) {
     return `ERROR: ${error}`;
   }
 
+  log("waiting for result to resolve");
+
+  const text = await result;
+
+  log("returning result", text);
+
   return result;
 }

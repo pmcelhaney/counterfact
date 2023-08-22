@@ -59,9 +59,11 @@ export class Specification {
 
     log("cache miss for", urlOrPath, "do readFile()");
 
-    const source = await readFile(urlOrPath, "utf8");
+    const source = await readFile(urlOrPath, "utf8").catch((error) =>
+      log("error", error)
+    );
 
-    log("finshed readFile() for", urlOrPath);
+    log("finished readFile() for", urlOrPath);
 
     log("now doing yaml.load() for", urlOrPath);
 
