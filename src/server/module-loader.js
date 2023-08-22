@@ -23,7 +23,7 @@ export class ModuleLoader extends EventTarget {
 
   constructor(basePath, registry, contextRegistry = new ContextRegistry()) {
     super();
-    this.basePath = basePath.replace("\\", "/", "all");
+    this.basePath = basePath.replaceAll("\\", "/", "all");
     this.registry = registry;
     this.contextRegistry = contextRegistry;
   }
