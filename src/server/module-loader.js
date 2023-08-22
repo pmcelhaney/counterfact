@@ -52,7 +52,14 @@ export class ModuleLoader extends EventTarget {
           this.registry.remove(url);
           log("did remove a module from registry", url);
           this.dispatchEvent(new Event("remove"), pathName);
+
+          return;
         }
+
+        // eslint-disable-next-line no-magic-numbers
+        const id = Math.random().toString(36).slice(2);
+
+        log("loading module at runtime", url, id, eventName);
 
         // eslint-disable-next-line  import/no-dynamic-require, no-unsanitized/method
         import(`${pathName}?cacheBust=${Date.now()}`)
@@ -66,9 +73,9 @@ export class ModuleLoader extends EventTarget {
               return "context";
             }
 
-            log("adding module to registry at runtime", url);
+            log("adding module to registry at runtime", url, id);
             this.registry.add(url, endpoint);
-            log("did add a module to the registry", url);
+            log("did add a module to the registry", url, id);
 
             return "path";
           })
