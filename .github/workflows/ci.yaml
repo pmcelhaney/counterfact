@@ -61,7 +61,7 @@ jobs:
       - name: Unit tests - script
         timeout-minutes: 2
         continue-on-error: true
-        run: yarn test --runInBand --forceExit "script" --verbose --no-watchman
+        run: yarn test --runInBand --forceExit "script\.test" --verbose --no-watchman
       - name: Unit tests - transpiler
         timeout-minutes: 2
         continue-on-error: true
