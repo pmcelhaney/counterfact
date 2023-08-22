@@ -6,6 +6,7 @@ function log(...strings) {
   process.stdout.write(`[read-file] ${strings.join("\t")}\n`);
 }
 
+// eslint-disable-next-line max-statements
 export async function readFile(urlOrPath) {
   log("reading file or URL", urlOrPath);
 
@@ -25,5 +26,11 @@ export async function readFile(urlOrPath) {
 
   log("reading plain old file", urlOrPath);
 
-  return fs.readFile(urlOrPath, "utf8");
+  try {
+    return fs.readFile(urlOrPath, "utf8");
+  } catch (error) {
+    log("error reading file", urlOrPath, error);
+
+    return `ERROR: ${error}`;
+  }
 }
