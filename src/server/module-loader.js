@@ -8,10 +8,6 @@ import chokidar from "chokidar";
 import { ContextRegistry } from "./context-registry.js";
 import { CHOKIDAR_OPTIONS } from "./constants.js";
 
-function log(...strings) {
-  process.stdout.write(`[module-loader] ${strings.join("\t")}\n`);
-}
-
 export class ModuleLoader extends EventTarget {
   basePath;
 
@@ -29,14 +25,11 @@ export class ModuleLoader extends EventTarget {
   }
 
   async watch() {
-    log("watching", this.basePath);
     this.watcher = chokidar
       .watch(`${this.basePath}/**/*.{js,mjs,ts,mts}`, CHOKIDAR_OPTIONS)
-      // eslint-disable-next-line max-statements
+
       .on("all", (eventName, pathNameOriginal) => {
         const pathName = pathNameOriginal.replaceAll("\\", "/");
-
-        log("chokidar", eventName, pathName);
 
         if (!["add", "change", "unlink"].includes(eventName)) {
           return;
@@ -48,18 +41,11 @@ export class ModuleLoader extends EventTarget {
           .replaceAll("\\", "/");
 
         if (eventName === "unlink") {
-          log("removing a module from registry at runtime", url);
           this.registry.remove(url);
-          log("did remove a module from registry", url);
           this.dispatchEvent(new Event("remove"), pathName);
 
           return;
         }
-
-        // eslint-disable-next-line no-magic-numbers
-        const id = Math.random().toString(36).slice(2);
-
-        log("loading module at runtime", url, id, eventName);
 
         // eslint-disable-next-line  import/no-dynamic-require, no-unsanitized/method
         import(`${pathName}?cacheBust=${Date.now()}`)
@@ -73,9 +59,7 @@ export class ModuleLoader extends EventTarget {
               return "context";
             }
 
-            log("adding module to registry at runtime", url, id);
             this.registry.add(url, endpoint);
-            log("did add a module to the registry", url, id);
 
             return "path";
           })
@@ -85,23 +69,17 @@ export class ModuleLoader extends EventTarget {
           });
       });
 
-    log("waiting for ready event", this.basePath);
     await once(this.watcher, "ready");
-    log("received ready event", this.basePath);
   }
 
   async stopWatching() {
-    log("stopping the watcher...", this.basePath);
     await this.watcher?.close();
-    log("stopped the watcher", this.basePath);
   }
 
   async load(directory = "") {
     if (
       !existsSync(nodePath.join(this.basePath, directory).replaceAll("\\", "/"))
     ) {
-      log("Directory does not exist", this.basePath, directory);
-
       throw new Error(`Directory does not exist ${this.basePath}`);
     }
 
@@ -137,15 +115,8 @@ export class ModuleLoader extends EventTarget {
         const endpoint = await import(fullPath);
 
         if (file.name.includes("$.context")) {
-          log("adding context to registry", directory, endpoint.default);
           this.contextRegistry.add(`/${directory}`, endpoint.default);
         } else {
-          log(
-            "adding module to registry",
-            directory,
-            file.name,
-            endpoint.default
-          );
           this.registry.add(
             `/${nodePath
               .join(directory, nodePath.parse(file.name).name)
@@ -154,7 +125,7 @@ export class ModuleLoader extends EventTarget {
           );
         }
       } catch (error) {
-        log("Error loading", fullPath, error);
+        process.stdout.write(["Error loading", fullPath, error].join("\t"));
       }
     });
 
