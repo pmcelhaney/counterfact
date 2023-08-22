@@ -36,6 +36,10 @@ jobs:
           key: ${{ runner.os }}-${{ steps.node-version.outputs.version }}-${{ hashFiles('**/yarn.lock') }}
       - name: Install Packages
         run: yarn install --frozen-lockfile --network-timeout 100000
+      - name: just read the petstore file
+        timeout-minutes: 2
+        continue-on-error: true
+        run: yarn test --runInBand --forceExit "just-read" --verbose --no-watchman
       - name: ESlint
         run: yarn eslint -f github-annotations .
       - name: Unit tests - all typescript-generator tests
