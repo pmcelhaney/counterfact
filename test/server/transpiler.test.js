@@ -55,6 +55,11 @@ describe("a Transpiler", () => {
         await add("src/added.ts", TYPESCRIPT_SOURCE);
         await write;
 
+        // eslint-disable-next-line promise/avoid-new
+        await new Promise((resolve) => {
+          setTimeout(resolve, 1000);
+        });
+
         await expect(fs.readFileSync(path("dist/added.mjs"), "utf8")).toBe(
           JAVASCRIPT_SOURCE
         );
