@@ -65,6 +65,7 @@
     "@types/json-schema": "^7.0.11",
     "chokidar": "^3.5.3",
     "commander": "^11.0.0",
+    "debug": "^4.3.4",
     "fetch": "^1.1.0",
     "fs-extra": "^11.0.0",
     "handlebars": "^4.7.7",
