@@ -1,5 +1,12 @@
 # counterfact
 
+## 0.24.0
+
+### Minor Changes
+
+- e1bbb42: added a bit of debug logging (use environment variable DEBUG=counterfact to see it)
+- 1ea478a: remove the dependency on ts-node -- path files are now compiled with Typescript and output to a paths-js directory
+
 ## 0.23.0
 
 ### Minor Changes
