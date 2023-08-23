@@ -47,7 +47,7 @@ class Context {
 
     script.repository.get(parentPath).exportDefault(this);
 
-    return { raw: 'export { default } from "../$.context.js"' };
+    return { raw: 'export { default } from "../$.context.mjs"' };
   }
 
   modulePath() {
