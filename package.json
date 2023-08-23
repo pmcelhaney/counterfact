@@ -80,7 +80,6 @@
     "node-fetch": "^3.2.10",
     "open": "^9.0.0",
     "prettier": "^2.7.1",
-    "ts-node": "^10.9.1",
     "typescript": "^5.0.0"
   }
 }

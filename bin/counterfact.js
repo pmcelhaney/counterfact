@@ -1,4 +1,4 @@
-#!/usr/bin/env ts-node --esm --transpileOnly
+#!/usr/bin/env node
 
 import nodePath from "node:path";
 
