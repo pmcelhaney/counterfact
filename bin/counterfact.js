@@ -22,17 +22,19 @@ async function main(source, destination) {
 
   const options = program.opts();
 
-  log("options", options);
-  log("source", source);
-  log("destination", destination);
+  log("options: %o", options);
+  log("source: %s", source);
+  log("destination: %s", destination);
 
   const destinationPath = nodePath
     .join(process.cwd(), destination)
     .replaceAll("\\", "/");
 
-  log("generating code at %s", destinationPath);
+  log('generating code at "%s"', destinationPath);
 
   await generate(source, destinationPath);
+
+  log("generated code", destinationPath);
 
   const basePath = nodePath.resolve(destinationPath);
 
@@ -51,13 +53,11 @@ async function main(source, destination) {
     proxyEnabled: Boolean(options.proxyUrl),
   };
 
-  log("config", config);
-
-  log("starting counterfact server", config);
+  log("starting server (%o)", config);
 
   const { contextRegistry } = await start(config);
 
-  log("started counterfact server", config);
+  log("started server");
 
   const waysToInteract = [
     `Call the REST APIs at ${url} (with your front end app, curl, Postman, etc.)`,
