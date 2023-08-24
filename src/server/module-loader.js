@@ -5,9 +5,12 @@ import { once } from "node:events";
 import { pathToFileURL } from "node:url";
 
 import chokidar from "chokidar";
+import createDebug from "debug";
 
 import { ContextRegistry } from "./context-registry.js";
 import { CHOKIDAR_OPTIONS } from "./constants.js";
+
+const debug = createDebug("counterfact:typescript-generator:module-loader");
 
 export class ModuleLoader extends EventTarget {
   basePath;
@@ -29,6 +32,7 @@ export class ModuleLoader extends EventTarget {
     this.watcher = chokidar
       .watch(`${this.basePath}/**/*.{js,mjs,ts,mts}`, CHOKIDAR_OPTIONS)
 
+      // eslint-disable-next-line max-statements
       .on("all", (eventName, pathNameOriginal) => {
         const pathName = pathNameOriginal.replaceAll("\\", "/");
 
@@ -48,10 +52,13 @@ export class ModuleLoader extends EventTarget {
           return;
         }
 
+        debug("importing module: %s", pathToFileURL(pathName));
+
         // eslint-disable-next-line  import/no-dynamic-require, no-unsanitized/method
         import(`${pathToFileURL(pathName)}?cacheBust=${Date.now()}`)
           // eslint-disable-next-line promise/prefer-await-to-then
           .then((endpoint) => {
+            debug("imported module: %s", pathToFileURL(pathName));
             this.dispatchEvent(new Event(eventName), pathName);
 
             if (pathName.includes("$.context")) {
