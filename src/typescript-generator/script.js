@@ -1,6 +1,9 @@
 import nodePath from "node:path";
 
 import prettier from "prettier";
+import createDebugger from "debug";
+
+const debug = createDebugger("counterfact:typescript-generator:script");
 
 export class Script {
   constructor(repository, path) {
@@ -73,14 +76,23 @@ export class Script {
     this.export(coder, isType, true);
   }
 
+  // eslint-disable-next-line max-statements
   import(coder, isType = false, isDefault = false) {
+    debug("import coder: %s", coder.id);
+
     const modulePath = coder.modulePath();
 
     const cacheKey = `${coder.id}@${modulePath}:${isType}:${isDefault}`;
 
+    debug("cache key: %s", cacheKey);
+
     if (this.cache.has(cacheKey)) {
+      debug("cache hit: %s", cacheKey);
+
       return this.cache.get(cacheKey);
     }
+
+    debug("cache miss: %s", cacheKey);
 
     const name = this.firstUniqueName(coder);
 

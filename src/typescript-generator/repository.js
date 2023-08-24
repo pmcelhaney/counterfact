@@ -28,9 +28,15 @@ export class Repository {
   }
 
   get(path) {
+    debug("getting script at %s", path);
+
     if (this.scripts.has(path)) {
+      debug("already have script %s, returning it", path);
+
       return this.scripts.get(path);
     }
+
+    debug("don't have %s, creating it", path);
 
     const script = new Script(this, path);
 
