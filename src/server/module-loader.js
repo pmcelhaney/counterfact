@@ -121,8 +121,14 @@ export class ModuleLoader extends EventTarget {
         .replaceAll("\\", "/");
 
       try {
-        // eslint-disable-next-line  import/no-dynamic-require, no-unsanitized/method
-        const endpoint = await import(fullPath);
+        const fileUrl = `${pathToFileURL(fullPath)}?cacheBust=${Date.now()}`;
+
+        debug("* importing module: %s", fileUrl);
+
+        // eslint-disable-next-line import/no-dynamic-require, no-unsanitized/method
+        const endpoint = await import(fileUrl);
+
+        debug("* imported module: %s", fileUrl);
 
         if (file.name.includes("$.context")) {
           this.contextRegistry.add(`/${directory}`, endpoint.default);
