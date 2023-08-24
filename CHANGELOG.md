@@ -1,5 +1,11 @@
 # counterfact
 
+## 0.25.0
+
+### Minor Changes
+
+- 5a9f40a: added a bunch more debug logging
+
 ## 0.24.0
 
 ### Minor Changes
