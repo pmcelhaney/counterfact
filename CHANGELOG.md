@@ -1,5 +1,12 @@
 # counterfact
 
+## 0.25.0
+
+### Minor Changes
+
+- 5a9f40a: added a bunch more debug logging
+- fix Windows issue where "http://" gets changed to "http:/" and as a result the app hangs
+
 ## 0.24.0
 
 ### Minor Changes
