@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import { existsSync } from "node:fs";
 import nodePath from "node:path";
 import { once } from "node:events";
-import { pathToFileUrl } from "node:url";
+import { pathToFileURL } from "node:url";
 
 import chokidar from "chokidar";
 import createDebug from "debug";
@@ -52,7 +52,7 @@ export class ModuleLoader extends EventTarget {
           return;
         }
 
-        const fileUrl = `${pathToFileUrl(pathName)}?cacheBust=${Date.now()}`;
+        const fileUrl = `${pathToFileURL(pathName)}?cacheBust=${Date.now()}`;
 
         debug("importing module: %s", fileUrl);
 
@@ -75,7 +75,7 @@ export class ModuleLoader extends EventTarget {
           })
           // eslint-disable-next-line promise/prefer-await-to-then
           .catch((error) => {
-            process.stdout.write(`\nError loading ${pathName}:\n${error}\n`);
+            process.stdout.write(`\nError loading ${fileUrl}:\n${error}\n`);
           });
       });
 
