@@ -1,6 +1,6 @@
 /* eslint-disable max-statements */
-import nodePath from "node:path";
-import { pathToFileURL } from "node:url";
+import nodePath, { dirname } from "node:path";
+import { pathToFileURL, fileURLToPath } from "node:url";
 
 import yaml from "js-yaml";
 import Koa from "koa";
@@ -13,7 +13,7 @@ import { readFile } from "../util/read-file.js";
 import { counterfact } from "./counterfact.js";
 
 // eslint-disable-next-line no-underscore-dangle
-const __dirname = nodePath.dirname(new URL(import.meta.url).pathname);
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const DEFAULT_PORT = 3100;
 
