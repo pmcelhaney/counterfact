@@ -1,5 +1,11 @@
 # counterfact
 
+## 0.25.1
+
+### Patch Changes
+
+- 226ce37: fixed a couple more issues in Windows
+
 ## 0.25.0
 
 ### Minor Changes
