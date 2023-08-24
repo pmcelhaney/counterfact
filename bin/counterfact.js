@@ -2,7 +2,7 @@
 
 import nodePath from "node:path";
 
-import debug from "debug";
+import createDebug from "debug";
 import { program } from "commander";
 import open from "open";
 
@@ -12,29 +12,29 @@ import { startRepl } from "../src/server/repl.js";
 
 const DEFAULT_PORT = 3100;
 
-const log = debug("counterfact");
+const debug = createDebug("counterfact:bin:counterfact");
 
-log("running ./bin/counterfact.js");
+debug("running ./bin/counterfact.js");
 
 // eslint-disable-next-line max-statements
 async function main(source, destination) {
-  log("executing the main function");
+  debug("executing the main function");
 
   const options = program.opts();
 
-  log("options: %o", options);
-  log("source: %s", source);
-  log("destination: %s", destination);
+  debug("options: %o", options);
+  debug("source: %s", source);
+  debug("destination: %s", destination);
 
   const destinationPath = nodePath
     .join(process.cwd(), destination)
     .replaceAll("\\", "/");
 
-  log('generating code at "%s"', destinationPath);
+  debug('generating code at "%s"', destinationPath);
 
   await generate(source, destinationPath);
 
-  log("generated code", destinationPath);
+  debug("generated code", destinationPath);
 
   const basePath = nodePath.resolve(destinationPath);
 
@@ -53,11 +53,11 @@ async function main(source, destination) {
     proxyEnabled: Boolean(options.proxyUrl),
   };
 
-  log("starting server (%o)", config);
+  debug("starting server (%o)", config);
 
   const { contextRegistry } = await start(config);
 
-  log("started server");
+  debug("started server");
 
   const waysToInteract = [
     `Call the REST APIs at ${url} (with your front end app, curl, Postman, etc.)`,
@@ -87,16 +87,16 @@ async function main(source, destination) {
 
   process.stdout.write("Starting REPL...\n");
 
-  log("starting repl");
+  debug("starting repl");
 
   startRepl(contextRegistry, config);
 
-  log("started repl");
+  debug("started repl");
 
   if (openBrowser) {
-    log("opening browser");
+    debug("opening browser");
     await open(guiUrl);
-    log("opened browser");
+    debug("opened browser");
   }
 }
 
