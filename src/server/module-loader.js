@@ -2,6 +2,7 @@ import fs from "node:fs/promises";
 import { existsSync } from "node:fs";
 import nodePath from "node:path";
 import { once } from "node:events";
+import { pathToFileUrl } from "node:url";
 
 import chokidar from "chokidar";
 import createDebug from "debug";
@@ -51,7 +52,7 @@ export class ModuleLoader extends EventTarget {
           return;
         }
 
-        const fileUrl = `${pathName}?cacheBust=${Date.now()}`;
+        const fileUrl = `${pathToFileUrl(pathName)}?cacheBust=${Date.now()}`;
 
         debug("importing module: %s", fileUrl);
 
