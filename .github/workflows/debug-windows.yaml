@@ -6,14 +6,14 @@ on:
       - main
   workflow_dispatch:
 
-env: 
-    DEBUG: "counterfact:*"
+env:
+  DEBUG: "counterfact:*"
 
 jobs:
   ci-checks:
     name: Debug Windows
     runs-on: "windows-latest"
-    
+
     steps:
       - name: Check out repo
         uses: actions/checkout@v3
@@ -35,6 +35,5 @@ jobs:
       - name: Install Packages
         run: yarn install --frozen-lockfile --network-timeout 100000
       - name: Try running the petstore
-        run:  npx . https://petstore3.swagger.io/api/v3/openapi.json out
-  
+        run: npx . https://petstore3.swagger.io/api/v3/openapi.json out
         timeout-minutes: 2
