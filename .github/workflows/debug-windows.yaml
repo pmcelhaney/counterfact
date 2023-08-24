@@ -1,12 +1,10 @@
-name: CI Checks
+name: Debug Windows
 
 on:
   pull_request:
     branches:
       - main
   workflow_dispatch:
-
-concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 env: 
     DEBUG: "counterfact:*"
