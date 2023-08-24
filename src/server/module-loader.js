@@ -2,6 +2,7 @@ import fs from "node:fs/promises";
 import { existsSync } from "node:fs";
 import nodePath from "node:path";
 import { once } from "node:events";
+import { pathToFileURL } from "node:url";
 
 import chokidar from "chokidar";
 
@@ -48,7 +49,7 @@ export class ModuleLoader extends EventTarget {
         }
 
         // eslint-disable-next-line  import/no-dynamic-require, no-unsanitized/method
-        import(`${pathName}?cacheBust=${Date.now()}`)
+        import(`${pathToFileURL(pathName)}?cacheBust=${Date.now()}`)
           // eslint-disable-next-line promise/prefer-await-to-then
           .then((endpoint) => {
             this.dispatchEvent(new Event(eventName), pathName);
