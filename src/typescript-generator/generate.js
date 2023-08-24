@@ -6,6 +6,7 @@ import { OperationCoder } from "./operation-coder.js";
 
 const debug = createDebug("counterfact:typescript-generator:generate");
 
+// eslint-disable-next-line max-statements
 export async function generate(
   source,
   destination,
@@ -23,7 +24,7 @@ export async function generate(
 
   const paths = await specification.requirementAt("#/paths");
 
-  debug("got %n paths", paths.size);
+  debug("got %i paths", paths.size);
 
   paths.forEach((pathDefinition, key) => {
     debug("processing path %s", key);
@@ -35,4 +36,6 @@ export async function generate(
   debug("telling the repository to write the files to %s", destination);
 
   await repository.writeFiles(destination);
+
+  debug("finished writing the files");
 }

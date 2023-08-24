@@ -3,8 +3,11 @@ import fs from "node:fs/promises";
 import { constants as fsConstants } from "node:fs";
 
 import prettier from "prettier";
+import createDebug from "debug";
 
 import { Script } from "./script.js";
+
+const debug = createDebug("counterfact:typescript-generator:repository");
 
 // eslint-disable-next-line no-underscore-dangle
 const __dirname = nodePath.dirname(new URL(import.meta.url).pathname);
@@ -40,6 +43,7 @@ export class Repository {
     while (
       Array.from(this.scripts.values()).some((script) => script.isInProgress())
     ) {
+      debug("waiting for %i scripts to finish", this.scripts.size);
       // eslint-disable-next-line no-await-in-loop
       await Promise.all(
         Array.from(this.scripts.values(), (script) => script.finished())
@@ -65,7 +69,12 @@ export class Repository {
   }
 
   async writeFiles(destination) {
+    debug(
+      "waiting for %i or more scripts to finish before writing files",
+      this.scripts.size
+    );
     await this.finished();
+    debug("all %i scripts are finished", this.scripts.size);
 
     const writeFiles = Array.from(
       this.scripts.entries(),
@@ -90,7 +99,9 @@ export class Repository {
           return;
         }
 
+        debug("about to write", fullPath);
         await fs.writeFile(fullPath, contents);
+        debug("did write", fullPath);
 
         process.stdout.write(`writing ${fullPath}\n`);
       }
