@@ -2,7 +2,6 @@ import fs from "node:fs/promises";
 import { existsSync } from "node:fs";
 import nodePath from "node:path";
 import { once } from "node:events";
-import { pathToFileURL } from "node:url";
 
 import chokidar from "chokidar";
 import createDebug from "debug";
@@ -52,13 +51,15 @@ export class ModuleLoader extends EventTarget {
           return;
         }
 
-        debug("importing module: %s", pathToFileURL(pathName));
+        const fileUrl = `${pathName}?cacheBust=${Date.now()}`;
+
+        debug("importing module: %s", fileUrl);
 
         // eslint-disable-next-line  import/no-dynamic-require, no-unsanitized/method
-        import(`${pathToFileURL(pathName)}?cacheBust=${Date.now()}`)
+        import(fileUrl)
           // eslint-disable-next-line promise/prefer-await-to-then
           .then((endpoint) => {
-            debug("imported module: %s", pathToFileURL(pathName));
+            debug("imported module: %s", fileUrl);
             this.dispatchEvent(new Event(eventName), pathName);
 
             if (pathName.includes("$.context")) {
