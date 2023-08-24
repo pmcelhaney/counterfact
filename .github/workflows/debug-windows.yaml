@@ -8,6 +8,9 @@ on:
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
+env: 
+    DEBUG: "counterfact:*"
+
 jobs:
   ci-checks:
     name: Debug Windows
@@ -35,6 +38,5 @@ jobs:
         run: yarn install --frozen-lockfile --network-timeout 100000
       - name: Try running the petstore
         run:  npx . https://petstore3.swagger.io/api/v3/openapi.json out
-        with: 
-            DEBUG: "counterfact:*"
+  
         timeout-minutes: 2
