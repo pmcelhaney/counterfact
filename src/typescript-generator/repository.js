@@ -12,6 +12,8 @@ const debug = createDebug("counterfact:typescript-generator:repository");
 // eslint-disable-next-line no-underscore-dangle
 const __dirname = nodePath.dirname(new URL(import.meta.url).pathname);
 
+debug("dirname is %s", __dirname);
+
 async function ensureDirectoryExists(filePath) {
   const directory = nodePath.dirname(filePath);
 
@@ -58,7 +60,7 @@ export class Repository {
   }
 
   copyCoreFiles(destination) {
-    const files = ["package.json", "response-builder-factory.ts"];
+    const files = ["response-builder-factory.ts"];
 
     return files.map((file) => {
       const path = nodePath.join(destination, file).replaceAll("\\", "/");
