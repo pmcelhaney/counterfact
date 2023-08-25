@@ -48,7 +48,7 @@ export async function withTemporaryFiles(files, ...callbacks) {
 
   const temporaryDirectory = `${await fs.mkdtemp(
     nodePath.join(baseDirectory, "wtf-")
-  )}/`;
+  )}/`.replaceAll("\\", "/");
 
   try {
     const writes = Object.entries(files).map(async (entry) => {
