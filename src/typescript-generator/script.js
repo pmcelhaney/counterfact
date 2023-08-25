@@ -166,10 +166,12 @@ export class Script {
       ([name, { script, isType, isDefault }]) =>
         `import${isType ? " type" : ""} ${
           isDefault ? name : `{ ${name} }`
-        } from "./${nodePath.relative(
-          nodePath.dirname(this.path),
-          script.path.replace(/\.ts$/u, ".js")
-        )}";`
+        } from "./${nodePath
+          .relative(
+            nodePath.dirname(this.path).replaceAll("\\", "/"),
+            script.path.replace(/\.ts$/u, ".js")
+          )
+          .replaceAll("\\", "/")}";`
     );
   }
 

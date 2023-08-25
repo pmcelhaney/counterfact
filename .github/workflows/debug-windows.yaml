@@ -35,5 +35,5 @@ jobs:
       - name: Install Packages
         run: yarn install --frozen-lockfile --network-timeout 100000
       - name: Try running the petstore
-        run: npx . ./openapi-example.yaml out
+        run: npx . https://petstore3.swagger.io/api/v3/openapi.json out
         timeout-minutes: 2
