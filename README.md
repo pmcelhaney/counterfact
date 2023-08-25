@@ -31,10 +31,10 @@ However, over the course of several years, I found ways to minimize the effort t
 <details>
 <summary>What's wrong with the status quo?</summary>
 
-- A typical web application these days spans multiple microservices, databases, etc. Standing up the whole stack locally takes a lot of effort (and defeats the purpose of microservices).
+- A typical web application these days spans multiple microservices, databases, etc. Standing up the whole stack locally takes a lot of effort (and defeats one of the main benefits of microservices).
 - It's not uncommon for teams to run the front end locally and point to an API on a dev or QA server. Multiple developers working against the same backend with shared state is a recipe for disaster.
 - Getting the back end in a state necessary to test functionality in the front end is tedious and time consuming, if not impossible.
-- A mock server can help. But a mock server that returns random or predetermined responses can only get us so far. For testing multiple step workflows, sometimes we need a real server (or something that mimics the behavior of a real server).
+- A mock server can help. But a mock server that returns random or predetermined responses can only get us so far. For testing multiple step workflows, sometimes we need a real server, or something that mimics the behavior of a real server. Ideally, we want something that mimics a real server except when we want it to behave in a controlled, predictable manner.
 - From a customer's point of view, the frontend _is_ the app. If we can build the frontend without first having a backend in place, we can reduce cycle time and overproduction significantly.
 - On some level, you got into software development because its _fun_. Don't you wish you could spend more time on the fun aspects of writing code and less time on tedious set up and testing?
 
@@ -50,7 +50,9 @@ Run the following command in your terminal and answer "yes" if when it asks to i
 npx counterfact@latest https://petstore3.swagger.io/api/v3/openapi.json api --open
 ```
 
-Assuming your have NodeJS 16+ installed, it will read the Open API spec for the Swagger Petstore, generate a TypeScript and Node based mock server based on that spec in the a directory called `api` , start the server, and open a browser with some tools to try out the API.
+Assuming your have NodeJS 16+ installed, it will read the Open API spec for the Swagger Petstore, generate a TypeScript and Node based mock server based on that spec in the output directory ("api"), start the server, and open a browser with some tools to try out the API.
+
+Try it out on your own [OpenAPI / Swagger spec](https://www.moesif.com/blog/technical/api-design/Benefits-of-using-the-OpenAPI-Swagger-specification-for-your-API/). Versions 2 and 3 are supported. You can point to a URL or a local file.
 
 ## What I can do with Counterfact?
 
@@ -73,10 +75,12 @@ Assuming your have NodeJS 16+ installed, it will read the Open API spec for the 
 
 ### In a few minutes:
 
-- Enhance a mock endpoint with business logic and state, so instead of serving random or example responses it can read the request, read and write state, and send and appropriate response. In other words, it can be totally fake, a fully functional replica of the real endpoint, or anything in between.
-- Interact with the mock server's state via a REPL.
+- Enhance auto-generated mocking code with business logic and state. A few small changes can go transform your totally fake endpoint to a fully functional replica of the real one, or anything in between.
+- Interact with the mock server's context via a REPL.
 - Simulate real-world conditions, such as a user with an extra long email address, low inventory, HTTP error codes, or latency.
 - Prototype and rapidly iterate on a REST APIs.
+
+More info under [Documentation](./docs/usage.md).
 
 ---
 
