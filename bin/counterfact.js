@@ -36,7 +36,7 @@ async function main(source, destination) {
 
   debug("generated code", destinationPath);
 
-  const basePath = nodePath.resolve(destinationPath);
+  const basePath = nodePath.resolve(destinationPath).replaceAll("\\", "/");
 
   const openBrowser = options.open;
 
