@@ -161,18 +161,18 @@ export class Script {
   }
 
   importStatements() {
-    return Array.from(
-      this.imports,
-      ([name, { script, isType, isDefault }]) =>
-        `import${isType ? " type" : ""} ${
-          isDefault ? name : `{ ${name} }`
-        } from "./${nodePath
-          .relative(
-            nodePath.dirname(this.path).replaceAll("\\", "/"),
-            script.path.replace(/\.ts$/u, ".js")
-          )
-          .replaceAll("\\", "/")}";`
-    );
+    return Array.from(this.imports, ([name, { script, isType, isDefault }]) => {
+      const resolvedPath = nodePath
+        .relative(
+          nodePath.dirname(this.path).replaceAll("\\", "/"),
+          script.path.replace(/\.ts$/u, ".js")
+        )
+        .replaceAll("\\", "/");
+
+      return `import${isType ? " type" : ""} ${
+        isDefault ? name : `{ ${name} }`
+      } from "${resolvedPath.includes("../") ? "" : "./"}${resolvedPath}";`;
+    });
   }
 
   exportStatements() {
