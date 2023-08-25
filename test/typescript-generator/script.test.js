@@ -99,6 +99,39 @@ describe("a Script", () => {
     ]);
   });
 
+  it("handles relative import statements", () => {
+    const repository = new Repository("/base/path");
+
+    class CoderThatWantsToImportAccount extends Coder {
+      *names() {
+        let index = 0;
+
+        while (true) {
+          yield `Account${index}`;
+          index += 1;
+        }
+      }
+
+      modulePath() {
+        return "../../export-from-me.ts";
+      }
+    }
+
+    const coder = new CoderThatWantsToImportAccount({});
+
+    const script = repository.get("import-to-me.ts");
+
+    script.import(coder);
+    script.importType(coder);
+    script.importDefault(coder);
+
+    expect(script.importStatements()).toStrictEqual([
+      'import { Account0 } from "../../export-from-me.js";',
+      'import type { Account1 } from "../../export-from-me.js";',
+      'import Account2 from "../../export-from-me.js";',
+    ]);
+  });
+
   it("creates export statements", async () => {
     const repository = new Repository("/base/path");
 
