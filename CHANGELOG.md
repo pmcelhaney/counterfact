@@ -1,5 +1,11 @@
 # counterfact
 
+## 0.25.2
+
+### Patch Changes
+
+- 5523d0f: fixed another bug caused by backslashes in Windows
+
 ## 0.25.1
 
 ### Patch Changes
