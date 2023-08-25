@@ -1,5 +1,11 @@
 # counterfact
 
+## 0.25.3
+
+### Patch Changes
+
+- 02676a8: Fix typescript-generator importStatements logic for relative paths
+
 ## 0.25.2
 
 ### Patch Changes
