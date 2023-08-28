@@ -1,14 +1,14 @@
-import fs from "node:fs/promises";
-import { existsSync } from "node:fs";
-import nodePath from "node:path";
 import { once } from "node:events";
+import { existsSync } from "node:fs";
+import fs from "node:fs/promises";
+import nodePath from "node:path";
 import { pathToFileURL } from "node:url";
 
 import chokidar from "chokidar";
 import createDebug from "debug";
 
-import { ContextRegistry } from "./context-registry.js";
 import { CHOKIDAR_OPTIONS } from "./constants.js";
+import { ContextRegistry } from "./context-registry.js";
 
 const debug = createDebug("counterfact:typescript-generator:module-loader");
 
@@ -97,7 +97,7 @@ export class ModuleLoader extends EventTarget {
       nodePath.join(this.basePath, directory).replaceAll("\\", "/"),
       {
         withFileTypes: true,
-      }
+      },
     );
 
     // eslint-disable-next-line max-statements
@@ -106,13 +106,13 @@ export class ModuleLoader extends EventTarget {
 
       if (file.isDirectory()) {
         await this.load(
-          nodePath.join(directory, file.name).replaceAll("\\", "/")
+          nodePath.join(directory, file.name).replaceAll("\\", "/"),
         );
 
         return;
       }
 
-      if (!["js", "mjs", "ts", "mts"].includes(extension)) {
+      if (!["js", "mjs", "mts", "ts"].includes(extension)) {
         return;
       }
 
@@ -137,7 +137,7 @@ export class ModuleLoader extends EventTarget {
             `/${nodePath
               .join(directory, nodePath.parse(file.name).name)
               .replaceAll("\\", "/")}`,
-            endpoint
+            endpoint,
           );
         }
       } catch (error) {

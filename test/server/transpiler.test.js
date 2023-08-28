@@ -33,7 +33,7 @@ describe("a Transpiler", () => {
       expect(fs.existsSync(path("dist/found.mjs"))).toBe(true);
 
       await expect(fs.readFileSync(path("dist/found.mjs"), "utf8")).toBe(
-        JAVASCRIPT_SOURCE
+        JAVASCRIPT_SOURCE,
       );
 
       transpiler.stopWatching();
@@ -45,7 +45,7 @@ describe("a Transpiler", () => {
 
     await withTemporaryFiles(
       { "src/starter.ts": TYPESCRIPT_SOURCE },
-      async (basePath, { path, add }) => {
+      async (basePath, { add, path }) => {
         transpiler = new Transpiler(path("src"), path("dist"));
 
         await transpiler.watch();
@@ -61,11 +61,11 @@ describe("a Transpiler", () => {
         });
 
         await expect(fs.readFileSync(path("dist/added.mjs"), "utf8")).toBe(
-          JAVASCRIPT_SOURCE
+          JAVASCRIPT_SOURCE,
         );
 
         transpiler.stopWatching();
-      }
+      },
     );
   });
 
@@ -74,7 +74,7 @@ describe("a Transpiler", () => {
       "src/update-me.ts": "const x = 'code to be overwritten';\n",
     };
 
-    await withTemporaryFiles(files, async (basePath, { path, add }) => {
+    await withTemporaryFiles(files, async (basePath, { add, path }) => {
       transpiler = new Transpiler(path("src"), path("dist"));
 
       const initialWrite = once(transpiler, "write");
@@ -88,7 +88,7 @@ describe("a Transpiler", () => {
       await overwrite;
 
       await expect(fs.readFileSync(path("dist/update-me.mjs"), "utf8")).toBe(
-        JAVASCRIPT_SOURCE
+        JAVASCRIPT_SOURCE,
       );
 
       transpiler.stopWatching();
@@ -108,7 +108,7 @@ describe("a Transpiler", () => {
       await once(transpiler, "delete");
 
       await expect(() =>
-        fs.accessSync(path("dist/delete-me.js"), fsConstants.F_OK)
+        fs.accessSync(path("dist/delete-me.js"), fsConstants.F_OK),
       ).toThrow(/ENOENT/u);
 
       transpiler.stopWatching();

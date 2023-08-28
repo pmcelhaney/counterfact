@@ -70,7 +70,7 @@ describe("a Coder", () => {
     });
 
     expect(new DelegatingCoder(requirement).write(script)).toBe(
-      '{ name: "example", account: Account }'
+      '{ name: "example", account: Account }',
     );
   });
 
@@ -93,8 +93,8 @@ describe("a Coder", () => {
       new Requirement(
         { $ref: "#/components/schemas/Person" },
         "",
-        specification
-      )
+        specification,
+      ),
     );
 
     const otherCoder = await coder.delegate();

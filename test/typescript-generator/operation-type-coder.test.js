@@ -10,7 +10,9 @@ function format(code) {
 }
 
 const dummyScript = {
-  path: ".",
+  import() {
+    return "schema";
+  },
 
   importDefault() {
     return "default";
@@ -24,15 +26,13 @@ const dummyScript = {
     return "Type";
   },
 
-  import() {
-    return "schema";
-  },
+  path: ".",
 };
 
 describe("an OperationTypeCoder", () => {
   it("generates a list of potential names", () => {
     const coder = new OperationTypeCoder(
-      new Requirement({}, "#/paths/hello/get")
+      new Requirement({}, "#/paths/hello/get"),
     );
 
     const [one, two, three] = coder.names();
@@ -46,7 +46,7 @@ describe("an OperationTypeCoder", () => {
 
   it("creates a type declaration", () => {
     const coder = new OperationTypeCoder(
-      new Requirement({}, "#/paths/hello/get")
+      new Requirement({}, "#/paths/hello/get"),
     );
 
     expect(coder.typeDeclaration(undefined, dummyScript)).toBe("");
@@ -54,7 +54,7 @@ describe("an OperationTypeCoder", () => {
 
   it("returns the module path", () => {
     const coder = new OperationTypeCoder(
-      new Requirement({}, "#/paths/hello~1world/get")
+      new Requirement({}, "#/paths/hello~1world/get"),
     );
 
     expect(coder.modulePath()).toBe("path-types/hello/world.types.ts");
@@ -64,9 +64,9 @@ describe("an OperationTypeCoder", () => {
     const requirement = new Requirement(
       {
         parameters: [
-          { name: "id", in: "path", schema: { type: "string" } },
-          { name: "name", in: "query", schema: { type: "string" } },
-          { name: "name", in: "header", schema: { type: "string" } },
+          { in: "path", name: "id", schema: { type: "string" } },
+          { in: "query", name: "name", schema: { type: "string" } },
+          { in: "header", name: "name", schema: { type: "string" } },
         ],
 
         requestBody: {
@@ -81,8 +81,6 @@ describe("an OperationTypeCoder", () => {
           200: {
             content: {
               "application/json": {
-                schema: { $ref: "#/components/schemas/Example" },
-
                 examples: {
                   "first-example": {
                     value: "first",
@@ -92,6 +90,8 @@ describe("an OperationTypeCoder", () => {
                     value: "second",
                   },
                 },
+
+                schema: { $ref: "#/components/schemas/Example" },
               },
             },
           },
@@ -113,13 +113,13 @@ describe("an OperationTypeCoder", () => {
           },
         },
       },
-      "#/paths/hello/post"
+      "#/paths/hello/post",
     );
 
     const coder = new OperationTypeCoder(requirement);
 
     expect(
-      format(`type TestType = ${coder.write(dummyScript)}`)
+      format(`type TestType = ${coder.write(dummyScript)}`),
     ).toMatchSnapshot();
   });
 
@@ -127,18 +127,19 @@ describe("an OperationTypeCoder", () => {
     const requirement = new Requirement(
       {
         consumes: ["application/json"],
-        produces: ["application/json"],
 
         parameters: [
-          { name: "id", in: "path", type: "string" },
-          { name: "name", in: "query", type: "string" },
-          { name: "name", in: "header", type: "string" },
+          { in: "path", name: "id", type: "string" },
+          { in: "query", name: "name", type: "string" },
+          { in: "header", name: "name", type: "string" },
           {
-            name: "body",
             in: "body",
+            name: "body",
             schema: { $ref: "#/components/schemas/Example" },
           },
         ],
+
+        produces: ["application/json"],
 
         responses: {
           200: {
@@ -154,13 +155,13 @@ describe("an OperationTypeCoder", () => {
           },
         },
       },
-      "#/paths/hello/post"
+      "#/paths/hello/post",
     );
 
     const coder = new OperationTypeCoder(requirement);
 
     expect(
-      format(`type TestType = ${coder.write(dummyScript)}`)
+      format(`type TestType = ${coder.write(dummyScript)}`),
     ).toMatchSnapshot();
   });
 
@@ -176,12 +177,12 @@ describe("an OperationTypeCoder", () => {
         consumes: ["application/json"],
 
         parameters: [
-          { name: "id", in: "path", type: "string" },
-          { name: "name", in: "query", type: "string" },
-          { name: "name", in: "header", type: "string" },
+          { in: "path", name: "id", type: "string" },
+          { in: "query", name: "name", type: "string" },
+          { in: "header", name: "name", type: "string" },
           {
-            name: "body",
             in: "body",
+            name: "body",
             schema: { $ref: "#/components/schemas/Example" },
           },
         ],
@@ -201,13 +202,13 @@ describe("an OperationTypeCoder", () => {
         },
       },
       "#/paths/hello/post",
-      specification
+      specification,
     );
 
     const coder = new OperationTypeCoder(requirement);
 
     expect(
-      format(`type TestType = ${coder.write(dummyScript)}`)
+      format(`type TestType = ${coder.write(dummyScript)}`),
     ).toMatchSnapshot();
   });
 
@@ -224,13 +225,13 @@ describe("an OperationTypeCoder", () => {
           },
         },
       },
-      "#/paths/hello/get"
+      "#/paths/hello/get",
     );
 
     const coder = new OperationTypeCoder(requirement);
 
     expect(
-      format(`type TestType =${coder.write(dummyScript)}`)
+      format(`type TestType =${coder.write(dummyScript)}`),
     ).toMatchSnapshot();
   });
 
@@ -245,13 +246,13 @@ describe("an OperationTypeCoder", () => {
           },
         },
       },
-      "#/paths/hello/get"
+      "#/paths/hello/get",
     );
 
     const coder = new OperationTypeCoder(requirement);
 
     expect(
-      format(`type TestType =${coder.write(dummyScript)}`)
+      format(`type TestType =${coder.write(dummyScript)}`),
     ).toMatchSnapshot();
   });
 
@@ -266,13 +267,13 @@ describe("an OperationTypeCoder", () => {
           },
         },
       },
-      "#/paths/hello/get"
+      "#/paths/hello/get",
     );
 
     const coder = new OperationTypeCoder(requirement);
 
     expect(
-      format(`type TestType =${coder.write(dummyScript)}`)
+      format(`type TestType =${coder.write(dummyScript)}`),
     ).toMatchSnapshot();
   });
 });

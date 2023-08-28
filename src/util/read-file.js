@@ -2,8 +2,8 @@
 
 import fs from "node:fs";
 
-import nodeFetch from "node-fetch";
 import createDebug from "debug";
+import nodeFetch from "node-fetch";
 
 const debug = createDebug("counterfact:util:read-file");
 

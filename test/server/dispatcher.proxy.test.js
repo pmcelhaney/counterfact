@@ -1,7 +1,7 @@
 import { Headers } from "node-fetch";
 
-import { Dispatcher } from "../../src/server/dispatcher.js";
 import { ContextRegistry } from "../../src/server/context-registry.js";
+import { Dispatcher } from "../../src/server/dispatcher.js";
 import { Registry } from "../../src/server/registry.js";
 
 describe("a dispatcher passes a proxy function to the operation", () => {
@@ -17,8 +17,8 @@ describe("a dispatcher passes a proxy function to the operation", () => {
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
 
     dispatcher.fetch = (url) => ({
-      status: 200,
       headers: new Headers([["content-type", "application/json"]]),
+      status: 200,
 
       text() {
         return `body from ${url}`;

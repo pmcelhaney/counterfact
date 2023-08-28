@@ -1,5 +1,5 @@
-import fs from "node:fs/promises";
 import { constants as fsConstants } from "node:fs";
+import fs from "node:fs/promises";
 import os from "node:os";
 import nodePath from "node:path";
 
@@ -47,7 +47,7 @@ export async function withTemporaryFiles(files, ...callbacks) {
     : os.tmpdir();
 
   const temporaryDirectory = `${await fs.mkdtemp(
-    nodePath.join(baseDirectory, "wtf-")
+    nodePath.join(baseDirectory, "wtf-"),
   )}/`.replaceAll("\\", "/");
 
   try {
@@ -67,7 +67,6 @@ export async function withTemporaryFiles(files, ...callbacks) {
       // eslint-disable-next-line no-await-in-loop, n/callback-return
       await callback(temporaryDirectory, {
         add: createAddFunction(temporaryDirectory),
-        remove: createRemoveFunction(temporaryDirectory),
         addDirectory: createAddDirectoryFunction(temporaryDirectory),
 
         path(relativePath) {
@@ -75,6 +74,8 @@ export async function withTemporaryFiles(files, ...callbacks) {
             .join(temporaryDirectory, relativePath)
             .replaceAll("\\", "/");
         },
+
+        remove: createRemoveFunction(temporaryDirectory),
       });
     }
   } finally {

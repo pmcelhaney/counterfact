@@ -1,15 +1,14 @@
 /* eslint-disable max-statements */
 import nodePath, { dirname } from "node:path";
-import { pathToFileURL, fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
+import Handlebars from "handlebars";
 import yaml from "js-yaml";
 import Koa from "koa";
 import bodyParser from "koa-bodyparser";
 import { koaSwagger } from "koa2-swagger-ui";
-import Handlebars from "handlebars";
 
 import { readFile } from "../util/read-file.js";
-
 import { counterfact } from "./counterfact.js";
 
 // eslint-disable-next-line no-underscore-dangle
@@ -18,7 +17,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const DEFAULT_PORT = 3100;
 
 Handlebars.registerHelper("escape_route", (route) =>
-  route.replaceAll(/[^\w/]/gu, "-")
+  route.replaceAll(/[^\w/]/gu, "-"),
 );
 
 function openapi(openApiPath, url) {
@@ -53,8 +52,8 @@ function page(pathname, templateName, locals) {
       await readFile(
         nodePath
           .join(__dirname, `../client/${templateName}.html.hbs`)
-          .replaceAll("\\", "/")
-      )
+          .replaceAll("\\", "/"),
+      ),
     );
 
     if (ctx.URL.pathname === pathname) {
@@ -80,10 +79,10 @@ export async function start(config) {
 
   const app = new Koa();
 
-  const { koaMiddleware, contextRegistry, registry } = await counterfact(
+  const { contextRegistry, koaMiddleware, registry } = await counterfact(
     basePath,
     openApiPath,
-    config
+    config,
   );
 
   app.use(openapi(openApiPath, `//localhost:${port}`));
@@ -95,20 +94,22 @@ export async function start(config) {
       swaggerOptions: {
         url: "/counterfact/openapi",
       },
-    })
+    }),
   );
 
   app.use(
     page("/counterfact/", "index", {
       basePath,
-      routes: registry.routes,
       methods: ["get", "post", "put", "delete", "patch"],
-      openApiPath,
 
       openApiHref: openApiPath.includes("://")
         ? openApiPath
         : pathToFileURL(openApiPath).href,
-    })
+
+      openApiPath,
+
+      routes: registry.routes,
+    }),
   );
 
   app.use(async (ctx, next) => {
@@ -126,7 +127,7 @@ export async function start(config) {
     page("/counterfact/rapidoc", "rapi-doc", {
       basePath,
       routes: registry.routes,
-    })
+    }),
   );
 
   app.use(bodyParser());
