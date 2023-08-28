@@ -1,6 +1,5 @@
-// eslint-disable-next-line import/order
+// eslint-disable-next-line import/newline-after-import
 import Accept from "@hapi/accept";
-
 // eslint-disable-next-line no-shadow
 import fetch, { Headers } from "node-fetch";
 
@@ -13,12 +12,12 @@ function parameterTypes(parameters) {
   }
 
   const types = {
-    path: {},
-    query: {},
-    header: {},
+    body: {},
     cookie: {},
     formData: {},
-    body: {},
+    header: {},
+    path: {},
+    query: {},
   };
 
   for (const parameter of parameters) {
@@ -57,27 +56,18 @@ export class Dispatcher {
     return operation;
   }
 
-  async request({ method, path, headers, body, query, req }) {
+  async request({ body, headers, method, path, query, req }) {
     const { matchedPath } = this.registry.handler(path);
     const operation = this.operationForPathAndMethod(matchedPath, method);
 
     const response = await this.registry.endpoint(
       method,
       path,
-      parameterTypes(operation?.parameters)
+      parameterTypes(operation?.parameters),
     )({
-      tools: new Tools({ headers }),
       body,
-      query,
-      headers,
       context: this.contextRegistry.find(path),
-
-      response: createResponseBuilder(
-        this.operationForPathAndMethod(
-          this.registry.handler(path).matchedPath,
-          method
-        )
-      ),
+      headers,
 
       proxy: async (url) => {
         if (
@@ -86,40 +76,51 @@ export class Dispatcher {
           headers.contentType !== "application/json"
         ) {
           throw new Error(
-            `$.proxy() is currently limited to application/json requests. You tried to proxy to ${url} with a Content-Type of ${headers.contentType}. Please open an issue at https://github.com/pmcelhaney/counterfact/issues and prod me to fix this limitation.`
+            `$.proxy() is currently limited to application/json requests. You tried to proxy to ${url} with a Content-Type of ${headers.contentType}. Please open an issue at https://github.com/pmcelhaney/counterfact/issues and prod me to fix this limitation.`,
           );
         }
 
         const fetchResponse = await this.fetch(url + req.path, {
-          method,
-          headers: new Headers(headers),
           body: body ? JSON.stringify(body) : undefined,
+          headers: new Headers(headers),
+          method,
         });
 
         const responseHeaders = Object.fromEntries(
-          fetchResponse.headers.entries()
+          fetchResponse.headers.entries(),
         );
 
         return {
-          status: fetchResponse.status,
+          body: await fetchResponse.text(),
           contentType: responseHeaders["content-type"] ?? "unknown/unknown",
           headers: responseHeaders,
-          body: await fetchResponse.text(),
+          status: fetchResponse.status,
         };
       },
+
+      query,
+
+      response: createResponseBuilder(
+        this.operationForPathAndMethod(
+          this.registry.handler(path).matchedPath,
+          method,
+        ),
+      ),
+
+      tools: new Tools({ headers }),
     });
 
     const normalizedResponse = this.normalizeResponse(
       response,
-      headers?.accept ?? "*/*"
+      headers?.accept ?? "*/*",
     );
 
     if (
       !Accept.mediaTypes(headers?.accept ?? "*/*").some((type) =>
-        this.isMediaType(normalizedResponse.contentType, type)
+        this.isMediaType(normalizedResponse.contentType, type),
       )
     ) {
-      return { status: 406, body: Accept.mediaTypes(headers?.accept ?? "*/*") };
+      return { body: Accept.mediaTypes(headers?.accept ?? "*/*"), status: 406 };
     }
 
     return normalizedResponse;
@@ -128,10 +129,10 @@ export class Dispatcher {
   normalizeResponse(response, acceptHeader) {
     if (typeof response === "string") {
       return {
-        status: 200,
-        headers: {},
-        contentType: "text/plain",
         body: response,
+        contentType: "text/plain",
+        headers: {},
+        status: 200,
       };
     }
 
@@ -146,8 +147,8 @@ export class Dispatcher {
 
       const normalizedResponse = {
         ...response,
-        contentType: content.type,
         body: content.body,
+        contentType: content.type,
       };
 
       delete normalizedResponse.content;
@@ -163,7 +164,7 @@ export class Dispatcher {
 
     for (const mediaType of preferredMediaTypes) {
       const contentItem = content.find((item) =>
-        this.isMediaType(item.type, mediaType)
+        this.isMediaType(item.type, mediaType),
       );
 
       if (contentItem) {
@@ -172,8 +173,8 @@ export class Dispatcher {
     }
 
     return {
-      type: preferredMediaTypes,
       body: "no match",
+      type: preferredMediaTypes,
     };
   }
 

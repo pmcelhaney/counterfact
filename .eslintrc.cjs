@@ -1,19 +1,34 @@
 "use strict";
 
 const rules = {
-  "n/shebang": "off",
-  "putout/putout": "off",
-  "import/prefer-default-export": "off",
+  "@microsoft/sdl/no-html-method": "off",
+  "@typescript-eslint/lines-around-comment": "off",
   "@typescript-eslint/naming-convention": "off",
+  "import/default": "off",
+
+  "import/namespace": "off",
+
+  // too slow
+  "import/no-cycle": "off",
+
+  "import/no-deprecated": "off",
+  "import/no-named-as-default": "off",
+  "import/no-named-as-default-member": "off",
+
+  "import/no-unused-modules": "off",
+
+  "import/prefer-default-export": "off",
 
   "max-len": [
     "warn",
     {
+      code: 120,
       ignorePattern: "eslint|it\\(|describe\\(",
       ignoreTemplateLiterals: true,
-      code: 120,
     },
   ],
+
+  "n/shebang": "off",
 
   "no-magic-numbers": [
     "error",
@@ -22,8 +37,8 @@ const rules = {
     },
   ],
 
-  "node/no-callback-literal": "off",
   "node/file-extension-in-import": "off",
+  "node/no-callback-literal": "off",
   "node/no-missing-import": "off",
 
   "prettier/prettier": [
@@ -33,19 +48,17 @@ const rules = {
     },
   ],
 
-  // too slow
-  "import/no-cycle": "off",
-  "import/no-unused-modules": "off",
-  "import/namespace": "off",
-  "import/no-named-as-default": "off",
-  "import/no-deprecated": "off",
-  "import/default": "off",
-  "import/no-named-as-default-member": "off",
-  "@microsoft/sdl/no-html-method": "off",
-  "@typescript-eslint/lines-around-comment": "off",
+  "putout/putout": "off",
 };
 
 module.exports = {
+  env: {
+    es2021: true,
+    node: true,
+  },
+
+  extends: ["hardcore", "hardcore/ts", "hardcore/node"],
+
   ignorePatterns: [
     "/node_modules/",
     "/coverage/",
@@ -55,112 +68,101 @@ module.exports = {
     ".stryker-tmp",
   ],
 
-  extends: ["hardcore", "hardcore/ts", "hardcore/node"],
-
-  parserOptions: {
-    sourceType: "module",
-  },
-
-  env: {
-    es2021: true,
-    node: true,
-  },
-
-  rules,
-
   overrides: [
     {
-      files: ["*.cjs"],
       extends: ["hardcore", "hardcore/node"],
-
-      rules: {
-        "import/no-commonjs": "off",
-      },
+      files: ["*.cjs"],
 
       parserOptions: {
         sourceType: "script",
       },
+
+      rules: {
+        "import/no-commonjs": "off",
+      },
     },
 
     {
-      files: ["*.test.js"],
-
       extends: ["hardcore", "hardcore/ts", "hardcore/node", "hardcore/jest"],
+
+      files: ["*.test.js"],
 
       rules: {
         ...rules,
+        "@typescript-eslint/naming-convention": "off",
+        "id-length": ["off"],
+
         "import/unambiguous": "off",
+
         "jest/prefer-expect-assertions": "off",
+
+        "jest/unbound-method": "off",
+
+        "max-lines": "off",
 
         "new-cap": [
           "error",
           { capIsNewExceptionPattern: "GET|PUT|POST|DELETE" },
         ],
 
-        "@typescript-eslint/naming-convention": "off",
-
-        "node/no-unpublished-import": "off",
-
         "no-magic-numbers": ["off"],
-        "id-length": ["off"],
-        "max-lines": "off",
-        "jest/unbound-method": "off",
+        "node/no-unpublished-import": "off",
       },
     },
 
     {
-      files: ["demo/**/*.js"],
       extends: ["hardcore", "hardcore/node"],
+      files: ["demo/**/*.js"],
 
       rules: {
         ...rules,
         "import/no-extraneous-dependencies": "off",
         "import/no-unused-modules": "off",
         "import/prefer-default-export": "off",
-        "no-param-reassign": "off",
         "no-console": "off",
+        "no-param-reassign": "off",
         "node/no-unpublished-import": "off",
       },
     },
 
     {
-      files: ["*.cjs"],
       extends: ["hardcore", "hardcore/node"],
+      files: ["*.cjs"],
+
+      parserOptions: {
+        sourceType: "script",
+      },
 
       rules: {
         ...rules,
         "import/no-commonjs": "off",
       },
-
-      parserOptions: {
-        sourceType: "script",
-      },
     },
 
     {
-      files: ["**/*.ts"],
       extends: ["hardcore", "hardcore/node", "hardcore/ts"],
+      files: ["**/*.ts"],
 
       parserOptions: {
-        sourceType: "module",
         project: "./tsconfig.json",
+        sourceType: "module",
       },
 
       rules: {
         ...rules,
-        "import/prefer-default-export": "off",
-        "import/no-unused-modules": "off",
-        "func-style": "off",
-        camelcase: "off",
         "@typescript-eslint/naming-convention": "off",
+        "@typescript-eslint/no-magic-numbers": "off",
+        "@typescript-eslint/prefer-readonly-parameter-types": "off",
+        camelcase: "off",
+        "eslint-comments/no-unused-disable": "off",
+        "etc/prefer-interface": "off",
+        "func-style": "off",
+        "import/group-exports": "off",
+        "import/no-unused-modules": "off",
+        "import/prefer-default-export": "off",
+        "max-len": "off",
         "no-magic-numbers": "off",
         "no-param-reassign": "off",
-        "import/group-exports": "off",
-        "max-len": "off",
-        "etc/prefer-interface": "off",
-        "@typescript-eslint/prefer-readonly-parameter-types": "off",
-        "eslint-comments/no-unused-disable": "off",
-        "@typescript-eslint/no-magic-numbers": "off",
       },
 
       settings: {
@@ -178,14 +180,14 @@ module.exports = {
     },
 
     {
-      files: ["templates/**/*.ts"],
-
       env: {
         es2021: true,
         node: true,
       },
 
       extends: ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+
+      files: ["templates/**/*.ts"],
 
       parserOptions: {
         ecmaVersion: "latest",
@@ -195,4 +197,10 @@ module.exports = {
       rules: {},
     },
   ],
+
+  parserOptions: {
+    sourceType: "module",
+  },
+
+  rules,
 };

@@ -2,13 +2,13 @@
 
 import nodePath from "node:path";
 
-import createDebug from "debug";
 import { program } from "commander";
+import createDebug from "debug";
 import open from "open";
 
-import { generate } from "../src/typescript-generator/generate.js";
-import { start } from "../src/server/start.js";
 import { startRepl } from "../src/server/repl.js";
+import { start } from "../src/server/start.js";
+import { generate } from "../src/typescript-generator/generate.js";
 
 const DEFAULT_PORT = 3100;
 
@@ -46,11 +46,11 @@ async function main(source, destination) {
 
   const config = {
     basePath,
-    port: options.port,
-    openApiPath: source,
     includeSwaggerUi: true,
-    proxyUrl: options.proxyUrl,
+    openApiPath: source,
+    port: options.port,
     proxyEnabled: Boolean(options.proxyUrl),
+    proxyUrl: options.proxyUrl,
   };
 
   debug("starting server (%o)", config);
@@ -80,7 +80,7 @@ async function main(source, destination) {
   process.stdout.write(`${introduction.join("\n")}\n`);
 
   process.stdout.write(
-    waysToInteract.map((text, index) => `${index + 1}. ${text}`).join("\n")
+    waysToInteract.map((text, index) => `${index + 1}. ${text}`).join("\n"),
   );
 
   process.stdout.write("\n\n");
@@ -103,7 +103,7 @@ async function main(source, destination) {
 program
   .name("counterfact")
   .description(
-    "Counterfact is a tool for generating a REST API from an OpenAPI document."
+    "Counterfact is a tool for generating a REST API from an OpenAPI document.",
   )
   .argument("<openapi.yaml>", "path or URL to OpenAPI document")
   .argument("[destination]", "path to generated code", ".")
@@ -112,4 +112,5 @@ program
   .option("--open", "open a browser")
   .option("--proxy-url <string>", "proxy URL")
   .action(main)
+  // eslint-disable-next-line sonar/process-argv
   .parse(process.argv);

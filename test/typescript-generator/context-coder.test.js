@@ -9,7 +9,9 @@ function format(code) {
 }
 
 const dummyScript = {
-  path: ".",
+  import() {
+    return "schema";
+  },
 
   importDefault() {
     return "default";
@@ -23,9 +25,7 @@ const dummyScript = {
     return "Type";
   },
 
-  import() {
-    return "schema";
-  },
+  path: ".",
 
   repository: {
     get() {

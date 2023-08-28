@@ -1,26 +1,26 @@
 import { once } from "node:events";
 
+import { ContextRegistry } from "../../src/server/context-registry.js";
 import { ModuleLoader } from "../../src/server/module-loader.js";
 import { Registry } from "../../src/server/registry.js";
-import { ContextRegistry } from "../../src/server/context-registry.js";
 import { withTemporaryFiles } from "../lib/with-temporary-files.js";
 
 describe("a module loader", () => {
   it("finds a file and adds it to the registry", async () => {
     const files = {
-      "hello.mjs": `
-      export function GET() {
-          return {
-              body: "hello"
-          };
-      }
-      `,
       "a/b/c.mjs": `
         export function GET() {
             return {
                 body: "GET from a/b/c"
             }; 
         }
+      `,
+      "hello.mjs": `
+      export function GET() {
+          return {
+              body: "hello"
+          };
+      }
       `,
     };
 
@@ -49,7 +49,7 @@ describe("a module loader", () => {
 
       add(
         "late/addition.mjs",
-        'export function GET() { return { body: "I\'m here now!" }; }'
+        'export function GET() { return { body: "I\'m here now!" }; }',
       );
       await once(loader, "add");
 
@@ -80,7 +80,7 @@ describe("a module loader", () => {
         expect(registry.exists("GET", "/delete-me")).toBe(false);
 
         await loader.stopWatching();
-      }
+      },
     );
   });
 
@@ -128,20 +128,20 @@ describe("a module loader", () => {
         await loader.watch();
         add(
           "change.mjs",
-          'export function GET() { return { body: "after change" }; }'
+          'export function GET() { return { body: "after change" }; }',
         );
         await once(loader, "change");
 
         const response = await registry.endpoint(
           "GET",
-          "/change"
-        )({ path: "", reduce: () => undefined, context: {} });
+          "/change",
+        )({ context: {}, path: "", reduce: () => undefined });
 
         expect(response.body).toBe("after change");
         expect(registry.exists("GET", "/late/addition")).toBe(true);
 
         await loader.stopWatching();
-      }
+      },
     );
   });
 

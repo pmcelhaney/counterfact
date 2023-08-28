@@ -4,9 +4,9 @@ describe("a Requirement", () => {
   it("select(name) - returns a new requirement", () => {
     const specification = {};
     const requirement = new Requirement(
-      { phone: { type: "string" }, address: { type: "Address" } },
+      { address: { type: "Address" }, phone: { type: "string" } },
       "openapi.yaml#/components/schemas/Person",
-      specification
+      specification,
     );
 
     const phone = requirement.select("phone");
@@ -50,9 +50,9 @@ describe("a Requirement", () => {
 
   it("provides a forEach() method", () => {
     const requirement = new Requirement({
-      phone: { type: "string" },
       address: { type: "Address" },
       "foo/bar~baz": { type: "SpecialChars" },
+      phone: { type: "string" },
     });
 
     const phone = requirement.select("phone");
@@ -66,17 +66,17 @@ describe("a Requirement", () => {
     });
 
     expect(result).toStrictEqual([
-      ["phone", phone],
       ["address", address],
       ["foo/bar~baz", specialChars],
+      ["phone", phone],
     ]);
   });
 
   it("provides a map() method", () => {
     const requirement = new Requirement({
-      phone: { type: "string" },
       address: { type: "Address" },
       "foo/bar~baz": { type: "SpecialChars" },
+      phone: { type: "string" },
     });
 
     const phone = requirement.select("phone");
@@ -89,9 +89,9 @@ describe("a Requirement", () => {
     ]);
 
     expect(result).toStrictEqual([
-      ["phone!", phone],
       ["address!", address],
       ["foo/bar~baz!", specialChars],
+      ["phone!", phone],
     ]);
   });
 
@@ -124,7 +124,7 @@ describe("a Requirement", () => {
 
     const result = requirement.find(
       // eslint-disable-next-line jest/no-conditional-in-test
-      (subRequirement, key) => key === "b" && subRequirement.data === "bar"
+      (subRequirement, key) => key === "b" && subRequirement.data === "bar",
     );
 
     expect(result).toStrictEqual(requirement.get("b"));

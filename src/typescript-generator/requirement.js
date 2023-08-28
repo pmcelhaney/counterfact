@@ -25,7 +25,7 @@ export class Requirement {
     return new Requirement(
       this.data[item],
       `${this.url}/${item}`,
-      this.specification
+      this.specification,
     );
   }
 
@@ -42,7 +42,7 @@ export class Requirement {
       return new Requirement(
         branch,
         `${this.url}/${basePath}${head}`,
-        this.specification
+        this.specification,
       );
     }
 
