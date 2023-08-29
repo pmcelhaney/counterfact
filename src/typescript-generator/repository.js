@@ -4,7 +4,6 @@ import nodePath, { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import createDebug from "debug";
-import prettier from "prettier";
 
 import { Script } from "./script.js";
 
@@ -88,9 +87,7 @@ export class Repository {
     const writeFiles = Array.from(
       this.scripts.entries(),
       async ([path, script]) => {
-        const contents = prettier.format(script.contents(), {
-          parser: "typescript",
-        });
+        const contents = await script.contents();
 
         const fullPath = nodePath.join(destination, path).replaceAll("\\", "/");
 

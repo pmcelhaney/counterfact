@@ -55,7 +55,7 @@ describe("a SchemaCoder", () => {
     expect(result).toBe(output);
   });
 
-  it("generates a type declaration for an object", () => {
+  it("generates a type declaration for an object", async () => {
     const coder = new SchemaCoder(
       new Requirement({
         properties: {
@@ -69,16 +69,18 @@ describe("a SchemaCoder", () => {
       }),
     );
 
-    const expected = format(`const x = { 
+    const expected = await format(`const x = { 
       type: "object",
       required: [],
       properties: { "age": {"type":"integer"}, "name": {"type":"string"}  }
     }`);
 
-    expect(format(`const x = ${coder.write()}`)).toStrictEqual(expected);
+    await expect(format(`const x = ${coder.write()}`)).resolves.toStrictEqual(
+      expected,
+    );
   });
 
-  it("generates a type declaration for an array", () => {
+  it("generates a type declaration for an array", async () => {
     const coder = new SchemaCoder(
       new Requirement({
         items: { type: "string" },
@@ -87,14 +89,16 @@ describe("a SchemaCoder", () => {
       }),
     );
 
-    const expected = format(
+    const expected = await format(
       `const x = { 
           type: "array", 
           items: { type: "string" } 
       };`,
     );
 
-    expect(format(`const x = ${coder.write()}`)).toStrictEqual(expected);
+    await expect(format(`const x = ${coder.write()}`)).resolves.toStrictEqual(
+      expected,
+    );
   });
 
   it("has type JSONSchema6", () => {

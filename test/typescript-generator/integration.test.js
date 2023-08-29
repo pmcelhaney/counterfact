@@ -46,10 +46,10 @@ describe("integration Test", () => {
 
     await account.finished();
 
-    expect(account.contents()).toBe(
+    await expect(account.contents()).resolves.toBe(
       "export const HTTP_GET = () => {};\n\nexport const HTTP_POST = () => {};\n",
     );
-    expect(accountId.contents()).toBe(
+    await expect(accountId.contents()).resolves.toBe(
       "export const HTTP_GET = () => {};\n\nexport const HTTP_PUT = () => {};\n",
     );
   });

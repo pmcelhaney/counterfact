@@ -1,4 +1,3 @@
-/* eslint-disable jest/no-restricted-matchers */
 import prettier from "prettier";
 
 import { ContextCoder } from "../../src/typescript-generator/context-coder.js";
@@ -63,9 +62,11 @@ describe("a ContextCoder", () => {
     expect(coder.id).toBe("ContextCoder");
   });
 
-  it("finds the request method in the URL", () => {
+  it("finds the request method in the URL", async () => {
     const coder = new ContextCoder(new Requirement({}, "#/paths/hello/get"));
 
-    expect(format(coder.write(dummyScript).raw)).toMatchSnapshot();
+    await expect(
+      format(coder.write(dummyScript).raw),
+    ).resolves.toMatchSnapshot();
   });
 });
