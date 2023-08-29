@@ -1,4 +1,3 @@
-/* eslint-disable jest/no-restricted-matchers */
 import prettier from "prettier";
 
 import { OperationCoder } from "../../src/typescript-generator/operation-coder.js";
@@ -45,7 +44,7 @@ describe("an OperationCoder", () => {
     expect(coder.modulePath()).toBe("path/hello/world.types.ts");
   });
 
-  it("generates a complex get operation", () => {
+  it("generates a complex get operation", async () => {
     const requirement = new Requirement(
       {
         parameters: [
@@ -94,7 +93,7 @@ describe("an OperationCoder", () => {
 
     const coder = new OperationCoder(requirement);
 
-    expect(
+    await expect(
       format(
         coder.write({
           import() {
@@ -106,10 +105,10 @@ describe("an OperationCoder", () => {
           },
         }),
       ),
-    ).toMatchSnapshot();
+    ).resolves.toMatchSnapshot();
   });
 
-  it("generates a simple post operation", () => {
+  it("generates a simple post operation", async () => {
     const requirement = new Requirement(
       {
         responses: {
@@ -127,7 +126,7 @@ describe("an OperationCoder", () => {
 
     const coder = new OperationCoder(requirement);
 
-    expect(
+    await expect(
       format(
         coder.write({
           import() {
@@ -139,6 +138,6 @@ describe("an OperationCoder", () => {
           },
         }),
       ),
-    ).toMatchSnapshot();
+    ).resolves.toMatchSnapshot();
   });
 });

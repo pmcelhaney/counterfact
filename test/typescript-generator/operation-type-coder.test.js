@@ -1,4 +1,3 @@
-/* eslint-disable jest/no-restricted-matchers */
 import prettier from "prettier";
 
 import { OperationTypeCoder } from "../../src/typescript-generator/operation-type-coder.js";
@@ -60,7 +59,7 @@ describe("an OperationTypeCoder", () => {
     expect(coder.modulePath()).toBe("path-types/hello/world.types.ts");
   });
 
-  it("generates a complex post operation", () => {
+  it("generates a complex post operation", async () => {
     const requirement = new Requirement(
       {
         parameters: [
@@ -118,12 +117,12 @@ describe("an OperationTypeCoder", () => {
 
     const coder = new OperationTypeCoder(requirement);
 
-    expect(
+    await expect(
       format(`type TestType = ${coder.write(dummyScript)}`),
-    ).toMatchSnapshot();
+    ).resolves.toMatchSnapshot();
   });
 
-  it("generates a complex post operation (OpenAPI 2)", () => {
+  it("generates a complex post operation (OpenAPI 2)", async () => {
     const requirement = new Requirement(
       {
         consumes: ["application/json"],
@@ -160,12 +159,12 @@ describe("an OperationTypeCoder", () => {
 
     const coder = new OperationTypeCoder(requirement);
 
-    expect(
+    await expect(
       format(`type TestType = ${coder.write(dummyScript)}`),
-    ).toMatchSnapshot();
+    ).resolves.toMatchSnapshot();
   });
 
-  it("generates a complex post operation (OpenAPI 2 with produces at the root)", () => {
+  it("generates a complex post operation (OpenAPI 2 with produces at the root)", async () => {
     const specification = new Specification();
 
     specification.rootRequirement = new Requirement({
@@ -207,12 +206,12 @@ describe("an OperationTypeCoder", () => {
 
     const coder = new OperationTypeCoder(requirement);
 
-    expect(
+    await expect(
       format(`type TestType = ${coder.write(dummyScript)}`),
-    ).toMatchSnapshot();
+    ).resolves.toMatchSnapshot();
   });
 
-  it("generates a simple get operation", () => {
+  it("generates a simple get operation", async () => {
     const requirement = new Requirement(
       {
         responses: {
@@ -230,12 +229,12 @@ describe("an OperationTypeCoder", () => {
 
     const coder = new OperationTypeCoder(requirement);
 
-    expect(
+    await expect(
       format(`type TestType =${coder.write(dummyScript)}`),
-    ).toMatchSnapshot();
+    ).resolves.toMatchSnapshot();
   });
 
-  it("generates a simple get operation (OpenAPI 2)", () => {
+  it("generates a simple get operation (OpenAPI 2)", async () => {
     const requirement = new Requirement(
       {
         produces: ["application/json"],
@@ -251,12 +250,12 @@ describe("an OperationTypeCoder", () => {
 
     const coder = new OperationTypeCoder(requirement);
 
-    expect(
+    await expect(
       format(`type TestType =${coder.write(dummyScript)}`),
-    ).toMatchSnapshot();
+    ).resolves.toMatchSnapshot();
   });
 
-  it("falls back to root level produces (OpenAPI 2)", () => {
+  it("falls back to root level produces (OpenAPI 2)", async () => {
     const requirement = new Requirement(
       {
         produces: ["text/plain"],
@@ -272,8 +271,8 @@ describe("an OperationTypeCoder", () => {
 
     const coder = new OperationTypeCoder(requirement);
 
-    expect(
+    await expect(
       format(`type TestType =${coder.write(dummyScript)}`),
-    ).toMatchSnapshot();
+    ).resolves.toMatchSnapshot();
   });
 });

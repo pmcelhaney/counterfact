@@ -167,7 +167,7 @@ describe("a Script", () => {
     ]);
   });
 
-  it("outputs the contents (import and export statements)", () => {
+  it("outputs the contents (import and export statements)", async () => {
     const repository = new Repository("/base/path");
 
     const script = repository.get("script.ts");
@@ -179,7 +179,7 @@ describe("a Script", () => {
       "export default class {};",
     ];
 
-    expect(script.contents()).toBe(
+    await expect(script.contents()).resolves.toBe(
       'import { foo } from "./foo.js";\n\nexport const bar = "Bar";\n\nexport default class {}\n',
     );
   });

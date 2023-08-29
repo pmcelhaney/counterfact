@@ -1,4 +1,3 @@
-/* eslint-disable jest/no-restricted-matchers */
 import prettier from "prettier";
 
 import { ParametersTypeCoder } from "../../src/typescript-generator/parameters-type-coder.js";
@@ -21,7 +20,7 @@ describe("a ParametersTypeCoder", () => {
     ]);
   });
 
-  it("generates types for parameters", () => {
+  it("generates types for parameters", async () => {
     const requirement = new Requirement([
       { in: "path", name: "id", required: true, schema: { type: "string" } },
       { in: "query", name: "name", schema: { type: "string" } },
@@ -33,18 +32,18 @@ describe("a ParametersTypeCoder", () => {
     const queryCoder = new ParametersTypeCoder(requirement, "query");
     const headerCoder = new ParametersTypeCoder(requirement, "header");
 
-    expect(format(`type TestType =${pathCoder.write({})}`)).toMatchSnapshot(
-      "path",
-    );
-    expect(format(`type TestType =${queryCoder.write({})}`)).toMatchSnapshot(
-      "query",
-    );
-    expect(format(`type TestType =${headerCoder.write({})}`)).toMatchSnapshot(
-      "header",
-    );
+    await expect(
+      format(`type TestType =${pathCoder.write({})}`),
+    ).resolves.toMatchSnapshot("path");
+    await expect(
+      format(`type TestType =${queryCoder.write({})}`),
+    ).resolves.toMatchSnapshot("query");
+    await expect(
+      format(`type TestType =${headerCoder.write({})}`),
+    ).resolves.toMatchSnapshot("header");
   });
 
-  it("generates types for parameters (OAS2)", () => {
+  it("generates types for parameters (OAS2)", async () => {
     const requirement = new Requirement([
       { in: "path", name: "id", required: true, type: "string" },
       { in: "query", name: "name", type: "string" },
@@ -56,25 +55,27 @@ describe("a ParametersTypeCoder", () => {
     const queryCoder = new ParametersTypeCoder(requirement, "query");
     const headerCoder = new ParametersTypeCoder(requirement, "header");
 
-    expect(format(`type TestType =${pathCoder.write({})}`)).toMatchSnapshot(
-      "path",
-    );
-    expect(format(`type TestType =${queryCoder.write({})}`)).toMatchSnapshot(
-      "query",
-    );
-    expect(format(`type TestType =${headerCoder.write({})}`)).toMatchSnapshot(
-      "header",
-    );
+    await expect(
+      format(`type TestType =${pathCoder.write({})}`),
+    ).resolves.toMatchSnapshot("path");
+    await expect(
+      format(`type TestType =${queryCoder.write({})}`),
+    ).resolves.toMatchSnapshot("query");
+    await expect(
+      format(`type TestType =${headerCoder.write({})}`),
+    ).resolves.toMatchSnapshot("header");
   });
 
-  it("generates type never when there is no match", () => {
+  it("generates type never when there is no match", async () => {
     const requirement = new Requirement([
       { in: "path", name: "id", required: true, schema: { type: "string" } },
     ]);
 
     const coder = new ParametersTypeCoder(requirement, "query");
 
-    expect(format(`type TestType =${coder.write({})}`)).toMatchSnapshot();
+    await expect(
+      format(`type TestType =${coder.write({})}`),
+    ).resolves.toMatchSnapshot();
   });
 
   it("has no type", () => {
