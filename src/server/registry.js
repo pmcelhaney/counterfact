@@ -84,9 +84,13 @@ export class Registry {
     const matchedParts = [""];
 
     for (const segment of url.split("/").slice(1)) {
-      if (node.children[segment]) {
-        node = node.children[segment];
-        matchedParts.push(segment);
+      const matchingChild = Object.keys(node.children).find(
+        (candidate) => candidate.toLowerCase() === segment.toLowerCase(),
+      );
+
+      if (matchingChild) {
+        node = node.children[matchingChild];
+        matchedParts.push(matchingChild);
       } else {
         const dynamicSegment = Object.keys(node.children).find(
           (ds) => ds.startsWith("{") && ds.endsWith("}"),
