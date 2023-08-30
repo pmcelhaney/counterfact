@@ -41,9 +41,9 @@ export class ModuleLoader extends EventTarget {
         }
 
         const parts = nodePath.parse(pathName.replace(this.basePath, ""));
-        const url = nodePath
-          .normalize(`/${nodePath.join(parts.dir, parts.name)}`)
-          .replaceAll("\\", "/");
+        const url = `/${parts.dir}/${parts.name}`
+          .replaceAll("\\", "/")
+          .replaceAll(/\/+/gu, "/");
 
         if (eventName === "unlink") {
           this.registry.remove(url);
@@ -131,14 +131,19 @@ export class ModuleLoader extends EventTarget {
         debug("* imported module: %s", fileUrl);
 
         if (file.name.includes("$.context")) {
-          this.contextRegistry.add(`/${directory}`, endpoint.default);
-        } else {
-          this.registry.add(
-            `/${nodePath
-              .join(directory, nodePath.parse(file.name).name)
-              .replaceAll("\\", "/")}`,
-            endpoint,
+          this.contextRegistry.add(
+            `/${directory.replaceAll("\\", "/")}`.replaceAll(/\/+/gu, "/"),
+            endpoint.default,
           );
+        } else {
+          const url = `/${nodePath.join(
+            directory,
+            nodePath.parse(file.name).name,
+          )}`
+            .replaceAll("\\", "/")
+            .replaceAll(/\/+/gu, "/");
+
+          this.registry.add(url, endpoint);
         }
       } catch (error) {
         process.stdout.write(["Error loading", fullPath, error].join("\n"));

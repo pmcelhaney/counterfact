@@ -7,7 +7,7 @@ import createDebug from "debug";
 
 import { Script } from "./script.js";
 
-const debug = createDebug("counterfact:typescript-generator:repository");
+const debug = createDebug("counterfact:server:repository");
 
 // eslint-disable-next-line no-underscore-dangle
 const __dirname = dirname(fileURLToPath(import.meta.url));
