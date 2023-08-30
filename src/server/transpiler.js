@@ -1,12 +1,12 @@
 // Stryker disable all
 
+import { once } from "node:events";
+import { constants as fsConstants } from "node:fs";
 import fs from "node:fs/promises";
 import nodePath from "node:path";
-import { constants as fsConstants } from "node:fs";
-import { once } from "node:events";
 
-import ts from "typescript";
 import chokidar from "chokidar";
+import ts from "typescript";
 
 import { CHOKIDAR_OPTIONS } from "./constants.js";
 
@@ -29,8 +29,8 @@ export class Transpiler extends EventTarget {
 
   async watch() {
     this.watcher = chokidar.watch(`${this.sourcePath}/**/*.{ts,mts,js,mjs}`, {
-      ignored: `${this.sourcePath}/js`,
       CHOKIDAR_OPTIONS,
+      ignored: `${this.sourcePath}/js`,
     });
 
     const transpiles = [];
@@ -45,7 +45,7 @@ export class Transpiler extends EventTarget {
 
       if (["add", "change"].includes(eventName)) {
         transpiles.push(
-          this.transpileFile(eventName, sourcePath, destinationPath)
+          this.transpileFile(eventName, sourcePath, destinationPath),
         );
       }
 
@@ -84,7 +84,7 @@ export class Transpiler extends EventTarget {
       .join(
         sourcePath
           .replace(this.sourcePath, this.destinationPath)
-          .replace(".ts", ".mjs")
+          .replace(".ts", ".mjs"),
       )
       .replaceAll("\\", "/");
 

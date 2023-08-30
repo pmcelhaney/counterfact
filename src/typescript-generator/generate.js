@@ -1,8 +1,8 @@
 import createDebug from "debug";
 
+import { OperationCoder } from "./operation-coder.js";
 import { Repository } from "./repository.js";
 import { Specification } from "./specification.js";
-import { OperationCoder } from "./operation-coder.js";
 
 const debug = createDebug("counterfact:typescript-generator:generate");
 
@@ -10,7 +10,7 @@ const debug = createDebug("counterfact:typescript-generator:generate");
 export async function generate(
   source,
   destination,
-  repository = new Repository()
+  repository = new Repository(),
 ) {
   debug("generating code from %s to %s", source, destination);
 

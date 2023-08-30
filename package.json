@@ -1,6 +1,6 @@
 {
   "name": "counterfact",
-  "version": "0.25.2",
+  "version": "0.25.3",
   "description": "a library for building a fake REST API for testing",
   "type": "module",
   "main": "./src/server/counterfact.js",
@@ -42,8 +42,8 @@
     "@testing-library/dom": "^9.3.0",
     "@types/koa": "2.13.8",
     "@types/koa-static": "^4.0.2",
-    "eslint": "8.47.0",
-    "eslint-config-hardcore": "36.4.0",
+    "eslint": "8.48.0",
+    "eslint-config-hardcore": "41.2.0",
     "eslint-formatter-github-annotations": "0.1.0",
     "eslint-import-resolver-typescript": "^3.2.5",
     "eslint-plugin-etc": "^2.0.2",
@@ -79,7 +79,7 @@
     "koa2-swagger-ui": "^5.6.0",
     "node-fetch": "^3.2.10",
     "open": "^9.0.0",
-    "prettier": "^2.7.1",
+    "prettier": "^3.0.0",
     "typescript": "^5.0.0"
   }
 }

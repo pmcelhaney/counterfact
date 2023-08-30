@@ -55,7 +55,7 @@ export class Repository {
       debug("waiting for %i scripts to finish", this.scripts.size);
       // eslint-disable-next-line no-await-in-loop
       await Promise.all(
-        Array.from(this.scripts.values(), (script) => script.finished())
+        Array.from(this.scripts.values(), (script) => script.finished()),
       );
     }
   }
@@ -72,7 +72,7 @@ export class Repository {
         nodePath
           .join(__dirname, `../../templates/${file}`)
           .replaceAll("\\", "/"),
-        path
+        path,
       );
     });
   }
@@ -80,7 +80,7 @@ export class Repository {
   async writeFiles(destination) {
     debug(
       "waiting for %i or more scripts to finish before writing files",
-      this.scripts.size
+      this.scripts.size,
     );
     await this.finished();
     debug("all %i scripts are finished", this.scripts.size);
@@ -88,9 +88,7 @@ export class Repository {
     const writeFiles = Array.from(
       this.scripts.entries(),
       async ([path, script]) => {
-        const contents = prettier.format(script.contents(), {
-          parser: "typescript",
-        });
+        const contents = await script.contents();
 
         const fullPath = nodePath.join(destination, path).replaceAll("\\", "/");
 
@@ -113,7 +111,7 @@ export class Repository {
         debug("did write", fullPath);
 
         process.stdout.write(`writing ${fullPath}\n`);
-      }
+      },
     );
 
     await Promise.all(writeFiles);
