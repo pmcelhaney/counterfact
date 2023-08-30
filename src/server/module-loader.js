@@ -137,9 +137,11 @@ export class ModuleLoader extends EventTarget {
           );
         } else {
           const url = `/${nodePath.join(
-            directory.replaceAll("\\", "/"),
+            directory,
             nodePath.parse(file.name).name,
-          )}`.replaceAll(/\/+/gu, "/");
+          )}`
+            .replaceAll("\\", "/")
+            .replaceAll(/\/+/gu, "/");
 
           this.registry.add(url, endpoint);
         }
