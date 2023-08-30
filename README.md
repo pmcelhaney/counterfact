@@ -22,9 +22,9 @@
 
 ## High code, low effort, mock REST APIs
 
-Counterfact is a mock server that supports building and testing frontend code when the backend -- due to inherent complexity or other forces -- is slow to configure, build, start, run, or change. Or when the APIs for a particular feature don't yet exist. Or when you want to prototype a new feature by writing on the only code your users experience directly: the UI.
+Having worked on several different teams at companies large and small, I found a consistent frustrating pattern: **When I was working on frontend code, I spent more time fiddling with the backend so that I could test the frontend than I did building features and fixing bugs.** In order to move faster, I started creating lightweight mock services in Node that I could use in development. That of course meant maintaining two back ends -- the real one and the mocks -- trading one problem for another.
 
-It is _not_ a front-end framework. It doesn't replace or alter anything in your existing stack. It's like scaffolding that the place of everything behind your REST APIs while you're developing the UI. It has a pass-through proxy mode, so you can instantly toggle between the real and fake backends.
+However, over the course of several years, I found ways to minimize the effort to create and maintain mocks. For example, if the APIs are documented with OpenAPI / Swagger (they should be!) we can use that documentation to automatically generate TypeScript code. Since a mock server doesn't need to scale or be secure, we can optimize everything around developer experience. These optimizations have culminated in **Counterfact, the fastest and easiest way to build and maintain mock REST APIs.**
 
 |                                                   | Real Backend                     | Counterfact Backend         |
 | ------------------------------------------------- | -------------------------------- | --------------------------- |
@@ -46,12 +46,6 @@ It is _not_ a front-end framework. It doesn't replace or alter anything in your 
 | Optimized for                                     | end users                        | developers                  |
 | Developer experience                              | 😣                               | 😁                          |
 
-### Backstory
-
-Having worked on several different teams at companies large and small, I found a consistent frustrating pattern: **When I was working on frontend code, I spent more time fiddling with the backend so that I could test the frontend than I did building features and fixing bugs.** In order to move faster, I started creating lightweight mock services that I could use in development. That of course meant maintaining two back ends -- the real one and the mocks -- trading one problem for another.
-
-However, over the course of several years, I found ways to minimize the effort to create and maintain mocks. For example, if the APIs are documented with OpenAPI / Swagger (they should be!) we can use that documentation to automatically generate code. Since a mock server doesn't need to scale or be secure, we can optimize everything around developer experience. These optimizations have culminated in **Counterfact, the fastest and easiest way to build and maintain mock REST APIs.**
-
 <details>
 <summary>What's wrong with the status quo?</summary>
 
@@ -68,41 +62,49 @@ However, over the course of several years, I found ways to minimize the effort t
 
 ## Usage
 
-Run the following command in your terminal and answer "yes" if when it asks to install the package.
-
-```sh copy
-npx counterfact@latest https://petstore3.swagger.io/api/v3/openapi.json api --open
-```
-
-Assuming your have NodeJS 16+ installed, it will read the Open API spec for the Swagger Petstore, generate a TypeScript and Node based mock server based on that spec in the output directory ("api"), start the server, and open a browser with some tools to try out the API.
-
-Try it out on your own [OpenAPI / Swagger spec](https://www.moesif.com/blog/technical/api-design/Benefits-of-using-the-OpenAPI-Swagger-specification-for-your-API/). Versions 2 and 3 are supported. You can point to a URL or a local file.
-
-## What I can do with Counterfact?
+The only prerequisite is Node 16+.
 
 ### In a few seconds
 
-- Turn an OpenAPI / Swagger spec into a mock server
-  <details>
-  <summary>Show me</summary>
+<details>
+<summary>Turn an OpenAPI / Swagger spec into a mock server me</summary>
+Using the Swagger Petstore as an example:
 
-  Using the Swagger Petstore as an example:
+```sh
+  npx counterfact ...
+```
 
-  ```sh
-    npx counterfact ...
-  ```
+</details>
 
-  </details>
+<details>
+<summary>Generate TypeScript types</summary>
+</details>
 
-- Generate TypeScript types
-- Toggle between mocks and real services
+<details>
+<summary> Toggle between mocks and real services</summary>
+</details>
 
 ### In a few minutes
 
-- Enhance auto-generated mocking code with business logic and state. A few small changes can go transform your totally fake endpoint to a fully functional replica of the real one, or anything in between.
-- Interact with the mock server's context via a REPL.
-- Simulate real-world conditions, such as a user with an extra long email address, low inventory, HTTP error codes, or latency.
-- Prototype and rapidly iterate on a REST APIs.
+<details>
+<summary>Enhance auto-generated mocking code with business logic and state. A few small changes can go transform your totally fake endpoint to a fully functional replica of the real one, or anything in between.</summary>
+
+</details>
+
+<details>
+<summary>Interact with the mock server's context via a REPL.</summary>
+
+</details>
+
+<details>
+<summary>Simulate real-world conditions, such as a user with an extra long email address, low inventory, HTTP error codes, or latency.</summary>
+
+</details>
+
+<details>
+<summary>Prototype and rapidly iterate on a REST APIs.</summary>
+
+</details>
 
 More info under [Documentation](./docs/usage.md).
 
