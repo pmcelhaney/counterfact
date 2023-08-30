@@ -46,7 +46,7 @@ export class Registry {
   get routes() {
     debug(
       "getting routes from module tree: %s",
-      JSON.stringify(this.moduleTree, undefined, 2)
+      JSON.stringify(this.moduleTree, undefined, 2),
     );
 
     return routesForNode(this.moduleTree);

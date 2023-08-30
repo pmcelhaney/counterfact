@@ -4,7 +4,6 @@ import nodePath, { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import createDebug from "debug";
-import prettier from "prettier";
 
 import { Script } from "./script.js";
 

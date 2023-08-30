@@ -133,12 +133,13 @@ export class ModuleLoader extends EventTarget {
         if (file.name.includes("$.context")) {
           this.contextRegistry.add(`/${directory}`, endpoint.default);
         } else {
-          this.registry.add(
-            `/${nodePath
-              .join(directory, nodePath.parse(file.name).name)
-              .replaceAll("\\", "/")}`,
-            endpoint,
-          );
+          const url = nodePath
+            .normalize(
+              `/${nodePath.join(directory, nodePath.parse(file.name).name)}`,
+            )
+            .replaceAll("\\", "/");
+
+          this.registry.add(url, endpoint);
         }
       } catch (error) {
         process.stdout.write(["Error loading", fullPath, error].join("\n"));
