@@ -1,3 +1,7 @@
+import createDebug from "debug";
+
+const debug = createDebug("counterfact:server:registry");
+
 function castParameters(parameters, parameterTypes) {
   const copy = { ...parameters };
 
@@ -40,10 +44,17 @@ export class Registry {
   };
 
   get routes() {
+    debug(
+      "getting routes from module tree: %s",
+      JSON.stringify(this.moduleTree, undefined, 2)
+    );
+
     return routesForNode(this.moduleTree);
   }
 
   add(url, module) {
+    debug("adding %s to registry", url);
+
     let node = this.moduleTree;
 
     for (const segment of url.split("/").slice(1)) {

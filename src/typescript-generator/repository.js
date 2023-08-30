@@ -1,14 +1,14 @@
-import nodePath, { dirname } from "node:path";
-import fs from "node:fs/promises";
 import { constants as fsConstants } from "node:fs";
+import fs from "node:fs/promises";
+import nodePath, { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import prettier from "prettier";
 import createDebug from "debug";
+import prettier from "prettier";
 
 import { Script } from "./script.js";
 
-const debug = createDebug("counterfact:typescript-generator:repository");
+const debug = createDebug("counterfact:server:repository");
 
 // eslint-disable-next-line no-underscore-dangle
 const __dirname = dirname(fileURLToPath(import.meta.url));
