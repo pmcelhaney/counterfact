@@ -1,8 +1,6 @@
 <div align="center" markdown="1">
 
-# Counterfact
-
-## _High code, low effort mock REST APIs_
+# Counterfact is the mock server that front end engineers need to be productive
 
 [Quick Start](./docs/quick-start.md) | [Documentation](./docs/usage.md) | [Contributing](CONTRIBUTING.md)
 
@@ -16,11 +14,37 @@
 
 </div>
 
-## Who is this for?
+> TL;DR: Do you have Node 16+ installed? Run this command.
+>
+> ```sh copy
+> npx counterfact@latest https://petstore3.swagger.io/api/v3/openapi.json api --open
+> ```
 
-Counterfact is for **front-end and full-stack engineers** who want to build and test frontend code when the backend -- due to inherent complexity or other forces -- is slow to configure, build, start, run, or change. Or when the APIs for a particular feature don't yet exist.
+## High code, low effort, mock REST APIs
 
-It is _not_ a front-end framework. It doesn't replace or alter anything in your existing stack. It works with your existing stack as long as your stack uses REST APIs.
+Counterfact is a mock server that supports building and testing frontend code when the backend -- due to inherent complexity or other forces -- is slow to configure, build, start, run, or change. Or when the APIs for a particular feature don't yet exist. Or when you want to prototype a new feature by writing on the only code your users experience directly: the UI.
+
+It is _not_ a front-end framework. It doesn't replace or alter anything in your existing stack. It's like scaffolding that the place of everything behind your REST APIs while you're developing the UI. It has a pass-through proxy mode, so you can instantly toggle between the real and fake backends.
+
+|                                                   | Real Backend                     | Counterfact Backend         |
+| ------------------------------------------------- | -------------------------------- | --------------------------- |
+| To front end code it's...                         | a fully functional REST API      | a fully functional REST API |
+| Secure, scalable, robust, etc.                    | yes (🤞)                         | doesn't need to be          |
+| Cost to build / prototype                         | $$$$$                            | $                           |
+| Implementing a typical feature takes              | days? weeks?                     | minutes                     |
+| Can be gradually replaced with production code    | n/a                              | yes                         |
+| Running locally requires                          | runtime, database, etc.          | node                        |
+| Maintainable by front end devs                    | maybe?                           |
+| See code changes                                  | after compile + restart / deploy | when you hit save           |
+| Change behavior without losing server-side state  | wait, what?                      | yes (hot reload)            |
+| Interact with the server in a REPL                | not likely                       | yes                         |
+| Reproducing weird stuff that happened in prod     | hard / impossible                | easy                        |
+| API response time                                 | varies                           | immediate                   |
+| Maintaining test accounts is                      | a huge pain                      | optional                    |
+| Integrates with UI tests (Jest, Playwright, etc.) | no                               | [planned]                   |
+| Seed with test data / scenarios                   | much slower if possible at all   | [planned]                   |
+| Optimized for                                     | end users                        | developers                  |
+| Developer experience                              | 😣                               | 😁                          |
 
 ### Backstory
 
@@ -56,7 +80,7 @@ Try it out on your own [OpenAPI / Swagger spec](https://www.moesif.com/blog/tech
 
 ## What I can do with Counterfact?
 
-### In a few seconds:
+### In a few seconds
 
 - Turn an OpenAPI / Swagger spec into a mock server
   <details>
@@ -73,7 +97,7 @@ Try it out on your own [OpenAPI / Swagger spec](https://www.moesif.com/blog/tech
 - Generate TypeScript types
 - Toggle between mocks and real services
 
-### In a few minutes:
+### In a few minutes
 
 - Enhance auto-generated mocking code with business logic and state. A few small changes can go transform your totally fake endpoint to a fully functional replica of the real one, or anything in between.
 - Interact with the mock server's context via a REPL.
