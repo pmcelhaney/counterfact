@@ -132,18 +132,14 @@ export class ModuleLoader extends EventTarget {
 
         if (file.name.includes("$.context")) {
           this.contextRegistry.add(
-            nodePath.normalize(`/${directory.replaceAll("\\", "/")}`),
+            `/${directory.replaceAll("\\", "/")}`.replaceAll(/\/+/gu, "/"),
             endpoint.default,
           );
         } else {
-          const url = nodePath
-            .normalize(
-              `/${nodePath.join(
-                directory.replaceAll("\\", "/"),
-                nodePath.parse(file.name).name,
-              )}`,
-            )
-            .replaceAll("\\", "/");
+          const url = `/${nodePath.join(
+            directory.replaceAll("\\", "/"),
+            nodePath.parse(file.name).name,
+          )}`.replaceAll(/\/+/gu, "/");
 
           this.registry.add(url, endpoint);
         }
