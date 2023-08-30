@@ -16,9 +16,10 @@ jobs:
           cache: yarn
 
       - name: install, run tests
-        run: |
-          yarn
-          yarn test
+        run: yarn install --frozen-lockfile --network-timeout 100000
+
+      - name: install, run tests
+        run: yarn test --runInBand --forceExit --no-watchman
 
       - name: Coveralls
         uses: coverallsapp/github-action@v2.2.1

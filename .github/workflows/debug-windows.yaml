@@ -37,3 +37,4 @@ jobs:
       - name: Try running the petstore
         run: npx . https://petstore3.swagger.io/api/v3/openapi.json out
         timeout-minutes: 2
+        continue-on-error: true
