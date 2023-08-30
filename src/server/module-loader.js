@@ -41,8 +41,7 @@ export class ModuleLoader extends EventTarget {
         }
 
         const parts = nodePath.parse(pathName.replace(this.basePath, ""));
-        const url = nodePath
-          .normalize(`/${nodePath.join(parts.dir, parts.name)}`)
+        const url = `/${parts.dir}/${parts.name}`
           .replaceAll("\\", "/")
           .replaceAll(/\/+/gu, "/");
 
