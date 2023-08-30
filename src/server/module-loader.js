@@ -43,7 +43,8 @@ export class ModuleLoader extends EventTarget {
         const parts = nodePath.parse(pathName.replace(this.basePath, ""));
         const url = nodePath
           .normalize(`/${nodePath.join(parts.dir, parts.name)}`)
-          .replaceAll("\\", "/");
+          .replaceAll("\\", "/")
+          .replaceAll(/\/+/gu, "/");
 
         if (eventName === "unlink") {
           this.registry.remove(url);
