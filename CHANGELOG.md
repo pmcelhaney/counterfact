@@ -1,5 +1,11 @@
 # counterfact
 
+## 0.25.4
+
+### Patch Changes
+
+- 7f2e19e: fixed an issue in which routes on the start page weren't rendered correctly in Windows
+
 ## 0.25.3
 
 ### Patch Changes
