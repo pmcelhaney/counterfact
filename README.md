@@ -22,7 +22,8 @@
 
 ## High code, low effort, mock REST APIs
 
-Having worked on several different teams at companies large and small, I found a consistent frustrating pattern: **When I was working on frontend code, I spent more time fiddling with the backend so that I could test the frontend than I did building features and fixing bugs.** In order to move faster, I started creating lightweight mock services in Node that I could use in development. That of course meant maintaining two back ends -- the real one and the mocks -- trading one problem for another.
+Having worked on several different teams at companies large and small, I found a consistent frustrating pattern:
+**When I was working on frontend code, I spent more time fiddling with the backend so that I could test the frontend than I did building features and fixing bugs.** In order to move faster, I started creating lightweight mock services in Node that I could use in development. That of course meant maintaining two back ends -- the real one and the mocks -- trading one problem for another.
 
 However, over the course of several years, I found ways to minimize the effort to create and maintain mocks. For example, if the APIs are documented with OpenAPI / Swagger (they should be!) we can use that documentation to automatically generate TypeScript code. Since a mock server doesn't need to scale or be secure, we can optimize everything around developer experience. These optimizations have culminated in **Counterfact, the fastest and easiest way to build and maintain mock REST APIs.**
 
@@ -32,7 +33,7 @@ However, over the course of several years, I found ways to minimize the effort t
 | Secure, scalable, robust, etc.                    | yes (🤞)                         | doesn't need to be          |
 | Cost to build / prototype                         | $$$$$                            | $                           |
 | Implementing a typical feature takes              | days? weeks?                     | minutes                     |
-| Can be gradually replaced with production code    | n/a                              | yes                         |
+| Can be gradually replaced with production code    | -                                | yes                         |
 | Running locally requires                          | runtime, database, etc.          | node                        |
 | Maintainable by front end devs                    | maybe?                           |
 | See code changes                                  | after compile + restart / deploy | when you hit save           |
@@ -44,7 +45,7 @@ However, over the course of several years, I found ways to minimize the effort t
 | Integrates with UI tests (Jest, Playwright, etc.) | no                               | [planned]                   |
 | Seed with test data / scenarios                   | much slower if possible at all   | [planned]                   |
 | Optimized for                                     | end users                        | developers                  |
-| Developer experience                              | 😣                               | 😁                          |
+| Developer experience                              | <big>😣</big>                    | <big>😁</big>               |
 
 <details>
 <summary>What's wrong with the status quo?</summary>
@@ -66,7 +67,7 @@ The only prerequisite is Node 16+.
 
 ### In a few seconds
 
-<details>
+<details open>
 <summary>Turn an OpenAPI / Swagger spec into a mock server me</summary>
 Using the Swagger Petstore as an example:
 
