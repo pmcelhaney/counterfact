@@ -35,9 +35,9 @@ However, over the course of several years, I found ways to minimize the effort t
 | Implementing a typical feature takes              | days? weeks?                     | minutes                     |
 | Can be gradually replaced with production code    | -                                | yes                         |
 | Running locally requires                          | runtime, database, etc.          | node                        |
-| Maintainable by front end devs                    | maybe?                           |
+| Maintainable by front end devs                    | maybe?                           | yes                         |
 | See code changes                                  | after compile + restart / deploy | when you hit save           |
-| Change behavior without losing server-side state  | wait, what?                      | yes (hot reload)            |
+| Change server-side code without losing state      | wait, what?                      | yes (hot reload)            |
 | Interact with the server in a REPL                | not likely                       | yes                         |
 | Reproducing weird stuff that happened in prod     | hard / impossible                | easy                        |
 | API response time                                 | varies                           | immediate                   |
@@ -88,7 +88,7 @@ Using the Swagger Petstore as an example:
 ### In a few minutes
 
 <details>
-<summary>Enhance auto-generated mocking code with business logic and state. A few small changes can go transform your totally fake endpoint to a fully functional replica of the real one, or anything in between.</summary>
+<summary>Enhance auto-generated mocking code with business logic and state. A few small changes can transform your totally fake endpoint to a fully functional replica of the real one, or anything in between.</summary>
 
 </details>
 
