@@ -131,11 +131,17 @@ export class ModuleLoader extends EventTarget {
         debug("* imported module: %s", fileUrl);
 
         if (file.name.includes("$.context")) {
-          this.contextRegistry.add(`/${directory}`, endpoint.default);
+          this.contextRegistry.add(
+            nodePath.normalize(`/${directory.replaceAll("\\", "/")}`),
+            endpoint.default,
+          );
         } else {
           const url = nodePath
             .normalize(
-              `/${nodePath.join(directory, nodePath.parse(file.name).name)}`,
+              `/${nodePath.join(
+                directory.replaceAll("\\", "/"),
+                nodePath.parse(file.name).name,
+              )}`,
             )
             .replaceAll("\\", "/");
 
