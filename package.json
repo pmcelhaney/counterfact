@@ -61,7 +61,8 @@
     "node-mocks-http": "^1.12.2",
     "nodemon": "2.0.22",
     "stryker-cli": "1.0.2",
-    "supertest": "6.3.3"
+    "supertest": "6.3.3",
+    "ts-node": "^10.9.1"
   },
   "dependencies": {
     "@hapi/accept": "^6.0.0",
@@ -85,7 +86,6 @@
     "node-fetch": "^3.2.10",
     "open": "^9.0.0",
     "prettier": "^2.7.1",
-    "ts-node": "^10.9.1",
     "typescript": "^5.0.0"
   }
 }
