@@ -17,7 +17,7 @@
 > TL;DR: Do you have Node 16+ installed? Run this command.
 >
 > ```sh copy
-> npx counterfact@latest https://petstore3.swagger.io/api/v3/openapi.json api --open
+> npx counterfact@latest https://petstore3.swagger.io/api/v3/openapi.yaml api --open
 > ```
 
 ## High code, low effort, mock REST APIs
@@ -69,20 +69,59 @@ The only prerequisite is Node 16+.
 
 <details open>
 <summary>Turn an OpenAPI / Swagger spec into a mock server me</summary>
-Using the Swagger Petstore as an example:
+
+For example, run the following command to generate code for the [Swagger Petstore](https://petstore.swagger.io/).
 
 ```sh
-  npx counterfact ...
+  npx counterfact@latest https://petstore3.swagger.io/api/v3/openapi.yaml api --open
 ```
+
+That command generates and starts a TypeScript implementation of the Swagger Petstore which returns random, valid responses, outputting code to the "api" directory, and opens a web browser with tools to interact with the API. You can replace the Petstore URL with a link to your own spec, either a URL or a local file. OpenAPI / Swagger versions 2 and 3 are supported.
 
 </details>
 
 <details>
 <summary>Generate TypeScript types</summary>
+
+Again, using the [Swagger Petstore](https://petstore.swagger.io/) as an example:
+
+```sh
+  npx counterfact@latest https://petstore3.swagger.io/api/v3/openapi.yaml api
+```
+
+Counterfact reads the components from the [spec](https://petstore3.swagger.io/api/v3/openapi.yaml) and converts them into equivalent TypeScript types. For example, here's `./api/components/Pet.ts`:
+
+```ts
+import type { Category } from "./Category.js";
+import type { Tag } from "./Tag.js";
+
+export type Pet = {
+  id?: number;
+  name: string;
+  category?: Category;
+  photoUrls: Array<string>;
+  tags?: Array<Tag>;
+  status?: "available" | "pending" | "sold";
+};
+```
+
+These types are used internally by Counterfact. You can also use them in your client-side code if you like.
+
 </details>
 
 <details>
-<summary> Toggle between mocks and real services</summary>
+<summary>Toggle between mocks and real services</summary>
+
+Add the `--proxy-url <url>` flag to point to the location of a real server.
+
+```sh
+  npx counterfact@latest ./path/to/your/spec api --proxy-url https://your-server.example.com/
+```
+
+All requests will be proxied to the real server, e.g. a request to `http://localhost/hello-world` will be routed to `https://your-server.example.com/`. To toggle between having Counterfact handle requests and having it hand them off to the real server, type `.proxy on` / `.proxy off` in the REPL.
+
+See the [usage guide](./docs/usage.md#proxy-peek-a-boo-) for more information.
+
 </details>
 
 ### In a few minutes
@@ -90,20 +129,28 @@ Using the Swagger Petstore as an example:
 <details>
 <summary>Enhance auto-generated mocking code with business logic and state. A few small changes can transform your totally fake endpoint to a fully functional replica of the real one, or anything in between.</summary>
 
+Video coming soon. For now see the [usage guide](./docs/usage.md).
+
 </details>
 
 <details>
 <summary>Interact with the mock server's context via a REPL.</summary>
+
+Video coming soon. For now see the [usage guide](./docs/usage.md).
 
 </details>
 
 <details>
 <summary>Simulate real-world conditions, such as a user with an extra long email address, low inventory, HTTP error codes, or latency.</summary>
 
+Video coming soon. For now see the [usage guide](./docs/usage.md).
+
 </details>
 
 <details>
 <summary>Prototype and rapidly iterate on a REST APIs.</summary>
+
+Video coming soon. For now see the [usage guide](./docs/usage.md).
 
 </details>
 
