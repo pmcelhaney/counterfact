@@ -36,14 +36,14 @@ However, over the course of several years, I found ways to minimize the effort t
 | Can be gradually replaced with production code    | -                                | yes                         |
 | Running locally requires                          | runtime, database, etc.          | node                        |
 | Maintainable by front end devs                    | maybe?                           | yes                         |
-| See code changes                                  | after compile + restart / deploy | when you hit save           |
+| See code changes                                  | after compile / deploy / restart | when you hit save           |
 | Change server-side code without losing state      | wait, what?                      | yes (hot reload)            |
 | Interact with the server in a REPL                | not likely                       | yes                         |
 | Reproducing weird stuff that happened in prod     | hard / impossible                | easy                        |
 | API response time                                 | varies                           | immediate                   |
 | Maintaining test accounts is                      | a huge pain                      | optional                    |
 | Integrates with UI tests (Jest, Playwright, etc.) | no                               | [planned]                   |
-| Seed with test data / scenarios                   | much slower if possible at all   | [planned]                   |
+| Seed with test data / scenarios                   | slow and tedious                 | [planned]                   |
 | Optimized for                                     | end users                        | developers                  |
 | Developer experience                              | <big>😣</big>                    | <big>😁</big>               |
 
@@ -118,7 +118,7 @@ Add the `--proxy-url <url>` flag to point to the location of a real server.
   npx counterfact@latest ./path/to/your/spec api --proxy-url https://your-server.example.com/
 ```
 
-All requests will be proxied to the real server, e.g. a request to `http://localhost/hello-world` will be routed to `https://your-server.example.com/`. To toggle between having Counterfact handle requests and having it hand them off to the real server, type `.proxy on` / `.proxy off` in the REPL.
+All requests will be proxied to the real server, e.g. a request to `http://localhost:3100/hello-world` will be routed to `https://your-server.example.com/`. To toggle between having Counterfact handle requests and having it hand them off to the real server, type `.proxy on` / `.proxy off` in the REPL.
 
 See the [usage guide](./docs/usage.md#proxy-peek-a-boo-) for more information.
 

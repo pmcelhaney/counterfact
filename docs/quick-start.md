@@ -3,7 +3,6 @@
 Copy the following command into your terminal. The only prerequisite is Node 16+.
 
 ```sh copy
-npm i -g ts-node
 npx counterfact@latest https://petstore3.swagger.io/api/v3/openapi.json api --open
 ```
 
