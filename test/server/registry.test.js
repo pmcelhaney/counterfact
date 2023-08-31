@@ -50,13 +50,13 @@ describe("a registry", () => {
     });
 
     const props = {
+      context: {},
+
       path: "",
 
       reduce(foo) {
         return foo;
       },
-
-      context: {},
     };
     const getA = await registry.endpoint("GET", "/a")(props);
     const getB = await registry.endpoint("GET", "/b")(props);
@@ -97,7 +97,7 @@ describe("a registry", () => {
     });
 
     expect(
-      registry.endpoint("GET", "/acme/users/alice/friends/2")({})
+      registry.endpoint("GET", "/acme/users/alice/friends/2")({}),
     ).toStrictEqual({
       body: "page 2 of alice's friends in acme",
     });

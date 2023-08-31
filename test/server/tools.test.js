@@ -16,11 +16,11 @@ describe("tools", () => {
     ${"text/*"}           | ${"text/*"}
   `(
     "accept('$contentType') returns true when the accept header is $acceptHeader",
-    ({ contentType, acceptHeader }) => {
+    ({ acceptHeader, contentType }) => {
       const tools = new Tools({ headers: { Accept: acceptHeader } });
 
       expect(tools.accepts(contentType)).toBe(true);
-    }
+    },
   );
 
   it.each`
@@ -30,11 +30,11 @@ describe("tools", () => {
     ${"application/json"} | ${"text/json"}
   `(
     "accept('$contentType') returns false when the accept header is $acceptHeader",
-    ({ contentType, acceptHeader }) => {
+    ({ acceptHeader, contentType }) => {
       const tools = new Tools({ headers: { Accept: acceptHeader } });
 
       expect(tools.accepts(contentType)).toBe(false);
-    }
+    },
   );
 
   it("randomFromSchema() returns a value (the implementation is in a third party library)", () => {
@@ -46,6 +46,6 @@ describe("tools", () => {
   it("randomFromSchema() uses examples", () => {
     const tools = new Tools();
 
-    expect(tools.randomFromSchema({ type: "integer", examples: [5] })).toBe(5);
+    expect(tools.randomFromSchema({ examples: [5], type: "integer" })).toBe(5);
   });
 });

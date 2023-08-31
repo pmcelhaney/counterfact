@@ -59,10 +59,10 @@ describe("a Script", () => {
     importingScript.import(coder);
 
     expect(importingScript.imports.get("Account")).toStrictEqual({
-      script: exportingScript,
-      name: "Account",
-      isType: false,
       isDefault: false,
+      isType: false,
+      name: "Account",
+      script: exportingScript,
     });
   });
 
@@ -96,6 +96,39 @@ describe("a Script", () => {
       'import { Account0 } from "./export-from-me.js";',
       'import type { Account1 } from "./export-from-me.js";',
       'import Account2 from "./export-from-me.js";',
+    ]);
+  });
+
+  it("handles relative import statements", () => {
+    const repository = new Repository("/base/path");
+
+    class CoderThatWantsToImportAccount extends Coder {
+      *names() {
+        let index = 0;
+
+        while (true) {
+          yield `Account${index}`;
+          index += 1;
+        }
+      }
+
+      modulePath() {
+        return "../../export-from-me.ts";
+      }
+    }
+
+    const coder = new CoderThatWantsToImportAccount({});
+
+    const script = repository.get("import-to-me.ts");
+
+    script.import(coder);
+    script.importType(coder);
+    script.importDefault(coder);
+
+    expect(script.importStatements()).toStrictEqual([
+      'import { Account0 } from "../../export-from-me.js";',
+      'import type { Account1 } from "../../export-from-me.js";',
+      'import Account2 from "../../export-from-me.js";',
     ]);
   });
 
@@ -134,7 +167,7 @@ describe("a Script", () => {
     ]);
   });
 
-  it("outputs the contents (import and export statements)", () => {
+  it("outputs the contents (import and export statements)", async () => {
     const repository = new Repository("/base/path");
 
     const script = repository.get("script.ts");
@@ -146,8 +179,8 @@ describe("a Script", () => {
       "export default class {};",
     ];
 
-    expect(script.contents()).toBe(
-      'import { foo } from "./foo.js";\n\nexport const bar = "Bar";\n\nexport default class {}\n'
+    await expect(script.contents()).resolves.toBe(
+      'import { foo } from "./foo.js";\n\nexport const bar = "Bar";\n\nexport default class {}\n',
     );
   });
 });

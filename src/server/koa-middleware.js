@@ -8,18 +8,18 @@ function addCors(ctx, headers) {
   ctx.set("Access-Control-Allow-Methods", "GET,HEAD,PUT,POST,DELETE,PATCH");
   ctx.set(
     "Access-Control-Allow-Headers",
-    headers?.["access-control-request-headers"]
+    headers?.["access-control-request-headers"],
   );
   ctx.set(
     "Access-Control-Expose-Headers",
-    headers?.["access-control-request-headers"]
+    headers?.["access-control-request-headers"],
   );
   ctx.set("Access-Control-Allow-Credentials", "true");
 }
 
 export function koaMiddleware(dispatcher, options = {}, proxy = koaProxy) {
   return async function middleware(ctx, next) {
-    const { method, path, headers, body, query } = ctx.request;
+    const { body, headers, method, path, query } = ctx.request;
 
     if (options.proxyEnabled && options.proxyUrl) {
       return proxy({ host: options.proxyUrl })(ctx, next);
@@ -32,10 +32,10 @@ export function koaMiddleware(dispatcher, options = {}, proxy = koaProxy) {
       ctx.status = HTTP_STATUS_CODE_OK;
     } else {
       const response = await dispatcher.request({
+        body,
+        headers,
         method,
         path,
-        headers,
-        body,
         query,
         req: ctx.req,
       });

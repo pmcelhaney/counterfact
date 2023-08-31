@@ -1,4 +1,0 @@
-{
-    "description": "This file ensures the .ts files herein are treated as ESM modules. If you have another package.json with type: module in a parent directory, you can delete this file.",
-    "type": "module"
-}

@@ -1,15 +1,15 @@
 import nodePath from "node:path";
 
-import $RefParser from "json-schema-ref-parser";
 import yaml from "js-yaml";
+import $RefParser from "json-schema-ref-parser";
 
 import { readFile } from "../util/read-file.js";
-
-import { Registry } from "./registry.js";
+import { ContextRegistry } from "./context-registry.js";
 import { Dispatcher } from "./dispatcher.js";
 import { koaMiddleware } from "./koa-middleware.js";
 import { ModuleLoader } from "./module-loader.js";
-import { ContextRegistry } from "./context-registry.js";
+import { Registry } from "./registry.js";
+import { Transpiler } from "./transpiler.js";
 
 async function loadOpenApiDocument(source) {
   try {
@@ -19,12 +19,13 @@ async function loadOpenApiDocument(source) {
   }
 }
 
+// eslint-disable-next-line max-statements
 export async function counterfact(
   basePath,
   openApiPath = nodePath
     .join(basePath, "../openapi.yaml")
     .replaceAll("\\", "/"),
-  options = {}
+  options = {},
 ) {
   const openApiDocument = await loadOpenApiDocument(openApiPath);
 
@@ -35,10 +36,22 @@ export async function counterfact(
   const contextRegistry = new ContextRegistry();
 
   const dispatcher = new Dispatcher(registry, contextRegistry, openApiDocument);
-  const moduleLoader = new ModuleLoader(
+
+  const compiledPathsDirectory = nodePath
+    .join(modulesPath, "paths-js")
+    .replaceAll("\\", "/");
+
+  const transpiler = new Transpiler(
     nodePath.join(modulesPath, "paths").replaceAll("\\", "/"),
+    compiledPathsDirectory,
+  );
+
+  await transpiler.watch();
+
+  const moduleLoader = new ModuleLoader(
+    compiledPathsDirectory,
     registry,
-    contextRegistry
+    contextRegistry,
   );
 
   await moduleLoader.load();
@@ -46,9 +59,9 @@ export async function counterfact(
   await moduleLoader.watch();
 
   return {
-    koaMiddleware: koaMiddleware(dispatcher, options),
-    registry,
-    moduleLoader,
     contextRegistry,
+    koaMiddleware: koaMiddleware(dispatcher, options),
+    moduleLoader,
+    registry,
   };
 }

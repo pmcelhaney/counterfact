@@ -1,12 +1,16 @@
-import fs from "node:fs/promises";
-import { existsSync } from "node:fs";
-import nodePath from "node:path";
 import { once } from "node:events";
+import { existsSync } from "node:fs";
+import fs from "node:fs/promises";
+import nodePath from "node:path";
+import { pathToFileURL } from "node:url";
 
 import chokidar from "chokidar";
+import createDebug from "debug";
 
-import { ContextRegistry } from "./context-registry.js";
 import { CHOKIDAR_OPTIONS } from "./constants.js";
+import { ContextRegistry } from "./context-registry.js";
+
+const debug = createDebug("counterfact:typescript-generator:module-loader");
 
 export class ModuleLoader extends EventTarget {
   basePath;
@@ -28,6 +32,7 @@ export class ModuleLoader extends EventTarget {
     this.watcher = chokidar
       .watch(`${this.basePath}/**/*.{js,mjs,ts,mts}`, CHOKIDAR_OPTIONS)
 
+      // eslint-disable-next-line max-statements
       .on("all", (eventName, pathNameOriginal) => {
         const pathName = pathNameOriginal.replaceAll("\\", "/");
 
@@ -36,9 +41,9 @@ export class ModuleLoader extends EventTarget {
         }
 
         const parts = nodePath.parse(pathName.replace(this.basePath, ""));
-        const url = nodePath
-          .normalize(`/${nodePath.join(parts.dir, parts.name)}`)
-          .replaceAll("\\", "/");
+        const url = `/${parts.dir}/${parts.name}`
+          .replaceAll("\\", "/")
+          .replaceAll(/\/+/gu, "/");
 
         if (eventName === "unlink") {
           this.registry.remove(url);
@@ -47,10 +52,15 @@ export class ModuleLoader extends EventTarget {
           return;
         }
 
+        const fileUrl = `${pathToFileURL(pathName)}?cacheBust=${Date.now()}`;
+
+        debug("importing module: %s", fileUrl);
+
         // eslint-disable-next-line  import/no-dynamic-require, no-unsanitized/method
-        import(`${pathName}?cacheBust=${Date.now()}`)
+        import(fileUrl)
           // eslint-disable-next-line promise/prefer-await-to-then
           .then((endpoint) => {
+            debug("imported module: %s", fileUrl);
             this.dispatchEvent(new Event(eventName), pathName);
 
             if (pathName.includes("$.context")) {
@@ -65,7 +75,7 @@ export class ModuleLoader extends EventTarget {
           })
           // eslint-disable-next-line promise/prefer-await-to-then
           .catch((error) => {
-            process.stdout.write(`\nError loading ${pathName}:\n${error}\n`);
+            process.stdout.write(`\nError loading ${fileUrl}:\n${error}\n`);
           });
       });
 
@@ -87,7 +97,7 @@ export class ModuleLoader extends EventTarget {
       nodePath.join(this.basePath, directory).replaceAll("\\", "/"),
       {
         withFileTypes: true,
-      }
+      },
     );
 
     // eslint-disable-next-line max-statements
@@ -96,13 +106,13 @@ export class ModuleLoader extends EventTarget {
 
       if (file.isDirectory()) {
         await this.load(
-          nodePath.join(directory, file.name).replaceAll("\\", "/")
+          nodePath.join(directory, file.name).replaceAll("\\", "/"),
         );
 
         return;
       }
 
-      if (!["js", "mjs", "ts", "mts"].includes(extension)) {
+      if (!["js", "mjs", "mts", "ts"].includes(extension)) {
         return;
       }
 
@@ -111,18 +121,29 @@ export class ModuleLoader extends EventTarget {
         .replaceAll("\\", "/");
 
       try {
-        // eslint-disable-next-line  import/no-dynamic-require, no-unsanitized/method
-        const endpoint = await import(fullPath);
+        const fileUrl = `${pathToFileURL(fullPath)}?cacheBust=${Date.now()}`;
+
+        debug("* importing module: %s", fileUrl);
+
+        // eslint-disable-next-line import/no-dynamic-require, no-unsanitized/method
+        const endpoint = await import(fileUrl);
+
+        debug("* imported module: %s", fileUrl);
 
         if (file.name.includes("$.context")) {
-          this.contextRegistry.add(`/${directory}`, endpoint.default);
-        } else {
-          this.registry.add(
-            `/${nodePath
-              .join(directory, nodePath.parse(file.name).name)
-              .replaceAll("\\", "/")}`,
-            endpoint
+          this.contextRegistry.add(
+            `/${directory.replaceAll("\\", "/")}`.replaceAll(/\/+/gu, "/"),
+            endpoint.default,
           );
+        } else {
+          const url = `/${nodePath.join(
+            directory,
+            nodePath.parse(file.name).name,
+          )}`
+            .replaceAll("\\", "/")
+            .replaceAll(/\/+/gu, "/");
+
+          this.registry.add(url, endpoint);
         }
       } catch (error) {
         process.stdout.write(["Error loading", fullPath, error].join("\n"));

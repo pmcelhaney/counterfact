@@ -1,15 +1,19 @@
-name: Mutation Testing
+name: Debug Windows
 
 on:
-  workflow_dispatch:
-  push:
+  pull_request:
     branches:
       - main
+  workflow_dispatch:
+
+env:
+  DEBUG: "counterfact:*"
 
 jobs:
   ci-checks:
-    name: Mutation Testing
-    runs-on: ubuntu-latest
+    name: Debug Windows
+    runs-on: "windows-latest"
+
     steps:
       - name: Check out repo
         uses: actions/checkout@v3
@@ -29,8 +33,8 @@ jobs:
           path: "**/node_modules"
           key: ${{ runner.os }}-${{ steps.node-version.outputs.version }}-${{ hashFiles('**/yarn.lock') }}
       - name: Install Packages
-        run: yarn install --frozen-lockfile
-      - name: Run Stryker
-        run: yarn test:mutants
-        env:
-          STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
+        run: yarn install --frozen-lockfile --network-timeout 100000
+      - name: Try running the petstore
+        run: npx . https://petstore3.swagger.io/api/v3/openapi.json out
+        timeout-minutes: 2
+        continue-on-error: true

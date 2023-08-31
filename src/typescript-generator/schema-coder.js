@@ -17,11 +17,11 @@ export class SchemaCoder extends Coder {
   }
 
   objectSchema(script) {
-    const { required, properties } = this.requirement.data;
+    const { properties, required } = this.requirement.data;
 
     const propertyLines = Object.keys(properties ?? {}).map((name) => {
       const schemaCoder = new SchemaCoder(
-        this.requirement.select(`properties/${name}`)
+        this.requirement.select(`properties/${name}`),
       );
 
       return `"${name}": ${schemaCoder.write(script)}`;

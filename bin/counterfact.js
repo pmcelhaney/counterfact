@@ -1,28 +1,42 @@
-#!/usr/bin/env ts-node --esm --transpileOnly
+#!/usr/bin/env node
 
 import nodePath from "node:path";
 
 import { program } from "commander";
+import createDebug from "debug";
 import open from "open";
 
-import { generate } from "../src/typescript-generator/generate.js";
-import { start } from "../src/server/start.js";
 import { startRepl } from "../src/server/repl.js";
+import { start } from "../src/server/start.js";
+import { generate } from "../src/typescript-generator/generate.js";
 
 const DEFAULT_PORT = 3100;
 
+const debug = createDebug("counterfact:bin:counterfact");
+
+debug("running ./bin/counterfact.js");
+
 // eslint-disable-next-line max-statements
 async function main(source, destination) {
+  debug("executing the main function");
+
   const options = program.opts();
 
-  await generate(
-    source,
-    nodePath.join(process.cwd(), destination).replaceAll("\\", "/")
-  );
+  debug("options: %o", options);
+  debug("source: %s", source);
+  debug("destination: %s", destination);
 
-  const basePath = nodePath.resolve(
-    nodePath.join(process.cwd(), destination).replaceAll("\\", "/")
-  );
+  const destinationPath = nodePath
+    .join(process.cwd(), destination)
+    .replaceAll("\\", "/");
+
+  debug('generating code at "%s"', destinationPath);
+
+  await generate(source, destinationPath);
+
+  debug("generated code", destinationPath);
+
+  const basePath = nodePath.resolve(destinationPath).replaceAll("\\", "/");
 
   const openBrowser = options.open;
 
@@ -32,14 +46,18 @@ async function main(source, destination) {
 
   const config = {
     basePath,
-    port: options.port,
-    openApiPath: source,
     includeSwaggerUi: true,
-    proxyUrl: options.proxyUrl,
+    openApiPath: source,
+    port: options.port,
     proxyEnabled: Boolean(options.proxyUrl),
+    proxyUrl: options.proxyUrl,
   };
 
+  debug("starting server (%o)", config);
+
   const { contextRegistry } = await start(config);
+
+  debug("started server");
 
   const waysToInteract = [
     `Call the REST APIs at ${url} (with your front end app, curl, Postman, etc.)`,
@@ -62,24 +80,30 @@ async function main(source, destination) {
   process.stdout.write(`${introduction.join("\n")}\n`);
 
   process.stdout.write(
-    waysToInteract.map((text, index) => `${index + 1}. ${text}`).join("\n")
+    waysToInteract.map((text, index) => `${index + 1}. ${text}`).join("\n"),
   );
 
   process.stdout.write("\n\n");
 
   process.stdout.write("Starting REPL...\n");
 
+  debug("starting repl");
+
   startRepl(contextRegistry, config);
 
+  debug("started repl");
+
   if (openBrowser) {
+    debug("opening browser");
     await open(guiUrl);
+    debug("opened browser");
   }
 }
 
 program
   .name("counterfact")
   .description(
-    "Counterfact is a tool for generating a REST API from an OpenAPI document."
+    "Counterfact is a tool for generating a REST API from an OpenAPI document.",
   )
   .argument("<openapi.yaml>", "path or URL to OpenAPI document")
   .argument("[destination]", "path to generated code", ".")
@@ -88,4 +112,5 @@ program
   .option("--open", "open a browser")
   .option("--proxy-url <string>", "proxy URL")
   .action(main)
+  // eslint-disable-next-line sonar/process-argv
   .parse(process.argv);

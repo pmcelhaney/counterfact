@@ -12,14 +12,14 @@ function oneOf(items) {
 
 function unknownStatusCodeResponse(statusCode) {
   return {
-    status: 500,
-
     content: [
       {
-        type: "text/plain",
         body: `The Open API document does not specify a response for status code ${statusCode}`,
+        type: "text/plain",
       },
     ],
+
+    status: 500,
   };
 }
 
@@ -29,8 +29,6 @@ export function createResponseBuilder(operation) {
     {
       // eslint-disable-next-line sonarjs/cognitive-complexity
       get: (target, name) => ({
-        status: Number.parseInt(name, 10),
-
         header(name, value) {
           return {
             ...this,
@@ -40,6 +38,14 @@ export function createResponseBuilder(operation) {
               [name]: value,
             },
           };
+        },
+
+        html(body) {
+          return this.match("text/html", body);
+        },
+
+        json(body) {
+          return this.match("application/json", body);
         },
 
         match(contentType, body) {
@@ -54,18 +60,6 @@ export function createResponseBuilder(operation) {
               },
             ],
           };
-        },
-
-        text(body) {
-          return this.match("text/plain", body);
-        },
-
-        html(body) {
-          return this.match("text/html", body);
-        },
-
-        json(body) {
-          return this.match("application/json", body);
         },
 
         random() {
@@ -86,11 +80,11 @@ export function createResponseBuilder(operation) {
             ...this,
 
             content: Object.keys(content).map((type) => ({
-              type,
-
               body: content[type].examples
                 ? oneOf(content[type].examples)
                 : JSONSchemaFaker.generate(content[type].schema),
+
+              type,
             })),
           };
         },
@@ -111,12 +105,18 @@ export function createResponseBuilder(operation) {
             ...this,
 
             content: operation.produces.map((type) => ({
-              type,
               body,
+              type,
             })),
           };
         },
+
+        status: Number.parseInt(name, 10),
+
+        text(body) {
+          return this.match("text/plain", body);
+        },
       }),
-    }
+    },
   );
 }

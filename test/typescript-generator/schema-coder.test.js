@@ -1,7 +1,7 @@
 import prettier from "prettier";
 
-import { SchemaCoder } from "../../src/typescript-generator/schema-coder.js";
 import { Requirement } from "../../src/typescript-generator/requirement.js";
+import { SchemaCoder } from "../../src/typescript-generator/schema-coder.js";
 
 function format(code) {
   return prettier.format(code, { parser: "typescript" });
@@ -10,7 +10,7 @@ function format(code) {
 describe("a SchemaCoder", () => {
   it("generates a list of potential names", () => {
     const coder = new SchemaCoder(
-      new Requirement({ $ref: "/components/schemas/Example" })
+      new Requirement({ $ref: "/components/schemas/Example" }),
     );
 
     const [one, two, three] = coder.names();
@@ -24,7 +24,7 @@ describe("a SchemaCoder", () => {
 
   it("when given a $ref, creates an import", () => {
     const coder = new SchemaCoder(
-      new Requirement({ $ref: "/components/schemas/Example" })
+      new Requirement({ $ref: "/components/schemas/Example" }),
     );
 
     const script = {
@@ -46,64 +46,68 @@ describe("a SchemaCoder", () => {
     ${"string"}  | ${'{"type":"string"}'}
     ${"number"}  | ${'{"type":"number"}'}
     ${"integer"} | ${'{"type":"integer"}'}
-  `("generates a type declaration for $type", ({ type, output }) => {
+  `("generates a type declaration for $type", ({ output, type }) => {
     const coder = new SchemaCoder(
-      new Requirement({ type, xml: "should be ignored" })
+      new Requirement({ type, xml: "should be ignored" }),
     );
     const result = coder.write({});
 
     expect(result).toBe(output);
   });
 
-  it("generates a type declaration for an object", () => {
+  it("generates a type declaration for an object", async () => {
     const coder = new SchemaCoder(
       new Requirement({
-        type: "object",
-
         properties: {
-          name: { type: "string" },
           age: { type: "integer" },
+          name: { type: "string" },
         },
 
+        type: "object",
+
         xml: "should be ignored",
-      })
+      }),
     );
 
-    const expected = format(`const x = { 
+    const expected = await format(`const x = { 
       type: "object",
       required: [],
-      properties: { "name": {"type":"string"}, "age": {"type":"integer"} }
+      properties: { "age": {"type":"integer"}, "name": {"type":"string"}  }
     }`);
 
-    expect(format(`const x = ${coder.write()}`)).toStrictEqual(expected);
+    await expect(format(`const x = ${coder.write()}`)).resolves.toStrictEqual(
+      expected,
+    );
   });
 
-  it("generates a type declaration for an array", () => {
+  it("generates a type declaration for an array", async () => {
     const coder = new SchemaCoder(
       new Requirement({
-        type: "array",
         items: { type: "string" },
+        type: "array",
         xml: "should be ignored",
-      })
+      }),
     );
 
-    const expected = format(
+    const expected = await format(
       `const x = { 
           type: "array", 
           items: { type: "string" } 
-      };`
+      };`,
     );
 
-    expect(format(`const x = ${coder.write()}`)).toStrictEqual(expected);
+    await expect(format(`const x = ${coder.write()}`)).resolves.toStrictEqual(
+      expected,
+    );
   });
 
   it("has type JSONSchema6", () => {
     const coder = new SchemaCoder(
       new Requirement({
-        type: "array",
         items: { type: "string" },
+        type: "array",
         xml: "should be ignored",
-      })
+      }),
     );
 
     const script = {
@@ -126,7 +130,7 @@ describe("a SchemaCoder", () => {
     const coder = new SchemaCoder(
       new Requirement({
         $ref: "foo/bar/baz",
-      })
+      }),
     );
 
     expect(coder.modulePath()).toBe("components/baz.ts");

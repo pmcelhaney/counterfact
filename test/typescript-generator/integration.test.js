@@ -1,6 +1,6 @@
+import { Coder } from "../../src/typescript-generator/coder.js";
 import { Repository } from "../../src/typescript-generator/repository.js";
 import { Specification } from "../../src/typescript-generator/specification.js";
-import { Coder } from "../../src/typescript-generator/coder.js";
 
 describe("integration Test", () => {
   it("writes some code", async () => {
@@ -22,7 +22,7 @@ describe("integration Test", () => {
 
     const repository = new Repository();
     const requirement = await specification.requirementAt(
-      "openapi.yaml#/paths"
+      "openapi.yaml#/paths",
     );
 
     class OperationCoder extends Coder {
@@ -46,11 +46,11 @@ describe("integration Test", () => {
 
     await account.finished();
 
-    expect(account.contents()).toBe(
-      "export const HTTP_GET = () => {};\n\nexport const HTTP_POST = () => {};\n"
+    await expect(account.contents()).resolves.toBe(
+      "export const HTTP_GET = () => {};\n\nexport const HTTP_POST = () => {};\n",
     );
-    expect(accountId.contents()).toBe(
-      "export const HTTP_GET = () => {};\n\nexport const HTTP_PUT = () => {};\n"
+    await expect(accountId.contents()).resolves.toBe(
+      "export const HTTP_GET = () => {};\n\nexport const HTTP_PUT = () => {};\n",
     );
   });
 });

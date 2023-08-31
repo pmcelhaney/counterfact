@@ -1,4 +1,3 @@
-/* eslint-disable jest/no-restricted-matchers */
 import prettier from "prettier";
 
 import { OperationCoder } from "../../src/typescript-generator/operation-coder.js";
@@ -39,26 +38,24 @@ describe("an OperationCoder", () => {
 
   it("returns the module path", () => {
     const coder = new OperationCoder(
-      new Requirement({}, "#/paths/hello~1world/get")
+      new Requirement({}, "#/paths/hello~1world/get"),
     );
 
     expect(coder.modulePath()).toBe("path/hello/world.types.ts");
   });
 
-  it("generates a complex get operation", () => {
+  it("generates a complex get operation", async () => {
     const requirement = new Requirement(
       {
         parameters: [
-          { name: "id", in: "path", schema: { type: "string" } },
-          { name: "name", in: "query", schema: { type: "string" } },
+          { in: "path", name: "id", schema: { type: "string" } },
+          { in: "query", name: "name", schema: { type: "string" } },
         ],
 
         responses: {
           200: {
             content: {
               "application/json": {
-                schema: { $ref: "#/components/schemas/Example" },
-
                 examples: {
                   "first-example": {
                     value: "first",
@@ -68,6 +65,8 @@ describe("an OperationCoder", () => {
                     value: "second",
                   },
                 },
+
+                schema: { $ref: "#/components/schemas/Example" },
               },
             },
           },
@@ -89,27 +88,27 @@ describe("an OperationCoder", () => {
           },
         },
       },
-      "#/paths/hello/get"
+      "#/paths/hello/get",
     );
 
     const coder = new OperationCoder(requirement);
 
-    expect(
+    await expect(
       format(
         coder.write({
-          importType() {
-            return "Type";
-          },
-
           import() {
             return "schema";
           },
-        })
-      )
-    ).toMatchSnapshot();
+
+          importType() {
+            return "Type";
+          },
+        }),
+      ),
+    ).resolves.toMatchSnapshot();
   });
 
-  it("generates a simple post operation", () => {
+  it("generates a simple post operation", async () => {
     const requirement = new Requirement(
       {
         responses: {
@@ -122,23 +121,23 @@ describe("an OperationCoder", () => {
           },
         },
       },
-      "#/paths/hello/post"
+      "#/paths/hello/post",
     );
 
     const coder = new OperationCoder(requirement);
 
-    expect(
+    await expect(
       format(
         coder.write({
-          importType() {
-            return "Type";
-          },
-
           import() {
             return "schema";
           },
-        })
-      )
-    ).toMatchSnapshot();
+
+          importType() {
+            return "Type";
+          },
+        }),
+      ),
+    ).resolves.toMatchSnapshot();
   });
 });

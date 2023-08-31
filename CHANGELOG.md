@@ -1,5 +1,43 @@
 # counterfact
 
+## 0.25.4
+
+### Patch Changes
+
+- 7f2e19e: fixed an issue in which routes on the start page weren't rendered correctly in Windows
+
+## 0.25.3
+
+### Patch Changes
+
+- 02676a8: Fix typescript-generator importStatements logic for relative paths
+
+## 0.25.2
+
+### Patch Changes
+
+- 5523d0f: fixed another bug caused by backslashes in Windows
+
+## 0.25.1
+
+### Patch Changes
+
+- 226ce37: fixed a couple more issues in Windows
+
+## 0.25.0
+
+### Minor Changes
+
+- 5a9f40a: added a bunch more debug logging
+- fix Windows issue where "http://" gets changed to "http:/" and as a result the app hangs
+
+## 0.24.0
+
+### Minor Changes
+
+- e1bbb42: added a bit of debug logging (use environment variable DEBUG=counterfact to see it)
+- 1ea478a: remove the dependency on ts-node -- path files are now compiled with Typescript and output to a paths-js directory
+
 ## 0.23.0
 
 ### Minor Changes

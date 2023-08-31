@@ -15,8 +15,8 @@ describe("a response builder", () => {
 
     expect(response.status).toBe(200);
     expect(response.content).toStrictEqual([
-      { type: "text/plain", body: "hello" },
-      { type: "application/json", body: { hello: "world" } },
+      { body: "hello", type: "text/plain" },
+      { body: { hello: "world" }, type: "application/json" },
     ]);
   });
 
@@ -28,9 +28,9 @@ describe("a response builder", () => {
 
     expect(response.status).toBe(200);
     expect(response.content).toStrictEqual([
-      { type: "text/plain", body: "hello" },
-      { type: "application/json", body: { hello: "world" } },
-      { type: "text/html", body: "<h1>Hello World</h1>" },
+      { body: "hello", type: "text/plain" },
+      { body: { hello: "world" }, type: "application/json" },
+      { body: "<h1>Hello World</h1>", type: "text/html" },
     ]);
   });
 
@@ -53,27 +53,27 @@ describe("a response builder", () => {
           content: {
             "application/json": {
               schema: {
-                type: "object",
+                additionalProperties: false,
 
                 properties: {
                   value: {
-                    type: "string",
-                    required: true,
                     examples: ["hello"],
+                    required: true,
+                    type: "string",
                   },
                 },
 
-                additionalProperties: false,
+                type: "object",
               },
             },
 
             "text/plain": {
-              schema: {
-                type: "string",
-                examples: ["hello"],
-              },
-
               examples: { text: "example text response" },
+
+              schema: {
+                examples: ["hello"],
+                type: "string",
+              },
             },
           },
         },
@@ -82,8 +82,8 @@ describe("a response builder", () => {
           content: {
             "text/plain": {
               schema: {
-                type: "string",
                 examples: ["an error occurred"],
+                type: "string",
               },
             },
           },
@@ -96,8 +96,8 @@ describe("a response builder", () => {
 
       expect(response.status).toBe(200);
       expect(response.content).toStrictEqual([
-        { type: "application/json", body: { value: "hello" } },
-        { type: "text/plain", body: "example text response" },
+        { body: { value: "hello" }, type: "application/json" },
+        { body: "example text response", type: "text/plain" },
       ]);
     });
 
@@ -106,7 +106,7 @@ describe("a response builder", () => {
 
       expect(response.status).toBe(403);
       expect(response.content).toStrictEqual([
-        { type: "text/plain", body: "an error occurred" },
+        { body: "an error occurred", type: "text/plain" },
       ]);
     });
 
@@ -116,14 +116,14 @@ describe("a response builder", () => {
       delete operationWithoutDefault.responses.default;
 
       const response = createResponseBuilder(
-        operationWithoutDefault
+        operationWithoutDefault,
       )[403].random();
 
       expect(response.status).toBe(500);
       expect(response.content).toStrictEqual([
         {
-          type: "text/plain",
           body: "The Open API document does not specify a response for status code 403",
+          type: "text/plain",
         },
       ]);
     });
@@ -135,27 +135,27 @@ describe("a response builder", () => {
 
       responses: {
         200: {
+          examples: { text: "example response" },
+
           schema: {
-            type: "object",
+            additionalProperties: false,
 
             properties: {
               value: {
-                type: "string",
-                required: true,
                 examples: ["hello"],
+                required: true,
+                type: "string",
               },
             },
 
-            additionalProperties: false,
+            type: "object",
           },
-
-          examples: { text: "example response" },
         },
 
         default: {
           schema: {
-            type: "string",
             examples: ["an error occurred"],
+            type: "string",
           },
         },
       },
@@ -166,8 +166,8 @@ describe("a response builder", () => {
 
       expect(response.status).toBe(200);
       expect(response.content).toStrictEqual([
-        { type: "application/json", body: "example response" },
-        { type: "text/plain", body: "example response" },
+        { body: "example response", type: "application/json" },
+        { body: "example response", type: "text/plain" },
       ]);
     });
 
@@ -176,8 +176,8 @@ describe("a response builder", () => {
 
       expect(response.status).toBe(403);
       expect(response.content).toStrictEqual([
-        { type: "application/json", body: "an error occurred" },
-        { type: "text/plain", body: "an error occurred" },
+        { body: "an error occurred", type: "application/json" },
+        { body: "an error occurred", type: "text/plain" },
       ]);
     });
 
@@ -187,14 +187,14 @@ describe("a response builder", () => {
       delete operationWithoutDefault.responses.default;
 
       const response = createResponseBuilder(
-        operationWithoutDefault
+        operationWithoutDefault,
       )[403].random();
 
       expect(response.status).toBe(500);
       expect(response.content).toStrictEqual([
         {
-          type: "text/plain",
           body: "The Open API document does not specify a response for status code 403",
+          type: "text/plain",
         },
       ]);
     });

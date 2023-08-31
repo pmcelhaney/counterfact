@@ -1,3 +1,7 @@
+import createDebug from "debug";
+
+const debug = createDebug("counterfact:server:registry");
+
 function castParameters(parameters, parameterTypes) {
   const copy = { ...parameters };
 
@@ -28,7 +32,7 @@ function routesForNode(node) {
       ...routesForNode(child).map((route) => `/${segment}${route}`),
     ])
     .sort((segment1, segment2) =>
-      stripBrackets(segment1).localeCompare(stripBrackets(segment2))
+      stripBrackets(segment1).localeCompare(stripBrackets(segment2)),
     );
 }
 
@@ -40,10 +44,17 @@ export class Registry {
   };
 
   get routes() {
+    debug(
+      "getting routes from module tree: %s",
+      JSON.stringify(this.moduleTree, undefined, 2),
+    );
+
     return routesForNode(this.moduleTree);
   }
 
   add(url, module) {
+    debug("adding %s to registry", url);
+
     let node = this.moduleTree;
 
     for (const segment of url.split("/").slice(1)) {
@@ -89,7 +100,7 @@ export class Registry {
         matchedParts.push(segment);
       } else {
         const dynamicSegment = Object.keys(node.children).find(
-          (ds) => ds.startsWith("{") && ds.endsWith("}")
+          (ds) => ds.startsWith("{") && ds.endsWith("}"),
         );
 
         if (dynamicSegment) {
@@ -104,7 +115,7 @@ export class Registry {
       }
     }
 
-    return { module: node.module, path, matchedPath: matchedParts.join("/") };
+    return { matchedPath: matchedParts.join("/"), module: node.module, path };
   }
 
   endpoint(httpRequestMethod, url, parameterTypes = {}) {
@@ -113,9 +124,9 @@ export class Registry {
 
     if (!execute) {
       return () => ({
-        status: 404,
         body: `Could not find a ${httpRequestMethod} method matching ${url}\n`,
         contentType: "text/plain",
+        status: 404,
       });
     }
 
@@ -125,11 +136,11 @@ export class Registry {
 
         header: castParameters(requestData.query, parameterTypes.header),
 
-        query: castParameters(requestData.query, parameterTypes.query),
+        matchedPath: handler.matchedPath ?? "none",
 
         path: castParameters(handler.path, parameterTypes.path),
 
-        matchedPath: handler.matchedPath ?? "none",
+        query: castParameters(requestData.query, parameterTypes.query),
       });
   }
 }

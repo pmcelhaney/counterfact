@@ -1,8 +1,9 @@
 import http from "node:http";
 
+// eslint-disable-next-line import/newline-after-import
+import Koa from "koa";
 // eslint-disable-next-line n/no-unpublished-import
 import supertest from "supertest";
-import Koa from "koa";
 
 import { counterfact } from "../../src/server/counterfact.js";
 import { withTemporaryFiles } from "../lib/with-temporary-files.js";
@@ -82,7 +83,7 @@ describe("integration test", () => {
     await withTemporaryFiles(files, async (basePath) => {
       const { koaMiddleware, moduleLoader } = await counterfact(
         basePath,
-        `${basePath}/openapi.yaml`
+        `${basePath}/openapi.yaml`,
       );
 
       app.use(koaMiddleware);
@@ -104,7 +105,7 @@ describe("integration test", () => {
       res.end("I am proxy!\n");
     });
 
-    proxyTarget.listen(8121);
+    proxyTarget.listen(0);
 
     const app = new Koa();
     const request = supertest(app.callback());
@@ -121,9 +122,9 @@ describe("integration test", () => {
         basePath,
         `${basePath}/openapi.yaml`,
         {
-          proxyUrl: `http://localhost:${proxyTarget.address().port}`,
           proxyEnabled: true,
-        }
+          proxyUrl: `http://localhost:${proxyTarget.address().port}`,
+        },
       );
 
       app.use(koaMiddleware);

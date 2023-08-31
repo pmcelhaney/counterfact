@@ -1,8 +1,8 @@
 /* eslint-disable max-statements */
 import prettier from "prettier";
 
-import { SchemaTypeCoder } from "../../src/typescript-generator/schema-type-coder.js";
 import { Requirement } from "../../src/typescript-generator/requirement.js";
+import { SchemaTypeCoder } from "../../src/typescript-generator/schema-type-coder.js";
 
 function format(code) {
   return prettier.format(code, { parser: "typescript" });
@@ -11,7 +11,7 @@ function format(code) {
 describe("a SchemaTypeCoder", () => {
   it("generates a list of potential names", () => {
     const coder = new SchemaTypeCoder(
-      new Requirement({ $ref: "/components/schemas/Example" })
+      new Requirement({ $ref: "/components/schemas/Example" }),
     );
 
     const [one, two, three] = coder.names();
@@ -25,7 +25,7 @@ describe("a SchemaTypeCoder", () => {
 
   it("when given a $ref, creates an import", () => {
     const coder = new SchemaTypeCoder(
-      new Requirement({ $ref: "/components/schemas/Example" })
+      new Requirement({ $ref: "/components/schemas/Example" }),
     );
 
     const script = {
@@ -47,237 +47,263 @@ describe("a SchemaTypeCoder", () => {
     ${"string"}  | ${"string"}
     ${"number"}  | ${"number"}
     ${"integer"} | ${"number"}
-  `("generates a type declaration for $type", ({ type, output }) => {
+  `("generates a type declaration for $type", ({ output, type }) => {
     const coder = new SchemaTypeCoder(
-      new Requirement({ type, xml: "should be ignored" })
+      new Requirement({ type, xml: "should be ignored" }),
     );
     const result = coder.write({});
 
     expect(result).toBe(output);
   });
 
-  it("generates a type declaration for an object", () => {
+  it("generates a type declaration for an object", async () => {
     const coder = new SchemaTypeCoder(
       new Requirement({
-        type: "object",
-
         properties: {
-          name: { type: "string" },
           age: { type: "integer" },
+          name: { type: "string" },
         },
+
+        type: "object",
 
         xml: "should be ignored",
-      })
+      }),
     );
 
-    const expected = format("type x = { name?: string, age?: number };");
+    const expected = await format("type x = { age?: number, name?: string };");
 
-    expect(format(`type x = ${coder.write()}`)).toStrictEqual(expected);
+    await expect(format(`type x = ${coder.write()}`)).resolves.toStrictEqual(
+      expected,
+    );
   });
 
-  it("generates a type declaration for an object with additionalProperties", () => {
+  it("generates a type declaration for an object with additionalProperties", async () => {
     const coder = new SchemaTypeCoder(
       new Requirement({
-        type: "object",
-
-        properties: {
-          name: { type: "string" },
-          age: { type: "integer" },
-        },
-
         additionalProperties: { type: "string" },
 
-        xml: "should be ignored",
-      })
-    );
+        properties: {
+          age: { type: "integer" },
+          name: { type: "string" },
+        },
 
-    const expected = format(
-      "type x = { name?: string, age?: number, [key: string]: unknown };"
-    );
-
-    expect(format(`type x = ${coder.write()}`)).toStrictEqual(expected);
-  });
-
-  it("generates a type declaration for an object with required properties", () => {
-    const coder = new SchemaTypeCoder(
-      new Requirement({
         type: "object",
 
+        xml: "should be ignored",
+      }),
+    );
+
+    const expected = await format(
+      "type x = { age?: number, name?: string, [key: string]: unknown };",
+    );
+
+    await expect(format(`type x = ${coder.write()}`)).resolves.toStrictEqual(
+      expected,
+    );
+  });
+
+  it("generates a type declaration for an object with required properties", async () => {
+    const coder = new SchemaTypeCoder(
+      new Requirement({
         properties: {
-          optionalString: { type: "string" },
-          requiredString: { type: "string", required: true },
           anotherRequiredString: { type: "string" },
+          optionalString: { type: "string" },
+          requiredString: { required: true, type: "string" },
         },
 
         required: ["anotherRequiredString"],
-      })
+
+        type: "object",
+      }),
     );
 
-    const expected = format(
-      "type x = { optionalString?: string, requiredString: string, anotherRequiredString: string };"
+    const expected = await format(
+      "type x = { anotherRequiredString: string, optionalString?: string, requiredString: string,  };",
     );
 
-    expect(format(`type x = ${coder.write()}`)).toStrictEqual(expected);
+    await expect(format(`type x = ${coder.write()}`)).resolves.toStrictEqual(
+      expected,
+    );
   });
 
-  it("generates a type declaration for an object with additionalProperties: true", () => {
+  it("generates a type declaration for an object with additionalProperties: true", async () => {
     const coder = new SchemaTypeCoder(
       new Requirement({
-        type: "object",
-
-        properties: {
-          name: { type: "string" },
-          age: { type: "integer" },
-        },
-
         additionalProperties: true,
-      })
-    );
-
-    const expected = format(
-      "type x = { name?: string, age?: number, [key: string]: unknown };"
-    );
-
-    expect(format(`type x = ${coder.write()}`)).toStrictEqual(expected);
-  });
-
-  it("generates a type declaration for an object with additionalProperties: false", () => {
-    const coder = new SchemaTypeCoder(
-      new Requirement({
-        type: "object",
 
         properties: {
-          name: { type: "string" },
           age: { type: "integer" },
+          name: { type: "string" },
         },
 
+        type: "object",
+      }),
+    );
+
+    const expected = await format(
+      "type x = {  age?: number, name?: string, [key: string]: unknown };",
+    );
+
+    await expect(format(`type x = ${coder.write()}`)).resolves.toStrictEqual(
+      expected,
+    );
+  });
+
+  it("generates a type declaration for an object with additionalProperties: false", async () => {
+    const coder = new SchemaTypeCoder(
+      new Requirement({
         additionalProperties: false,
-      })
-    );
-
-    const expected = format("type x = { name?: string, age?: number };");
-
-    expect(format(`type x = ${coder.write()}`)).toStrictEqual(expected);
-  });
-
-  it("generates a type declaration for an object with additionalProperties and no properties", () => {
-    const coder = new SchemaTypeCoder(
-      new Requirement({
-        type: "object",
-
-        additionalProperties: { type: "boolean" },
-      })
-    );
-
-    const expected = format("type x = {  [key: string]: boolean };");
-
-    expect(format(`type x = ${coder.write()}`)).toStrictEqual(expected);
-  });
-
-  it("generates a type declaration for an object with additionalProperties all of the same type", () => {
-    const coder = new SchemaTypeCoder(
-      new Requirement({
-        type: "object",
 
         properties: {
-          aNumber: { type: "number" },
-          anotherNumber: { type: "number" },
+          age: { type: "integer" },
+          name: { type: "string" },
         },
 
-        additionalProperties: { type: "number" },
-      })
+        type: "object",
+      }),
     );
 
-    const expected = format(
-      "type x = { aNumber?: number; anotherNumber?: number; [key: string]: number };"
-    );
+    const expected = await format("type x = {  age?: number, name?: string};");
 
-    expect(format(`type x = ${coder.write()}`)).toStrictEqual(expected);
+    await expect(format(`type x = ${coder.write()}`)).resolves.toStrictEqual(
+      expected,
+    );
   });
 
-  it("generates a type declaration for an array", () => {
+  it("generates a type declaration for an object with additionalProperties and no properties", async () => {
     const coder = new SchemaTypeCoder(
       new Requirement({
-        type: "array",
-        items: { type: "string" },
-        xml: "should be ignored",
-      })
+        additionalProperties: { type: "boolean" },
+
+        type: "object",
+      }),
     );
 
-    const expected = format("type x = Array<string>;");
+    const expected = await format("type x = {  [key: string]: boolean };");
 
-    expect(format(`type x = ${coder.write()}`)).toStrictEqual(expected);
+    await expect(format(`type x = ${coder.write()}`)).resolves.toStrictEqual(
+      expected,
+    );
   });
 
-  it("generates a type declaration for allOf", () => {
+  it("generates a type declaration for an object with additionalProperties all of the same type", async () => {
+    const coder = new SchemaTypeCoder(
+      new Requirement({
+        additionalProperties: { type: "number" },
+
+        properties: {
+          anotherNumber: { type: "number" },
+          aNumber: { type: "number" },
+        },
+
+        type: "object",
+      }),
+    );
+
+    const expected = await format(
+      "type x = { anotherNumber?: number; aNumber?: number; [key: string]: number };",
+    );
+
+    await expect(format(`type x = ${coder.write()}`)).resolves.toStrictEqual(
+      expected,
+    );
+  });
+
+  it("generates a type declaration for an array", async () => {
+    const coder = new SchemaTypeCoder(
+      new Requirement({
+        items: { type: "string" },
+        type: "array",
+        xml: "should be ignored",
+      }),
+    );
+
+    const expected = await format("type x = Array<string>;");
+
+    await expect(format(`type x = ${coder.write()}`)).resolves.toStrictEqual(
+      expected,
+    );
+  });
+
+  it("generates a type declaration for allOf", async () => {
     const coder = new SchemaTypeCoder(
       new Requirement({
         allOf: [{ type: "string" }, { type: "number" }],
-      })
+      }),
     );
 
-    const expected = format("type x = string & number;");
+    const expected = await format("type x = string & number;");
 
-    expect(format(`type x = ${coder.write()}`)).toStrictEqual(expected);
+    await expect(format(`type x = ${coder.write()}`)).resolves.toStrictEqual(
+      expected,
+    );
   });
 
-  it("generates a type declaration for anyOf", () => {
+  it("generates a type declaration for anyOf", async () => {
     const coder = new SchemaTypeCoder(
       new Requirement({
         anyOf: [{ type: "string" }, { type: "number" }],
-      })
+      }),
     );
 
-    const expected = format("type x = string | number;");
+    const expected = await format("type x = string | number;");
 
-    expect(format(`type x = ${coder.write()}`)).toStrictEqual(expected);
+    await expect(format(`type x = ${coder.write()}`)).resolves.toStrictEqual(
+      expected,
+    );
   });
 
-  it("generates a type declaration for oneOf", () => {
+  it("generates a type declaration for oneOf", async () => {
     const coder = new SchemaTypeCoder(
       new Requirement({
         oneOf: [{ type: "string" }, { type: "number" }],
-      })
+      }),
     );
 
-    const expected = format("type x = string | number;");
+    const expected = await format("type x = string | number;");
 
-    expect(format(`type x = ${coder.write()}`)).toStrictEqual(expected);
+    await expect(format(`type x = ${coder.write()}`)).resolves.toStrictEqual(
+      expected,
+    );
   });
 
-  it("generates a type declaration for not (unknown)", () => {
+  it("generates a type declaration for not (unknown)", async () => {
     const coder = new SchemaTypeCoder(
       new Requirement({
         not: { type: "string" },
-      })
+      }),
     );
 
     // not is not expressible in TypeScript
     // The best we could do is Exclude<any, string>, but that doesn't actually exclude strings
-    const expected = format("type x = unknown;");
+    const expected = await format("type x = unknown;");
 
-    expect(format(`type x = ${coder.write()}`)).toStrictEqual(expected);
+    await expect(format(`type x = ${coder.write()}`)).resolves.toStrictEqual(
+      expected,
+    );
   });
 
-  it("generates a type declaration for enum", () => {
+  it("generates a type declaration for enum", async () => {
     const coder = new SchemaTypeCoder(
       new Requirement({
         enum: [1, "two"],
-      })
+      }),
     );
 
-    const expected = format('type x = 1 | "two";');
+    const expected = await format('type x = 1 | "two";');
 
-    expect(format(`type x = ${coder.write()}`)).toStrictEqual(expected);
+    await expect(format(`type x = ${coder.write()}`)).resolves.toStrictEqual(
+      expected,
+    );
   });
 
   it("has type JSONSchema6", () => {
     const coder = new SchemaTypeCoder(
       new Requirement({
-        type: "array",
         items: { type: "string" },
+        type: "array",
         xml: "should be ignored",
-      })
+      }),
     );
 
     expect(coder.typeDeclaration(undefined, {})).toBe("");

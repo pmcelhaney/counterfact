@@ -1,10 +1,10 @@
 // eslint-disable-next-line import/no-extraneous-dependencies, n/no-extraneous-import, @typescript-eslint/no-shadow, no-shadow
 import { jest } from "@jest/globals";
 
-import { Registry } from "../../src/server/registry.js";
+import { ContextRegistry } from "../../src/server/context-registry.js";
 import { Dispatcher } from "../../src/server/dispatcher.js";
 import { koaMiddleware } from "../../src/server/koa-middleware.js";
-import { ContextRegistry } from "../../src/server/context-registry.js";
+import { Registry } from "../../src/server/registry.js";
 
 function mockKoaProxy(options) {
   return function proxy(ctx) {
@@ -27,13 +27,13 @@ describe("koa middleware", () => {
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
     const middleware = koaMiddleware(dispatcher);
     const ctx = {
-      request: {
+      req: {
         path: "/hello",
-        method: "POST",
-        body: { name: "Homer" },
       },
 
-      req: {
+      request: {
+        body: { name: "Homer" },
+        method: "POST",
         path: "/hello",
       },
 
@@ -60,7 +60,7 @@ describe("koa middleware", () => {
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
     const middleware = koaMiddleware(dispatcher);
     const ctx = {
-      request: { path: "/not-modified", method: "GET" },
+      request: { method: "GET", path: "/not-modified" },
       // eslint-disable-next-line no-empty-function
       set: () => {},
     };
@@ -82,11 +82,11 @@ describe("koa middleware", () => {
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
     const middleware = koaMiddleware(
       dispatcher,
-      { proxyUrl: "https://example.com", proxyEnabled: true },
-      mockKoaProxy
+      { proxyEnabled: true, proxyUrl: "https://example.com" },
+      mockKoaProxy,
     );
     const ctx = {
-      request: { path: "/proxy", method: "GET" },
+      request: { method: "GET", path: "/proxy" },
     };
 
     await middleware(ctx);
@@ -108,13 +108,13 @@ describe("koa middleware", () => {
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
     const middleware = koaMiddleware(dispatcher);
     const ctx = {
-      request: {
+      req: {
         path: "/hello",
-        method: "POST",
-        body: { name: "Homer" },
       },
 
-      req: {
+      request: {
+        body: { name: "Homer" },
+        method: "POST",
         path: "/hello",
       },
 
@@ -125,18 +125,19 @@ describe("koa middleware", () => {
 
     expect(ctx.status).toBe(200);
     expect(ctx.body).toBe("Hello, Homer!");
+    // eslint-disable-next-line sonar/cors
     expect(ctx.set).toHaveBeenCalledWith("Access-Control-Allow-Origin", "*");
     expect(ctx.set).toHaveBeenCalledWith(
       "Access-Control-Allow-Methods",
-      "GET,HEAD,PUT,POST,DELETE,PATCH"
+      "GET,HEAD,PUT,POST,DELETE,PATCH",
     );
     expect(ctx.set).toHaveBeenCalledWith(
       "Access-Control-Allow-Headers",
-      undefined
+      undefined,
     );
     expect(ctx.set).toHaveBeenCalledWith(
       "Access-Control-Expose-Headers",
-      undefined
+      undefined,
     );
   });
 
@@ -154,18 +155,20 @@ describe("koa middleware", () => {
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
     const middleware = koaMiddleware(dispatcher);
     const ctx = {
-      request: {
+      req: {
         path: "/hello",
-        method: "POST",
+      },
+
+      request: {
         body: { name: "Homer" },
 
         headers: {
-          origin: "https://my.local.app:3000",
           "access-control-request-headers": "X-My-Header,X-Another-Header",
+          origin: "https://my.local.app:3000",
         },
-      },
 
-      req: {
+        method: "POST",
+
         path: "/hello",
       },
 
@@ -178,19 +181,19 @@ describe("koa middleware", () => {
     expect(ctx.body).toBe("Hello, Homer!");
     expect(ctx.set).toHaveBeenCalledWith(
       "Access-Control-Allow-Origin",
-      "https://my.local.app:3000"
+      "https://my.local.app:3000",
     );
     expect(ctx.set).toHaveBeenCalledWith(
       "Access-Control-Allow-Methods",
-      "GET,HEAD,PUT,POST,DELETE,PATCH"
+      "GET,HEAD,PUT,POST,DELETE,PATCH",
     );
     expect(ctx.set).toHaveBeenCalledWith(
       "Access-Control-Allow-Headers",
-      "X-My-Header,X-Another-Header"
+      "X-My-Header,X-Another-Header",
     );
     expect(ctx.set).toHaveBeenCalledWith(
       "Access-Control-Expose-Headers",
-      "X-My-Header,X-Another-Header"
+      "X-My-Header,X-Another-Header",
     );
   });
 });

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`a ContextCoder finds the request method in the URL 1`] = `
-"export { default } from \\"../$.context.js\\";
+"export { default } from \\"../$.context.mjs\\";
 "
 `;
