@@ -59,6 +59,7 @@ describe("a SchemaCoder", () => {
     const coder = new SchemaCoder(
       new Requirement({
         properties: {
+          "@needsQuotes": { type: "string" },
           age: { type: "integer" },
           name: { type: "string" },
         },
@@ -72,7 +73,7 @@ describe("a SchemaCoder", () => {
     const expected = await format(`const x = { 
       type: "object",
       required: [],
-      properties: { "age": {"type":"integer"}, "name": {"type":"string"}  }
+      properties: { "@needsQuotes": { type: "string"}, "age": {"type":"integer"}, "name": {"type":"string"}  }
     }`);
 
     await expect(format(`const x = ${coder.write()}`)).resolves.toStrictEqual(
