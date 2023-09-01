@@ -10,7 +10,7 @@ export class Script {
     this.repository = repository;
     this.exports = new Map();
     this.imports = new Map();
-    this.externalImports = new Map();
+    this.externalImport = new Map();
     this.cache = new Map();
     this.typeCache = new Map();
     this.path = path;
@@ -125,7 +125,7 @@ export class Script {
   }
 
   importExternal(name, modulePath, isType = false) {
-    this.externalImports.set(name, { isType, modulePath });
+    this.externalImport.set(name, { isType, modulePath });
 
     return name;
   }
@@ -150,9 +150,9 @@ export class Script {
     );
   }
 
-  externalImportsStatements() {
+  externalImportStatements() {
     return Array.from(
-      this.externalImports,
+      this.externalImport,
       ([name, { isDefault, isType, modulePath }]) =>
         `import${isType ? " type" : ""} ${
           isDefault ? name : `{ ${name} }`
@@ -199,7 +199,7 @@ export class Script {
   contents() {
     return prettier.format(
       [
-        this.externalImportsStatements().join("\n"),
+        this.externalImportStatements().join("\n"),
         this.importStatements().join("\n"),
         "\n\n",
         this.exportStatements().join("\n\n"),
