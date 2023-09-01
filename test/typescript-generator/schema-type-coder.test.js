@@ -109,6 +109,7 @@ describe("a SchemaTypeCoder", () => {
           anotherRequiredString: { type: "string" },
           optionalString: { type: "string" },
           requiredString: { required: true, type: "string" },
+          "with spaces": { type: "string" },
         },
 
         required: ["anotherRequiredString"],
@@ -118,7 +119,12 @@ describe("a SchemaTypeCoder", () => {
     );
 
     const expected = await format(
-      "type x = { anotherRequiredString: string, optionalString?: string, requiredString: string,  };",
+      `type x = { 
+        anotherRequiredString: string, 
+        optionalString?: string, 
+        requiredString: string, 
+        "with spaces"?: string  };
+      `,
     );
 
     await expect(format(`type x = ${coder.write()}`)).resolves.toStrictEqual(
@@ -286,11 +292,12 @@ describe("a SchemaTypeCoder", () => {
   it("generates a type declaration for enum", async () => {
     const coder = new SchemaTypeCoder(
       new Requirement({
-        enum: [1, "two"],
+        // eslint-disable-next-line unicorn/no-null
+        enum: [1, "two", null],
       }),
     );
 
-    const expected = await format('type x = 1 | "two";');
+    const expected = await format('type x = 1 | "two" | null;');
 
     await expect(format(`type x = ${coder.write()}`)).resolves.toStrictEqual(
       expected,
@@ -307,5 +314,15 @@ describe("a SchemaTypeCoder", () => {
     );
 
     expect(coder.typeDeclaration(undefined, {})).toBe("");
+  });
+
+  it("calculates the modulePath", () => {
+    const coder = new SchemaTypeCoder(
+      new Requirement({
+        $ref: "components/Example",
+      }),
+    );
+
+    expect(coder.modulePath()).toBe("components/Example.ts");
   });
 });
