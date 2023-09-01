@@ -55,6 +55,18 @@ export class SchemaTypeCoder extends Coder {
     )}>`;
   }
 
+  writePrimitive(value) {
+    if (typeof value === "string") {
+      return `"${value}"`;
+    }
+
+    if (value === null) {
+      return "null";
+    }
+
+    return value;
+  }
+
   writeType(script, type) {
     if (type === "object") {
       return this.objectSchema(script);
@@ -95,9 +107,7 @@ export class SchemaTypeCoder extends Coder {
 
   writeEnum(script, requirement) {
     return requirement.data
-      .map((item) =>
-        typeof item === "string" ? `"${item}"` : item === null ? "null" : item,
-      )
+      .map((item) => this.writePrimitive(item))
       .join(" | ");
   }
 
