@@ -66,9 +66,9 @@ describe("a Requirement", () => {
     });
 
     expect(result).toStrictEqual([
-      ["phone", phone],
       ["address", address],
       ["foo/bar~baz", specialChars],
+      ["phone", phone],
     ]);
   });
 
@@ -89,9 +89,9 @@ describe("a Requirement", () => {
     ]);
 
     expect(result).toStrictEqual([
-      ["phone!", phone],
       ["address!", address],
       ["foo/bar~baz!", specialChars],
+      ["phone!", phone],
     ]);
   });
 

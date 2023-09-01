@@ -44,6 +44,8 @@ export class OperationCoder extends Coder {
       .at(-2)
       .replaceAll("~1", "/");
 
-    return `${nodePath.join("path", pathString)}.types.ts`;
+    return `${nodePath
+      .join("path", pathString)
+      .replaceAll("\\", "/")}.types.ts`;
   }
 }

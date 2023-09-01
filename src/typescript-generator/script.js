@@ -1,13 +1,16 @@
 import nodePath from "node:path";
 
+import createDebugger from "debug";
 import prettier from "prettier";
+
+const debug = createDebugger("counterfact:typescript-generator:script");
 
 export class Script {
   constructor(repository, path) {
     this.repository = repository;
     this.exports = new Map();
     this.imports = new Map();
-    this.externalImports = new Map();
+    this.externalImport = new Map();
     this.cache = new Map();
     this.typeCache = new Map();
     this.path = path;
@@ -73,14 +76,23 @@ export class Script {
     this.export(coder, isType, true);
   }
 
+  // eslint-disable-next-line max-statements
   import(coder, isType = false, isDefault = false) {
+    debug("import coder: %s", coder.id);
+
     const modulePath = coder.modulePath();
 
     const cacheKey = `${coder.id}@${modulePath}:${isType}:${isDefault}`;
 
+    debug("cache key: %s", cacheKey);
+
     if (this.cache.has(cacheKey)) {
+      debug("cache hit: %s", cacheKey);
+
       return this.cache.get(cacheKey);
     }
+
+    debug("cache miss: %s", cacheKey);
 
     const name = this.firstUniqueName(coder);
 
@@ -113,7 +125,7 @@ export class Script {
   }
 
   importExternal(name, modulePath, isType = false) {
-    this.externalImports.set(name, { isType, modulePath });
+    this.externalImport.set(name, { isType, modulePath });
 
     return name;
   }
@@ -138,9 +150,9 @@ export class Script {
     );
   }
 
-  externalImportsStatements() {
+  externalImportStatements() {
     return Array.from(
-      this.externalImports,
+      this.externalImport,
       ([name, { isDefault, isType, modulePath }]) =>
         `import${isType ? " type" : ""} ${
           isDefault ? name : `{ ${name} }`
@@ -149,16 +161,18 @@ export class Script {
   }
 
   importStatements() {
-    return Array.from(
-      this.imports,
-      ([name, { isDefault, isType, script }]) =>
-        `import${isType ? " type" : ""} ${
-          isDefault ? name : `{ ${name} }`
-        } from "./${nodePath.relative(
-          nodePath.dirname(this.path),
+    return Array.from(this.imports, ([name, { isDefault, isType, script }]) => {
+      const resolvedPath = nodePath
+        .relative(
+          nodePath.dirname(this.path).replaceAll("\\", "/"),
           script.path.replace(/\.ts$/u, ".js"),
-        )}";`,
-    );
+        )
+        .replaceAll("\\", "/");
+
+      return `import${isType ? " type" : ""} ${
+        isDefault ? name : `{ ${name} }`
+      } from "${resolvedPath.includes("../") ? "" : "./"}${resolvedPath}";`;
+    });
   }
 
   exportStatements() {
@@ -185,7 +199,7 @@ export class Script {
   contents() {
     return prettier.format(
       [
-        this.externalImportsStatements().join("\n"),
+        this.externalImportStatements().join("\n"),
         this.importStatements().join("\n"),
         "\n\n",
         this.exportStatements().join("\n\n"),

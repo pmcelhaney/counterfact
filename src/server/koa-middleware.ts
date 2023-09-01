@@ -1,26 +1,44 @@
-import type { Middleware, Request as KoaRequest } from "koa";
+import type Koa from "koa";
 import koaProxy from "koa-proxy";
 
 import type { Dispatcher } from "./dispatcher.js";
-import type { HttpMethods } from "./registry.js";
 
 const HTTP_STATUS_CODE_OK = 200;
+
+function addCors(ctx: Koa.ExtendableContext, headers) {
+  // Always append CORS headers, reflecting back the headers requested if any
+  ctx.set("Access-Control-Allow-Origin", headers?.origin || "*");
+  ctx.set("Access-Control-Allow-Methods", "GET,HEAD,PUT,POST,DELETE,PATCH");
+  ctx.set(
+    "Access-Control-Allow-Headers",
+    headers?.["access-control-request-headers"],
+  );
+  ctx.set(
+    "Access-Control-Expose-Headers",
+    headers?.["access-control-request-headers"],
+  );
+  ctx.set("Access-Control-Allow-Credentials", "true");
+}
 
 export function koaMiddleware(
   dispatcher: Dispatcher,
   { proxyEnabled = false, proxyUrl = "" } = {},
   proxy = koaProxy,
-): Middleware {
+): Koa.Middleware {
+  // eslint-disable-next-line max-statements
   return async function middleware(ctx, next) {
-    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-    const { body, headers, method, path, query } = ctx.request as KoaRequest & {
-      body: unknown;
-      method: HttpMethods;
-    };
+    const { body, headers, method, path, query } = ctx.request;
 
     if (proxyEnabled && proxyUrl) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-return
       return proxy({ host: proxyUrl })(ctx, next);
+    }
+
+    addCors(ctx, headers);
+
+    if (method === "OPTIONS") {
+      ctx.status = HTTP_STATUS_CODE_OK;
+      return undefined;
     }
 
     const response = await dispatcher.request({

@@ -142,6 +142,24 @@ describe("a registry", () => {
     });
   });
 
+  it("matches an endpoint where the case does not match", () => {
+    const registry = new Registry();
+
+    registry.add("/{organization}/users/{username}/friends/{page}", {
+      GET({ path }) {
+        return {
+          body: `page ${path.page} of ${path.username}'s friends in ${path.organization}`,
+        };
+      },
+    });
+
+    expect(
+      registry.endpoint("GET", "/Acme/users/alice/Friends/2")({}),
+    ).toStrictEqual({
+      body: "page 2 of alice's friends in Acme",
+    });
+  });
+
   it("lists all of the routes", () => {
     const registry = new Registry();
 

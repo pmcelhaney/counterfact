@@ -137,5 +137,10 @@ describe("integration test", () => {
 
       await proxyTarget.unref();
     });
+
+    // eslint-disable-next-line promise/avoid-new
+    await new Promise((resolve) => {
+      proxyTarget.close(resolve);
+    });
   });
 });

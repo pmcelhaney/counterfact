@@ -3,6 +3,7 @@
 import nodePath from "node:path";
 
 import { program } from "commander";
+import createDebug from "debug";
 import open from "open";
 
 import { startRepl } from "../src/server/repl.ts";
@@ -11,13 +12,31 @@ import { generate } from "../src/typescript-generator/generate.js";
 
 const DEFAULT_PORT = 3100;
 
+const debug = createDebug("counterfact:bin:counterfact");
+
+debug("running ./bin/counterfact.js");
+
 // eslint-disable-next-line max-statements
 async function main(source, destination) {
+  debug("executing the main function");
+
   const options = program.opts();
 
-  await generate(source, nodePath.join(process.cwd(), destination));
+  debug("options: %o", options);
+  debug("source: %s", source);
+  debug("destination: %s", destination);
 
-  const basePath = nodePath.resolve(nodePath.join(process.cwd(), destination));
+  const destinationPath = nodePath
+    .join(process.cwd(), destination)
+    .replaceAll("\\", "/");
+
+  debug('generating code at "%s"', destinationPath);
+
+  await generate(source, destinationPath);
+
+  debug("generated code", destinationPath);
+
+  const basePath = nodePath.resolve(destinationPath).replaceAll("\\", "/");
 
   const openBrowser = options.open;
 
@@ -34,14 +53,17 @@ async function main(source, destination) {
     proxyUrl: options.proxyUrl,
   };
 
+  debug("starting server (%o)", config);
+
   const { contextRegistry } = await start(config);
+
+  debug("started server");
 
   const waysToInteract = [
     `Call the REST APIs at ${url} (with your front end app, curl, Postman, etc.)`,
-    `Change the implementation of the APIs by editing files under ${nodePath.join(
-      basePath,
-      "paths",
-    )} (no need to restart)`,
+    `Change the implementation of the APIs by editing files under ${nodePath
+      .join(basePath, "paths")
+      .replaceAll("\\", "/")} (no need to restart)`,
     `Use the GUI at ${guiUrl}`,
     "Use the REPL below (type .counterfact for more information)",
   ];
@@ -65,10 +87,16 @@ async function main(source, destination) {
 
   process.stdout.write("Starting REPL...\n");
 
+  debug("starting repl");
+
   startRepl(contextRegistry, config);
 
+  debug("started repl");
+
   if (openBrowser) {
+    debug("opening browser");
     await open(guiUrl);
+    debug("opened browser");
   }
 }
 

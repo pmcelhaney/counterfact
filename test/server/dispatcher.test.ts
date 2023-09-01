@@ -640,4 +640,25 @@ describe("given an invalid path", () => {
       "Could not find a PUT method matching /your/left/foot/in/and/your/right/foot/out\n",
     );
   });
+
+  it("attaches the root produces array to an operation", () => {
+    const registry = new Registry();
+
+    registry.add("/your/{side}/{bodyPart}/in/and/your/left/foot/out", {
+      PUT() {
+        return {
+          body: "ok",
+          status: 201,
+        };
+      },
+    });
+
+    const dispatcher = new Dispatcher(registry, new ContextRegistry(), {
+      produces: ["text/plain"],
+    });
+
+    const operation = dispatcher.operationForPathAndMethod("/hello", "GET");
+
+    expect(operation.produces).toStrictEqual(["text/plain"]);
+  });
 });

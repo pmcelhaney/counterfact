@@ -35,7 +35,7 @@ export class SchemaTypeCoder extends Coder {
         data.required?.includes(name) || property.data.required;
       const optionalFlag = isRequired ? "" : "?";
 
-      return `${name}${optionalFlag}: ${new SchemaTypeCoder(property).write(
+      return `"${name}"${optionalFlag}: ${new SchemaTypeCoder(property).write(
         script,
       )}`;
     });
@@ -53,6 +53,18 @@ export class SchemaTypeCoder extends Coder {
     return `Array<${new SchemaTypeCoder(this.requirement.get("items")).write(
       script,
     )}>`;
+  }
+
+  writePrimitive(value) {
+    if (typeof value === "string") {
+      return `"${value}"`;
+    }
+
+    if (value === null) {
+      return "null";
+    }
+
+    return value;
   }
 
   writeType(script, type) {
@@ -95,7 +107,7 @@ export class SchemaTypeCoder extends Coder {
 
   writeEnum(script, requirement) {
     return requirement.data
-      .map((item) => (typeof item === "string" ? `"${item}"` : item))
+      .map((item) => this.writePrimitive(item))
       .join(" | ");
   }
 

@@ -9,6 +9,7 @@ import { Dispatcher, type OpenApiDocument } from "./dispatcher.js";
 import { koaMiddleware } from "./koa-middleware.js";
 import { ModuleLoader } from "./module-loader.js";
 import { Registry } from "./registry.js";
+import { Transpiler } from "./transpiler.js";
 
 async function loadOpenApiDocument(source: string) {
   try {
@@ -23,9 +24,12 @@ async function loadOpenApiDocument(source: string) {
   }
 }
 
+// eslint-disable-next-line max-statements
 export async function counterfact(
   basePath: string,
-  openApiPath = nodePath.join(basePath, "../openapi.yaml"),
+  openApiPath = nodePath
+    .join(basePath, "../openapi.yaml")
+    .replaceAll("\\", "/"),
   options = {},
 ) {
   const openApiDocument = await loadOpenApiDocument(openApiPath);
@@ -37,8 +41,20 @@ export async function counterfact(
   const contextRegistry = new ContextRegistry();
 
   const dispatcher = new Dispatcher(registry, contextRegistry, openApiDocument);
+
+  const compiledPathsDirectory = nodePath
+    .join(modulesPath, "paths-js")
+    .replaceAll("\\", "/");
+
+  const transpiler = new Transpiler(
+    nodePath.join(modulesPath, "paths").replaceAll("\\", "/"),
+    compiledPathsDirectory,
+  );
+
+  await transpiler.watch();
+
   const moduleLoader = new ModuleLoader(
-    nodePath.join(modulesPath, "paths"),
+    compiledPathsDirectory,
     registry,
     contextRegistry,
   );

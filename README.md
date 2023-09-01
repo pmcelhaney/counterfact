@@ -14,114 +14,148 @@
 
 </div>
 
-## Features
+> TL;DR: Do you have Node 16+ installed? Run this command.
+>
+> ```sh copy
+> npx counterfact@latest https://petstore3.swagger.io/api/v3/openapi.yaml api --open
+> ```
 
-- Supports JavaScript and TypeScript
-- Runs on Node, Deno, and Bun
-- Uses Swagger / OpenAPI if you have it
-- File system based routing
-- Hot reload server-side code
-- Manipulate test data with a REPL
-- Toggle between the mock and real backend at runtime
-- Works with any “front end” that calls RESTful services (a React app, a native iOS app, a web service, etc.)
-- Emulates the real back end, but 100X faster
+## High code, low effort, mock REST APIs
 
-## Use Cases
+Having worked on several different teams at companies large and small, I found a consistent frustrating pattern:
+**When I was working on frontend code, I spent more time fiddling with the backend so that I could test the frontend than I did building features and fixing bugs.** In order to move faster, I started creating lightweight mock services in Node that I could use in development. That of course meant maintaining two back ends -- the real one and the mocks -- trading one problem for another.
 
-- Rapidly iterate on the front end without waiting for back end features or changes
-- Reproduce bugs when the conditions on the server side are hard to replicate
-- Test against a private, local stack that you fully control
-- Write contract tests for APIs
+However, over the course of several years, I found ways to minimize the effort to create and maintain mocks. For example, if the APIs are documented with OpenAPI / Swagger (they should be!) we can use that documentation to automatically generate TypeScript code. Since a mock server doesn't need to scale or be secure, we can optimize everything around developer experience. These optimizations have culminated in **Counterfact, the fastest and easiest way to build and maintain mock REST APIs.**
 
-Unlike similar tools, Counterfact is not limited to canned or randomly generated responses. It can mimic as much or as little of the business logic in your n-tier / cloud-native back end as you want. Test end-to-end scenarios in your front end code as if a lighting-fast implementation of the real backend is running on your machine. Because it is.
+|                                                   | Real Backend                     | Counterfact Backend         |
+| ------------------------------------------------- | -------------------------------- | --------------------------- |
+| To front end code it's...                         | a fully functional REST API      | a fully functional REST API |
+| Secure, scalable, robust, etc.                    | yes (🤞)                         | doesn't need to be          |
+| Cost to build / prototype                         | $$$$$                            | $                           |
+| Implementing a typical feature takes              | days? weeks?                     | minutes                     |
+| Can be gradually replaced with production code    | -                                | yes                         |
+| Running locally requires                          | runtime, database, etc.          | node                        |
+| Maintainable by front end devs                    | maybe?                           | yes                         |
+| See code changes                                  | after compile / deploy / restart | when you hit save           |
+| Change server-side code without losing state      | wait, what?                      | yes (hot reload)            |
+| Interact with the server in a REPL                | not likely                       | yes                         |
+| Reproducing weird stuff that happened in prod     | hard / impossible                | easy                        |
+| API response time                                 | varies                           | immediate                   |
+| Maintaining test accounts is                      | a huge pain                      | optional                    |
+| Integrates with UI tests (Jest, Playwright, etc.) | no                               | [planned]                   |
+| Seed with test data / scenarios                   | slow and tedious                 | [planned]                   |
+| Optimized for                                     | end users                        | developers                  |
+| Developer experience                              | <big>😣</big>                    | <big>😁</big>               |
 
-As a front end dev, when you have **complete and granular control over the back end**, and you can **modify anything on a whim**, it **enhances your developer experience** in ways that are hard to describe.
+<details>
+<summary>What's wrong with the status quo?</summary>
 
-## What does the code look like?
+- A typical web application these days spans multiple microservices, databases, etc. Standing up the whole stack locally takes a lot of effort (and defeats one of the main benefits of microservices).
+- It's not uncommon for teams to run the front end locally and point to an API on a dev or QA server. Multiple developers working against the same backend with shared state is a recipe for disaster.
+- Getting the back end in a state necessary to test functionality in the front end is tedious and time consuming, if not impossible.
+- A mock server can help. But a mock server that returns random or predetermined responses can only get us so far. For testing multiple step workflows, sometimes we need a real server, or something that mimics the behavior of a real server. Ideally, we want something that mimics a real server except when we want it to behave in a controlled, predictable manner.
+- From a customer's point of view, the frontend _is_ the app. If we can build the frontend without first having a backend in place, we can reduce cycle time and overproduction significantly.
+- On some level, you got into software development because its _fun_. Don't you wish you could spend more time on the fun aspects of writing code and less time on tedious set up and testing?
 
-<details markdown="1">
+</ul>
 
-<summary><code>GET /hello/world</code></summary>
+</details>
 
-```js
-// ./paths/hello/world.js
-export const GET = () => "Hello World!";
+## Usage
+
+The only prerequisite is Node 16+.
+
+### In a few seconds
+
+<details open>
+<summary>Turn an OpenAPI / Swagger spec into a mock server me</summary>
+
+For example, run the following command to generate code for the [Swagger Petstore](https://petstore.swagger.io/).
+
+```sh
+  npx counterfact@latest https://petstore3.swagger.io/api/v3/openapi.yaml api --open
 ```
+
+That command generates and starts a TypeScript implementation of the Swagger Petstore which returns random, valid responses, outputting code to the "api" directory, and opens a web browser with tools to interact with the API. You can replace the Petstore URL with a link to your own spec, either a URL or a local file. OpenAPI / Swagger versions 2 and 3 are supported.
 
 </details>
 
 <details>
+<summary>Generate TypeScript types</summary>
 
-<summary markdown="1">Using the <a href="https://petstore3.swagger.io">Swagger Petstore</a> as an example, here’s one way to implement <code>GET /pet/{petId}`</code> and <code>POST `POST /pets`</code>.</summary>
+Again, using the [Swagger Petstore](https://petstore.swagger.io/) as an example:
 
-```js
-// ./paths/pet/{petId}.js
-export const GET = ({ context, response, path }) => {
-  const pet = context.getPetById(path.petId);
+```sh
+  npx counterfact@latest https://petstore3.swagger.io/api/v3/openapi.yaml api
+```
 
-  if (!pet) {
-    return response[404].text(`Pet with ID ${path.petID} not found.`);
-  }
+Counterfact reads the components from the [spec](https://petstore3.swagger.io/api/v3/openapi.yaml) and converts them into equivalent TypeScript types. For example, here's `./api/components/Pet.ts`:
 
-  return response[200].json(pet);
+```ts
+import type { Category } from "./Category.js";
+import type { Tag } from "./Tag.js";
+
+export type Pet = {
+  id?: number;
+  name: string;
+  category?: Category;
+  photoUrls: Array<string>;
+  tags?: Array<Tag>;
+  status?: "available" | "pending" | "sold";
 };
 ```
 
-```js
-// ./paths/pets.js
-export const POST = ({ context, response, body }) => {
-  const pet = context.addPet(body);
-
-  return response[200].json(pet);
-};
-```
-
-```js
-
-// ./paths/$.context.ts
-class PetStore () {
-    pets = {};
-
-    getPetById(petId) {
-        return pets[id];
-    }
-
-    addPet(pet) {
-        this.pets[pet.id] = pet;
-    }
-}
-
-export default new PetStore();
-```
+These types are used internally by Counterfact. You can also use them in your client-side code if you like.
 
 </details>
 
-## If you have a Swagger / OpenAPI spec, you'll be up and running in seconds
+<details>
+<summary>Toggle between mocks and real services</summary>
 
-For example, run the following command to generate code for the Swagger Petstore.
+Add the `--proxy-url <url>` flag to point to the location of a real server.
 
-```sh copy
-npx counterfact@latest https://petstore3.swagger.io/api/v3/openapi.json api --open
+```sh
+  npx counterfact@latest ./path/to/your/spec api --proxy-url https://your-server.example.com/
 ```
 
-That command generates and starts a TypeScript implementation of the Swagger Petstore which returns random, valid responses. Not too shabby for _a few seconds of work_!
+All requests will be proxied to the real server, e.g. a request to `http://localhost:3100/hello-world` will be routed to `https://your-server.example.com/`. To toggle between having Counterfact handle requests and having it hand them off to the real server, type `.proxy on` / `.proxy off` in the REPL.
 
-## It's your server. Do whatever you want with it.
+See the [usage guide](./docs/usage.md#proxy-peek-a-boo-) for more information.
 
-Edit the code under `./api/paths` to **implement real behavior**, as we did in the JavaScript examples above. Store and retrieve data, perform calculations, filter / sort / paginate, whatever it takes the make the API real enough to support the development and testing of your front end.
+</details>
 
-- Use autocomplete as documentation. For example, when you're working on an operation that takes query parameters, type "`$.query.`" to list all of the available parameters.
-- Stay in sync with changes in your OpenAPI / Swagger document. Counterfact will keep the type definitions up to date without overwriting your work.
-- Get immediate feedback. Modules are hot reloaded so changes apply immediately without restarting the server or resetting its state.
-- Interact with the running server using a REPL. For example, type `context.addPet({id: 2, name: "Fido"})` to add a pet to the store. Then view the pet you just added at `http://localhost:3100/pet/2`.
-- Much more!
+### In a few minutes
 
-See the [Usage Guide](./docs/usage.md) for details.
+<details>
+<summary>Enhance auto-generated mocking code with business logic and state. A few small changes can transform your totally fake endpoint to a fully functional replica of the real one, or anything in between.</summary>
+
+Video coming soon. For now see the [usage guide](./docs/usage.md).
+
+</details>
+
+<details>
+<summary>Interact with the mock server's context via a REPL.</summary>
+
+Video coming soon. For now see the [usage guide](./docs/usage.md).
+
+</details>
+
+<details>
+<summary>Simulate real-world conditions, such as a user with an extra long email address, low inventory, HTTP error codes, or latency.</summary>
+
+Video coming soon. For now see the [usage guide](./docs/usage.md).
+
+</details>
+
+<details>
+<summary>Prototype and rapidly iterate on a REST APIs.</summary>
+
+Video coming soon. For now see the [usage guide](./docs/usage.md).
+
+</details>
+
+More info under [Documentation](./docs/usage.md).
 
 ---
 
-Counterfact is brand new as of November 30, 2022. Please send feedback / questions to pmcelhaney@gmail.com or [create a new issue](https://github.com/pmcelhaney/counterfact/issues/new). If you like what you see, please give this project a star!
-
-```
-
-```
+Please send feedback / questions to pmcelhaney@gmail.com or [create a new issue](https://github.com/pmcelhaney/counterfact/issues/new). If you like what you see, please give this project a star!

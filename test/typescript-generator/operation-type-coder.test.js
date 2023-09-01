@@ -1,8 +1,8 @@
-/* eslint-disable jest/no-restricted-matchers */
 import prettier from "prettier";
 
 import { OperationTypeCoder } from "../../src/typescript-generator/operation-type-coder.js";
 import { Requirement } from "../../src/typescript-generator/requirement.js";
+import { Specification } from "../../src/typescript-generator/specification.js";
 
 function format(code) {
   return prettier.format(code, { parser: "typescript" });
@@ -59,7 +59,7 @@ describe("an OperationTypeCoder", () => {
     expect(coder.modulePath()).toBe("path-types/hello/world.types.ts");
   });
 
-  it("generates a complex post operation", () => {
+  it("generates a complex post operation", async () => {
     const requirement = new Requirement(
       {
         parameters: [
@@ -117,12 +117,12 @@ describe("an OperationTypeCoder", () => {
 
     const coder = new OperationTypeCoder(requirement);
 
-    expect(
+    await expect(
       format(`type TestType = ${coder.write(dummyScript)}`),
-    ).toMatchSnapshot();
+    ).resolves.toMatchSnapshot();
   });
 
-  it("generates a complex post operation (OpenAPI 2)", () => {
+  it("generates a complex post operation (OpenAPI 2)", async () => {
     const requirement = new Requirement(
       {
         consumes: ["application/json"],
@@ -159,12 +159,61 @@ describe("an OperationTypeCoder", () => {
 
     const coder = new OperationTypeCoder(requirement);
 
-    expect(
+    await expect(
       format(`type TestType = ${coder.write(dummyScript)}`),
-    ).toMatchSnapshot();
+    ).resolves.toMatchSnapshot();
   });
 
-  it("generates a simple get operation", () => {
+  it("generates a complex post operation (OpenAPI 2 with produces at the root)", async () => {
+    const specification = new Specification();
+
+    specification.rootRequirement = new Requirement({
+      produces: ["application/json"],
+    });
+
+    const requirement = new Requirement(
+      {
+        consumes: ["application/json"],
+
+        parameters: [
+          { in: "path", name: "id", type: "string" },
+          { in: "query", name: "name", type: "string" },
+          { in: "header", name: "name", type: "string" },
+          {
+            in: "body",
+            name: "body",
+            schema: { $ref: "#/components/schemas/Example" },
+          },
+        ],
+
+        produces: ["application/json"],
+
+        responses: {
+          200: {
+            schema: { $ref: "#/components/schemas/Example" },
+          },
+
+          400: {
+            schema: { $ref: "#/components/schemas/Error" },
+          },
+
+          default: {
+            schema: { $ref: "#/components/schemas/Error" },
+          },
+        },
+      },
+      "#/paths/hello/post",
+      specification,
+    );
+
+    const coder = new OperationTypeCoder(requirement);
+
+    await expect(
+      format(`type TestType = ${coder.write(dummyScript)}`),
+    ).resolves.toMatchSnapshot();
+  });
+
+  it("generates a simple get operation", async () => {
     const requirement = new Requirement(
       {
         responses: {
@@ -182,12 +231,12 @@ describe("an OperationTypeCoder", () => {
 
     const coder = new OperationTypeCoder(requirement);
 
-    expect(
+    await expect(
       format(`type TestType =${coder.write(dummyScript)}`),
-    ).toMatchSnapshot();
+    ).resolves.toMatchSnapshot();
   });
 
-  it("generates a simple get operation (OpenAPI 2)", () => {
+  it("generates a simple get operation (OpenAPI 2)", async () => {
     const requirement = new Requirement(
       {
         produces: ["application/json"],
@@ -203,12 +252,12 @@ describe("an OperationTypeCoder", () => {
 
     const coder = new OperationTypeCoder(requirement);
 
-    expect(
+    await expect(
       format(`type TestType =${coder.write(dummyScript)}`),
-    ).toMatchSnapshot();
+    ).resolves.toMatchSnapshot();
   });
 
-  it("falls back to root level produces (OpenAPI 2)", () => {
+  it("falls back to root level produces (OpenAPI 2)", async () => {
     const requirement = new Requirement(
       {
         produces: ["text/plain"],
@@ -224,8 +273,8 @@ describe("an OperationTypeCoder", () => {
 
     const coder = new OperationTypeCoder(requirement);
 
-    expect(
+    await expect(
       format(`type TestType =${coder.write(dummyScript)}`),
-    ).toMatchSnapshot();
+    ).resolves.toMatchSnapshot();
   });
 });

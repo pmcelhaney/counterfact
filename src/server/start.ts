@@ -2,6 +2,7 @@
 import nodePath from "node:path";
 import { pathToFileURL } from "node:url";
 
+import createDebug from "debug";
 import Handlebars from "handlebars";
 import yaml from "js-yaml";
 import Koa from "koa";
@@ -10,6 +11,8 @@ import { koaSwagger } from "koa2-swagger-ui";
 
 import { readFile } from "../util/read-file.js";
 import { counterfact } from "./counterfact.js";
+
+const debug = createDebug("counterfact:server:start");
 
 // eslint-disable-next-line no-underscore-dangle, total-functions/no-partial-url-constructor
 const __dirname = nodePath.dirname(new URL(import.meta.url).pathname);
@@ -81,8 +84,10 @@ export async function start(config: {
   port: number;
 }) {
   const {
-    basePath = process.cwd(),
-    openApiPath = nodePath.join(basePath, "../openapi.yaml"),
+    basePath = process.cwd().replaceAll("\\", "/"),
+    openApiPath = nodePath
+      .join(basePath, "../openapi.yaml")
+      .replaceAll("\\", "/"),
     port = DEFAULT_PORT,
   } = config;
 
@@ -105,6 +110,9 @@ export async function start(config: {
       },
     }),
   );
+
+  debug("basePath: %s", basePath);
+  debug("routes", registry.routes);
 
   app.use(
     page("/counterfact/", "index", {

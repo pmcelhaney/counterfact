@@ -57,7 +57,16 @@ describe("a Specification", () => {
       hello: "world",
     });
 
-    await server.close();
+    // eslint-disable-next-line promise/avoid-new
+    await new Promise((resolve) => {
+      server.close(resolve);
+    });
+
+    // The server still might not be completely shut down at this point so wait a bit longer
+    // eslint-disable-next-line promise/avoid-new
+    await new Promise((resolve) => {
+      setTimeout(resolve, 1000);
+    });
   });
 
   it("returns a requirement for a URL", async () => {

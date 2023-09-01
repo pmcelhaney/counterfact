@@ -92,10 +92,59 @@ describe("a Script", () => {
     script.importType(coder);
     script.importDefault(coder);
 
+    script.importExternalType("ResponseBuilderFactory", "file.ts");
+
     expect(script.importStatements()).toStrictEqual([
       'import { Account0 } from "./export-from-me.js";',
       'import type { Account1 } from "./export-from-me.js";',
       'import Account2 from "./export-from-me.js";',
+    ]);
+  });
+
+  it("creates external import statements", () => {
+    const repository = new Repository("/base/path");
+
+    const script = repository.get("import-to-me.ts");
+
+    script.importExternal("SomeClass", "code.ts");
+    script.importExternalType("SomeType", "type.ts");
+
+    expect(script.externalImportStatements()).toStrictEqual([
+      'import { SomeClass } from "code.ts";',
+      'import type { SomeType } from "type.ts";',
+    ]);
+  });
+
+  it("handles relative import statements", () => {
+    const repository = new Repository("/base/path");
+
+    class CoderThatWantsToImportAccount extends Coder {
+      *names() {
+        let index = 0;
+
+        while (true) {
+          yield `Account${index}`;
+          index += 1;
+        }
+      }
+
+      modulePath() {
+        return "../../export-from-me.ts";
+      }
+    }
+
+    const coder = new CoderThatWantsToImportAccount({});
+
+    const script = repository.get("import-to-me.ts");
+
+    script.import(coder);
+    script.importType(coder);
+    script.importDefault(coder);
+
+    expect(script.importStatements()).toStrictEqual([
+      'import { Account0 } from "../../export-from-me.js";',
+      'import type { Account1 } from "../../export-from-me.js";',
+      'import Account2 from "../../export-from-me.js";',
     ]);
   });
 
@@ -134,7 +183,7 @@ describe("a Script", () => {
     ]);
   });
 
-  it("outputs the contents (import and export statements)", () => {
+  it("outputs the contents (import and export statements)", async () => {
     const repository = new Repository("/base/path");
 
     const script = repository.get("script.ts");
@@ -146,7 +195,7 @@ describe("a Script", () => {
       "export default class {};",
     ];
 
-    expect(script.contents()).toBe(
+    await expect(script.contents()).resolves.toBe(
       'import { foo } from "./foo.js";\n\nexport const bar = "Bar";\n\nexport default class {}\n',
     );
   });

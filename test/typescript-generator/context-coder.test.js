@@ -1,4 +1,3 @@
-/* eslint-disable jest/no-restricted-matchers */
 import prettier from "prettier";
 
 import { ContextCoder } from "../../src/typescript-generator/context-coder.js";
@@ -63,9 +62,30 @@ describe("a ContextCoder", () => {
     expect(coder.id).toBe("ContextCoder");
   });
 
-  it("finds the request method in the URL", () => {
+  it("extends the Context from the parent directory", async () => {
     const coder = new ContextCoder(new Requirement({}, "#/paths/hello/get"));
 
-    expect(format(coder.write(dummyScript).raw)).toMatchSnapshot();
+    await expect(format(coder.write(dummyScript).raw)).resolves.toBe(
+      await format('export { default } from "../$.context.mjs";'),
+    );
+  });
+
+  it("returns the context object if this is the root directory", async () => {
+    const coder = new ContextCoder(new Requirement({}, "#/paths/hello"));
+
+    const rootContextScript = {
+      ...dummyScript,
+      path: "paths/$.context.ts",
+    };
+
+    await expect(format(coder.write(rootContextScript))).resolves.toBe(
+      await format("new Context()"),
+    );
+  });
+
+  it("writes out the Context class", () => {
+    const coder = new ContextCoder(new Requirement({}, "#/paths/hello"));
+
+    expect(coder.beforeExport(dummyScript)).toContain("class Context {");
   });
 });

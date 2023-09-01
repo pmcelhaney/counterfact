@@ -24,7 +24,7 @@ async function ensureDirectoryExists(filePath: string) {
 
 function createAddFunction(basePath: string) {
   return async function add(filePath: string, content: string) {
-    const fullPath = nodePath.join(basePath, filePath);
+    const fullPath = nodePath.join(basePath, filePath).replaceAll("\\", "/");
 
     await ensureDirectoryExists(fullPath);
     await fs.writeFile(fullPath, content);
@@ -32,8 +32,8 @@ function createAddFunction(basePath: string) {
 }
 
 function createAddDirectoryFunction(basePath: string) {
-  return async function addDirectory(filePath: string) {
-    const fullPath = nodePath.join(basePath, filePath);
+  return async function addDirectory(filePath) {
+    const fullPath = nodePath.join(basePath, filePath).replaceAll("\\", "/");
 
     await fs.mkdir(fullPath, { recursive: true });
   };
@@ -41,7 +41,7 @@ function createAddDirectoryFunction(basePath: string) {
 
 function createRemoveFunction(basePath: string) {
   return async function remove(filePath: string) {
-    const fullPath = nodePath.join(basePath, filePath);
+    const fullPath = nodePath.join(basePath, filePath).replaceAll("\\", "/");
 
     await ensureDirectoryExists(fullPath);
     await fs.rm(fullPath);
@@ -59,12 +59,14 @@ export async function withTemporaryFiles(
 
   const temporaryDirectory = `${await fs.mkdtemp(
     nodePath.join(baseDirectory, "wtf-"),
-  )}/`;
+  )}/`.replaceAll("\\", "/");
 
   try {
     const writes = Object.entries(files).map(async (entry) => {
       const [filename, contents] = entry;
-      const filePath = nodePath.join(temporaryDirectory, filename);
+      const filePath = nodePath
+        .join(temporaryDirectory, filename)
+        .replaceAll("\\", "/");
 
       await ensureDirectoryExists(filePath);
       await fs.writeFile(filePath, contents);
@@ -78,8 +80,10 @@ export async function withTemporaryFiles(
         add: createAddFunction(temporaryDirectory),
         addDirectory: createAddDirectoryFunction(temporaryDirectory),
 
-        path(relativePath: string) {
-          return nodePath.join(temporaryDirectory, relativePath);
+        path(relativePath) {
+          return nodePath
+            .join(temporaryDirectory, relativePath)
+            .replaceAll("\\", "/");
         },
 
         remove: createRemoveFunction(temporaryDirectory),

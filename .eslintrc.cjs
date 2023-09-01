@@ -4,6 +4,20 @@ const rules = {
   "@microsoft/sdl/no-html-method": "off",
   "@typescript-eslint/lines-around-comment": "off",
   "@typescript-eslint/naming-convention": "off",
+  "import/default": "off",
+
+  "import/namespace": "off",
+
+  // too slow
+  "import/no-cycle": "off",
+
+  "import/no-deprecated": "off",
+  "import/no-named-as-default": "off",
+  "import/no-named-as-default-member": "off",
+
+  "import/no-unused-modules": "off",
+
+  "import/prefer-default-export": "off",
 
   "import/default": "off",
 
@@ -27,6 +41,8 @@ const rules = {
     },
   ],
 
+  "n/shebang": "off",
+
   "no-magic-numbers": [
     "error",
     {
@@ -37,6 +53,14 @@ const rules = {
   "node/file-extension-in-import": "off",
   "node/no-callback-literal": "off",
   "node/no-missing-import": "off",
+
+  "prettier/prettier": [
+    "error",
+    {
+      endOfLine: "auto",
+    },
+  ],
+
   "putout/putout": "off",
 };
 

@@ -1,4 +1,4 @@
-name: CI Checks
+name: Debug Windows
 
 on:
   pull_request:
@@ -6,15 +6,14 @@ on:
       - main
   workflow_dispatch:
 
-concurrency: ${{ github.workflow }}-${{ github.ref }}
+env:
+  DEBUG: "counterfact:*"
 
 jobs:
   ci-checks:
-    name: CI Checks
-    strategy:
-      matrix:
-        os: ["windows-latest", "ubuntu-latest"]
-    runs-on: ${{ matrix.os }}
+    name: Debug Windows
+    runs-on: "windows-latest"
+
     steps:
       - name: Check out repo
         uses: actions/checkout@v3
@@ -35,8 +34,7 @@ jobs:
           key: ${{ runner.os }}-${{ steps.node-version.outputs.version }}-${{ hashFiles('**/yarn.lock') }}
       - name: Install Packages
         run: yarn install --frozen-lockfile --network-timeout 100000
-      - name: ESlint
-        run: yarn eslint -f github-annotations .
-      - name: Unit tests
+      - name: Try running the petstore
+        run: npx . https://petstore3.swagger.io/api/v3/openapi.json out
         timeout-minutes: 2
-        run: yarn test --runInBand --forceExit --verbose --no-watchman
+        continue-on-error: true

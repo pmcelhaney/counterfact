@@ -46,6 +46,8 @@ export class ParametersTypeCoder extends Coder {
       .at(-2)
       .replaceAll("~1", "/");
 
-    return `${nodePath.join("parameters", pathString)}.types.ts`;
+    return `${nodePath
+      .join("parameters", pathString)
+      .replaceAll("\\", "/")}.types.ts`;
   }
 }

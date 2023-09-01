@@ -145,7 +145,7 @@ describe("a module loader", () => {
         await loader.watch();
         add(
           "change.mjs",
-          'export function GET(): { body } { return { body: "after change" }; }',
+          'export function GET() { return { body: "after change" }; }',
         );
         await once(loader, "change");
 

@@ -1,5 +1,95 @@
 # counterfact
 
+## 0.25.4
+
+### Patch Changes
+
+- 7f2e19e: fixed an issue in which routes on the start page weren't rendered correctly in Windows
+
+## 0.25.3
+
+### Patch Changes
+
+- 02676a8: Fix typescript-generator importStatements logic for relative paths
+
+## 0.25.2
+
+### Patch Changes
+
+- 5523d0f: fixed another bug caused by backslashes in Windows
+
+## 0.25.1
+
+### Patch Changes
+
+- 226ce37: fixed a couple more issues in Windows
+
+## 0.25.0
+
+### Minor Changes
+
+- 5a9f40a: added a bunch more debug logging
+- fix Windows issue where "http://" gets changed to "http:/" and as a result the app hangs
+
+## 0.24.0
+
+### Minor Changes
+
+- e1bbb42: added a bit of debug logging (use environment variable DEBUG=counterfact to see it)
+- 1ea478a: remove the dependency on ts-node -- path files are now compiled with Typescript and output to a paths-js directory
+
+## 0.23.0
+
+### Minor Changes
+
+- 8ef5f41: Windows support! (maybe -- I don't have a Windows machine so I can't test directly)
+
+## 0.22.0
+
+### Minor Changes
+
+- 4dcfa06: add CORS headers to support local development (Thanks, [dethell-jh](https://github.com/dethell-jh)!)
+
+### Patch Changes
+
+- dec64f4: Add CORS headers
+
+## 0.21.3
+
+### Patch Changes
+
+- 1d13668: fix an issue where the random() function doesn't recognize it should use OpenAPI2
+
+## 0.21.2
+
+### Patch Changes
+
+- 9ca754f: fix another bug where OpenAPI2 puts the produces proprty in the root
+
+## 0.21.1
+
+### Patch Changes
+
+- 65f081b: fix error when the produces content type is defined at the root
+
+## 0.21.0
+
+### Minor Changes
+
+- 9e0e4d3: it's Friday ¯\_(ツ)\_/¯
+
+## 0.20.6
+
+### Patch Changes
+
+- d975833: fix an issue where ts-node was not being used, which basically broke everything
+
+## 0.20.5
+
+### Patch Changes
+
+- 7d05529: fix $.proxy() -- it's better but still experimental
+
 ## 0.20.4
 
 ### Patch Changes

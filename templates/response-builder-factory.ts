@@ -1,4 +1,3 @@
-// eslint-disable-next-line n/no-unpublished-import
 import type { OpenApiResponse } from "../src/server/response-builder.js";
 
 type OmitValueWhenNever<Base> = Pick<

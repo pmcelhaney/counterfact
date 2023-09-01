@@ -101,13 +101,17 @@ export class ResponseTypeCoder extends Coder {
 
     script.importExternalType(
       "ResponseBuilderFactory",
-      nodePath.join(basePath, "response-builder-factory.js"),
+      nodePath
+        .join(basePath, "response-builder-factory.js")
+        .replaceAll("\\", "/"),
     );
 
     if (this.needsHttpStatusCodeImport) {
       script.importExternalType(
         "HttpStatusCode",
-        nodePath.join(basePath, "response-builder-factory.js"),
+        nodePath
+          .join(basePath, "response-builder-factory.js")
+          .replaceAll("\\", "/"),
       );
     }
 

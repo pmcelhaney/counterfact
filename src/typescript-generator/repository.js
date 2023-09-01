@@ -1,13 +1,18 @@
 import { constants as fsConstants } from "node:fs";
 import fs from "node:fs/promises";
-import nodePath from "node:path";
+import nodePath, { dirname } from "node:path";
+import { fileURLToPath } from "node:url";
 
-import prettier from "prettier";
+import createDebug from "debug";
 
 import { Script } from "./script.js";
 
+const debug = createDebug("counterfact:server:repository");
+
 // eslint-disable-next-line no-underscore-dangle
-const __dirname = nodePath.dirname(new URL(import.meta.url).pathname);
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+debug("dirname is %s", __dirname);
 
 async function ensureDirectoryExists(filePath) {
   const directory = nodePath.dirname(filePath);
@@ -25,9 +30,15 @@ export class Repository {
   }
 
   get(path) {
+    debug("getting script at %s", path);
+
     if (this.scripts.has(path)) {
+      debug("already have script %s, returning it", path);
+
       return this.scripts.get(path);
     }
+
+    debug("don't have %s, creating it", path);
 
     const script = new Script(this, path);
 
@@ -40,6 +51,7 @@ export class Repository {
     while (
       Array.from(this.scripts.values()).some((script) => script.isInProgress())
     ) {
+      debug("waiting for %i scripts to finish", this.scripts.size);
       // eslint-disable-next-line no-await-in-loop
       await Promise.all(
         Array.from(this.scripts.values(), (script) => script.finished()),
@@ -48,31 +60,36 @@ export class Repository {
   }
 
   copyCoreFiles(destination) {
-    const files = ["package.json", "response-builder-factory.ts"];
+    const files = ["response-builder-factory.ts"];
 
     return files.map((file) => {
-      const path = nodePath.join(destination, file);
+      const path = nodePath.join(destination, file).replaceAll("\\", "/");
 
       process.stdout.write(`writing ${path}\n`);
 
       return fs.copyFile(
-        nodePath.join(__dirname, `../../templates/${file}`),
+        nodePath
+          .join(__dirname, `../../templates/${file}`)
+          .replaceAll("\\", "/"),
         path,
       );
     });
   }
 
   async writeFiles(destination) {
+    debug(
+      "waiting for %i or more scripts to finish before writing files",
+      this.scripts.size,
+    );
     await this.finished();
+    debug("all %i scripts are finished", this.scripts.size);
 
     const writeFiles = Array.from(
       this.scripts.entries(),
       async ([path, script]) => {
-        const contents = prettier.format(script.contents(), {
-          parser: "typescript",
-        });
+        const contents = await script.contents();
 
-        const fullPath = nodePath.join(destination, path);
+        const fullPath = nodePath.join(destination, path).replaceAll("\\", "/");
 
         await ensureDirectoryExists(fullPath);
 
@@ -88,7 +105,9 @@ export class Repository {
           return;
         }
 
+        debug("about to write", fullPath);
         await fs.writeFile(fullPath, contents);
+        debug("did write", fullPath);
 
         process.stdout.write(`writing ${fullPath}\n`);
       },
