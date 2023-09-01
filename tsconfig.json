@@ -10,5 +10,5 @@
     "allowJs": true,
     "outDir": "dist"
   },
-  "include": ["src", "demo-ts", "templates", "test", "jest.config.ts"]
+  "include": ["src", "demo-ts", "templates", "test"]
 }
