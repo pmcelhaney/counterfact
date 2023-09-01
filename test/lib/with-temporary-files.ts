@@ -27,12 +27,13 @@ function createAddFunction(basePath: string) {
     const fullPath = nodePath.join(basePath, filePath).replaceAll("\\", "/");
 
     await ensureDirectoryExists(fullPath);
+
     await fs.writeFile(fullPath, content);
   };
 }
 
 function createAddDirectoryFunction(basePath: string) {
-  return async function addDirectory(filePath) {
+  return async function addDirectory(filePath: string) {
     const fullPath = nodePath.join(basePath, filePath).replaceAll("\\", "/");
 
     await fs.mkdir(fullPath, { recursive: true });
@@ -69,6 +70,7 @@ export async function withTemporaryFiles(
         .replaceAll("\\", "/");
 
       await ensureDirectoryExists(filePath);
+
       await fs.writeFile(filePath, contents);
     });
 

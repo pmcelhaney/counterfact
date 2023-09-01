@@ -3,7 +3,7 @@ import { type Dirent, existsSync } from "node:fs";
 import fs from "node:fs/promises";
 import nodePath from "node:path";
 
-import chokidar from "chokidar";
+import { type FSWatcher, watch } from "chokidar";
 
 import { type Context, ContextRegistry } from "./context-registry.js";
 import type { Module, Registry } from "./registry.js";
@@ -17,7 +17,7 @@ export class ModuleLoader extends EventTarget {
 
   public readonly registry: Registry;
 
-  private watcher: chokidar.FSWatcher | undefined;
+  private watcher: FSWatcher | undefined;
 
   private readonly contextRegistry: ContextRegistry;
 
@@ -33,9 +33,9 @@ export class ModuleLoader extends EventTarget {
   }
 
   public async watch(): Promise<void> {
-    this.watcher = chokidar
-      .watch(`${this.basePath}/**/*.{js,mjs,ts,mts}`)
-      .on("all", (eventName: string, pathName: string) => {
+    this.watcher = watch(`${this.basePath}/**/*.{js,mjs,ts,mts}`).on(
+      "all",
+      (eventName: string, pathName: string) => {
         if (!["add", "change", "unlink"].includes(eventName)) {
           return;
         }
@@ -77,7 +77,8 @@ export class ModuleLoader extends EventTarget {
               `\nError loading ${pathName}:\n${String(error)}\n`,
             );
           });
-      });
+      },
+    );
     await once(this.watcher, "ready");
   }
 

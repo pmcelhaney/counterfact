@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/newline-after-import
-import Accept from "@hapi/accept";
+import { mediaTypes } from "@hapi/accept";
 // eslint-disable-next-line @typescript-eslint/no-shadow
 import fetch, { Headers } from "node-fetch";
 
@@ -155,7 +155,7 @@ export class Dispatcher {
     acceptHeader: string,
     content: { body: unknown; type: string }[],
   ) {
-    const preferredMediaTypes = Accept.mediaTypes(acceptHeader);
+    const preferredMediaTypes = mediaTypes(acceptHeader);
 
     for (const mediaType of preferredMediaTypes) {
       const contentItem = content.find((item) =>
@@ -265,11 +265,11 @@ export class Dispatcher {
     );
 
     if (
-      !Accept.mediaTypes(headers.accept ?? "*/*").some((type) =>
+      !mediaTypes(headers.accept ?? "*/*").some((type) =>
         this.isMediaType(normalizedResponse.contentType, type),
       )
     ) {
-      return { body: Accept.mediaTypes(headers.accept ?? "*/*"), status: 406 };
+      return { body: mediaTypes(headers.accept ?? "*/*"), status: 406 };
     }
 
     return normalizedResponse;

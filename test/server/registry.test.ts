@@ -148,7 +148,9 @@ describe("a registry", () => {
     registry.add("/{organization}/users/{username}/friends/{page}", {
       GET({ path }) {
         return {
-          body: `page ${path.page} of ${path.username}'s friends in ${path.organization}`,
+          body: `page ${path?.page ?? "???"} of ${
+            path?.username ?? "???"
+          }'s friends in ${path?.organization ?? "???"}`,
         };
       },
     });

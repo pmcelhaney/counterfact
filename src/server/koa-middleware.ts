@@ -1,3 +1,5 @@
+import type { IncomingHttpHeaders } from "node:http";
+
 import type Koa from "koa";
 import koaProxy from "koa-proxy";
 
@@ -5,17 +7,20 @@ import type { Dispatcher } from "./dispatcher.js";
 
 const HTTP_STATUS_CODE_OK = 200;
 
-function addCors(ctx: Koa.ExtendableContext, headers) {
+function addCors(ctx: Koa.ExtendableContext, headers: IncomingHttpHeaders) {
   // Always append CORS headers, reflecting back the headers requested if any
-  ctx.set("Access-Control-Allow-Origin", headers?.origin || "*");
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  ctx.set("Access-Control-Allow-Origin", headers?.origin ?? "*");
   ctx.set("Access-Control-Allow-Methods", "GET,HEAD,PUT,POST,DELETE,PATCH");
   ctx.set(
     "Access-Control-Allow-Headers",
-    headers?.["access-control-request-headers"],
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    headers?.["access-control-request-headers"] ?? "",
   );
   ctx.set(
     "Access-Control-Expose-Headers",
-    headers?.["access-control-request-headers"],
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    headers?.["access-control-request-headers"] ?? "",
   );
   ctx.set("Access-Control-Allow-Credentials", "true");
 }

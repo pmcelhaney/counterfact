@@ -8,28 +8,6 @@ const rules = {
 
   "import/namespace": "off",
 
-  // too slow
-  "import/no-cycle": "off",
-
-  "import/no-deprecated": "off",
-  "import/no-named-as-default": "off",
-  "import/no-named-as-default-member": "off",
-
-  "import/no-unused-modules": "off",
-
-  "import/prefer-default-export": "off",
-
-  "import/default": "off",
-
-  "import/namespace": "off",
-
-  // too slow
-  "import/no-cycle": "off",
-  "import/no-deprecated": "off",
-  "import/no-named-as-default": "off",
-
-  "import/no-named-as-default-member": "off",
-  "import/no-unused-modules": "off",
   "import/prefer-default-export": "off",
 
   "max-len": [

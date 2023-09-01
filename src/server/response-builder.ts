@@ -1,4 +1,4 @@
-import JSONSchemaFaker, { type Schema } from "json-schema-faker";
+import { JSONSchemaFaker, type Schema } from "json-schema-faker";
 
 import type { OpenApiParameters } from "./dispatcher.js";
 
