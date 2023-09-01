@@ -131,14 +131,8 @@ describe("koa middleware", () => {
       "Access-Control-Allow-Methods",
       "GET,HEAD,PUT,POST,DELETE,PATCH",
     );
-    expect(ctx.set).toHaveBeenCalledWith(
-      "Access-Control-Allow-Headers",
-      undefined,
-    );
-    expect(ctx.set).toHaveBeenCalledWith(
-      "Access-Control-Expose-Headers",
-      undefined,
-    );
+    expect(ctx.set).toHaveBeenCalledWith("Access-Control-Allow-Headers", []);
+    expect(ctx.set).toHaveBeenCalledWith("Access-Control-Expose-Headers", []);
   });
 
   it("reflects desired CORS headers if specific headers are requested", async () => {

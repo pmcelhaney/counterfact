@@ -7,20 +7,18 @@ import type { Dispatcher } from "./dispatcher.js";
 
 const HTTP_STATUS_CODE_OK = 200;
 
-function addCors(ctx: Koa.ExtendableContext, headers: IncomingHttpHeaders) {
+function addCors(ctx: Koa.ExtendableContext, headers?: IncomingHttpHeaders) {
   // Always append CORS headers, reflecting back the headers requested if any
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+
   ctx.set("Access-Control-Allow-Origin", headers?.origin ?? "*");
   ctx.set("Access-Control-Allow-Methods", "GET,HEAD,PUT,POST,DELETE,PATCH");
   ctx.set(
     "Access-Control-Allow-Headers",
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    headers?.["access-control-request-headers"] ?? "",
+    headers?.["access-control-request-headers"] ?? [],
   );
   ctx.set(
     "Access-Control-Expose-Headers",
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    headers?.["access-control-request-headers"] ?? "",
+    headers?.["access-control-request-headers"] ?? [],
   );
   ctx.set("Access-Control-Allow-Credentials", "true");
 }
