@@ -142,7 +142,7 @@ describe("a registry", () => {
     });
   });
 
-  it("matches an endpoint where the case does not match", () => {
+  it("matches an endpoint where the case does not match", async () => {
     const registry = new Registry();
 
     registry.add("/{organization}/users/{username}/friends/{page}", {
@@ -156,7 +156,7 @@ describe("a registry", () => {
     });
 
     expect(
-      registry.endpoint("GET", "/Acme/users/alice/Friends/2")({}),
+      await registry.endpoint("GET", "/Acme/users/alice/Friends/2")({}),
     ).toStrictEqual({
       body: "page 2 of alice's friends in Acme",
     });

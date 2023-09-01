@@ -159,16 +159,18 @@ export class Registry {
       if (node.children === undefined) {
         throw new Error("node or node node.children cannot be undefined");
       }
-      if (node.children[segment]) {
-        node = node.children[segment];
-        matchedParts.push(segment);
-      } else {
-        const dynamicSegment = Object.keys(node.children).find(
-          (ds) => ds.startsWith("{") && ds.endsWith("}"),
-        );
+
+      const matchingChild = Object.keys(node.children).find(
+        (candidate) => candidate.toLowerCase() === segment.toLowerCase(),
+      );
+
+      if (matchingChild === undefined) {
+        const dynamicSegment: string | undefined = Object.keys(
+          node.children,
+        ).find((ds) => ds.startsWith("{") && ds.endsWith("}"));
 
         if (dynamicSegment !== undefined) {
-          const variableName = dynamicSegment.slice(1, -1);
+          const variableName: string = dynamicSegment.slice(1, -1);
 
           path[variableName] = segment;
 
@@ -176,6 +178,9 @@ export class Registry {
 
           matchedParts.push(dynamicSegment);
         }
+      } else {
+        node = node.children[matchingChild];
+        matchedParts.push(matchingChild);
       }
     }
 

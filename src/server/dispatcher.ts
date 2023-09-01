@@ -50,6 +50,7 @@ export interface OpenApiDocument {
       [key in Lowercase<HttpMethods>]?: OpenApiOperation;
     };
   };
+  produces?: string[];
 }
 
 export class Dispatcher {
@@ -100,14 +101,22 @@ export class Dispatcher {
     return types;
   }
 
-  private operationForPathAndMethod(
+  public operationForPathAndMethod(
     path: string,
     method: HttpMethods,
   ): OpenApiOperation | undefined {
-    return this.openApiDocument?.paths[path]?.[
-      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-      method.toLowerCase() as Lowercase<HttpMethods>
-    ];
+    const operation: OpenApiOperation | undefined = this.openApiDocument?.paths[
+      path
+    ]?.[method.toLowerCase()] as OpenApiOperation;
+
+    if (this.openApiDocument?.produces) {
+      return {
+        produces: this.openApiDocument.produces,
+        ...operation,
+      };
+    }
+
+    return operation;
   }
 
   private normalizeResponse(

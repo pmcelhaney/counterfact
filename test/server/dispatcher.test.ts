@@ -654,6 +654,7 @@ describe("given an invalid path", () => {
     });
 
     const dispatcher = new Dispatcher(registry, new ContextRegistry(), {
+      paths: {},
       produces: ["text/plain"],
     });
 
