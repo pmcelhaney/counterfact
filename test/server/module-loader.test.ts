@@ -1,26 +1,26 @@
 import { once } from "node:events";
 
+import { ContextRegistry } from "../../src/server/context-registry.js";
 import { ModuleLoader } from "../../src/server/module-loader.js";
 import { Registry } from "../../src/server/registry.js";
-import { ContextRegistry } from "../../src/server/context-registry.js";
 import { withTemporaryFiles } from "../lib/with-temporary-files.js";
 
 describe("a module loader", () => {
   it("finds a file and adds it to the registry", async () => {
     const files: { [fileName: string]: string } = {
-      "hello.mjs": `
-      export function GET() {
-          return {
-              body: "hello"
-          };
-      }
-      `,
       "a/b/c.mjs": `
         export function GET() {
             return {
                 body: "GET from a/b/c"
             }; 
         }
+      `,
+      "hello.mjs": `
+      export function GET() {
+          return {
+              body: "hello"
+          };
+      }
       `,
     };
 
@@ -42,7 +42,7 @@ describe("a module loader", () => {
       {},
       async (
         basePath: string,
-        { add }: { add: (path: string, content: string) => void }
+        { add }: { add: (path: string, content: string) => void },
       ) => {
         const registry: Registry = new Registry();
         const loader: ModuleLoader = new ModuleLoader(basePath, registry);
@@ -54,14 +54,14 @@ describe("a module loader", () => {
 
         add(
           "late/addition.mjs",
-          'export function GET() { return { body: "I\'m here now!" }; }'
+          'export function GET() { return { body: "I\'m here now!" }; }',
         );
         await once(loader, "add");
 
         expect(registry.exists("GET", "/late/addition")).toBe(true);
 
         await loader.stopWatching();
-      }
+      },
     );
   });
 
@@ -73,7 +73,7 @@ describe("a module loader", () => {
       },
       async (
         basePath: string,
-        { remove }: { remove: (path: string) => void }
+        { remove }: { remove: (path: string) => void },
       ) => {
         const registry: Registry = new Registry();
         const loader: ModuleLoader = new ModuleLoader(basePath, registry);
@@ -89,7 +89,7 @@ describe("a module loader", () => {
         expect(registry.exists("GET", "/delete-me")).toBe(false);
 
         await loader.stopWatching();
-      }
+      },
     );
   });
 
@@ -105,7 +105,7 @@ describe("a module loader", () => {
       files,
       async (
         basePath: string,
-        { add }: { add: (path: string, content: string) => void }
+        { add }: { add: (path: string, content: string) => void },
       ) => {
         const registry: Registry = new Registry();
         const loader: ModuleLoader = new ModuleLoader(basePath, registry);
@@ -121,7 +121,7 @@ describe("a module loader", () => {
         expect(registry.exists("GET", "/types")).toBe(false);
 
         await loader.stopWatching();
-      }
+      },
     );
   });
 
@@ -137,7 +137,7 @@ describe("a module loader", () => {
       },
       async (
         basePath: string,
-        { add }: { add: (path: string, content: string) => void }
+        { add }: { add: (path: string, content: string) => void },
       ) => {
         const registry: Registry = new Registry();
         const loader: ModuleLoader = new ModuleLoader(basePath, registry);
@@ -145,20 +145,20 @@ describe("a module loader", () => {
         await loader.watch();
         add(
           "change.mjs",
-          'export function GET(): { body } { return { body: "after change" }; }'
+          'export function GET(): { body } { return { body: "after change" }; }',
         );
         await once(loader, "change");
 
         const response = registry.endpoint(
           "GET",
-          "/change"
-        )({ query: {}, headers: {}, path: {}, matchedPath: "" });
+          "/change",
+        )({ headers: {}, matchedPath: "", path: {}, query: {} });
 
         expect(response.body).toBe("after change");
         expect(registry.exists("GET", "/late/addition")).toBe(true);
 
         await loader.stopWatching();
-      }
+      },
     );
   });
 
@@ -176,7 +176,7 @@ describe("a module loader", () => {
       const loader: ModuleLoader = new ModuleLoader(
         basePath,
         registry,
-        contextRegistry
+        contextRegistry,
       );
 
       await loader.load();

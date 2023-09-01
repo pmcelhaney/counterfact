@@ -6,7 +6,7 @@ export class SchemaTypeCoder extends Coder {
   }
 
   additionalPropertiesType(script) {
-    const { properties, additionalProperties } = this.requirement.data;
+    const { additionalProperties, properties } = this.requirement.data;
 
     if (!additionalProperties.type) {
       return "unknown";
@@ -14,7 +14,7 @@ export class SchemaTypeCoder extends Coder {
 
     if (
       Object.values(properties ?? {}).some(
-        (property) => property.type !== additionalProperties.type
+        (property) => property.type !== additionalProperties.type,
       )
     ) {
       return "unknown";
@@ -36,13 +36,13 @@ export class SchemaTypeCoder extends Coder {
       const optionalFlag = isRequired ? "" : "?";
 
       return `${name}${optionalFlag}: ${new SchemaTypeCoder(property).write(
-        script
+        script,
       )}`;
     });
 
     if (data.additionalProperties) {
       properties.push(
-        `[key: string]: ${this.additionalPropertiesType(script)}`
+        `[key: string]: ${this.additionalPropertiesType(script)}`,
       );
     }
 
@@ -51,7 +51,7 @@ export class SchemaTypeCoder extends Coder {
 
   arraySchema(script) {
     return `Array<${new SchemaTypeCoder(this.requirement.get("items")).write(
-      script
+      script,
     )}>`;
   }
 
@@ -86,8 +86,8 @@ export class SchemaTypeCoder extends Coder {
 
     const types = (allOf ?? anyOf ?? oneOf).map((item, index) =>
       new SchemaTypeCoder(this.requirement.get(matchingKey()).get(index)).write(
-        script
-      )
+        script,
+      ),
     );
 
     return types.join(allOf ? " & " : " | ");
@@ -108,7 +108,7 @@ export class SchemaTypeCoder extends Coder {
       return script.importType(this);
     }
 
-    const { type, allOf, anyOf, oneOf } = this.requirement.data;
+    const { allOf, anyOf, oneOf, type } = this.requirement.data;
 
     if (allOf ?? anyOf ?? oneOf) {
       return this.writeGroup(script, { allOf, anyOf, oneOf });

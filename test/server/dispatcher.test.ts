@@ -3,11 +3,11 @@
 // Note: I cut a few corners here on type checking. Since these are tests, I'm more
 // concerned about the tests passing at runtime than lining up the types perfectly.
 
+import { ContextRegistry } from "../../src/server/context-registry.js";
 import {
   Dispatcher,
   type OpenApiDocument,
 } from "../../src/server/dispatcher.js";
-import { ContextRegistry } from "../../src/server/context-registry.js";
 import { Registry } from "../../src/server/registry.js";
 
 // eslint-disable-next-line max-statements
@@ -25,12 +25,12 @@ describe("a dispatcher", () => {
 
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
     const response = await dispatcher.request({
+      body: "",
+      headers: {},
       method: "GET",
       path: "/hello",
-      headers: {},
-      body: "",
-      req: { path: "/hello" },
       query: {},
+      req: { path: "/hello" },
     });
 
     expect(response.body).toBe("hello");
@@ -47,19 +47,19 @@ describe("a dispatcher", () => {
 
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
     const response = await dispatcher.request({
+      body: "",
+      headers: {},
       method: "GET",
       path: "/hello",
-      headers: {},
-      body: "",
-      req: { path: "/hello" },
       query: {},
+      req: { path: "/hello" },
     });
 
     expect(response).toStrictEqual({
-      status: 200,
-      headers: {},
-      contentType: "text/plain",
       body: "hello",
+      contentType: "text/plain",
+      headers: {},
+      status: 200,
     });
   });
 
@@ -68,12 +68,12 @@ describe("a dispatcher", () => {
 
     const html = dispatcher.selectContent("text/html", [
       {
-        type: "text/plain",
         body: "hello",
+        type: "text/plain",
       },
       {
-        type: "text/html",
         body: "<h1>hello</h1>",
+        type: "text/html",
       },
     ]);
 
@@ -86,25 +86,26 @@ describe("a dispatcher", () => {
     registry.add("/hello", {
       GET() {
         return {
-          status: 200,
-          contentType: "text/plain",
           body: "I am not JSON",
+          contentType: "text/plain",
+          status: 200,
         };
       },
     });
 
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
     const response = await dispatcher.request({
-      method: "GET",
-      path: "/hello",
+      body: "",
 
       headers: {
         accept: "application/json",
       },
 
-      body: "",
-      req: { path: "/hello" },
+      method: "GET",
+
+      path: "/hello",
       query: {},
+      req: { path: "/hello" },
     });
 
     expect(response.status).toBe(406);
@@ -125,12 +126,12 @@ describe("a dispatcher", () => {
     (acceptHeader, types, expected) => {
       const dispatcher = new Dispatcher(new Registry(), new ContextRegistry());
 
-      const content = types.map((type) => ({ type, body: "" }));
+      const content = types.map((type) => ({ body: "", type }));
 
       expect(dispatcher.selectContent(acceptHeader, content)?.type).toBe(
-        expected
+        expected,
       );
-    }
+    },
   );
 
   it("selects the best content item matching the Accepts header", async () => {
@@ -139,43 +140,44 @@ describe("a dispatcher", () => {
     registry.add("/hello", {
       GET() {
         return {
-          status: 200,
+          content: [
+            {
+              body: "Hello, world!",
+              type: "text/plain",
+            },
+            {
+              body: "<h1>Hello, world!</h1>",
+              type: "text/html",
+            },
+          ],
 
           headers: {},
 
-          content: [
-            {
-              type: "text/plain",
-              body: "Hello, world!",
-            },
-            {
-              type: "text/html",
-              body: "<h1>Hello, world!</h1>",
-            },
-          ],
+          status: 200,
         };
       },
     });
 
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
     const html = await dispatcher.request({
-      method: "GET",
-      path: "/hello",
+      body: "",
 
       headers: {
         accept: "text/html",
       },
 
-      body: "",
-      req: { path: "/hello" },
+      method: "GET",
+
+      path: "/hello",
       query: {},
+      req: { path: "/hello" },
     });
 
     expect(html).toStrictEqual({
-      status: 200,
-      headers: {},
-      contentType: "text/html",
       body: "<h1>Hello, world!</h1>",
+      contentType: "text/html",
+      headers: {},
+      status: 200,
     });
   });
 
@@ -192,17 +194,18 @@ describe("a dispatcher", () => {
 
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
     const response = await dispatcher.request({
-      method: "POST",
-      path: "/a",
-
       body: {
         name: "Catherine",
         place: "Aragon",
       },
 
-      req: { path: "/a" },
-      query: {},
       headers: {},
+
+      method: "POST",
+
+      path: "/a",
+      query: {},
+      req: { path: "/a" },
     });
 
     expect(response.body).toBe("Hello Catherine of Aragon!");
@@ -228,13 +231,13 @@ describe("a dispatcher", () => {
     };
 
     const response = await dispatcher.request({
+      body: "",
+      headers: authHeader,
+
       method: "GET",
       path: "/a",
-
-      headers: authHeader,
-      body: "",
-      req: { path: "/a" },
       query: {},
+      req: { path: "/a" },
     });
 
     if (!("headers" in response)) {
@@ -258,16 +261,18 @@ describe("a dispatcher", () => {
 
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
     const response = await dispatcher.request({
+      body: "",
+      headers: {},
+
       method: "GET",
+
       path: "/a",
 
       query: {
         zip: "90210",
       },
 
-      body: "",
       req: { path: "/a" },
-      headers: {},
     });
 
     expect(response.body).toBe("Searching for stores near 90210!");
@@ -284,31 +289,33 @@ describe("a dispatcher", () => {
 
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
     const htmlResponse = await dispatcher.request({
-      method: "GET",
-      path: "/a",
+      body: "",
 
       headers: {
         Accept: "text/html",
       },
 
-      body: "",
-      req: { path: "/a" },
+      method: "GET",
+
+      path: "/a",
       query: {},
+      req: { path: "/a" },
     });
 
     expect(htmlResponse.body).toBe(true);
 
     const textResponse = await dispatcher.request({
-      method: "GET",
-      path: "/a",
+      body: "",
 
       headers: {
         Accept: "text/plain",
       },
 
-      body: "",
-      req: { path: "/a" },
+      method: "GET",
+
+      path: "/a",
       query: {},
+      req: { path: "/a" },
     });
 
     expect(textResponse.body).toBe(false);
@@ -326,16 +333,17 @@ describe("a dispatcher", () => {
 
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
     const htmlResponse = await dispatcher.request({
-      method: "GET",
-      path: "/a",
+      body: "",
 
       headers: {
         accept: "text/html",
       },
 
-      body: "",
-      req: { path: "/a" },
+      method: "GET",
+
+      path: "/a",
       query: {},
+      req: { path: "/a" },
     });
 
     expect(htmlResponse.body).toBe("<h1>hello</h1>");
@@ -360,8 +368,8 @@ describe("a dispatcher", () => {
                 content: {
                   "text/plain": {
                     schema: {
-                      type: "string",
                       examples: ["hello"],
+                      type: "string",
                     },
                   },
                 },
@@ -375,19 +383,20 @@ describe("a dispatcher", () => {
     const dispatcher = new Dispatcher(
       registry,
       new ContextRegistry(),
-      openApiDocument
+      openApiDocument,
     );
     const htmlResponse = await dispatcher.request({
-      method: "GET",
-      path: "/a",
+      body: "",
 
       headers: {
         accept: "text/plain",
       },
 
-      body: "",
-      req: { path: "/a" },
+      method: "GET",
+
+      path: "/a",
       query: {},
+      req: { path: "/a" },
     });
 
     expect(htmlResponse.body).toBe("hello");
@@ -399,20 +408,20 @@ describe("a dispatcher", () => {
     registry.add("/stuff", {
       PUT() {
         return {
-          status: 201,
           body: "ok",
+          status: 201,
         };
       },
     });
 
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
     const response = await dispatcher.request({
+      body: "",
+      headers: {},
       method: "PUT",
       path: "/stuff",
-      body: "",
-      req: { path: "/stuff" },
       query: {},
-      headers: {},
+      req: { path: "/stuff" },
     });
 
     expect(response.status).toBe(201);
@@ -444,12 +453,12 @@ describe("a dispatcher", () => {
     const dispatcher = new Dispatcher(registry, contextRegistry);
 
     const result = await dispatcher.request({
+      body: "",
+      headers: {},
       method: "GET",
       path: "/increment/1",
-      body: "",
-      req: { path: "/increment/1" },
       query: {},
-      headers: {},
+      req: { path: "/increment/1" },
     });
 
     expect(result.body).toBe("incremented");
@@ -457,12 +466,12 @@ describe("a dispatcher", () => {
     expect(rootContext.value).toBe(1);
 
     await dispatcher.request({
+      body: "",
+      headers: {},
       method: "GET",
       path: "/increment/2",
-      body: "",
-      req: { path: "/increment/2" },
       query: {},
-      headers: {},
+      req: { path: "/increment/2" },
     });
 
     expect(rootContext.value).toBe(3);
@@ -483,12 +492,12 @@ describe("a dispatcher", () => {
     const dispatcher = new Dispatcher(registry, contextRegistry);
 
     const result = await dispatcher.request({
+      body: "",
+      headers: {},
       method: "GET",
       path: "/echo",
-      body: "",
-      req: { path: "/echo" },
       query: {},
-      headers: {},
+      req: { path: "/echo" },
     });
 
     expect(result.body).toBe("test context");
@@ -498,7 +507,7 @@ describe("a dispatcher", () => {
     const registry = new Registry();
 
     registry.add("/a/{integerInPath}/{stringInPath}", {
-      GET({ response, path, query, headers }) {
+      GET({ headers, path, query, response }) {
         if (path === undefined) {
           throw new Error("path is undefined");
         }
@@ -506,11 +515,11 @@ describe("a dispatcher", () => {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
         return response[200].text({
           integerInPath: path.integerInPath,
-          stringInPath: path.stringInPath,
-          numberInQuery: query.numberInQuery,
-          stringInQuery: query.stringInQuery,
           numberInHeader: headers.numberInHeader,
+          numberInQuery: query.numberInQuery,
           stringInHeader: headers.stringInHeader,
+          stringInPath: path.stringInPath,
+          stringInQuery: query.stringInQuery,
         });
       },
     });
@@ -521,29 +530,29 @@ describe("a dispatcher", () => {
           get: {
             parameters: [
               {
-                name: "integerInPath",
                 in: "path",
+                name: "integerInPath",
                 schema: { type: "integer" },
               },
-              { name: "stringInPath", in: "path", schema: { type: "string" } },
+              { in: "path", name: "stringInPath", schema: { type: "string" } },
               {
-                name: "numberInQuery",
                 in: "query",
+                name: "numberInQuery",
                 schema: { type: "number" },
               },
               {
-                name: "stringInQuery",
                 in: "query",
+                name: "stringInQuery",
                 schema: { type: "string" },
               },
               {
-                name: "numberInHeader",
                 in: "header",
+                name: "numberInHeader",
                 schema: { type: "number" },
               },
               {
-                name: "stringInHeader",
                 in: "header",
+                name: "stringInHeader",
                 schema: { type: "string" },
               },
             ],
@@ -568,10 +577,18 @@ describe("a dispatcher", () => {
     const dispatcher = new Dispatcher(
       registry,
       new ContextRegistry(),
-      openApiDocument
+      openApiDocument,
     );
     const htmlResponse = await dispatcher.request({
+      body: "",
+
+      headers: {
+        numberInHeader: "5",
+        stringInHeader: "6",
+      },
+
       method: "GET",
+
       path: "/a/1/2",
 
       query: {
@@ -579,22 +596,16 @@ describe("a dispatcher", () => {
         stringInQuery: "4",
       },
 
-      headers: {
-        numberInHeader: "5",
-        stringInHeader: "6",
-      },
-
-      body: "",
       req: { path: "/a/1/2" },
     });
 
     expect(htmlResponse.body).toStrictEqual({
       integerInPath: 1,
-      stringInPath: "2",
-      numberInQuery: 3,
-      stringInQuery: "4",
       numberInHeader: 5,
+      numberInQuery: 3,
       stringInHeader: "6",
+      stringInPath: "2",
+      stringInQuery: "4",
     });
   });
 });
@@ -606,8 +617,8 @@ describe("given an invalid path", () => {
     registry.add("/your/{side}/{bodyPart}/in/and/your/left/foot/out", {
       PUT() {
         return {
-          status: 201,
           body: "ok",
+          status: 201,
         };
       },
     });
@@ -615,18 +626,18 @@ describe("given an invalid path", () => {
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
 
     const response = await dispatcher.request({
+      body: "",
+      headers: {},
       method: "PUT",
       path: "/your/left/foot/in/and/your/right/foot/out",
-      body: "",
-      req: { path: "/your/left/foot/in/and/your/right/foot/out" },
       query: {},
-      headers: {},
+      req: { path: "/your/left/foot/in/and/your/right/foot/out" },
     });
 
     expect(response.status).toBe(404);
 
     expect(response.body).toBe(
-      "Could not find a PUT method matching /your/left/foot/in/and/your/right/foot/out\n"
+      "Could not find a PUT method matching /your/left/foot/in/and/your/right/foot/out\n",
     );
   });
 });

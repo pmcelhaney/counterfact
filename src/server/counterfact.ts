@@ -1,15 +1,14 @@
 import nodePath from "node:path";
 
-import $RefParser from "json-schema-ref-parser";
 import yaml from "js-yaml";
+import $RefParser from "json-schema-ref-parser";
 
 import { readFile } from "../util/read-file.js";
-
-import { Registry } from "./registry.js";
-import { type OpenApiDocument, Dispatcher } from "./dispatcher.js";
+import { ContextRegistry } from "./context-registry.js";
+import { Dispatcher, type OpenApiDocument } from "./dispatcher.js";
 import { koaMiddleware } from "./koa-middleware.js";
 import { ModuleLoader } from "./module-loader.js";
-import { ContextRegistry } from "./context-registry.js";
+import { Registry } from "./registry.js";
 
 async function loadOpenApiDocument(source: string) {
   try {
@@ -27,7 +26,7 @@ async function loadOpenApiDocument(source: string) {
 export async function counterfact(
   basePath: string,
   openApiPath = nodePath.join(basePath, "../openapi.yaml"),
-  options = {}
+  options = {},
 ) {
   const openApiDocument = await loadOpenApiDocument(openApiPath);
 
@@ -41,7 +40,7 @@ export async function counterfact(
   const moduleLoader = new ModuleLoader(
     nodePath.join(modulesPath, "paths"),
     registry,
-    contextRegistry
+    contextRegistry,
   );
 
   await moduleLoader.load();
@@ -49,10 +48,10 @@ export async function counterfact(
   await moduleLoader.watch();
 
   return {
+    contextRegistry,
     // eslint-disable-next-line total-functions/no-unsafe-readonly-mutable-assignment
     koaMiddleware: koaMiddleware(dispatcher, options),
-    registry,
     moduleLoader,
-    contextRegistry,
+    registry,
   };
 }

@@ -1,11 +1,11 @@
+import { OperationCoder } from "./operation-coder.js";
 import { Repository } from "./repository.js";
 import { Specification } from "./specification.js";
-import { OperationCoder } from "./operation-coder.js";
 
 export async function generate(
   source,
   destination,
-  repository = new Repository()
+  repository = new Repository(),
 ) {
   const specification = new Specification(source);
 

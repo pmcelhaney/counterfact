@@ -3,7 +3,6 @@ import nodePath from "node:path";
 import yaml from "js-yaml";
 
 import { readFile } from "../util/read-file.ts";
-
 import { Requirement } from "./requirement.js";
 
 export class Specification {

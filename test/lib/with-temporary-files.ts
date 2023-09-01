@@ -1,5 +1,5 @@
-import fs from "node:fs/promises";
 import { constants as fsConstants } from "node:fs";
+import fs from "node:fs/promises";
 import os from "node:os";
 import nodePath from "node:path";
 
@@ -8,8 +8,8 @@ const DEBUG = false;
 interface Operations {
   add: (filePath: string, content: string) => Promise<void>;
   addDirectory: (filePath: string) => Promise<void>;
-  remove: (filePath: string) => Promise<void>;
   path: (filePath: string) => string;
+  remove: (filePath: string) => Promise<void>;
 }
 
 async function ensureDirectoryExists(filePath: string) {
@@ -58,7 +58,7 @@ export async function withTemporaryFiles(
     : os.tmpdir();
 
   const temporaryDirectory = `${await fs.mkdtemp(
-    nodePath.join(baseDirectory, "wtf-")
+    nodePath.join(baseDirectory, "wtf-"),
   )}/`;
 
   try {
@@ -76,12 +76,13 @@ export async function withTemporaryFiles(
       // eslint-disable-next-line no-await-in-loop, n/callback-return
       await callback(temporaryDirectory, {
         add: createAddFunction(temporaryDirectory),
-        remove: createRemoveFunction(temporaryDirectory),
         addDirectory: createAddDirectoryFunction(temporaryDirectory),
 
         path(relativePath: string) {
           return nodePath.join(temporaryDirectory, relativePath);
         },
+
+        remove: createRemoveFunction(temporaryDirectory),
       });
     }
   } finally {

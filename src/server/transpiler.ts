@@ -1,12 +1,12 @@
 // Stryker disable all
 
+import { once } from "node:events";
+import { constants as fsConstants } from "node:fs";
 import fs from "node:fs/promises";
 import nodePath from "node:path";
-import { constants as fsConstants } from "node:fs";
-import { once } from "node:events";
 
-import ts from "typescript";
 import chokidar from "chokidar";
+import ts from "typescript";
 
 async function ensureDirectoryExists(filePath: string): Promise<void> {
   const directory = nodePath.dirname(filePath);
@@ -46,7 +46,7 @@ export class Transpiler extends EventTarget {
 
       if (["add", "change"].includes(eventName)) {
         transpiles.push(
-          this.transpileFile(eventName, sourcePath, destinationPath)
+          this.transpileFile(eventName, sourcePath, destinationPath),
         );
       }
 
@@ -56,7 +56,6 @@ export class Transpiler extends EventTarget {
         } catch (error) {
           // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
           if ((error as { code: string }).code !== "ENOENT") {
-            // eslint-disable-next-line @typescript-eslint/no-throw-literal
             throw error;
           }
         }
@@ -76,7 +75,7 @@ export class Transpiler extends EventTarget {
   private async transpileFile(
     eventName: string,
     sourcePath: string,
-    destinationPath: string
+    destinationPath: string,
   ): Promise<void> {
     await ensureDirectoryExists(destinationPath);
 
@@ -91,10 +90,10 @@ export class Transpiler extends EventTarget {
         nodePath.join(
           sourcePath
             .replace(this.sourcePath, this.destinationPath)
-            .replace(".ts", ".mjs")
+            .replace(".ts", ".mjs"),
         ),
 
-        result
+        result,
       );
     } catch {
       throw new Error("could not transpile");

@@ -1,8 +1,8 @@
 // eslint-disable-next-line @typescript-eslint/no-shadow
 import { Headers } from "node-fetch";
 
-import { Dispatcher } from "../../src/server/dispatcher.js";
 import { ContextRegistry } from "../../src/server/context-registry.js";
+import { Dispatcher } from "../../src/server/dispatcher.js";
 import { Registry } from "../../src/server/registry.js";
 
 describe("a dispatcher passes a proxy function to the operation", () => {
@@ -21,8 +21,8 @@ describe("a dispatcher passes a proxy function to the operation", () => {
     dispatcher.fetch = async (url: string) =>
       /* @ts-expect-error not mocking all properties of fetch response */
       await Promise.resolve({
-        status: 200,
         headers: new Headers([["content-type", "application/json"]]),
+        status: 200,
 
         async text() {
           return await Promise.resolve(`body from ${url}`);

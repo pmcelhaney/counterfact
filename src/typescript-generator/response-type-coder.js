@@ -1,8 +1,8 @@
 import nodePath from "node:path";
 
 import { Coder } from "./coder.js";
-import { SchemaTypeCoder } from "./schema-type-coder.js";
 import { printObject, printObjectWithoutQuotes } from "./printers.js";
+import { SchemaTypeCoder } from "./schema-type-coder.js";
 
 export class ResponseTypeCoder extends Coder {
   constructor(requirement, openApi2MediaTypes = []) {
@@ -15,7 +15,7 @@ export class ResponseTypeCoder extends Coder {
     this.needsHttpStatusCodeImport = true;
 
     const definedStatusCodes = listedStatusCodes.filter(
-      (key) => key !== "default"
+      (key) => key !== "default",
     );
 
     if (definedStatusCodes.length === 0) {
@@ -23,7 +23,7 @@ export class ResponseTypeCoder extends Coder {
     }
 
     return `[statusCode in Exclude<HttpStatusCode, ${definedStatusCodes.join(
-      " | "
+      " | ",
     )}>]`;
   }
 
@@ -67,7 +67,7 @@ export class ResponseTypeCoder extends Coder {
       .map((value, name) => [
         name,
         `{ schema: ${new SchemaTypeCoder(value.get("schema") ?? value).write(
-          script
+          script,
         )}}`,
       ]);
   }
@@ -88,7 +88,7 @@ export class ResponseTypeCoder extends Coder {
           headers: ${this.printHeaders(script, response)};
           content: ${this.printContentObjectType(script, response)};
         }`,
-      ])
+      ]),
     );
   }
 
@@ -101,13 +101,13 @@ export class ResponseTypeCoder extends Coder {
 
     script.importExternalType(
       "ResponseBuilderFactory",
-      nodePath.join(basePath, "response-builder-factory.js")
+      nodePath.join(basePath, "response-builder-factory.js"),
     );
 
     if (this.needsHttpStatusCodeImport) {
       script.importExternalType(
         "HttpStatusCode",
-        nodePath.join(basePath, "response-builder-factory.js")
+        nodePath.join(basePath, "response-builder-factory.js"),
       );
     }
 

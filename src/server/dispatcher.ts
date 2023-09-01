@@ -1,27 +1,22 @@
+// eslint-disable-next-line import/newline-after-import
+import Accept from "@hapi/accept";
 // eslint-disable-next-line @typescript-eslint/no-shadow
 import fetch, { Headers } from "node-fetch";
-import Accept from "@hapi/accept";
 
-import {
-  type OpenApiOperation,
-  createResponseBuilder,
-} from "./response-builder.js";
-import { Tools } from "./tools.js";
+import type { ContextRegistry } from "./context-registry.js";
 import type {
   CounterfactResponseObject,
   HttpMethods,
   Registry,
 } from "./registry.js";
-import type { ContextRegistry } from "./context-registry.js";
+import {
+  createResponseBuilder,
+  type OpenApiOperation,
+} from "./response-builder.js";
+import { Tools } from "./tools.js";
 
 interface ParameterTypes {
-  path: {
-    [key: string]: string;
-  };
-  query: {
-    [key: string]: string;
-  };
-  header: {
+  body: {
     [key: string]: string;
   };
   cookie: {
@@ -30,7 +25,13 @@ interface ParameterTypes {
   formData: {
     [key: string]: string;
   };
-  body: {
+  header: {
+    [key: string]: string;
+  };
+  path: {
+    [key: string]: string;
+  };
+  query: {
     [key: string]: string;
   };
 }
@@ -63,7 +64,7 @@ export class Dispatcher {
   public constructor(
     registry: Registry,
     contextRegistry: ContextRegistry,
-    openApiDocument?: OpenApiDocument
+    openApiDocument?: OpenApiDocument,
   ) {
     this.registry = registry;
     this.contextRegistry = contextRegistry;
@@ -72,15 +73,15 @@ export class Dispatcher {
   }
 
   private parameterTypes(
-    parameters: OpenApiParameters[] | undefined
+    parameters: OpenApiParameters[] | undefined,
   ): ParameterTypes {
     const types: ParameterTypes = {
-      path: {},
-      query: {},
-      header: {},
+      body: {},
       cookie: {},
       formData: {},
-      body: {},
+      header: {},
+      path: {},
+      query: {},
     };
 
     if (!parameters) {
@@ -101,7 +102,7 @@ export class Dispatcher {
 
   private operationForPathAndMethod(
     path: string,
-    method: HttpMethods
+    method: HttpMethods,
   ): OpenApiOperation | undefined {
     return this.openApiDocument?.paths[path]?.[
       // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
@@ -111,14 +112,14 @@ export class Dispatcher {
 
   private normalizeResponse(
     response: CounterfactResponseObject,
-    acceptHeader: string
+    acceptHeader: string,
   ) {
     if (typeof response === "string") {
       return {
-        status: 200,
-        headers: {},
-        contentType: "text/plain",
         body: response,
+        contentType: "text/plain",
+        headers: {},
+        status: 200,
       };
     }
 
@@ -127,16 +128,16 @@ export class Dispatcher {
 
       if (content === undefined) {
         return {
-          status: 406,
           body: `Not Acceptable: could not produce a response matching any of the following content types: ${acceptHeader}`,
           contentType: "text/plain",
+          status: 406,
         };
       }
 
       const normalizedResponse = {
         ...response,
-        contentType: content.type,
         body: content.body,
+        contentType: content.type,
       };
 
       delete normalizedResponse.content;
@@ -152,13 +153,13 @@ export class Dispatcher {
 
   public selectContent(
     acceptHeader: string,
-    content: { type: string; body: unknown }[]
+    content: { body: unknown; type: string }[],
   ) {
     const preferredMediaTypes = Accept.mediaTypes(acceptHeader);
 
     for (const mediaType of preferredMediaTypes) {
       const contentItem = content.find((item) =>
-        this.isMediaType(item.type, mediaType)
+        this.isMediaType(item.type, mediaType),
       );
 
       if (contentItem) {
@@ -191,19 +192,19 @@ export class Dispatcher {
 
   // eslint-disable-next-line sonarjs/cognitive-complexity
   public async request({
+    body,
+    headers = {},
     method,
     path,
-    headers = {},
-    body,
     query,
     req,
   }: {
-    method: HttpMethods;
-    path: string;
+    body: unknown;
     headers: {
       [key: string]: string;
     };
-    body: unknown;
+    method: HttpMethods;
+    path: string;
     query: {
       [key: string]: string;
     };
@@ -217,56 +218,58 @@ export class Dispatcher {
     const response = await this.registry.endpoint(
       method,
       path,
-      this.parameterTypes(operation?.parameters)
+      this.parameterTypes(operation?.parameters),
     )({
-      tools: new Tools({ headers }),
       body,
-      query,
-      headers,
       context: this.contextRegistry.find(path),
-
-      // @ts-expect-error - Might be pushing the limits of what TypeScript can do here
-      response: createResponseBuilder(operation ?? { responses: {} }),
+      headers,
 
       proxy: async (url: string) => {
         if (body !== undefined && headers.contentType !== "application/json") {
           throw new Error(
             `$.proxy() is currently limited to application/json requests. You tried to proxy to ${url} with a Content-Type of ${
               headers.contentType ?? "[unknown]"
-            }. Please open an issue at https://github.com/pmcelhaney/counterfact/issues and prod me to fix this limitation.`
+            }. Please open an issue at https://github.com/pmcelhaney/counterfact/issues and prod me to fix this limitation.`,
           );
         }
 
         const fetchResponse = await this.fetch(`${url}${req.path ?? ""}`, {
-          method,
-          headers: new Headers(headers),
           body: body === undefined ? undefined : JSON.stringify(body),
+          headers: new Headers(headers),
+          method,
         });
 
         const responseHeaders = Object.fromEntries(
-          fetchResponse.headers.entries()
+          fetchResponse.headers.entries(),
         );
 
         return {
-          status: fetchResponse.status,
+          body: await fetchResponse.text(),
           contentType: responseHeaders["content-type"] ?? "unknown/unknown",
           headers: responseHeaders,
-          body: await fetchResponse.text(),
+          status: fetchResponse.status,
         };
       },
+
+      query,
+
+      // @ts-expect-error - Might be pushing the limits of what TypeScript can do here
+      response: createResponseBuilder(operation ?? { responses: {} }),
+
+      tools: new Tools({ headers }),
     });
 
     const normalizedResponse = this.normalizeResponse(
       response,
-      headers.accept ?? "*/*"
+      headers.accept ?? "*/*",
     );
 
     if (
       !Accept.mediaTypes(headers.accept ?? "*/*").some((type) =>
-        this.isMediaType(normalizedResponse.contentType, type)
+        this.isMediaType(normalizedResponse.contentType, type),
       )
     ) {
-      return { status: 406, body: Accept.mediaTypes(headers.accept ?? "*/*") };
+      return { body: Accept.mediaTypes(headers.accept ?? "*/*"), status: 406 };
     }
 
     return normalizedResponse;

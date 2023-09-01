@@ -17,7 +17,7 @@ export class OperationCoder extends Coder {
     const responses = this.requirement.get("responses");
 
     const [firstStatusCode] = responses.map(
-      (response, statusCode) => statusCode
+      (response, statusCode) => statusCode,
     );
     const [firstResponse] = responses.map((response) => response.data);
 

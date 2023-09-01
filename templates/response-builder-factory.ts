@@ -20,39 +20,39 @@ type IfHasKey<SomeObject, Key, Yes, No> = Key extends keyof SomeObject
 
 type MaybeShortcut<
   ContentType extends MediaType,
-  Response extends OpenApiResponse
+  Response extends OpenApiResponse,
 > = IfHasKey<
   Response["content"],
   ContentType,
   (body: Response["content"][ContentType]["schema"]) => ResponseBuilder<{
-    headers: Response["headers"];
     content: Omit<Response["content"], ContentType>;
+    headers: Response["headers"];
   }>,
   never
 >;
 
 type MatchFunction<Response extends OpenApiResponse> = <
-  ContentType extends MediaType & keyof Response["content"]
+  ContentType extends MediaType & keyof Response["content"],
 >(
   contentType: ContentType,
-  body: Response["content"][ContentType]["schema"]
+  body: Response["content"][ContentType]["schema"],
 ) => ResponseBuilder<{
-  headers: Response["headers"];
   content: Omit<Response["content"], ContentType>;
+  headers: Response["headers"];
 }>;
 
 type HeaderFunction<Response extends OpenApiResponse> = <
-  Header extends string & keyof Response["headers"]
+  Header extends string & keyof Response["headers"],
 >(
   header: Header,
-  value: Response["headers"][Header]["schema"]
+  value: Response["headers"][Header]["schema"],
 ) => ResponseBuilder<{
   content: Response["content"];
   headers: Omit<Response["headers"], Header>;
 }>;
 
 export type ResponseBuilder<
-  Response extends OpenApiResponse = OpenApiResponse
+  Response extends OpenApiResponse = OpenApiResponse,
 > = [keyof Response["content"]] extends [never]
   ? // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
     void
@@ -60,17 +60,17 @@ export type ResponseBuilder<
       header: [keyof Response["headers"]] extends [never]
         ? never
         : HeaderFunction<Response>;
+      html: MaybeShortcut<"text/html", Response>;
+      json: MaybeShortcut<"application/json", Response>;
       match: [keyof Response["content"]] extends [never]
         ? never
         : MatchFunction<Response>;
-      text: MaybeShortcut<"text/plain", Response>;
-      json: MaybeShortcut<"application/json", Response>;
-      html: MaybeShortcut<"text/html", Response>;
       random: [keyof Response["content"]] extends [never] ? never : () => void;
+      text: MaybeShortcut<"text/plain", Response>;
     }>;
 
 export type ResponseBuilderFactory<
-  Responses extends OpenApiResponses = OpenApiResponses
+  Responses extends OpenApiResponses = OpenApiResponses,
 > = {
   [StatusCode in keyof Responses]: ResponseBuilder<Responses[StatusCode]>;
 } & { [key: string]: ResponseBuilder<Responses["default"]> };

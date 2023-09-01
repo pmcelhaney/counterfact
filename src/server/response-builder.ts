@@ -3,17 +3,17 @@ import JSONSchemaFaker, { type Schema } from "json-schema-faker";
 import type { OpenApiParameters } from "./dispatcher.js";
 
 interface ResponseBuilder {
-  status?: number;
   [status: number | `${number} ${string}`]: ResponseBuilder;
+  content?: { body: unknown; type: string }[];
+  header: (name: string, value: string) => ResponseBuilder;
   headers: { [name: string]: string };
-  match: (contentType: string, body: unknown) => ResponseBuilder;
-  content?: { type: string; body: unknown }[];
   html: (body: unknown) => ResponseBuilder;
   json: (body: unknown) => ResponseBuilder;
-  text: (body: unknown) => ResponseBuilder;
+  match: (contentType: string, body: unknown) => ResponseBuilder;
   random: () => ResponseBuilder;
   randomLegacy: () => ResponseBuilder;
-  header: (name: string, value: string) => ResponseBuilder;
+  status?: number;
+  text: (body: unknown) => ResponseBuilder;
 }
 
 interface OpenApiHeader {
@@ -36,28 +36,29 @@ function oneOf(items: unknown[] | { [key: string]: unknown }): unknown {
 
 function unknownStatusCodeResponse(statusCode: number | undefined) {
   return {
-    status: 500,
-
     content: [
       {
-        type: "text/plain",
-
         body: `The Open API document does not specify a response for status code ${
           statusCode ?? '""'
         }`,
+
+        type: "text/plain",
       },
     ],
+
+    status: 500,
   };
 }
 
 export type MediaType = `${string}/${string}`;
 
 export interface OpenApiResponse {
-  headers: { [key: string]: OpenApiHeader };
   content: { [key: MediaType]: OpenApiContent };
+  headers: { [key: string]: OpenApiHeader };
 }
 
 export interface OpenApiOperation {
+  parameters?: OpenApiParameters[];
   produces?: string[];
   responses: {
     [status: string]: {
@@ -71,22 +72,19 @@ export interface OpenApiOperation {
       schema?: Schema;
     };
   };
-  parameters?: OpenApiParameters[];
 }
 
 export function createResponseBuilder(
-  operation: OpenApiOperation
+  operation: OpenApiOperation,
 ): ResponseBuilder {
   // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
   return new Proxy({} as ResponseBuilder, {
     // eslint-disable-next-line sonarjs/cognitive-complexity
     get: (target, statusCode: string) => ({
-      status: Number.parseInt(statusCode, 10),
-
       header(
         this: ResponseBuilder,
         name: string,
-        value: string
+        value: string,
       ): ResponseBuilder {
         return {
           ...this,
@@ -98,10 +96,18 @@ export function createResponseBuilder(
         };
       },
 
+      html(this: ResponseBuilder, body: unknown) {
+        return this.match("text/html", body);
+      },
+
+      json(this: ResponseBuilder, body: unknown) {
+        return this.match("application/json", body);
+      },
+
       match(
         this: ResponseBuilder,
         contentType: string,
-        body: unknown
+        body: unknown,
       ): ResponseBuilder {
         return {
           ...this,
@@ -116,18 +122,6 @@ export function createResponseBuilder(
         };
       },
 
-      text(this: ResponseBuilder, body: unknown) {
-        return this.match("text/plain", body);
-      },
-
-      html(this: ResponseBuilder, body: unknown) {
-        return this.match("text/html", body);
-      },
-
-      json(this: ResponseBuilder, body: unknown) {
-        return this.match("application/json", body);
-      },
-
       random(this: ResponseBuilder) {
         if (operation.produces) {
           return this.randomLegacy();
@@ -137,7 +131,7 @@ export function createResponseBuilder(
           operation.responses[this.status ?? "default"] ??
           operation.responses.default;
 
-        if (response === undefined || response.content === undefined) {
+        if (response?.content === undefined) {
           return unknownStatusCodeResponse(this.status);
         }
 
@@ -147,14 +141,14 @@ export function createResponseBuilder(
           ...this,
 
           content: Object.keys(content).map((type) => ({
-            type,
-
             body: content[type]?.examples
               ? oneOf(content[type]?.examples ?? [])
               : JSONSchemaFaker.generate(
                   // eslint-disable-next-line total-functions/no-unsafe-readonly-mutable-assignment
-                  content[type]?.schema ?? { type: "object" }
+                  content[type]?.schema ?? { type: "object" },
                 ),
+
+            type,
           })),
         };
       },
@@ -176,10 +170,16 @@ export function createResponseBuilder(
           ...this,
 
           content: operation.produces?.map((type) => ({
-            type,
             body,
+            type,
           })),
         };
+      },
+
+      status: Number.parseInt(statusCode, 10),
+
+      text(this: ResponseBuilder, body: unknown) {
+        return this.match("text/plain", body);
       },
     }),
   });

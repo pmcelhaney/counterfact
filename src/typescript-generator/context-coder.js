@@ -42,7 +42,7 @@ class Context {
     }
 
     const parentPath = nodePath.normalize(
-      nodePath.join(script.path, "../../$.context.ts")
+      nodePath.join(script.path, "../../$.context.ts"),
     );
 
     script.repository.get(parentPath).exportDefault(this);
@@ -54,7 +54,7 @@ class Context {
     return nodePath.join(
       "paths",
       nodePath.dirname(this.pathString()),
-      "$.context.ts"
+      "$.context.ts",
     );
   }
 }

@@ -1,4 +1,4 @@
-import { Registry, type Module } from "../../src/server/registry.js";
+import { type Module, Registry } from "../../src/server/registry.js";
 
 function makeModule(name: string): Module {
   return {
@@ -9,14 +9,14 @@ function makeModule(name: string): Module {
 }
 
 async function identifyModule(
-  node: { module?: Module } | undefined
+  node: { module?: Module } | undefined,
 ): Promise<unknown> {
   // eslint-disable-next-line new-cap
   return await node?.module?.GET?.({
-    query: {},
     headers: {},
-    path: {},
     matchedPath: "",
+    path: {},
+    query: {},
   });
 }
 
@@ -28,7 +28,7 @@ describe("a registry", () => {
       async GET() {
         await Promise.resolve("noop");
 
-        return { status: 200, headers: {}, body: "hello" };
+        return { body: "hello", headers: {}, status: 200 };
       },
     });
 
@@ -70,13 +70,13 @@ describe("a registry", () => {
     });
 
     const props = {
+      context: {},
+
+      headers: {},
+      matchedPath: "",
       path: {},
 
       query: {},
-      headers: {},
-      matchedPath: "",
-
-      context: {},
     };
     const getA = await registry.endpoint("GET", "/a")(props);
     const getB = await registry.endpoint("GET", "/b")(props);
@@ -97,19 +97,19 @@ describe("a registry", () => {
     registry.add("/nc/charlotte", makeModule("Charlotte"));
 
     expect(await identifyModule(registry.moduleTree.children?.nc)).toBe(
-      "North Carolina"
+      "North Carolina",
     );
     expect(
       await identifyModule(
-        registry.moduleTree.children?.nc?.children?.charlotte
-      )
+        registry.moduleTree.children?.nc?.children?.charlotte,
+      ),
     ).toBe("Charlotte");
     expect(
       await identifyModule(
         registry.moduleTree.children?.nc?.children?.charlotte?.children?.[
           "south-park"
-        ]
-      )
+        ],
+      ),
     ).toBe("South Park");
   });
 
@@ -119,12 +119,13 @@ describe("a registry", () => {
     registry.add("/{organization}/users/{username}/friends/{page}", {
       GET({ path }) {
         return {
-          headers: { "content-type": "text/plain" },
-          status: 200,
-
           body: `page ${String(path.page)} of ${String(
-            path.username
+            path.username,
           )}'s friends in ${String(path.organization)}`,
+
+          headers: { "content-type": "text/plain" },
+
+          status: 200,
         };
       },
     });
@@ -132,12 +133,12 @@ describe("a registry", () => {
     expect(
       await registry.endpoint(
         "GET",
-        "/acme/users/alice/friends/2"
-      )({ path: {}, query: {}, headers: {}, matchedPath: "" })
+        "/acme/users/alice/friends/2",
+      )({ headers: {}, matchedPath: "", path: {}, query: {} }),
     ).toStrictEqual({
+      body: "page 2 of alice's friends in acme",
       headers: { "content-type": "text/plain" },
       status: 200,
-      body: "page 2 of alice's friends in acme",
     });
   });
 

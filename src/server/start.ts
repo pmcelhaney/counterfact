@@ -2,14 +2,13 @@
 import nodePath from "node:path";
 import { pathToFileURL } from "node:url";
 
+import Handlebars from "handlebars";
 import yaml from "js-yaml";
 import Koa from "koa";
 import bodyParser from "koa-bodyparser";
 import { koaSwagger } from "koa2-swagger-ui";
-import Handlebars from "handlebars";
 
 import { readFile } from "../util/read-file.js";
-
 import { counterfact } from "./counterfact.js";
 
 // eslint-disable-next-line no-underscore-dangle, total-functions/no-partial-url-constructor
@@ -18,7 +17,7 @@ const __dirname = nodePath.dirname(new URL(import.meta.url).pathname);
 const DEFAULT_PORT = 3100;
 
 Handlebars.registerHelper("escape_route", (route: string) =>
-  route.replaceAll(/[^\w/]/gu, "-")
+  route.replaceAll(/[^\w/]/gu, "-"),
 );
 
 function openapi(openApiPath: string, url: string) {
@@ -26,10 +25,10 @@ function openapi(openApiPath: string, url: string) {
     if (ctx.URL.pathname === "/counterfact/openapi") {
       // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
       const openApiDocument = (await yaml.load(
-        await readFile(openApiPath)
+        await readFile(openApiPath),
       )) as {
         host?: string;
-        servers?: { url: string; description: string }[];
+        servers?: { description: string; url: string }[];
       };
 
       openApiDocument.servers ??= [];
@@ -56,13 +55,13 @@ function openapi(openApiPath: string, url: string) {
 function page(
   pathname: string,
   templateName: string,
-  locals: { [key: string]: unknown }
+  locals: { [key: string]: unknown },
 ) {
   return async (ctx: Koa.ExtendableContext, next: Koa.Next) => {
     const render = Handlebars.compile(
       await readFile(
-        nodePath.join(__dirname, `../client/${templateName}.html.hbs`)
-      )
+        nodePath.join(__dirname, `../client/${templateName}.html.hbs`),
+      ),
     );
 
     if (ctx.URL.pathname === pathname) {
@@ -89,10 +88,10 @@ export async function start(config: {
 
   const app = new Koa();
 
-  const { koaMiddleware, contextRegistry, registry } = await counterfact(
+  const { contextRegistry, koaMiddleware, registry } = await counterfact(
     basePath,
     openApiPath,
-    config
+    config,
   );
 
   app.use(openapi(openApiPath, `//localhost:${port}`));
@@ -104,20 +103,22 @@ export async function start(config: {
       swaggerOptions: {
         url: "/counterfact/openapi",
       },
-    })
+    }),
   );
 
   app.use(
     page("/counterfact/", "index", {
       basePath,
-      routes: registry.routes,
       methods: ["get", "post", "put", "delete", "patch"],
-      openApiPath,
 
       openApiHref: openApiPath.includes("://")
         ? openApiPath
         : pathToFileURL(openApiPath).href,
-    })
+
+      openApiPath,
+
+      routes: registry.routes,
+    }),
   );
 
   app.use(async (ctx, next) => {
@@ -135,7 +136,7 @@ export async function start(config: {
     page("/counterfact/rapidoc", "rapi-doc", {
       basePath,
       routes: registry.routes,
-    })
+    }),
   );
 
   app.use(bodyParser());

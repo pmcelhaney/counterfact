@@ -59,10 +59,10 @@ describe("a Script", () => {
     importingScript.import(coder);
 
     expect(importingScript.imports.get("Account")).toStrictEqual({
-      script: exportingScript,
-      name: "Account",
-      isType: false,
       isDefault: false,
+      isType: false,
+      name: "Account",
+      script: exportingScript,
     });
   });
 
@@ -147,7 +147,7 @@ describe("a Script", () => {
     ];
 
     expect(script.contents()).toBe(
-      'import { foo } from "./foo.js";\n\nexport const bar = "Bar";\n\nexport default class {}\n'
+      'import { foo } from "./foo.js";\n\nexport const bar = "Bar";\n\nexport default class {}\n',
     );
   });
 });

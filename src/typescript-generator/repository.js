@@ -1,6 +1,6 @@
-import nodePath from "node:path";
-import fs from "node:fs/promises";
 import { constants as fsConstants } from "node:fs";
+import fs from "node:fs/promises";
+import nodePath from "node:path";
 
 import prettier from "prettier";
 
@@ -42,7 +42,7 @@ export class Repository {
     ) {
       // eslint-disable-next-line no-await-in-loop
       await Promise.all(
-        Array.from(this.scripts.values(), (script) => script.finished())
+        Array.from(this.scripts.values(), (script) => script.finished()),
       );
     }
   }
@@ -57,7 +57,7 @@ export class Repository {
 
       return fs.copyFile(
         nodePath.join(__dirname, `../../templates/${file}`),
-        path
+        path,
       );
     });
   }
@@ -91,7 +91,7 @@ export class Repository {
         await fs.writeFile(fullPath, contents);
 
         process.stdout.write(`writing ${fullPath}\n`);
-      }
+      },
     );
 
     await Promise.all(writeFiles);

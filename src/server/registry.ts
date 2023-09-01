@@ -1,5 +1,4 @@
 import type { ResponseBuilder } from "../../templates/response-builder-factory.js";
-
 import type { MediaType } from "./response-builder.js";
 import type { Tools } from "./tools.js";
 
@@ -14,14 +13,14 @@ type HttpMethods =
   | "TRACE";
 
 interface RequestData {
-  query: { [key: string]: number | string };
-  headers: { [key: string]: string };
-  path?: { [key: string]: number | string };
-  matchedPath?: string;
-  tools: Tools;
   context: unknown;
-  response: ResponseBuilder;
+  headers: { [key: string]: string };
+  matchedPath?: string;
+  path?: { [key: string]: number | string };
   proxy: unknown;
+  query: { [key: string]: number | string };
+  response: ResponseBuilder;
+  tools: Tools;
 }
 
 interface RequestDataWithBody extends RequestData {
@@ -29,13 +28,13 @@ interface RequestDataWithBody extends RequestData {
 }
 
 interface Module {
-  GET?: (requestData: RequestData) => CounterfactResponse;
-  PUT?: (requestData: RequestDataWithBody) => CounterfactResponse;
-  POST?: (requestData: RequestDataWithBody) => CounterfactResponse;
   DELETE?: (requestData: RequestData) => CounterfactResponse;
-  OPTIONS?: (requestData: RequestData) => CounterfactResponse;
+  GET?: (requestData: RequestData) => CounterfactResponse;
   HEAD?: (requestData: RequestData) => CounterfactResponse;
+  OPTIONS?: (requestData: RequestData) => CounterfactResponse;
   PATCH?: (requestData: RequestData) => CounterfactResponse;
+  POST?: (requestData: RequestDataWithBody) => CounterfactResponse;
+  PUT?: (requestData: RequestDataWithBody) => CounterfactResponse;
   TRACE?: (requestData: RequestData) => CounterfactResponse;
 }
 
@@ -47,13 +46,13 @@ interface Node {
 type CounterfactResponseObject =
   | string
   | {
-      status?: number;
-      headers?: { [key: string]: string };
       body?: string;
       content?: {
-        type: MediaType;
         body: unknown;
+        type: MediaType;
       }[];
+      headers?: { [key: string]: string };
+      status?: number;
     };
 
 type CounterfactResponse =
@@ -62,7 +61,7 @@ type CounterfactResponse =
 
 function castParameters(
   parameters: { [key: string]: number | string },
-  parameterTypes?: { [key: string]: string }
+  parameterTypes?: { [key: string]: string },
 ) {
   const copy: { [key: string]: number | string } = { ...parameters };
 
@@ -96,7 +95,7 @@ function routesForNode(node: Node): string[] {
       ...routesForNode(child).map((route) => `/${segment}${route}`),
     ])
     .sort((segment1, segment2) =>
-      stripBrackets(segment1).localeCompare(stripBrackets(segment2))
+      stripBrackets(segment1).localeCompare(stripBrackets(segment2)),
     );
 }
 
@@ -165,7 +164,7 @@ export class Registry {
         matchedParts.push(segment);
       } else {
         const dynamicSegment = Object.keys(node.children).find(
-          (ds) => ds.startsWith("{") && ds.endsWith("}")
+          (ds) => ds.startsWith("{") && ds.endsWith("}"),
         );
 
         if (dynamicSegment !== undefined) {
@@ -184,7 +183,7 @@ export class Registry {
       throw new Error("node cannot be undefined");
     }
 
-    return { module: node.module, path, matchedPath: matchedParts.join("/") };
+    return { matchedPath: matchedParts.join("/"), module: node.module, path };
   }
 
   public endpoint(
@@ -192,19 +191,19 @@ export class Registry {
     url: string,
     parameterTypes: {
       header?: { [key: string]: string };
-      query?: { [key: string]: string };
       path?: { [key: string]: string };
-    } = {}
+      query?: { [key: string]: string };
+    } = {},
   ) {
     const handler = this.handler(url);
     const execute = handler.module?.[httpRequestMethod];
 
     if (!execute) {
       return () => ({
-        status: 404,
         body: `Could not find a ${httpRequestMethod} method matching ${url}\n`,
         contentType: "text/plain",
         headers: {},
+        status: 404,
       });
     }
 
@@ -214,13 +213,13 @@ export class Registry {
 
         headers: castParameters(requestData.headers, parameterTypes.header),
 
-        query: castParameters(requestData.query, parameterTypes.query),
+        matchedPath: handler.matchedPath,
 
         path: castParameters(handler.path, parameterTypes.path),
 
-        matchedPath: handler.matchedPath,
+        query: castParameters(requestData.query, parameterTypes.query),
       });
   }
 }
 
-export type { Module, CounterfactResponseObject, HttpMethods };
+export type { CounterfactResponseObject, HttpMethods, Module };

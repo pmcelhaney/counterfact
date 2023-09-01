@@ -1,5 +1,5 @@
-import koaProxy from "koa-proxy";
 import type { Middleware, Request as KoaRequest } from "koa";
+import koaProxy from "koa-proxy";
 
 import type { Dispatcher } from "./dispatcher.js";
 import type { HttpMethods } from "./registry.js";
@@ -9,11 +9,11 @@ const HTTP_STATUS_CODE_OK = 200;
 export function koaMiddleware(
   dispatcher: Dispatcher,
   { proxyEnabled = false, proxyUrl = "" } = {},
-  proxy = koaProxy
+  proxy = koaProxy,
 ): Middleware {
   return async function middleware(ctx, next) {
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-    const { method, path, headers, body, query } = ctx.request as KoaRequest & {
+    const { body, headers, method, path, query } = ctx.request as KoaRequest & {
       body: unknown;
       method: HttpMethods;
     };
@@ -24,11 +24,11 @@ export function koaMiddleware(
     }
 
     const response = await dispatcher.request({
-      method,
-      path,
+      body,
       /* @ts-expect-error the value of a header can be an array and we don't have a solution for that yet */
       headers,
-      body,
+      method,
+      path,
       /* @ts-expect-error the value of a querystring item can be an array and we don't have a solution for that yet */
       query,
       req: { path: "", ...ctx.req },

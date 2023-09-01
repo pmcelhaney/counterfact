@@ -37,12 +37,12 @@ export class Script {
     this.cache.set(cacheKey, name);
 
     const exportStatement = {
-      id: coder.id,
-      done: false,
-      isType,
-      isDefault,
-      typeDeclaration: coder.typeDeclaration(this.exports, this),
       beforeExport: coder.beforeExport(this.path),
+      done: false,
+      id: coder.id,
+      isDefault,
+      isType,
+      typeDeclaration: coder.typeDeclaration(this.exports, this),
     };
 
     exportStatement.promise = coder
@@ -91,14 +91,14 @@ export class Script {
     const exportedName = scriptFromWhichToExport.export(
       coder,
       isType,
-      isDefault
+      isDefault,
     );
 
     this.imports.set(name, {
-      script: scriptFromWhichToExport,
-      name: exportedName,
-      isType,
       isDefault,
+      isType,
+      name: exportedName,
+      script: scriptFromWhichToExport,
     });
 
     return name;
@@ -113,7 +113,7 @@ export class Script {
   }
 
   importExternal(name, modulePath, isType = false) {
-    this.externalImports.set(name, { modulePath, isType });
+    this.externalImports.set(name, { isType, modulePath });
 
     return name;
   }
@@ -128,43 +128,43 @@ export class Script {
 
   isInProgress() {
     return Array.from(this.exports.values()).some(
-      (exportStatement) => !exportStatement.done
+      (exportStatement) => !exportStatement.done,
     );
   }
 
   finished() {
     return Promise.all(
-      Array.from(this.exports.values(), (value) => value.promise)
+      Array.from(this.exports.values(), (value) => value.promise),
     );
   }
 
   externalImportsStatements() {
     return Array.from(
       this.externalImports,
-      ([name, { modulePath, isType, isDefault }]) =>
+      ([name, { isDefault, isType, modulePath }]) =>
         `import${isType ? " type" : ""} ${
           isDefault ? name : `{ ${name} }`
-        } from "${modulePath}";`
+        } from "${modulePath}";`,
     );
   }
 
   importStatements() {
     return Array.from(
       this.imports,
-      ([name, { script, isType, isDefault }]) =>
+      ([name, { isDefault, isType, script }]) =>
         `import${isType ? " type" : ""} ${
           isDefault ? name : `{ ${name} }`
         } from "./${nodePath.relative(
           nodePath.dirname(this.path),
-          script.path.replace(/\.ts$/u, ".js")
-        )}";`
+          script.path.replace(/\.ts$/u, ".js"),
+        )}";`,
     );
   }
 
   exportStatements() {
     return Array.from(
       this.exports.values(),
-      ({ name, isType, isDefault, code, typeDeclaration, beforeExport }) => {
+      ({ beforeExport, code, isDefault, isType, name, typeDeclaration }) => {
         if (code.raw) {
           return code.raw;
         }
@@ -178,7 +178,7 @@ export class Script {
           typeDeclaration.length === 0 ? "" : `:${typeDeclaration}`;
 
         return `${beforeExport}export ${keyword} ${name}${typeAnnotation} = ${code};`;
-      }
+      },
     );
   }
 
@@ -190,7 +190,7 @@ export class Script {
         "\n\n",
         this.exportStatements().join("\n\n"),
       ].join(""),
-      { parser: "typescript" }
+      { parser: "typescript" },
     );
   }
 }

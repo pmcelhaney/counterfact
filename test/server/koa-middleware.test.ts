@@ -1,7 +1,7 @@
-import { Registry } from "../../src/server/registry.js";
+import { ContextRegistry } from "../../src/server/context-registry.js";
 import { Dispatcher } from "../../src/server/dispatcher.js";
 import { koaMiddleware } from "../../src/server/koa-middleware.js";
-import { ContextRegistry } from "../../src/server/context-registry.js";
+import { Registry } from "../../src/server/registry.js";
 
 function mockKoaProxy(options: { host: string }) {
   return function proxy(ctx: { mockProxyHost: string }) {
@@ -24,11 +24,11 @@ describe("koa middleware", () => {
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
     const middleware = koaMiddleware(dispatcher);
     const ctx = {
-      request: { path: "/hello", method: "POST", body: { name: "Homer" } },
-
       req: {
         path: "/hello",
       },
+
+      request: { body: { name: "Homer" }, method: "POST", path: "/hello" },
     };
 
     await middleware(ctx, () => undefined);
@@ -51,7 +51,7 @@ describe("koa middleware", () => {
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
     const middleware = koaMiddleware(dispatcher);
     const ctx = {
-      request: { path: "/not-modified", method: "GET" },
+      request: { method: "GET", path: "/not-modified" },
     };
 
     await middleware(ctx);
@@ -71,11 +71,11 @@ describe("koa middleware", () => {
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
     const middleware = koaMiddleware(
       dispatcher,
-      { proxyUrl: "https://example.com", proxyEnabled: true },
-      mockKoaProxy
+      { proxyEnabled: true, proxyUrl: "https://example.com" },
+      mockKoaProxy,
     );
     const ctx = {
-      request: { path: "/proxy", method: "GET" },
+      request: { method: "GET", path: "/proxy" },
     };
 
     await middleware(ctx);

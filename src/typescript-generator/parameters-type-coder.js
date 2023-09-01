@@ -29,7 +29,7 @@ export class ParametersTypeCoder extends Coder {
           : requirement;
 
         return `"${name}${optionalFlag}": ${new SchemaTypeCoder(schema).write(
-          script
+          script,
         )}`;
       });
 

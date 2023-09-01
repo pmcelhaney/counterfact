@@ -1,12 +1,12 @@
-import fs from "node:fs/promises";
-import { existsSync, type Dirent } from "node:fs";
-import nodePath from "node:path";
 import { once } from "node:events";
+import { type Dirent, existsSync } from "node:fs";
+import fs from "node:fs/promises";
+import nodePath from "node:path";
 
 import chokidar from "chokidar";
 
-import { ContextRegistry, type Context } from "./context-registry.js";
-import type { Registry, Module } from "./registry.js";
+import { type Context, ContextRegistry } from "./context-registry.js";
+import type { Module, Registry } from "./registry.js";
 
 interface ContextModule {
   default?: Context;
@@ -24,7 +24,7 @@ export class ModuleLoader extends EventTarget {
   public constructor(
     basePath: string,
     registry: Registry,
-    contextRegistry = new ContextRegistry()
+    contextRegistry = new ContextRegistry(),
   ) {
     super();
     this.basePath = basePath;
@@ -42,7 +42,7 @@ export class ModuleLoader extends EventTarget {
 
         const parts = nodePath.parse(pathName.replace(this.basePath, ""));
         const url = nodePath.normalize(
-          `/${nodePath.join(parts.dir, parts.name)}`
+          `/${nodePath.join(parts.dir, parts.name)}`,
         );
 
         if (eventName === "unlink") {
@@ -60,7 +60,7 @@ export class ModuleLoader extends EventTarget {
               this.contextRegistry.update(
                 parts.dir,
                 // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-                (endpoint as ContextModule).default
+                (endpoint as ContextModule).default,
               );
 
               return "context";
@@ -74,7 +74,7 @@ export class ModuleLoader extends EventTarget {
           // eslint-disable-next-line promise/prefer-await-to-then
           .catch((error: unknown) => {
             process.stdout.write(
-              `\nError loading ${pathName}:\n${String(error)}\n`
+              `\nError loading ${pathName}:\n${String(error)}\n`,
             );
           });
       });
@@ -103,7 +103,7 @@ export class ModuleLoader extends EventTarget {
         return;
       }
 
-      if (!["js", "mjs", "ts", "mts"].includes(extension ?? "")) {
+      if (!["js", "mjs", "mts", "ts"].includes(extension ?? "")) {
         return;
       }
 
@@ -117,7 +117,7 @@ export class ModuleLoader extends EventTarget {
   private async loadEndpoint(
     fullPath: string,
     directory: string,
-    file: Dirent
+    file: Dirent,
   ) {
     try {
       // eslint-disable-next-line import/no-dynamic-require, no-unsanitized/method, @typescript-eslint/consistent-type-assertions
@@ -130,13 +130,13 @@ export class ModuleLoader extends EventTarget {
           `/${directory}`,
 
           // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-          (endpoint as ContextModule).default
+          (endpoint as ContextModule).default,
         );
       } else {
         this.registry.add(
           `/${nodePath.join(directory, nodePath.parse(file.name).name)}`,
           // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-          endpoint as Module
+          endpoint as Module,
         );
       }
     } catch (error: unknown) {

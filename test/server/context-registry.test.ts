@@ -1,7 +1,7 @@
 import {
+  type Context,
   ContextRegistry,
   parentPath,
-  type Context,
 } from "../../src/server/context-registry.js";
 
 describe("a context registry", () => {

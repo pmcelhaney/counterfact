@@ -2,9 +2,9 @@ import { pathToFileURL } from "node:url";
 
 import Koa from "koa";
 
-import { withTemporaryFiles } from "../lib/with-temporary-files.ts";
 import { Requirement } from "../../src/typescript-generator/requirement.js";
 import { Specification } from "../../src/typescript-generator/specification.js";
+import { withTemporaryFiles } from "../lib/with-temporary-files.ts";
 
 describe("a Specification", () => {
   it("loads a file from disk", async () => {
@@ -18,7 +18,7 @@ describe("a Specification", () => {
         expect(specification.cache.get(path("openapi.yaml"))).toStrictEqual({
           hello: "world",
         });
-      }
+      },
     );
   });
 
@@ -35,7 +35,7 @@ describe("a Specification", () => {
         expect(specification.cache.get(url)).toStrictEqual({
           hello: "world",
         });
-      }
+      },
     );
   });
 
@@ -69,34 +69,34 @@ describe("a Specification", () => {
         components: {
           schemas: {
             Person: {
-              type: "object",
-
               properties: {
                 name: { type: "string" },
                 phone: { type: "string" },
               },
+
+              type: "object",
             },
           },
         },
-      })
+      }),
     );
 
     const person = new Requirement(
       {
-        type: "object",
-
         properties: {
           name: { type: "string" },
           phone: { type: "string" },
         },
+
+        type: "object",
       },
 
       "openapi.yaml#/components/schemas/Person",
-      specification
+      specification,
     );
 
     const requirement = await specification.requirementAt(
-      "openapi.yaml#/components/schemas/Person"
+      "openapi.yaml#/components/schemas/Person",
     );
 
     expect(requirement).toStrictEqual(person);
@@ -111,34 +111,34 @@ describe("a Specification", () => {
         components: {
           schemas: {
             Person: {
-              type: "object",
-
               properties: {
                 name: { type: "string" },
                 phone: { type: "string" },
               },
+
+              type: "object",
             },
           },
         },
-      })
+      }),
     );
 
     const person = new Requirement(
       {
-        type: "object",
-
         properties: {
           name: { type: "string" },
           phone: { type: "string" },
         },
+
+        type: "object",
       },
 
       "openapi.yaml#/components/schemas/Person",
-      specification
+      specification,
     );
 
     const requirement = await specification.requirementAt(
-      "#/components/schemas/Person"
+      "#/components/schemas/Person",
     );
 
     expect(requirement).toStrictEqual(person);

@@ -5,9 +5,9 @@ import nodePath from "node:path";
 import { program } from "commander";
 import open from "open";
 
-import { generate } from "../src/typescript-generator/generate.js";
-import { start } from "../src/server/start.ts";
 import { startRepl } from "../src/server/repl.ts";
+import { start } from "../src/server/start.ts";
+import { generate } from "../src/typescript-generator/generate.js";
 
 const DEFAULT_PORT = 3100;
 
@@ -27,11 +27,11 @@ async function main(source, destination) {
 
   const config = {
     basePath,
-    port: options.port,
-    openApiPath: source,
     includeSwaggerUi: true,
-    proxyUrl: options.proxyUrl,
+    openApiPath: source,
+    port: options.port,
     proxyEnabled: Boolean(options.proxyUrl),
+    proxyUrl: options.proxyUrl,
   };
 
   const { contextRegistry } = await start(config);
@@ -40,7 +40,7 @@ async function main(source, destination) {
     `Call the REST APIs at ${url} (with your front end app, curl, Postman, etc.)`,
     `Change the implementation of the APIs by editing files under ${nodePath.join(
       basePath,
-      "paths"
+      "paths",
     )} (no need to restart)`,
     `Use the GUI at ${guiUrl}`,
     "Use the REPL below (type .counterfact for more information)",
@@ -58,7 +58,7 @@ async function main(source, destination) {
   process.stdout.write(`${introduction.join("\n")}\n`);
 
   process.stdout.write(
-    waysToInteract.map((text, index) => `${index + 1}. ${text}`).join("\n")
+    waysToInteract.map((text, index) => `${index + 1}. ${text}`).join("\n"),
   );
 
   process.stdout.write("\n\n");
@@ -75,7 +75,7 @@ async function main(source, destination) {
 program
   .name("counterfact")
   .description(
-    "Counterfact is a tool for generating a REST API from an OpenAPI document."
+    "Counterfact is a tool for generating a REST API from an OpenAPI document.",
   )
   .argument("<openapi.yaml>", "path or URL to OpenAPI document")
   .argument("[destination]", "path to generated code", ".")
@@ -84,4 +84,5 @@ program
   .option("--open", "open a browser")
   .option("--proxy-url <string>", "proxy URL")
   .action(main)
+  // eslint-disable-next-line sonar/process-argv
   .parse(process.argv);

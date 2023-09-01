@@ -1,15 +1,15 @@
 import nodePath from "node:path";
 
 import { Coder } from "./coder.js";
-import { SchemaTypeCoder } from "./schema-type-coder.js";
+import { ContextCoder } from "./context-coder.js";
 import { ParametersTypeCoder } from "./parameters-type-coder.js";
 import { ResponseTypeCoder } from "./response-type-coder.js";
-import { ContextCoder } from "./context-coder.js";
+import { SchemaTypeCoder } from "./schema-type-coder.js";
 
 export class OperationTypeCoder extends Coder {
   names() {
     return super.names(
-      `HTTP_${this.requirement.url.split("/").at(-1).toUpperCase()}`
+      `HTTP_${this.requirement.url.split("/").at(-1).toUpperCase()}`,
     );
   }
 
@@ -28,7 +28,7 @@ export class OperationTypeCoder extends Coder {
               status: ${status}, 
               contentType?: "${contentType}",
               body?: ${new SchemaTypeCoder(content.get("schema")).write(script)}
-            }`
+            }`,
           );
         }
 
@@ -43,7 +43,7 @@ export class OperationTypeCoder extends Coder {
             status: ${status},
             contentType?: "${contentType}",
             body?: ${new SchemaTypeCoder(response.get("schema")).write(script)}
-          }`
+          }`,
             )
             .join(" | ");
         }
@@ -67,7 +67,7 @@ export class OperationTypeCoder extends Coder {
 
   write(script) {
     const contextImportName = script.importDefault(
-      new ContextCoder(this.requirement)
+      new ContextCoder(this.requirement),
     );
 
     const parameters = this.requirement.get("parameters");
@@ -90,7 +90,7 @@ export class OperationTypeCoder extends Coder {
     const bodyRequirement = this.requirement.get("consumes")
       ? parameters
           .find((parameter) =>
-            ["body", "formData"].includes(parameter.get("in").data)
+            ["body", "formData"].includes(parameter.get("in").data),
           )
           .get("schema")
       : this.requirement.select("requestBody/content/application~1json/schema");
@@ -101,13 +101,13 @@ export class OperationTypeCoder extends Coder {
 
     const responseType = new ResponseTypeCoder(
       this.requirement.get("responses"),
-      this.requirement.get("produces")?.data
+      this.requirement.get("produces")?.data,
     ).write(script);
 
     const proxyType = "(url: string) => { proxyUrl: string }";
 
     return `({ query, path, header, body, context, proxy }: { query: ${queryType}, path: ${pathType}, header: ${headerType}, body: ${bodyType}, context: typeof ${contextImportName}, response: ${responseType}, proxy: ${proxyType} }) => ${this.responseTypes(
-      script
+      script,
     )} | { status: 415, contentType: "text/plain", body: string } | void`;
   }
 }

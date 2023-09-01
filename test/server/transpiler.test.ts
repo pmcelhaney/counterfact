@@ -1,6 +1,6 @@
 import { once } from "node:events";
-import fs from "node:fs/promises";
 import { constants as fsConstants } from "node:fs";
+import fs from "node:fs/promises";
 
 import { Transpiler } from "../../src/server/transpiler.js";
 import { withTemporaryFiles } from "../lib/with-temporary-files.js";
@@ -26,7 +26,7 @@ describe("a Transpiler", () => {
       await transpiler.watch();
 
       await expect(fs.readFile(path("dist/found.mjs"), "utf8")).resolves.toBe(
-        JAVASCRIPT_SOURCE
+        JAVASCRIPT_SOURCE,
       );
 
       await transpiler.stopWatching();
@@ -38,7 +38,7 @@ describe("a Transpiler", () => {
 
     await withTemporaryFiles(
       { "src/starter.ts": TYPESCRIPT_SOURCE },
-      async (basePath, { path, add }) => {
+      async (basePath, { add, path }) => {
         transpiler = new Transpiler(path("src"), path("dist"));
 
         await transpiler.watch();
@@ -49,11 +49,11 @@ describe("a Transpiler", () => {
         await write;
 
         await expect(fs.readFile(path("dist/added.mjs"), "utf8")).resolves.toBe(
-          JAVASCRIPT_SOURCE
+          JAVASCRIPT_SOURCE,
         );
 
         await transpiler.stopWatching();
-      }
+      },
     );
   });
 
@@ -62,7 +62,7 @@ describe("a Transpiler", () => {
       "src/update-me.ts": "const x = 'code to be overwritten';\n",
     };
 
-    await withTemporaryFiles(files, async (basePath, { path, add }) => {
+    await withTemporaryFiles(files, async (basePath, { add, path }) => {
       transpiler = new Transpiler(path("src"), path("dist"));
 
       const initialWrite = once(transpiler, "write");
@@ -76,7 +76,7 @@ describe("a Transpiler", () => {
       await overwrite;
 
       await expect(
-        fs.readFile(path("dist/update-me.mjs"), "utf8")
+        fs.readFile(path("dist/update-me.mjs"), "utf8"),
       ).resolves.toBe(JAVASCRIPT_SOURCE);
 
       await transpiler.stopWatching();
