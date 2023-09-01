@@ -1,5 +1,12 @@
 # counterfact
 
+## 0.25.5
+
+### Patch Changes
+
+- 8d86f34: make paths in URLs case-insensitive (http://localhost:3100/FOO is the same as http://localhost:3100/foo)
+- f60874f: fix a few edge cases found when running against Github's extensive OpenAPI description: https://github.com/github/rest-api-description
+
 ## 0.25.4
 
 ### Patch Changes
