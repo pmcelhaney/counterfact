@@ -37,7 +37,7 @@ Map {
         "typeDeclaration": "HTTP_PUT",
       },
     },
-    "externalImports": Map {},
+    "externalImport": Map {},
     "imports": Map {
       "HTTP_POST" => Object {
         "isDefault": false,
@@ -138,7 +138,7 @@ Map {
               "typeDeclaration": "",
             },
           },
-          "externalImports": Map {
+          "externalImport": Map {
             "ResponseBuilderFactory" => Object {
               "isType": true,
               "modulePath": "../response-builder-factory.js",
@@ -179,7 +179,7 @@ class Context {
                     "typeDeclaration": "",
                   },
                 },
-                "externalImports": Map {},
+                "externalImport": Map {},
                 "imports": Map {},
                 "path": "paths/$.context.ts",
                 "repository": Repository {
@@ -212,7 +212,7 @@ class Context {
                     "typeDeclaration": "",
                   },
                 },
-                "externalImports": Map {},
+                "externalImport": Map {},
                 "imports": Map {
                   "Category" => Object {
                     "isDefault": false,
@@ -235,7 +235,7 @@ class Context {
                           "typeDeclaration": "",
                         },
                       },
-                      "externalImports": Map {},
+                      "externalImport": Map {},
                       "imports": Map {},
                       "path": "components/Category.ts",
                       "repository": Repository {
@@ -266,7 +266,7 @@ class Context {
                           "typeDeclaration": "",
                         },
                       },
-                      "externalImports": Map {},
+                      "externalImport": Map {},
                       "imports": Map {},
                       "path": "components/Tag.ts",
                       "repository": Repository {
@@ -393,7 +393,7 @@ class Context {
               "typeDeclaration": "",
             },
           },
-          "externalImports": Map {
+          "externalImport": Map {
             "ResponseBuilderFactory" => Object {
               "isType": true,
               "modulePath": "../response-builder-factory.js",
@@ -434,7 +434,7 @@ class Context {
                     "typeDeclaration": "",
                   },
                 },
-                "externalImports": Map {},
+                "externalImport": Map {},
                 "imports": Map {},
                 "path": "paths/$.context.ts",
                 "repository": Repository {
@@ -467,7 +467,7 @@ class Context {
                     "typeDeclaration": "",
                   },
                 },
-                "externalImports": Map {},
+                "externalImport": Map {},
                 "imports": Map {
                   "Category" => Object {
                     "isDefault": false,
@@ -490,7 +490,7 @@ class Context {
                           "typeDeclaration": "",
                         },
                       },
-                      "externalImports": Map {},
+                      "externalImport": Map {},
                       "imports": Map {},
                       "path": "components/Category.ts",
                       "repository": Repository {
@@ -521,7 +521,7 @@ class Context {
                           "typeDeclaration": "",
                         },
                       },
-                      "externalImports": Map {},
+                      "externalImport": Map {},
                       "imports": Map {},
                       "path": "components/Tag.ts",
                       "repository": Repository {
@@ -652,7 +652,7 @@ class Context {
         "typeDeclaration": "",
       },
     },
-    "externalImports": Map {
+    "externalImport": Map {
       "ResponseBuilderFactory" => Object {
         "isType": true,
         "modulePath": "../response-builder-factory.js",
@@ -693,7 +693,7 @@ class Context {
               "typeDeclaration": "",
             },
           },
-          "externalImports": Map {},
+          "externalImport": Map {},
           "imports": Map {},
           "path": "paths/$.context.ts",
           "repository": Repository {
@@ -726,7 +726,7 @@ class Context {
               "typeDeclaration": "",
             },
           },
-          "externalImports": Map {},
+          "externalImport": Map {},
           "imports": Map {
             "Category" => Object {
               "isDefault": false,
@@ -749,7 +749,7 @@ class Context {
                     "typeDeclaration": "",
                   },
                 },
-                "externalImports": Map {},
+                "externalImport": Map {},
                 "imports": Map {},
                 "path": "components/Category.ts",
                 "repository": Repository {
@@ -780,7 +780,7 @@ class Context {
                     "typeDeclaration": "",
                   },
                 },
-                "externalImports": Map {},
+                "externalImport": Map {},
                 "imports": Map {},
                 "path": "components/Tag.ts",
                 "repository": Repository {
@@ -827,7 +827,7 @@ class Context {
         "typeDeclaration": "HTTP_GET",
       },
     },
-    "externalImports": Map {},
+    "externalImport": Map {},
     "imports": Map {
       "HTTP_GET" => Object {
         "isDefault": false,
@@ -878,7 +878,7 @@ class Context {
               "typeDeclaration": "",
             },
           },
-          "externalImports": Map {
+          "externalImport": Map {
             "ResponseBuilderFactory" => Object {
               "isType": true,
               "modulePath": "../../response-builder-factory.js",
@@ -921,7 +921,7 @@ class Context {
                     "typeDeclaration": "",
                   },
                 },
-                "externalImports": Map {},
+                "externalImport": Map {},
                 "imports": Map {},
                 "path": "paths/pet/$.context.ts",
                 "repository": Repository {
@@ -954,7 +954,7 @@ class Context {
                     "typeDeclaration": "",
                   },
                 },
-                "externalImports": Map {},
+                "externalImport": Map {},
                 "imports": Map {
                   "Category" => Object {
                     "isDefault": false,
@@ -977,7 +977,7 @@ class Context {
                           "typeDeclaration": "",
                         },
                       },
-                      "externalImports": Map {},
+                      "externalImport": Map {},
                       "imports": Map {},
                       "path": "components/Category.ts",
                       "repository": Repository {
@@ -1008,7 +1008,7 @@ class Context {
                           "typeDeclaration": "",
                         },
                       },
-                      "externalImports": Map {},
+                      "externalImport": Map {},
                       "imports": Map {},
                       "path": "components/Tag.ts",
                       "repository": Repository {
@@ -1089,7 +1089,7 @@ class Context {
         "typeDeclaration": "",
       },
     },
-    "externalImports": Map {
+    "externalImport": Map {
       "ResponseBuilderFactory" => Object {
         "isType": true,
         "modulePath": "../../response-builder-factory.js",
@@ -1132,7 +1132,7 @@ class Context {
               "typeDeclaration": "",
             },
           },
-          "externalImports": Map {},
+          "externalImport": Map {},
           "imports": Map {},
           "path": "paths/pet/$.context.ts",
           "repository": Repository {
@@ -1165,7 +1165,7 @@ class Context {
               "typeDeclaration": "",
             },
           },
-          "externalImports": Map {},
+          "externalImport": Map {},
           "imports": Map {
             "Category" => Object {
               "isDefault": false,
@@ -1188,7 +1188,7 @@ class Context {
                     "typeDeclaration": "",
                   },
                 },
-                "externalImports": Map {},
+                "externalImport": Map {},
                 "imports": Map {},
                 "path": "components/Category.ts",
                 "repository": Repository {
@@ -1219,7 +1219,7 @@ class Context {
                     "typeDeclaration": "",
                   },
                 },
-                "externalImports": Map {},
+                "externalImport": Map {},
                 "imports": Map {},
                 "path": "components/Tag.ts",
                 "repository": Repository {
@@ -1266,7 +1266,7 @@ class Context {
         "typeDeclaration": "HTTP_GET",
       },
     },
-    "externalImports": Map {},
+    "externalImport": Map {},
     "imports": Map {
       "HTTP_GET" => Object {
         "isDefault": false,
@@ -1317,7 +1317,7 @@ class Context {
               "typeDeclaration": "",
             },
           },
-          "externalImports": Map {
+          "externalImport": Map {
             "ResponseBuilderFactory" => Object {
               "isType": true,
               "modulePath": "../../response-builder-factory.js",
@@ -1360,7 +1360,7 @@ class Context {
                     "typeDeclaration": "",
                   },
                 },
-                "externalImports": Map {},
+                "externalImport": Map {},
                 "imports": Map {},
                 "path": "paths/pet/$.context.ts",
                 "repository": Repository {
@@ -1393,7 +1393,7 @@ class Context {
                     "typeDeclaration": "",
                   },
                 },
-                "externalImports": Map {},
+                "externalImport": Map {},
                 "imports": Map {
                   "Category" => Object {
                     "isDefault": false,
@@ -1416,7 +1416,7 @@ class Context {
                           "typeDeclaration": "",
                         },
                       },
-                      "externalImports": Map {},
+                      "externalImport": Map {},
                       "imports": Map {},
                       "path": "components/Category.ts",
                       "repository": Repository {
@@ -1447,7 +1447,7 @@ class Context {
                           "typeDeclaration": "",
                         },
                       },
-                      "externalImports": Map {},
+                      "externalImport": Map {},
                       "imports": Map {},
                       "path": "components/Tag.ts",
                       "repository": Repository {
@@ -1528,7 +1528,7 @@ class Context {
         "typeDeclaration": "",
       },
     },
-    "externalImports": Map {
+    "externalImport": Map {
       "ResponseBuilderFactory" => Object {
         "isType": true,
         "modulePath": "../../response-builder-factory.js",
@@ -1571,7 +1571,7 @@ class Context {
               "typeDeclaration": "",
             },
           },
-          "externalImports": Map {},
+          "externalImport": Map {},
           "imports": Map {},
           "path": "paths/pet/$.context.ts",
           "repository": Repository {
@@ -1604,7 +1604,7 @@ class Context {
               "typeDeclaration": "",
             },
           },
-          "externalImports": Map {},
+          "externalImport": Map {},
           "imports": Map {
             "Category" => Object {
               "isDefault": false,
@@ -1627,7 +1627,7 @@ class Context {
                     "typeDeclaration": "",
                   },
                 },
-                "externalImports": Map {},
+                "externalImport": Map {},
                 "imports": Map {},
                 "path": "components/Category.ts",
                 "repository": Repository {
@@ -1658,7 +1658,7 @@ class Context {
                     "typeDeclaration": "",
                   },
                 },
-                "externalImports": Map {},
+                "externalImport": Map {},
                 "imports": Map {},
                 "path": "components/Tag.ts",
                 "repository": Repository {
@@ -1731,7 +1731,7 @@ class Context {
         "typeDeclaration": "HTTP_DELETE",
       },
     },
-    "externalImports": Map {},
+    "externalImport": Map {},
     "imports": Map {
       "HTTP_GET" => Object {
         "isDefault": false,
@@ -1826,7 +1826,7 @@ class Context {
               "typeDeclaration": "",
             },
           },
-          "externalImports": Map {
+          "externalImport": Map {
             "ResponseBuilderFactory" => Object {
               "isType": true,
               "modulePath": "../../response-builder-factory.js",
@@ -1869,7 +1869,7 @@ class Context {
                     "typeDeclaration": "",
                   },
                 },
-                "externalImports": Map {},
+                "externalImport": Map {},
                 "imports": Map {},
                 "path": "paths/pet/$.context.ts",
                 "repository": Repository {
@@ -1902,7 +1902,7 @@ class Context {
                     "typeDeclaration": "",
                   },
                 },
-                "externalImports": Map {},
+                "externalImport": Map {},
                 "imports": Map {
                   "Category" => Object {
                     "isDefault": false,
@@ -1925,7 +1925,7 @@ class Context {
                           "typeDeclaration": "",
                         },
                       },
-                      "externalImports": Map {},
+                      "externalImport": Map {},
                       "imports": Map {},
                       "path": "components/Category.ts",
                       "repository": Repository {
@@ -1956,7 +1956,7 @@ class Context {
                           "typeDeclaration": "",
                         },
                       },
-                      "externalImports": Map {},
+                      "externalImport": Map {},
                       "imports": Map {},
                       "path": "components/Tag.ts",
                       "repository": Repository {
@@ -2077,7 +2077,7 @@ class Context {
               "typeDeclaration": "",
             },
           },
-          "externalImports": Map {
+          "externalImport": Map {
             "ResponseBuilderFactory" => Object {
               "isType": true,
               "modulePath": "../../response-builder-factory.js",
@@ -2120,7 +2120,7 @@ class Context {
                     "typeDeclaration": "",
                   },
                 },
-                "externalImports": Map {},
+                "externalImport": Map {},
                 "imports": Map {},
                 "path": "paths/pet/$.context.ts",
                 "repository": Repository {
@@ -2153,7 +2153,7 @@ class Context {
                     "typeDeclaration": "",
                   },
                 },
-                "externalImports": Map {},
+                "externalImport": Map {},
                 "imports": Map {
                   "Category" => Object {
                     "isDefault": false,
@@ -2176,7 +2176,7 @@ class Context {
                           "typeDeclaration": "",
                         },
                       },
-                      "externalImports": Map {},
+                      "externalImport": Map {},
                       "imports": Map {},
                       "path": "components/Category.ts",
                       "repository": Repository {
@@ -2207,7 +2207,7 @@ class Context {
                           "typeDeclaration": "",
                         },
                       },
-                      "externalImports": Map {},
+                      "externalImport": Map {},
                       "imports": Map {},
                       "path": "components/Tag.ts",
                       "repository": Repository {
@@ -2328,7 +2328,7 @@ class Context {
               "typeDeclaration": "",
             },
           },
-          "externalImports": Map {
+          "externalImport": Map {
             "ResponseBuilderFactory" => Object {
               "isType": true,
               "modulePath": "../../response-builder-factory.js",
@@ -2371,7 +2371,7 @@ class Context {
                     "typeDeclaration": "",
                   },
                 },
-                "externalImports": Map {},
+                "externalImport": Map {},
                 "imports": Map {},
                 "path": "paths/pet/$.context.ts",
                 "repository": Repository {
@@ -2404,7 +2404,7 @@ class Context {
                     "typeDeclaration": "",
                   },
                 },
-                "externalImports": Map {},
+                "externalImport": Map {},
                 "imports": Map {
                   "Category" => Object {
                     "isDefault": false,
@@ -2427,7 +2427,7 @@ class Context {
                           "typeDeclaration": "",
                         },
                       },
-                      "externalImports": Map {},
+                      "externalImport": Map {},
                       "imports": Map {},
                       "path": "components/Category.ts",
                       "repository": Repository {
@@ -2458,7 +2458,7 @@ class Context {
                           "typeDeclaration": "",
                         },
                       },
-                      "externalImports": Map {},
+                      "externalImport": Map {},
                       "imports": Map {},
                       "path": "components/Tag.ts",
                       "repository": Repository {
@@ -2583,7 +2583,7 @@ class Context {
         "typeDeclaration": "",
       },
     },
-    "externalImports": Map {
+    "externalImport": Map {
       "ResponseBuilderFactory" => Object {
         "isType": true,
         "modulePath": "../../response-builder-factory.js",
@@ -2626,7 +2626,7 @@ class Context {
               "typeDeclaration": "",
             },
           },
-          "externalImports": Map {},
+          "externalImport": Map {},
           "imports": Map {},
           "path": "paths/pet/$.context.ts",
           "repository": Repository {
@@ -2659,7 +2659,7 @@ class Context {
               "typeDeclaration": "",
             },
           },
-          "externalImports": Map {},
+          "externalImport": Map {},
           "imports": Map {
             "Category" => Object {
               "isDefault": false,
@@ -2682,7 +2682,7 @@ class Context {
                     "typeDeclaration": "",
                   },
                 },
-                "externalImports": Map {},
+                "externalImport": Map {},
                 "imports": Map {},
                 "path": "components/Category.ts",
                 "repository": Repository {
@@ -2713,7 +2713,7 @@ class Context {
                     "typeDeclaration": "",
                   },
                 },
-                "externalImports": Map {},
+                "externalImport": Map {},
                 "imports": Map {},
                 "path": "components/Tag.ts",
                 "repository": Repository {
@@ -2760,7 +2760,7 @@ class Context {
         "typeDeclaration": "HTTP_POST",
       },
     },
-    "externalImports": Map {},
+    "externalImport": Map {},
     "imports": Map {
       "HTTP_POST" => Object {
         "isDefault": false,
@@ -2798,7 +2798,7 @@ class Context {
               "typeDeclaration": "",
             },
           },
-          "externalImports": Map {
+          "externalImport": Map {
             "ResponseBuilderFactory" => Object {
               "isType": true,
               "modulePath": "../../../response-builder-factory.js",
@@ -2841,7 +2841,7 @@ class Context {
                     "typeDeclaration": "",
                   },
                 },
-                "externalImports": Map {},
+                "externalImport": Map {},
                 "imports": Map {},
                 "path": "paths/pet/{petId}/$.context.ts",
                 "repository": Repository {
@@ -2872,7 +2872,7 @@ class Context {
                     "typeDeclaration": "",
                   },
                 },
-                "externalImports": Map {},
+                "externalImport": Map {},
                 "imports": Map {},
                 "path": "components/ApiResponse.ts",
                 "repository": Repository {
@@ -2931,7 +2931,7 @@ class Context {
         "typeDeclaration": "",
       },
     },
-    "externalImports": Map {
+    "externalImport": Map {
       "ResponseBuilderFactory" => Object {
         "isType": true,
         "modulePath": "../../../response-builder-factory.js",
@@ -2974,7 +2974,7 @@ class Context {
               "typeDeclaration": "",
             },
           },
-          "externalImports": Map {},
+          "externalImport": Map {},
           "imports": Map {},
           "path": "paths/pet/{petId}/$.context.ts",
           "repository": Repository {
@@ -3005,7 +3005,7 @@ class Context {
               "typeDeclaration": "",
             },
           },
-          "externalImports": Map {},
+          "externalImport": Map {},
           "imports": Map {},
           "path": "components/ApiResponse.ts",
           "repository": Repository {
@@ -3043,7 +3043,7 @@ class Context {
         "typeDeclaration": "HTTP_GET",
       },
     },
-    "externalImports": Map {},
+    "externalImport": Map {},
     "imports": Map {
       "HTTP_GET" => Object {
         "isDefault": false,
@@ -3080,7 +3080,7 @@ class Context {
               "typeDeclaration": "",
             },
           },
-          "externalImports": Map {
+          "externalImport": Map {
             "ResponseBuilderFactory" => Object {
               "isType": true,
               "modulePath": "../../response-builder-factory.js",
@@ -3123,7 +3123,7 @@ class Context {
                     "typeDeclaration": "",
                   },
                 },
-                "externalImports": Map {},
+                "externalImport": Map {},
                 "imports": Map {},
                 "path": "paths/store/$.context.ts",
                 "repository": Repository {
@@ -3181,7 +3181,7 @@ class Context {
         "typeDeclaration": "",
       },
     },
-    "externalImports": Map {
+    "externalImport": Map {
       "ResponseBuilderFactory" => Object {
         "isType": true,
         "modulePath": "../../response-builder-factory.js",
@@ -3224,7 +3224,7 @@ class Context {
               "typeDeclaration": "",
             },
           },
-          "externalImports": Map {},
+          "externalImport": Map {},
           "imports": Map {},
           "path": "paths/store/$.context.ts",
           "repository": Repository {
@@ -3262,7 +3262,7 @@ class Context {
         "typeDeclaration": "HTTP_POST",
       },
     },
-    "externalImports": Map {},
+    "externalImport": Map {},
     "imports": Map {
       "HTTP_POST" => Object {
         "isDefault": false,
@@ -3306,7 +3306,7 @@ class Context {
               "typeDeclaration": "",
             },
           },
-          "externalImports": Map {
+          "externalImport": Map {
             "ResponseBuilderFactory" => Object {
               "isType": true,
               "modulePath": "../../response-builder-factory.js",
@@ -3349,7 +3349,7 @@ class Context {
                     "typeDeclaration": "",
                   },
                 },
-                "externalImports": Map {},
+                "externalImport": Map {},
                 "imports": Map {},
                 "path": "paths/store/$.context.ts",
                 "repository": Repository {
@@ -3380,7 +3380,7 @@ class Context {
                     "typeDeclaration": "",
                   },
                 },
-                "externalImports": Map {},
+                "externalImport": Map {},
                 "imports": Map {},
                 "path": "components/Order.ts",
                 "repository": Repository {
@@ -3445,7 +3445,7 @@ class Context {
         "typeDeclaration": "",
       },
     },
-    "externalImports": Map {
+    "externalImport": Map {
       "ResponseBuilderFactory" => Object {
         "isType": true,
         "modulePath": "../../response-builder-factory.js",
@@ -3488,7 +3488,7 @@ class Context {
               "typeDeclaration": "",
             },
           },
-          "externalImports": Map {},
+          "externalImport": Map {},
           "imports": Map {},
           "path": "paths/store/$.context.ts",
           "repository": Repository {
@@ -3519,7 +3519,7 @@ class Context {
               "typeDeclaration": "",
             },
           },
-          "externalImports": Map {},
+          "externalImport": Map {},
           "imports": Map {},
           "path": "components/Order.ts",
           "repository": Repository {
@@ -3570,7 +3570,7 @@ class Context {
         "typeDeclaration": "HTTP_DELETE",
       },
     },
-    "externalImports": Map {},
+    "externalImport": Map {},
     "imports": Map {
       "HTTP_GET" => Object {
         "isDefault": false,
@@ -3652,7 +3652,7 @@ class Context {
               "typeDeclaration": "",
             },
           },
-          "externalImports": Map {
+          "externalImport": Map {
             "ResponseBuilderFactory" => Object {
               "isType": true,
               "modulePath": "../../../response-builder-factory.js",
@@ -3695,7 +3695,7 @@ class Context {
                     "typeDeclaration": "",
                   },
                 },
-                "externalImports": Map {},
+                "externalImport": Map {},
                 "imports": Map {},
                 "path": "paths/store/order/$.context.ts",
                 "repository": Repository {
@@ -3726,7 +3726,7 @@ class Context {
                     "typeDeclaration": "",
                   },
                 },
-                "externalImports": Map {},
+                "externalImport": Map {},
                 "imports": Map {},
                 "path": "components/Order.ts",
                 "repository": Repository {
@@ -3825,7 +3825,7 @@ class Context {
               "typeDeclaration": "",
             },
           },
-          "externalImports": Map {
+          "externalImport": Map {
             "ResponseBuilderFactory" => Object {
               "isType": true,
               "modulePath": "../../../response-builder-factory.js",
@@ -3868,7 +3868,7 @@ class Context {
                     "typeDeclaration": "",
                   },
                 },
-                "externalImports": Map {},
+                "externalImport": Map {},
                 "imports": Map {},
                 "path": "paths/store/order/$.context.ts",
                 "repository": Repository {
@@ -3899,7 +3899,7 @@ class Context {
                     "typeDeclaration": "",
                   },
                 },
-                "externalImports": Map {},
+                "externalImport": Map {},
                 "imports": Map {},
                 "path": "components/Order.ts",
                 "repository": Repository {
@@ -4002,7 +4002,7 @@ class Context {
         "typeDeclaration": "",
       },
     },
-    "externalImports": Map {
+    "externalImport": Map {
       "ResponseBuilderFactory" => Object {
         "isType": true,
         "modulePath": "../../../response-builder-factory.js",
@@ -4045,7 +4045,7 @@ class Context {
               "typeDeclaration": "",
             },
           },
-          "externalImports": Map {},
+          "externalImport": Map {},
           "imports": Map {},
           "path": "paths/store/order/$.context.ts",
           "repository": Repository {
@@ -4076,7 +4076,7 @@ class Context {
               "typeDeclaration": "",
             },
           },
-          "externalImports": Map {},
+          "externalImport": Map {},
           "imports": Map {},
           "path": "components/Order.ts",
           "repository": Repository {
@@ -4114,7 +4114,7 @@ class Context {
         "typeDeclaration": "HTTP_POST",
       },
     },
-    "externalImports": Map {},
+    "externalImport": Map {},
     "imports": Map {
       "HTTP_POST" => Object {
         "isDefault": false,
@@ -4159,7 +4159,7 @@ class Context {
               "typeDeclaration": "",
             },
           },
-          "externalImports": Map {
+          "externalImport": Map {
             "ResponseBuilderFactory" => Object {
               "isType": true,
               "modulePath": "../response-builder-factory.js",
@@ -4200,7 +4200,7 @@ class Context {
                     "typeDeclaration": "",
                   },
                 },
-                "externalImports": Map {},
+                "externalImport": Map {},
                 "imports": Map {},
                 "path": "paths/$.context.ts",
                 "repository": Repository {
@@ -4231,7 +4231,7 @@ class Context {
                     "typeDeclaration": "",
                   },
                 },
-                "externalImports": Map {},
+                "externalImport": Map {},
                 "imports": Map {},
                 "path": "components/User.ts",
                 "repository": Repository {
@@ -4297,7 +4297,7 @@ class Context {
         "typeDeclaration": "",
       },
     },
-    "externalImports": Map {
+    "externalImport": Map {
       "ResponseBuilderFactory" => Object {
         "isType": true,
         "modulePath": "../response-builder-factory.js",
@@ -4338,7 +4338,7 @@ class Context {
               "typeDeclaration": "",
             },
           },
-          "externalImports": Map {},
+          "externalImport": Map {},
           "imports": Map {},
           "path": "paths/$.context.ts",
           "repository": Repository {
@@ -4369,7 +4369,7 @@ class Context {
               "typeDeclaration": "",
             },
           },
-          "externalImports": Map {},
+          "externalImport": Map {},
           "imports": Map {},
           "path": "components/User.ts",
           "repository": Repository {
@@ -4407,7 +4407,7 @@ class Context {
         "typeDeclaration": "HTTP_POST",
       },
     },
-    "externalImports": Map {},
+    "externalImport": Map {},
     "imports": Map {
       "HTTP_POST" => Object {
         "isDefault": false,
@@ -4458,7 +4458,7 @@ class Context {
               "typeDeclaration": "",
             },
           },
-          "externalImports": Map {
+          "externalImport": Map {
             "ResponseBuilderFactory" => Object {
               "isType": true,
               "modulePath": "../../response-builder-factory.js",
@@ -4501,7 +4501,7 @@ class Context {
                     "typeDeclaration": "",
                   },
                 },
-                "externalImports": Map {},
+                "externalImport": Map {},
                 "imports": Map {},
                 "path": "paths/user/$.context.ts",
                 "repository": Repository {
@@ -4532,7 +4532,7 @@ class Context {
                     "typeDeclaration": "",
                   },
                 },
-                "externalImports": Map {},
+                "externalImport": Map {},
                 "imports": Map {},
                 "path": "components/User.ts",
                 "repository": Repository {
@@ -4604,7 +4604,7 @@ class Context {
         "typeDeclaration": "",
       },
     },
-    "externalImports": Map {
+    "externalImport": Map {
       "ResponseBuilderFactory" => Object {
         "isType": true,
         "modulePath": "../../response-builder-factory.js",
@@ -4647,7 +4647,7 @@ class Context {
               "typeDeclaration": "",
             },
           },
-          "externalImports": Map {},
+          "externalImport": Map {},
           "imports": Map {},
           "path": "paths/user/$.context.ts",
           "repository": Repository {
@@ -4678,7 +4678,7 @@ class Context {
               "typeDeclaration": "",
             },
           },
-          "externalImports": Map {},
+          "externalImport": Map {},
           "imports": Map {},
           "path": "components/User.ts",
           "repository": Repository {
@@ -4716,7 +4716,7 @@ class Context {
         "typeDeclaration": "HTTP_GET",
       },
     },
-    "externalImports": Map {},
+    "externalImport": Map {},
     "imports": Map {
       "HTTP_GET" => Object {
         "isDefault": false,
@@ -4769,7 +4769,7 @@ class Context {
               "typeDeclaration": "",
             },
           },
-          "externalImports": Map {
+          "externalImport": Map {
             "ResponseBuilderFactory" => Object {
               "isType": true,
               "modulePath": "../../response-builder-factory.js",
@@ -4812,7 +4812,7 @@ class Context {
                     "typeDeclaration": "",
                   },
                 },
-                "externalImports": Map {},
+                "externalImport": Map {},
                 "imports": Map {},
                 "path": "paths/user/$.context.ts",
                 "repository": Repository {
@@ -4886,7 +4886,7 @@ class Context {
         "typeDeclaration": "",
       },
     },
-    "externalImports": Map {
+    "externalImport": Map {
       "ResponseBuilderFactory" => Object {
         "isType": true,
         "modulePath": "../../response-builder-factory.js",
@@ -4929,7 +4929,7 @@ class Context {
               "typeDeclaration": "",
             },
           },
-          "externalImports": Map {},
+          "externalImport": Map {},
           "imports": Map {},
           "path": "paths/user/$.context.ts",
           "repository": Repository {
@@ -4965,7 +4965,7 @@ class Context {
         "typeDeclaration": "HTTP_GET",
       },
     },
-    "externalImports": Map {},
+    "externalImport": Map {},
     "imports": Map {
       "HTTP_GET" => Object {
         "isDefault": false,
@@ -4996,7 +4996,7 @@ class Context {
               "typeDeclaration": "",
             },
           },
-          "externalImports": Map {
+          "externalImport": Map {
             "ResponseBuilderFactory" => Object {
               "isType": true,
               "modulePath": "../../response-builder-factory.js",
@@ -5039,7 +5039,7 @@ class Context {
                     "typeDeclaration": "",
                   },
                 },
-                "externalImports": Map {},
+                "externalImport": Map {},
                 "imports": Map {},
                 "path": "paths/user/$.context.ts",
                 "repository": Repository {
@@ -5091,7 +5091,7 @@ class Context {
         "typeDeclaration": "",
       },
     },
-    "externalImports": Map {
+    "externalImport": Map {
       "ResponseBuilderFactory" => Object {
         "isType": true,
         "modulePath": "../../response-builder-factory.js",
@@ -5134,7 +5134,7 @@ class Context {
               "typeDeclaration": "",
             },
           },
-          "externalImports": Map {},
+          "externalImport": Map {},
           "imports": Map {},
           "path": "paths/user/$.context.ts",
           "repository": Repository {
@@ -5198,7 +5198,7 @@ class Context {
         "typeDeclaration": "HTTP_DELETE",
       },
     },
-    "externalImports": Map {},
+    "externalImport": Map {},
     "imports": Map {
       "HTTP_GET" => Object {
         "isDefault": false,
@@ -5299,7 +5299,7 @@ class Context {
               "typeDeclaration": "",
             },
           },
-          "externalImports": Map {
+          "externalImport": Map {
             "ResponseBuilderFactory" => Object {
               "isType": true,
               "modulePath": "../../response-builder-factory.js",
@@ -5342,7 +5342,7 @@ class Context {
                     "typeDeclaration": "",
                   },
                 },
-                "externalImports": Map {},
+                "externalImport": Map {},
                 "imports": Map {},
                 "path": "paths/user/$.context.ts",
                 "repository": Repository {
@@ -5373,7 +5373,7 @@ class Context {
                     "typeDeclaration": "",
                   },
                 },
-                "externalImports": Map {},
+                "externalImport": Map {},
                 "imports": Map {},
                 "path": "components/User.ts",
                 "repository": Repository {
@@ -5491,7 +5491,7 @@ class Context {
               "typeDeclaration": "",
             },
           },
-          "externalImports": Map {
+          "externalImport": Map {
             "ResponseBuilderFactory" => Object {
               "isType": true,
               "modulePath": "../../response-builder-factory.js",
@@ -5534,7 +5534,7 @@ class Context {
                     "typeDeclaration": "",
                   },
                 },
-                "externalImports": Map {},
+                "externalImport": Map {},
                 "imports": Map {},
                 "path": "paths/user/$.context.ts",
                 "repository": Repository {
@@ -5565,7 +5565,7 @@ class Context {
                     "typeDeclaration": "",
                   },
                 },
-                "externalImports": Map {},
+                "externalImport": Map {},
                 "imports": Map {},
                 "path": "components/User.ts",
                 "repository": Repository {
@@ -5683,7 +5683,7 @@ class Context {
               "typeDeclaration": "",
             },
           },
-          "externalImports": Map {
+          "externalImport": Map {
             "ResponseBuilderFactory" => Object {
               "isType": true,
               "modulePath": "../../response-builder-factory.js",
@@ -5726,7 +5726,7 @@ class Context {
                     "typeDeclaration": "",
                   },
                 },
-                "externalImports": Map {},
+                "externalImport": Map {},
                 "imports": Map {},
                 "path": "paths/user/$.context.ts",
                 "repository": Repository {
@@ -5757,7 +5757,7 @@ class Context {
                     "typeDeclaration": "",
                   },
                 },
-                "externalImports": Map {},
+                "externalImport": Map {},
                 "imports": Map {},
                 "path": "components/User.ts",
                 "repository": Repository {
@@ -5879,7 +5879,7 @@ class Context {
         "typeDeclaration": "",
       },
     },
-    "externalImports": Map {
+    "externalImport": Map {
       "ResponseBuilderFactory" => Object {
         "isType": true,
         "modulePath": "../../response-builder-factory.js",
@@ -5922,7 +5922,7 @@ class Context {
               "typeDeclaration": "",
             },
           },
-          "externalImports": Map {},
+          "externalImport": Map {},
           "imports": Map {},
           "path": "paths/user/$.context.ts",
           "repository": Repository {
@@ -5953,7 +5953,7 @@ class Context {
               "typeDeclaration": "",
             },
           },
-          "externalImports": Map {},
+          "externalImport": Map {},
           "imports": Map {},
           "path": "components/User.ts",
           "repository": Repository {
@@ -6001,7 +6001,7 @@ class Context {
         "typeDeclaration": "",
       },
     },
-    "externalImports": Map {},
+    "externalImport": Map {},
     "imports": Map {},
     "path": "paths/$.context.ts",
     "repository": Repository {
@@ -6029,7 +6029,7 @@ class Context {
         "typeDeclaration": "",
       },
     },
-    "externalImports": Map {},
+    "externalImport": Map {},
     "imports": Map {
       "Category" => Object {
         "isDefault": false,
@@ -6052,7 +6052,7 @@ class Context {
               "typeDeclaration": "",
             },
           },
-          "externalImports": Map {},
+          "externalImport": Map {},
           "imports": Map {},
           "path": "components/Category.ts",
           "repository": Repository {
@@ -6083,7 +6083,7 @@ class Context {
               "typeDeclaration": "",
             },
           },
-          "externalImports": Map {},
+          "externalImport": Map {},
           "imports": Map {},
           "path": "components/Tag.ts",
           "repository": Repository {
@@ -6133,7 +6133,7 @@ class Context {
         "typeDeclaration": "",
       },
     },
-    "externalImports": Map {},
+    "externalImport": Map {},
     "imports": Map {},
     "path": "paths/pet/$.context.ts",
     "repository": Repository {
@@ -6174,7 +6174,7 @@ class Context {
         "typeDeclaration": "",
       },
     },
-    "externalImports": Map {},
+    "externalImport": Map {},
     "imports": Map {},
     "path": "paths/pet/{petId}/$.context.ts",
     "repository": Repository {
@@ -6200,7 +6200,7 @@ class Context {
         "typeDeclaration": "",
       },
     },
-    "externalImports": Map {},
+    "externalImport": Map {},
     "imports": Map {},
     "path": "components/ApiResponse.ts",
     "repository": Repository {
@@ -6241,7 +6241,7 @@ class Context {
         "typeDeclaration": "",
       },
     },
-    "externalImports": Map {},
+    "externalImport": Map {},
     "imports": Map {},
     "path": "paths/store/$.context.ts",
     "repository": Repository {
@@ -6267,7 +6267,7 @@ class Context {
         "typeDeclaration": "",
       },
     },
-    "externalImports": Map {},
+    "externalImport": Map {},
     "imports": Map {},
     "path": "components/Order.ts",
     "repository": Repository {
@@ -6308,7 +6308,7 @@ class Context {
         "typeDeclaration": "",
       },
     },
-    "externalImports": Map {},
+    "externalImport": Map {},
     "imports": Map {},
     "path": "paths/store/order/$.context.ts",
     "repository": Repository {
@@ -6334,7 +6334,7 @@ class Context {
         "typeDeclaration": "",
       },
     },
-    "externalImports": Map {},
+    "externalImport": Map {},
     "imports": Map {},
     "path": "components/User.ts",
     "repository": Repository {
@@ -6375,7 +6375,7 @@ class Context {
         "typeDeclaration": "",
       },
     },
-    "externalImports": Map {},
+    "externalImport": Map {},
     "imports": Map {},
     "path": "paths/user/$.context.ts",
     "repository": Repository {
@@ -6401,7 +6401,7 @@ class Context {
         "typeDeclaration": "",
       },
     },
-    "externalImports": Map {},
+    "externalImport": Map {},
     "imports": Map {},
     "path": "components/Category.ts",
     "repository": Repository {
@@ -6427,7 +6427,7 @@ class Context {
         "typeDeclaration": "",
       },
     },
-    "externalImports": Map {},
+    "externalImport": Map {},
     "imports": Map {},
     "path": "components/Tag.ts",
     "repository": Repository {
