@@ -105,6 +105,7 @@ export class Dispatcher {
     path: string,
     method: HttpMethods,
   ): OpenApiOperation | undefined {
+    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
     const operation: OpenApiOperation | undefined = this.openApiDocument?.paths[
       path
     ]?.[method.toLowerCase()] as OpenApiOperation;

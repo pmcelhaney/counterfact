@@ -62,7 +62,7 @@ describe("koa middleware", () => {
     const ctx = {
       request: { method: "GET", path: "/not-modified" },
 
-      set: () => {},
+      set: () => undefined,
     };
 
     await middleware(ctx);
