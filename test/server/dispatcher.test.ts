@@ -330,8 +330,9 @@ describe("a dispatcher", () => {
     const registry = new Registry();
 
     registry.add("/a", {
+      // @ts-expect-error - not obvious how to make TS happy here, and it's just a unit test
       GET({ response }) {
-        return response[200].text("hello").html("<h1>hello</h1>");
+        return response["200"]?.text("hello").html("<h1>hello</h1>");
       },
     });
 
@@ -357,9 +358,9 @@ describe("a dispatcher", () => {
     const registry = new Registry();
 
     registry.add("/a", {
+      // @ts-expect-error - not obvious how to make TypeScript happy here, and it's just a unit test
       GET({ response }) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-        return response[200]?.random();
+        return response["200"]?.random();
       },
     });
 
@@ -439,6 +440,7 @@ describe("a dispatcher", () => {
     contextRegistry.add("/", rootContext);
 
     registry.add("/increment/{value}", {
+      // @ts-expect-error - not obvious how to make TS happy here, and it's just a unit test
       GET({
         context,
         path,
@@ -488,8 +490,8 @@ describe("a dispatcher", () => {
     contextRegistry.add("/", { id: "test context" });
     registry.add("/echo", {
       GET({ context }) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        return { body: context.id };
+        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+        return { body: (context as { id: string }).id };
       },
     });
 
@@ -511,13 +513,13 @@ describe("a dispatcher", () => {
     const registry = new Registry();
 
     registry.add("/a/{integerInPath}/{stringInPath}", {
+      // @ts-expect-error - not obvious how to make TS happy here, and it's just a unit test
       GET({ headers, path, query, response }) {
         if (path === undefined) {
           throw new Error("path is undefined");
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-        return response[200].text({
+        return response["200"]?.text({
           integerInPath: path.integerInPath,
           numberInHeader: headers.numberInHeader,
           numberInQuery: query.numberInQuery,
