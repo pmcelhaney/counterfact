@@ -25,7 +25,7 @@ export class Transpiler extends EventTarget {
 
   private readonly destinationPath: string;
 
-  private watcher: FSWatcher;
+  private watcher: FSWatcher | undefined;
 
   public constructor(sourcePath: string, destinationPath: string) {
     super();
@@ -80,7 +80,7 @@ export class Transpiler extends EventTarget {
   }
 
   public async stopWatching(): Promise<void> {
-    await this.watcher.close();
+    await this.watcher?.close();
   }
 
   private async transpileFile(
