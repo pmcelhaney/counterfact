@@ -17,7 +17,12 @@ interface RequestData {
   headers: { [key: string]: number | string };
   matchedPath?: string;
   path?: { [key: string]: number | string };
-  proxy: unknown;
+  proxy: (url: string) => Promise<{
+    body: string;
+    contentType: string;
+    headers: { [key: string]: string };
+    status: number;
+  }>;
   query: { [key: string]: number | string };
   response: ResponseBuilder;
   tools: Tools;

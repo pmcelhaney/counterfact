@@ -10,9 +10,8 @@ describe("a dispatcher passes a proxy function to the operation", () => {
     const registry = new Registry();
 
     registry.add("/a", {
-      GET({ proxy }) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-        return proxy("https://example.com");
+      async GET({ proxy }) {
+        return await proxy("https://example.com");
       },
     });
 
