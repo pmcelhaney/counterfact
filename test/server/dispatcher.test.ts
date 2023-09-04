@@ -286,7 +286,9 @@ describe("a dispatcher", () => {
 
     registry.add("/a", {
       GET({ tools }) {
-        return { body: tools.accepts("text/html") };
+        return {
+          body: tools.accepts("text/html") ? "acceptable" : "unacceptable",
+        };
       },
     });
 
@@ -305,7 +307,7 @@ describe("a dispatcher", () => {
       req: { path: "/a" },
     });
 
-    expect(htmlResponse.body).toBe(true);
+    expect(htmlResponse.body).toBe("acceptable");
 
     const textResponse = await dispatcher.request({
       body: "",
@@ -321,7 +323,7 @@ describe("a dispatcher", () => {
       req: { path: "/a" },
     });
 
-    expect(textResponse.body).toBe(false);
+    expect(textResponse.body).toBe("unacceptable");
   });
 
   it("passes a response builder", async () => {
@@ -329,7 +331,6 @@ describe("a dispatcher", () => {
 
     registry.add("/a", {
       GET({ response }) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
         return response[200].text("hello").html("<h1>hello</h1>");
       },
     });

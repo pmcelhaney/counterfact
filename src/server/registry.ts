@@ -1,4 +1,4 @@
-import type { ResponseBuilder } from "../../templates/response-builder-factory.js";
+import type { ResponseBuilderFactory } from "../../templates/response-builder-factory.js";
 import type { MediaType } from "./response-builder.js";
 import type { Tools } from "./tools.js";
 
@@ -24,7 +24,7 @@ interface RequestData {
     status: number;
   }>;
   query: { [key: string]: number | string };
-  response: ResponseBuilder;
+  response: ResponseBuilderFactory;
   tools: Tools;
 }
 
