@@ -186,8 +186,11 @@ describe("a dispatcher", () => {
 
     registry.add("/a", {
       POST({ body }) {
+        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+        const typeSafeBody = body as { name: string; place: string };
+
         return {
-          body: `Hello ${body.name} of ${body.place}!`,
+          body: `Hello ${typeSafeBody.name} of ${typeSafeBody.place}!`,
         };
       },
     });
