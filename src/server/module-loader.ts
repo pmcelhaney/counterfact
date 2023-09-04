@@ -31,7 +31,7 @@ export class ModuleLoader extends EventTarget {
     contextRegistry = new ContextRegistry(),
   ) {
     super();
-    this.basePath = basePath.replace("\\", "/");
+    this.basePath = basePath.replaceAll("\\", "/");
     this.registry = registry;
     this.contextRegistry = contextRegistry;
   }
