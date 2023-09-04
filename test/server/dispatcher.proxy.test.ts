@@ -18,13 +18,17 @@ describe("a dispatcher passes a proxy function to the operation", () => {
 
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
 
-    dispatcher.fetch = async (url: string) =>
+    dispatcher.fetch = async (url) =>
       /* @ts-expect-error not mocking all properties of fetch response */
       await Promise.resolve({
         headers: new Headers([["content-type", "application/json"]]),
         status: 200,
 
         async text() {
+          if (typeof url !== "string") {
+            throw new TypeError("url is not a string");
+          }
+
           return await Promise.resolve(`body from ${url}`);
         },
       });
@@ -39,11 +43,14 @@ describe("a dispatcher passes a proxy function to the operation", () => {
       },
     });
 
-    expect(response.body).toBe("body from https://example.com/a?x=1");
-    expect(response.headers).toStrictEqual({
+    // @ts-expect-error I don't understand why TS says contentType and headers don't exist
+    const { body, contentType, headers, status } = response;
+
+    expect(body).toBe("body from https://example.com/a?x=1");
+    expect(headers).toStrictEqual({
       "content-type": "application/json",
     });
-    expect(response.contentType).toBe("application/json");
-    expect(response.status).toBe(200);
+    expect(contentType).toBe("application/json");
+    expect(status).toBe(200);
   });
 });
