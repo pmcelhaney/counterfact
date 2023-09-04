@@ -105,10 +105,15 @@ export class Dispatcher {
     path: string,
     method: HttpMethods,
   ): OpenApiOperation | undefined {
-    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-    const operation: OpenApiOperation | undefined = this.openApiDocument?.paths[
-      path
-    ]?.[method.toLowerCase()] as OpenApiOperation;
+    const operation: OpenApiOperation | undefined =
+      this.openApiDocument?.paths[path]?.[
+        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+        method.toLowerCase() as Lowercase<HttpMethods>
+      ];
+
+    if (operation === undefined) {
+      return undefined;
+    }
 
     if (this.openApiDocument?.produces) {
       return {

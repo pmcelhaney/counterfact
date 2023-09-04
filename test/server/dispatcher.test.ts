@@ -608,6 +608,46 @@ describe("a dispatcher", () => {
       stringInQuery: "4",
     });
   });
+
+  it("attaches the root produces array to an operation", () => {
+    const registry = new Registry();
+
+    registry.add("/hello", {
+      GET() {
+        return {
+          body: "ok",
+          status: 200,
+        };
+      },
+    });
+
+    const dispatcher = new Dispatcher(registry, new ContextRegistry(), {
+      paths: {
+        "/hello": {
+          get: {
+            responses: {
+              200: {
+                content: {
+                  "text/plain": {
+                    schema: {
+                      type: "string",
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+
+      produces: ["text/plain"],
+    });
+
+    const operation = dispatcher.operationForPathAndMethod("/hello", "GET");
+
+    expect(operation).not.toBeUndefined();
+    expect(operation?.produces).toStrictEqual(["text/plain"]);
+  });
 });
 
 describe("given an invalid path", () => {
@@ -639,27 +679,5 @@ describe("given an invalid path", () => {
     expect(response.body).toBe(
       "Could not find a PUT method matching /your/left/foot/in/and/your/right/foot/out\n",
     );
-  });
-
-  it("attaches the root produces array to an operation", () => {
-    const registry = new Registry();
-
-    registry.add("/your/{side}/{bodyPart}/in/and/your/left/foot/out", {
-      PUT() {
-        return {
-          body: "ok",
-          status: 201,
-        };
-      },
-    });
-
-    const dispatcher = new Dispatcher(registry, new ContextRegistry(), {
-      paths: {},
-      produces: ["text/plain"],
-    });
-
-    const operation = dispatcher.operationForPathAndMethod("/hello", "GET");
-
-    expect(operation.produces).toStrictEqual(["text/plain"]);
   });
 });
