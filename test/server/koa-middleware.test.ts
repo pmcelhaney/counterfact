@@ -1,22 +1,24 @@
 // eslint-disable-next-line import/no-extraneous-dependencies, n/no-extraneous-import
 import { jest } from "@jest/globals";
+import type { Context as KoaContext, ParameterizedContext } from "koa";
+import type KoaProxy from "koa-proxy";
 
 import { ContextRegistry } from "../../src/server/context-registry.js";
 import { Dispatcher } from "../../src/server/dispatcher.js";
 import { koaMiddleware } from "../../src/server/koa-middleware.js";
 import { Registry } from "../../src/server/registry.js";
 
-function mockKoaProxy(options: { host: string }) {
-  return function proxy(ctx: { mockProxyHost: string }) {
-    ctx.mockProxyHost = options.host;
+const mockKoaProxy = (options: KoaProxy.Options | undefined) =>
+  function proxy(ctx: KoaContext) {
+    ctx.mockProxyHost = options?.host;
   };
-}
 
 describe("koa middleware", () => {
   it("passes the request to the dispatcher and returns the response", async () => {
     const registry = new Registry();
 
     registry.add("/hello", {
+      // @ts-expect-error - not obvious how to make TS happy here, and it's just a unit test
       POST({ body }: { body: { name: string } }) {
         return {
           body: `Hello, ${body.name}!`,
@@ -26,6 +28,7 @@ describe("koa middleware", () => {
 
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
     const middleware = koaMiddleware(dispatcher);
+    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
     const ctx = {
       req: {
         path: "/hello",
@@ -38,9 +41,11 @@ describe("koa middleware", () => {
       },
 
       set: jest.fn(),
-    };
+    } as unknown as ParameterizedContext;
 
-    await middleware(ctx, () => undefined);
+    await middleware(ctx, async () => {
+      await Promise.resolve(undefined);
+    });
 
     expect(ctx.status).toBe(200);
     expect(ctx.body).toBe("Hello, Homer!");
@@ -63,9 +68,13 @@ describe("koa middleware", () => {
       request: { method: "GET", path: "/not-modified" },
 
       set: () => undefined,
+      status: undefined,
     };
 
-    await middleware(ctx);
+    // @ts-expect-error - not obvious how to make TS happy here, and it's just a unit test
+    await middleware(ctx, async () => {
+      await Promise.resolve(undefined);
+    });
 
     expect(ctx.status).toBe(304);
   });
@@ -86,10 +95,14 @@ describe("koa middleware", () => {
       mockKoaProxy,
     );
     const ctx = {
+      mockProxyHost: undefined,
       request: { method: "GET", path: "/proxy" },
     };
 
-    await middleware(ctx);
+    // @ts-expect-error - not obvious how to make TS happy here, and it's just a unit test
+    await middleware(ctx, async () => {
+      await Promise.resolve(undefined);
+    });
 
     expect(ctx.mockProxyHost).toBe("https://example.com");
   });
@@ -100,7 +113,8 @@ describe("koa middleware", () => {
     registry.add("/hello", {
       POST({ body }) {
         return {
-          body: `Hello, ${body.name}!`,
+          // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+          body: `Hello, ${(body as { name: string }).name}!`,
         };
       },
     });
@@ -108,6 +122,8 @@ describe("koa middleware", () => {
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
     const middleware = koaMiddleware(dispatcher);
     const ctx = {
+      body: undefined,
+
       req: {
         path: "/hello",
       },
@@ -119,9 +135,14 @@ describe("koa middleware", () => {
       },
 
       set: jest.fn(),
+
+      status: undefined,
     };
 
-    await middleware(ctx);
+    // @ts-expect-error - not obvious how to make TS happy here, and it's just a unit test
+    await middleware(ctx, async () => {
+      await Promise.resolve(undefined);
+    });
 
     expect(ctx.status).toBe(200);
     expect(ctx.body).toBe("Hello, Homer!");
@@ -141,7 +162,8 @@ describe("koa middleware", () => {
     registry.add("/hello", {
       POST({ body }) {
         return {
-          body: `Hello, ${body.name}!`,
+          // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+          body: `Hello, ${(body as { name: string }).name}!`,
         };
       },
     });
@@ -149,6 +171,8 @@ describe("koa middleware", () => {
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
     const middleware = koaMiddleware(dispatcher);
     const ctx = {
+      body: undefined,
+
       req: {
         path: "/hello",
       },
@@ -167,8 +191,10 @@ describe("koa middleware", () => {
       },
 
       set: jest.fn(),
+      status: undefined,
     };
 
+    // @ts-expect-error - not obvious how to make TS happy here, and it's just a unit test
     await middleware(ctx);
 
     expect(ctx.status).toBe(200);

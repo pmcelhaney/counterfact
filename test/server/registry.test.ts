@@ -1,4 +1,8 @@
-import { type Module, Registry } from "../../src/server/registry.js";
+import {
+  type Module,
+  Registry,
+  type RequestDataWithBody,
+} from "../../src/server/registry.js";
 
 function makeModule(name: string): Module {
   return {
@@ -11,6 +15,7 @@ function makeModule(name: string): Module {
 async function identifyModule(
   node: { module?: Module } | undefined,
 ): Promise<unknown> {
+  // @ts-expect-error - not creating an entire request object
   // eslint-disable-next-line new-cap
   return await node?.module?.GET?.({
     headers: {},
@@ -78,9 +83,13 @@ describe("a registry", () => {
 
       query: {},
     };
+    // @ts-expect-error - chill out, TypeScript
     const getA = await registry.endpoint("GET", "/a")(props);
+    // @ts-expect-error - chill out, TypeScript
     const getB = await registry.endpoint("GET", "/b")(props);
+    // @ts-expect-error - chill out, TypeScript
     const postA = await registry.endpoint("POST", "/a")(props);
+    // @ts-expect-error - chill out, TypeScript
     const postB = await registry.endpoint("POST", "/b")(props);
 
     expect(getA).toBe("GET a");
@@ -119,9 +128,9 @@ describe("a registry", () => {
     registry.add("/{organization}/users/{username}/friends/{page}", {
       GET({ path }) {
         return {
-          body: `page ${String(path.page)} of ${String(
-            path.username,
-          )}'s friends in ${String(path.organization)}`,
+          body: `page ${String(path?.page)} of ${String(
+            path?.username,
+          )}'s friends in ${String(path?.organization)}`,
 
           headers: { "content-type": "text/plain" },
 
@@ -134,6 +143,7 @@ describe("a registry", () => {
       await registry.endpoint(
         "GET",
         "/acme/users/alice/friends/2",
+        // @ts-expect-error - not creating an entire request object
       )({ headers: {}, matchedPath: "", path: {}, query: {} }),
     ).toStrictEqual({
       body: "page 2 of alice's friends in acme",
@@ -156,7 +166,11 @@ describe("a registry", () => {
     });
 
     expect(
-      await registry.endpoint("GET", "/Acme/users/alice/Friends/2")({}),
+      await registry.endpoint(
+        "GET",
+        "/Acme/users/alice/Friends/2",
+        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+      )({} as RequestDataWithBody),
     ).toStrictEqual({
       body: "page 2 of alice's friends in Acme",
     });

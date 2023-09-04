@@ -79,7 +79,13 @@ describe("a response builder", () => {
             },
 
             "text/plain": {
-              examples: { text: "example text response" },
+              examples: {
+                text: {
+                  description: "a text response",
+                  summary: "summary",
+                  value: "example text response",
+                },
+              },
 
               schema: {
                 examples: ["hello"],

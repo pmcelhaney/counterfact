@@ -152,8 +152,10 @@ describe("a module loader", () => {
         const response = registry.endpoint(
           "GET",
           "/change",
+          // @ts-expect-error - not going to create a whole context object for a test
         )({ headers: {}, matchedPath: "", path: {}, query: {} });
 
+        // @ts-expect-error - TypeScript doesn't know that the response will have a body property
         expect(response.body).toBe("after change");
         expect(registry.exists("GET", "/late/addition")).toBe(true);
 

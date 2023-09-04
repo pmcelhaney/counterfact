@@ -50,6 +50,12 @@ function unknownStatusCodeResponse(statusCode: number | undefined) {
   };
 }
 
+interface Example {
+  description: string;
+  summary: string;
+  value: unknown;
+}
+
 export type MediaType = `${string}/${string}`;
 
 export interface OpenApiResponse {
@@ -64,7 +70,7 @@ export interface OpenApiOperation {
     [status: string]: {
       content?: {
         [type: number | string]: {
-          examples?: unknown[];
+          examples?: { [key: string]: Example };
           schema: unknown;
         };
       };
@@ -142,7 +148,11 @@ export function createResponseBuilder(
 
           content: Object.keys(content).map((type) => ({
             body: content[type]?.examples
-              ? oneOf(content[type]?.examples ?? [])
+              ? oneOf(
+                  Object.values(content[type]?.examples ?? []).map(
+                    (example) => example.value,
+                  ),
+                )
               : JSONSchemaFaker.generate(
                   // eslint-disable-next-line total-functions/no-unsafe-readonly-mutable-assignment
                   content[type]?.schema ?? { type: "object" },

@@ -232,4 +232,9 @@ export class Registry {
   }
 }
 
-export type { CounterfactResponseObject, HttpMethods, Module };
+export type {
+  CounterfactResponseObject,
+  HttpMethods,
+  Module,
+  RequestDataWithBody,
+};
