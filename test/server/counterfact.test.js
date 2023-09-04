@@ -1,8 +1,6 @@
 import http from "node:http";
 
-// eslint-disable-next-line import/newline-after-import
 import Koa from "koa";
-// eslint-disable-next-line n/no-unpublished-import
 import supertest from "supertest";
 
 import { counterfact } from "../../src/server/counterfact.ts";

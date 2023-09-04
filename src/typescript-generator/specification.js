@@ -1,9 +1,11 @@
+/* eslint-disable n/no-missing-import */
 import nodePath from "node:path";
 
 import createDebug from "debug";
 import yaml from "js-yaml";
 
-import { readFile } from "../util/read-file.ts";
+// eslint-disable-next-line import/no-unresolved
+import { readFile } from "../util/read-file.js";
 import { Requirement } from "./requirement.js";
 
 const debug = createDebug("counterfact:typescript-generator:specification");
