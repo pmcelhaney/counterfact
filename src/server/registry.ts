@@ -56,7 +56,7 @@ type CounterfactResponseObject =
         body: unknown;
         type: MediaType;
       }[];
-      headers?: { [key: string]: string };
+      headers?: { [key: string]: number | string };
       status?: number;
     };
 
