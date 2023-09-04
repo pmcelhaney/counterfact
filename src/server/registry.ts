@@ -14,7 +14,7 @@ type HttpMethods =
 
 interface RequestData {
   context: unknown;
-  headers: { [key: string]: string };
+  headers: { [key: string]: number | string };
   matchedPath?: string;
   path?: { [key: string]: number | string };
   proxy: unknown;

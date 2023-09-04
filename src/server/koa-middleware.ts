@@ -4,6 +4,7 @@ import type Koa from "koa";
 import koaProxy from "koa-proxy";
 
 import type { Dispatcher } from "./dispatcher.js";
+import type { HttpMethods } from "./registry.js";
 
 const HTTP_STATUS_CODE_OK = 200;
 
@@ -30,7 +31,10 @@ export function koaMiddleware(
 ): Koa.Middleware {
   // eslint-disable-next-line max-statements
   return async function middleware(ctx, next) {
-    const { body, headers, method, path, query } = ctx.request;
+    const { body, headers, path, query } = ctx.request;
+
+    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+    const method = ctx.request.method as HttpMethods;
 
     if (proxyEnabled && proxyUrl) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-return
