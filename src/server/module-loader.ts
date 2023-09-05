@@ -87,7 +87,7 @@ export class ModuleLoader extends EventTarget {
           // eslint-disable-next-line promise/prefer-await-to-then
           .catch((error: unknown) => {
             process.stdout.write(
-              `\nError loading ${pathName}:\n${String(error)}\n`,
+              `\nError loading ${fileUrl}:\n${String(error)}\n`,
             );
           });
       },
@@ -142,9 +142,13 @@ export class ModuleLoader extends EventTarget {
     directory: string,
     file: Dirent,
   ) {
+    const fileUrl = `${pathToFileURL(
+      fullPath,
+    ).toString()}?cacheBust=${Date.now()}`;
+
     try {
       // eslint-disable-next-line import/no-dynamic-require, no-unsanitized/method, @typescript-eslint/consistent-type-assertions
-      const endpoint: ContextModule | Module = (await import(fullPath)) as
+      const endpoint: ContextModule | Module = (await import(fileUrl)) as
         | ContextModule
         | Module;
 
@@ -167,7 +171,7 @@ export class ModuleLoader extends EventTarget {
         this.registry.add(url, endpoint as Module);
       }
     } catch (error: unknown) {
-      process.stdout.write(`\nError loading ${fullPath}:\n${String(error)}\n`);
+      process.stdout.write(`\nError loading ${fileUrl}:\n${String(error)}\n`);
     }
   }
 }
