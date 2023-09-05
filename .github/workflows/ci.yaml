@@ -16,7 +16,7 @@ jobs:
         os: ["windows-latest", "ubuntu-latest"]
     runs-on: ${{ matrix.os }}
     steps:
-      - name: Check out repo
+      - name: Check Out Repo
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
@@ -26,7 +26,7 @@ jobs:
           cache: yarn
         id: setup-node
       - name: Get Node Version
-        run: echo "::set-output name=version::$(node -v)"
+        run: echo "version=$(node -v)" >> $GITHUB_OUTPUT
         id: node-version
       - name: Cache node_modules
         uses: actions/cache@v3
@@ -35,10 +35,16 @@ jobs:
           key: ${{ runner.os }}-${{ steps.node-version.outputs.version }}-${{ hashFiles('**/yarn.lock') }}
       - name: Install Packages
         run: yarn install --frozen-lockfile --network-timeout 100000
+      - name: Black Box Tests
+        timeout-minutes: 2
+        run: yarn test:black-box --runInBand --forceExit --verbose --no-watchman
       - name: ESlint
         run: yarn eslint -f github-annotations .
       - name: TypeScript
         run: yarn tsc --noEmit
-      - name: Unit tests
+      - name: Unit Tests
         timeout-minutes: 2
         run: yarn test --runInBand --forceExit --verbose --no-watchman
+      - name: Black Box Tests
+        timeout-minutes: 2
+        run: yarn test:black-box --runInBand --forceExit --verbose --no-watchman

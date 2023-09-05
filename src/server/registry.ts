@@ -1,6 +1,10 @@
+import createDebugger from "debug";
+
 import type { ResponseBuilderFactory } from "../../templates/response-builder-factory.js";
 import type { MediaType } from "./response-builder.js";
 import type { Tools } from "./tools.js";
+
+const debug = createDebugger("counterfact:server:registry");
 
 type HttpMethods =
   | "DELETE"
@@ -169,6 +173,9 @@ export class Registry {
         (candidate) => candidate.toLowerCase() === segment.toLowerCase(),
       );
 
+      debug("segment: %s", segment);
+      debug("matching child: %s", matchingChild);
+
       if (matchingChild === undefined) {
         const dynamicSegment: string | undefined = Object.keys(
           node.children,
@@ -206,6 +213,8 @@ export class Registry {
     } = {},
   ) {
     const handler = this.handler(url);
+
+    debug("handler for %s: %o", url, handler);
     const execute = handler.module?.[httpRequestMethod];
 
     if (!execute) {
