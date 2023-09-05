@@ -1,3 +1,7 @@
+/* eslint-disable sonar/no-os-command-from-path */
+/* eslint-disable sonar/os-command */
+/* eslint-disable no-console */
+/* eslint-disable n/no-process-env */
 /* eslint-disable jest/no-restricted-matchers */
 /* eslint-disable n/no-sync */
 /* eslint-disable jest/no-hooks */
@@ -7,13 +11,19 @@ import fs from "node:fs";
 // eslint-disable-next-line @typescript-eslint/no-shadow, no-shadow
 import fetch from "node-fetch";
 
+const SERVER_START_WAIT_SECONDS = 10;
+
 describe("black box test", () => {
   // eslint-disable-next-line init-declarations
   let counterfactProcess;
 
   beforeAll(async () => {
-    // eslint-disable-next-line sonar/no-os-command-from-path
-    counterfactProcess = exec("npx . ./openapi-example.yaml out");
+    counterfactProcess = exec("npx . ./openapi-example.yaml out", {
+      env: { ...process.env, DEBUG: "counterfact:*" },
+    });
+
+    counterfactProcess.stderr.pipe(process.stderr);
+    counterfactProcess.stdout.pipe(process.stdout);
 
     // eslint-disable-next-line promise/avoid-new
     await new Promise((resolve) => {
@@ -23,7 +33,10 @@ describe("black box test", () => {
     // wait a few seconds to make sure the server is up
     // eslint-disable-next-line promise/avoid-new
     await new Promise((resolve) => {
-      setTimeout(resolve, 5000);
+      console.log(
+        `waiting ${SERVER_START_WAIT_SECONDS} seconds for server to start`,
+      );
+      setTimeout(resolve, SERVER_START_WAIT_SECONDS * 1000);
     });
   }, 60_000);
 
