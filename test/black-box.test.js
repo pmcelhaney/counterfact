@@ -25,6 +25,9 @@ describe("black box test", () => {
   }, 60_000);
 
   afterAll(() => {
+    counterfactProcess.stdout.destroy();
+    counterfactProcess.stderr.destroy();
+    counterfactProcess.stdin.destroy();
     counterfactProcess.kill();
     counterfactProcess.unref();
   });
