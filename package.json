@@ -28,7 +28,7 @@
     "dist"
   ],
   "scripts": {
-    "test": "yarn node --experimental-vm-modules ./node_modules/jest-cli/bin/jest --testPathIgnorePatterns=black-box",
+    "test": "yarn node --experimental-vm-modules ./node_modules/jest-cli/bin/jest --testPathIgnorePatterns=black-box --detectOpenHandles",
     "test:black-box": "rimraf dist && rimraf out && yarn build && yarn node --experimental-vm-modules ./node_modules/jest-cli/bin/jest black-box --detectOpenHandles --coverage=false",
     "test:mutants": "stryker run stryker.config.json",
     "build": "tsc && copyfiles src/client/** dist && copyfiles templates/** dist",
