@@ -1,6 +1,6 @@
 /* eslint-disable max-statements */
-import nodePath from "node:path";
-import { pathToFileURL } from "node:url";
+import nodePath, { dirname } from "node:path";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 import createDebug from "debug";
 import Handlebars from "handlebars";
@@ -18,8 +18,8 @@ const debug = createDebug("counterfact:server:start");
 // eslint-disable-next-line @typescript-eslint/init-declarations
 let httpTerminator: HttpTerminator | undefined;
 
-// eslint-disable-next-line no-underscore-dangle, total-functions/no-partial-url-constructor
-const __dirname = nodePath.dirname(new URL(import.meta.url).pathname);
+// eslint-disable-next-line no-underscore-dangle
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const DEFAULT_PORT = 3100;
 
