@@ -135,7 +135,7 @@ module.exports = {
       files: ["**/*.ts"],
 
       parserOptions: {
-        project: "./tsconfig.json",
+        project: "./tsconfig.eslint.json",
         sourceType: "module",
       },
 
@@ -166,7 +166,7 @@ module.exports = {
         "import/resolver": {
           typescript: {
             alwaysTryTypes: true,
-            project: "tsconfig.json",
+            project: "tsconfig.eslint.json",
           },
         },
       },
