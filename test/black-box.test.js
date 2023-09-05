@@ -26,11 +26,12 @@ describe("black box test", () => {
 
   afterAll(() => {
     counterfactProcess.kill();
+    counterfactProcess.unref();
   });
 
   it("responds to a GET request", async () => {
     const response = await fetch("http://localhost:3100/hello/world");
 
     expect(response.status).toBe(200);
-  }, 60_000);
+  });
 });
