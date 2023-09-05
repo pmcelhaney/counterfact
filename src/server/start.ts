@@ -1,9 +1,10 @@
 /* eslint-disable max-statements */
-import nodePath from "node:path";
-import { pathToFileURL } from "node:url";
+import nodePath, { dirname } from "node:path";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 import createDebug from "debug";
 import Handlebars from "handlebars";
+import { createHttpTerminator, type HttpTerminator } from "http-terminator";
 import yaml from "js-yaml";
 import Koa from "koa";
 import bodyParser from "koa-bodyparser";
@@ -14,8 +15,11 @@ import { counterfact } from "./counterfact.js";
 
 const debug = createDebug("counterfact:server:start");
 
-// eslint-disable-next-line no-underscore-dangle, total-functions/no-partial-url-constructor
-const __dirname = nodePath.dirname(new URL(import.meta.url).pathname);
+// eslint-disable-next-line @typescript-eslint/init-declarations
+let httpTerminator: HttpTerminator | undefined;
+
+// eslint-disable-next-line no-underscore-dangle
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const DEFAULT_PORT = 3100;
 
@@ -61,11 +65,13 @@ function page(
   locals: { [key: string]: unknown },
 ) {
   return async (ctx: Koa.ExtendableContext, next: Koa.Next) => {
-    const render = Handlebars.compile(
-      await readFile(
-        nodePath.join(__dirname, `../client/${templateName}.html.hbs`),
-      ),
-    );
+    const pathToHandlebarsTemplate = nodePath
+      .join(__dirname, `../client/${templateName}.html.hbs`)
+      .replaceAll("\\", "/");
+
+    debug("pathToHandlebarsTemplate: %s", pathToHandlebarsTemplate);
+
+    const render = Handlebars.compile(await readFile(pathToHandlebarsTemplate));
 
     if (ctx.URL.pathname === pathname) {
       ctx.body = render(locals);
@@ -136,6 +142,14 @@ export async function start(config: {
       return;
     }
 
+    if (ctx.URL.pathname === "/counterfact/stop") {
+      debug("Stopping server...");
+      await httpTerminator?.terminate();
+      debug("Server stopped.");
+
+      return;
+    }
+
     // eslint-disable-next-line  n/callback-return
     await next();
   });
@@ -151,7 +165,13 @@ export async function start(config: {
 
   app.use(koaMiddleware);
 
-  app.listen(port);
+  const server = app.listen({
+    port,
+  });
+
+  httpTerminator = createHttpTerminator({
+    server,
+  });
 
   return { contextRegistry };
 }

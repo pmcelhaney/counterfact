@@ -1,5 +1,8 @@
-// eslint-disable-next-line import/newline-after-import
+/* eslint-disable import/newline-after-import */
+/* eslint-disable max-lines */
+
 import { mediaTypes } from "@hapi/accept";
+import createDebugger from "debug";
 // eslint-disable-next-line @typescript-eslint/no-shadow
 import fetch, { Headers } from "node-fetch";
 
@@ -14,6 +17,8 @@ import {
   type OpenApiOperation,
 } from "./response-builder.js";
 import { Tools } from "./tools.js";
+
+const debug = createDebugger("counterfact:server:dispatcher");
 
 interface ParameterTypes {
   body: {
@@ -229,6 +234,8 @@ export class Dispatcher {
       path?: string;
     };
   }) {
+    debug(`request: ${method} ${path}`);
+
     const { matchedPath } = this.registry.handler(path);
     const operation = this.operationForPathAndMethod(matchedPath, method);
 
