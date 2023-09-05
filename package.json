@@ -96,6 +96,6 @@
     "node-fetch": "^3.2.10",
     "open": "^9.0.0",
     "prettier": "^3.0.0",
-    "typescript": "5.1.6"
+    "typescript": "5.2.2"
   }
 }
