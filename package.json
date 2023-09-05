@@ -28,7 +28,8 @@
     "dist"
   ],
   "scripts": {
-    "test": "yarn node --experimental-vm-modules ./node_modules/jest-cli/bin/jest",
+    "test": "yarn node --experimental-vm-modules ./node_modules/jest-cli/bin/jest --testPathIgnorePatterns=black-box",
+    "test:black-box": "rimraf dist && rimraf out && yarn build && yarn node --experimental-vm-modules ./node_modules/jest-cli/bin/jest black-box",
     "test:mutants": "stryker run stryker.config.json",
     "build": "tsc && copyfiles src/client/** dist && copyfiles templates/** dist",
     "prepack": "yarn build",
@@ -73,6 +74,7 @@
     "node-mocks-http": "^1.12.2",
     "nodemon": "3.0.1",
     "patch-package": "^8.0.0",
+    "rimraf": "^5.0.1",
     "stryker-cli": "1.0.2",
     "supertest": "6.3.3"
   },

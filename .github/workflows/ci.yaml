@@ -16,7 +16,7 @@ jobs:
         os: ["windows-latest", "ubuntu-latest"]
     runs-on: ${{ matrix.os }}
     steps:
-      - name: Check out repo
+      - name: Check Out Repo
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
@@ -39,6 +39,9 @@ jobs:
         run: yarn eslint -f github-annotations .
       - name: TypeScript
         run: yarn tsc --noEmit
-      - name: Unit tests
+      - name: Unit Tests
         timeout-minutes: 2
         run: yarn test --runInBand --forceExit --verbose --no-watchman
+      - name: Black Box Tests
+        timeout-minutes: 2
+        run: yarn test:black-box --runInBand --forceExit --verbose --no-watchman
