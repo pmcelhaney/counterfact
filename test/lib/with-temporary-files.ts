@@ -5,7 +5,14 @@ import nodePath from "node:path";
 
 const DEBUG = false;
 
-async function ensureDirectoryExists(filePath) {
+interface Operations {
+  add: (filePath: string, content: string) => Promise<void>;
+  addDirectory: (filePath: string) => Promise<void>;
+  path: (filePath: string) => string;
+  remove: (filePath: string) => Promise<void>;
+}
+
+async function ensureDirectoryExists(filePath: string) {
   const directory = nodePath.dirname(filePath);
 
   try {
@@ -15,25 +22,26 @@ async function ensureDirectoryExists(filePath) {
   }
 }
 
-function createAddFunction(basePath) {
-  return async function add(filePath, content) {
+function createAddFunction(basePath: string) {
+  return async function add(filePath: string, content: string) {
     const fullPath = nodePath.join(basePath, filePath).replaceAll("\\", "/");
 
     await ensureDirectoryExists(fullPath);
+
     await fs.writeFile(fullPath, content);
   };
 }
 
-function createAddDirectoryFunction(basePath) {
-  return async function addDirectory(filePath) {
+function createAddDirectoryFunction(basePath: string) {
+  return async function addDirectory(filePath: string) {
     const fullPath = nodePath.join(basePath, filePath).replaceAll("\\", "/");
 
     await fs.mkdir(fullPath, { recursive: true });
   };
 }
 
-function createRemoveFunction(basePath) {
-  return async function remove(filePath) {
+function createRemoveFunction(basePath: string) {
+  return async function remove(filePath: string) {
     const fullPath = nodePath.join(basePath, filePath).replaceAll("\\", "/");
 
     await ensureDirectoryExists(fullPath);
@@ -41,7 +49,11 @@ function createRemoveFunction(basePath) {
   };
 }
 
-export async function withTemporaryFiles(files, ...callbacks) {
+export async function withTemporaryFiles(
+  files: { [name: string]: string },
+  ...callbacks: ((directory: string, operations: Operations) => Promise<void>)[]
+) {
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const baseDirectory = DEBUG
     ? nodePath.resolve(process.cwd(), "./")
     : os.tmpdir();
@@ -58,6 +70,7 @@ export async function withTemporaryFiles(files, ...callbacks) {
         .replaceAll("\\", "/");
 
       await ensureDirectoryExists(filePath);
+
       await fs.writeFile(filePath, contents);
     });
 
@@ -79,6 +92,7 @@ export async function withTemporaryFiles(files, ...callbacks) {
       });
     }
   } finally {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (!DEBUG) {
       await fs.rm(temporaryDirectory, { recursive: true });
     }

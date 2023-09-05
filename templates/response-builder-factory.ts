@@ -1,10 +1,4 @@
-interface OpenApiHeader {
-  schema: unknown;
-}
-
-interface OpenApiContent {
-  schema: unknown;
-}
+import type { OpenApiResponse } from "../src/server/response-builder.js";
 
 type OmitValueWhenNever<Base> = Pick<
   Base,
@@ -14,11 +8,6 @@ type OmitValueWhenNever<Base> = Pick<
 >;
 
 type MediaType = `${string}/${string}`;
-
-interface OpenApiResponse {
-  content: { [key: MediaType]: OpenApiContent };
-  headers: { [key: string]: OpenApiHeader };
-}
 
 interface OpenApiResponses {
   [key: string]: OpenApiResponse;
@@ -61,9 +50,9 @@ type HeaderFunction<Response extends OpenApiResponse> = <
   headers: Omit<Response["headers"], Header>;
 }>;
 
-type ResponseBuilder<Response extends OpenApiResponse> = [
-  keyof Response["content"],
-] extends [never]
+export type ResponseBuilder<
+  Response extends OpenApiResponse = OpenApiResponse,
+> = [keyof Response["content"]] extends [never]
   ? // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
     void
   : OmitValueWhenNever<{
@@ -79,7 +68,9 @@ type ResponseBuilder<Response extends OpenApiResponse> = [
       text: MaybeShortcut<"text/plain", Response>;
     }>;
 
-export type ResponseBuilderFactory<Responses extends OpenApiResponses> = {
+export type ResponseBuilderFactory<
+  Responses extends OpenApiResponses = OpenApiResponses,
+> = {
   [StatusCode in keyof Responses]: ResponseBuilder<Responses[StatusCode]>;
 } & { [key: string]: ResponseBuilder<Responses["default"]> };
 

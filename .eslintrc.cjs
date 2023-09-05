@@ -8,15 +8,6 @@ const rules = {
 
   "import/namespace": "off",
 
-  // too slow
-  "import/no-cycle": "off",
-
-  "import/no-deprecated": "off",
-  "import/no-named-as-default": "off",
-  "import/no-named-as-default-member": "off",
-
-  "import/no-unused-modules": "off",
-
   "import/prefer-default-export": "off",
 
   "max-len": [
@@ -144,7 +135,7 @@ module.exports = {
       files: ["**/*.ts"],
 
       parserOptions: {
-        project: "./tsconfig.json",
+        project: "./tsconfig.eslint.json",
         sourceType: "module",
       },
 
@@ -175,7 +166,7 @@ module.exports = {
         "import/resolver": {
           typescript: {
             alwaysTryTypes: true,
-            project: "tsconfig.json",
+            project: "tsconfig.eslint.json",
           },
         },
       },
@@ -197,6 +188,16 @@ module.exports = {
       },
 
       rules: {},
+    },
+
+    {
+      files: ["bin/**.js"],
+
+      rules: {
+        ...rules,
+        "import/no-unresolved": "off",
+        "n/no-missing-import": "off",
+      },
     },
   ],
 

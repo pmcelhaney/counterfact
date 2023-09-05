@@ -7,7 +7,7 @@ import { withTemporaryFiles } from "../lib/with-temporary-files.js";
 
 describe("a module loader", () => {
   it("finds a file and adds it to the registry", async () => {
-    const files = {
+    const files: { [fileName: string]: string } = {
       "a/b/c.mjs": `
         export function GET() {
             return {
@@ -24,9 +24,9 @@ describe("a module loader", () => {
       `,
     };
 
-    await withTemporaryFiles(files, async (basePath) => {
-      const registry = new Registry();
-      const loader = new ModuleLoader(basePath, registry);
+    await withTemporaryFiles(files, async (basePath: string) => {
+      const registry: Registry = new Registry();
+      const loader: ModuleLoader = new ModuleLoader(basePath, registry);
 
       await loader.load();
 
@@ -38,25 +38,31 @@ describe("a module loader", () => {
   });
 
   it("updates the registry when a file is added", async () => {
-    await withTemporaryFiles({}, async (basePath, { add }) => {
-      const registry = new Registry();
-      const loader = new ModuleLoader(basePath, registry);
+    await withTemporaryFiles(
+      {},
+      async (
+        basePath: string,
+        { add }: { add: (path: string, content: string) => void },
+      ) => {
+        const registry: Registry = new Registry();
+        const loader: ModuleLoader = new ModuleLoader(basePath, registry);
 
-      await loader.load();
-      await loader.watch();
+        await loader.load();
+        await loader.watch();
 
-      expect(registry.exists("GET", "/late/addition")).toBe(false);
+        expect(registry.exists("GET", "/late/addition")).toBe(false);
 
-      add(
-        "late/addition.mjs",
-        'export function GET() { return { body: "I\'m here now!" }; }',
-      );
-      await once(loader, "add");
+        add(
+          "late/addition.mjs",
+          'export function GET() { return { body: "I\'m here now!" }; }',
+        );
+        await once(loader, "add");
 
-      expect(registry.exists("GET", "/late/addition")).toBe(true);
+        expect(registry.exists("GET", "/late/addition")).toBe(true);
 
-      await loader.stopWatching();
-    });
+        await loader.stopWatching();
+      },
+    );
   });
 
   it("updates the registry when a file is deleted", async () => {
@@ -65,9 +71,12 @@ describe("a module loader", () => {
         "delete-me.mjs":
           'export function GET() { return { body: "Goodbye" }; }',
       },
-      async (basePath, { remove }) => {
-        const registry = new Registry();
-        const loader = new ModuleLoader(basePath, registry);
+      async (
+        basePath: string,
+        { remove }: { remove: (path: string) => void },
+      ) => {
+        const registry: Registry = new Registry();
+        const loader: ModuleLoader = new ModuleLoader(basePath, registry);
 
         await loader.load();
         await loader.watch();
@@ -87,43 +96,51 @@ describe("a module loader", () => {
   it("ignores files with the wrong file extension", async () => {
     const contents = 'export function GET() { return { body: "hello" }; }';
 
-    const files = {
+    const files: { [key: string]: string } = {
       "module.mjs": contents,
       "README.md": contents,
     };
 
-    await withTemporaryFiles(files, async (basePath, { add }) => {
-      const registry = new Registry();
-      const loader = new ModuleLoader(basePath, registry);
+    await withTemporaryFiles(
+      files,
+      async (
+        basePath: string,
+        { add }: { add: (path: string, content: string) => void },
+      ) => {
+        const registry: Registry = new Registry();
+        const loader: ModuleLoader = new ModuleLoader(basePath, registry);
 
-      await loader.load();
-      await loader.watch();
+        await loader.load();
+        await loader.watch();
 
-      await add("other.txt", "should not be loaded");
+        add("other.txt", "should not be loaded");
 
-      expect(registry.exists("GET", "/module")).toBe(true);
-      expect(registry.exists("GET", "/READMEx")).toBe(false);
-      expect(registry.exists("GET", "/other")).toBe(false);
-      expect(registry.exists("GET", "/types")).toBe(false);
+        expect(registry.exists("GET", "/module")).toBe(true);
+        expect(registry.exists("GET", "/READMEx")).toBe(false);
+        expect(registry.exists("GET", "/other")).toBe(false);
+        expect(registry.exists("GET", "/types")).toBe(false);
 
-      await loader.stopWatching();
-    });
+        await loader.stopWatching();
+      },
+    );
   });
 
   // This should work but I can't figure out how to break the
   // module cache when running through Jest (which uses the
   // experimental module API).
 
-  // eslint-disable-next-line jest/no-disabled-tests
   it.skip("updates the registry when a file is changed", async () => {
     await withTemporaryFiles(
       {
         "change.mjs":
-          'export function GET() { return { body: "before change" }; }',
+          'export function GET(): { body } { return { body: "before change" }; }',
       },
-      async (basePath, { add }) => {
-        const registry = new Registry();
-        const loader = new ModuleLoader(basePath, registry);
+      async (
+        basePath: string,
+        { add }: { add: (path: string, content: string) => void },
+      ) => {
+        const registry: Registry = new Registry();
+        const loader: ModuleLoader = new ModuleLoader(basePath, registry);
 
         await loader.watch();
         add(
@@ -132,11 +149,13 @@ describe("a module loader", () => {
         );
         await once(loader, "change");
 
-        const response = await registry.endpoint(
+        const response = registry.endpoint(
           "GET",
           "/change",
-        )({ context: {}, path: "", reduce: () => undefined });
+          // @ts-expect-error - not going to create a whole context object for a test
+        )({ headers: {}, matchedPath: "", path: {}, query: {} });
 
+        // @ts-expect-error - TypeScript doesn't know that the response will have a body property
         expect(response.body).toBe("after change");
         expect(registry.exists("GET", "/late/addition")).toBe(true);
 
@@ -146,17 +165,21 @@ describe("a module loader", () => {
   });
 
   it("finds a context and adds it to the context registry", async () => {
-    const files = {
+    const files: { [key: string]: string } = {
       "$.context.mjs": 'export default "main"',
       "hello/$.context.mjs": 'export default "hello"',
     };
 
-    await withTemporaryFiles(files, async (basePath) => {
-      const registry = new Registry();
+    await withTemporaryFiles(files, async (basePath: string) => {
+      const registry: Registry = new Registry();
 
-      const contextRegistry = new ContextRegistry();
+      const contextRegistry: ContextRegistry = new ContextRegistry();
 
-      const loader = new ModuleLoader(basePath, registry, contextRegistry);
+      const loader: ModuleLoader = new ModuleLoader(
+        basePath,
+        registry,
+        contextRegistry,
+      );
 
       await loader.load();
 

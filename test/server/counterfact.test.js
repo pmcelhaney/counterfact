@@ -1,12 +1,10 @@
 import http from "node:http";
 
-// eslint-disable-next-line import/newline-after-import
 import Koa from "koa";
-// eslint-disable-next-line n/no-unpublished-import
 import supertest from "supertest";
 
-import { counterfact } from "../../src/server/counterfact.js";
-import { withTemporaryFiles } from "../lib/with-temporary-files.js";
+import { counterfact } from "../../src/server/counterfact.ts";
+import { withTemporaryFiles } from "../lib/with-temporary-files.ts";
 
 describe("integration test", () => {
   it("finds a path", async () => {
@@ -134,6 +132,8 @@ describe("integration test", () => {
       expect(getResponse.text).toBe("I am proxy!\n");
 
       await moduleLoader.stopWatching();
+
+      await proxyTarget.unref();
     });
 
     // eslint-disable-next-line promise/avoid-new

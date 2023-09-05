@@ -1,8 +1,10 @@
+/* eslint-disable n/no-missing-import */
 import nodePath from "node:path";
 
 import createDebug from "debug";
 import yaml from "js-yaml";
 
+// eslint-disable-next-line import/no-unresolved
 import { readFile } from "../util/read-file.js";
 import { Requirement } from "./requirement.js";
 

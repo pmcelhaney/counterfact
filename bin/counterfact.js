@@ -6,9 +6,9 @@ import { program } from "commander";
 import createDebug from "debug";
 import open from "open";
 
-import { startRepl } from "../src/server/repl.js";
-import { start } from "../src/server/start.js";
-import { generate } from "../src/typescript-generator/generate.js";
+import { startRepl } from "../dist/src/server/repl.js";
+import { start } from "../dist/src/server/start.js";
+import { generate } from "../dist/src/typescript-generator/generate.js";
 
 const DEFAULT_PORT = 3100;
 

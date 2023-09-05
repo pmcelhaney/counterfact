@@ -37,6 +37,8 @@ jobs:
         run: yarn install --frozen-lockfile --network-timeout 100000
       - name: ESlint
         run: yarn eslint -f github-annotations .
+      - name: TypeScript
+        run: yarn tsc --noEmit
       - name: Unit tests
         timeout-minutes: 2
         run: yarn test --runInBand --forceExit --verbose --no-watchman

@@ -1,4 +1,5 @@
 {
+  "$schema": "http://json.schemastore.org/tsconfig",
   "compilerOptions": {
     "moduleResolution": "node",
     "module": "es2022",
@@ -6,7 +7,10 @@
     "strictNullChecks": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
-    "noUncheckedIndexedAccess": true
+    "noUncheckedIndexedAccess": true,
+    "allowJs": true,
+    "outDir": "dist",
+    "skipLibCheck": true
   },
-  "include": ["src", "demo-ts", "templates", "test"]
+  "include": ["src"]
 }

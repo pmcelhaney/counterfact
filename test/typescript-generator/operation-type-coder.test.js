@@ -186,6 +186,8 @@ describe("an OperationTypeCoder", () => {
           },
         ],
 
+        produces: ["application/json"],
+
         responses: {
           200: {
             schema: { $ref: "#/components/schemas/Example" },

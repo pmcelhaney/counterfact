@@ -34,6 +34,8 @@ jobs:
           key: ${{ runner.os }}-${{ steps.node-version.outputs.version }}-${{ hashFiles('**/yarn.lock') }}
       - name: Install Packages
         run: yarn install --frozen-lockfile --network-timeout 100000
+      - name: Build
+        run: yarn build
       - name: Try running the petstore
         run: npx . https://petstore3.swagger.io/api/v3/openapi.json out
         timeout-minutes: 2

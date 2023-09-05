@@ -1,5 +1,13 @@
+/* eslint-disable max-lines */
+
+// Note: I cut a few corners here on type checking. Since these are tests, I'm more
+// concerned about the tests passing at runtime than lining up the types perfectly.
+
 import { ContextRegistry } from "../../src/server/context-registry.js";
-import { Dispatcher } from "../../src/server/dispatcher.js";
+import {
+  Dispatcher,
+  type OpenApiDocument,
+} from "../../src/server/dispatcher.js";
 import { Registry } from "../../src/server/registry.js";
 
 // eslint-disable-next-line max-statements
@@ -17,8 +25,12 @@ describe("a dispatcher", () => {
 
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
     const response = await dispatcher.request({
+      body: "",
+      headers: {},
       method: "GET",
       path: "/hello",
+      query: {},
+      req: { path: "/hello" },
     });
 
     expect(response.body).toBe("hello");
@@ -35,8 +47,12 @@ describe("a dispatcher", () => {
 
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
     const response = await dispatcher.request({
+      body: "",
+      headers: {},
       method: "GET",
       path: "/hello",
+      query: {},
+      req: { path: "/hello" },
     });
 
     expect(response).toStrictEqual({
@@ -48,7 +64,7 @@ describe("a dispatcher", () => {
   });
 
   it("finds the best content item for an accept header", () => {
-    const dispatcher = new Dispatcher();
+    const dispatcher = new Dispatcher(new Registry(), new ContextRegistry());
 
     const html = dispatcher.selectContent("text/html", [
       {
@@ -61,7 +77,7 @@ describe("a dispatcher", () => {
       },
     ]);
 
-    expect(html.type).toBe("text/html");
+    expect(html?.type).toBe("text/html");
   });
 
   it("returns HTTP 406 if it can't return content matching the accept header", async () => {
@@ -79,6 +95,8 @@ describe("a dispatcher", () => {
 
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
     const response = await dispatcher.request({
+      body: "",
+
       headers: {
         accept: "application/json",
       },
@@ -86,6 +104,8 @@ describe("a dispatcher", () => {
       method: "GET",
 
       path: "/hello",
+      query: {},
+      req: { path: "/hello" },
     });
 
     expect(response.status).toBe(406);
@@ -104,11 +124,11 @@ describe("a dispatcher", () => {
   ])(
     'given accept header "%s" and content types: %s, select %s',
     (acceptHeader, types, expected) => {
-      const dispatcher = new Dispatcher();
+      const dispatcher = new Dispatcher(new Registry(), new ContextRegistry());
 
-      const content = types.map((type) => ({ type }));
+      const content = types.map((type) => ({ body: "", type }));
 
-      expect(dispatcher.selectContent(acceptHeader, content).type).toBe(
+      expect(dispatcher.selectContent(acceptHeader, content)?.type).toBe(
         expected,
       );
     },
@@ -140,6 +160,8 @@ describe("a dispatcher", () => {
 
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
     const html = await dispatcher.request({
+      body: "",
+
       headers: {
         accept: "text/html",
       },
@@ -147,6 +169,8 @@ describe("a dispatcher", () => {
       method: "GET",
 
       path: "/hello",
+      query: {},
+      req: { path: "/hello" },
     });
 
     expect(html).toStrictEqual({
@@ -161,9 +185,12 @@ describe("a dispatcher", () => {
     const registry = new Registry();
 
     registry.add("/a", {
-      GET({ body }) {
+      POST({ body }) {
+        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+        const typeSafeBody = body as { name: string; place: string };
+
         return {
-          body: `Hello ${body.name} of ${body.place}!`,
+          body: `Hello ${typeSafeBody.name} of ${typeSafeBody.place}!`,
         };
       },
     });
@@ -175,9 +202,13 @@ describe("a dispatcher", () => {
         place: "Aragon",
       },
 
-      method: "GET",
+      headers: {},
+
+      method: "POST",
 
       path: "/a",
+      query: {},
+      req: { path: "/a" },
     });
 
     expect(response.body).toBe("Hello Catherine of Aragon!");
@@ -203,13 +234,21 @@ describe("a dispatcher", () => {
     };
 
     const response = await dispatcher.request({
+      body: "",
       headers: authHeader,
-      method: "GET",
 
+      method: "GET",
       path: "/a",
+      query: {},
+      req: { path: "/a" },
     });
 
-    expect(response.headers).toBe(authHeader);
+    if (!("headers" in response)) {
+      // TypeScript thinks the response object might not have a headers property. Can't figure out why.
+      throw new Error("response.headers not defined");
+    }
+
+    expect(response.headers).toStrictEqual(authHeader);
   });
 
   it("passes the query params", async () => {
@@ -218,19 +257,25 @@ describe("a dispatcher", () => {
     registry.add("/a", {
       GET({ query }) {
         return {
-          body: `Searching for stores near ${query.zip}!`,
+          body: `Searching for stores near ${String(query.zip)}!`,
         };
       },
     });
 
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
     const response = await dispatcher.request({
+      body: "",
+      headers: {},
+
       method: "GET",
+
       path: "/a",
 
       query: {
         zip: "90210",
       },
+
+      req: { path: "/a" },
     });
 
     expect(response.body).toBe("Searching for stores near 90210!");
@@ -241,12 +286,16 @@ describe("a dispatcher", () => {
 
     registry.add("/a", {
       GET({ tools }) {
-        return { body: tools.accepts("text/html") };
+        return {
+          body: tools.accepts("text/html") ? "acceptable" : "unacceptable",
+        };
       },
     });
 
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
     const htmlResponse = await dispatcher.request({
+      body: "",
+
       headers: {
         Accept: "text/html",
       },
@@ -254,11 +303,15 @@ describe("a dispatcher", () => {
       method: "GET",
 
       path: "/a",
+      query: {},
+      req: { path: "/a" },
     });
 
-    expect(htmlResponse.body).toBe(true);
+    expect(htmlResponse.body).toBe("acceptable");
 
     const textResponse = await dispatcher.request({
+      body: "",
+
       headers: {
         Accept: "text/plain",
       },
@@ -266,22 +319,27 @@ describe("a dispatcher", () => {
       method: "GET",
 
       path: "/a",
+      query: {},
+      req: { path: "/a" },
     });
 
-    expect(textResponse.body).toBe(false);
+    expect(textResponse.body).toBe("unacceptable");
   });
 
   it("passes a response builder", async () => {
     const registry = new Registry();
 
     registry.add("/a", {
+      // @ts-expect-error - not obvious how to make TS happy here, and it's just a unit test
       GET({ response }) {
-        return response[200].text("hello").html("<h1>hello</h1>");
+        return response["200"]?.text("hello").html("<h1>hello</h1>");
       },
     });
 
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
     const htmlResponse = await dispatcher.request({
+      body: "",
+
       headers: {
         accept: "text/html",
       },
@@ -289,6 +347,8 @@ describe("a dispatcher", () => {
       method: "GET",
 
       path: "/a",
+      query: {},
+      req: { path: "/a" },
     });
 
     expect(htmlResponse.body).toBe("<h1>hello</h1>");
@@ -298,8 +358,9 @@ describe("a dispatcher", () => {
     const registry = new Registry();
 
     registry.add("/a", {
+      // @ts-expect-error - not obvious how to make TypeScript happy here, and it's just a unit test
       GET({ response }) {
-        return response[200].random();
+        return response["200"]?.random();
       },
     });
 
@@ -330,6 +391,8 @@ describe("a dispatcher", () => {
       openApiDocument,
     );
     const htmlResponse = await dispatcher.request({
+      body: "",
+
       headers: {
         accept: "text/plain",
       },
@@ -337,6 +400,8 @@ describe("a dispatcher", () => {
       method: "GET",
 
       path: "/a",
+      query: {},
+      req: { path: "/a" },
     });
 
     expect(htmlResponse.body).toBe("hello");
@@ -356,8 +421,12 @@ describe("a dispatcher", () => {
 
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
     const response = await dispatcher.request({
+      body: "",
+      headers: {},
       method: "PUT",
       path: "/stuff",
+      query: {},
+      req: { path: "/stuff" },
     });
 
     expect(response.status).toBe(201);
@@ -371,7 +440,14 @@ describe("a dispatcher", () => {
     contextRegistry.add("/", rootContext);
 
     registry.add("/increment/{value}", {
-      GET({ context, path }) {
+      // @ts-expect-error - not obvious how to make TS happy here, and it's just a unit test
+      GET({
+        context,
+        path,
+      }: {
+        context: { value: number };
+        path: { value: string };
+      }) {
         const amountToIncrement = Number.parseInt(path.value, 10);
 
         context.value += amountToIncrement;
@@ -384,8 +460,11 @@ describe("a dispatcher", () => {
 
     const result = await dispatcher.request({
       body: "",
+      headers: {},
       method: "GET",
       path: "/increment/1",
+      query: {},
+      req: { path: "/increment/1" },
     });
 
     expect(result.body).toBe("incremented");
@@ -394,8 +473,11 @@ describe("a dispatcher", () => {
 
     await dispatcher.request({
       body: "",
+      headers: {},
       method: "GET",
       path: "/increment/2",
+      query: {},
+      req: { path: "/increment/2" },
     });
 
     expect(rootContext.value).toBe(3);
@@ -405,18 +487,23 @@ describe("a dispatcher", () => {
     const registry = new Registry();
     const contextRegistry = new ContextRegistry();
 
-    contextRegistry.add("/", "test context");
+    contextRegistry.add("/", { id: "test context" });
     registry.add("/echo", {
       GET({ context }) {
-        return { body: context };
+        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+        return { body: (context as { id: string }).id };
       },
     });
 
     const dispatcher = new Dispatcher(registry, contextRegistry);
 
     const result = await dispatcher.request({
+      body: "",
+      headers: {},
       method: "GET",
       path: "/echo",
+      query: {},
+      req: { path: "/echo" },
     });
 
     expect(result.body).toBe("test context");
@@ -426,8 +513,13 @@ describe("a dispatcher", () => {
     const registry = new Registry();
 
     registry.add("/a/{integerInPath}/{stringInPath}", {
+      // @ts-expect-error - not obvious how to make TS happy here, and it's just a unit test
       GET({ headers, path, query, response }) {
-        return response[200].text({
+        if (path === undefined) {
+          throw new Error("path is undefined");
+        }
+
+        return response["200"]?.text({
           integerInPath: path.integerInPath,
           numberInHeader: headers.numberInHeader,
           numberInQuery: query.numberInQuery,
@@ -438,7 +530,7 @@ describe("a dispatcher", () => {
       },
     });
 
-    const openApiDocument = {
+    const openApiDocument: OpenApiDocument = {
       paths: {
         "/a/{integerInPath}/{stringInPath}": {
           get: {
@@ -494,8 +586,10 @@ describe("a dispatcher", () => {
       openApiDocument,
     );
     const htmlResponse = await dispatcher.request({
+      body: "",
+
       headers: {
-        numberInHeader: 5,
+        numberInHeader: "5",
         stringInHeader: "6",
       },
 
@@ -507,6 +601,8 @@ describe("a dispatcher", () => {
         numberInQuery: "3",
         stringInQuery: "4",
       },
+
+      req: { path: "/a/1/2" },
     });
 
     expect(htmlResponse.body).toStrictEqual({
@@ -517,6 +613,46 @@ describe("a dispatcher", () => {
       stringInPath: "2",
       stringInQuery: "4",
     });
+  });
+
+  it("attaches the root produces array to an operation", () => {
+    const registry = new Registry();
+
+    registry.add("/hello", {
+      GET() {
+        return {
+          body: "ok",
+          status: 200,
+        };
+      },
+    });
+
+    const dispatcher = new Dispatcher(registry, new ContextRegistry(), {
+      paths: {
+        "/hello": {
+          get: {
+            responses: {
+              200: {
+                content: {
+                  "text/plain": {
+                    schema: {
+                      type: "string",
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+
+      produces: ["text/plain"],
+    });
+
+    const operation = dispatcher.operationForPathAndMethod("/hello", "GET");
+
+    expect(operation).not.toBeUndefined();
+    expect(operation?.produces).toStrictEqual(["text/plain"]);
   });
 });
 
@@ -536,8 +672,12 @@ describe("given an invalid path", () => {
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
 
     const response = await dispatcher.request({
+      body: "",
+      headers: {},
       method: "PUT",
       path: "/your/left/foot/in/and/your/right/foot/out",
+      query: {},
+      req: { path: "/your/left/foot/in/and/your/right/foot/out" },
     });
 
     expect(response.status).toBe(404);
@@ -545,26 +685,5 @@ describe("given an invalid path", () => {
     expect(response.body).toBe(
       "Could not find a PUT method matching /your/left/foot/in/and/your/right/foot/out\n",
     );
-  });
-
-  it("attaches the root produces array to an operation", () => {
-    const registry = new Registry();
-
-    registry.add("/your/{side}/{bodyPart}/in/and/your/left/foot/out", {
-      PUT() {
-        return {
-          body: "ok",
-          status: 201,
-        };
-      },
-    });
-
-    const dispatcher = new Dispatcher(registry, new ContextRegistry(), {
-      produces: ["text/plain"],
-    });
-
-    const operation = dispatcher.operationForPathAndMethod("/hello", "GET");
-
-    expect(operation.produces).toStrictEqual(["text/plain"]);
   });
 });

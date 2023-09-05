@@ -1,6 +1,13 @@
 import repl from "node:repl";
 
-export function startRepl(contextRegistry, config) {
+import type { ContextRegistry } from "./context-registry.js";
+
+interface Config {
+  proxyEnabled: boolean;
+  proxyUrl: string;
+}
+
+export function startRepl(contextRegistry: ContextRegistry, config: Config) {
   const replServer = repl.start("> ");
 
   replServer.defineCommand("counterfact", {
@@ -31,12 +38,10 @@ export function startRepl(contextRegistry, config) {
   replServer.defineCommand("proxy", {
     action(state) {
       if (state === "on") {
-        // eslint-disable-next-line no-param-reassign
         config.proxyEnabled = true;
       }
 
       if (state === "off") {
-        // eslint-disable-next-line no-param-reassign
         config.proxyEnabled = false;
       }
 
@@ -51,6 +56,7 @@ export function startRepl(contextRegistry, config) {
     help: "proxy [on|off] - turn the proxy on or off; proxy - print proxy info",
   });
 
-  replServer.context.loadContext = (path) => contextRegistry.find(path);
+  replServer.context.loadContext = (path: string) => contextRegistry.find(path);
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
   replServer.context.context = replServer.context.loadContext("/");
 }

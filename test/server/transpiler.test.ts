@@ -9,12 +9,10 @@ const TYPESCRIPT_SOURCE = "const x:number = 1;\n";
 const JAVASCRIPT_SOURCE = "var x = 1;\n";
 
 describe("a Transpiler", () => {
-  // eslint-disable-next-line init-declarations
-  let transpiler;
+  let transpiler: Transpiler = new Transpiler("src", "dist");
 
-  // eslint-disable-next-line jest/no-hooks
-  afterEach(() => {
-    transpiler.stopWatching();
+  afterEach(async () => {
+    await transpiler.stopWatching();
   });
 
   it("finds a file and transpiles it", async () => {
@@ -32,11 +30,11 @@ describe("a Transpiler", () => {
 
       expect(fs.existsSync(path("dist/found.mjs"))).toBe(true);
 
-      await expect(fs.readFileSync(path("dist/found.mjs"), "utf8")).toBe(
+      expect(fs.readFileSync(path("dist/found.mjs"), "utf8")).toBe(
         JAVASCRIPT_SOURCE,
       );
 
-      transpiler.stopWatching();
+      await transpiler.stopWatching();
     });
   });
 
@@ -60,11 +58,11 @@ describe("a Transpiler", () => {
           setTimeout(resolve, 1000);
         });
 
-        await expect(fs.readFileSync(path("dist/added.mjs"), "utf8")).toBe(
+        expect(fs.readFileSync(path("dist/added.mjs"), "utf8")).toBe(
           JAVASCRIPT_SOURCE,
         );
 
-        transpiler.stopWatching();
+        await transpiler.stopWatching();
       },
     );
   });
@@ -84,14 +82,14 @@ describe("a Transpiler", () => {
 
       const overwrite = once(transpiler, "write");
 
-      add("src/update-me.ts", TYPESCRIPT_SOURCE);
+      await add("src/update-me.ts", TYPESCRIPT_SOURCE);
       await overwrite;
 
-      await expect(fs.readFileSync(path("dist/update-me.mjs"), "utf8")).toBe(
+      expect(fs.readFileSync(path("dist/update-me.mjs"), "utf8")).toBe(
         JAVASCRIPT_SOURCE,
       );
 
-      transpiler.stopWatching();
+      await transpiler.stopWatching();
     });
   }, 10_000);
 
@@ -107,11 +105,11 @@ describe("a Transpiler", () => {
       await remove("src/delete-me.ts");
       await once(transpiler, "delete");
 
-      await expect(() =>
-        fs.accessSync(path("dist/delete-me.js"), fsConstants.F_OK),
-      ).toThrow(/ENOENT/u);
+      expect(() => {
+        fs.accessSync(path("dist/delete-me.js"), fsConstants.F_OK);
+      }).toThrow(/ENOENT/u);
 
-      transpiler.stopWatching();
+      await transpiler.stopWatching();
     });
   });
 });

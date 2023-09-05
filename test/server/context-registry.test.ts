@@ -1,4 +1,5 @@
 import {
+  type Context,
   ContextRegistry,
   parentPath,
 } from "../../src/server/context-registry.js";
@@ -35,24 +36,24 @@ describe("a context registry", () => {
   });
 
   it("updates an existing context by changing methods but not properties", () => {
-    class SingleContext {
-      constructor() {
-        this.count = 0;
-      }
+    class SingleContext implements Context {
+      public count = 0;
 
-      increment() {
+      public increment() {
         this.count += 1;
       }
+
+      [key: string]: unknown;
     }
 
-    class DoubleContext {
-      constructor() {
-        this.count = 0;
-      }
+    class DoubleContext implements Context {
+      public count = 0;
 
-      increment() {
+      public increment() {
         this.count += 2;
       }
+
+      [key: string]: unknown;
     }
 
     const originalContext = new SingleContext();
