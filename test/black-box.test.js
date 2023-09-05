@@ -18,9 +18,12 @@ describe("black box test", () => {
   let counterfactProcess;
 
   beforeAll(async () => {
-    counterfactProcess = exec("npx . ./openapi-example.yaml out", {
-      env: { ...process.env, DEBUG: "counterfact:*" },
-    });
+    counterfactProcess = exec(
+      "node ./bin/counterfact.js ./openapi-example.yaml out",
+      {
+        env: { ...process.env, DEBUG: "counterfact:*" },
+      },
+    );
 
     counterfactProcess.stderr.pipe(process.stderr);
     counterfactProcess.stdout.pipe(process.stdout);

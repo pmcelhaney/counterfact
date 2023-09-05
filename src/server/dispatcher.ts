@@ -1,5 +1,6 @@
-// eslint-disable-next-line import/newline-after-import
 import { mediaTypes } from "@hapi/accept";
+import createDebugger from "debug";
+
 // eslint-disable-next-line @typescript-eslint/no-shadow
 import fetch, { Headers } from "node-fetch";
 
@@ -52,6 +53,8 @@ export interface OpenApiDocument {
   };
   produces?: string[];
 }
+
+const debug = createDebugger("counterfact:server:dispatcher");
 
 export class Dispatcher {
   public registry: Registry;
@@ -229,6 +232,8 @@ export class Dispatcher {
       path?: string;
     };
   }) {
+    debug(`request: ${method} ${path}`);
+
     const { matchedPath } = this.registry.handler(path);
     const operation = this.operationForPathAndMethod(matchedPath, method);
 
