@@ -65,11 +65,13 @@ function page(
   locals: { [key: string]: unknown },
 ) {
   return async (ctx: Koa.ExtendableContext, next: Koa.Next) => {
-    const render = Handlebars.compile(
-      await readFile(
-        nodePath.join(__dirname, `../client/${templateName}.html.hbs`),
-      ),
-    );
+    const pathToHandlebarsTemplate = nodePath
+      .join(__dirname, `../client/${templateName}.html.hbs`)
+      .replaceAll("\\", "/");
+
+    debug("pathToHandlebarsTemplate: %s", pathToHandlebarsTemplate);
+
+    const render = Handlebars.compile(await readFile(pathToHandlebarsTemplate));
 
     if (ctx.URL.pathname === pathname) {
       ctx.body = render(locals);

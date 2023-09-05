@@ -235,3 +235,5 @@ Object {
   "type": "Buffer",
 }
 `;
+
+exports[`black box test responds to a GET request 1`] = `"<img src=\\"https://upload.wikimedia.org/wikipedia/en/0/05/Hello_kitty_character_portrait.png\\">"`;
