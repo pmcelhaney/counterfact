@@ -31,6 +31,7 @@
     "test": "yarn node --experimental-vm-modules ./node_modules/jest-cli/bin/jest",
     "test:mutants": "stryker run stryker.config.json",
     "build": "tsc && copyfiles src/client/** dist && copyfiles templates/** dist",
+    "prepack": "yarn build",
     "release": "npx changeset publish",
     "prepare": "husky install",
     "lint": "eslint . --plugin file-progress --rule 'file-progress/activate: 1'",
