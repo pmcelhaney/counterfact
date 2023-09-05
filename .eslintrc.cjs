@@ -189,6 +189,16 @@ module.exports = {
 
       rules: {},
     },
+
+    {
+      files: ["bin/**.js"],
+
+      rules: {
+        ...rules,
+        "import/no-unresolved": "off",
+        "n/no-missing-import": "off",
+      },
+    },
   ],
 
   parserOptions: {
