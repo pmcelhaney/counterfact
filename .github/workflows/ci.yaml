@@ -26,7 +26,7 @@ jobs:
           cache: yarn
         id: setup-node
       - name: Get Node Version
-        run: echo "::set-output name=version::$(node -v)"
+        run: echo "version=$(node -v)" >> $GITHUB_OUTPUT
         id: node-version
       - name: Cache node_modules
         uses: actions/cache@v3
