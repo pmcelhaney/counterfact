@@ -30,6 +30,7 @@
   "scripts": {
     "test": "yarn node --experimental-vm-modules ./node_modules/jest-cli/bin/jest",
     "test:mutants": "stryker run stryker.config.json",
+    "build": "tsc && copyfiles src/client/** dist && copyfiles templates/** dist",
     "release": "npx changeset publish",
     "prepare": "husky install",
     "lint": "eslint . --plugin file-progress --rule 'file-progress/activate: 1'",
@@ -53,6 +54,7 @@
     "@types/koa-bodyparser": "^4.3.10",
     "@types/koa-proxy": "^1.0.4",
     "@types/koa-static": "^4.0.2",
+    "copyfiles": "^2.4.1",
     "eslint": "8.48.0",
     "eslint-config-hardcore": "41.2.0",
     "eslint-formatter-github-annotations": "0.1.0",
