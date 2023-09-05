@@ -68,7 +68,7 @@ describe("black box test", () => {
   it("responds to a GET request", async () => {
     const response = await fetch("http://localhost:3100/hello/kitty");
 
-    expect(response.status).toBe(200);
     await expect(response.text()).resolves.toMatchSnapshot();
+    expect(response.status).toBe(200);
   });
 });
