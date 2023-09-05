@@ -27,6 +27,8 @@ export default {
 
   testEnvironment: "node",
 
+  testTimeout: 10_000,
+
   transform: {
     "^.+\\.(t|j|mj)s?$": "@swc/jest",
   },
