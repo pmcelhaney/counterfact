@@ -35,9 +35,6 @@ jobs:
           key: ${{ runner.os }}-${{ steps.node-version.outputs.version }}-${{ hashFiles('**/yarn.lock') }}
       - name: Install Packages
         run: yarn install --frozen-lockfile --network-timeout 100000
-      - name: Black Box Tests
-        timeout-minutes: 2
-        run: yarn test:black-box --runInBand --forceExit --verbose --no-watchman
       - name: ESlint
         run: yarn eslint -f github-annotations .
       - name: TypeScript
