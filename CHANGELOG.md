@@ -1,5 +1,13 @@
 # counterfact
 
+## 0.26.0
+
+### Minor Changes
+
+- 61ba2c9: the server code has been converted to TypeScript -- let me know if something stopped working
+- 28d21f8: put generated JS code under a .cache directory and add that directory to .gitignore
+- 61ba2c9: fix for OpenAPI 3 examples, which weren't read correctly (hardly anyone uses them)
+
 ## 0.25.5
 
 ### Patch Changes
