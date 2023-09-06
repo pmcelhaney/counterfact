@@ -1,10 +1,39 @@
+import { existsSync } from "node:fs";
+import fs from "node:fs/promises";
+import nodePath from "node:path";
+
 import createDebug from "debug";
 
+import { ensureDirectoryExists } from "../util/ensure-directory-exists.js";
 import { OperationCoder } from "./operation-coder.js";
 import { Repository } from "./repository.js";
 import { Specification } from "./specification.js";
 
 const debug = createDebug("counterfact:typescript-generator:generate");
+
+async function buildCacheDirectory(destination) {
+  const gitignorePath = nodePath.join(destination, ".gitignore");
+  const cacheReadmePath = nodePath.join(destination, ".cache", "README.md");
+
+  debug("got here");
+
+  await ensureDirectoryExists(gitignorePath);
+
+  debug("got here too");
+
+  if (!existsSync(gitignorePath)) {
+    await fs.writeFile(gitignorePath, ".cache\n", "utf8");
+  }
+
+  if (!existsSync(cacheReadmePath)) {
+    ensureDirectoryExists(cacheReadmePath);
+    await fs.writeFile(
+      cacheReadmePath,
+      "This directory contains compiled JS files from the paths directory. Do not edit these files directly.\n",
+      "utf8",
+    );
+  }
+}
 
 // eslint-disable-next-line max-statements
 export async function generate(
@@ -13,6 +42,10 @@ export async function generate(
   repository = new Repository(),
 ) {
   debug("generating code from %s to %s", source, destination);
+
+  debug("initializing the .cache directory");
+  await buildCacheDirectory(destination);
+  debug("done initializing the .cache directory");
 
   debug("creating specification from %s", source);
 

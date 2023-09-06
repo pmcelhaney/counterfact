@@ -1,10 +1,10 @@
-import { constants as fsConstants } from "node:fs";
 import fs from "node:fs/promises";
 import nodePath, { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import createDebug from "debug";
 
+import { ensureDirectoryExists } from "../util/ensure-directory-exists.js";
 import { Script } from "./script.js";
 
 const debug = createDebug("counterfact:server:repository");
@@ -13,16 +13,6 @@ const debug = createDebug("counterfact:server:repository");
 const __dirname = dirname(fileURLToPath(import.meta.url)).replaceAll("\\", "/");
 
 debug("dirname is %s", __dirname);
-
-async function ensureDirectoryExists(filePath) {
-  const directory = nodePath.dirname(filePath);
-
-  try {
-    await fs.access(directory, fsConstants.W_OK);
-  } catch {
-    await fs.mkdir(directory, { recursive: true });
-  }
-}
 
 export class Repository {
   constructor() {

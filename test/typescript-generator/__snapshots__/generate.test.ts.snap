@@ -202,7 +202,7 @@ class Context {
                 "exports": Map {
                   "Pet" => Object {
                     "beforeExport": "",
-                    "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: \\"available\\" | \\"pending\\" | \\"sold\\"}",
+                    "code": "{\\"id\\"?: number,\\"name\\": string,\\"category\\"?: Category,\\"photoUrls\\": Array<string>,\\"tags\\"?: Array<Tag>,\\"status\\"?: \\"available\\" | \\"pending\\" | \\"sold\\"}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isDefault": false,
@@ -225,7 +225,7 @@ class Context {
                       "exports": Map {
                         "Category" => Object {
                           "beforeExport": "",
-                          "code": "{id?: number,name?: string}",
+                          "code": "{\\"id\\"?: number,\\"name\\"?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
                           "isDefault": false,
@@ -256,7 +256,7 @@ class Context {
                       "exports": Map {
                         "Tag" => Object {
                           "beforeExport": "",
-                          "code": "{id?: number,name?: string}",
+                          "code": "{\\"id\\"?: number,\\"name\\"?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
                           "isDefault": false,
@@ -457,7 +457,7 @@ class Context {
                 "exports": Map {
                   "Pet" => Object {
                     "beforeExport": "",
-                    "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: \\"available\\" | \\"pending\\" | \\"sold\\"}",
+                    "code": "{\\"id\\"?: number,\\"name\\": string,\\"category\\"?: Category,\\"photoUrls\\": Array<string>,\\"tags\\"?: Array<Tag>,\\"status\\"?: \\"available\\" | \\"pending\\" | \\"sold\\"}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isDefault": false,
@@ -480,7 +480,7 @@ class Context {
                       "exports": Map {
                         "Category" => Object {
                           "beforeExport": "",
-                          "code": "{id?: number,name?: string}",
+                          "code": "{\\"id\\"?: number,\\"name\\"?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
                           "isDefault": false,
@@ -511,7 +511,7 @@ class Context {
                       "exports": Map {
                         "Tag" => Object {
                           "beforeExport": "",
-                          "code": "{id?: number,name?: string}",
+                          "code": "{\\"id\\"?: number,\\"name\\"?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
                           "isDefault": false,
@@ -716,7 +716,7 @@ class Context {
           "exports": Map {
             "Pet" => Object {
               "beforeExport": "",
-              "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: \\"available\\" | \\"pending\\" | \\"sold\\"}",
+              "code": "{\\"id\\"?: number,\\"name\\": string,\\"category\\"?: Category,\\"photoUrls\\": Array<string>,\\"tags\\"?: Array<Tag>,\\"status\\"?: \\"available\\" | \\"pending\\" | \\"sold\\"}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
               "isDefault": false,
@@ -739,7 +739,7 @@ class Context {
                 "exports": Map {
                   "Category" => Object {
                     "beforeExport": "",
-                    "code": "{id?: number,name?: string}",
+                    "code": "{\\"id\\"?: number,\\"name\\"?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isDefault": false,
@@ -770,7 +770,7 @@ class Context {
                 "exports": Map {
                   "Tag" => Object {
                     "beforeExport": "",
-                    "code": "{id?: number,name?: string}",
+                    "code": "{\\"id\\"?: number,\\"name\\"?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isDefault": false,
@@ -910,7 +910,7 @@ class Context {
 }
 ",
                     "code": Object {
-                      "raw": "export { default } from \\"../$.context.js\\"",
+                      "raw": "export { default } from \\"../$.context.mjs\\"",
                     },
                     "done": true,
                     "id": "ContextCoder",
@@ -944,7 +944,7 @@ class Context {
                 "exports": Map {
                   "Pet" => Object {
                     "beforeExport": "",
-                    "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: \\"available\\" | \\"pending\\" | \\"sold\\"}",
+                    "code": "{\\"id\\"?: number,\\"name\\": string,\\"category\\"?: Category,\\"photoUrls\\": Array<string>,\\"tags\\"?: Array<Tag>,\\"status\\"?: \\"available\\" | \\"pending\\" | \\"sold\\"}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isDefault": false,
@@ -967,7 +967,7 @@ class Context {
                       "exports": Map {
                         "Category" => Object {
                           "beforeExport": "",
-                          "code": "{id?: number,name?: string}",
+                          "code": "{\\"id\\"?: number,\\"name\\"?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
                           "isDefault": false,
@@ -998,7 +998,7 @@ class Context {
                       "exports": Map {
                         "Tag" => Object {
                           "beforeExport": "",
-                          "code": "{id?: number,name?: string}",
+                          "code": "{\\"id\\"?: number,\\"name\\"?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
                           "isDefault": false,
@@ -1121,7 +1121,7 @@ class Context {
 }
 ",
               "code": Object {
-                "raw": "export { default } from \\"../$.context.js\\"",
+                "raw": "export { default } from \\"../$.context.mjs\\"",
               },
               "done": true,
               "id": "ContextCoder",
@@ -1155,7 +1155,7 @@ class Context {
           "exports": Map {
             "Pet" => Object {
               "beforeExport": "",
-              "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: \\"available\\" | \\"pending\\" | \\"sold\\"}",
+              "code": "{\\"id\\"?: number,\\"name\\": string,\\"category\\"?: Category,\\"photoUrls\\": Array<string>,\\"tags\\"?: Array<Tag>,\\"status\\"?: \\"available\\" | \\"pending\\" | \\"sold\\"}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
               "isDefault": false,
@@ -1178,7 +1178,7 @@ class Context {
                 "exports": Map {
                   "Category" => Object {
                     "beforeExport": "",
-                    "code": "{id?: number,name?: string}",
+                    "code": "{\\"id\\"?: number,\\"name\\"?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isDefault": false,
@@ -1209,7 +1209,7 @@ class Context {
                 "exports": Map {
                   "Tag" => Object {
                     "beforeExport": "",
-                    "code": "{id?: number,name?: string}",
+                    "code": "{\\"id\\"?: number,\\"name\\"?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isDefault": false,
@@ -1349,7 +1349,7 @@ class Context {
 }
 ",
                     "code": Object {
-                      "raw": "export { default } from \\"../$.context.js\\"",
+                      "raw": "export { default } from \\"../$.context.mjs\\"",
                     },
                     "done": true,
                     "id": "ContextCoder",
@@ -1383,7 +1383,7 @@ class Context {
                 "exports": Map {
                   "Pet" => Object {
                     "beforeExport": "",
-                    "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: \\"available\\" | \\"pending\\" | \\"sold\\"}",
+                    "code": "{\\"id\\"?: number,\\"name\\": string,\\"category\\"?: Category,\\"photoUrls\\": Array<string>,\\"tags\\"?: Array<Tag>,\\"status\\"?: \\"available\\" | \\"pending\\" | \\"sold\\"}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isDefault": false,
@@ -1406,7 +1406,7 @@ class Context {
                       "exports": Map {
                         "Category" => Object {
                           "beforeExport": "",
-                          "code": "{id?: number,name?: string}",
+                          "code": "{\\"id\\"?: number,\\"name\\"?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
                           "isDefault": false,
@@ -1437,7 +1437,7 @@ class Context {
                       "exports": Map {
                         "Tag" => Object {
                           "beforeExport": "",
-                          "code": "{id?: number,name?: string}",
+                          "code": "{\\"id\\"?: number,\\"name\\"?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
                           "isDefault": false,
@@ -1560,7 +1560,7 @@ class Context {
 }
 ",
               "code": Object {
-                "raw": "export { default } from \\"../$.context.js\\"",
+                "raw": "export { default } from \\"../$.context.mjs\\"",
               },
               "done": true,
               "id": "ContextCoder",
@@ -1594,7 +1594,7 @@ class Context {
           "exports": Map {
             "Pet" => Object {
               "beforeExport": "",
-              "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: \\"available\\" | \\"pending\\" | \\"sold\\"}",
+              "code": "{\\"id\\"?: number,\\"name\\": string,\\"category\\"?: Category,\\"photoUrls\\": Array<string>,\\"tags\\"?: Array<Tag>,\\"status\\"?: \\"available\\" | \\"pending\\" | \\"sold\\"}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
               "isDefault": false,
@@ -1617,7 +1617,7 @@ class Context {
                 "exports": Map {
                   "Category" => Object {
                     "beforeExport": "",
-                    "code": "{id?: number,name?: string}",
+                    "code": "{\\"id\\"?: number,\\"name\\"?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isDefault": false,
@@ -1648,7 +1648,7 @@ class Context {
                 "exports": Map {
                   "Tag" => Object {
                     "beforeExport": "",
-                    "code": "{id?: number,name?: string}",
+                    "code": "{\\"id\\"?: number,\\"name\\"?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isDefault": false,
@@ -1858,7 +1858,7 @@ class Context {
 }
 ",
                     "code": Object {
-                      "raw": "export { default } from \\"../$.context.js\\"",
+                      "raw": "export { default } from \\"../$.context.mjs\\"",
                     },
                     "done": true,
                     "id": "ContextCoder",
@@ -1892,7 +1892,7 @@ class Context {
                 "exports": Map {
                   "Pet" => Object {
                     "beforeExport": "",
-                    "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: \\"available\\" | \\"pending\\" | \\"sold\\"}",
+                    "code": "{\\"id\\"?: number,\\"name\\": string,\\"category\\"?: Category,\\"photoUrls\\": Array<string>,\\"tags\\"?: Array<Tag>,\\"status\\"?: \\"available\\" | \\"pending\\" | \\"sold\\"}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isDefault": false,
@@ -1915,7 +1915,7 @@ class Context {
                       "exports": Map {
                         "Category" => Object {
                           "beforeExport": "",
-                          "code": "{id?: number,name?: string}",
+                          "code": "{\\"id\\"?: number,\\"name\\"?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
                           "isDefault": false,
@@ -1946,7 +1946,7 @@ class Context {
                       "exports": Map {
                         "Tag" => Object {
                           "beforeExport": "",
-                          "code": "{id?: number,name?: string}",
+                          "code": "{\\"id\\"?: number,\\"name\\"?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
                           "isDefault": false,
@@ -2109,7 +2109,7 @@ class Context {
 }
 ",
                     "code": Object {
-                      "raw": "export { default } from \\"../$.context.js\\"",
+                      "raw": "export { default } from \\"../$.context.mjs\\"",
                     },
                     "done": true,
                     "id": "ContextCoder",
@@ -2143,7 +2143,7 @@ class Context {
                 "exports": Map {
                   "Pet" => Object {
                     "beforeExport": "",
-                    "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: \\"available\\" | \\"pending\\" | \\"sold\\"}",
+                    "code": "{\\"id\\"?: number,\\"name\\": string,\\"category\\"?: Category,\\"photoUrls\\": Array<string>,\\"tags\\"?: Array<Tag>,\\"status\\"?: \\"available\\" | \\"pending\\" | \\"sold\\"}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isDefault": false,
@@ -2166,7 +2166,7 @@ class Context {
                       "exports": Map {
                         "Category" => Object {
                           "beforeExport": "",
-                          "code": "{id?: number,name?: string}",
+                          "code": "{\\"id\\"?: number,\\"name\\"?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
                           "isDefault": false,
@@ -2197,7 +2197,7 @@ class Context {
                       "exports": Map {
                         "Tag" => Object {
                           "beforeExport": "",
-                          "code": "{id?: number,name?: string}",
+                          "code": "{\\"id\\"?: number,\\"name\\"?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
                           "isDefault": false,
@@ -2360,7 +2360,7 @@ class Context {
 }
 ",
                     "code": Object {
-                      "raw": "export { default } from \\"../$.context.js\\"",
+                      "raw": "export { default } from \\"../$.context.mjs\\"",
                     },
                     "done": true,
                     "id": "ContextCoder",
@@ -2394,7 +2394,7 @@ class Context {
                 "exports": Map {
                   "Pet" => Object {
                     "beforeExport": "",
-                    "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: \\"available\\" | \\"pending\\" | \\"sold\\"}",
+                    "code": "{\\"id\\"?: number,\\"name\\": string,\\"category\\"?: Category,\\"photoUrls\\": Array<string>,\\"tags\\"?: Array<Tag>,\\"status\\"?: \\"available\\" | \\"pending\\" | \\"sold\\"}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isDefault": false,
@@ -2417,7 +2417,7 @@ class Context {
                       "exports": Map {
                         "Category" => Object {
                           "beforeExport": "",
-                          "code": "{id?: number,name?: string}",
+                          "code": "{\\"id\\"?: number,\\"name\\"?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
                           "isDefault": false,
@@ -2448,7 +2448,7 @@ class Context {
                       "exports": Map {
                         "Tag" => Object {
                           "beforeExport": "",
-                          "code": "{id?: number,name?: string}",
+                          "code": "{\\"id\\"?: number,\\"name\\"?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
                           "isDefault": false,
@@ -2615,7 +2615,7 @@ class Context {
 }
 ",
               "code": Object {
-                "raw": "export { default } from \\"../$.context.js\\"",
+                "raw": "export { default } from \\"../$.context.mjs\\"",
               },
               "done": true,
               "id": "ContextCoder",
@@ -2649,7 +2649,7 @@ class Context {
           "exports": Map {
             "Pet" => Object {
               "beforeExport": "",
-              "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: \\"available\\" | \\"pending\\" | \\"sold\\"}",
+              "code": "{\\"id\\"?: number,\\"name\\": string,\\"category\\"?: Category,\\"photoUrls\\": Array<string>,\\"tags\\"?: Array<Tag>,\\"status\\"?: \\"available\\" | \\"pending\\" | \\"sold\\"}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
               "isDefault": false,
@@ -2672,7 +2672,7 @@ class Context {
                 "exports": Map {
                   "Category" => Object {
                     "beforeExport": "",
-                    "code": "{id?: number,name?: string}",
+                    "code": "{\\"id\\"?: number,\\"name\\"?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isDefault": false,
@@ -2703,7 +2703,7 @@ class Context {
                 "exports": Map {
                   "Tag" => Object {
                     "beforeExport": "",
-                    "code": "{id?: number,name?: string}",
+                    "code": "{\\"id\\"?: number,\\"name\\"?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isDefault": false,
@@ -2830,7 +2830,7 @@ class Context {
 }
 ",
                     "code": Object {
-                      "raw": "export { default } from \\"../$.context.js\\"",
+                      "raw": "export { default } from \\"../$.context.mjs\\"",
                     },
                     "done": true,
                     "id": "ContextCoder",
@@ -2862,7 +2862,7 @@ class Context {
                 "exports": Map {
                   "ApiResponse" => Object {
                     "beforeExport": "",
-                    "code": "{code?: number,type?: string,message?: string}",
+                    "code": "{\\"code\\"?: number,\\"type\\"?: string,\\"message\\"?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isDefault": false,
@@ -2963,7 +2963,7 @@ class Context {
 }
 ",
               "code": Object {
-                "raw": "export { default } from \\"../$.context.js\\"",
+                "raw": "export { default } from \\"../$.context.mjs\\"",
               },
               "done": true,
               "id": "ContextCoder",
@@ -2995,7 +2995,7 @@ class Context {
           "exports": Map {
             "ApiResponse" => Object {
               "beforeExport": "",
-              "code": "{code?: number,type?: string,message?: string}",
+              "code": "{\\"code\\"?: number,\\"type\\"?: string,\\"message\\"?: string}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
               "isDefault": false,
@@ -3112,7 +3112,7 @@ class Context {
 }
 ",
                     "code": Object {
-                      "raw": "export { default } from \\"../$.context.js\\"",
+                      "raw": "export { default } from \\"../$.context.mjs\\"",
                     },
                     "done": true,
                     "id": "ContextCoder",
@@ -3213,7 +3213,7 @@ class Context {
 }
 ",
               "code": Object {
-                "raw": "export { default } from \\"../$.context.js\\"",
+                "raw": "export { default } from \\"../$.context.mjs\\"",
               },
               "done": true,
               "id": "ContextCoder",
@@ -3338,7 +3338,7 @@ class Context {
 }
 ",
                     "code": Object {
-                      "raw": "export { default } from \\"../$.context.js\\"",
+                      "raw": "export { default } from \\"../$.context.mjs\\"",
                     },
                     "done": true,
                     "id": "ContextCoder",
@@ -3370,7 +3370,7 @@ class Context {
                 "exports": Map {
                   "Order" => Object {
                     "beforeExport": "",
-                    "code": "{id?: number,petId?: number,quantity?: number,shipDate?: string,status?: \\"placed\\" | \\"approved\\" | \\"delivered\\",complete?: boolean}",
+                    "code": "{\\"id\\"?: number,\\"petId\\"?: number,\\"quantity\\"?: number,\\"shipDate\\"?: string,\\"status\\"?: \\"placed\\" | \\"approved\\" | \\"delivered\\",\\"complete\\"?: boolean}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isDefault": false,
@@ -3477,7 +3477,7 @@ class Context {
 }
 ",
               "code": Object {
-                "raw": "export { default } from \\"../$.context.js\\"",
+                "raw": "export { default } from \\"../$.context.mjs\\"",
               },
               "done": true,
               "id": "ContextCoder",
@@ -3509,7 +3509,7 @@ class Context {
           "exports": Map {
             "Order" => Object {
               "beforeExport": "",
-              "code": "{id?: number,petId?: number,quantity?: number,shipDate?: string,status?: \\"placed\\" | \\"approved\\" | \\"delivered\\",complete?: boolean}",
+              "code": "{\\"id\\"?: number,\\"petId\\"?: number,\\"quantity\\"?: number,\\"shipDate\\"?: string,\\"status\\"?: \\"placed\\" | \\"approved\\" | \\"delivered\\",\\"complete\\"?: boolean}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
               "isDefault": false,
@@ -3684,7 +3684,7 @@ class Context {
 }
 ",
                     "code": Object {
-                      "raw": "export { default } from \\"../$.context.js\\"",
+                      "raw": "export { default } from \\"../$.context.mjs\\"",
                     },
                     "done": true,
                     "id": "ContextCoder",
@@ -3716,7 +3716,7 @@ class Context {
                 "exports": Map {
                   "Order" => Object {
                     "beforeExport": "",
-                    "code": "{id?: number,petId?: number,quantity?: number,shipDate?: string,status?: \\"placed\\" | \\"approved\\" | \\"delivered\\",complete?: boolean}",
+                    "code": "{\\"id\\"?: number,\\"petId\\"?: number,\\"quantity\\"?: number,\\"shipDate\\"?: string,\\"status\\"?: \\"placed\\" | \\"approved\\" | \\"delivered\\",\\"complete\\"?: boolean}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isDefault": false,
@@ -3857,7 +3857,7 @@ class Context {
 }
 ",
                     "code": Object {
-                      "raw": "export { default } from \\"../$.context.js\\"",
+                      "raw": "export { default } from \\"../$.context.mjs\\"",
                     },
                     "done": true,
                     "id": "ContextCoder",
@@ -3889,7 +3889,7 @@ class Context {
                 "exports": Map {
                   "Order" => Object {
                     "beforeExport": "",
-                    "code": "{id?: number,petId?: number,quantity?: number,shipDate?: string,status?: \\"placed\\" | \\"approved\\" | \\"delivered\\",complete?: boolean}",
+                    "code": "{\\"id\\"?: number,\\"petId\\"?: number,\\"quantity\\"?: number,\\"shipDate\\"?: string,\\"status\\"?: \\"placed\\" | \\"approved\\" | \\"delivered\\",\\"complete\\"?: boolean}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isDefault": false,
@@ -4034,7 +4034,7 @@ class Context {
 }
 ",
               "code": Object {
-                "raw": "export { default } from \\"../$.context.js\\"",
+                "raw": "export { default } from \\"../$.context.mjs\\"",
               },
               "done": true,
               "id": "ContextCoder",
@@ -4066,7 +4066,7 @@ class Context {
           "exports": Map {
             "Order" => Object {
               "beforeExport": "",
-              "code": "{id?: number,petId?: number,quantity?: number,shipDate?: string,status?: \\"placed\\" | \\"approved\\" | \\"delivered\\",complete?: boolean}",
+              "code": "{\\"id\\"?: number,\\"petId\\"?: number,\\"quantity\\"?: number,\\"shipDate\\"?: string,\\"status\\"?: \\"placed\\" | \\"approved\\" | \\"delivered\\",\\"complete\\"?: boolean}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
               "isDefault": false,
@@ -4221,7 +4221,7 @@ class Context {
                 "exports": Map {
                   "User" => Object {
                     "beforeExport": "",
-                    "code": "{id?: number,username?: string,firstName?: string,lastName?: string,email?: string,password?: string,phone?: string,userStatus?: number}",
+                    "code": "{\\"id\\"?: number,\\"username\\"?: string,\\"firstName\\"?: string,\\"lastName\\"?: string,\\"email\\"?: string,\\"password\\"?: string,\\"phone\\"?: string,\\"userStatus\\"?: number}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isDefault": false,
@@ -4359,7 +4359,7 @@ class Context {
           "exports": Map {
             "User" => Object {
               "beforeExport": "",
-              "code": "{id?: number,username?: string,firstName?: string,lastName?: string,email?: string,password?: string,phone?: string,userStatus?: number}",
+              "code": "{\\"id\\"?: number,\\"username\\"?: string,\\"firstName\\"?: string,\\"lastName\\"?: string,\\"email\\"?: string,\\"password\\"?: string,\\"phone\\"?: string,\\"userStatus\\"?: number}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
               "isDefault": false,
@@ -4490,7 +4490,7 @@ class Context {
 }
 ",
                     "code": Object {
-                      "raw": "export { default } from \\"../$.context.js\\"",
+                      "raw": "export { default } from \\"../$.context.mjs\\"",
                     },
                     "done": true,
                     "id": "ContextCoder",
@@ -4522,7 +4522,7 @@ class Context {
                 "exports": Map {
                   "User" => Object {
                     "beforeExport": "",
-                    "code": "{id?: number,username?: string,firstName?: string,lastName?: string,email?: string,password?: string,phone?: string,userStatus?: number}",
+                    "code": "{\\"id\\"?: number,\\"username\\"?: string,\\"firstName\\"?: string,\\"lastName\\"?: string,\\"email\\"?: string,\\"password\\"?: string,\\"phone\\"?: string,\\"userStatus\\"?: number}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isDefault": false,
@@ -4636,7 +4636,7 @@ class Context {
 }
 ",
               "code": Object {
-                "raw": "export { default } from \\"../$.context.js\\"",
+                "raw": "export { default } from \\"../$.context.mjs\\"",
               },
               "done": true,
               "id": "ContextCoder",
@@ -4668,7 +4668,7 @@ class Context {
           "exports": Map {
             "User" => Object {
               "beforeExport": "",
-              "code": "{id?: number,username?: string,firstName?: string,lastName?: string,email?: string,password?: string,phone?: string,userStatus?: number}",
+              "code": "{\\"id\\"?: number,\\"username\\"?: string,\\"firstName\\"?: string,\\"lastName\\"?: string,\\"email\\"?: string,\\"password\\"?: string,\\"phone\\"?: string,\\"userStatus\\"?: number}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
               "isDefault": false,
@@ -4801,7 +4801,7 @@ class Context {
 }
 ",
                     "code": Object {
-                      "raw": "export { default } from \\"../$.context.js\\"",
+                      "raw": "export { default } from \\"../$.context.mjs\\"",
                     },
                     "done": true,
                     "id": "ContextCoder",
@@ -4918,7 +4918,7 @@ class Context {
 }
 ",
               "code": Object {
-                "raw": "export { default } from \\"../$.context.js\\"",
+                "raw": "export { default } from \\"../$.context.mjs\\"",
               },
               "done": true,
               "id": "ContextCoder",
@@ -5028,7 +5028,7 @@ class Context {
 }
 ",
                     "code": Object {
-                      "raw": "export { default } from \\"../$.context.js\\"",
+                      "raw": "export { default } from \\"../$.context.mjs\\"",
                     },
                     "done": true,
                     "id": "ContextCoder",
@@ -5123,7 +5123,7 @@ class Context {
 }
 ",
               "code": Object {
-                "raw": "export { default } from \\"../$.context.js\\"",
+                "raw": "export { default } from \\"../$.context.mjs\\"",
               },
               "done": true,
               "id": "ContextCoder",
@@ -5331,7 +5331,7 @@ class Context {
 }
 ",
                     "code": Object {
-                      "raw": "export { default } from \\"../$.context.js\\"",
+                      "raw": "export { default } from \\"../$.context.mjs\\"",
                     },
                     "done": true,
                     "id": "ContextCoder",
@@ -5363,7 +5363,7 @@ class Context {
                 "exports": Map {
                   "User" => Object {
                     "beforeExport": "",
-                    "code": "{id?: number,username?: string,firstName?: string,lastName?: string,email?: string,password?: string,phone?: string,userStatus?: number}",
+                    "code": "{\\"id\\"?: number,\\"username\\"?: string,\\"firstName\\"?: string,\\"lastName\\"?: string,\\"email\\"?: string,\\"password\\"?: string,\\"phone\\"?: string,\\"userStatus\\"?: number}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isDefault": false,
@@ -5523,7 +5523,7 @@ class Context {
 }
 ",
                     "code": Object {
-                      "raw": "export { default } from \\"../$.context.js\\"",
+                      "raw": "export { default } from \\"../$.context.mjs\\"",
                     },
                     "done": true,
                     "id": "ContextCoder",
@@ -5555,7 +5555,7 @@ class Context {
                 "exports": Map {
                   "User" => Object {
                     "beforeExport": "",
-                    "code": "{id?: number,username?: string,firstName?: string,lastName?: string,email?: string,password?: string,phone?: string,userStatus?: number}",
+                    "code": "{\\"id\\"?: number,\\"username\\"?: string,\\"firstName\\"?: string,\\"lastName\\"?: string,\\"email\\"?: string,\\"password\\"?: string,\\"phone\\"?: string,\\"userStatus\\"?: number}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isDefault": false,
@@ -5715,7 +5715,7 @@ class Context {
 }
 ",
                     "code": Object {
-                      "raw": "export { default } from \\"../$.context.js\\"",
+                      "raw": "export { default } from \\"../$.context.mjs\\"",
                     },
                     "done": true,
                     "id": "ContextCoder",
@@ -5747,7 +5747,7 @@ class Context {
                 "exports": Map {
                   "User" => Object {
                     "beforeExport": "",
-                    "code": "{id?: number,username?: string,firstName?: string,lastName?: string,email?: string,password?: string,phone?: string,userStatus?: number}",
+                    "code": "{\\"id\\"?: number,\\"username\\"?: string,\\"firstName\\"?: string,\\"lastName\\"?: string,\\"email\\"?: string,\\"password\\"?: string,\\"phone\\"?: string,\\"userStatus\\"?: number}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isDefault": false,
@@ -5911,7 +5911,7 @@ class Context {
 }
 ",
               "code": Object {
-                "raw": "export { default } from \\"../$.context.js\\"",
+                "raw": "export { default } from \\"../$.context.mjs\\"",
               },
               "done": true,
               "id": "ContextCoder",
@@ -5943,7 +5943,7 @@ class Context {
           "exports": Map {
             "User" => Object {
               "beforeExport": "",
-              "code": "{id?: number,username?: string,firstName?: string,lastName?: string,email?: string,password?: string,phone?: string,userStatus?: number}",
+              "code": "{\\"id\\"?: number,\\"username\\"?: string,\\"firstName\\"?: string,\\"lastName\\"?: string,\\"email\\"?: string,\\"password\\"?: string,\\"phone\\"?: string,\\"userStatus\\"?: number}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
               "isDefault": false,
@@ -6019,7 +6019,7 @@ class Context {
     "exports": Map {
       "Pet" => Object {
         "beforeExport": "",
-        "code": "{id?: number,name: string,category?: Category,photoUrls: Array<string>,tags?: Array<Tag>,status?: \\"available\\" | \\"pending\\" | \\"sold\\"}",
+        "code": "{\\"id\\"?: number,\\"name\\": string,\\"category\\"?: Category,\\"photoUrls\\": Array<string>,\\"tags\\"?: Array<Tag>,\\"status\\"?: \\"available\\" | \\"pending\\" | \\"sold\\"}",
         "done": true,
         "id": "SchemaTypeCoder@undefined",
         "isDefault": false,
@@ -6042,7 +6042,7 @@ class Context {
           "exports": Map {
             "Category" => Object {
               "beforeExport": "",
-              "code": "{id?: number,name?: string}",
+              "code": "{\\"id\\"?: number,\\"name\\"?: string}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
               "isDefault": false,
@@ -6073,7 +6073,7 @@ class Context {
           "exports": Map {
             "Tag" => Object {
               "beforeExport": "",
-              "code": "{id?: number,name?: string}",
+              "code": "{\\"id\\"?: number,\\"name\\"?: string}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
               "isDefault": false,
@@ -6122,7 +6122,7 @@ class Context {
 }
 ",
         "code": Object {
-          "raw": "export { default } from \\"../$.context.js\\"",
+          "raw": "export { default } from \\"../$.context.mjs\\"",
         },
         "done": true,
         "id": "ContextCoder",
@@ -6163,7 +6163,7 @@ class Context {
 }
 ",
         "code": Object {
-          "raw": "export { default } from \\"../$.context.js\\"",
+          "raw": "export { default } from \\"../$.context.mjs\\"",
         },
         "done": true,
         "id": "ContextCoder",
@@ -6190,7 +6190,7 @@ class Context {
     "exports": Map {
       "ApiResponse" => Object {
         "beforeExport": "",
-        "code": "{code?: number,type?: string,message?: string}",
+        "code": "{\\"code\\"?: number,\\"type\\"?: string,\\"message\\"?: string}",
         "done": true,
         "id": "SchemaTypeCoder@undefined",
         "isDefault": false,
@@ -6230,7 +6230,7 @@ class Context {
 }
 ",
         "code": Object {
-          "raw": "export { default } from \\"../$.context.js\\"",
+          "raw": "export { default } from \\"../$.context.mjs\\"",
         },
         "done": true,
         "id": "ContextCoder",
@@ -6257,7 +6257,7 @@ class Context {
     "exports": Map {
       "Order" => Object {
         "beforeExport": "",
-        "code": "{id?: number,petId?: number,quantity?: number,shipDate?: string,status?: \\"placed\\" | \\"approved\\" | \\"delivered\\",complete?: boolean}",
+        "code": "{\\"id\\"?: number,\\"petId\\"?: number,\\"quantity\\"?: number,\\"shipDate\\"?: string,\\"status\\"?: \\"placed\\" | \\"approved\\" | \\"delivered\\",\\"complete\\"?: boolean}",
         "done": true,
         "id": "SchemaTypeCoder@undefined",
         "isDefault": false,
@@ -6297,7 +6297,7 @@ class Context {
 }
 ",
         "code": Object {
-          "raw": "export { default } from \\"../$.context.js\\"",
+          "raw": "export { default } from \\"../$.context.mjs\\"",
         },
         "done": true,
         "id": "ContextCoder",
@@ -6324,7 +6324,7 @@ class Context {
     "exports": Map {
       "User" => Object {
         "beforeExport": "",
-        "code": "{id?: number,username?: string,firstName?: string,lastName?: string,email?: string,password?: string,phone?: string,userStatus?: number}",
+        "code": "{\\"id\\"?: number,\\"username\\"?: string,\\"firstName\\"?: string,\\"lastName\\"?: string,\\"email\\"?: string,\\"password\\"?: string,\\"phone\\"?: string,\\"userStatus\\"?: number}",
         "done": true,
         "id": "SchemaTypeCoder@undefined",
         "isDefault": false,
@@ -6364,7 +6364,7 @@ class Context {
 }
 ",
         "code": Object {
-          "raw": "export { default } from \\"../$.context.js\\"",
+          "raw": "export { default } from \\"../$.context.mjs\\"",
         },
         "done": true,
         "id": "ContextCoder",
@@ -6391,7 +6391,7 @@ class Context {
     "exports": Map {
       "Category" => Object {
         "beforeExport": "",
-        "code": "{id?: number,name?: string}",
+        "code": "{\\"id\\"?: number,\\"name\\"?: string}",
         "done": true,
         "id": "SchemaTypeCoder@undefined",
         "isDefault": false,
@@ -6417,7 +6417,7 @@ class Context {
     "exports": Map {
       "Tag" => Object {
         "beforeExport": "",
-        "code": "{id?: number,name?: string}",
+        "code": "{\\"id\\"?: number,\\"name\\"?: string}",
         "done": true,
         "id": "SchemaTypeCoder@undefined",
         "isDefault": false,
@@ -6437,4 +6437,14 @@ class Context {
     "typeCache": Map {},
   },
 }
+`;
+
+exports[`end-to-end test generates the same code for pet store that it did on the last test run 2`] = `
+".cache
+"
+`;
+
+exports[`end-to-end test generates the same code for pet store that it did on the last test run 3`] = `
+"This directory contains compiled JS files from the paths directory. Do not edit these files directly.
+"
 `;
