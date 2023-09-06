@@ -9,8 +9,8 @@
       "automerge": true,
       "stabilityDays": 3,
       "prCreation": "not-pending",
-      "ignoreDeps": ["jest", "jest-environment-jsdom"],
-      "rangeStrategy": "pin"
+      "rangeStrategy": "pin",
+      "depTypeList": ["dependencies", "devDependencies"]
     },
     {
       "matchManagers": ["github-actions"],
