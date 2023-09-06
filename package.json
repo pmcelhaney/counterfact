@@ -18,7 +18,7 @@
     "testing"
   ],
   "engines": {
-    "node": "20.6.0"
+    "node": ">=16.9.0"
   },
   "bin": {
     "counterfact": "./bin/counterfact.js"
