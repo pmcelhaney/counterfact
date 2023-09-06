@@ -6,7 +6,7 @@ exports[`a ParametersTypeCoder generates type never when there is no match 1`] =
 `;
 
 exports[`a ParametersTypeCoder generates types for parameters (OAS2): header 1`] = `
-"type TestType = { "name?": string };
+"type TestType = { \\"name?\\": string };
 "
 `;
 
@@ -16,12 +16,12 @@ exports[`a ParametersTypeCoder generates types for parameters (OAS2): path 1`] =
 `;
 
 exports[`a ParametersTypeCoder generates types for parameters (OAS2): query 1`] = `
-"type TestType = { "name?": string; "age?": string };
+"type TestType = { \\"name?\\": string; \\"age?\\": string };
 "
 `;
 
 exports[`a ParametersTypeCoder generates types for parameters: header 1`] = `
-"type TestType = { "name?": string };
+"type TestType = { \\"name?\\": string };
 "
 `;
 
@@ -31,6 +31,6 @@ exports[`a ParametersTypeCoder generates types for parameters: path 1`] = `
 `;
 
 exports[`a ParametersTypeCoder generates types for parameters: query 1`] = `
-"type TestType = { "name?": string; "age?": string };
+"type TestType = { \\"name?\\": string; \\"age?\\": string };
 "
 `;
