@@ -1,24 +1,14 @@
 // Stryker disable all
 
 import { once } from "node:events";
-import { constants as fsConstants } from "node:fs";
 import fs from "node:fs/promises";
 import nodePath from "node:path";
 
 import { type FSWatcher, watch as chokidarWatch } from "chokidar";
 import ts from "typescript";
 
+import { ensureDirectoryExists } from "../util/ensure-directory-exists.js";
 import { CHOKIDAR_OPTIONS } from "./constants.js";
-
-async function ensureDirectoryExists(filePath: string): Promise<void> {
-  const directory = nodePath.dirname(filePath);
-
-  try {
-    await fs.access(directory, fsConstants.W_OK);
-  } catch {
-    await fs.mkdir(directory, { recursive: true });
-  }
-}
 
 export class Transpiler extends EventTarget {
   private readonly sourcePath: string;
@@ -88,7 +78,7 @@ export class Transpiler extends EventTarget {
     sourcePath: string,
     destinationPath: string,
   ): Promise<void> {
-    await ensureDirectoryExists(destinationPath);
+    ensureDirectoryExists(destinationPath);
 
     const source = await fs.readFile(sourcePath, "utf8");
 
@@ -107,6 +97,7 @@ export class Transpiler extends EventTarget {
       .replaceAll("\\", "/");
 
     try {
+      // eslint-disable-next-line total-functions/no-unsafe-readonly-mutable-assignment
       await fs.writeFile(fullDestination, result);
     } catch {
       throw new Error("could not transpile");

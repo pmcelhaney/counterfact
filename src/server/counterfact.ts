@@ -43,7 +43,7 @@ export async function counterfact(
   const dispatcher = new Dispatcher(registry, contextRegistry, openApiDocument);
 
   const compiledPathsDirectory = nodePath
-    .join(modulesPath, "paths-js")
+    .join(modulesPath, ".cache")
     .replaceAll("\\", "/");
 
   const transpiler = new Transpiler(

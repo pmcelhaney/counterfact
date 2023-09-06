@@ -62,7 +62,7 @@ describe("black box test", () => {
   });
 
   it("compiles kitty.ts", () => {
-    expect(fs.readFileSync("./out/paths-js/hello/kitty.mjs")).toMatchSnapshot();
+    expect(fs.readFileSync("./out/.cache/hello/kitty.mjs")).toMatchSnapshot();
   });
 
   it("responds to a GET request", async () => {
