@@ -49,9 +49,10 @@ describe("a Transpiler", () => {
         await transpiler.watch();
 
         const write = once(transpiler, "write");
+        const error = once(transpiler, "error");
 
         await add("src/added.ts", TYPESCRIPT_SOURCE);
-        await write;
+        await Promise.race([write, error]);
 
         // eslint-disable-next-line promise/avoid-new
         await new Promise((resolve) => {

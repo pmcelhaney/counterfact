@@ -35,6 +35,10 @@ jobs:
           key: ${{ runner.os }}-${{ steps.node-version.outputs.version }}-${{ hashFiles('**/yarn.lock') }}
       - name: Install Packages
         run: yarn install --frozen-lockfile --network-timeout 100000
+      - name: flaky test on Windows
+        env:
+          DEGUG: "counterfact:*"
+        run: yarn test transpiler
       - name: ESlint
         run: yarn eslint -f github-annotations .
       - name: TypeScript
