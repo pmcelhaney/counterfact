@@ -5,11 +5,13 @@ import fs from "node:fs/promises";
 import nodePath from "node:path";
 
 import { type FSWatcher, watch as chokidarWatch } from "chokidar";
+import createDebug from "debug";
 import ts from "typescript";
 
 import { ensureDirectoryExists } from "../util/ensure-directory-exists.js";
 import { CHOKIDAR_OPTIONS } from "./constants.js";
 
+const debug = createDebug("counterfact:server:transpiler");
 export class Transpiler extends EventTarget {
   private readonly sourcePath: string;
 
@@ -24,6 +26,7 @@ export class Transpiler extends EventTarget {
   }
 
   public async watch(): Promise<void> {
+    debug("transpiler: watch");
     this.watcher = chokidarWatch(`${this.sourcePath}/**/*.{ts,mts,js,mjs}`, {
       ...CHOKIDAR_OPTIONS,
       ignored: `${this.sourcePath}/js`,
@@ -34,8 +37,9 @@ export class Transpiler extends EventTarget {
     this.watcher.on(
       "all",
 
-      // eslint-disable-next-line @typescript-eslint/no-misused-promises
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises, max-statements
       async (eventName: string, sourcePathOriginal: string) => {
+        debug("transpiler event: %s <%s>", eventName, sourcePathOriginal);
         const sourcePath = sourcePathOriginal.replaceAll("\\", "/");
 
         const destinationPath = sourcePath
@@ -55,6 +59,8 @@ export class Transpiler extends EventTarget {
           } catch (error) {
             // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
             if ((error as { code: string }).code !== "ENOENT") {
+              debug("error removing %s: %o", destinationPath, error);
+              this.dispatchEvent(new Event("error"));
               throw error;
             }
           }
@@ -100,6 +106,8 @@ export class Transpiler extends EventTarget {
       // eslint-disable-next-line total-functions/no-unsafe-readonly-mutable-assignment
       await fs.writeFile(fullDestination, result);
     } catch {
+      debug("error transpiling %s", fullDestination);
+      this.dispatchEvent(new Event("error"));
       throw new Error("could not transpile");
     }
 
