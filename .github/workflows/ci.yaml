@@ -38,7 +38,7 @@ jobs:
       - name: flaky test on Windows
         env:
           DEGUG: "counterfact:*"
-        run: yarn test transpiler
+        run: yarn test transpiler --runInBand --forceExit --verbose --no-watchman --no-coverage
       - name: ESlint
         run: yarn eslint -f github-annotations .
       - name: TypeScript
