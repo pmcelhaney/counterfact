@@ -2438,10 +2438,10 @@
   dependencies:
     "@types/koa" "*"
 
-"@types/koa-proxy@1.0.4":
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/@types/koa-proxy/-/koa-proxy-1.0.4.tgz#b39af17b4bcc2ed65c44e9fef3661134e2442746"
-  integrity sha512-k1mCdAxLSmJsmo691Easp7nBaclZEGWodYkbaQdrA2+ImTnoQ8b4lbgVuz4lipJNnvKs5XDj/8FbRX3ppcydNA==
+"@types/koa-proxy@1.0.5":
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@types/koa-proxy/-/koa-proxy-1.0.5.tgz#f1e3b6d3fdb5568a7de99eaf843050c69fcce707"
+  integrity sha512-o9dyYQ8UCSeKarPmsXnaNOSZCGQ/7KBiEcoNZMuKFXweTJ8zwjAAqJ5JEF94WyCaHxLu8hUnIb3orYUyUwMZvw==
   dependencies:
     "@types/koa" "*"
 
