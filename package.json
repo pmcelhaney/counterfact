@@ -80,7 +80,7 @@
   },
   "dependencies": {
     "@hapi/accept": "6.0.2",
-    "@types/json-schema": "7.0.12",
+    "@types/json-schema": "7.0.13",
     "chokidar": "3.5.3",
     "commander": "11.0.0",
     "debug": "4.3.4",
