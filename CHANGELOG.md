@@ -1,5 +1,11 @@
 # counterfact
 
+## 0.26.1
+
+### Patch Changes
+
+- dd0aecb: remove postinstall script that was preventing counterfact from installing
+
 ## 0.26.0
 
 ### Minor Changes
