@@ -1,4 +1,3 @@
-/* eslint-disable import/newline-after-import */
 /* eslint-disable max-lines */
 
 import { mediaTypes } from "@hapi/accept";
@@ -70,7 +69,7 @@ export class Dispatcher {
   public constructor(
     registry: Registry,
     contextRegistry: ContextRegistry,
-    openApiDocument?: OpenApiDocument,
+    openApiDocument?: OpenApiDocument
   ) {
     this.registry = registry;
     this.contextRegistry = contextRegistry;
@@ -79,7 +78,7 @@ export class Dispatcher {
   }
 
   private parameterTypes(
-    parameters: OpenApiParameters[] | undefined,
+    parameters: OpenApiParameters[] | undefined
   ): ParameterTypes {
     const types: ParameterTypes = {
       body: {},
@@ -108,7 +107,7 @@ export class Dispatcher {
 
   public operationForPathAndMethod(
     path: string,
-    method: HttpMethods,
+    method: HttpMethods
   ): OpenApiOperation | undefined {
     const operation: OpenApiOperation | undefined =
       this.openApiDocument?.paths[path]?.[
@@ -132,7 +131,7 @@ export class Dispatcher {
 
   private normalizeResponse(
     response: CounterfactResponseObject,
-    acceptHeader: string,
+    acceptHeader: string
   ) {
     if (typeof response === "string") {
       return {
@@ -175,13 +174,13 @@ export class Dispatcher {
 
   public selectContent(
     acceptHeader: string,
-    content: { body: unknown; type: string }[],
+    content: { body: unknown; type: string }[]
   ) {
     const preferredMediaTypes = mediaTypes(acceptHeader);
 
     for (const mediaType of preferredMediaTypes) {
       const contentItem = content.find((item) =>
-        this.isMediaType(item.type, mediaType),
+        this.isMediaType(item.type, mediaType)
       );
 
       if (contentItem) {
@@ -242,10 +241,10 @@ export class Dispatcher {
     const response = await this.registry.endpoint(
       method,
       path,
-      this.parameterTypes(operation?.parameters),
+      this.parameterTypes(operation?.parameters)
     )({
       body,
-      context: this.contextRegistry.find(path),
+      context: this.contextRegistry.find(matchedPath),
       headers,
 
       proxy: async (url: string) => {
@@ -253,7 +252,7 @@ export class Dispatcher {
           throw new Error(
             `$.proxy() is currently limited to application/json requests. You tried to proxy to ${url} with a Content-Type of ${
               headers.contentType ?? "[unknown]"
-            }. Please open an issue at https://github.com/pmcelhaney/counterfact/issues and prod me to fix this limitation.`,
+            }. Please open an issue at https://github.com/pmcelhaney/counterfact/issues and prod me to fix this limitation.`
           );
         }
 
@@ -264,7 +263,7 @@ export class Dispatcher {
         });
 
         const responseHeaders = Object.fromEntries(
-          fetchResponse.headers.entries(),
+          fetchResponse.headers.entries()
         );
 
         return {
@@ -285,12 +284,12 @@ export class Dispatcher {
 
     const normalizedResponse = this.normalizeResponse(
       response,
-      headers.accept ?? "*/*",
+      headers.accept ?? "*/*"
     );
 
     if (
       !mediaTypes(headers.accept ?? "*/*").some((type) =>
-        this.isMediaType(normalizedResponse.contentType, type),
+        this.isMediaType(normalizedResponse.contentType, type)
       )
     ) {
       return { body: mediaTypes(headers.accept ?? "*/*"), status: 406 };
