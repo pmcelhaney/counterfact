@@ -17,7 +17,7 @@
 > TL;DR: Do you have Node 16+ installed? Run this command.
 >
 > ```sh copy
-> npx counterfact@latest https://petstore3.swagger.io/api/v3/openapi.yaml api --open
+> npx counterfact@0.25.0 https://petstore3.swagger.io/api/v3/openapi.yaml api --open
 > ```
 
 ## High code, low effort, mock REST APIs
@@ -73,7 +73,7 @@ The only prerequisite is Node 16+.
 For example, run the following command to generate code for the [Swagger Petstore](https://petstore.swagger.io/).
 
 ```sh
-  npx counterfact@latest https://petstore3.swagger.io/api/v3/openapi.yaml api --open
+  npx counterfact@0.25.0 https://petstore3.swagger.io/api/v3/openapi.yaml api --open
 ```
 
 That command generates and starts a TypeScript implementation of the Swagger Petstore which returns random, valid responses, outputting code to the "api" directory, and opens a web browser with tools to interact with the API. You can replace the Petstore URL with a link to your own spec, either a URL or a local file. OpenAPI / Swagger versions 2 and 3 are supported.
@@ -86,7 +86,7 @@ That command generates and starts a TypeScript implementation of the Swagger Pet
 Again, using the [Swagger Petstore](https://petstore.swagger.io/) as an example:
 
 ```sh
-  npx counterfact@latest https://petstore3.swagger.io/api/v3/openapi.yaml api
+  npx counterfact@0.25.0 https://petstore3.swagger.io/api/v3/openapi.yaml api
 ```
 
 Counterfact reads the components from the [spec](https://petstore3.swagger.io/api/v3/openapi.yaml) and converts them into equivalent TypeScript types. For example, here's `./api/components/Pet.ts`:
@@ -115,7 +115,7 @@ These types are used internally by Counterfact. You can also use them in your cl
 Add the `--proxy-url <url>` flag to point to the location of a real server.
 
 ```sh
-  npx counterfact@latest ./path/to/your/spec api --proxy-url https://your-server.example.com/
+  npx counterfact@0.25.0 ./path/to/your/spec api --proxy-url https://your-server.example.com/
 ```
 
 All requests will be proxied to the real server, e.g. a request to `http://localhost:3100/hello-world` will be routed to `https://your-server.example.com/`. To toggle between having Counterfact handle requests and having it hand them off to the real server, type `.proxy on` / `.proxy off` in the REPL.
