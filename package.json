@@ -40,8 +40,7 @@
     "go:petstore": "yarn build && yarn counterfact https://petstore3.swagger.io/api/v3/openapi.json out",
     "go:petstore2": "yarn build && yarn counterfact  https://petstore.swagger.io/v2/swagger.json out",
     "go:example": "yarn build && yarn counterfact ./openapi-example.yaml out",
-    "counterfact": "./bin/counterfact.js",
-    "postinstall": "patch-package"
+    "counterfact": "./bin/counterfact.js"
   },
   "devDependencies": {
     "@changesets/cli": "2.26.2",
