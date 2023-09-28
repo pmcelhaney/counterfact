@@ -1,5 +1,11 @@
 # counterfact
 
+## 0.26.2
+
+### Patch Changes
+
+- 9d7bc5c: Fixes issue #585 where dispatcher.ts needs to use the matchedPath when calling the contextRegistry.find method
+
 ## 0.26.1
 
 ### Patch Changes
