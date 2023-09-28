@@ -1,3 +1,4 @@
+/* eslint-disable import/newline-after-import */
 /* eslint-disable max-lines */
 
 import { mediaTypes } from "@hapi/accept";
