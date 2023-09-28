@@ -509,6 +509,34 @@ describe("a dispatcher", () => {
     expect(result.body).toBe("test context");
   });
 
+  it("passes a context object (not in the root)", async () => {
+    const registry = new Registry();
+    const contextRegistry = new ContextRegistry();
+
+    contextRegistry.add("/", { id: "test context" });
+
+    contextRegistry.add("/echo/{id}", { id: "echo context" });
+    registry.add("/echo/{id}", {
+      GET({ context }) {
+        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+        return { body: (context as { id: string }).id };
+      },
+    });
+
+    const dispatcher = new Dispatcher(registry, contextRegistry);
+
+    const result = await dispatcher.request({
+      body: "",
+      headers: {},
+      method: "GET",
+      path: "/echo/1",
+      query: {},
+      req: { path: "/echo/1" },
+    });
+
+    expect(result.body).toBe("echo context");
+  });
+
   it("converts query, path, and header parameters to numbers if necessary", async () => {
     const registry = new Registry();
 

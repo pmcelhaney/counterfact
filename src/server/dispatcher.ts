@@ -245,7 +245,7 @@ export class Dispatcher {
       this.parameterTypes(operation?.parameters),
     )({
       body,
-      context: this.contextRegistry.find(path),
+      context: this.contextRegistry.find(matchedPath),
       headers,
 
       proxy: async (url: string) => {
