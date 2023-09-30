@@ -73,7 +73,7 @@
     "node-mocks-http": "1.13.0",
     "nodemon": "3.0.1",
     "patch-package": "8.0.0",
-    "rimraf": "5.0.4",
+    "rimraf": "5.0.5",
     "stryker-cli": "1.0.2",
     "supertest": "6.3.3"
   },
