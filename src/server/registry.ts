@@ -60,6 +60,7 @@ type CounterfactResponseObject =
         body: unknown;
         type: MediaType;
       }[];
+      contentType?: string;
       headers?: { [key: string]: number | string };
       status?: number;
     };
@@ -67,6 +68,17 @@ type CounterfactResponseObject =
 type CounterfactResponse =
   | CounterfactResponseObject
   | Promise<CounterfactResponseObject>;
+
+interface NormalizedCounterfactResponseObject {
+  body?: string;
+  content?: {
+    body: unknown;
+    type: MediaType;
+  }[];
+  contentType?: string;
+  headers?: { [key: string]: number | string };
+  status?: number;
+}
 
 function castParameters(
   parameters: { [key: string]: number | string },
@@ -245,5 +257,6 @@ export type {
   CounterfactResponseObject,
   HttpMethods,
   Module,
+  NormalizedCounterfactResponseObject,
   RequestDataWithBody,
 };

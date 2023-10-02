@@ -10,6 +10,7 @@ import type { ContextRegistry } from "./context-registry.js";
 import type {
   CounterfactResponseObject,
   HttpMethods,
+  NormalizedCounterfactResponseObject,
   Registry,
 } from "./registry.js";
 import {
@@ -133,7 +134,7 @@ export class Dispatcher {
   private normalizeResponse(
     response: CounterfactResponseObject,
     acceptHeader: string,
-  ) {
+  ): NormalizedCounterfactResponseObject {
     if (typeof response === "string") {
       return {
         body: response,
@@ -156,7 +157,8 @@ export class Dispatcher {
 
       const normalizedResponse = {
         ...response,
-        body: content.body,
+        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+        body: content.body as string | undefined,
         contentType: content.type,
       };
 
@@ -233,7 +235,7 @@ export class Dispatcher {
     req: {
       path?: string;
     };
-  }) {
+  }): Promise<NormalizedCounterfactResponseObject> {
     debug(`request: ${method} ${path}`);
 
     const { matchedPath } = this.registry.handler(path);
@@ -290,10 +292,13 @@ export class Dispatcher {
 
     if (
       !mediaTypes(headers.accept ?? "*/*").some((type) =>
-        this.isMediaType(normalizedResponse.contentType, type),
+        this.isMediaType(normalizedResponse.contentType ?? "", type),
       )
     ) {
-      return { body: mediaTypes(headers.accept ?? "*/*"), status: 406 };
+      return {
+        body: JSON.stringify(mediaTypes(headers.accept ?? "*/*")),
+        status: 406,
+      };
     }
 
     return normalizedResponse;
