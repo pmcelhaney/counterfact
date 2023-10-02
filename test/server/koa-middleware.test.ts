@@ -216,4 +216,51 @@ describe("koa middleware", () => {
       "X-My-Header,X-Another-Header",
     );
   });
+
+  it("adds custom response builder headers", async () => {
+    const registry = new Registry();
+
+    registry.add("/hello", {
+      POST({ body }) {
+        return {
+          // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+          body: `Hello, ${(body as { name: string }).name}!`,
+
+          headers: {
+            "X-Custom-Header": "custom value",
+          },
+        };
+      },
+    });
+
+    const dispatcher = new Dispatcher(registry, new ContextRegistry());
+    const middleware = koaMiddleware(dispatcher);
+    const ctx = {
+      body: undefined,
+
+      req: {
+        path: "/hello",
+      },
+
+      request: {
+        body: { name: "Homer" },
+        method: "POST",
+        path: "/hello",
+      },
+
+      set: jest.fn(),
+
+      status: undefined,
+    };
+
+    // @ts-expect-error - not obvious how to make TS happy here, and it's just a unit test
+    await middleware(ctx, async () => {
+      await Promise.resolve(undefined);
+    });
+
+    expect(ctx.status).toBe(200);
+    expect(ctx.body).toBe("Hello, Homer!");
+
+    expect(ctx.set).toHaveBeenCalledWith("X-Custom-Header", "custom value");
+  });
 });
