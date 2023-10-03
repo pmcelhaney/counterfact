@@ -1,5 +1,11 @@
 # counterfact
 
+## 0.26.3
+
+### Patch Changes
+
+- 5f02963: Fixes issue #593 where custom response headers were not being set
+
 ## 0.26.2
 
 ### Patch Changes
