@@ -61,6 +61,11 @@ export function koaMiddleware(
 
     /* eslint-disable require-atomic-updates */
     ctx.body = response.body;
+    if (response.headers) {
+      for (const [key, value] of Object.entries(response.headers)) {
+        ctx.set(key, value.toString());
+      }
+    }
     ctx.status = response.status ?? HTTP_STATUS_CODE_OK;
     /* eslint-enable require-atomic-updates */
 
