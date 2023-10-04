@@ -55,7 +55,9 @@ async function main(source, destination) {
 
   debug("starting server (%o)", config);
 
-  const { contextRegistry } = await start(config);
+  const { contextRegistry, server } = await start(config);
+
+  server.listen(config.port);
 
   debug("started server");
 

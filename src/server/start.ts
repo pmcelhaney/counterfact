@@ -4,7 +4,6 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 
 import createDebug from "debug";
 import Handlebars from "handlebars";
-import { createHttpTerminator, type HttpTerminator } from "http-terminator";
 import yaml from "js-yaml";
 import Koa from "koa";
 import bodyParser from "koa-bodyparser";
@@ -14,9 +13,6 @@ import { readFile } from "../util/read-file.js";
 import { counterfact } from "./counterfact.js";
 
 const debug = createDebug("counterfact:server:start");
-
-// eslint-disable-next-line @typescript-eslint/init-declarations
-let httpTerminator: HttpTerminator | undefined;
 
 // eslint-disable-next-line no-underscore-dangle
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -142,14 +138,6 @@ export async function start(config: {
       return;
     }
 
-    if (ctx.URL.pathname === "/counterfact/stop") {
-      debug("Stopping server...");
-      await httpTerminator?.terminate();
-      debug("Server stopped.");
-
-      return;
-    }
-
     // eslint-disable-next-line  n/callback-return
     await next();
   });
@@ -165,13 +153,5 @@ export async function start(config: {
 
   app.use(koaMiddleware);
 
-  const server = app.listen({
-    port,
-  });
-
-  httpTerminator = createHttpTerminator({
-    server,
-  });
-
-  return { contextRegistry };
+  return { contextRegistry, server: app };
 }
