@@ -7,8 +7,8 @@ import createDebug from "debug";
 import open from "open";
 
 import { migrate } from "../dist/src/migrations/0.27.js";
+import { counterfact } from "../dist/src/server/app.js";
 import { startRepl } from "../dist/src/server/repl.js";
-import { start } from "../dist/src/server/start.js";
 import { generate } from "../dist/src/typescript-generator/generate.js";
 
 const DEFAULT_PORT = 3100;
@@ -60,7 +60,7 @@ async function main(source, destination) {
 
   debug("starting server (%o)", config);
 
-  const { contextRegistry } = await start(config);
+  const { contextRegistry } = await counterfact(config);
 
   debug("started server");
 
