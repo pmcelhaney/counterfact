@@ -10,7 +10,7 @@ import bodyParser from "koa-bodyparser";
 import { koaSwagger } from "koa2-swagger-ui";
 
 import { readFile } from "../util/read-file.js";
-import { counterfact } from "./counterfact.js";
+import { server } from "./server.js";
 
 const debug = createDebug("counterfact:server:start");
 
@@ -80,7 +80,7 @@ function page(
   };
 }
 
-export async function start(config: {
+export async function counterfact(config: {
   basePath: string;
   openApiPath: string;
   port: number;
@@ -95,7 +95,7 @@ export async function start(config: {
 
   const app = new Koa();
 
-  const { contextRegistry, koaMiddleware, registry } = await counterfact(
+  const { contextRegistry, koaMiddleware, registry } = await server(
     basePath,
     openApiPath,
     config,
