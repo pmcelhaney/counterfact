@@ -58,9 +58,15 @@ async function main(source, destination) {
     proxyUrl: options.proxyUrl,
   };
 
-  debug("starting server (%o)", config);
+  debug("loading counterfact (%o)", config);
 
-  const { contextRegistry } = await counterfact(config);
+  const { contextRegistry, start } = await counterfact(config);
+
+  debug("loaded counterfact", config);
+
+  debug("starting server");
+
+  await start();
 
   debug("started server");
 

@@ -11,7 +11,7 @@ import bodyParser from "koa-bodyparser";
 import { koaSwagger } from "koa2-swagger-ui";
 
 import { readFile } from "../util/read-file.js";
-import { counterfact as innerCounterfact } from "./counterfact.js";
+import { counterfact as core } from "./counterfact.js";
 
 const debug = createDebug("counterfact:server:start");
 
@@ -105,9 +105,7 @@ export async function counterfact(config: {
     registry,
     start: startCounterfact,
     stop: stopCounterfact,
-  } = await innerCounterfact(basePath, openApiPath, config);
-
-  await startCounterfact();
+  } = await core(basePath, openApiPath, config);
 
   app.use(openapi(openApiPath, `//localhost:${port}`));
 
