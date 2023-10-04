@@ -51,23 +51,29 @@ export async function counterfact(
     compiledPathsDirectory,
   );
 
-  await transpiler.watch();
-
   const moduleLoader = new ModuleLoader(
     compiledPathsDirectory,
     registry,
     contextRegistry,
   );
 
-  await moduleLoader.load();
+  async function start() {
+    await transpiler.watch();
+    await moduleLoader.load();
+    await moduleLoader.watch();
+  }
 
-  await moduleLoader.watch();
+  async function stop() {
+    await transpiler.stopWatching();
+    await moduleLoader.stopWatching();
+  }
 
   return {
     contextRegistry,
     // eslint-disable-next-line total-functions/no-unsafe-readonly-mutable-assignment
     koaMiddleware: koaMiddleware(dispatcher, options),
-    moduleLoader,
     registry,
+    start,
+    stop,
   };
 }

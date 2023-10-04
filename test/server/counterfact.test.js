@@ -29,9 +29,11 @@ describe("integration test", () => {
     };
 
     await withTemporaryFiles(files, async (basePath) => {
-      const { koaMiddleware, moduleLoader } = await counterfact(basePath);
+      const { koaMiddleware, start, stop } = await counterfact(basePath);
 
       app.use(koaMiddleware);
+
+      await start();
 
       const getResponse = await request.get("/hello");
       const postResponse = await request.post("/hello/world");
@@ -41,7 +43,7 @@ describe("integration test", () => {
       expect(postResponse.text).toBe("POST /hello/world");
       expect(teapotResponse.statusCode).toBe(418);
 
-      await moduleLoader.stopWatching();
+      await stop();
     });
   });
 
@@ -79,10 +81,12 @@ describe("integration test", () => {
     };
 
     await withTemporaryFiles(files, async (basePath) => {
-      const { koaMiddleware, moduleLoader } = await counterfact(
+      const { koaMiddleware, start, stop } = await counterfact(
         basePath,
         `${basePath}/openapi.yaml`,
       );
+
+      await start();
 
       app.use(koaMiddleware);
 
@@ -90,7 +94,7 @@ describe("integration test", () => {
 
       expect(getResponse.text).toBe("hello");
 
-      await moduleLoader.stopWatching();
+      await stop();
     });
   });
 
@@ -116,7 +120,7 @@ describe("integration test", () => {
     };
 
     await withTemporaryFiles(files, async (basePath) => {
-      const { koaMiddleware, moduleLoader } = await counterfact(
+      const { koaMiddleware, start, stop } = await counterfact(
         basePath,
         `${basePath}/openapi.yaml`,
         {
@@ -127,11 +131,13 @@ describe("integration test", () => {
 
       app.use(koaMiddleware);
 
+      await start();
+
       const getResponse = await request.get("/hello");
 
       expect(getResponse.text).toBe("I am proxy!\n");
 
-      await moduleLoader.stopWatching();
+      await stop();
 
       await proxyTarget.unref();
     });

@@ -99,11 +99,15 @@ export async function start(config: {
 
   const app = new Koa();
 
-  const { contextRegistry, koaMiddleware, registry } = await counterfact(
-    basePath,
-    openApiPath,
-    config,
-  );
+  const {
+    contextRegistry,
+    koaMiddleware,
+    registry,
+    start: startCounterfact,
+    stop: stopCounterfact,
+  } = await counterfact(basePath, openApiPath, config);
+
+  await startCounterfact();
 
   app.use(openapi(openApiPath, `//localhost:${port}`));
 
@@ -144,6 +148,7 @@ export async function start(config: {
 
     if (ctx.URL.pathname === "/counterfact/stop") {
       debug("Stopping server...");
+      await stopCounterfact();
       await httpTerminator?.terminate();
       debug("Server stopped.");
 
