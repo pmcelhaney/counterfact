@@ -5,13 +5,13 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import createDebug from "debug";
 import Handlebars from "handlebars";
 import { createHttpTerminator, type HttpTerminator } from "http-terminator";
-import yaml from "js-yaml";
 import Koa from "koa";
 import bodyParser from "koa-bodyparser";
 import { koaSwagger } from "koa2-swagger-ui";
 
 import { readFile } from "../util/read-file.js";
 import { core } from "./core.js";
+import { openapiMiddleware } from "./openapi-middleware.js";
 
 const debug = createDebug("counterfact:server:start");
 
@@ -26,38 +26,6 @@ const DEFAULT_PORT = 3100;
 Handlebars.registerHelper("escape_route", (route: string) =>
   route.replaceAll(/[^\w/]/gu, "-"),
 );
-
-function openapi(openApiPath: string, url: string) {
-  return async (ctx: Koa.ExtendableContext, next: Koa.Next) => {
-    if (ctx.URL.pathname === "/counterfact/openapi") {
-      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-      const openApiDocument = (await yaml.load(
-        await readFile(openApiPath),
-      )) as {
-        host?: string;
-        servers?: { description: string; url: string }[];
-      };
-
-      openApiDocument.servers ??= [];
-
-      openApiDocument.servers.unshift({
-        description: "Counterfact",
-        url,
-      });
-
-      // OpenApi 2 support:
-      openApiDocument.host = url;
-
-      // eslint-disable-next-line require-atomic-updates
-      ctx.body = yaml.dump(openApiDocument);
-
-      return;
-    }
-
-    // eslint-disable-next-line  n/callback-return
-    await next();
-  };
-}
 
 function page(
   pathname: string,
@@ -107,7 +75,7 @@ export async function counterfact(config: {
     stop: stopCounterfact,
   } = await core(basePath, openApiPath, config);
 
-  app.use(openapi(openApiPath, `//localhost:${port}`));
+  app.use(openapiMiddleware(openApiPath, `//localhost:${port}`));
 
   app.use(
     koaSwagger({
