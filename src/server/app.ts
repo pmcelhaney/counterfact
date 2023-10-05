@@ -1,56 +1,23 @@
 /* eslint-disable max-statements */
-import nodePath, { dirname } from "node:path";
-import { fileURLToPath, pathToFileURL } from "node:url";
+import nodePath from "node:path";
+import { pathToFileURL } from "node:url";
 
 import createDebug from "debug";
-import Handlebars from "handlebars";
 import { createHttpTerminator, type HttpTerminator } from "http-terminator";
 import Koa from "koa";
 import bodyParser from "koa-bodyparser";
 import { koaSwagger } from "koa2-swagger-ui";
 
-import { readFile } from "../util/read-file.js";
 import { core } from "./core.js";
 import { openapiMiddleware } from "./openapi-middleware.js";
+import { pageMiddleware } from "./page-middleware.js";
 
 const debug = createDebug("counterfact:server:start");
 
 // eslint-disable-next-line @typescript-eslint/init-declarations
 let httpTerminator: HttpTerminator | undefined;
 
-// eslint-disable-next-line no-underscore-dangle
-const __dirname = dirname(fileURLToPath(import.meta.url));
-
 const DEFAULT_PORT = 3100;
-
-Handlebars.registerHelper("escape_route", (route: string) =>
-  route.replaceAll(/[^\w/]/gu, "-"),
-);
-
-function page(
-  pathname: string,
-  templateName: string,
-  locals: { [key: string]: unknown },
-) {
-  return async (ctx: Koa.ExtendableContext, next: Koa.Next) => {
-    const pathToHandlebarsTemplate = nodePath
-      .join(__dirname, `../client/${templateName}.html.hbs`)
-      .replaceAll("\\", "/");
-
-    debug("pathToHandlebarsTemplate: %s", pathToHandlebarsTemplate);
-
-    const render = Handlebars.compile(await readFile(pathToHandlebarsTemplate));
-
-    if (ctx.URL.pathname === pathname) {
-      ctx.body = render(locals);
-
-      return;
-    }
-
-    // eslint-disable-next-line  n/callback-return
-    await next();
-  };
-}
 
 export async function counterfact(config: {
   basePath: string;
@@ -91,7 +58,7 @@ export async function counterfact(config: {
   debug("routes", registry.routes);
 
   app.use(
-    page("/counterfact/", "index", {
+    pageMiddleware("/counterfact/", "index", {
       basePath,
       methods: ["get", "post", "put", "delete", "patch"],
 
@@ -125,7 +92,7 @@ export async function counterfact(config: {
   });
 
   app.use(
-    page("/counterfact/rapidoc", "rapi-doc", {
+    pageMiddleware("/counterfact/rapidoc", "rapi-doc", {
       basePath,
       routes: registry.routes,
     }),
