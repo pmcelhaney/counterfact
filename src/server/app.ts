@@ -11,6 +11,7 @@ import { koaSwagger } from "koa2-swagger-ui";
 import { core } from "./core.js";
 import { openapiMiddleware } from "./openapi-middleware.js";
 import { pageMiddleware } from "./page-middleware.js";
+import type { Registry } from "./registry.js";
 
 interface Config {
   basePath?: string;
@@ -27,24 +28,16 @@ let httpTerminator: HttpTerminator | undefined;
 
 const DEFAULT_PORT = 3100;
 
-export async function counterfact(config: Config) {
-  const {
-    basePath = process.cwd().replaceAll("\\", "/"),
-    openApiPath = nodePath
-      .join(basePath, "../openapi.yaml")
-      .replaceAll("\\", "/"),
-    port = DEFAULT_PORT,
-  } = config;
-
+// eslint-disable-next-line max-params
+function createKoaApp(
+  registry: Registry,
+  koaMiddleware: Koa.Middleware,
+  basePath: string,
+  openApiPath: string,
+  port: number,
+  stopCounterfact: () => Promise<void>,
+) {
   const app = new Koa();
-
-  const {
-    contextRegistry,
-    koaMiddleware,
-    registry,
-    start: startCounterfact,
-    stop: stopCounterfact,
-  } = await core(basePath, openApiPath, config);
 
   app.use(openapiMiddleware(openApiPath, `//localhost:${port}`));
 
@@ -105,6 +98,35 @@ export async function counterfact(config: Config) {
   app.use(bodyParser());
 
   app.use(koaMiddleware);
+
+  return app;
+}
+
+export async function counterfact(config: Config) {
+  const {
+    basePath = process.cwd().replaceAll("\\", "/"),
+    openApiPath = nodePath
+      .join(basePath, "../openapi.yaml")
+      .replaceAll("\\", "/"),
+    port = DEFAULT_PORT,
+  } = config;
+
+  const {
+    contextRegistry,
+    koaMiddleware,
+    registry,
+    start: startCounterfact,
+    stop: stopCounterfact,
+  } = await core(basePath, openApiPath, config);
+
+  const app = createKoaApp(
+    registry,
+    koaMiddleware,
+    basePath,
+    openApiPath,
+    port,
+    stopCounterfact,
+  );
 
   async function start() {
     await startCounterfact();
