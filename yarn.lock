@@ -2471,10 +2471,24 @@
     "@types/koa" "*"
     "@types/koa-send" "*"
 
-"@types/koa@*", "@types/koa@2.13.8", "@types/koa@^2.13.8":
+"@types/koa@*", "@types/koa@2.13.8":
   version "2.13.8"
   resolved "https://registry.yarnpkg.com/@types/koa/-/koa-2.13.8.tgz#4302d2f2712348aadb6c0b03eb614f30afde486b"
   integrity sha512-Ugmxmgk/yPRW3ptBTh9VjOLwsKWJuGbymo1uGX0qdaqqL18uJiiG1ZoV0rxCOYSaDGhvEp5Ece02Amx0iwaxQQ==
+  dependencies:
+    "@types/accepts" "*"
+    "@types/content-disposition" "*"
+    "@types/cookies" "*"
+    "@types/http-assert" "*"
+    "@types/http-errors" "*"
+    "@types/keygrip" "*"
+    "@types/koa-compose" "*"
+    "@types/node" "*"
+
+"@types/koa@^2.13.9":
+  version "2.13.9"
+  resolved "https://registry.yarnpkg.com/@types/koa/-/koa-2.13.9.tgz#8d989ac17d7f033475fbe34c4f906c9287c2041a"
+  integrity sha512-tPX3cN1dGrMn+sjCDEiQqXH2AqlPoPd594S/8zxwUm/ZbPsQXKqHPUypr2gjCPhHUc+nDJLduhh5lXI/1olnGQ==
   dependencies:
     "@types/accepts" "*"
     "@types/content-disposition" "*"
@@ -7346,12 +7360,12 @@ koa-proxy@1.0.0-alpha.3:
     request "^2.88.0"
     request-promise-native "^1.0.5"
 
-koa2-swagger-ui@5.9.0:
-  version "5.9.0"
-  resolved "https://registry.yarnpkg.com/koa2-swagger-ui/-/koa2-swagger-ui-5.9.0.tgz#c18c2f3296d37732522c87fe9d16c66806ff47b9"
-  integrity sha512-L+Ju47K3jzHwLHTapUH57SfWf62bnQt7Rvzl89BdvDHSteWfqzflw9D5gXG6kqlzMaxSyC7UEdFKCUKyHE30dw==
+koa2-swagger-ui@5.9.1:
+  version "5.9.1"
+  resolved "https://registry.yarnpkg.com/koa2-swagger-ui/-/koa2-swagger-ui-5.9.1.tgz#ff7ae7d22f1c9962f07f8675c49414a5b564609c"
+  integrity sha512-9qz3BGLgekWNhndyuTj9LbGZvGuY5JFctIwnLG9NeGiHNFJnWJ1rtPpV/iM5xqaPmha6cEWBs9SU1/5VqfIm8g==
   dependencies:
-    "@types/koa" "^2.13.8"
+    "@types/koa" "^2.13.9"
     handlebars "^4.7.8"
     lodash "^4.17.21"
     read-pkg-up "7.0.1"
