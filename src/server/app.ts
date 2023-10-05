@@ -12,6 +12,14 @@ import { core } from "./core.js";
 import { openapiMiddleware } from "./openapi-middleware.js";
 import { pageMiddleware } from "./page-middleware.js";
 
+interface Config {
+  basePath?: string;
+  openApiPath?: string;
+  port?: number;
+  proxyEnabled?: boolean;
+  proxyUrl?: string;
+}
+
 const debug = createDebug("counterfact:server:start");
 
 // eslint-disable-next-line @typescript-eslint/init-declarations
@@ -19,11 +27,7 @@ let httpTerminator: HttpTerminator | undefined;
 
 const DEFAULT_PORT = 3100;
 
-export async function counterfact(config: {
-  basePath: string;
-  openApiPath: string;
-  port: number;
-}) {
+export async function counterfact(config: Config) {
   const {
     basePath = process.cwd().replaceAll("\\", "/"),
     openApiPath = nodePath
