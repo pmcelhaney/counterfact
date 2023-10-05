@@ -167,13 +167,22 @@ export async function counterfact(config: {
 
   app.use(koaMiddleware);
 
-  const server = app.listen({
-    port,
-  });
+  async function start() {
+    await startCounterfact();
 
-  httpTerminator = createHttpTerminator({
-    server,
-  });
+    const server = app.listen({
+      port,
+    });
 
-  return { contextRegistry, start: startCounterfact, stop: stopCounterfact };
+    httpTerminator = createHttpTerminator({
+      server,
+    });
+  }
+
+  async function stop() {
+    await stopCounterfact();
+    await httpTerminator?.terminate();
+  }
+
+  return { contextRegistry, start, stop };
 }
