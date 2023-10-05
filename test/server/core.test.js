@@ -3,7 +3,7 @@ import http from "node:http";
 import Koa from "koa";
 import supertest from "supertest";
 
-import { counterfact } from "../../src/server/counterfact.ts";
+import { core } from "../../src/server/core.ts";
 import { withTemporaryFiles } from "../lib/with-temporary-files.ts";
 
 describe("integration test", () => {
@@ -29,7 +29,7 @@ describe("integration test", () => {
     };
 
     await withTemporaryFiles(files, async (basePath) => {
-      const { koaMiddleware, start, stop } = await counterfact(basePath);
+      const { koaMiddleware, start, stop } = await core(basePath);
 
       app.use(koaMiddleware);
 
@@ -81,7 +81,7 @@ describe("integration test", () => {
     };
 
     await withTemporaryFiles(files, async (basePath) => {
-      const { koaMiddleware, start, stop } = await counterfact(
+      const { koaMiddleware, start, stop } = await core(
         basePath,
         `${basePath}/openapi.yaml`,
       );
@@ -120,7 +120,7 @@ describe("integration test", () => {
     };
 
     await withTemporaryFiles(files, async (basePath) => {
-      const { koaMiddleware, start, stop } = await counterfact(
+      const { koaMiddleware, start, stop } = await core(
         basePath,
         `${basePath}/openapi.yaml`,
         {

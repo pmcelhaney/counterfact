@@ -25,7 +25,7 @@ async function loadOpenApiDocument(source: string) {
 }
 
 // eslint-disable-next-line max-statements
-export async function counterfact(
+export async function core(
   basePath: string,
   openApiPath = nodePath
     .join(basePath, "../openapi.yaml")

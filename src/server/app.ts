@@ -11,7 +11,7 @@ import bodyParser from "koa-bodyparser";
 import { koaSwagger } from "koa2-swagger-ui";
 
 import { readFile } from "../util/read-file.js";
-import { counterfact as core } from "./counterfact.js";
+import { core } from "./core.js";
 
 const debug = createDebug("counterfact:server:start");
 
