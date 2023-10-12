@@ -1,3 +1,10 @@
+//
+// Next
+// - put config in its own file
+// - put createKoaApp() in its own file
+// - put the contents of core.ts here
+//
+
 /* eslint-disable max-statements */
 import nodePath from "node:path";
 import { pathToFileURL } from "node:url";
@@ -122,6 +129,8 @@ export async function counterfact(config: Config) {
   const app = createKoaApp(
     registry,
     koaMiddleware,
+
+    // These three should be the config object
     basePath,
     openApiPath,
     port,
