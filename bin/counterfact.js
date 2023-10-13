@@ -6,6 +6,7 @@ import { program } from "commander";
 import createDebug from "debug";
 import open from "open";
 
+import { migrate } from "../dist/src/migrations/0.27.js";
 import { startRepl } from "../dist/src/server/repl.js";
 import { start } from "../dist/src/server/start.js";
 import { generate } from "../dist/src/typescript-generator/generate.js";
@@ -29,6 +30,10 @@ async function main(source, destination) {
   const destinationPath = nodePath
     .join(process.cwd(), destination)
     .replaceAll("\\", "/");
+
+  debug("migrating code from before 0.27.0");
+  migrate(destinationPath);
+  debug("done with migration");
 
   debug('generating code at "%s"', destinationPath);
 

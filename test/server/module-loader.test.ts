@@ -188,4 +188,36 @@ describe("a module loader", () => {
       expect(contextRegistry.find("/some/other/path")).toBe("main");
     });
   });
+
+  it("provides the parent context if the locale $.context.ts doesn't export a default", async () => {
+    const files: { [key: string]: string } = {
+      "$.context.mjs": "export default { value: 0 }",
+      "hello/$.context.mjs": "export default { value: 100 }",
+    };
+
+    await withTemporaryFiles(files, async (basePath: string) => {
+      const registry: Registry = new Registry();
+
+      const contextRegistry: ContextRegistry = new ContextRegistry();
+
+      const loader: ModuleLoader = new ModuleLoader(
+        basePath,
+        registry,
+        contextRegistry,
+      );
+
+      await loader.load();
+
+      const rootContext = contextRegistry.find("/");
+      const helloContext = contextRegistry.find("/hello");
+
+      rootContext.value = 1;
+      helloContext.value = 101;
+
+      expect(contextRegistry.find("/").value).toBe(1);
+      expect(contextRegistry.find("/other").value).toBe(1);
+      expect(contextRegistry.find("/hello").value).toBe(101);
+      expect(contextRegistry.find("/hello/world").value).toBe(101);
+    });
+  });
 });

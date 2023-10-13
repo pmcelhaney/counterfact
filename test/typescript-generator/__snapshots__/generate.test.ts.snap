@@ -47,13 +47,13 @@ Map {
           "cache": Map {
             "OperationTypeCoder@./petstore.yaml#/paths/~1pet/post@[object Object]:true" => "HTTP_POST",
             "OperationTypeCoder@./petstore.yaml#/paths/~1pet/put@[object Object]:true" => "HTTP_PUT",
-            "ContextCoder@paths/$.context.ts:false:true" => "Context",
+            "ContextTypeCoder@paths/$.context.ts:true:false" => "ContextType",
             "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
           },
           "exports": Map {
             "HTTP_POST" => Object {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Pet, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Pet, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -90,7 +90,7 @@ Map {
             },
             "HTTP_PUT" => Object {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Pet, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Pet, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -145,13 +145,14 @@ Map {
             },
           },
           "imports": Map {
-            "Context" => Object {
-              "isDefault": true,
-              "isType": false,
-              "name": "Context",
+            "ContextType" => Object {
+              "isDefault": false,
+              "isType": true,
+              "name": "ContextType",
               "script": Script {
                 "cache": Map {
                   "default" => "Context",
+                  "ContextTypeCoder@[object Object]:true" => "ContextType",
                 },
                 "exports": Map {
                   "Context" => Object {
@@ -175,6 +176,17 @@ class Context {
                     "isDefault": true,
                     "isType": false,
                     "name": "Context",
+                    "promise": Promise {},
+                    "typeDeclaration": "",
+                  },
+                  "ContextType" => Object {
+                    "beforeExport": "",
+                    "code": "typeof Context",
+                    "done": true,
+                    "id": "ContextTypeCoder",
+                    "isDefault": false,
+                    "isType": true,
+                    "name": "ContextType",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -302,13 +314,13 @@ class Context {
           "cache": Map {
             "OperationTypeCoder@./petstore.yaml#/paths/~1pet/post@[object Object]:true" => "HTTP_POST",
             "OperationTypeCoder@./petstore.yaml#/paths/~1pet/put@[object Object]:true" => "HTTP_PUT",
-            "ContextCoder@paths/$.context.ts:false:true" => "Context",
+            "ContextTypeCoder@paths/$.context.ts:true:false" => "ContextType",
             "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
           },
           "exports": Map {
             "HTTP_POST" => Object {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Pet, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Pet, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -345,7 +357,7 @@ class Context {
             },
             "HTTP_PUT" => Object {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Pet, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Pet, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -400,13 +412,14 @@ class Context {
             },
           },
           "imports": Map {
-            "Context" => Object {
-              "isDefault": true,
-              "isType": false,
-              "name": "Context",
+            "ContextType" => Object {
+              "isDefault": false,
+              "isType": true,
+              "name": "ContextType",
               "script": Script {
                 "cache": Map {
                   "default" => "Context",
+                  "ContextTypeCoder@[object Object]:true" => "ContextType",
                 },
                 "exports": Map {
                   "Context" => Object {
@@ -430,6 +443,17 @@ class Context {
                     "isDefault": true,
                     "isType": false,
                     "name": "Context",
+                    "promise": Promise {},
+                    "typeDeclaration": "",
+                  },
+                  "ContextType" => Object {
+                    "beforeExport": "",
+                    "code": "typeof Context",
+                    "done": true,
+                    "id": "ContextTypeCoder",
+                    "isDefault": false,
+                    "isType": true,
+                    "name": "ContextType",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -561,13 +585,13 @@ class Context {
     "cache": Map {
       "OperationTypeCoder@./petstore.yaml#/paths/~1pet/post@[object Object]:true" => "HTTP_POST",
       "OperationTypeCoder@./petstore.yaml#/paths/~1pet/put@[object Object]:true" => "HTTP_PUT",
-      "ContextCoder@paths/$.context.ts:false:true" => "Context",
+      "ContextTypeCoder@paths/$.context.ts:true:false" => "ContextType",
       "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
     },
     "exports": Map {
       "HTTP_POST" => Object {
         "beforeExport": "",
-        "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Pet, context: typeof Context, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Pet, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -604,7 +628,7 @@ class Context {
       },
       "HTTP_PUT" => Object {
         "beforeExport": "",
-        "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Pet, context: typeof Context, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Pet, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -659,13 +683,14 @@ class Context {
       },
     },
     "imports": Map {
-      "Context" => Object {
-        "isDefault": true,
-        "isType": false,
-        "name": "Context",
+      "ContextType" => Object {
+        "isDefault": false,
+        "isType": true,
+        "name": "ContextType",
         "script": Script {
           "cache": Map {
             "default" => "Context",
+            "ContextTypeCoder@[object Object]:true" => "ContextType",
           },
           "exports": Map {
             "Context" => Object {
@@ -689,6 +714,17 @@ class Context {
               "isDefault": true,
               "isType": false,
               "name": "Context",
+              "promise": Promise {},
+              "typeDeclaration": "",
+            },
+            "ContextType" => Object {
+              "beforeExport": "",
+              "code": "typeof Context",
+              "done": true,
+              "id": "ContextTypeCoder",
+              "isDefault": false,
+              "isType": true,
+              "name": "ContextType",
               "promise": Promise {},
               "typeDeclaration": "",
             },
@@ -836,13 +872,13 @@ class Context {
         "script": Script {
           "cache": Map {
             "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1findByStatus/get@[object Object]:true" => "HTTP_GET",
-            "ContextCoder@paths/pet/$.context.ts:false:true" => "Context",
+            "ContextTypeCoder@paths/pet/$.context.ts:true:false" => "ContextType",
             "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
           },
           "exports": Map {
             "HTTP_GET" => Object {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: {\\"status?\\": \\"available\\" | \\"pending\\" | \\"sold\\"}, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: {\\"status?\\": \\"available\\" | \\"pending\\" | \\"sold\\"}, path: never, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -885,38 +921,25 @@ class Context {
             },
           },
           "imports": Map {
-            "Context" => Object {
-              "isDefault": true,
-              "isType": false,
-              "name": "Context",
+            "ContextType" => Object {
+              "isDefault": false,
+              "isType": true,
+              "name": "ContextType",
               "script": Script {
                 "cache": Map {
-                  "default" => "Context",
+                  "ContextTypeCoder@[object Object]:true" => "ContextType",
                 },
                 "exports": Map {
-                  "Context" => Object {
-                    "beforeExport": "/**
-* This is the default context for Counterfact.
-* Change the code to suit your needs.
-*/
-class Context {
-  // delete this line to make the class type safe
-  [key: string]: any; 
-
-  // A helper when you accessing the context object via the REPL. You can delete it if you like.
-  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
-    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/pet/$.context.ts\\";
-  }
-}
-",
+                  "ContextType" => Object {
+                    "beforeExport": "",
                     "code": Object {
-                      "raw": "export { default } from \\"../$.context.mjs\\"",
+                      "raw": "export type { ContextType } from \\"../$.context\\"",
                     },
                     "done": true,
-                    "id": "ContextCoder",
-                    "isDefault": true,
-                    "isType": false,
-                    "name": "Context",
+                    "id": "ContextTypeCoder",
+                    "isDefault": false,
+                    "isType": true,
+                    "name": "ContextType",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -1047,13 +1070,13 @@ class Context {
   "path-types/pet/findByStatus.types.ts" => Script {
     "cache": Map {
       "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1findByStatus/get@[object Object]:true" => "HTTP_GET",
-      "ContextCoder@paths/pet/$.context.ts:false:true" => "Context",
+      "ContextTypeCoder@paths/pet/$.context.ts:true:false" => "ContextType",
       "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
     },
     "exports": Map {
       "HTTP_GET" => Object {
         "beforeExport": "",
-        "code": "({ query, path, header, body, context, proxy }: { query: {\\"status?\\": \\"available\\" | \\"pending\\" | \\"sold\\"}, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context, proxy }: { query: {\\"status?\\": \\"available\\" | \\"pending\\" | \\"sold\\"}, path: never, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -1096,38 +1119,25 @@ class Context {
       },
     },
     "imports": Map {
-      "Context" => Object {
-        "isDefault": true,
-        "isType": false,
-        "name": "Context",
+      "ContextType" => Object {
+        "isDefault": false,
+        "isType": true,
+        "name": "ContextType",
         "script": Script {
           "cache": Map {
-            "default" => "Context",
+            "ContextTypeCoder@[object Object]:true" => "ContextType",
           },
           "exports": Map {
-            "Context" => Object {
-              "beforeExport": "/**
-* This is the default context for Counterfact.
-* Change the code to suit your needs.
-*/
-class Context {
-  // delete this line to make the class type safe
-  [key: string]: any; 
-
-  // A helper when you accessing the context object via the REPL. You can delete it if you like.
-  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
-    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/pet/$.context.ts\\";
-  }
-}
-",
+            "ContextType" => Object {
+              "beforeExport": "",
               "code": Object {
-                "raw": "export { default } from \\"../$.context.mjs\\"",
+                "raw": "export type { ContextType } from \\"../$.context\\"",
               },
               "done": true,
-              "id": "ContextCoder",
-              "isDefault": true,
-              "isType": false,
-              "name": "Context",
+              "id": "ContextTypeCoder",
+              "isDefault": false,
+              "isType": true,
+              "name": "ContextType",
               "promise": Promise {},
               "typeDeclaration": "",
             },
@@ -1275,13 +1285,13 @@ class Context {
         "script": Script {
           "cache": Map {
             "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1findByTags/get@[object Object]:true" => "HTTP_GET",
-            "ContextCoder@paths/pet/$.context.ts:false:true" => "Context",
+            "ContextTypeCoder@paths/pet/$.context.ts:true:false" => "ContextType",
             "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
           },
           "exports": Map {
             "HTTP_GET" => Object {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: {\\"tags?\\": Array<string>}, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: {\\"tags?\\": Array<string>}, path: never, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -1324,38 +1334,25 @@ class Context {
             },
           },
           "imports": Map {
-            "Context" => Object {
-              "isDefault": true,
-              "isType": false,
-              "name": "Context",
+            "ContextType" => Object {
+              "isDefault": false,
+              "isType": true,
+              "name": "ContextType",
               "script": Script {
                 "cache": Map {
-                  "default" => "Context",
+                  "ContextTypeCoder@[object Object]:true" => "ContextType",
                 },
                 "exports": Map {
-                  "Context" => Object {
-                    "beforeExport": "/**
-* This is the default context for Counterfact.
-* Change the code to suit your needs.
-*/
-class Context {
-  // delete this line to make the class type safe
-  [key: string]: any; 
-
-  // A helper when you accessing the context object via the REPL. You can delete it if you like.
-  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
-    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/pet/$.context.ts\\";
-  }
-}
-",
+                  "ContextType" => Object {
+                    "beforeExport": "",
                     "code": Object {
-                      "raw": "export { default } from \\"../$.context.mjs\\"",
+                      "raw": "export type { ContextType } from \\"../$.context\\"",
                     },
                     "done": true,
-                    "id": "ContextCoder",
-                    "isDefault": true,
-                    "isType": false,
-                    "name": "Context",
+                    "id": "ContextTypeCoder",
+                    "isDefault": false,
+                    "isType": true,
+                    "name": "ContextType",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -1486,13 +1483,13 @@ class Context {
   "path-types/pet/findByTags.types.ts" => Script {
     "cache": Map {
       "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1findByTags/get@[object Object]:true" => "HTTP_GET",
-      "ContextCoder@paths/pet/$.context.ts:false:true" => "Context",
+      "ContextTypeCoder@paths/pet/$.context.ts:true:false" => "ContextType",
       "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
     },
     "exports": Map {
       "HTTP_GET" => Object {
         "beforeExport": "",
-        "code": "({ query, path, header, body, context, proxy }: { query: {\\"tags?\\": Array<string>}, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context, proxy }: { query: {\\"tags?\\": Array<string>}, path: never, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -1535,38 +1532,25 @@ class Context {
       },
     },
     "imports": Map {
-      "Context" => Object {
-        "isDefault": true,
-        "isType": false,
-        "name": "Context",
+      "ContextType" => Object {
+        "isDefault": false,
+        "isType": true,
+        "name": "ContextType",
         "script": Script {
           "cache": Map {
-            "default" => "Context",
+            "ContextTypeCoder@[object Object]:true" => "ContextType",
           },
           "exports": Map {
-            "Context" => Object {
-              "beforeExport": "/**
-* This is the default context for Counterfact.
-* Change the code to suit your needs.
-*/
-class Context {
-  // delete this line to make the class type safe
-  [key: string]: any; 
-
-  // A helper when you accessing the context object via the REPL. You can delete it if you like.
-  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
-    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/pet/$.context.ts\\";
-  }
-}
-",
+            "ContextType" => Object {
+              "beforeExport": "",
               "code": Object {
-                "raw": "export { default } from \\"../$.context.mjs\\"",
+                "raw": "export type { ContextType } from \\"../$.context\\"",
               },
               "done": true,
-              "id": "ContextCoder",
-              "isDefault": true,
-              "isType": false,
-              "name": "Context",
+              "id": "ContextTypeCoder",
+              "isDefault": false,
+              "isType": true,
+              "name": "ContextType",
               "promise": Promise {},
               "typeDeclaration": "",
             },
@@ -1742,13 +1726,13 @@ class Context {
             "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/get@[object Object]:true" => "HTTP_GET",
             "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/post@[object Object]:true" => "HTTP_POST",
             "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/delete@[object Object]:true" => "HTTP_DELETE",
-            "ContextCoder@paths/pet/$.context.ts:false:true" => "Context",
+            "ContextTypeCoder@paths/pet/$.context.ts:true:false" => "ContextType",
             "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
           },
           "exports": Map {
             "HTTP_GET" => Object {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"petId\\": number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"petId\\": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -1791,7 +1775,7 @@ class Context {
             },
             "HTTP_POST" => Object {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: {\\"name?\\": number, \\"status?\\": string}, path: {\\"petId\\": number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: {\\"name?\\": number, \\"status?\\": string}, path: {\\"petId\\": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 405: {
           headers: {};
           content: {};
@@ -1809,7 +1793,7 @@ class Context {
             },
             "HTTP_DELETE" => Object {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"petId\\": string}, header: {\\"api_key?\\": string}, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"petId\\": string}, header: {\\"api_key?\\": string}, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 400: {
           headers: {};
           content: {};
@@ -1833,38 +1817,25 @@ class Context {
             },
           },
           "imports": Map {
-            "Context" => Object {
-              "isDefault": true,
-              "isType": false,
-              "name": "Context",
+            "ContextType" => Object {
+              "isDefault": false,
+              "isType": true,
+              "name": "ContextType",
               "script": Script {
                 "cache": Map {
-                  "default" => "Context",
+                  "ContextTypeCoder@[object Object]:true" => "ContextType",
                 },
                 "exports": Map {
-                  "Context" => Object {
-                    "beforeExport": "/**
-* This is the default context for Counterfact.
-* Change the code to suit your needs.
-*/
-class Context {
-  // delete this line to make the class type safe
-  [key: string]: any; 
-
-  // A helper when you accessing the context object via the REPL. You can delete it if you like.
-  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
-    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/pet/$.context.ts\\";
-  }
-}
-",
+                  "ContextType" => Object {
+                    "beforeExport": "",
                     "code": Object {
-                      "raw": "export { default } from \\"../$.context.mjs\\"",
+                      "raw": "export type { ContextType } from \\"../$.context\\"",
                     },
                     "done": true,
-                    "id": "ContextCoder",
-                    "isDefault": true,
-                    "isType": false,
-                    "name": "Context",
+                    "id": "ContextTypeCoder",
+                    "isDefault": false,
+                    "isType": true,
+                    "name": "ContextType",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -1993,13 +1964,13 @@ class Context {
             "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/get@[object Object]:true" => "HTTP_GET",
             "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/post@[object Object]:true" => "HTTP_POST",
             "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/delete@[object Object]:true" => "HTTP_DELETE",
-            "ContextCoder@paths/pet/$.context.ts:false:true" => "Context",
+            "ContextTypeCoder@paths/pet/$.context.ts:true:false" => "ContextType",
             "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
           },
           "exports": Map {
             "HTTP_GET" => Object {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"petId\\": number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"petId\\": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -2042,7 +2013,7 @@ class Context {
             },
             "HTTP_POST" => Object {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: {\\"name?\\": number, \\"status?\\": string}, path: {\\"petId\\": number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: {\\"name?\\": number, \\"status?\\": string}, path: {\\"petId\\": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 405: {
           headers: {};
           content: {};
@@ -2060,7 +2031,7 @@ class Context {
             },
             "HTTP_DELETE" => Object {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"petId\\": string}, header: {\\"api_key?\\": string}, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"petId\\": string}, header: {\\"api_key?\\": string}, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 400: {
           headers: {};
           content: {};
@@ -2084,38 +2055,25 @@ class Context {
             },
           },
           "imports": Map {
-            "Context" => Object {
-              "isDefault": true,
-              "isType": false,
-              "name": "Context",
+            "ContextType" => Object {
+              "isDefault": false,
+              "isType": true,
+              "name": "ContextType",
               "script": Script {
                 "cache": Map {
-                  "default" => "Context",
+                  "ContextTypeCoder@[object Object]:true" => "ContextType",
                 },
                 "exports": Map {
-                  "Context" => Object {
-                    "beforeExport": "/**
-* This is the default context for Counterfact.
-* Change the code to suit your needs.
-*/
-class Context {
-  // delete this line to make the class type safe
-  [key: string]: any; 
-
-  // A helper when you accessing the context object via the REPL. You can delete it if you like.
-  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
-    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/pet/$.context.ts\\";
-  }
-}
-",
+                  "ContextType" => Object {
+                    "beforeExport": "",
                     "code": Object {
-                      "raw": "export { default } from \\"../$.context.mjs\\"",
+                      "raw": "export type { ContextType } from \\"../$.context\\"",
                     },
                     "done": true,
-                    "id": "ContextCoder",
-                    "isDefault": true,
-                    "isType": false,
-                    "name": "Context",
+                    "id": "ContextTypeCoder",
+                    "isDefault": false,
+                    "isType": true,
+                    "name": "ContextType",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -2244,13 +2202,13 @@ class Context {
             "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/get@[object Object]:true" => "HTTP_GET",
             "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/post@[object Object]:true" => "HTTP_POST",
             "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/delete@[object Object]:true" => "HTTP_DELETE",
-            "ContextCoder@paths/pet/$.context.ts:false:true" => "Context",
+            "ContextTypeCoder@paths/pet/$.context.ts:true:false" => "ContextType",
             "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
           },
           "exports": Map {
             "HTTP_GET" => Object {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"petId\\": number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"petId\\": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -2293,7 +2251,7 @@ class Context {
             },
             "HTTP_POST" => Object {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: {\\"name?\\": number, \\"status?\\": string}, path: {\\"petId\\": number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: {\\"name?\\": number, \\"status?\\": string}, path: {\\"petId\\": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 405: {
           headers: {};
           content: {};
@@ -2311,7 +2269,7 @@ class Context {
             },
             "HTTP_DELETE" => Object {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"petId\\": string}, header: {\\"api_key?\\": string}, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"petId\\": string}, header: {\\"api_key?\\": string}, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 400: {
           headers: {};
           content: {};
@@ -2335,38 +2293,25 @@ class Context {
             },
           },
           "imports": Map {
-            "Context" => Object {
-              "isDefault": true,
-              "isType": false,
-              "name": "Context",
+            "ContextType" => Object {
+              "isDefault": false,
+              "isType": true,
+              "name": "ContextType",
               "script": Script {
                 "cache": Map {
-                  "default" => "Context",
+                  "ContextTypeCoder@[object Object]:true" => "ContextType",
                 },
                 "exports": Map {
-                  "Context" => Object {
-                    "beforeExport": "/**
-* This is the default context for Counterfact.
-* Change the code to suit your needs.
-*/
-class Context {
-  // delete this line to make the class type safe
-  [key: string]: any; 
-
-  // A helper when you accessing the context object via the REPL. You can delete it if you like.
-  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
-    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/pet/$.context.ts\\";
-  }
-}
-",
+                  "ContextType" => Object {
+                    "beforeExport": "",
                     "code": Object {
-                      "raw": "export { default } from \\"../$.context.mjs\\"",
+                      "raw": "export type { ContextType } from \\"../$.context\\"",
                     },
                     "done": true,
-                    "id": "ContextCoder",
-                    "isDefault": true,
-                    "isType": false,
-                    "name": "Context",
+                    "id": "ContextTypeCoder",
+                    "isDefault": false,
+                    "isType": true,
+                    "name": "ContextType",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -2499,13 +2444,13 @@ class Context {
       "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/get@[object Object]:true" => "HTTP_GET",
       "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/post@[object Object]:true" => "HTTP_POST",
       "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/delete@[object Object]:true" => "HTTP_DELETE",
-      "ContextCoder@paths/pet/$.context.ts:false:true" => "Context",
+      "ContextTypeCoder@paths/pet/$.context.ts:true:false" => "ContextType",
       "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
     },
     "exports": Map {
       "HTTP_GET" => Object {
         "beforeExport": "",
-        "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"petId\\": number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"petId\\": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -2548,7 +2493,7 @@ class Context {
       },
       "HTTP_POST" => Object {
         "beforeExport": "",
-        "code": "({ query, path, header, body, context, proxy }: { query: {\\"name?\\": number, \\"status?\\": string}, path: {\\"petId\\": number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context, proxy }: { query: {\\"name?\\": number, \\"status?\\": string}, path: {\\"petId\\": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 405: {
           headers: {};
           content: {};
@@ -2566,7 +2511,7 @@ class Context {
       },
       "HTTP_DELETE" => Object {
         "beforeExport": "",
-        "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"petId\\": string}, header: {\\"api_key?\\": string}, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"petId\\": string}, header: {\\"api_key?\\": string}, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 400: {
           headers: {};
           content: {};
@@ -2590,38 +2535,25 @@ class Context {
       },
     },
     "imports": Map {
-      "Context" => Object {
-        "isDefault": true,
-        "isType": false,
-        "name": "Context",
+      "ContextType" => Object {
+        "isDefault": false,
+        "isType": true,
+        "name": "ContextType",
         "script": Script {
           "cache": Map {
-            "default" => "Context",
+            "ContextTypeCoder@[object Object]:true" => "ContextType",
           },
           "exports": Map {
-            "Context" => Object {
-              "beforeExport": "/**
-* This is the default context for Counterfact.
-* Change the code to suit your needs.
-*/
-class Context {
-  // delete this line to make the class type safe
-  [key: string]: any; 
-
-  // A helper when you accessing the context object via the REPL. You can delete it if you like.
-  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
-    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/pet/$.context.ts\\";
-  }
-}
-",
+            "ContextType" => Object {
+              "beforeExport": "",
               "code": Object {
-                "raw": "export { default } from \\"../$.context.mjs\\"",
+                "raw": "export type { ContextType } from \\"../$.context\\"",
               },
               "done": true,
-              "id": "ContextCoder",
-              "isDefault": true,
-              "isType": false,
-              "name": "Context",
+              "id": "ContextTypeCoder",
+              "isDefault": false,
+              "isType": true,
+              "name": "ContextType",
               "promise": Promise {},
               "typeDeclaration": "",
             },
@@ -2769,13 +2701,13 @@ class Context {
         "script": Script {
           "cache": Map {
             "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post@[object Object]:true" => "HTTP_POST",
-            "ContextCoder@paths/pet/{petId}/$.context.ts:false:true" => "Context",
+            "ContextTypeCoder@paths/pet/{petId}/$.context.ts:true:false" => "ContextType",
             "SchemaTypeCoder@undefined@components/ApiResponse.ts:true:false" => "ApiResponse",
           },
           "exports": Map {
             "HTTP_POST" => Object {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: {\\"additionalMetadata?\\": number}, path: {\\"petId\\": number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: {\\"additionalMetadata?\\": number}, path: {\\"petId\\": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -2805,38 +2737,25 @@ class Context {
             },
           },
           "imports": Map {
-            "Context" => Object {
-              "isDefault": true,
-              "isType": false,
-              "name": "Context",
+            "ContextType" => Object {
+              "isDefault": false,
+              "isType": true,
+              "name": "ContextType",
               "script": Script {
                 "cache": Map {
-                  "default" => "Context",
+                  "ContextTypeCoder@[object Object]:true" => "ContextType",
                 },
                 "exports": Map {
-                  "Context" => Object {
-                    "beforeExport": "/**
-* This is the default context for Counterfact.
-* Change the code to suit your needs.
-*/
-class Context {
-  // delete this line to make the class type safe
-  [key: string]: any; 
-
-  // A helper when you accessing the context object via the REPL. You can delete it if you like.
-  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
-    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/pet/{petId}/$.context.ts\\";
-  }
-}
-",
+                  "ContextType" => Object {
+                    "beforeExport": "",
                     "code": Object {
-                      "raw": "export { default } from \\"../$.context.mjs\\"",
+                      "raw": "export type { ContextType } from \\"../$.context\\"",
                     },
                     "done": true,
-                    "id": "ContextCoder",
-                    "isDefault": true,
-                    "isType": false,
-                    "name": "Context",
+                    "id": "ContextTypeCoder",
+                    "isDefault": false,
+                    "isType": true,
+                    "name": "ContextType",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -2902,13 +2821,13 @@ class Context {
   "path-types/pet/{petId}/uploadImage.types.ts" => Script {
     "cache": Map {
       "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post@[object Object]:true" => "HTTP_POST",
-      "ContextCoder@paths/pet/{petId}/$.context.ts:false:true" => "Context",
+      "ContextTypeCoder@paths/pet/{petId}/$.context.ts:true:false" => "ContextType",
       "SchemaTypeCoder@undefined@components/ApiResponse.ts:true:false" => "ApiResponse",
     },
     "exports": Map {
       "HTTP_POST" => Object {
         "beforeExport": "",
-        "code": "({ query, path, header, body, context, proxy }: { query: {\\"additionalMetadata?\\": number}, path: {\\"petId\\": number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context, proxy }: { query: {\\"additionalMetadata?\\": number}, path: {\\"petId\\": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -2938,38 +2857,25 @@ class Context {
       },
     },
     "imports": Map {
-      "Context" => Object {
-        "isDefault": true,
-        "isType": false,
-        "name": "Context",
+      "ContextType" => Object {
+        "isDefault": false,
+        "isType": true,
+        "name": "ContextType",
         "script": Script {
           "cache": Map {
-            "default" => "Context",
+            "ContextTypeCoder@[object Object]:true" => "ContextType",
           },
           "exports": Map {
-            "Context" => Object {
-              "beforeExport": "/**
-* This is the default context for Counterfact.
-* Change the code to suit your needs.
-*/
-class Context {
-  // delete this line to make the class type safe
-  [key: string]: any; 
-
-  // A helper when you accessing the context object via the REPL. You can delete it if you like.
-  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
-    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/pet/{petId}/$.context.ts\\";
-  }
-}
-",
+            "ContextType" => Object {
+              "beforeExport": "",
               "code": Object {
-                "raw": "export { default } from \\"../$.context.mjs\\"",
+                "raw": "export type { ContextType } from \\"../$.context\\"",
               },
               "done": true,
-              "id": "ContextCoder",
-              "isDefault": true,
-              "isType": false,
-              "name": "Context",
+              "id": "ContextTypeCoder",
+              "isDefault": false,
+              "isType": true,
+              "name": "ContextType",
               "promise": Promise {},
               "typeDeclaration": "",
             },
@@ -3052,12 +2958,12 @@ class Context {
         "script": Script {
           "cache": Map {
             "OperationTypeCoder@./petstore.yaml#/paths/~1store~1inventory/get@[object Object]:true" => "HTTP_GET",
-            "ContextCoder@paths/store/$.context.ts:false:true" => "Context",
+            "ContextTypeCoder@paths/store/$.context.ts:true:false" => "ContextType",
           },
           "exports": Map {
             "HTTP_GET" => Object {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -3087,38 +2993,25 @@ class Context {
             },
           },
           "imports": Map {
-            "Context" => Object {
-              "isDefault": true,
-              "isType": false,
-              "name": "Context",
+            "ContextType" => Object {
+              "isDefault": false,
+              "isType": true,
+              "name": "ContextType",
               "script": Script {
                 "cache": Map {
-                  "default" => "Context",
+                  "ContextTypeCoder@[object Object]:true" => "ContextType",
                 },
                 "exports": Map {
-                  "Context" => Object {
-                    "beforeExport": "/**
-* This is the default context for Counterfact.
-* Change the code to suit your needs.
-*/
-class Context {
-  // delete this line to make the class type safe
-  [key: string]: any; 
-
-  // A helper when you accessing the context object via the REPL. You can delete it if you like.
-  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
-    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/store/$.context.ts\\";
-  }
-}
-",
+                  "ContextType" => Object {
+                    "beforeExport": "",
                     "code": Object {
-                      "raw": "export { default } from \\"../$.context.mjs\\"",
+                      "raw": "export type { ContextType } from \\"../$.context\\"",
                     },
                     "done": true,
-                    "id": "ContextCoder",
-                    "isDefault": true,
-                    "isType": false,
-                    "name": "Context",
+                    "id": "ContextTypeCoder",
+                    "isDefault": false,
+                    "isType": true,
+                    "name": "ContextType",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -3153,12 +3046,12 @@ class Context {
   "path-types/store/inventory.types.ts" => Script {
     "cache": Map {
       "OperationTypeCoder@./petstore.yaml#/paths/~1store~1inventory/get@[object Object]:true" => "HTTP_GET",
-      "ContextCoder@paths/store/$.context.ts:false:true" => "Context",
+      "ContextTypeCoder@paths/store/$.context.ts:true:false" => "ContextType",
     },
     "exports": Map {
       "HTTP_GET" => Object {
         "beforeExport": "",
-        "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -3188,38 +3081,25 @@ class Context {
       },
     },
     "imports": Map {
-      "Context" => Object {
-        "isDefault": true,
-        "isType": false,
-        "name": "Context",
+      "ContextType" => Object {
+        "isDefault": false,
+        "isType": true,
+        "name": "ContextType",
         "script": Script {
           "cache": Map {
-            "default" => "Context",
+            "ContextTypeCoder@[object Object]:true" => "ContextType",
           },
           "exports": Map {
-            "Context" => Object {
-              "beforeExport": "/**
-* This is the default context for Counterfact.
-* Change the code to suit your needs.
-*/
-class Context {
-  // delete this line to make the class type safe
-  [key: string]: any; 
-
-  // A helper when you accessing the context object via the REPL. You can delete it if you like.
-  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
-    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/store/$.context.ts\\";
-  }
-}
-",
+            "ContextType" => Object {
+              "beforeExport": "",
               "code": Object {
-                "raw": "export { default } from \\"../$.context.mjs\\"",
+                "raw": "export type { ContextType } from \\"../$.context\\"",
               },
               "done": true,
-              "id": "ContextCoder",
-              "isDefault": true,
-              "isType": false,
-              "name": "Context",
+              "id": "ContextTypeCoder",
+              "isDefault": false,
+              "isType": true,
+              "name": "ContextType",
               "promise": Promise {},
               "typeDeclaration": "",
             },
@@ -3271,13 +3151,13 @@ class Context {
         "script": Script {
           "cache": Map {
             "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order/post@[object Object]:true" => "HTTP_POST",
-            "ContextCoder@paths/store/$.context.ts:false:true" => "Context",
+            "ContextTypeCoder@paths/store/$.context.ts:true:false" => "ContextType",
             "SchemaTypeCoder@undefined@components/Order.ts:true:false" => "Order",
           },
           "exports": Map {
             "HTTP_POST" => Object {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Order, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Order, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -3313,38 +3193,25 @@ class Context {
             },
           },
           "imports": Map {
-            "Context" => Object {
-              "isDefault": true,
-              "isType": false,
-              "name": "Context",
+            "ContextType" => Object {
+              "isDefault": false,
+              "isType": true,
+              "name": "ContextType",
               "script": Script {
                 "cache": Map {
-                  "default" => "Context",
+                  "ContextTypeCoder@[object Object]:true" => "ContextType",
                 },
                 "exports": Map {
-                  "Context" => Object {
-                    "beforeExport": "/**
-* This is the default context for Counterfact.
-* Change the code to suit your needs.
-*/
-class Context {
-  // delete this line to make the class type safe
-  [key: string]: any; 
-
-  // A helper when you accessing the context object via the REPL. You can delete it if you like.
-  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
-    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/store/$.context.ts\\";
-  }
-}
-",
+                  "ContextType" => Object {
+                    "beforeExport": "",
                     "code": Object {
-                      "raw": "export { default } from \\"../$.context.mjs\\"",
+                      "raw": "export type { ContextType } from \\"../$.context\\"",
                     },
                     "done": true,
-                    "id": "ContextCoder",
-                    "isDefault": true,
-                    "isType": false,
-                    "name": "Context",
+                    "id": "ContextTypeCoder",
+                    "isDefault": false,
+                    "isType": true,
+                    "name": "ContextType",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -3410,13 +3277,13 @@ class Context {
   "path-types/store/order.types.ts" => Script {
     "cache": Map {
       "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order/post@[object Object]:true" => "HTTP_POST",
-      "ContextCoder@paths/store/$.context.ts:false:true" => "Context",
+      "ContextTypeCoder@paths/store/$.context.ts:true:false" => "ContextType",
       "SchemaTypeCoder@undefined@components/Order.ts:true:false" => "Order",
     },
     "exports": Map {
       "HTTP_POST" => Object {
         "beforeExport": "",
-        "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Order, context: typeof Context, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Order, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -3452,38 +3319,25 @@ class Context {
       },
     },
     "imports": Map {
-      "Context" => Object {
-        "isDefault": true,
-        "isType": false,
-        "name": "Context",
+      "ContextType" => Object {
+        "isDefault": false,
+        "isType": true,
+        "name": "ContextType",
         "script": Script {
           "cache": Map {
-            "default" => "Context",
+            "ContextTypeCoder@[object Object]:true" => "ContextType",
           },
           "exports": Map {
-            "Context" => Object {
-              "beforeExport": "/**
-* This is the default context for Counterfact.
-* Change the code to suit your needs.
-*/
-class Context {
-  // delete this line to make the class type safe
-  [key: string]: any; 
-
-  // A helper when you accessing the context object via the REPL. You can delete it if you like.
-  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
-    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/store/$.context.ts\\";
-  }
-}
-",
+            "ContextType" => Object {
+              "beforeExport": "",
               "code": Object {
-                "raw": "export { default } from \\"../$.context.mjs\\"",
+                "raw": "export type { ContextType } from \\"../$.context\\"",
               },
               "done": true,
-              "id": "ContextCoder",
-              "isDefault": true,
-              "isType": false,
-              "name": "Context",
+              "id": "ContextTypeCoder",
+              "isDefault": false,
+              "isType": true,
+              "name": "ContextType",
               "promise": Promise {},
               "typeDeclaration": "",
             },
@@ -3580,13 +3434,13 @@ class Context {
           "cache": Map {
             "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order~1{orderId}/get@[object Object]:true" => "HTTP_GET",
             "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order~1{orderId}/delete@[object Object]:true" => "HTTP_DELETE",
-            "ContextCoder@paths/store/order/$.context.ts:false:true" => "Context",
+            "ContextTypeCoder@paths/store/order/$.context.ts:true:false" => "ContextType",
             "SchemaTypeCoder@undefined@components/Order.ts:true:false" => "Order",
           },
           "exports": Map {
             "HTTP_GET" => Object {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"orderId\\": number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"orderId\\": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -3629,7 +3483,7 @@ class Context {
             },
             "HTTP_DELETE" => Object {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"orderId\\": number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"orderId\\": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 400: {
           headers: {};
           content: {};
@@ -3659,38 +3513,25 @@ class Context {
             },
           },
           "imports": Map {
-            "Context" => Object {
-              "isDefault": true,
-              "isType": false,
-              "name": "Context",
+            "ContextType" => Object {
+              "isDefault": false,
+              "isType": true,
+              "name": "ContextType",
               "script": Script {
                 "cache": Map {
-                  "default" => "Context",
+                  "ContextTypeCoder@[object Object]:true" => "ContextType",
                 },
                 "exports": Map {
-                  "Context" => Object {
-                    "beforeExport": "/**
-* This is the default context for Counterfact.
-* Change the code to suit your needs.
-*/
-class Context {
-  // delete this line to make the class type safe
-  [key: string]: any; 
-
-  // A helper when you accessing the context object via the REPL. You can delete it if you like.
-  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
-    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/store/order/$.context.ts\\";
-  }
-}
-",
+                  "ContextType" => Object {
+                    "beforeExport": "",
                     "code": Object {
-                      "raw": "export { default } from \\"../$.context.mjs\\"",
+                      "raw": "export type { ContextType } from \\"../$.context\\"",
                     },
                     "done": true,
-                    "id": "ContextCoder",
-                    "isDefault": true,
-                    "isType": false,
-                    "name": "Context",
+                    "id": "ContextTypeCoder",
+                    "isDefault": false,
+                    "isType": true,
+                    "name": "ContextType",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -3753,13 +3594,13 @@ class Context {
           "cache": Map {
             "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order~1{orderId}/get@[object Object]:true" => "HTTP_GET",
             "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order~1{orderId}/delete@[object Object]:true" => "HTTP_DELETE",
-            "ContextCoder@paths/store/order/$.context.ts:false:true" => "Context",
+            "ContextTypeCoder@paths/store/order/$.context.ts:true:false" => "ContextType",
             "SchemaTypeCoder@undefined@components/Order.ts:true:false" => "Order",
           },
           "exports": Map {
             "HTTP_GET" => Object {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"orderId\\": number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"orderId\\": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -3802,7 +3643,7 @@ class Context {
             },
             "HTTP_DELETE" => Object {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"orderId\\": number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"orderId\\": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 400: {
           headers: {};
           content: {};
@@ -3832,38 +3673,25 @@ class Context {
             },
           },
           "imports": Map {
-            "Context" => Object {
-              "isDefault": true,
-              "isType": false,
-              "name": "Context",
+            "ContextType" => Object {
+              "isDefault": false,
+              "isType": true,
+              "name": "ContextType",
               "script": Script {
                 "cache": Map {
-                  "default" => "Context",
+                  "ContextTypeCoder@[object Object]:true" => "ContextType",
                 },
                 "exports": Map {
-                  "Context" => Object {
-                    "beforeExport": "/**
-* This is the default context for Counterfact.
-* Change the code to suit your needs.
-*/
-class Context {
-  // delete this line to make the class type safe
-  [key: string]: any; 
-
-  // A helper when you accessing the context object via the REPL. You can delete it if you like.
-  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
-    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/store/order/$.context.ts\\";
-  }
-}
-",
+                  "ContextType" => Object {
+                    "beforeExport": "",
                     "code": Object {
-                      "raw": "export { default } from \\"../$.context.mjs\\"",
+                      "raw": "export type { ContextType } from \\"../$.context\\"",
                     },
                     "done": true,
-                    "id": "ContextCoder",
-                    "isDefault": true,
-                    "isType": false,
-                    "name": "Context",
+                    "id": "ContextTypeCoder",
+                    "isDefault": false,
+                    "isType": true,
+                    "name": "ContextType",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -3930,13 +3758,13 @@ class Context {
     "cache": Map {
       "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order~1{orderId}/get@[object Object]:true" => "HTTP_GET",
       "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order~1{orderId}/delete@[object Object]:true" => "HTTP_DELETE",
-      "ContextCoder@paths/store/order/$.context.ts:false:true" => "Context",
+      "ContextTypeCoder@paths/store/order/$.context.ts:true:false" => "ContextType",
       "SchemaTypeCoder@undefined@components/Order.ts:true:false" => "Order",
     },
     "exports": Map {
       "HTTP_GET" => Object {
         "beforeExport": "",
-        "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"orderId\\": number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"orderId\\": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -3979,7 +3807,7 @@ class Context {
       },
       "HTTP_DELETE" => Object {
         "beforeExport": "",
-        "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"orderId\\": number}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"orderId\\": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 400: {
           headers: {};
           content: {};
@@ -4009,38 +3837,25 @@ class Context {
       },
     },
     "imports": Map {
-      "Context" => Object {
-        "isDefault": true,
-        "isType": false,
-        "name": "Context",
+      "ContextType" => Object {
+        "isDefault": false,
+        "isType": true,
+        "name": "ContextType",
         "script": Script {
           "cache": Map {
-            "default" => "Context",
+            "ContextTypeCoder@[object Object]:true" => "ContextType",
           },
           "exports": Map {
-            "Context" => Object {
-              "beforeExport": "/**
-* This is the default context for Counterfact.
-* Change the code to suit your needs.
-*/
-class Context {
-  // delete this line to make the class type safe
-  [key: string]: any; 
-
-  // A helper when you accessing the context object via the REPL. You can delete it if you like.
-  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
-    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/store/order/$.context.ts\\";
-  }
-}
-",
+            "ContextType" => Object {
+              "beforeExport": "",
               "code": Object {
-                "raw": "export { default } from \\"../$.context.mjs\\"",
+                "raw": "export type { ContextType } from \\"../$.context\\"",
               },
               "done": true,
-              "id": "ContextCoder",
-              "isDefault": true,
-              "isType": false,
-              "name": "Context",
+              "id": "ContextTypeCoder",
+              "isDefault": false,
+              "isType": true,
+              "name": "ContextType",
               "promise": Promise {},
               "typeDeclaration": "",
             },
@@ -4123,13 +3938,13 @@ class Context {
         "script": Script {
           "cache": Map {
             "OperationTypeCoder@./petstore.yaml#/paths/~1user/post@[object Object]:true" => "HTTP_POST",
-            "ContextCoder@paths/$.context.ts:false:true" => "Context",
+            "ContextTypeCoder@paths/$.context.ts:true:false" => "ContextType",
             "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
           },
           "exports": Map {
             "HTTP_POST" => Object {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: User, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: User, context: ContextType, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
           headers: {};
           content: {
@@ -4166,13 +3981,14 @@ class Context {
             },
           },
           "imports": Map {
-            "Context" => Object {
-              "isDefault": true,
-              "isType": false,
-              "name": "Context",
+            "ContextType" => Object {
+              "isDefault": false,
+              "isType": true,
+              "name": "ContextType",
               "script": Script {
                 "cache": Map {
                   "default" => "Context",
+                  "ContextTypeCoder@[object Object]:true" => "ContextType",
                 },
                 "exports": Map {
                   "Context" => Object {
@@ -4196,6 +4012,17 @@ class Context {
                     "isDefault": true,
                     "isType": false,
                     "name": "Context",
+                    "promise": Promise {},
+                    "typeDeclaration": "",
+                  },
+                  "ContextType" => Object {
+                    "beforeExport": "",
+                    "code": "typeof Context",
+                    "done": true,
+                    "id": "ContextTypeCoder",
+                    "isDefault": false,
+                    "isType": true,
+                    "name": "ContextType",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -4261,13 +4088,13 @@ class Context {
   "path-types/user.types.ts" => Script {
     "cache": Map {
       "OperationTypeCoder@./petstore.yaml#/paths/~1user/post@[object Object]:true" => "HTTP_POST",
-      "ContextCoder@paths/$.context.ts:false:true" => "Context",
+      "ContextTypeCoder@paths/$.context.ts:true:false" => "ContextType",
       "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
     },
     "exports": Map {
       "HTTP_POST" => Object {
         "beforeExport": "",
-        "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: User, context: typeof Context, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: User, context: ContextType, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
           headers: {};
           content: {
@@ -4304,13 +4131,14 @@ class Context {
       },
     },
     "imports": Map {
-      "Context" => Object {
-        "isDefault": true,
-        "isType": false,
-        "name": "Context",
+      "ContextType" => Object {
+        "isDefault": false,
+        "isType": true,
+        "name": "ContextType",
         "script": Script {
           "cache": Map {
             "default" => "Context",
+            "ContextTypeCoder@[object Object]:true" => "ContextType",
           },
           "exports": Map {
             "Context" => Object {
@@ -4334,6 +4162,17 @@ class Context {
               "isDefault": true,
               "isType": false,
               "name": "Context",
+              "promise": Promise {},
+              "typeDeclaration": "",
+            },
+            "ContextType" => Object {
+              "beforeExport": "",
+              "code": "typeof Context",
+              "done": true,
+              "id": "ContextTypeCoder",
+              "isDefault": false,
+              "isType": true,
+              "name": "ContextType",
               "promise": Promise {},
               "typeDeclaration": "",
             },
@@ -4416,13 +4255,13 @@ class Context {
         "script": Script {
           "cache": Map {
             "OperationTypeCoder@./petstore.yaml#/paths/~1user~1createWithList/post@[object Object]:true" => "HTTP_POST",
-            "ContextCoder@paths/user/$.context.ts:false:true" => "Context",
+            "ContextTypeCoder@paths/user/$.context.ts:true:false" => "ContextType",
             "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
           },
           "exports": Map {
             "HTTP_POST" => Object {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Array<User>, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Array<User>, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -4465,38 +4304,25 @@ class Context {
             },
           },
           "imports": Map {
-            "Context" => Object {
-              "isDefault": true,
-              "isType": false,
-              "name": "Context",
+            "ContextType" => Object {
+              "isDefault": false,
+              "isType": true,
+              "name": "ContextType",
               "script": Script {
                 "cache": Map {
-                  "default" => "Context",
+                  "ContextTypeCoder@[object Object]:true" => "ContextType",
                 },
                 "exports": Map {
-                  "Context" => Object {
-                    "beforeExport": "/**
-* This is the default context for Counterfact.
-* Change the code to suit your needs.
-*/
-class Context {
-  // delete this line to make the class type safe
-  [key: string]: any; 
-
-  // A helper when you accessing the context object via the REPL. You can delete it if you like.
-  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
-    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/user/$.context.ts\\";
-  }
-}
-",
+                  "ContextType" => Object {
+                    "beforeExport": "",
                     "code": Object {
-                      "raw": "export { default } from \\"../$.context.mjs\\"",
+                      "raw": "export type { ContextType } from \\"../$.context\\"",
                     },
                     "done": true,
-                    "id": "ContextCoder",
-                    "isDefault": true,
-                    "isType": false,
-                    "name": "Context",
+                    "id": "ContextTypeCoder",
+                    "isDefault": false,
+                    "isType": true,
+                    "name": "ContextType",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -4562,13 +4388,13 @@ class Context {
   "path-types/user/createWithList.types.ts" => Script {
     "cache": Map {
       "OperationTypeCoder@./petstore.yaml#/paths/~1user~1createWithList/post@[object Object]:true" => "HTTP_POST",
-      "ContextCoder@paths/user/$.context.ts:false:true" => "Context",
+      "ContextTypeCoder@paths/user/$.context.ts:true:false" => "ContextType",
       "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
     },
     "exports": Map {
       "HTTP_POST" => Object {
         "beforeExport": "",
-        "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Array<User>, context: typeof Context, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Array<User>, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -4611,38 +4437,25 @@ class Context {
       },
     },
     "imports": Map {
-      "Context" => Object {
-        "isDefault": true,
-        "isType": false,
-        "name": "Context",
+      "ContextType" => Object {
+        "isDefault": false,
+        "isType": true,
+        "name": "ContextType",
         "script": Script {
           "cache": Map {
-            "default" => "Context",
+            "ContextTypeCoder@[object Object]:true" => "ContextType",
           },
           "exports": Map {
-            "Context" => Object {
-              "beforeExport": "/**
-* This is the default context for Counterfact.
-* Change the code to suit your needs.
-*/
-class Context {
-  // delete this line to make the class type safe
-  [key: string]: any; 
-
-  // A helper when you accessing the context object via the REPL. You can delete it if you like.
-  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
-    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/user/$.context.ts\\";
-  }
-}
-",
+            "ContextType" => Object {
+              "beforeExport": "",
               "code": Object {
-                "raw": "export { default } from \\"../$.context.mjs\\"",
+                "raw": "export type { ContextType } from \\"../$.context\\"",
               },
               "done": true,
-              "id": "ContextCoder",
-              "isDefault": true,
-              "isType": false,
-              "name": "Context",
+              "id": "ContextTypeCoder",
+              "isDefault": false,
+              "isType": true,
+              "name": "ContextType",
               "promise": Promise {},
               "typeDeclaration": "",
             },
@@ -4725,12 +4538,12 @@ class Context {
         "script": Script {
           "cache": Map {
             "OperationTypeCoder@./petstore.yaml#/paths/~1user~1login/get@[object Object]:true" => "HTTP_GET",
-            "ContextCoder@paths/user/$.context.ts:false:true" => "Context",
+            "ContextTypeCoder@paths/user/$.context.ts:true:false" => "ContextType",
           },
           "exports": Map {
             "HTTP_GET" => Object {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: {\\"username?\\": string, \\"password?\\": string}, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: {\\"username?\\": string, \\"password?\\": string}, path: never, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {
 \\"X-Rate-Limit\\": { schema: number},
@@ -4776,38 +4589,25 @@ class Context {
             },
           },
           "imports": Map {
-            "Context" => Object {
-              "isDefault": true,
-              "isType": false,
-              "name": "Context",
+            "ContextType" => Object {
+              "isDefault": false,
+              "isType": true,
+              "name": "ContextType",
               "script": Script {
                 "cache": Map {
-                  "default" => "Context",
+                  "ContextTypeCoder@[object Object]:true" => "ContextType",
                 },
                 "exports": Map {
-                  "Context" => Object {
-                    "beforeExport": "/**
-* This is the default context for Counterfact.
-* Change the code to suit your needs.
-*/
-class Context {
-  // delete this line to make the class type safe
-  [key: string]: any; 
-
-  // A helper when you accessing the context object via the REPL. You can delete it if you like.
-  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
-    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/user/$.context.ts\\";
-  }
-}
-",
+                  "ContextType" => Object {
+                    "beforeExport": "",
                     "code": Object {
-                      "raw": "export { default } from \\"../$.context.mjs\\"",
+                      "raw": "export type { ContextType } from \\"../$.context\\"",
                     },
                     "done": true,
-                    "id": "ContextCoder",
-                    "isDefault": true,
-                    "isType": false,
-                    "name": "Context",
+                    "id": "ContextTypeCoder",
+                    "isDefault": false,
+                    "isType": true,
+                    "name": "ContextType",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -4842,12 +4642,12 @@ class Context {
   "path-types/user/login.types.ts" => Script {
     "cache": Map {
       "OperationTypeCoder@./petstore.yaml#/paths/~1user~1login/get@[object Object]:true" => "HTTP_GET",
-      "ContextCoder@paths/user/$.context.ts:false:true" => "Context",
+      "ContextTypeCoder@paths/user/$.context.ts:true:false" => "ContextType",
     },
     "exports": Map {
       "HTTP_GET" => Object {
         "beforeExport": "",
-        "code": "({ query, path, header, body, context, proxy }: { query: {\\"username?\\": string, \\"password?\\": string}, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context, proxy }: { query: {\\"username?\\": string, \\"password?\\": string}, path: never, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {
 \\"X-Rate-Limit\\": { schema: number},
@@ -4893,38 +4693,25 @@ class Context {
       },
     },
     "imports": Map {
-      "Context" => Object {
-        "isDefault": true,
-        "isType": false,
-        "name": "Context",
+      "ContextType" => Object {
+        "isDefault": false,
+        "isType": true,
+        "name": "ContextType",
         "script": Script {
           "cache": Map {
-            "default" => "Context",
+            "ContextTypeCoder@[object Object]:true" => "ContextType",
           },
           "exports": Map {
-            "Context" => Object {
-              "beforeExport": "/**
-* This is the default context for Counterfact.
-* Change the code to suit your needs.
-*/
-class Context {
-  // delete this line to make the class type safe
-  [key: string]: any; 
-
-  // A helper when you accessing the context object via the REPL. You can delete it if you like.
-  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
-    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/user/$.context.ts\\";
-  }
-}
-",
+            "ContextType" => Object {
+              "beforeExport": "",
               "code": Object {
-                "raw": "export { default } from \\"../$.context.mjs\\"",
+                "raw": "export type { ContextType } from \\"../$.context\\"",
               },
               "done": true,
-              "id": "ContextCoder",
-              "isDefault": true,
-              "isType": false,
-              "name": "Context",
+              "id": "ContextTypeCoder",
+              "isDefault": false,
+              "isType": true,
+              "name": "ContextType",
               "promise": Promise {},
               "typeDeclaration": "",
             },
@@ -4974,12 +4761,12 @@ class Context {
         "script": Script {
           "cache": Map {
             "OperationTypeCoder@./petstore.yaml#/paths/~1user~1logout/get@[object Object]:true" => "HTTP_GET",
-            "ContextCoder@paths/user/$.context.ts:false:true" => "Context",
+            "ContextTypeCoder@paths/user/$.context.ts:true:false" => "ContextType",
           },
           "exports": Map {
             "HTTP_GET" => Object {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
           headers: {};
           content: {};
@@ -5003,38 +4790,25 @@ class Context {
             },
           },
           "imports": Map {
-            "Context" => Object {
-              "isDefault": true,
-              "isType": false,
-              "name": "Context",
+            "ContextType" => Object {
+              "isDefault": false,
+              "isType": true,
+              "name": "ContextType",
               "script": Script {
                 "cache": Map {
-                  "default" => "Context",
+                  "ContextTypeCoder@[object Object]:true" => "ContextType",
                 },
                 "exports": Map {
-                  "Context" => Object {
-                    "beforeExport": "/**
-* This is the default context for Counterfact.
-* Change the code to suit your needs.
-*/
-class Context {
-  // delete this line to make the class type safe
-  [key: string]: any; 
-
-  // A helper when you accessing the context object via the REPL. You can delete it if you like.
-  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
-    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/user/$.context.ts\\";
-  }
-}
-",
+                  "ContextType" => Object {
+                    "beforeExport": "",
                     "code": Object {
-                      "raw": "export { default } from \\"../$.context.mjs\\"",
+                      "raw": "export type { ContextType } from \\"../$.context\\"",
                     },
                     "done": true,
-                    "id": "ContextCoder",
-                    "isDefault": true,
-                    "isType": false,
-                    "name": "Context",
+                    "id": "ContextTypeCoder",
+                    "isDefault": false,
+                    "isType": true,
+                    "name": "ContextType",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -5069,12 +4843,12 @@ class Context {
   "path-types/user/logout.types.ts" => Script {
     "cache": Map {
       "OperationTypeCoder@./petstore.yaml#/paths/~1user~1logout/get@[object Object]:true" => "HTTP_GET",
-      "ContextCoder@paths/user/$.context.ts:false:true" => "Context",
+      "ContextTypeCoder@paths/user/$.context.ts:true:false" => "ContextType",
     },
     "exports": Map {
       "HTTP_GET" => Object {
         "beforeExport": "",
-        "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
           headers: {};
           content: {};
@@ -5098,38 +4872,25 @@ class Context {
       },
     },
     "imports": Map {
-      "Context" => Object {
-        "isDefault": true,
-        "isType": false,
-        "name": "Context",
+      "ContextType" => Object {
+        "isDefault": false,
+        "isType": true,
+        "name": "ContextType",
         "script": Script {
           "cache": Map {
-            "default" => "Context",
+            "ContextTypeCoder@[object Object]:true" => "ContextType",
           },
           "exports": Map {
-            "Context" => Object {
-              "beforeExport": "/**
-* This is the default context for Counterfact.
-* Change the code to suit your needs.
-*/
-class Context {
-  // delete this line to make the class type safe
-  [key: string]: any; 
-
-  // A helper when you accessing the context object via the REPL. You can delete it if you like.
-  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
-    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/user/$.context.ts\\";
-  }
-}
-",
+            "ContextType" => Object {
+              "beforeExport": "",
               "code": Object {
-                "raw": "export { default } from \\"../$.context.mjs\\"",
+                "raw": "export type { ContextType } from \\"../$.context\\"",
               },
               "done": true,
-              "id": "ContextCoder",
-              "isDefault": true,
-              "isType": false,
-              "name": "Context",
+              "id": "ContextTypeCoder",
+              "isDefault": false,
+              "isType": true,
+              "name": "ContextType",
               "promise": Promise {},
               "typeDeclaration": "",
             },
@@ -5209,13 +4970,13 @@ class Context {
             "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/get@[object Object]:true" => "HTTP_GET",
             "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/put@[object Object]:true" => "HTTP_PUT",
             "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/delete@[object Object]:true" => "HTTP_DELETE",
-            "ContextCoder@paths/user/$.context.ts:false:true" => "Context",
+            "ContextTypeCoder@paths/user/$.context.ts:true:false" => "ContextType",
             "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
           },
           "exports": Map {
             "HTTP_GET" => Object {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"username\\": string}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"username\\": string}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -5258,7 +5019,7 @@ class Context {
             },
             "HTTP_PUT" => Object {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"username\\": string}, header: never, body: User, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"username\\": string}, header: never, body: User, context: ContextType, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
           headers: {};
           content: {};
@@ -5276,7 +5037,7 @@ class Context {
             },
             "HTTP_DELETE" => Object {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"username\\": string}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"username\\": string}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 400: {
           headers: {};
           content: {};
@@ -5306,38 +5067,25 @@ class Context {
             },
           },
           "imports": Map {
-            "Context" => Object {
-              "isDefault": true,
-              "isType": false,
-              "name": "Context",
+            "ContextType" => Object {
+              "isDefault": false,
+              "isType": true,
+              "name": "ContextType",
               "script": Script {
                 "cache": Map {
-                  "default" => "Context",
+                  "ContextTypeCoder@[object Object]:true" => "ContextType",
                 },
                 "exports": Map {
-                  "Context" => Object {
-                    "beforeExport": "/**
-* This is the default context for Counterfact.
-* Change the code to suit your needs.
-*/
-class Context {
-  // delete this line to make the class type safe
-  [key: string]: any; 
-
-  // A helper when you accessing the context object via the REPL. You can delete it if you like.
-  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
-    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/user/$.context.ts\\";
-  }
-}
-",
+                  "ContextType" => Object {
+                    "beforeExport": "",
                     "code": Object {
-                      "raw": "export { default } from \\"../$.context.mjs\\"",
+                      "raw": "export type { ContextType } from \\"../$.context\\"",
                     },
                     "done": true,
-                    "id": "ContextCoder",
-                    "isDefault": true,
-                    "isType": false,
-                    "name": "Context",
+                    "id": "ContextTypeCoder",
+                    "isDefault": false,
+                    "isType": true,
+                    "name": "ContextType",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -5401,13 +5149,13 @@ class Context {
             "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/get@[object Object]:true" => "HTTP_GET",
             "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/put@[object Object]:true" => "HTTP_PUT",
             "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/delete@[object Object]:true" => "HTTP_DELETE",
-            "ContextCoder@paths/user/$.context.ts:false:true" => "Context",
+            "ContextTypeCoder@paths/user/$.context.ts:true:false" => "ContextType",
             "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
           },
           "exports": Map {
             "HTTP_GET" => Object {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"username\\": string}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"username\\": string}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -5450,7 +5198,7 @@ class Context {
             },
             "HTTP_PUT" => Object {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"username\\": string}, header: never, body: User, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"username\\": string}, header: never, body: User, context: ContextType, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
           headers: {};
           content: {};
@@ -5468,7 +5216,7 @@ class Context {
             },
             "HTTP_DELETE" => Object {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"username\\": string}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"username\\": string}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 400: {
           headers: {};
           content: {};
@@ -5498,38 +5246,25 @@ class Context {
             },
           },
           "imports": Map {
-            "Context" => Object {
-              "isDefault": true,
-              "isType": false,
-              "name": "Context",
+            "ContextType" => Object {
+              "isDefault": false,
+              "isType": true,
+              "name": "ContextType",
               "script": Script {
                 "cache": Map {
-                  "default" => "Context",
+                  "ContextTypeCoder@[object Object]:true" => "ContextType",
                 },
                 "exports": Map {
-                  "Context" => Object {
-                    "beforeExport": "/**
-* This is the default context for Counterfact.
-* Change the code to suit your needs.
-*/
-class Context {
-  // delete this line to make the class type safe
-  [key: string]: any; 
-
-  // A helper when you accessing the context object via the REPL. You can delete it if you like.
-  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
-    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/user/$.context.ts\\";
-  }
-}
-",
+                  "ContextType" => Object {
+                    "beforeExport": "",
                     "code": Object {
-                      "raw": "export { default } from \\"../$.context.mjs\\"",
+                      "raw": "export type { ContextType } from \\"../$.context\\"",
                     },
                     "done": true,
-                    "id": "ContextCoder",
-                    "isDefault": true,
-                    "isType": false,
-                    "name": "Context",
+                    "id": "ContextTypeCoder",
+                    "isDefault": false,
+                    "isType": true,
+                    "name": "ContextType",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -5593,13 +5328,13 @@ class Context {
             "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/get@[object Object]:true" => "HTTP_GET",
             "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/put@[object Object]:true" => "HTTP_PUT",
             "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/delete@[object Object]:true" => "HTTP_DELETE",
-            "ContextCoder@paths/user/$.context.ts:false:true" => "Context",
+            "ContextTypeCoder@paths/user/$.context.ts:true:false" => "ContextType",
             "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
           },
           "exports": Map {
             "HTTP_GET" => Object {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"username\\": string}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"username\\": string}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -5642,7 +5377,7 @@ class Context {
             },
             "HTTP_PUT" => Object {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"username\\": string}, header: never, body: User, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"username\\": string}, header: never, body: User, context: ContextType, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
           headers: {};
           content: {};
@@ -5660,7 +5395,7 @@ class Context {
             },
             "HTTP_DELETE" => Object {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"username\\": string}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"username\\": string}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 400: {
           headers: {};
           content: {};
@@ -5690,38 +5425,25 @@ class Context {
             },
           },
           "imports": Map {
-            "Context" => Object {
-              "isDefault": true,
-              "isType": false,
-              "name": "Context",
+            "ContextType" => Object {
+              "isDefault": false,
+              "isType": true,
+              "name": "ContextType",
               "script": Script {
                 "cache": Map {
-                  "default" => "Context",
+                  "ContextTypeCoder@[object Object]:true" => "ContextType",
                 },
                 "exports": Map {
-                  "Context" => Object {
-                    "beforeExport": "/**
-* This is the default context for Counterfact.
-* Change the code to suit your needs.
-*/
-class Context {
-  // delete this line to make the class type safe
-  [key: string]: any; 
-
-  // A helper when you accessing the context object via the REPL. You can delete it if you like.
-  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
-    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/user/$.context.ts\\";
-  }
-}
-",
+                  "ContextType" => Object {
+                    "beforeExport": "",
                     "code": Object {
-                      "raw": "export { default } from \\"../$.context.mjs\\"",
+                      "raw": "export type { ContextType } from \\"../$.context\\"",
                     },
                     "done": true,
-                    "id": "ContextCoder",
-                    "isDefault": true,
-                    "isType": false,
-                    "name": "Context",
+                    "id": "ContextTypeCoder",
+                    "isDefault": false,
+                    "isType": true,
+                    "name": "ContextType",
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
@@ -5789,13 +5511,13 @@ class Context {
       "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/get@[object Object]:true" => "HTTP_GET",
       "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/put@[object Object]:true" => "HTTP_PUT",
       "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/delete@[object Object]:true" => "HTTP_DELETE",
-      "ContextCoder@paths/user/$.context.ts:false:true" => "Context",
+      "ContextTypeCoder@paths/user/$.context.ts:true:false" => "ContextType",
       "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
     },
     "exports": Map {
       "HTTP_GET" => Object {
         "beforeExport": "",
-        "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"username\\": string}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"username\\": string}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -5838,7 +5560,7 @@ class Context {
       },
       "HTTP_PUT" => Object {
         "beforeExport": "",
-        "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"username\\": string}, header: never, body: User, context: typeof Context, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"username\\": string}, header: never, body: User, context: ContextType, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
           headers: {};
           content: {};
@@ -5856,7 +5578,7 @@ class Context {
       },
       "HTTP_DELETE" => Object {
         "beforeExport": "",
-        "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"username\\": string}, header: never, body: undefined, context: typeof Context, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"username\\": string}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 400: {
           headers: {};
           content: {};
@@ -5886,38 +5608,25 @@ class Context {
       },
     },
     "imports": Map {
-      "Context" => Object {
-        "isDefault": true,
-        "isType": false,
-        "name": "Context",
+      "ContextType" => Object {
+        "isDefault": false,
+        "isType": true,
+        "name": "ContextType",
         "script": Script {
           "cache": Map {
-            "default" => "Context",
+            "ContextTypeCoder@[object Object]:true" => "ContextType",
           },
           "exports": Map {
-            "Context" => Object {
-              "beforeExport": "/**
-* This is the default context for Counterfact.
-* Change the code to suit your needs.
-*/
-class Context {
-  // delete this line to make the class type safe
-  [key: string]: any; 
-
-  // A helper when you accessing the context object via the REPL. You can delete it if you like.
-  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
-    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/user/$.context.ts\\";
-  }
-}
-",
+            "ContextType" => Object {
+              "beforeExport": "",
               "code": Object {
-                "raw": "export { default } from \\"../$.context.mjs\\"",
+                "raw": "export type { ContextType } from \\"../$.context\\"",
               },
               "done": true,
-              "id": "ContextCoder",
-              "isDefault": true,
-              "isType": false,
-              "name": "Context",
+              "id": "ContextTypeCoder",
+              "isDefault": false,
+              "isType": true,
+              "name": "ContextType",
               "promise": Promise {},
               "typeDeclaration": "",
             },
@@ -5974,6 +5683,7 @@ class Context {
   "paths/$.context.ts" => Script {
     "cache": Map {
       "default" => "Context",
+      "ContextTypeCoder@[object Object]:true" => "ContextType",
     },
     "exports": Map {
       "Context" => Object {
@@ -5997,6 +5707,17 @@ class Context {
         "isDefault": true,
         "isType": false,
         "name": "Context",
+        "promise": Promise {},
+        "typeDeclaration": "",
+      },
+      "ContextType" => Object {
+        "beforeExport": "",
+        "code": "typeof Context",
+        "done": true,
+        "id": "ContextTypeCoder",
+        "isDefault": false,
+        "isType": true,
+        "name": "ContextType",
         "promise": Promise {},
         "typeDeclaration": "",
       },
@@ -6103,32 +5824,19 @@ class Context {
   },
   "paths/pet/$.context.ts" => Script {
     "cache": Map {
-      "default" => "Context",
+      "ContextTypeCoder@[object Object]:true" => "ContextType",
     },
     "exports": Map {
-      "Context" => Object {
-        "beforeExport": "/**
-* This is the default context for Counterfact.
-* Change the code to suit your needs.
-*/
-class Context {
-  // delete this line to make the class type safe
-  [key: string]: any; 
-
-  // A helper when you accessing the context object via the REPL. You can delete it if you like.
-  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
-    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/pet/$.context.ts\\";
-  }
-}
-",
+      "ContextType" => Object {
+        "beforeExport": "",
         "code": Object {
-          "raw": "export { default } from \\"../$.context.mjs\\"",
+          "raw": "export type { ContextType } from \\"../$.context\\"",
         },
         "done": true,
-        "id": "ContextCoder",
-        "isDefault": true,
-        "isType": false,
-        "name": "Context",
+        "id": "ContextTypeCoder",
+        "isDefault": false,
+        "isType": true,
+        "name": "ContextType",
         "promise": Promise {},
         "typeDeclaration": "",
       },
@@ -6144,32 +5852,19 @@ class Context {
   },
   "paths/pet/{petId}/$.context.ts" => Script {
     "cache": Map {
-      "default" => "Context",
+      "ContextTypeCoder@[object Object]:true" => "ContextType",
     },
     "exports": Map {
-      "Context" => Object {
-        "beforeExport": "/**
-* This is the default context for Counterfact.
-* Change the code to suit your needs.
-*/
-class Context {
-  // delete this line to make the class type safe
-  [key: string]: any; 
-
-  // A helper when you accessing the context object via the REPL. You can delete it if you like.
-  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
-    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/pet/{petId}/$.context.ts\\";
-  }
-}
-",
+      "ContextType" => Object {
+        "beforeExport": "",
         "code": Object {
-          "raw": "export { default } from \\"../$.context.mjs\\"",
+          "raw": "export type { ContextType } from \\"../$.context\\"",
         },
         "done": true,
-        "id": "ContextCoder",
-        "isDefault": true,
-        "isType": false,
-        "name": "Context",
+        "id": "ContextTypeCoder",
+        "isDefault": false,
+        "isType": true,
+        "name": "ContextType",
         "promise": Promise {},
         "typeDeclaration": "",
       },
@@ -6211,32 +5906,19 @@ class Context {
   },
   "paths/store/$.context.ts" => Script {
     "cache": Map {
-      "default" => "Context",
+      "ContextTypeCoder@[object Object]:true" => "ContextType",
     },
     "exports": Map {
-      "Context" => Object {
-        "beforeExport": "/**
-* This is the default context for Counterfact.
-* Change the code to suit your needs.
-*/
-class Context {
-  // delete this line to make the class type safe
-  [key: string]: any; 
-
-  // A helper when you accessing the context object via the REPL. You can delete it if you like.
-  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
-    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/store/$.context.ts\\";
-  }
-}
-",
+      "ContextType" => Object {
+        "beforeExport": "",
         "code": Object {
-          "raw": "export { default } from \\"../$.context.mjs\\"",
+          "raw": "export type { ContextType } from \\"../$.context\\"",
         },
         "done": true,
-        "id": "ContextCoder",
-        "isDefault": true,
-        "isType": false,
-        "name": "Context",
+        "id": "ContextTypeCoder",
+        "isDefault": false,
+        "isType": true,
+        "name": "ContextType",
         "promise": Promise {},
         "typeDeclaration": "",
       },
@@ -6278,32 +5960,19 @@ class Context {
   },
   "paths/store/order/$.context.ts" => Script {
     "cache": Map {
-      "default" => "Context",
+      "ContextTypeCoder@[object Object]:true" => "ContextType",
     },
     "exports": Map {
-      "Context" => Object {
-        "beforeExport": "/**
-* This is the default context for Counterfact.
-* Change the code to suit your needs.
-*/
-class Context {
-  // delete this line to make the class type safe
-  [key: string]: any; 
-
-  // A helper when you accessing the context object via the REPL. You can delete it if you like.
-  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
-    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/store/order/$.context.ts\\";
-  }
-}
-",
+      "ContextType" => Object {
+        "beforeExport": "",
         "code": Object {
-          "raw": "export { default } from \\"../$.context.mjs\\"",
+          "raw": "export type { ContextType } from \\"../$.context\\"",
         },
         "done": true,
-        "id": "ContextCoder",
-        "isDefault": true,
-        "isType": false,
-        "name": "Context",
+        "id": "ContextTypeCoder",
+        "isDefault": false,
+        "isType": true,
+        "name": "ContextType",
         "promise": Promise {},
         "typeDeclaration": "",
       },
@@ -6345,32 +6014,19 @@ class Context {
   },
   "paths/user/$.context.ts" => Script {
     "cache": Map {
-      "default" => "Context",
+      "ContextTypeCoder@[object Object]:true" => "ContextType",
     },
     "exports": Map {
-      "Context" => Object {
-        "beforeExport": "/**
-* This is the default context for Counterfact.
-* Change the code to suit your needs.
-*/
-class Context {
-  // delete this line to make the class type safe
-  [key: string]: any; 
-
-  // A helper when you accessing the context object via the REPL. You can delete it if you like.
-  [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
-    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/user/$.context.ts\\";
-  }
-}
-",
+      "ContextType" => Object {
+        "beforeExport": "",
         "code": Object {
-          "raw": "export { default } from \\"../$.context.mjs\\"",
+          "raw": "export type { ContextType } from \\"../$.context\\"",
         },
         "done": true,
-        "id": "ContextCoder",
-        "isDefault": true,
-        "isType": false,
-        "name": "Context",
+        "id": "ContextTypeCoder",
+        "isDefault": false,
+        "isType": true,
+        "name": "ContextType",
         "promise": Promise {},
         "typeDeclaration": "",
       },
