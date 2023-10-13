@@ -1,4 +1,10 @@
-import { readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
+import {
+  existsSync,
+  readdirSync,
+  readFileSync,
+  statSync,
+  writeFileSync,
+} from "node:fs";
 import { join } from "node:path";
 
 function processFile(filePath) {
@@ -24,6 +30,10 @@ function processFile(filePath) {
 }
 
 function migrateContextFiles(path) {
+  if (!existsSync(path)) {
+    return;
+  }
+
   const items = readdirSync(path);
 
   for (const item of items) {
@@ -41,5 +51,9 @@ function migrateContextFiles(path) {
 }
 
 export function migrate(rootPath) {
+  if (!existsSync(rootPath)) {
+    return;
+  }
+
   migrateContextFiles(join(rootPath, "paths"));
 }
