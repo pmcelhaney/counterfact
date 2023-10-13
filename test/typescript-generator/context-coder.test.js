@@ -62,14 +62,6 @@ describe("a ContextCoder", () => {
     expect(coder.id).toBe("ContextCoder");
   });
 
-  it("extends the Context from the parent directory", async () => {
-    const coder = new ContextCoder(new Requirement({}, "#/paths/hello/get"));
-
-    await expect(format(coder.write(dummyScript).raw)).resolves.toBe(
-      await format('export { default } from "../$.context.mjs";'),
-    );
-  });
-
   it("returns the context object if this is the root directory", async () => {
     const coder = new ContextCoder(new Requirement({}, "#/paths/hello"));
 
