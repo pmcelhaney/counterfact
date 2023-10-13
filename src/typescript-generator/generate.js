@@ -5,6 +5,7 @@ import nodePath from "node:path";
 import createDebug from "debug";
 
 import { ensureDirectoryExists } from "../util/ensure-directory-exists.js";
+import { ContextCoder } from "./context-coder.js";
 import { OperationCoder } from "./operation-coder.js";
 import { Repository } from "./repository.js";
 import { Specification } from "./specification.js";
@@ -65,6 +66,8 @@ export async function generate(
       repository.get(`paths${key}.ts`).export(new OperationCoder(operation));
     });
   });
+
+  repository.get("paths/$.context.ts").exportDefault(new ContextCoder(paths));
 
   debug("telling the repository to write the files to %s", destination);
 

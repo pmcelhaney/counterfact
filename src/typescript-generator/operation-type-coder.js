@@ -1,7 +1,7 @@
 import nodePath from "node:path";
 
 import { Coder } from "./coder.js";
-import { ContextCoder } from "./context-coder.js";
+import { ContextTypeCoder } from "./context-type-coder.js";
 import { ParametersTypeCoder } from "./parameters-type-coder.js";
 import { ResponseTypeCoder } from "./response-type-coder.js";
 import { SchemaTypeCoder } from "./schema-type-coder.js";
@@ -68,8 +68,8 @@ export class OperationTypeCoder extends Coder {
   }
 
   write(script) {
-    const contextImportName = script.importDefault(
-      new ContextCoder(this.requirement),
+    const contextTypeImportName = script.importType(
+      new ContextTypeCoder(this.requirement),
     );
 
     const parameters = this.requirement.get("parameters");
@@ -109,7 +109,7 @@ export class OperationTypeCoder extends Coder {
 
     const proxyType = "(url: string) => { proxyUrl: string }";
 
-    return `({ query, path, header, body, context, proxy }: { query: ${queryType}, path: ${pathType}, header: ${headerType}, body: ${bodyType}, context: typeof ${contextImportName}, response: ${responseType}, proxy: ${proxyType} }) => ${this.responseTypes(
+    return `({ query, path, header, body, context, proxy }: { query: ${queryType}, path: ${pathType}, header: ${headerType}, body: ${bodyType}, context: ${contextTypeImportName}, response: ${responseType}, proxy: ${proxyType} }) => ${this.responseTypes(
       script,
     )} | { status: 415, contentType: "text/plain", body: string } | void`;
   }

@@ -36,18 +36,8 @@ class Context {
 `;
   }
 
-  write(script) {
-    if (script.path === "paths/$.context.ts") {
-      return "new Context()";
-    }
-
-    const parentPath = nodePath
-      .normalize(nodePath.join(script.path, "../../$.context.ts"))
-      .replaceAll("\\", "/");
-
-    script.repository.get(parentPath).exportDefault(this);
-
-    return { raw: 'export { default } from "../$.context.mjs"' };
+  write() {
+    return "new Context()";
   }
 
   modulePath() {
