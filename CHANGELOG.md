@@ -1,5 +1,11 @@
 # counterfact
 
+## 0.27.1
+
+### Patch Changes
+
+- 7eba726: got a little carried away with typeof; it's needed for the instance, not the class
+
 ## 0.27.0
 
 ### Minor Changes
