@@ -48,7 +48,7 @@ describe("a ContextTypeCoder", () => {
     );
   });
 
-  it("exports typeof Context in the root", async () => {
+  it("exports ContextType in the root", async () => {
     const coder = new ContextTypeCoder(new Requirement({}, "#/paths"));
 
     const dummyScriptWithRootPath = {
@@ -57,7 +57,7 @@ describe("a ContextTypeCoder", () => {
     };
 
     await expect(format(coder.write(dummyScriptWithRootPath))).resolves.toBe(
-      await format("typeof Context"),
+      await format("Context"),
     );
   });
 });

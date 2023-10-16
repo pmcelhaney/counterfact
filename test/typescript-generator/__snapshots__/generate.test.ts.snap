@@ -181,7 +181,7 @@ class Context {
                   },
                   "ContextType" => Object {
                     "beforeExport": "",
-                    "code": "typeof Context",
+                    "code": "Context",
                     "done": true,
                     "id": "ContextTypeCoder",
                     "isDefault": false,
@@ -448,7 +448,7 @@ class Context {
                   },
                   "ContextType" => Object {
                     "beforeExport": "",
-                    "code": "typeof Context",
+                    "code": "Context",
                     "done": true,
                     "id": "ContextTypeCoder",
                     "isDefault": false,
@@ -719,7 +719,7 @@ class Context {
             },
             "ContextType" => Object {
               "beforeExport": "",
-              "code": "typeof Context",
+              "code": "Context",
               "done": true,
               "id": "ContextTypeCoder",
               "isDefault": false,
@@ -4017,7 +4017,7 @@ class Context {
                   },
                   "ContextType" => Object {
                     "beforeExport": "",
-                    "code": "typeof Context",
+                    "code": "Context",
                     "done": true,
                     "id": "ContextTypeCoder",
                     "isDefault": false,
@@ -4167,7 +4167,7 @@ class Context {
             },
             "ContextType" => Object {
               "beforeExport": "",
-              "code": "typeof Context",
+              "code": "Context",
               "done": true,
               "id": "ContextTypeCoder",
               "isDefault": false,
@@ -5712,7 +5712,7 @@ class Context {
       },
       "ContextType" => Object {
         "beforeExport": "",
-        "code": "typeof Context",
+        "code": "Context",
         "done": true,
         "id": "ContextTypeCoder",
         "isDefault": false,
