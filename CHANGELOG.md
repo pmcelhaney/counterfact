@@ -8,7 +8,7 @@
 
   BREAKING CHANGE:
 
-  - the main $.context.ts file needs an extra line: `export type ContextType = typeof Context;`
+  - the main $.context.ts file needs an extra line: `export type ContextType = Context;`
   - $.context.ts files below the root need to change to `export type { ContextType } from "../$.context";`
   - if you modified any of the $.context.ts files below the root, treat the first bullet applies
 

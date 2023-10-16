@@ -26,7 +26,7 @@ export class ContextTypeCoder extends Coder {
 
   write(script) {
     if (script.path === "paths/$.context.ts") {
-      return "typeof Context";
+      return "Context";
     }
 
     return { raw: 'export type { ContextType } from "../$.context"' };

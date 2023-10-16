@@ -18,7 +18,7 @@ function processFile(filePath) {
   }
 
   if (content.includes("export default new Context")) {
-    writeFileSync(filePath, "export type ContextType = typeof Context;\n", {
+    writeFileSync(filePath, "export type ContextType = Context;\n", {
       flag: "a",
     });
   } else {
