@@ -1,5 +1,11 @@
 # counterfact
 
+## 0.28.0
+
+### Minor Changes
+
+- 33d05f9: configure json-schema-aker to create between 0 and 20 items when it generates an array
+
 ## 0.27.1
 
 ### Patch Changes
