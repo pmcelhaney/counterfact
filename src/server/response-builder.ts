@@ -25,6 +25,8 @@ interface OpenApiContent {
 }
 
 JSONSchemaFaker.option("useExamplesValue", true);
+JSONSchemaFaker.option("minItems", 0);
+JSONSchemaFaker.option("maxItems", 20);
 
 function oneOf(items: unknown[] | { [key: string]: unknown }): unknown {
   if (Array.isArray(items)) {
