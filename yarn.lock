@@ -2152,27 +2152,27 @@
   dependencies:
     lodash "^4.17.15"
 
-"@stryker-mutator/api@7.2.0":
-  version "7.2.0"
-  resolved "https://registry.yarnpkg.com/@stryker-mutator/api/-/api-7.2.0.tgz#8022eef5ddbc60d5d57e6dcac30a2b82205a0dc1"
-  integrity sha512-8RXFedycLutqua0aUiB5sYUkQFEATuNCnrM5/mVXRw3QBAcSfkLq5vMpJZJpS970yXeQqAfT4nfZskr/Lg2/Vw==
+"@stryker-mutator/api@7.3.0":
+  version "7.3.0"
+  resolved "https://registry.yarnpkg.com/@stryker-mutator/api/-/api-7.3.0.tgz#cde05daa8c7e098b35189d8d2a8a776f5b9330a5"
+  integrity sha512-0tiQF0E38ypgg2fb2a4wbr2wpu4ugY7HwwsgrI9NttY1EojOS0BtaKHo1DIrj5SVMRXq0kaMgl5h2ohSuysvRA==
   dependencies:
     mutation-testing-metrics "2.0.3"
     mutation-testing-report-schema "2.0.3"
     tslib "~2.6.0"
     typed-inject "~4.0.0"
 
-"@stryker-mutator/core@7.2.0":
-  version "7.2.0"
-  resolved "https://registry.yarnpkg.com/@stryker-mutator/core/-/core-7.2.0.tgz#8fbbaa0d9244807944a1306549e3c85790ae89f6"
-  integrity sha512-tACByIbWeR48q003GbnBVs1hXXWyrzjVIKDmFYT1ei1DJKl8OrEWSr8SpV93QVKprRzNgt0xuxE07aLSuzBr1A==
+"@stryker-mutator/core@7.3.0":
+  version "7.3.0"
+  resolved "https://registry.yarnpkg.com/@stryker-mutator/core/-/core-7.3.0.tgz#ac998dd752de54f7254b77c8a21e2ff4be73af61"
+  integrity sha512-O9m2jEnJXbKBlj27/ps9nGCpm0HtQC0YlNV/aenocmERnySnvqEM6bwxvQ4apK5bad8ZyGJyhDIyJrwoVGmfVQ==
   dependencies:
-    "@stryker-mutator/api" "7.2.0"
-    "@stryker-mutator/instrumenter" "7.2.0"
-    "@stryker-mutator/util" "7.2.0"
+    "@stryker-mutator/api" "7.3.0"
+    "@stryker-mutator/instrumenter" "7.3.0"
+    "@stryker-mutator/util" "7.3.0"
     ajv "~8.12.0"
     chalk "~5.3.0"
-    commander "~11.0.0"
+    commander "~11.1.0"
     diff-match-patch "1.0.5"
     emoji-regex "~10.2.1"
     execa "~8.0.0"
@@ -2180,7 +2180,6 @@
     get-port "~7.0.0"
     glob "~10.3.0"
     inquirer "~9.2.0"
-    lodash.flatmap "~4.5.0"
     lodash.groupby "~4.6.0"
     log4js "~6.9.0"
     minimatch "~9.0.1"
@@ -2197,46 +2196,44 @@
     typed-inject "~4.0.0"
     typed-rest-client "~1.8.0"
 
-"@stryker-mutator/instrumenter@7.2.0":
-  version "7.2.0"
-  resolved "https://registry.yarnpkg.com/@stryker-mutator/instrumenter/-/instrumenter-7.2.0.tgz#58b74f040eff72e724d49cd242e1b001277f71be"
-  integrity sha512-jQc7QBu6OswTHBYUKbmCJHCYDXR5K4ehpy2dwrKuSg5n63S9v0Hebqk556sGkSu0KmX2Ts98f7u7Wfn1rIuv+g==
+"@stryker-mutator/instrumenter@7.3.0":
+  version "7.3.0"
+  resolved "https://registry.yarnpkg.com/@stryker-mutator/instrumenter/-/instrumenter-7.3.0.tgz#cc277e7e9e77a9915f289cfc47147000c9678dad"
+  integrity sha512-RdfQF08GclNdKldG3rH9YztapPhfTYsc90p8Tev+b6yZJSpk1j8mKZRMjxk/mylDtXFZZ2IVhI9txAt2YYT+OQ==
   dependencies:
     "@babel/core" "~7.23.0"
     "@babel/generator" "~7.23.0"
     "@babel/parser" "~7.23.0"
     "@babel/plugin-proposal-decorators" "~7.23.0"
     "@babel/preset-typescript" "~7.23.0"
-    "@stryker-mutator/api" "7.2.0"
-    "@stryker-mutator/util" "7.2.0"
+    "@stryker-mutator/api" "7.3.0"
+    "@stryker-mutator/util" "7.3.0"
     angular-html-parser "~4.0.0"
     weapon-regex "~1.1.0"
 
-"@stryker-mutator/jest-runner@7.2.0":
-  version "7.2.0"
-  resolved "https://registry.yarnpkg.com/@stryker-mutator/jest-runner/-/jest-runner-7.2.0.tgz#5b70c670f571d59f4dcf424606d242b8a59baa8e"
-  integrity sha512-yh85kK5wWUf9NB+72GtJ2skDfOJcBnmDUka4y0VFE/TogJDdcPw/Qdd8DL6mbUAMW/LOKzTBS3Q3aZ8FG/N4SA==
+"@stryker-mutator/jest-runner@7.3.0":
+  version "7.3.0"
+  resolved "https://registry.yarnpkg.com/@stryker-mutator/jest-runner/-/jest-runner-7.3.0.tgz#9fad2297ac1b26bb1a630270adae8da3459fb691"
+  integrity sha512-9iNJ/CwHK3tve/ZExG99MyRahlISmE3BAJ7MPVueMBVSif7Vh/jPevDyYHw0yc/DFZ2rM4A5UiWh1aiIM0HGVg==
   dependencies:
-    "@stryker-mutator/api" "7.2.0"
-    "@stryker-mutator/util" "7.2.0"
+    "@stryker-mutator/api" "7.3.0"
+    "@stryker-mutator/util" "7.3.0"
     semver "~7.5.0"
     tslib "~2.6.0"
 
-"@stryker-mutator/typescript-checker@7.2.0":
-  version "7.2.0"
-  resolved "https://registry.yarnpkg.com/@stryker-mutator/typescript-checker/-/typescript-checker-7.2.0.tgz#f7402c4633fbf18499650b294a01a0ef5e633684"
-  integrity sha512-MaHpGuHS69Crz3os1FssR8l+Ysx/R7wFJx46IHhYafm8gHhQ/UToXWhhnzEUZ4c1f5wVk8kYqtKakK2NjznFMQ==
+"@stryker-mutator/typescript-checker@7.3.0":
+  version "7.3.0"
+  resolved "https://registry.yarnpkg.com/@stryker-mutator/typescript-checker/-/typescript-checker-7.3.0.tgz#77a3cd49a76025f8bb72eab1a4f9724434e4d05d"
+  integrity sha512-WNYeDRJNeyA6r6eSQLO9HPd0t88QD77Nv422EGzInGT9DIgpRffH46JijFsdcLZtzAq1OACFZZ25bgdHTEjCrQ==
   dependencies:
-    "@stryker-mutator/api" "7.2.0"
-    "@stryker-mutator/util" "7.2.0"
+    "@stryker-mutator/api" "7.3.0"
+    "@stryker-mutator/util" "7.3.0"
     semver "~7.5.0"
 
-"@stryker-mutator/util@7.2.0":
-  version "7.2.0"
-  resolved "https://registry.yarnpkg.com/@stryker-mutator/util/-/util-7.2.0.tgz#51d662f77d0ea3e8faca79c0e4bd3531fc5c4fc7"
-  integrity sha512-3uKu74XODQqOflFMQ/CefiCHr9w7igx7Y4D33MDRja4egP1wWSzbjnYRJuTtjFoM13poZFBvEMi2GDtDl3o5Mg==
-  dependencies:
-    lodash.flatmap "~4.5.0"
+"@stryker-mutator/util@7.3.0":
+  version "7.3.0"
+  resolved "https://registry.yarnpkg.com/@stryker-mutator/util/-/util-7.3.0.tgz#954372a3f265f9fb268330c9e1032cca391174dd"
+  integrity sha512-bdFvuw7F3LC05dOFqgGjuipLt8ng5uXyjjdKeqqeTowm1wAyeDt0GTQKBuiINSAtcZxN75wTXq4DsCZXb/LMjw==
 
 "@swc/core-darwin-arm64@1.3.93":
   version "1.3.93"
@@ -3854,15 +3851,10 @@ combined-stream@^1.0.6, combined-stream@^1.0.8, combined-stream@~1.0.6:
   dependencies:
     delayed-stream "~1.0.0"
 
-commander@11.1.0:
+commander@11.1.0, commander@~11.1.0:
   version "11.1.0"
   resolved "https://registry.yarnpkg.com/commander/-/commander-11.1.0.tgz#62fdce76006a68e5c1ab3314dc92e800eb83d906"
   integrity sha512-yPVavfyCcRhmorC7rWlkHn15b4wDVgVmBA7kV4QVBsF7kv/9TKJAbAXVTxvTnwP8HHKjRCJDClKbciiYS7p0DQ==
-
-commander@~11.0.0:
-  version "11.0.0"
-  resolved "https://registry.yarnpkg.com/commander/-/commander-11.0.0.tgz#43e19c25dbedc8256203538e8d7e9346877a6f67"
-  integrity sha512-9HMlXtt/BNoYr8ooyjjNRdIilOTkVJXB+GhxMTtOKwk0R4j4lS4NpjuqmRxroBfnfTSHQIHQB7wryHhXarNjmQ==
 
 comment-parser@^1.1.2:
   version "1.4.0"
@@ -7580,11 +7572,6 @@ locate-path@^7.1.0:
   integrity sha512-gvVijfZvn7R+2qyPX8mAuKcFGDf6Nc61GdvGafQsHL0sBIxfKzA+usWn4GFC/bk+QdwPUD4kWFJLhElipq+0VA==
   dependencies:
     p-locate "^6.0.0"
-
-lodash.flatmap@~4.5.0:
-  version "4.5.0"
-  resolved "https://registry.yarnpkg.com/lodash.flatmap/-/lodash.flatmap-4.5.0.tgz#ef8cbf408f6e48268663345305c6acc0b778702e"
-  integrity sha512-/OcpcAGWlrZyoHGeHh3cAoa6nGdX6QYtmzNP84Jqol6UEQQ2gIaU3H+0eICcjcKGl0/XF8LWOujNn9lffsnaOg==
 
 lodash.get@^4.3.0, lodash.get@^4.4.2:
   version "4.4.2"
