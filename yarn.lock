@@ -2561,10 +2561,10 @@
   dependencies:
     "@types/koa" "*"
 
-"@types/koa-static@4.0.2":
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/@types/koa-static/-/koa-static-4.0.2.tgz#a199d2d64d2930755eb3ea370aeaf2cb6f501d67"
-  integrity sha512-ns/zHg+K6XVPMuohjpOlpkR1WLa4VJ9czgUP9bxkCDn0JZBtUWbD/wKDZzPGDclkQK1bpAEScufCHOy8cbfL0w==
+"@types/koa-static@4.0.3":
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/@types/koa-static/-/koa-static-4.0.3.tgz#e008a7f6d8a7518c112fa67ba526fd2785d4cc85"
+  integrity sha512-4U9uZwXqYAudDLDVkw1prJM5avn9/lHLVEwoyyI/ITZluWkBdmirkj8EsOLG6kLr0XFZdViR0ZBtQ3oetSsr3g==
   dependencies:
     "@types/koa" "*"
     "@types/koa-send" "*"
