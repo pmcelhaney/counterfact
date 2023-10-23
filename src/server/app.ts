@@ -12,6 +12,7 @@ import { Dispatcher, type OpenApiDocument } from "./dispatcher.js";
 import { koaMiddleware } from "./koa-middleware.js";
 import { ModuleLoader } from "./module-loader.js";
 import { Registry } from "./registry.js";
+import { startRepl } from "./repl.js";
 import { Transpiler } from "./transpiler.js";
 
 // eslint-disable-next-line @typescript-eslint/init-declarations
@@ -82,6 +83,8 @@ export async function counterfact(config: Config) {
     httpTerminator = createHttpTerminator({
       server,
     });
+
+    startRepl(contextRegistry, config);
   }
 
   async function stop() {

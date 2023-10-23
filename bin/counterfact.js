@@ -8,7 +8,6 @@ import open from "open";
 
 import { migrate } from "../dist/src/migrations/0.27.js";
 import { counterfact } from "../dist/src/server/app.js";
-import { startRepl } from "../dist/src/server/repl.js";
 import { generate } from "../dist/src/typescript-generator/generate.js";
 
 const DEFAULT_PORT = 3100;
@@ -64,15 +63,9 @@ async function main(source, destination) {
 
   debug("loading counterfact (%o)", config);
 
-  const { contextRegistry, start } = await counterfact(config);
+  const { start } = await counterfact(config);
 
   debug("loaded counterfact", config);
-
-  debug("starting server");
-
-  await start();
-
-  debug("started server");
 
   const waysToInteract = [
     `Call the REST APIs at ${url} (with your front end app, curl, Postman, etc.)`,
@@ -100,13 +93,11 @@ async function main(source, destination) {
 
   process.stdout.write("\n\n");
 
-  process.stdout.write("Starting REPL...\n");
+  debug("starting server");
 
-  debug("starting repl");
+  await start();
 
-  startRepl(contextRegistry, config);
-
-  debug("started repl");
+  debug("started server");
 
   if (openBrowser) {
     debug("opening browser");
