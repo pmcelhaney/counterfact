@@ -55,6 +55,10 @@ export async function counterfact(config: Config) {
     contextRegistry,
   );
 
+  const middleware = koaMiddleware(dispatcher, config);
+
+  const app = createKoaApp(registry, middleware, config);
+
   async function startCounterfact() {
     await transpiler.watch();
     await moduleLoader.load();
@@ -65,10 +69,6 @@ export async function counterfact(config: Config) {
     await transpiler.stopWatching();
     await moduleLoader.stopWatching();
   }
-
-  const middleware = koaMiddleware(dispatcher, config);
-
-  const app = createKoaApp(registry, middleware, config);
 
   async function start(options: { http?: boolean } = {}) {
     const http = options.http ?? true;
