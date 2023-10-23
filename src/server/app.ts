@@ -59,21 +59,12 @@ export async function counterfact(config: Config) {
 
   const koaApp = createKoaApp(registry, middleware, config);
 
-  async function startCounterfact() {
-    await transpiler.watch();
-    await moduleLoader.load();
-    await moduleLoader.watch();
-  }
-
-  async function stopCounterfact() {
-    await transpiler.stopWatching();
-    await moduleLoader.stopWatching();
-  }
-
   async function start(options: { http?: boolean } = {}) {
     const http = options.http ?? true;
 
-    await startCounterfact();
+    await transpiler.watch();
+    await moduleLoader.load();
+    await moduleLoader.watch();
 
     const server = koaApp.listen({
       port: config.port,
@@ -95,7 +86,8 @@ export async function counterfact(config: Config) {
       replServer,
 
       async stop() {
-        await stopCounterfact();
+        await transpiler.stopWatching();
+        await moduleLoader.stopWatching();
         await httpTerminator.terminate();
       },
     };
