@@ -1,6 +1,6 @@
 import nodePath from "node:path";
 
-import { createHttpTerminator } from "http-terminator";
+import { createHttpTerminator, type HttpTerminator } from "http-terminator";
 import yaml from "js-yaml";
 import $RefParser from "json-schema-ref-parser";
 
@@ -66,19 +66,18 @@ export async function counterfact(config: Config) {
     await moduleLoader.load();
     await moduleLoader.watch();
 
-    const server = koaApp.listen({
-      port: config.port,
-    });
+    // eslint-disable-next-line @typescript-eslint/init-declarations
+    let httpTerminator: HttpTerminator | undefined;
 
-    const httpTerminator = http
-      ? createHttpTerminator({
-          server,
-        })
-      : {
-          terminate() {
-            return true;
-          },
-        };
+    if (http) {
+      const server = koaApp.listen({
+        port: config.port,
+      });
+
+      httpTerminator = createHttpTerminator({
+        server,
+      });
+    }
 
     const replServer = startRepl(contextRegistry, config);
 
@@ -88,7 +87,7 @@ export async function counterfact(config: Config) {
       async stop() {
         await transpiler.stopWatching();
         await moduleLoader.stopWatching();
-        await httpTerminator.terminate();
+        await httpTerminator?.terminate();
       },
     };
   }

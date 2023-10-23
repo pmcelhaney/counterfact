@@ -103,7 +103,6 @@ export class Transpiler extends EventTarget {
       .replaceAll("\\", "/");
 
     try {
-      // eslint-disable-next-line total-functions/no-unsafe-readonly-mutable-assignment
       await fs.writeFile(fullDestination, result);
     } catch {
       debug("error transpiling %s", fullDestination);
