@@ -10,7 +10,7 @@ import { openapiMiddleware } from "./openapi-middleware.js";
 import { pageMiddleware } from "./page-middleware.js";
 import type { Registry } from "./registry.js";
 
-const debug = createDebug("counterfact:server:start");
+const debug = createDebug("counterfact:server:create-koa-app");
 
 // eslint-disable-next-line max-statements
 export function createKoaApp(
