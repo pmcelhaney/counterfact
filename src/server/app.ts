@@ -70,16 +70,24 @@ export async function counterfact(config: Config) {
 
   const app = createKoaApp(registry, middleware, config);
 
-  async function start() {
+  async function start(options: { http?: boolean } = {}) {
+    const http = options.http ?? true;
+
     await startCounterfact();
 
     const server = app.listen({
       port: config.port,
     });
 
-    const httpTerminator = createHttpTerminator({
-      server,
-    });
+    const httpTerminator = http
+      ? createHttpTerminator({
+          server,
+        })
+      : {
+          terminate() {
+            return true;
+          },
+        };
 
     const replServer = startRepl(contextRegistry, config);
 
@@ -94,6 +102,7 @@ export async function counterfact(config: Config) {
   }
 
   return {
+    app,
     contextRegistry,
     koaMiddleware: middleware,
     registry,
