@@ -55,4 +55,6 @@ export function startRepl(contextRegistry: ContextRegistry, config: Config) {
   replServer.context.loadContext = (path: string) => contextRegistry.find(path);
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
   replServer.context.context = replServer.context.loadContext("/");
+
+  return replServer;
 }

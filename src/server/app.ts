@@ -1,6 +1,6 @@
 import nodePath from "node:path";
 
-import { createHttpTerminator, type HttpTerminator } from "http-terminator";
+import { createHttpTerminator } from "http-terminator";
 import yaml from "js-yaml";
 import $RefParser from "json-schema-ref-parser";
 
@@ -14,9 +14,6 @@ import { ModuleLoader } from "./module-loader.js";
 import { Registry } from "./registry.js";
 import { startRepl } from "./repl.js";
 import { Transpiler } from "./transpiler.js";
-
-// eslint-disable-next-line @typescript-eslint/init-declarations
-let httpTerminator: HttpTerminator | undefined;
 
 async function loadOpenApiDocument(source: string) {
   try {
@@ -80,22 +77,26 @@ export async function counterfact(config: Config) {
       port: config.port,
     });
 
-    httpTerminator = createHttpTerminator({
+    const httpTerminator = createHttpTerminator({
       server,
     });
 
-    startRepl(contextRegistry, config);
-  }
+    const replServer = startRepl(contextRegistry, config);
 
-  async function stop() {
-    await stopCounterfact();
-    await httpTerminator?.terminate();
+    return {
+      replServer,
+
+      async stop() {
+        await stopCounterfact();
+        await httpTerminator.terminate();
+      },
+    };
   }
 
   return {
     contextRegistry,
     koaMiddleware: middleware,
+    registry,
     start,
-    stop,
   };
 }
