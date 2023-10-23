@@ -1,147 +1,82 @@
-//
-// Next
-// - put config in its own file
-// - put createKoaApp() in its own file
-// - put the contents of core.ts here
-//
-
-/* eslint-disable max-statements */
 import nodePath from "node:path";
-import { pathToFileURL } from "node:url";
 
-import createDebug from "debug";
 import { createHttpTerminator, type HttpTerminator } from "http-terminator";
-import Koa from "koa";
-import bodyParser from "koa-bodyparser";
-import { koaSwagger } from "koa2-swagger-ui";
+import yaml from "js-yaml";
+import $RefParser from "json-schema-ref-parser";
 
-import { core } from "./core.js";
-import { openapiMiddleware } from "./openapi-middleware.js";
-import { pageMiddleware } from "./page-middleware.js";
-import type { Registry } from "./registry.js";
-
-interface Config {
-  basePath?: string;
-  openApiPath?: string;
-  port?: number;
-  proxyEnabled?: boolean;
-  proxyUrl?: string;
-}
-
-const debug = createDebug("counterfact:server:start");
+import { readFile } from "../util/read-file.js";
+import type { Config } from "./config.js";
+import { ContextRegistry } from "./context-registry.js";
+import { createKoaApp } from "./create-koa-app.js";
+import { Dispatcher, type OpenApiDocument } from "./dispatcher.js";
+import { koaMiddleware } from "./koa-middleware.js";
+import { ModuleLoader } from "./module-loader.js";
+import { Registry } from "./registry.js";
+import { Transpiler } from "./transpiler.js";
 
 // eslint-disable-next-line @typescript-eslint/init-declarations
 let httpTerminator: HttpTerminator | undefined;
 
-const DEFAULT_PORT = 3100;
+async function loadOpenApiDocument(source: string) {
+  try {
+    const text = await readFile(source);
+    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+    const openApiDocument = (await yaml.load(text)) as $RefParser.JSONSchema;
 
-// eslint-disable-next-line max-params
-function createKoaApp(
-  registry: Registry,
-  koaMiddleware: Koa.Middleware,
-  basePath: string,
-  openApiPath: string,
-  port: number,
-  stopCounterfact: () => Promise<void>,
-) {
-  const app = new Koa();
-
-  app.use(openapiMiddleware(openApiPath, `//localhost:${port}`));
-
-  app.use(
-    koaSwagger({
-      routePrefix: "/counterfact/swagger",
-
-      swaggerOptions: {
-        url: "/counterfact/openapi",
-      },
-    }),
-  );
-
-  debug("basePath: %s", basePath);
-  debug("routes", registry.routes);
-
-  app.use(
-    pageMiddleware("/counterfact/", "index", {
-      basePath,
-      methods: ["get", "post", "put", "delete", "patch"],
-
-      openApiHref: openApiPath.includes("://")
-        ? openApiPath
-        : pathToFileURL(openApiPath).href,
-
-      openApiPath,
-
-      routes: registry.routes,
-    }),
-  );
-
-  app.use(async (ctx, next) => {
-    if (ctx.URL.pathname === "/counterfact") {
-      ctx.redirect("/counterfact/");
-
-      return;
-    }
-
-    if (ctx.URL.pathname === "/counterfact/stop") {
-      debug("Stopping server...");
-      await stopCounterfact();
-      await httpTerminator?.terminate();
-      debug("Server stopped.");
-
-      return;
-    }
-    // eslint-disable-next-line  n/callback-return
-    await next();
-  });
-
-  app.use(
-    pageMiddleware("/counterfact/rapidoc", "rapi-doc", {
-      basePath,
-      routes: registry.routes,
-    }),
-  );
-
-  app.use(bodyParser());
-
-  app.use(koaMiddleware);
-
-  return app;
+    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+    return (await $RefParser.dereference(openApiDocument)) as OpenApiDocument;
+  } catch {
+    return undefined;
+  }
 }
 
+// eslint-disable-next-line max-statements
 export async function counterfact(config: Config) {
-  const {
-    basePath = process.cwd().replaceAll("\\", "/"),
-    openApiPath = nodePath
-      .join(basePath, "../openapi.yaml")
-      .replaceAll("\\", "/"),
-    port = DEFAULT_PORT,
-  } = config;
+  const openApiDocument = await loadOpenApiDocument(config.openApiPath);
 
-  const {
-    contextRegistry,
-    koaMiddleware,
-    registry,
-    start: startCounterfact,
-    stop: stopCounterfact,
-  } = await core(basePath, openApiPath, config);
+  const modulesPath = config.basePath;
 
-  const app = createKoaApp(
-    registry,
-    koaMiddleware,
+  const compiledPathsDirectory = nodePath
+    .join(modulesPath, ".cache")
+    .replaceAll("\\", "/");
 
-    // These three should be the config object
-    basePath,
-    openApiPath,
-    port,
-    stopCounterfact,
+  const registry = new Registry();
+
+  const contextRegistry = new ContextRegistry();
+
+  const dispatcher = new Dispatcher(registry, contextRegistry, openApiDocument);
+
+  const transpiler = new Transpiler(
+    nodePath.join(modulesPath, "paths").replaceAll("\\", "/"),
+    compiledPathsDirectory,
   );
+
+  const moduleLoader = new ModuleLoader(
+    compiledPathsDirectory,
+    registry,
+    contextRegistry,
+  );
+
+  async function startCounterfact() {
+    await transpiler.watch();
+    await moduleLoader.load();
+    await moduleLoader.watch();
+  }
+
+  async function stopCounterfact() {
+    await transpiler.stopWatching();
+    await moduleLoader.stopWatching();
+  }
+
+  const middleware = koaMiddleware(dispatcher, config);
+
+  const app = createKoaApp(registry, middleware, config);
 
   async function start() {
     await startCounterfact();
 
     const server = app.listen({
-      port,
+      port: config.port,
     });
 
     httpTerminator = createHttpTerminator({
@@ -154,5 +89,10 @@ export async function counterfact(config: Config) {
     await httpTerminator?.terminate();
   }
 
-  return { contextRegistry, start, stop };
+  return {
+    contextRegistry,
+    koaMiddleware: middleware,
+    start,
+    stop,
+  };
 }

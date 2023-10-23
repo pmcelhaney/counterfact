@@ -23,10 +23,6 @@ async function main(source, destination) {
 
   const options = program.opts();
 
-  debug("options: %o", options);
-  debug("source: %s", source);
-  debug("destination: %s", destination);
-
   const destinationPath = nodePath
     .join(process.cwd(), destination)
     .replaceAll("\\", "/");
@@ -35,13 +31,17 @@ async function main(source, destination) {
   migrate(destinationPath);
   debug("done with migration");
 
+  const basePath = nodePath.resolve(destinationPath).replaceAll("\\", "/");
+
+  debug("options: %o", options);
+  debug("source: %s", source);
+  debug("destination: %s", destination);
+
   debug('generating code at "%s"', destinationPath);
 
   await generate(source, destinationPath);
 
   debug("generated code", destinationPath);
-
-  const basePath = nodePath.resolve(destinationPath).replaceAll("\\", "/");
 
   const openBrowser = options.open;
 
@@ -52,7 +52,11 @@ async function main(source, destination) {
   const config = {
     basePath,
     includeSwaggerUi: true,
-    openApiPath: source,
+
+    openApiPath:
+      source ||
+      nodePath.join(basePath, "../openapi.yaml").replaceAll("\\", "/"),
+
     port: options.port,
     proxyEnabled: Boolean(options.proxyUrl),
     proxyUrl: options.proxyUrl,
