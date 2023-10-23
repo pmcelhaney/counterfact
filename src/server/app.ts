@@ -57,7 +57,7 @@ export async function counterfact(config: Config) {
 
   const middleware = koaMiddleware(dispatcher, config);
 
-  const app = createKoaApp(registry, middleware, config);
+  const koaApp = createKoaApp(registry, middleware, config);
 
   async function startCounterfact() {
     await transpiler.watch();
@@ -75,7 +75,7 @@ export async function counterfact(config: Config) {
 
     await startCounterfact();
 
-    const server = app.listen({
+    const server = koaApp.listen({
       port: config.port,
     });
 
@@ -102,8 +102,8 @@ export async function counterfact(config: Config) {
   }
 
   return {
-    app,
     contextRegistry,
+    koaApp,
     koaMiddleware: middleware,
     registry,
     start,
