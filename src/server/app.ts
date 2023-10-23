@@ -30,8 +30,6 @@ async function loadOpenApiDocument(source: string) {
 
 // eslint-disable-next-line max-statements
 export async function counterfact(config: Config) {
-  const openApiDocument = await loadOpenApiDocument(config.openApiPath);
-
   const modulesPath = config.basePath;
 
   const compiledPathsDirectory = nodePath
@@ -42,7 +40,11 @@ export async function counterfact(config: Config) {
 
   const contextRegistry = new ContextRegistry();
 
-  const dispatcher = new Dispatcher(registry, contextRegistry, openApiDocument);
+  const dispatcher = new Dispatcher(
+    registry,
+    contextRegistry,
+    await loadOpenApiDocument(config.openApiPath),
+  );
 
   const transpiler = new Transpiler(
     nodePath.join(modulesPath, "paths").replaceAll("\\", "/"),
