@@ -31,12 +31,14 @@ export function koaMiddleware(
 ): Koa.Middleware {
   // eslint-disable-next-line max-statements
   return async function middleware(ctx, next) {
+    /* @ts-expect-error the body comes from koa-bodyparser, not sure how to fix this */
     const { body, headers, path, query } = ctx.request;
 
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
     const method = ctx.request.method as HttpMethods;
 
     if (proxyEnabled && proxyUrl) {
+      /* @ts-expect-error the body comes from koa-bodyparser, not sure how to fix this */
       // eslint-disable-next-line @typescript-eslint/no-unsafe-return
       return proxy({ host: proxyUrl })(ctx, next);
     }
