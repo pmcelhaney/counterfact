@@ -5,6 +5,7 @@ import yaml from "js-yaml";
 import $RefParser from "json-schema-ref-parser";
 
 import { readFile } from "../util/read-file.js";
+import { CodeGenerator } from "./code-generator.js";
 import type { Config } from "./config.js";
 import { ContextRegistry } from "./context-registry.js";
 import { createKoaApp } from "./create-koa-app.js";
@@ -40,6 +41,8 @@ export async function counterfact(config: Config) {
 
   const contextRegistry = new ContextRegistry();
 
+  const codeGenerator = new CodeGenerator(config.openApiPath, config.basePath);
+
   const dispatcher = new Dispatcher(
     registry,
     contextRegistry,
@@ -61,9 +64,11 @@ export async function counterfact(config: Config) {
 
   const koaApp = createKoaApp(registry, middleware, config);
 
+  // eslint-disable-next-line max-statements
   async function start(options: { http?: boolean } = {}) {
     const http = options.http ?? true;
 
+    await codeGenerator.watch();
     await transpiler.watch();
     await moduleLoader.load();
     await moduleLoader.watch();
@@ -87,6 +92,7 @@ export async function counterfact(config: Config) {
       replServer,
 
       async stop() {
+        await codeGenerator.stopWatching();
         await transpiler.stopWatching();
         await moduleLoader.stopWatching();
         await httpTerminator?.terminate();

@@ -8,7 +8,6 @@ import open from "open";
 
 import { migrate } from "../dist/src/migrations/0.27.js";
 import { counterfact } from "../dist/src/server/app.js";
-import { generate } from "../dist/src/typescript-generator/generate.js";
 
 const DEFAULT_PORT = 3100;
 
@@ -35,12 +34,6 @@ async function main(source, destination) {
   debug("options: %o", options);
   debug("source: %s", source);
   debug("destination: %s", destination);
-
-  debug('generating code at "%s"', destinationPath);
-
-  await generate(source, destinationPath);
-
-  debug("generated code", destinationPath);
 
   const openBrowser = options.open;
 
