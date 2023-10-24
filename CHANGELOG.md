@@ -1,5 +1,13 @@
 # counterfact
 
+## 0.29.0
+
+### Minor Changes
+
+- 0069e9b: The list of routes on on the dashboard (http://localhost:3100/counterfact) is now determined on the fly
+- 0069e9b: Regenerate code if the OpenAPI file changes while Counterfact is running
+- f89691a: configure json-schema-faker to create between 0 and 20 items when it generates an array
+
 ## 0.28.0
 
 ### Minor Changes
