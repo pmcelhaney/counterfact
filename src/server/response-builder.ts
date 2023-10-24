@@ -1,28 +1,6 @@
-import { JSONSchemaFaker, type Schema } from "json-schema-faker";
+import { JSONSchemaFaker } from "json-schema-faker";
 
-import type { OpenApiParameters } from "./types.js";
-
-interface ResponseBuilder {
-  [status: number | `${number} ${string}`]: ResponseBuilder;
-  content?: { body: unknown; type: string }[];
-  header: (name: string, value: string) => ResponseBuilder;
-  headers: { [name: string]: string };
-  html: (body: unknown) => ResponseBuilder;
-  json: (body: unknown) => ResponseBuilder;
-  match: (contentType: string, body: unknown) => ResponseBuilder;
-  random: () => ResponseBuilder;
-  randomLegacy: () => ResponseBuilder;
-  status?: number;
-  text: (body: unknown) => ResponseBuilder;
-}
-
-interface OpenApiHeader {
-  schema: unknown;
-}
-
-interface OpenApiContent {
-  schema: unknown;
-}
+import type { OpenApiOperation, ResponseBuilder } from "./types.d.ts";
 
 JSONSchemaFaker.option("useExamplesValue", true);
 JSONSchemaFaker.option("minItems", 0);
@@ -49,36 +27,6 @@ function unknownStatusCodeResponse(statusCode: number | undefined) {
     ],
 
     status: 500,
-  };
-}
-
-interface Example {
-  description: string;
-  summary: string;
-  value: unknown;
-}
-
-export type MediaType = `${string}/${string}`;
-
-export interface OpenApiResponse {
-  content: { [key: MediaType]: OpenApiContent };
-  headers: { [key: string]: OpenApiHeader };
-}
-
-export interface OpenApiOperation {
-  parameters?: OpenApiParameters[];
-  produces?: string[];
-  responses: {
-    [status: string]: {
-      content?: {
-        [type: number | string]: {
-          examples?: { [key: string]: Example };
-          schema: unknown;
-        };
-      };
-      examples?: { [key: string]: unknown };
-      schema?: Schema;
-    };
   };
 }
 
@@ -176,7 +124,8 @@ export function createResponseBuilder(
 
         const body = response.examples
           ? oneOf(response.examples)
-          : JSONSchemaFaker.generate(response.schema ?? { type: "object" });
+          : // eslint-disable-next-line total-functions/no-unsafe-readonly-mutable-assignment
+            JSONSchemaFaker.generate(response.schema ?? { type: "object" });
 
         return {
           ...this,
@@ -196,3 +145,5 @@ export function createResponseBuilder(
     }),
   });
 }
+
+export type { OpenApiOperation };

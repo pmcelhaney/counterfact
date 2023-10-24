@@ -12,12 +12,9 @@ import type {
   NormalizedCounterfactResponseObject,
   Registry,
 } from "./registry.js";
-import {
-  createResponseBuilder,
-  type OpenApiOperation,
-} from "./response-builder.js";
+import { createResponseBuilder } from "./response-builder.js";
 import { Tools } from "./tools.js";
-import type { OpenApiParameters } from "./types.js";
+import type { OpenApiOperation, OpenApiParameters } from "./types.d.ts";
 
 const debug = createDebugger("counterfact:server:dispatcher");
 
