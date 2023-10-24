@@ -2,10 +2,12 @@
   "extends": ["config:base"],
   "rangeStrategy": "update-lockfile",
   "enabledManagers": ["npm", "github-actions"],
+  "gitIgnoredAuthors": ["github+renovate@scharley.me"],
   "packageRules": [
     {
       "matchManagers": ["npm"],
       "description": "Automatically merge all updates",
+      "addLabels": ["npm", "dependencies"],
       "automerge": true,
       "stabilityDays": 3,
       "prCreation": "not-pending",
@@ -14,8 +16,8 @@
     },
     {
       "matchManagers": ["github-actions"],
-      "addLabels": ["github_actions"],
       "description": "Automatically merge all updates",
+      "addLabels": ["github_actions", "dependencies"],
       "automerge": true,
       "stabilityDays": 3,
       "prCreation": "not-pending"
