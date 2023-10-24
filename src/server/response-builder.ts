@@ -1,6 +1,6 @@
 import { JSONSchemaFaker, type Schema } from "json-schema-faker";
 
-import type { OpenApiParameters } from "./dispatcher.js";
+import type { OpenApiParameters } from "./types.js";
 
 interface ResponseBuilder {
   [status: number | `${number} ${string}`]: ResponseBuilder;
