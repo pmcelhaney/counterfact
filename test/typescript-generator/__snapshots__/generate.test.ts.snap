@@ -10,7 +10,7 @@ Map {
       "OperationTypeCoder@./petstore.yaml#/paths/~1pet/put@path-types/pet.types.ts:true:false" => "HTTP_PUT",
     },
     "exports": Map {
-      "POST" => Object {
+      "POST" => {
         "beforeExport": "",
         "code": "($) => {
       return $.response[200].random();
@@ -23,7 +23,7 @@ Map {
         "promise": Promise {},
         "typeDeclaration": "HTTP_POST",
       },
-      "PUT" => Object {
+      "PUT" => {
         "beforeExport": "",
         "code": "($) => {
       return $.response[200].random();
@@ -39,7 +39,7 @@ Map {
     },
     "externalImport": Map {},
     "imports": Map {
-      "HTTP_POST" => Object {
+      "HTTP_POST" => {
         "isDefault": false,
         "isType": true,
         "name": "HTTP_POST",
@@ -51,16 +51,16 @@ Map {
             "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
           },
           "exports": Map {
-            "HTTP_POST" => Object {
+            "HTTP_POST" => {
               "beforeExport": "",
               "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Pet, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
-\\"application/xml\\": { 
+"application/xml": { 
             schema:  Pet
          },
-\\"application/json\\": { 
+"application/json": { 
             schema:  Pet
          }
 };
@@ -71,15 +71,15 @@ Map {
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
-              contentType?: \\"application/xml\\",
+              contentType?: "application/xml",
               body?: Pet
             } | {  
               status: 200, 
-              contentType?: \\"application/json\\",
+              contentType?: "application/json",
               body?: Pet
             } | {  
           status: 405 
-        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
+        } | { status: 415, contentType: "text/plain", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet/post",
               "isDefault": false,
@@ -88,16 +88,16 @@ Map {
               "promise": Promise {},
               "typeDeclaration": "",
             },
-            "HTTP_PUT" => Object {
+            "HTTP_PUT" => {
               "beforeExport": "",
               "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Pet, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
-\\"application/xml\\": { 
+"application/xml": { 
             schema:  Pet
          },
-\\"application/json\\": { 
+"application/json": { 
             schema:  Pet
          }
 };
@@ -116,11 +116,11 @@ Map {
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
-              contentType?: \\"application/xml\\",
+              contentType?: "application/xml",
               body?: Pet
             } | {  
               status: 200, 
-              contentType?: \\"application/json\\",
+              contentType?: "application/json",
               body?: Pet
             } | {  
           status: 400 
@@ -128,7 +128,7 @@ Map {
           status: 404 
         } | {  
           status: 405 
-        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
+        } | { status: 415, contentType: "text/plain", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet/put",
               "isDefault": false,
@@ -139,13 +139,13 @@ Map {
             },
           },
           "externalImport": Map {
-            "ResponseBuilderFactory" => Object {
+            "ResponseBuilderFactory" => {
               "isType": true,
               "modulePath": "../response-builder-factory.js",
             },
           },
           "imports": Map {
-            "ContextType" => Object {
+            "ContextType" => {
               "isDefault": false,
               "isType": true,
               "name": "ContextType",
@@ -155,7 +155,7 @@ Map {
                   "ContextTypeCoder@[object Object]:true" => "ContextType",
                 },
                 "exports": Map {
-                  "Context" => Object {
+                  "Context" => {
                     "beforeExport": "/**
 * This is the default context for Counterfact.
 * Change the code to suit your needs.
@@ -166,7 +166,7 @@ class Context {
 
   // A helper when you accessing the context object via the REPL. You can delete it if you like.
   [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
-    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/$.context.ts\\";
+    return inspect(this, { ...options, customInspect: false }) + "\\n\\n ^ This is the default context object. You can edit its definition at paths/$.context.ts";
   }
 }
 ",
@@ -179,7 +179,7 @@ class Context {
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
-                  "ContextType" => Object {
+                  "ContextType" => {
                     "beforeExport": "",
                     "code": "Context",
                     "done": true,
@@ -201,7 +201,7 @@ class Context {
                 "typeCache": Map {},
               },
             },
-            "Pet" => Object {
+            "Pet" => {
               "isDefault": false,
               "isType": true,
               "name": "Pet",
@@ -212,9 +212,9 @@ class Context {
                   "SchemaTypeCoder@undefined@components/Tag.ts:true:false" => "Tag",
                 },
                 "exports": Map {
-                  "Pet" => Object {
+                  "Pet" => {
                     "beforeExport": "",
-                    "code": "{\\"id\\"?: number,\\"name\\": string,\\"category\\"?: Category,\\"photoUrls\\": Array<string>,\\"tags\\"?: Array<Tag>,\\"status\\"?: \\"available\\" | \\"pending\\" | \\"sold\\"}",
+                    "code": "{"id"?: number,"name": string,"category"?: Category,"photoUrls": Array<string>,"tags"?: Array<Tag>,"status"?: "available" | "pending" | "sold"}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isDefault": false,
@@ -226,7 +226,7 @@ class Context {
                 },
                 "externalImport": Map {},
                 "imports": Map {
-                  "Category" => Object {
+                  "Category" => {
                     "isDefault": false,
                     "isType": true,
                     "name": "Category",
@@ -235,9 +235,9 @@ class Context {
                         "SchemaTypeCoder@undefined@[object Object]:true" => "Category",
                       },
                       "exports": Map {
-                        "Category" => Object {
+                        "Category" => {
                           "beforeExport": "",
-                          "code": "{\\"id\\"?: number,\\"name\\"?: string}",
+                          "code": "{"id"?: number,"name"?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
                           "isDefault": false,
@@ -257,7 +257,7 @@ class Context {
                       "typeCache": Map {},
                     },
                   },
-                  "Tag" => Object {
+                  "Tag" => {
                     "isDefault": false,
                     "isType": true,
                     "name": "Tag",
@@ -266,9 +266,9 @@ class Context {
                         "SchemaTypeCoder@undefined@[object Object]:true" => "Tag",
                       },
                       "exports": Map {
-                        "Tag" => Object {
+                        "Tag" => {
                           "beforeExport": "",
-                          "code": "{\\"id\\"?: number,\\"name\\"?: string}",
+                          "code": "{"id"?: number,"name"?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
                           "isDefault": false,
@@ -306,7 +306,7 @@ class Context {
           "typeCache": Map {},
         },
       },
-      "HTTP_PUT" => Object {
+      "HTTP_PUT" => {
         "isDefault": false,
         "isType": true,
         "name": "HTTP_PUT",
@@ -318,16 +318,16 @@ class Context {
             "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
           },
           "exports": Map {
-            "HTTP_POST" => Object {
+            "HTTP_POST" => {
               "beforeExport": "",
               "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Pet, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
-\\"application/xml\\": { 
+"application/xml": { 
             schema:  Pet
          },
-\\"application/json\\": { 
+"application/json": { 
             schema:  Pet
          }
 };
@@ -338,15 +338,15 @@ class Context {
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
-              contentType?: \\"application/xml\\",
+              contentType?: "application/xml",
               body?: Pet
             } | {  
               status: 200, 
-              contentType?: \\"application/json\\",
+              contentType?: "application/json",
               body?: Pet
             } | {  
           status: 405 
-        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
+        } | { status: 415, contentType: "text/plain", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet/post",
               "isDefault": false,
@@ -355,16 +355,16 @@ class Context {
               "promise": Promise {},
               "typeDeclaration": "",
             },
-            "HTTP_PUT" => Object {
+            "HTTP_PUT" => {
               "beforeExport": "",
               "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Pet, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
-\\"application/xml\\": { 
+"application/xml": { 
             schema:  Pet
          },
-\\"application/json\\": { 
+"application/json": { 
             schema:  Pet
          }
 };
@@ -383,11 +383,11 @@ class Context {
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
-              contentType?: \\"application/xml\\",
+              contentType?: "application/xml",
               body?: Pet
             } | {  
               status: 200, 
-              contentType?: \\"application/json\\",
+              contentType?: "application/json",
               body?: Pet
             } | {  
           status: 400 
@@ -395,7 +395,7 @@ class Context {
           status: 404 
         } | {  
           status: 405 
-        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
+        } | { status: 415, contentType: "text/plain", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet/put",
               "isDefault": false,
@@ -406,13 +406,13 @@ class Context {
             },
           },
           "externalImport": Map {
-            "ResponseBuilderFactory" => Object {
+            "ResponseBuilderFactory" => {
               "isType": true,
               "modulePath": "../response-builder-factory.js",
             },
           },
           "imports": Map {
-            "ContextType" => Object {
+            "ContextType" => {
               "isDefault": false,
               "isType": true,
               "name": "ContextType",
@@ -422,7 +422,7 @@ class Context {
                   "ContextTypeCoder@[object Object]:true" => "ContextType",
                 },
                 "exports": Map {
-                  "Context" => Object {
+                  "Context" => {
                     "beforeExport": "/**
 * This is the default context for Counterfact.
 * Change the code to suit your needs.
@@ -433,7 +433,7 @@ class Context {
 
   // A helper when you accessing the context object via the REPL. You can delete it if you like.
   [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
-    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/$.context.ts\\";
+    return inspect(this, { ...options, customInspect: false }) + "\\n\\n ^ This is the default context object. You can edit its definition at paths/$.context.ts";
   }
 }
 ",
@@ -446,7 +446,7 @@ class Context {
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
-                  "ContextType" => Object {
+                  "ContextType" => {
                     "beforeExport": "",
                     "code": "Context",
                     "done": true,
@@ -468,7 +468,7 @@ class Context {
                 "typeCache": Map {},
               },
             },
-            "Pet" => Object {
+            "Pet" => {
               "isDefault": false,
               "isType": true,
               "name": "Pet",
@@ -479,9 +479,9 @@ class Context {
                   "SchemaTypeCoder@undefined@components/Tag.ts:true:false" => "Tag",
                 },
                 "exports": Map {
-                  "Pet" => Object {
+                  "Pet" => {
                     "beforeExport": "",
-                    "code": "{\\"id\\"?: number,\\"name\\": string,\\"category\\"?: Category,\\"photoUrls\\": Array<string>,\\"tags\\"?: Array<Tag>,\\"status\\"?: \\"available\\" | \\"pending\\" | \\"sold\\"}",
+                    "code": "{"id"?: number,"name": string,"category"?: Category,"photoUrls": Array<string>,"tags"?: Array<Tag>,"status"?: "available" | "pending" | "sold"}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isDefault": false,
@@ -493,7 +493,7 @@ class Context {
                 },
                 "externalImport": Map {},
                 "imports": Map {
-                  "Category" => Object {
+                  "Category" => {
                     "isDefault": false,
                     "isType": true,
                     "name": "Category",
@@ -502,9 +502,9 @@ class Context {
                         "SchemaTypeCoder@undefined@[object Object]:true" => "Category",
                       },
                       "exports": Map {
-                        "Category" => Object {
+                        "Category" => {
                           "beforeExport": "",
-                          "code": "{\\"id\\"?: number,\\"name\\"?: string}",
+                          "code": "{"id"?: number,"name"?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
                           "isDefault": false,
@@ -524,7 +524,7 @@ class Context {
                       "typeCache": Map {},
                     },
                   },
-                  "Tag" => Object {
+                  "Tag" => {
                     "isDefault": false,
                     "isType": true,
                     "name": "Tag",
@@ -533,9 +533,9 @@ class Context {
                         "SchemaTypeCoder@undefined@[object Object]:true" => "Tag",
                       },
                       "exports": Map {
-                        "Tag" => Object {
+                        "Tag" => {
                           "beforeExport": "",
-                          "code": "{\\"id\\"?: number,\\"name\\"?: string}",
+                          "code": "{"id"?: number,"name"?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
                           "isDefault": false,
@@ -589,16 +589,16 @@ class Context {
       "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
     },
     "exports": Map {
-      "HTTP_POST" => Object {
+      "HTTP_POST" => {
         "beforeExport": "",
         "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Pet, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
-\\"application/xml\\": { 
+"application/xml": { 
             schema:  Pet
          },
-\\"application/json\\": { 
+"application/json": { 
             schema:  Pet
          }
 };
@@ -609,15 +609,15 @@ class Context {
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
-              contentType?: \\"application/xml\\",
+              contentType?: "application/xml",
               body?: Pet
             } | {  
               status: 200, 
-              contentType?: \\"application/json\\",
+              contentType?: "application/json",
               body?: Pet
             } | {  
           status: 405 
-        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
+        } | { status: 415, contentType: "text/plain", body: string } | void",
         "done": true,
         "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet/post",
         "isDefault": false,
@@ -626,16 +626,16 @@ class Context {
         "promise": Promise {},
         "typeDeclaration": "",
       },
-      "HTTP_PUT" => Object {
+      "HTTP_PUT" => {
         "beforeExport": "",
         "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Pet, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
-\\"application/xml\\": { 
+"application/xml": { 
             schema:  Pet
          },
-\\"application/json\\": { 
+"application/json": { 
             schema:  Pet
          }
 };
@@ -654,11 +654,11 @@ class Context {
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
-              contentType?: \\"application/xml\\",
+              contentType?: "application/xml",
               body?: Pet
             } | {  
               status: 200, 
-              contentType?: \\"application/json\\",
+              contentType?: "application/json",
               body?: Pet
             } | {  
           status: 400 
@@ -666,7 +666,7 @@ class Context {
           status: 404 
         } | {  
           status: 405 
-        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
+        } | { status: 415, contentType: "text/plain", body: string } | void",
         "done": true,
         "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet/put",
         "isDefault": false,
@@ -677,13 +677,13 @@ class Context {
       },
     },
     "externalImport": Map {
-      "ResponseBuilderFactory" => Object {
+      "ResponseBuilderFactory" => {
         "isType": true,
         "modulePath": "../response-builder-factory.js",
       },
     },
     "imports": Map {
-      "ContextType" => Object {
+      "ContextType" => {
         "isDefault": false,
         "isType": true,
         "name": "ContextType",
@@ -693,7 +693,7 @@ class Context {
             "ContextTypeCoder@[object Object]:true" => "ContextType",
           },
           "exports": Map {
-            "Context" => Object {
+            "Context" => {
               "beforeExport": "/**
 * This is the default context for Counterfact.
 * Change the code to suit your needs.
@@ -704,7 +704,7 @@ class Context {
 
   // A helper when you accessing the context object via the REPL. You can delete it if you like.
   [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
-    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/$.context.ts\\";
+    return inspect(this, { ...options, customInspect: false }) + "\\n\\n ^ This is the default context object. You can edit its definition at paths/$.context.ts";
   }
 }
 ",
@@ -717,7 +717,7 @@ class Context {
               "promise": Promise {},
               "typeDeclaration": "",
             },
-            "ContextType" => Object {
+            "ContextType" => {
               "beforeExport": "",
               "code": "Context",
               "done": true,
@@ -739,7 +739,7 @@ class Context {
           "typeCache": Map {},
         },
       },
-      "Pet" => Object {
+      "Pet" => {
         "isDefault": false,
         "isType": true,
         "name": "Pet",
@@ -750,9 +750,9 @@ class Context {
             "SchemaTypeCoder@undefined@components/Tag.ts:true:false" => "Tag",
           },
           "exports": Map {
-            "Pet" => Object {
+            "Pet" => {
               "beforeExport": "",
-              "code": "{\\"id\\"?: number,\\"name\\": string,\\"category\\"?: Category,\\"photoUrls\\": Array<string>,\\"tags\\"?: Array<Tag>,\\"status\\"?: \\"available\\" | \\"pending\\" | \\"sold\\"}",
+              "code": "{"id"?: number,"name": string,"category"?: Category,"photoUrls": Array<string>,"tags"?: Array<Tag>,"status"?: "available" | "pending" | "sold"}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
               "isDefault": false,
@@ -764,7 +764,7 @@ class Context {
           },
           "externalImport": Map {},
           "imports": Map {
-            "Category" => Object {
+            "Category" => {
               "isDefault": false,
               "isType": true,
               "name": "Category",
@@ -773,9 +773,9 @@ class Context {
                   "SchemaTypeCoder@undefined@[object Object]:true" => "Category",
                 },
                 "exports": Map {
-                  "Category" => Object {
+                  "Category" => {
                     "beforeExport": "",
-                    "code": "{\\"id\\"?: number,\\"name\\"?: string}",
+                    "code": "{"id"?: number,"name"?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isDefault": false,
@@ -795,7 +795,7 @@ class Context {
                 "typeCache": Map {},
               },
             },
-            "Tag" => Object {
+            "Tag" => {
               "isDefault": false,
               "isType": true,
               "name": "Tag",
@@ -804,9 +804,9 @@ class Context {
                   "SchemaTypeCoder@undefined@[object Object]:true" => "Tag",
                 },
                 "exports": Map {
-                  "Tag" => Object {
+                  "Tag" => {
                     "beforeExport": "",
-                    "code": "{\\"id\\"?: number,\\"name\\"?: string}",
+                    "code": "{"id"?: number,"name"?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isDefault": false,
@@ -849,7 +849,7 @@ class Context {
       "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1findByStatus/get@path-types/pet/findByStatus.types.ts:true:false" => "HTTP_GET",
     },
     "exports": Map {
-      "GET" => Object {
+      "GET" => {
         "beforeExport": "",
         "code": "($) => {
       return $.response[200].random();
@@ -865,7 +865,7 @@ class Context {
     },
     "externalImport": Map {},
     "imports": Map {
-      "HTTP_GET" => Object {
+      "HTTP_GET" => {
         "isDefault": false,
         "isType": true,
         "name": "HTTP_GET",
@@ -876,16 +876,16 @@ class Context {
             "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
           },
           "exports": Map {
-            "HTTP_GET" => Object {
+            "HTTP_GET" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: {\\"status?\\": \\"available\\" | \\"pending\\" | \\"sold\\"}, path: never, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: {"status?": "available" | "pending" | "sold"}, path: never, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
-\\"application/xml\\": { 
+"application/xml": { 
             schema:  Array<Pet>
          },
-\\"application/json\\": { 
+"application/json": { 
             schema:  Array<Pet>
          }
 };
@@ -896,15 +896,15 @@ class Context {
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
-              contentType?: \\"application/xml\\",
+              contentType?: "application/xml",
               body?: Array<Pet>
             } | {  
               status: 200, 
-              contentType?: \\"application/json\\",
+              contentType?: "application/json",
               body?: Array<Pet>
             } | {  
           status: 400 
-        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
+        } | { status: 415, contentType: "text/plain", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1findByStatus/get",
               "isDefault": false,
@@ -915,13 +915,13 @@ class Context {
             },
           },
           "externalImport": Map {
-            "ResponseBuilderFactory" => Object {
+            "ResponseBuilderFactory" => {
               "isType": true,
               "modulePath": "../../response-builder-factory.js",
             },
           },
           "imports": Map {
-            "ContextType" => Object {
+            "ContextType" => {
               "isDefault": false,
               "isType": true,
               "name": "ContextType",
@@ -930,10 +930,10 @@ class Context {
                   "ContextTypeCoder@[object Object]:true" => "ContextType",
                 },
                 "exports": Map {
-                  "ContextType" => Object {
+                  "ContextType" => {
                     "beforeExport": "",
-                    "code": Object {
-                      "raw": "export type { ContextType } from \\"../$.context\\"",
+                    "code": {
+                      "raw": "export type { ContextType } from "../$.context"",
                     },
                     "done": true,
                     "id": "ContextTypeCoder",
@@ -954,7 +954,7 @@ class Context {
                 "typeCache": Map {},
               },
             },
-            "Pet" => Object {
+            "Pet" => {
               "isDefault": false,
               "isType": true,
               "name": "Pet",
@@ -965,9 +965,9 @@ class Context {
                   "SchemaTypeCoder@undefined@components/Tag.ts:true:false" => "Tag",
                 },
                 "exports": Map {
-                  "Pet" => Object {
+                  "Pet" => {
                     "beforeExport": "",
-                    "code": "{\\"id\\"?: number,\\"name\\": string,\\"category\\"?: Category,\\"photoUrls\\": Array<string>,\\"tags\\"?: Array<Tag>,\\"status\\"?: \\"available\\" | \\"pending\\" | \\"sold\\"}",
+                    "code": "{"id"?: number,"name": string,"category"?: Category,"photoUrls": Array<string>,"tags"?: Array<Tag>,"status"?: "available" | "pending" | "sold"}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isDefault": false,
@@ -979,7 +979,7 @@ class Context {
                 },
                 "externalImport": Map {},
                 "imports": Map {
-                  "Category" => Object {
+                  "Category" => {
                     "isDefault": false,
                     "isType": true,
                     "name": "Category",
@@ -988,9 +988,9 @@ class Context {
                         "SchemaTypeCoder@undefined@[object Object]:true" => "Category",
                       },
                       "exports": Map {
-                        "Category" => Object {
+                        "Category" => {
                           "beforeExport": "",
-                          "code": "{\\"id\\"?: number,\\"name\\"?: string}",
+                          "code": "{"id"?: number,"name"?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
                           "isDefault": false,
@@ -1010,7 +1010,7 @@ class Context {
                       "typeCache": Map {},
                     },
                   },
-                  "Tag" => Object {
+                  "Tag" => {
                     "isDefault": false,
                     "isType": true,
                     "name": "Tag",
@@ -1019,9 +1019,9 @@ class Context {
                         "SchemaTypeCoder@undefined@[object Object]:true" => "Tag",
                       },
                       "exports": Map {
-                        "Tag" => Object {
+                        "Tag" => {
                           "beforeExport": "",
-                          "code": "{\\"id\\"?: number,\\"name\\"?: string}",
+                          "code": "{"id"?: number,"name"?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
                           "isDefault": false,
@@ -1074,16 +1074,16 @@ class Context {
       "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
     },
     "exports": Map {
-      "HTTP_GET" => Object {
+      "HTTP_GET" => {
         "beforeExport": "",
-        "code": "({ query, path, header, body, context, proxy }: { query: {\\"status?\\": \\"available\\" | \\"pending\\" | \\"sold\\"}, path: never, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context, proxy }: { query: {"status?": "available" | "pending" | "sold"}, path: never, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
-\\"application/xml\\": { 
+"application/xml": { 
             schema:  Array<Pet>
          },
-\\"application/json\\": { 
+"application/json": { 
             schema:  Array<Pet>
          }
 };
@@ -1094,15 +1094,15 @@ class Context {
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
-              contentType?: \\"application/xml\\",
+              contentType?: "application/xml",
               body?: Array<Pet>
             } | {  
               status: 200, 
-              contentType?: \\"application/json\\",
+              contentType?: "application/json",
               body?: Array<Pet>
             } | {  
           status: 400 
-        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
+        } | { status: 415, contentType: "text/plain", body: string } | void",
         "done": true,
         "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1findByStatus/get",
         "isDefault": false,
@@ -1113,13 +1113,13 @@ class Context {
       },
     },
     "externalImport": Map {
-      "ResponseBuilderFactory" => Object {
+      "ResponseBuilderFactory" => {
         "isType": true,
         "modulePath": "../../response-builder-factory.js",
       },
     },
     "imports": Map {
-      "ContextType" => Object {
+      "ContextType" => {
         "isDefault": false,
         "isType": true,
         "name": "ContextType",
@@ -1128,10 +1128,10 @@ class Context {
             "ContextTypeCoder@[object Object]:true" => "ContextType",
           },
           "exports": Map {
-            "ContextType" => Object {
+            "ContextType" => {
               "beforeExport": "",
-              "code": Object {
-                "raw": "export type { ContextType } from \\"../$.context\\"",
+              "code": {
+                "raw": "export type { ContextType } from "../$.context"",
               },
               "done": true,
               "id": "ContextTypeCoder",
@@ -1152,7 +1152,7 @@ class Context {
           "typeCache": Map {},
         },
       },
-      "Pet" => Object {
+      "Pet" => {
         "isDefault": false,
         "isType": true,
         "name": "Pet",
@@ -1163,9 +1163,9 @@ class Context {
             "SchemaTypeCoder@undefined@components/Tag.ts:true:false" => "Tag",
           },
           "exports": Map {
-            "Pet" => Object {
+            "Pet" => {
               "beforeExport": "",
-              "code": "{\\"id\\"?: number,\\"name\\": string,\\"category\\"?: Category,\\"photoUrls\\": Array<string>,\\"tags\\"?: Array<Tag>,\\"status\\"?: \\"available\\" | \\"pending\\" | \\"sold\\"}",
+              "code": "{"id"?: number,"name": string,"category"?: Category,"photoUrls": Array<string>,"tags"?: Array<Tag>,"status"?: "available" | "pending" | "sold"}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
               "isDefault": false,
@@ -1177,7 +1177,7 @@ class Context {
           },
           "externalImport": Map {},
           "imports": Map {
-            "Category" => Object {
+            "Category" => {
               "isDefault": false,
               "isType": true,
               "name": "Category",
@@ -1186,9 +1186,9 @@ class Context {
                   "SchemaTypeCoder@undefined@[object Object]:true" => "Category",
                 },
                 "exports": Map {
-                  "Category" => Object {
+                  "Category" => {
                     "beforeExport": "",
-                    "code": "{\\"id\\"?: number,\\"name\\"?: string}",
+                    "code": "{"id"?: number,"name"?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isDefault": false,
@@ -1208,7 +1208,7 @@ class Context {
                 "typeCache": Map {},
               },
             },
-            "Tag" => Object {
+            "Tag" => {
               "isDefault": false,
               "isType": true,
               "name": "Tag",
@@ -1217,9 +1217,9 @@ class Context {
                   "SchemaTypeCoder@undefined@[object Object]:true" => "Tag",
                 },
                 "exports": Map {
-                  "Tag" => Object {
+                  "Tag" => {
                     "beforeExport": "",
-                    "code": "{\\"id\\"?: number,\\"name\\"?: string}",
+                    "code": "{"id"?: number,"name"?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isDefault": false,
@@ -1262,7 +1262,7 @@ class Context {
       "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1findByTags/get@path-types/pet/findByTags.types.ts:true:false" => "HTTP_GET",
     },
     "exports": Map {
-      "GET" => Object {
+      "GET" => {
         "beforeExport": "",
         "code": "($) => {
       return $.response[200].random();
@@ -1278,7 +1278,7 @@ class Context {
     },
     "externalImport": Map {},
     "imports": Map {
-      "HTTP_GET" => Object {
+      "HTTP_GET" => {
         "isDefault": false,
         "isType": true,
         "name": "HTTP_GET",
@@ -1289,16 +1289,16 @@ class Context {
             "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
           },
           "exports": Map {
-            "HTTP_GET" => Object {
+            "HTTP_GET" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: {\\"tags?\\": Array<string>}, path: never, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: {"tags?": Array<string>}, path: never, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
-\\"application/xml\\": { 
+"application/xml": { 
             schema:  Array<Pet>
          },
-\\"application/json\\": { 
+"application/json": { 
             schema:  Array<Pet>
          }
 };
@@ -1309,15 +1309,15 @@ class Context {
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
-              contentType?: \\"application/xml\\",
+              contentType?: "application/xml",
               body?: Array<Pet>
             } | {  
               status: 200, 
-              contentType?: \\"application/json\\",
+              contentType?: "application/json",
               body?: Array<Pet>
             } | {  
           status: 400 
-        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
+        } | { status: 415, contentType: "text/plain", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1findByTags/get",
               "isDefault": false,
@@ -1328,13 +1328,13 @@ class Context {
             },
           },
           "externalImport": Map {
-            "ResponseBuilderFactory" => Object {
+            "ResponseBuilderFactory" => {
               "isType": true,
               "modulePath": "../../response-builder-factory.js",
             },
           },
           "imports": Map {
-            "ContextType" => Object {
+            "ContextType" => {
               "isDefault": false,
               "isType": true,
               "name": "ContextType",
@@ -1343,10 +1343,10 @@ class Context {
                   "ContextTypeCoder@[object Object]:true" => "ContextType",
                 },
                 "exports": Map {
-                  "ContextType" => Object {
+                  "ContextType" => {
                     "beforeExport": "",
-                    "code": Object {
-                      "raw": "export type { ContextType } from \\"../$.context\\"",
+                    "code": {
+                      "raw": "export type { ContextType } from "../$.context"",
                     },
                     "done": true,
                     "id": "ContextTypeCoder",
@@ -1367,7 +1367,7 @@ class Context {
                 "typeCache": Map {},
               },
             },
-            "Pet" => Object {
+            "Pet" => {
               "isDefault": false,
               "isType": true,
               "name": "Pet",
@@ -1378,9 +1378,9 @@ class Context {
                   "SchemaTypeCoder@undefined@components/Tag.ts:true:false" => "Tag",
                 },
                 "exports": Map {
-                  "Pet" => Object {
+                  "Pet" => {
                     "beforeExport": "",
-                    "code": "{\\"id\\"?: number,\\"name\\": string,\\"category\\"?: Category,\\"photoUrls\\": Array<string>,\\"tags\\"?: Array<Tag>,\\"status\\"?: \\"available\\" | \\"pending\\" | \\"sold\\"}",
+                    "code": "{"id"?: number,"name": string,"category"?: Category,"photoUrls": Array<string>,"tags"?: Array<Tag>,"status"?: "available" | "pending" | "sold"}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isDefault": false,
@@ -1392,7 +1392,7 @@ class Context {
                 },
                 "externalImport": Map {},
                 "imports": Map {
-                  "Category" => Object {
+                  "Category" => {
                     "isDefault": false,
                     "isType": true,
                     "name": "Category",
@@ -1401,9 +1401,9 @@ class Context {
                         "SchemaTypeCoder@undefined@[object Object]:true" => "Category",
                       },
                       "exports": Map {
-                        "Category" => Object {
+                        "Category" => {
                           "beforeExport": "",
-                          "code": "{\\"id\\"?: number,\\"name\\"?: string}",
+                          "code": "{"id"?: number,"name"?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
                           "isDefault": false,
@@ -1423,7 +1423,7 @@ class Context {
                       "typeCache": Map {},
                     },
                   },
-                  "Tag" => Object {
+                  "Tag" => {
                     "isDefault": false,
                     "isType": true,
                     "name": "Tag",
@@ -1432,9 +1432,9 @@ class Context {
                         "SchemaTypeCoder@undefined@[object Object]:true" => "Tag",
                       },
                       "exports": Map {
-                        "Tag" => Object {
+                        "Tag" => {
                           "beforeExport": "",
-                          "code": "{\\"id\\"?: number,\\"name\\"?: string}",
+                          "code": "{"id"?: number,"name"?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
                           "isDefault": false,
@@ -1487,16 +1487,16 @@ class Context {
       "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
     },
     "exports": Map {
-      "HTTP_GET" => Object {
+      "HTTP_GET" => {
         "beforeExport": "",
-        "code": "({ query, path, header, body, context, proxy }: { query: {\\"tags?\\": Array<string>}, path: never, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context, proxy }: { query: {"tags?": Array<string>}, path: never, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
-\\"application/xml\\": { 
+"application/xml": { 
             schema:  Array<Pet>
          },
-\\"application/json\\": { 
+"application/json": { 
             schema:  Array<Pet>
          }
 };
@@ -1507,15 +1507,15 @@ class Context {
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
-              contentType?: \\"application/xml\\",
+              contentType?: "application/xml",
               body?: Array<Pet>
             } | {  
               status: 200, 
-              contentType?: \\"application/json\\",
+              contentType?: "application/json",
               body?: Array<Pet>
             } | {  
           status: 400 
-        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
+        } | { status: 415, contentType: "text/plain", body: string } | void",
         "done": true,
         "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1findByTags/get",
         "isDefault": false,
@@ -1526,13 +1526,13 @@ class Context {
       },
     },
     "externalImport": Map {
-      "ResponseBuilderFactory" => Object {
+      "ResponseBuilderFactory" => {
         "isType": true,
         "modulePath": "../../response-builder-factory.js",
       },
     },
     "imports": Map {
-      "ContextType" => Object {
+      "ContextType" => {
         "isDefault": false,
         "isType": true,
         "name": "ContextType",
@@ -1541,10 +1541,10 @@ class Context {
             "ContextTypeCoder@[object Object]:true" => "ContextType",
           },
           "exports": Map {
-            "ContextType" => Object {
+            "ContextType" => {
               "beforeExport": "",
-              "code": Object {
-                "raw": "export type { ContextType } from \\"../$.context\\"",
+              "code": {
+                "raw": "export type { ContextType } from "../$.context"",
               },
               "done": true,
               "id": "ContextTypeCoder",
@@ -1565,7 +1565,7 @@ class Context {
           "typeCache": Map {},
         },
       },
-      "Pet" => Object {
+      "Pet" => {
         "isDefault": false,
         "isType": true,
         "name": "Pet",
@@ -1576,9 +1576,9 @@ class Context {
             "SchemaTypeCoder@undefined@components/Tag.ts:true:false" => "Tag",
           },
           "exports": Map {
-            "Pet" => Object {
+            "Pet" => {
               "beforeExport": "",
-              "code": "{\\"id\\"?: number,\\"name\\": string,\\"category\\"?: Category,\\"photoUrls\\": Array<string>,\\"tags\\"?: Array<Tag>,\\"status\\"?: \\"available\\" | \\"pending\\" | \\"sold\\"}",
+              "code": "{"id"?: number,"name": string,"category"?: Category,"photoUrls": Array<string>,"tags"?: Array<Tag>,"status"?: "available" | "pending" | "sold"}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
               "isDefault": false,
@@ -1590,7 +1590,7 @@ class Context {
           },
           "externalImport": Map {},
           "imports": Map {
-            "Category" => Object {
+            "Category" => {
               "isDefault": false,
               "isType": true,
               "name": "Category",
@@ -1599,9 +1599,9 @@ class Context {
                   "SchemaTypeCoder@undefined@[object Object]:true" => "Category",
                 },
                 "exports": Map {
-                  "Category" => Object {
+                  "Category" => {
                     "beforeExport": "",
-                    "code": "{\\"id\\"?: number,\\"name\\"?: string}",
+                    "code": "{"id"?: number,"name"?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isDefault": false,
@@ -1621,7 +1621,7 @@ class Context {
                 "typeCache": Map {},
               },
             },
-            "Tag" => Object {
+            "Tag" => {
               "isDefault": false,
               "isType": true,
               "name": "Tag",
@@ -1630,9 +1630,9 @@ class Context {
                   "SchemaTypeCoder@undefined@[object Object]:true" => "Tag",
                 },
                 "exports": Map {
-                  "Tag" => Object {
+                  "Tag" => {
                     "beforeExport": "",
-                    "code": "{\\"id\\"?: number,\\"name\\"?: string}",
+                    "code": "{"id"?: number,"name"?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isDefault": false,
@@ -1679,7 +1679,7 @@ class Context {
       "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/delete@path-types/pet/{petId}.types.ts:true:false" => "HTTP_DELETE",
     },
     "exports": Map {
-      "GET" => Object {
+      "GET" => {
         "beforeExport": "",
         "code": "($) => {
       return $.response[200].random();
@@ -1692,7 +1692,7 @@ class Context {
         "promise": Promise {},
         "typeDeclaration": "HTTP_GET",
       },
-      "POST" => Object {
+      "POST" => {
         "beforeExport": "",
         "code": "() => { /* no response content specified in the OpenAPI document */ }",
         "done": true,
@@ -1703,7 +1703,7 @@ class Context {
         "promise": Promise {},
         "typeDeclaration": "HTTP_POST",
       },
-      "DELETE" => Object {
+      "DELETE" => {
         "beforeExport": "",
         "code": "() => { /* no response content specified in the OpenAPI document */ }",
         "done": true,
@@ -1717,7 +1717,7 @@ class Context {
     },
     "externalImport": Map {},
     "imports": Map {
-      "HTTP_GET" => Object {
+      "HTTP_GET" => {
         "isDefault": false,
         "isType": true,
         "name": "HTTP_GET",
@@ -1730,16 +1730,16 @@ class Context {
             "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
           },
           "exports": Map {
-            "HTTP_GET" => Object {
+            "HTTP_GET" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"petId\\": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"petId": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
-\\"application/xml\\": { 
+"application/xml": { 
             schema:  Pet
          },
-\\"application/json\\": { 
+"application/json": { 
             schema:  Pet
          }
 };
@@ -1754,17 +1754,17 @@ class Context {
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
-              contentType?: \\"application/xml\\",
+              contentType?: "application/xml",
               body?: Pet
             } | {  
               status: 200, 
-              contentType?: \\"application/json\\",
+              contentType?: "application/json",
               body?: Pet
             } | {  
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
+        } | { status: 415, contentType: "text/plain", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/get",
               "isDefault": false,
@@ -1773,16 +1773,16 @@ class Context {
               "promise": Promise {},
               "typeDeclaration": "",
             },
-            "HTTP_POST" => Object {
+            "HTTP_POST" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: {\\"name?\\": number, \\"status?\\": string}, path: {\\"petId\\": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: {"name?": number, "status?": string}, path: {"petId": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 405: {
           headers: {};
           content: {};
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: 405 
-        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
+        } | { status: 415, contentType: "text/plain", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/post",
               "isDefault": false,
@@ -1791,16 +1791,16 @@ class Context {
               "promise": Promise {},
               "typeDeclaration": "",
             },
-            "HTTP_DELETE" => Object {
+            "HTTP_DELETE" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"petId\\": string}, header: {\\"api_key?\\": string}, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"petId": string}, header: {"api_key?": string}, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 400: {
           headers: {};
           content: {};
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: 400 
-        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
+        } | { status: 415, contentType: "text/plain", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/delete",
               "isDefault": false,
@@ -1811,13 +1811,13 @@ class Context {
             },
           },
           "externalImport": Map {
-            "ResponseBuilderFactory" => Object {
+            "ResponseBuilderFactory" => {
               "isType": true,
               "modulePath": "../../response-builder-factory.js",
             },
           },
           "imports": Map {
-            "ContextType" => Object {
+            "ContextType" => {
               "isDefault": false,
               "isType": true,
               "name": "ContextType",
@@ -1826,10 +1826,10 @@ class Context {
                   "ContextTypeCoder@[object Object]:true" => "ContextType",
                 },
                 "exports": Map {
-                  "ContextType" => Object {
+                  "ContextType" => {
                     "beforeExport": "",
-                    "code": Object {
-                      "raw": "export type { ContextType } from \\"../$.context\\"",
+                    "code": {
+                      "raw": "export type { ContextType } from "../$.context"",
                     },
                     "done": true,
                     "id": "ContextTypeCoder",
@@ -1850,7 +1850,7 @@ class Context {
                 "typeCache": Map {},
               },
             },
-            "Pet" => Object {
+            "Pet" => {
               "isDefault": false,
               "isType": true,
               "name": "Pet",
@@ -1861,9 +1861,9 @@ class Context {
                   "SchemaTypeCoder@undefined@components/Tag.ts:true:false" => "Tag",
                 },
                 "exports": Map {
-                  "Pet" => Object {
+                  "Pet" => {
                     "beforeExport": "",
-                    "code": "{\\"id\\"?: number,\\"name\\": string,\\"category\\"?: Category,\\"photoUrls\\": Array<string>,\\"tags\\"?: Array<Tag>,\\"status\\"?: \\"available\\" | \\"pending\\" | \\"sold\\"}",
+                    "code": "{"id"?: number,"name": string,"category"?: Category,"photoUrls": Array<string>,"tags"?: Array<Tag>,"status"?: "available" | "pending" | "sold"}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isDefault": false,
@@ -1875,7 +1875,7 @@ class Context {
                 },
                 "externalImport": Map {},
                 "imports": Map {
-                  "Category" => Object {
+                  "Category" => {
                     "isDefault": false,
                     "isType": true,
                     "name": "Category",
@@ -1884,9 +1884,9 @@ class Context {
                         "SchemaTypeCoder@undefined@[object Object]:true" => "Category",
                       },
                       "exports": Map {
-                        "Category" => Object {
+                        "Category" => {
                           "beforeExport": "",
-                          "code": "{\\"id\\"?: number,\\"name\\"?: string}",
+                          "code": "{"id"?: number,"name"?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
                           "isDefault": false,
@@ -1906,7 +1906,7 @@ class Context {
                       "typeCache": Map {},
                     },
                   },
-                  "Tag" => Object {
+                  "Tag" => {
                     "isDefault": false,
                     "isType": true,
                     "name": "Tag",
@@ -1915,9 +1915,9 @@ class Context {
                         "SchemaTypeCoder@undefined@[object Object]:true" => "Tag",
                       },
                       "exports": Map {
-                        "Tag" => Object {
+                        "Tag" => {
                           "beforeExport": "",
-                          "code": "{\\"id\\"?: number,\\"name\\"?: string}",
+                          "code": "{"id"?: number,"name"?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
                           "isDefault": false,
@@ -1955,7 +1955,7 @@ class Context {
           "typeCache": Map {},
         },
       },
-      "HTTP_POST" => Object {
+      "HTTP_POST" => {
         "isDefault": false,
         "isType": true,
         "name": "HTTP_POST",
@@ -1968,16 +1968,16 @@ class Context {
             "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
           },
           "exports": Map {
-            "HTTP_GET" => Object {
+            "HTTP_GET" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"petId\\": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"petId": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
-\\"application/xml\\": { 
+"application/xml": { 
             schema:  Pet
          },
-\\"application/json\\": { 
+"application/json": { 
             schema:  Pet
          }
 };
@@ -1992,17 +1992,17 @@ class Context {
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
-              contentType?: \\"application/xml\\",
+              contentType?: "application/xml",
               body?: Pet
             } | {  
               status: 200, 
-              contentType?: \\"application/json\\",
+              contentType?: "application/json",
               body?: Pet
             } | {  
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
+        } | { status: 415, contentType: "text/plain", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/get",
               "isDefault": false,
@@ -2011,16 +2011,16 @@ class Context {
               "promise": Promise {},
               "typeDeclaration": "",
             },
-            "HTTP_POST" => Object {
+            "HTTP_POST" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: {\\"name?\\": number, \\"status?\\": string}, path: {\\"petId\\": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: {"name?": number, "status?": string}, path: {"petId": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 405: {
           headers: {};
           content: {};
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: 405 
-        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
+        } | { status: 415, contentType: "text/plain", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/post",
               "isDefault": false,
@@ -2029,16 +2029,16 @@ class Context {
               "promise": Promise {},
               "typeDeclaration": "",
             },
-            "HTTP_DELETE" => Object {
+            "HTTP_DELETE" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"petId\\": string}, header: {\\"api_key?\\": string}, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"petId": string}, header: {"api_key?": string}, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 400: {
           headers: {};
           content: {};
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: 400 
-        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
+        } | { status: 415, contentType: "text/plain", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/delete",
               "isDefault": false,
@@ -2049,13 +2049,13 @@ class Context {
             },
           },
           "externalImport": Map {
-            "ResponseBuilderFactory" => Object {
+            "ResponseBuilderFactory" => {
               "isType": true,
               "modulePath": "../../response-builder-factory.js",
             },
           },
           "imports": Map {
-            "ContextType" => Object {
+            "ContextType" => {
               "isDefault": false,
               "isType": true,
               "name": "ContextType",
@@ -2064,10 +2064,10 @@ class Context {
                   "ContextTypeCoder@[object Object]:true" => "ContextType",
                 },
                 "exports": Map {
-                  "ContextType" => Object {
+                  "ContextType" => {
                     "beforeExport": "",
-                    "code": Object {
-                      "raw": "export type { ContextType } from \\"../$.context\\"",
+                    "code": {
+                      "raw": "export type { ContextType } from "../$.context"",
                     },
                     "done": true,
                     "id": "ContextTypeCoder",
@@ -2088,7 +2088,7 @@ class Context {
                 "typeCache": Map {},
               },
             },
-            "Pet" => Object {
+            "Pet" => {
               "isDefault": false,
               "isType": true,
               "name": "Pet",
@@ -2099,9 +2099,9 @@ class Context {
                   "SchemaTypeCoder@undefined@components/Tag.ts:true:false" => "Tag",
                 },
                 "exports": Map {
-                  "Pet" => Object {
+                  "Pet" => {
                     "beforeExport": "",
-                    "code": "{\\"id\\"?: number,\\"name\\": string,\\"category\\"?: Category,\\"photoUrls\\": Array<string>,\\"tags\\"?: Array<Tag>,\\"status\\"?: \\"available\\" | \\"pending\\" | \\"sold\\"}",
+                    "code": "{"id"?: number,"name": string,"category"?: Category,"photoUrls": Array<string>,"tags"?: Array<Tag>,"status"?: "available" | "pending" | "sold"}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isDefault": false,
@@ -2113,7 +2113,7 @@ class Context {
                 },
                 "externalImport": Map {},
                 "imports": Map {
-                  "Category" => Object {
+                  "Category" => {
                     "isDefault": false,
                     "isType": true,
                     "name": "Category",
@@ -2122,9 +2122,9 @@ class Context {
                         "SchemaTypeCoder@undefined@[object Object]:true" => "Category",
                       },
                       "exports": Map {
-                        "Category" => Object {
+                        "Category" => {
                           "beforeExport": "",
-                          "code": "{\\"id\\"?: number,\\"name\\"?: string}",
+                          "code": "{"id"?: number,"name"?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
                           "isDefault": false,
@@ -2144,7 +2144,7 @@ class Context {
                       "typeCache": Map {},
                     },
                   },
-                  "Tag" => Object {
+                  "Tag" => {
                     "isDefault": false,
                     "isType": true,
                     "name": "Tag",
@@ -2153,9 +2153,9 @@ class Context {
                         "SchemaTypeCoder@undefined@[object Object]:true" => "Tag",
                       },
                       "exports": Map {
-                        "Tag" => Object {
+                        "Tag" => {
                           "beforeExport": "",
-                          "code": "{\\"id\\"?: number,\\"name\\"?: string}",
+                          "code": "{"id"?: number,"name"?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
                           "isDefault": false,
@@ -2193,7 +2193,7 @@ class Context {
           "typeCache": Map {},
         },
       },
-      "HTTP_DELETE" => Object {
+      "HTTP_DELETE" => {
         "isDefault": false,
         "isType": true,
         "name": "HTTP_DELETE",
@@ -2206,16 +2206,16 @@ class Context {
             "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
           },
           "exports": Map {
-            "HTTP_GET" => Object {
+            "HTTP_GET" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"petId\\": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"petId": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
-\\"application/xml\\": { 
+"application/xml": { 
             schema:  Pet
          },
-\\"application/json\\": { 
+"application/json": { 
             schema:  Pet
          }
 };
@@ -2230,17 +2230,17 @@ class Context {
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
-              contentType?: \\"application/xml\\",
+              contentType?: "application/xml",
               body?: Pet
             } | {  
               status: 200, 
-              contentType?: \\"application/json\\",
+              contentType?: "application/json",
               body?: Pet
             } | {  
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
+        } | { status: 415, contentType: "text/plain", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/get",
               "isDefault": false,
@@ -2249,16 +2249,16 @@ class Context {
               "promise": Promise {},
               "typeDeclaration": "",
             },
-            "HTTP_POST" => Object {
+            "HTTP_POST" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: {\\"name?\\": number, \\"status?\\": string}, path: {\\"petId\\": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: {"name?": number, "status?": string}, path: {"petId": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 405: {
           headers: {};
           content: {};
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: 405 
-        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
+        } | { status: 415, contentType: "text/plain", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/post",
               "isDefault": false,
@@ -2267,16 +2267,16 @@ class Context {
               "promise": Promise {},
               "typeDeclaration": "",
             },
-            "HTTP_DELETE" => Object {
+            "HTTP_DELETE" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"petId\\": string}, header: {\\"api_key?\\": string}, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"petId": string}, header: {"api_key?": string}, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 400: {
           headers: {};
           content: {};
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: 400 
-        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
+        } | { status: 415, contentType: "text/plain", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/delete",
               "isDefault": false,
@@ -2287,13 +2287,13 @@ class Context {
             },
           },
           "externalImport": Map {
-            "ResponseBuilderFactory" => Object {
+            "ResponseBuilderFactory" => {
               "isType": true,
               "modulePath": "../../response-builder-factory.js",
             },
           },
           "imports": Map {
-            "ContextType" => Object {
+            "ContextType" => {
               "isDefault": false,
               "isType": true,
               "name": "ContextType",
@@ -2302,10 +2302,10 @@ class Context {
                   "ContextTypeCoder@[object Object]:true" => "ContextType",
                 },
                 "exports": Map {
-                  "ContextType" => Object {
+                  "ContextType" => {
                     "beforeExport": "",
-                    "code": Object {
-                      "raw": "export type { ContextType } from \\"../$.context\\"",
+                    "code": {
+                      "raw": "export type { ContextType } from "../$.context"",
                     },
                     "done": true,
                     "id": "ContextTypeCoder",
@@ -2326,7 +2326,7 @@ class Context {
                 "typeCache": Map {},
               },
             },
-            "Pet" => Object {
+            "Pet" => {
               "isDefault": false,
               "isType": true,
               "name": "Pet",
@@ -2337,9 +2337,9 @@ class Context {
                   "SchemaTypeCoder@undefined@components/Tag.ts:true:false" => "Tag",
                 },
                 "exports": Map {
-                  "Pet" => Object {
+                  "Pet" => {
                     "beforeExport": "",
-                    "code": "{\\"id\\"?: number,\\"name\\": string,\\"category\\"?: Category,\\"photoUrls\\": Array<string>,\\"tags\\"?: Array<Tag>,\\"status\\"?: \\"available\\" | \\"pending\\" | \\"sold\\"}",
+                    "code": "{"id"?: number,"name": string,"category"?: Category,"photoUrls": Array<string>,"tags"?: Array<Tag>,"status"?: "available" | "pending" | "sold"}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isDefault": false,
@@ -2351,7 +2351,7 @@ class Context {
                 },
                 "externalImport": Map {},
                 "imports": Map {
-                  "Category" => Object {
+                  "Category" => {
                     "isDefault": false,
                     "isType": true,
                     "name": "Category",
@@ -2360,9 +2360,9 @@ class Context {
                         "SchemaTypeCoder@undefined@[object Object]:true" => "Category",
                       },
                       "exports": Map {
-                        "Category" => Object {
+                        "Category" => {
                           "beforeExport": "",
-                          "code": "{\\"id\\"?: number,\\"name\\"?: string}",
+                          "code": "{"id"?: number,"name"?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
                           "isDefault": false,
@@ -2382,7 +2382,7 @@ class Context {
                       "typeCache": Map {},
                     },
                   },
-                  "Tag" => Object {
+                  "Tag" => {
                     "isDefault": false,
                     "isType": true,
                     "name": "Tag",
@@ -2391,9 +2391,9 @@ class Context {
                         "SchemaTypeCoder@undefined@[object Object]:true" => "Tag",
                       },
                       "exports": Map {
-                        "Tag" => Object {
+                        "Tag" => {
                           "beforeExport": "",
-                          "code": "{\\"id\\"?: number,\\"name\\"?: string}",
+                          "code": "{"id"?: number,"name"?: string}",
                           "done": true,
                           "id": "SchemaTypeCoder@undefined",
                           "isDefault": false,
@@ -2448,16 +2448,16 @@ class Context {
       "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
     },
     "exports": Map {
-      "HTTP_GET" => Object {
+      "HTTP_GET" => {
         "beforeExport": "",
-        "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"petId\\": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"petId": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
-\\"application/xml\\": { 
+"application/xml": { 
             schema:  Pet
          },
-\\"application/json\\": { 
+"application/json": { 
             schema:  Pet
          }
 };
@@ -2472,17 +2472,17 @@ class Context {
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
-              contentType?: \\"application/xml\\",
+              contentType?: "application/xml",
               body?: Pet
             } | {  
               status: 200, 
-              contentType?: \\"application/json\\",
+              contentType?: "application/json",
               body?: Pet
             } | {  
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
+        } | { status: 415, contentType: "text/plain", body: string } | void",
         "done": true,
         "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/get",
         "isDefault": false,
@@ -2491,16 +2491,16 @@ class Context {
         "promise": Promise {},
         "typeDeclaration": "",
       },
-      "HTTP_POST" => Object {
+      "HTTP_POST" => {
         "beforeExport": "",
-        "code": "({ query, path, header, body, context, proxy }: { query: {\\"name?\\": number, \\"status?\\": string}, path: {\\"petId\\": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context, proxy }: { query: {"name?": number, "status?": string}, path: {"petId": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 405: {
           headers: {};
           content: {};
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: 405 
-        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
+        } | { status: 415, contentType: "text/plain", body: string } | void",
         "done": true,
         "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/post",
         "isDefault": false,
@@ -2509,16 +2509,16 @@ class Context {
         "promise": Promise {},
         "typeDeclaration": "",
       },
-      "HTTP_DELETE" => Object {
+      "HTTP_DELETE" => {
         "beforeExport": "",
-        "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"petId\\": string}, header: {\\"api_key?\\": string}, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"petId": string}, header: {"api_key?": string}, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 400: {
           headers: {};
           content: {};
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: 400 
-        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
+        } | { status: 415, contentType: "text/plain", body: string } | void",
         "done": true,
         "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/delete",
         "isDefault": false,
@@ -2529,13 +2529,13 @@ class Context {
       },
     },
     "externalImport": Map {
-      "ResponseBuilderFactory" => Object {
+      "ResponseBuilderFactory" => {
         "isType": true,
         "modulePath": "../../response-builder-factory.js",
       },
     },
     "imports": Map {
-      "ContextType" => Object {
+      "ContextType" => {
         "isDefault": false,
         "isType": true,
         "name": "ContextType",
@@ -2544,10 +2544,10 @@ class Context {
             "ContextTypeCoder@[object Object]:true" => "ContextType",
           },
           "exports": Map {
-            "ContextType" => Object {
+            "ContextType" => {
               "beforeExport": "",
-              "code": Object {
-                "raw": "export type { ContextType } from \\"../$.context\\"",
+              "code": {
+                "raw": "export type { ContextType } from "../$.context"",
               },
               "done": true,
               "id": "ContextTypeCoder",
@@ -2568,7 +2568,7 @@ class Context {
           "typeCache": Map {},
         },
       },
-      "Pet" => Object {
+      "Pet" => {
         "isDefault": false,
         "isType": true,
         "name": "Pet",
@@ -2579,9 +2579,9 @@ class Context {
             "SchemaTypeCoder@undefined@components/Tag.ts:true:false" => "Tag",
           },
           "exports": Map {
-            "Pet" => Object {
+            "Pet" => {
               "beforeExport": "",
-              "code": "{\\"id\\"?: number,\\"name\\": string,\\"category\\"?: Category,\\"photoUrls\\": Array<string>,\\"tags\\"?: Array<Tag>,\\"status\\"?: \\"available\\" | \\"pending\\" | \\"sold\\"}",
+              "code": "{"id"?: number,"name": string,"category"?: Category,"photoUrls": Array<string>,"tags"?: Array<Tag>,"status"?: "available" | "pending" | "sold"}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
               "isDefault": false,
@@ -2593,7 +2593,7 @@ class Context {
           },
           "externalImport": Map {},
           "imports": Map {
-            "Category" => Object {
+            "Category" => {
               "isDefault": false,
               "isType": true,
               "name": "Category",
@@ -2602,9 +2602,9 @@ class Context {
                   "SchemaTypeCoder@undefined@[object Object]:true" => "Category",
                 },
                 "exports": Map {
-                  "Category" => Object {
+                  "Category" => {
                     "beforeExport": "",
-                    "code": "{\\"id\\"?: number,\\"name\\"?: string}",
+                    "code": "{"id"?: number,"name"?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isDefault": false,
@@ -2624,7 +2624,7 @@ class Context {
                 "typeCache": Map {},
               },
             },
-            "Tag" => Object {
+            "Tag" => {
               "isDefault": false,
               "isType": true,
               "name": "Tag",
@@ -2633,9 +2633,9 @@ class Context {
                   "SchemaTypeCoder@undefined@[object Object]:true" => "Tag",
                 },
                 "exports": Map {
-                  "Tag" => Object {
+                  "Tag" => {
                     "beforeExport": "",
-                    "code": "{\\"id\\"?: number,\\"name\\"?: string}",
+                    "code": "{"id"?: number,"name"?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isDefault": false,
@@ -2678,7 +2678,7 @@ class Context {
       "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post@path-types/pet/{petId}/uploadImage.types.ts:true:false" => "HTTP_POST",
     },
     "exports": Map {
-      "POST" => Object {
+      "POST" => {
         "beforeExport": "",
         "code": "($) => {
       return $.response[200].random();
@@ -2694,7 +2694,7 @@ class Context {
     },
     "externalImport": Map {},
     "imports": Map {
-      "HTTP_POST" => Object {
+      "HTTP_POST" => {
         "isDefault": false,
         "isType": true,
         "name": "HTTP_POST",
@@ -2705,22 +2705,22 @@ class Context {
             "SchemaTypeCoder@undefined@components/ApiResponse.ts:true:false" => "ApiResponse",
           },
           "exports": Map {
-            "HTTP_POST" => Object {
+            "HTTP_POST" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: {\\"additionalMetadata?\\": number}, path: {\\"petId\\": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: {"additionalMetadata?": number}, path: {"petId": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
-\\"application/json\\": { 
+"application/json": { 
             schema:  ApiResponse
          }
 };
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
-              contentType?: \\"application/json\\",
+              contentType?: "application/json",
               body?: ApiResponse
-            } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
+            } | { status: 415, contentType: "text/plain", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post",
               "isDefault": false,
@@ -2731,13 +2731,13 @@ class Context {
             },
           },
           "externalImport": Map {
-            "ResponseBuilderFactory" => Object {
+            "ResponseBuilderFactory" => {
               "isType": true,
               "modulePath": "../../../response-builder-factory.js",
             },
           },
           "imports": Map {
-            "ContextType" => Object {
+            "ContextType" => {
               "isDefault": false,
               "isType": true,
               "name": "ContextType",
@@ -2746,10 +2746,10 @@ class Context {
                   "ContextTypeCoder@[object Object]:true" => "ContextType",
                 },
                 "exports": Map {
-                  "ContextType" => Object {
+                  "ContextType" => {
                     "beforeExport": "",
-                    "code": Object {
-                      "raw": "export type { ContextType } from \\"../$.context\\"",
+                    "code": {
+                      "raw": "export type { ContextType } from "../$.context"",
                     },
                     "done": true,
                     "id": "ContextTypeCoder",
@@ -2770,7 +2770,7 @@ class Context {
                 "typeCache": Map {},
               },
             },
-            "ApiResponse" => Object {
+            "ApiResponse" => {
               "isDefault": false,
               "isType": true,
               "name": "ApiResponse",
@@ -2779,9 +2779,9 @@ class Context {
                   "SchemaTypeCoder@undefined@[object Object]:true" => "ApiResponse",
                 },
                 "exports": Map {
-                  "ApiResponse" => Object {
+                  "ApiResponse" => {
                     "beforeExport": "",
-                    "code": "{\\"code\\"?: number,\\"type\\"?: string,\\"message\\"?: string}",
+                    "code": "{"code"?: number,"type"?: string,"message"?: string}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isDefault": false,
@@ -2825,22 +2825,22 @@ class Context {
       "SchemaTypeCoder@undefined@components/ApiResponse.ts:true:false" => "ApiResponse",
     },
     "exports": Map {
-      "HTTP_POST" => Object {
+      "HTTP_POST" => {
         "beforeExport": "",
-        "code": "({ query, path, header, body, context, proxy }: { query: {\\"additionalMetadata?\\": number}, path: {\\"petId\\": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context, proxy }: { query: {"additionalMetadata?": number}, path: {"petId": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
-\\"application/json\\": { 
+"application/json": { 
             schema:  ApiResponse
          }
 };
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
-              contentType?: \\"application/json\\",
+              contentType?: "application/json",
               body?: ApiResponse
-            } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
+            } | { status: 415, contentType: "text/plain", body: string } | void",
         "done": true,
         "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post",
         "isDefault": false,
@@ -2851,13 +2851,13 @@ class Context {
       },
     },
     "externalImport": Map {
-      "ResponseBuilderFactory" => Object {
+      "ResponseBuilderFactory" => {
         "isType": true,
         "modulePath": "../../../response-builder-factory.js",
       },
     },
     "imports": Map {
-      "ContextType" => Object {
+      "ContextType" => {
         "isDefault": false,
         "isType": true,
         "name": "ContextType",
@@ -2866,10 +2866,10 @@ class Context {
             "ContextTypeCoder@[object Object]:true" => "ContextType",
           },
           "exports": Map {
-            "ContextType" => Object {
+            "ContextType" => {
               "beforeExport": "",
-              "code": Object {
-                "raw": "export type { ContextType } from \\"../$.context\\"",
+              "code": {
+                "raw": "export type { ContextType } from "../$.context"",
               },
               "done": true,
               "id": "ContextTypeCoder",
@@ -2890,7 +2890,7 @@ class Context {
           "typeCache": Map {},
         },
       },
-      "ApiResponse" => Object {
+      "ApiResponse" => {
         "isDefault": false,
         "isType": true,
         "name": "ApiResponse",
@@ -2899,9 +2899,9 @@ class Context {
             "SchemaTypeCoder@undefined@[object Object]:true" => "ApiResponse",
           },
           "exports": Map {
-            "ApiResponse" => Object {
+            "ApiResponse" => {
               "beforeExport": "",
-              "code": "{\\"code\\"?: number,\\"type\\"?: string,\\"message\\"?: string}",
+              "code": "{"code"?: number,"type"?: string,"message"?: string}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
               "isDefault": false,
@@ -2935,7 +2935,7 @@ class Context {
       "OperationTypeCoder@./petstore.yaml#/paths/~1store~1inventory/get@path-types/store/inventory.types.ts:true:false" => "HTTP_GET",
     },
     "exports": Map {
-      "GET" => Object {
+      "GET" => {
         "beforeExport": "",
         "code": "($) => {
       return $.response[200].random();
@@ -2951,7 +2951,7 @@ class Context {
     },
     "externalImport": Map {},
     "imports": Map {
-      "HTTP_GET" => Object {
+      "HTTP_GET" => {
         "isDefault": false,
         "isType": true,
         "name": "HTTP_GET",
@@ -2961,22 +2961,22 @@ class Context {
             "ContextTypeCoder@paths/store/$.context.ts:true:false" => "ContextType",
           },
           "exports": Map {
-            "HTTP_GET" => Object {
+            "HTTP_GET" => {
               "beforeExport": "",
               "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
-\\"application/json\\": { 
+"application/json": { 
             schema:  {[key: string]: number}
          }
 };
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
-              contentType?: \\"application/json\\",
+              contentType?: "application/json",
               body?: {[key: string]: number}
-            } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
+            } | { status: 415, contentType: "text/plain", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1store~1inventory/get",
               "isDefault": false,
@@ -2987,13 +2987,13 @@ class Context {
             },
           },
           "externalImport": Map {
-            "ResponseBuilderFactory" => Object {
+            "ResponseBuilderFactory" => {
               "isType": true,
               "modulePath": "../../response-builder-factory.js",
             },
           },
           "imports": Map {
-            "ContextType" => Object {
+            "ContextType" => {
               "isDefault": false,
               "isType": true,
               "name": "ContextType",
@@ -3002,10 +3002,10 @@ class Context {
                   "ContextTypeCoder@[object Object]:true" => "ContextType",
                 },
                 "exports": Map {
-                  "ContextType" => Object {
+                  "ContextType" => {
                     "beforeExport": "",
-                    "code": Object {
-                      "raw": "export type { ContextType } from \\"../$.context\\"",
+                    "code": {
+                      "raw": "export type { ContextType } from "../$.context"",
                     },
                     "done": true,
                     "id": "ContextTypeCoder",
@@ -3049,22 +3049,22 @@ class Context {
       "ContextTypeCoder@paths/store/$.context.ts:true:false" => "ContextType",
     },
     "exports": Map {
-      "HTTP_GET" => Object {
+      "HTTP_GET" => {
         "beforeExport": "",
         "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
-\\"application/json\\": { 
+"application/json": { 
             schema:  {[key: string]: number}
          }
 };
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
-              contentType?: \\"application/json\\",
+              contentType?: "application/json",
               body?: {[key: string]: number}
-            } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
+            } | { status: 415, contentType: "text/plain", body: string } | void",
         "done": true,
         "id": "OperationTypeCoder@./petstore.yaml#/paths/~1store~1inventory/get",
         "isDefault": false,
@@ -3075,13 +3075,13 @@ class Context {
       },
     },
     "externalImport": Map {
-      "ResponseBuilderFactory" => Object {
+      "ResponseBuilderFactory" => {
         "isType": true,
         "modulePath": "../../response-builder-factory.js",
       },
     },
     "imports": Map {
-      "ContextType" => Object {
+      "ContextType" => {
         "isDefault": false,
         "isType": true,
         "name": "ContextType",
@@ -3090,10 +3090,10 @@ class Context {
             "ContextTypeCoder@[object Object]:true" => "ContextType",
           },
           "exports": Map {
-            "ContextType" => Object {
+            "ContextType" => {
               "beforeExport": "",
-              "code": Object {
-                "raw": "export type { ContextType } from \\"../$.context\\"",
+              "code": {
+                "raw": "export type { ContextType } from "../$.context"",
               },
               "done": true,
               "id": "ContextTypeCoder",
@@ -3128,7 +3128,7 @@ class Context {
       "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order/post@path-types/store/order.types.ts:true:false" => "HTTP_POST",
     },
     "exports": Map {
-      "POST" => Object {
+      "POST" => {
         "beforeExport": "",
         "code": "($) => {
       return $.response[200].random();
@@ -3144,7 +3144,7 @@ class Context {
     },
     "externalImport": Map {},
     "imports": Map {
-      "HTTP_POST" => Object {
+      "HTTP_POST" => {
         "isDefault": false,
         "isType": true,
         "name": "HTTP_POST",
@@ -3155,13 +3155,13 @@ class Context {
             "SchemaTypeCoder@undefined@components/Order.ts:true:false" => "Order",
           },
           "exports": Map {
-            "HTTP_POST" => Object {
+            "HTTP_POST" => {
               "beforeExport": "",
               "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Order, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
-\\"application/json\\": { 
+"application/json": { 
             schema:  Order
          }
 };
@@ -3172,11 +3172,11 @@ class Context {
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
-              contentType?: \\"application/json\\",
+              contentType?: "application/json",
               body?: Order
             } | {  
           status: 405 
-        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
+        } | { status: 415, contentType: "text/plain", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order/post",
               "isDefault": false,
@@ -3187,13 +3187,13 @@ class Context {
             },
           },
           "externalImport": Map {
-            "ResponseBuilderFactory" => Object {
+            "ResponseBuilderFactory" => {
               "isType": true,
               "modulePath": "../../response-builder-factory.js",
             },
           },
           "imports": Map {
-            "ContextType" => Object {
+            "ContextType" => {
               "isDefault": false,
               "isType": true,
               "name": "ContextType",
@@ -3202,10 +3202,10 @@ class Context {
                   "ContextTypeCoder@[object Object]:true" => "ContextType",
                 },
                 "exports": Map {
-                  "ContextType" => Object {
+                  "ContextType" => {
                     "beforeExport": "",
-                    "code": Object {
-                      "raw": "export type { ContextType } from \\"../$.context\\"",
+                    "code": {
+                      "raw": "export type { ContextType } from "../$.context"",
                     },
                     "done": true,
                     "id": "ContextTypeCoder",
@@ -3226,7 +3226,7 @@ class Context {
                 "typeCache": Map {},
               },
             },
-            "Order" => Object {
+            "Order" => {
               "isDefault": false,
               "isType": true,
               "name": "Order",
@@ -3235,9 +3235,9 @@ class Context {
                   "SchemaTypeCoder@undefined@[object Object]:true" => "Order",
                 },
                 "exports": Map {
-                  "Order" => Object {
+                  "Order" => {
                     "beforeExport": "",
-                    "code": "{\\"id\\"?: number,\\"petId\\"?: number,\\"quantity\\"?: number,\\"shipDate\\"?: string,\\"status\\"?: \\"placed\\" | \\"approved\\" | \\"delivered\\",\\"complete\\"?: boolean}",
+                    "code": "{"id"?: number,"petId"?: number,"quantity"?: number,"shipDate"?: string,"status"?: "placed" | "approved" | "delivered","complete"?: boolean}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isDefault": false,
@@ -3281,13 +3281,13 @@ class Context {
       "SchemaTypeCoder@undefined@components/Order.ts:true:false" => "Order",
     },
     "exports": Map {
-      "HTTP_POST" => Object {
+      "HTTP_POST" => {
         "beforeExport": "",
         "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Order, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
-\\"application/json\\": { 
+"application/json": { 
             schema:  Order
          }
 };
@@ -3298,11 +3298,11 @@ class Context {
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
-              contentType?: \\"application/json\\",
+              contentType?: "application/json",
               body?: Order
             } | {  
           status: 405 
-        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
+        } | { status: 415, contentType: "text/plain", body: string } | void",
         "done": true,
         "id": "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order/post",
         "isDefault": false,
@@ -3313,13 +3313,13 @@ class Context {
       },
     },
     "externalImport": Map {
-      "ResponseBuilderFactory" => Object {
+      "ResponseBuilderFactory" => {
         "isType": true,
         "modulePath": "../../response-builder-factory.js",
       },
     },
     "imports": Map {
-      "ContextType" => Object {
+      "ContextType" => {
         "isDefault": false,
         "isType": true,
         "name": "ContextType",
@@ -3328,10 +3328,10 @@ class Context {
             "ContextTypeCoder@[object Object]:true" => "ContextType",
           },
           "exports": Map {
-            "ContextType" => Object {
+            "ContextType" => {
               "beforeExport": "",
-              "code": Object {
-                "raw": "export type { ContextType } from \\"../$.context\\"",
+              "code": {
+                "raw": "export type { ContextType } from "../$.context"",
               },
               "done": true,
               "id": "ContextTypeCoder",
@@ -3352,7 +3352,7 @@ class Context {
           "typeCache": Map {},
         },
       },
-      "Order" => Object {
+      "Order" => {
         "isDefault": false,
         "isType": true,
         "name": "Order",
@@ -3361,9 +3361,9 @@ class Context {
             "SchemaTypeCoder@undefined@[object Object]:true" => "Order",
           },
           "exports": Map {
-            "Order" => Object {
+            "Order" => {
               "beforeExport": "",
-              "code": "{\\"id\\"?: number,\\"petId\\"?: number,\\"quantity\\"?: number,\\"shipDate\\"?: string,\\"status\\"?: \\"placed\\" | \\"approved\\" | \\"delivered\\",\\"complete\\"?: boolean}",
+              "code": "{"id"?: number,"petId"?: number,"quantity"?: number,"shipDate"?: string,"status"?: "placed" | "approved" | "delivered","complete"?: boolean}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
               "isDefault": false,
@@ -3399,7 +3399,7 @@ class Context {
       "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order~1{orderId}/delete@path-types/store/order/{orderId}.types.ts:true:false" => "HTTP_DELETE",
     },
     "exports": Map {
-      "GET" => Object {
+      "GET" => {
         "beforeExport": "",
         "code": "($) => {
       return $.response[200].random();
@@ -3412,7 +3412,7 @@ class Context {
         "promise": Promise {},
         "typeDeclaration": "HTTP_GET",
       },
-      "DELETE" => Object {
+      "DELETE" => {
         "beforeExport": "",
         "code": "() => { /* no response content specified in the OpenAPI document */ }",
         "done": true,
@@ -3426,7 +3426,7 @@ class Context {
     },
     "externalImport": Map {},
     "imports": Map {
-      "HTTP_GET" => Object {
+      "HTTP_GET" => {
         "isDefault": false,
         "isType": true,
         "name": "HTTP_GET",
@@ -3438,16 +3438,16 @@ class Context {
             "SchemaTypeCoder@undefined@components/Order.ts:true:false" => "Order",
           },
           "exports": Map {
-            "HTTP_GET" => Object {
+            "HTTP_GET" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"orderId\\": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"orderId": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
-\\"application/xml\\": { 
+"application/xml": { 
             schema:  Order
          },
-\\"application/json\\": { 
+"application/json": { 
             schema:  Order
          }
 };
@@ -3462,17 +3462,17 @@ class Context {
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
-              contentType?: \\"application/xml\\",
+              contentType?: "application/xml",
               body?: Order
             } | {  
               status: 200, 
-              contentType?: \\"application/json\\",
+              contentType?: "application/json",
               body?: Order
             } | {  
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
+        } | { status: 415, contentType: "text/plain", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order~1{orderId}/get",
               "isDefault": false,
@@ -3481,9 +3481,9 @@ class Context {
               "promise": Promise {},
               "typeDeclaration": "",
             },
-            "HTTP_DELETE" => Object {
+            "HTTP_DELETE" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"orderId\\": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"orderId": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 400: {
           headers: {};
           content: {};
@@ -3496,7 +3496,7 @@ class Context {
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
+        } | { status: 415, contentType: "text/plain", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order~1{orderId}/delete",
               "isDefault": false,
@@ -3507,13 +3507,13 @@ class Context {
             },
           },
           "externalImport": Map {
-            "ResponseBuilderFactory" => Object {
+            "ResponseBuilderFactory" => {
               "isType": true,
               "modulePath": "../../../response-builder-factory.js",
             },
           },
           "imports": Map {
-            "ContextType" => Object {
+            "ContextType" => {
               "isDefault": false,
               "isType": true,
               "name": "ContextType",
@@ -3522,10 +3522,10 @@ class Context {
                   "ContextTypeCoder@[object Object]:true" => "ContextType",
                 },
                 "exports": Map {
-                  "ContextType" => Object {
+                  "ContextType" => {
                     "beforeExport": "",
-                    "code": Object {
-                      "raw": "export type { ContextType } from \\"../$.context\\"",
+                    "code": {
+                      "raw": "export type { ContextType } from "../$.context"",
                     },
                     "done": true,
                     "id": "ContextTypeCoder",
@@ -3546,7 +3546,7 @@ class Context {
                 "typeCache": Map {},
               },
             },
-            "Order" => Object {
+            "Order" => {
               "isDefault": false,
               "isType": true,
               "name": "Order",
@@ -3555,9 +3555,9 @@ class Context {
                   "SchemaTypeCoder@undefined@[object Object]:true" => "Order",
                 },
                 "exports": Map {
-                  "Order" => Object {
+                  "Order" => {
                     "beforeExport": "",
-                    "code": "{\\"id\\"?: number,\\"petId\\"?: number,\\"quantity\\"?: number,\\"shipDate\\"?: string,\\"status\\"?: \\"placed\\" | \\"approved\\" | \\"delivered\\",\\"complete\\"?: boolean}",
+                    "code": "{"id"?: number,"petId"?: number,"quantity"?: number,"shipDate"?: string,"status"?: "placed" | "approved" | "delivered","complete"?: boolean}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isDefault": false,
@@ -3586,7 +3586,7 @@ class Context {
           "typeCache": Map {},
         },
       },
-      "HTTP_DELETE" => Object {
+      "HTTP_DELETE" => {
         "isDefault": false,
         "isType": true,
         "name": "HTTP_DELETE",
@@ -3598,16 +3598,16 @@ class Context {
             "SchemaTypeCoder@undefined@components/Order.ts:true:false" => "Order",
           },
           "exports": Map {
-            "HTTP_GET" => Object {
+            "HTTP_GET" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"orderId\\": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"orderId": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
-\\"application/xml\\": { 
+"application/xml": { 
             schema:  Order
          },
-\\"application/json\\": { 
+"application/json": { 
             schema:  Order
          }
 };
@@ -3622,17 +3622,17 @@ class Context {
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
-              contentType?: \\"application/xml\\",
+              contentType?: "application/xml",
               body?: Order
             } | {  
               status: 200, 
-              contentType?: \\"application/json\\",
+              contentType?: "application/json",
               body?: Order
             } | {  
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
+        } | { status: 415, contentType: "text/plain", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order~1{orderId}/get",
               "isDefault": false,
@@ -3641,9 +3641,9 @@ class Context {
               "promise": Promise {},
               "typeDeclaration": "",
             },
-            "HTTP_DELETE" => Object {
+            "HTTP_DELETE" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"orderId\\": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"orderId": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 400: {
           headers: {};
           content: {};
@@ -3656,7 +3656,7 @@ class Context {
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
+        } | { status: 415, contentType: "text/plain", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order~1{orderId}/delete",
               "isDefault": false,
@@ -3667,13 +3667,13 @@ class Context {
             },
           },
           "externalImport": Map {
-            "ResponseBuilderFactory" => Object {
+            "ResponseBuilderFactory" => {
               "isType": true,
               "modulePath": "../../../response-builder-factory.js",
             },
           },
           "imports": Map {
-            "ContextType" => Object {
+            "ContextType" => {
               "isDefault": false,
               "isType": true,
               "name": "ContextType",
@@ -3682,10 +3682,10 @@ class Context {
                   "ContextTypeCoder@[object Object]:true" => "ContextType",
                 },
                 "exports": Map {
-                  "ContextType" => Object {
+                  "ContextType" => {
                     "beforeExport": "",
-                    "code": Object {
-                      "raw": "export type { ContextType } from \\"../$.context\\"",
+                    "code": {
+                      "raw": "export type { ContextType } from "../$.context"",
                     },
                     "done": true,
                     "id": "ContextTypeCoder",
@@ -3706,7 +3706,7 @@ class Context {
                 "typeCache": Map {},
               },
             },
-            "Order" => Object {
+            "Order" => {
               "isDefault": false,
               "isType": true,
               "name": "Order",
@@ -3715,9 +3715,9 @@ class Context {
                   "SchemaTypeCoder@undefined@[object Object]:true" => "Order",
                 },
                 "exports": Map {
-                  "Order" => Object {
+                  "Order" => {
                     "beforeExport": "",
-                    "code": "{\\"id\\"?: number,\\"petId\\"?: number,\\"quantity\\"?: number,\\"shipDate\\"?: string,\\"status\\"?: \\"placed\\" | \\"approved\\" | \\"delivered\\",\\"complete\\"?: boolean}",
+                    "code": "{"id"?: number,"petId"?: number,"quantity"?: number,"shipDate"?: string,"status"?: "placed" | "approved" | "delivered","complete"?: boolean}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isDefault": false,
@@ -3762,16 +3762,16 @@ class Context {
       "SchemaTypeCoder@undefined@components/Order.ts:true:false" => "Order",
     },
     "exports": Map {
-      "HTTP_GET" => Object {
+      "HTTP_GET" => {
         "beforeExport": "",
-        "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"orderId\\": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"orderId": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
-\\"application/xml\\": { 
+"application/xml": { 
             schema:  Order
          },
-\\"application/json\\": { 
+"application/json": { 
             schema:  Order
          }
 };
@@ -3786,17 +3786,17 @@ class Context {
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
-              contentType?: \\"application/xml\\",
+              contentType?: "application/xml",
               body?: Order
             } | {  
               status: 200, 
-              contentType?: \\"application/json\\",
+              contentType?: "application/json",
               body?: Order
             } | {  
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
+        } | { status: 415, contentType: "text/plain", body: string } | void",
         "done": true,
         "id": "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order~1{orderId}/get",
         "isDefault": false,
@@ -3805,9 +3805,9 @@ class Context {
         "promise": Promise {},
         "typeDeclaration": "",
       },
-      "HTTP_DELETE" => Object {
+      "HTTP_DELETE" => {
         "beforeExport": "",
-        "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"orderId\\": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"orderId": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 400: {
           headers: {};
           content: {};
@@ -3820,7 +3820,7 @@ class Context {
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
+        } | { status: 415, contentType: "text/plain", body: string } | void",
         "done": true,
         "id": "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order~1{orderId}/delete",
         "isDefault": false,
@@ -3831,13 +3831,13 @@ class Context {
       },
     },
     "externalImport": Map {
-      "ResponseBuilderFactory" => Object {
+      "ResponseBuilderFactory" => {
         "isType": true,
         "modulePath": "../../../response-builder-factory.js",
       },
     },
     "imports": Map {
-      "ContextType" => Object {
+      "ContextType" => {
         "isDefault": false,
         "isType": true,
         "name": "ContextType",
@@ -3846,10 +3846,10 @@ class Context {
             "ContextTypeCoder@[object Object]:true" => "ContextType",
           },
           "exports": Map {
-            "ContextType" => Object {
+            "ContextType" => {
               "beforeExport": "",
-              "code": Object {
-                "raw": "export type { ContextType } from \\"../$.context\\"",
+              "code": {
+                "raw": "export type { ContextType } from "../$.context"",
               },
               "done": true,
               "id": "ContextTypeCoder",
@@ -3870,7 +3870,7 @@ class Context {
           "typeCache": Map {},
         },
       },
-      "Order" => Object {
+      "Order" => {
         "isDefault": false,
         "isType": true,
         "name": "Order",
@@ -3879,9 +3879,9 @@ class Context {
             "SchemaTypeCoder@undefined@[object Object]:true" => "Order",
           },
           "exports": Map {
-            "Order" => Object {
+            "Order" => {
               "beforeExport": "",
-              "code": "{\\"id\\"?: number,\\"petId\\"?: number,\\"quantity\\"?: number,\\"shipDate\\"?: string,\\"status\\"?: \\"placed\\" | \\"approved\\" | \\"delivered\\",\\"complete\\"?: boolean}",
+              "code": "{"id"?: number,"petId"?: number,"quantity"?: number,"shipDate"?: string,"status"?: "placed" | "approved" | "delivered","complete"?: boolean}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
               "isDefault": false,
@@ -3915,7 +3915,7 @@ class Context {
       "OperationTypeCoder@./petstore.yaml#/paths/~1user/post@path-types/user.types.ts:true:false" => "HTTP_POST",
     },
     "exports": Map {
-      "POST" => Object {
+      "POST" => {
         "beforeExport": "",
         "code": "($) => {
       return $.response[200].random();
@@ -3931,7 +3931,7 @@ class Context {
     },
     "externalImport": Map {},
     "imports": Map {
-      "HTTP_POST" => Object {
+      "HTTP_POST" => {
         "isDefault": false,
         "isType": true,
         "name": "HTTP_POST",
@@ -3942,29 +3942,29 @@ class Context {
             "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
           },
           "exports": Map {
-            "HTTP_POST" => Object {
+            "HTTP_POST" => {
               "beforeExport": "",
               "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: User, context: ContextType, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
           headers: {};
           content: {
-\\"application/json\\": { 
+"application/json": { 
             schema:  User
          },
-\\"application/xml\\": { 
+"application/xml": { 
             schema:  User
          }
 };
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: number | undefined, 
-              contentType?: \\"application/json\\",
+              contentType?: "application/json",
               body?: User
             } | {  
               status: number | undefined, 
-              contentType?: \\"application/xml\\",
+              contentType?: "application/xml",
               body?: User
-            } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
+            } | { status: 415, contentType: "text/plain", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user/post",
               "isDefault": false,
@@ -3975,13 +3975,13 @@ class Context {
             },
           },
           "externalImport": Map {
-            "ResponseBuilderFactory" => Object {
+            "ResponseBuilderFactory" => {
               "isType": true,
               "modulePath": "../response-builder-factory.js",
             },
           },
           "imports": Map {
-            "ContextType" => Object {
+            "ContextType" => {
               "isDefault": false,
               "isType": true,
               "name": "ContextType",
@@ -3991,7 +3991,7 @@ class Context {
                   "ContextTypeCoder@[object Object]:true" => "ContextType",
                 },
                 "exports": Map {
-                  "Context" => Object {
+                  "Context" => {
                     "beforeExport": "/**
 * This is the default context for Counterfact.
 * Change the code to suit your needs.
@@ -4002,7 +4002,7 @@ class Context {
 
   // A helper when you accessing the context object via the REPL. You can delete it if you like.
   [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
-    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/$.context.ts\\";
+    return inspect(this, { ...options, customInspect: false }) + "\\n\\n ^ This is the default context object. You can edit its definition at paths/$.context.ts";
   }
 }
 ",
@@ -4015,7 +4015,7 @@ class Context {
                     "promise": Promise {},
                     "typeDeclaration": "",
                   },
-                  "ContextType" => Object {
+                  "ContextType" => {
                     "beforeExport": "",
                     "code": "Context",
                     "done": true,
@@ -4037,7 +4037,7 @@ class Context {
                 "typeCache": Map {},
               },
             },
-            "User" => Object {
+            "User" => {
               "isDefault": false,
               "isType": true,
               "name": "User",
@@ -4046,9 +4046,9 @@ class Context {
                   "SchemaTypeCoder@undefined@[object Object]:true" => "User",
                 },
                 "exports": Map {
-                  "User" => Object {
+                  "User" => {
                     "beforeExport": "",
-                    "code": "{\\"id\\"?: number,\\"username\\"?: string,\\"firstName\\"?: string,\\"lastName\\"?: string,\\"email\\"?: string,\\"password\\"?: string,\\"phone\\"?: string,\\"userStatus\\"?: number}",
+                    "code": "{"id"?: number,"username"?: string,"firstName"?: string,"lastName"?: string,"email"?: string,"password"?: string,"phone"?: string,"userStatus"?: number}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isDefault": false,
@@ -4092,29 +4092,29 @@ class Context {
       "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
     },
     "exports": Map {
-      "HTTP_POST" => Object {
+      "HTTP_POST" => {
         "beforeExport": "",
         "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: User, context: ContextType, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
           headers: {};
           content: {
-\\"application/json\\": { 
+"application/json": { 
             schema:  User
          },
-\\"application/xml\\": { 
+"application/xml": { 
             schema:  User
          }
 };
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: number | undefined, 
-              contentType?: \\"application/json\\",
+              contentType?: "application/json",
               body?: User
             } | {  
               status: number | undefined, 
-              contentType?: \\"application/xml\\",
+              contentType?: "application/xml",
               body?: User
-            } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
+            } | { status: 415, contentType: "text/plain", body: string } | void",
         "done": true,
         "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user/post",
         "isDefault": false,
@@ -4125,13 +4125,13 @@ class Context {
       },
     },
     "externalImport": Map {
-      "ResponseBuilderFactory" => Object {
+      "ResponseBuilderFactory" => {
         "isType": true,
         "modulePath": "../response-builder-factory.js",
       },
     },
     "imports": Map {
-      "ContextType" => Object {
+      "ContextType" => {
         "isDefault": false,
         "isType": true,
         "name": "ContextType",
@@ -4141,7 +4141,7 @@ class Context {
             "ContextTypeCoder@[object Object]:true" => "ContextType",
           },
           "exports": Map {
-            "Context" => Object {
+            "Context" => {
               "beforeExport": "/**
 * This is the default context for Counterfact.
 * Change the code to suit your needs.
@@ -4152,7 +4152,7 @@ class Context {
 
   // A helper when you accessing the context object via the REPL. You can delete it if you like.
   [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
-    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/$.context.ts\\";
+    return inspect(this, { ...options, customInspect: false }) + "\\n\\n ^ This is the default context object. You can edit its definition at paths/$.context.ts";
   }
 }
 ",
@@ -4165,7 +4165,7 @@ class Context {
               "promise": Promise {},
               "typeDeclaration": "",
             },
-            "ContextType" => Object {
+            "ContextType" => {
               "beforeExport": "",
               "code": "Context",
               "done": true,
@@ -4187,7 +4187,7 @@ class Context {
           "typeCache": Map {},
         },
       },
-      "User" => Object {
+      "User" => {
         "isDefault": false,
         "isType": true,
         "name": "User",
@@ -4196,9 +4196,9 @@ class Context {
             "SchemaTypeCoder@undefined@[object Object]:true" => "User",
           },
           "exports": Map {
-            "User" => Object {
+            "User" => {
               "beforeExport": "",
-              "code": "{\\"id\\"?: number,\\"username\\"?: string,\\"firstName\\"?: string,\\"lastName\\"?: string,\\"email\\"?: string,\\"password\\"?: string,\\"phone\\"?: string,\\"userStatus\\"?: number}",
+              "code": "{"id"?: number,"username"?: string,"firstName"?: string,"lastName"?: string,"email"?: string,"password"?: string,"phone"?: string,"userStatus"?: number}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
               "isDefault": false,
@@ -4232,7 +4232,7 @@ class Context {
       "OperationTypeCoder@./petstore.yaml#/paths/~1user~1createWithList/post@path-types/user/createWithList.types.ts:true:false" => "HTTP_POST",
     },
     "exports": Map {
-      "POST" => Object {
+      "POST" => {
         "beforeExport": "",
         "code": "($) => {
       return $.response[200].random();
@@ -4248,7 +4248,7 @@ class Context {
     },
     "externalImport": Map {},
     "imports": Map {
-      "HTTP_POST" => Object {
+      "HTTP_POST" => {
         "isDefault": false,
         "isType": true,
         "name": "HTTP_POST",
@@ -4259,16 +4259,16 @@ class Context {
             "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
           },
           "exports": Map {
-            "HTTP_POST" => Object {
+            "HTTP_POST" => {
               "beforeExport": "",
               "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Array<User>, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
-\\"application/xml\\": { 
+"application/xml": { 
             schema:  User
          },
-\\"application/json\\": { 
+"application/json": { 
             schema:  User
          }
 };
@@ -4279,15 +4279,15 @@ class Context {
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
-              contentType?: \\"application/xml\\",
+              contentType?: "application/xml",
               body?: User
             } | {  
               status: 200, 
-              contentType?: \\"application/json\\",
+              contentType?: "application/json",
               body?: User
             } | {  
           status: number | undefined 
-        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
+        } | { status: 415, contentType: "text/plain", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user~1createWithList/post",
               "isDefault": false,
@@ -4298,13 +4298,13 @@ class Context {
             },
           },
           "externalImport": Map {
-            "ResponseBuilderFactory" => Object {
+            "ResponseBuilderFactory" => {
               "isType": true,
               "modulePath": "../../response-builder-factory.js",
             },
           },
           "imports": Map {
-            "ContextType" => Object {
+            "ContextType" => {
               "isDefault": false,
               "isType": true,
               "name": "ContextType",
@@ -4313,10 +4313,10 @@ class Context {
                   "ContextTypeCoder@[object Object]:true" => "ContextType",
                 },
                 "exports": Map {
-                  "ContextType" => Object {
+                  "ContextType" => {
                     "beforeExport": "",
-                    "code": Object {
-                      "raw": "export type { ContextType } from \\"../$.context\\"",
+                    "code": {
+                      "raw": "export type { ContextType } from "../$.context"",
                     },
                     "done": true,
                     "id": "ContextTypeCoder",
@@ -4337,7 +4337,7 @@ class Context {
                 "typeCache": Map {},
               },
             },
-            "User" => Object {
+            "User" => {
               "isDefault": false,
               "isType": true,
               "name": "User",
@@ -4346,9 +4346,9 @@ class Context {
                   "SchemaTypeCoder@undefined@[object Object]:true" => "User",
                 },
                 "exports": Map {
-                  "User" => Object {
+                  "User" => {
                     "beforeExport": "",
-                    "code": "{\\"id\\"?: number,\\"username\\"?: string,\\"firstName\\"?: string,\\"lastName\\"?: string,\\"email\\"?: string,\\"password\\"?: string,\\"phone\\"?: string,\\"userStatus\\"?: number}",
+                    "code": "{"id"?: number,"username"?: string,"firstName"?: string,"lastName"?: string,"email"?: string,"password"?: string,"phone"?: string,"userStatus"?: number}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isDefault": false,
@@ -4392,16 +4392,16 @@ class Context {
       "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
     },
     "exports": Map {
-      "HTTP_POST" => Object {
+      "HTTP_POST" => {
         "beforeExport": "",
         "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Array<User>, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
-\\"application/xml\\": { 
+"application/xml": { 
             schema:  User
          },
-\\"application/json\\": { 
+"application/json": { 
             schema:  User
          }
 };
@@ -4412,15 +4412,15 @@ class Context {
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
-              contentType?: \\"application/xml\\",
+              contentType?: "application/xml",
               body?: User
             } | {  
               status: 200, 
-              contentType?: \\"application/json\\",
+              contentType?: "application/json",
               body?: User
             } | {  
           status: number | undefined 
-        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
+        } | { status: 415, contentType: "text/plain", body: string } | void",
         "done": true,
         "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user~1createWithList/post",
         "isDefault": false,
@@ -4431,13 +4431,13 @@ class Context {
       },
     },
     "externalImport": Map {
-      "ResponseBuilderFactory" => Object {
+      "ResponseBuilderFactory" => {
         "isType": true,
         "modulePath": "../../response-builder-factory.js",
       },
     },
     "imports": Map {
-      "ContextType" => Object {
+      "ContextType" => {
         "isDefault": false,
         "isType": true,
         "name": "ContextType",
@@ -4446,10 +4446,10 @@ class Context {
             "ContextTypeCoder@[object Object]:true" => "ContextType",
           },
           "exports": Map {
-            "ContextType" => Object {
+            "ContextType" => {
               "beforeExport": "",
-              "code": Object {
-                "raw": "export type { ContextType } from \\"../$.context\\"",
+              "code": {
+                "raw": "export type { ContextType } from "../$.context"",
               },
               "done": true,
               "id": "ContextTypeCoder",
@@ -4470,7 +4470,7 @@ class Context {
           "typeCache": Map {},
         },
       },
-      "User" => Object {
+      "User" => {
         "isDefault": false,
         "isType": true,
         "name": "User",
@@ -4479,9 +4479,9 @@ class Context {
             "SchemaTypeCoder@undefined@[object Object]:true" => "User",
           },
           "exports": Map {
-            "User" => Object {
+            "User" => {
               "beforeExport": "",
-              "code": "{\\"id\\"?: number,\\"username\\"?: string,\\"firstName\\"?: string,\\"lastName\\"?: string,\\"email\\"?: string,\\"password\\"?: string,\\"phone\\"?: string,\\"userStatus\\"?: number}",
+              "code": "{"id"?: number,"username"?: string,"firstName"?: string,"lastName"?: string,"email"?: string,"password"?: string,"phone"?: string,"userStatus"?: number}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
               "isDefault": false,
@@ -4515,7 +4515,7 @@ class Context {
       "OperationTypeCoder@./petstore.yaml#/paths/~1user~1login/get@path-types/user/login.types.ts:true:false" => "HTTP_GET",
     },
     "exports": Map {
-      "GET" => Object {
+      "GET" => {
         "beforeExport": "",
         "code": "($) => {
       return $.response[200].random();
@@ -4531,7 +4531,7 @@ class Context {
     },
     "externalImport": Map {},
     "imports": Map {
-      "HTTP_GET" => Object {
+      "HTTP_GET" => {
         "isDefault": false,
         "isType": true,
         "name": "HTTP_GET",
@@ -4541,19 +4541,19 @@ class Context {
             "ContextTypeCoder@paths/user/$.context.ts:true:false" => "ContextType",
           },
           "exports": Map {
-            "HTTP_GET" => Object {
+            "HTTP_GET" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: {\\"username?\\": string, \\"password?\\": string}, path: never, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: {"username?": string, "password?": string}, path: never, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {
-\\"X-Rate-Limit\\": { schema: number},
-\\"X-Expires-After\\": { schema: string}
+"X-Rate-Limit": { schema: number},
+"X-Expires-After": { schema: string}
 };
           content: {
-\\"application/xml\\": { 
+"application/xml": { 
             schema:  string
          },
-\\"application/json\\": { 
+"application/json": { 
             schema:  string
          }
 };
@@ -4564,15 +4564,15 @@ class Context {
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
-              contentType?: \\"application/xml\\",
+              contentType?: "application/xml",
               body?: string
             } | {  
               status: 200, 
-              contentType?: \\"application/json\\",
+              contentType?: "application/json",
               body?: string
             } | {  
           status: 400 
-        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
+        } | { status: 415, contentType: "text/plain", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user~1login/get",
               "isDefault": false,
@@ -4583,13 +4583,13 @@ class Context {
             },
           },
           "externalImport": Map {
-            "ResponseBuilderFactory" => Object {
+            "ResponseBuilderFactory" => {
               "isType": true,
               "modulePath": "../../response-builder-factory.js",
             },
           },
           "imports": Map {
-            "ContextType" => Object {
+            "ContextType" => {
               "isDefault": false,
               "isType": true,
               "name": "ContextType",
@@ -4598,10 +4598,10 @@ class Context {
                   "ContextTypeCoder@[object Object]:true" => "ContextType",
                 },
                 "exports": Map {
-                  "ContextType" => Object {
+                  "ContextType" => {
                     "beforeExport": "",
-                    "code": Object {
-                      "raw": "export type { ContextType } from \\"../$.context\\"",
+                    "code": {
+                      "raw": "export type { ContextType } from "../$.context"",
                     },
                     "done": true,
                     "id": "ContextTypeCoder",
@@ -4645,19 +4645,19 @@ class Context {
       "ContextTypeCoder@paths/user/$.context.ts:true:false" => "ContextType",
     },
     "exports": Map {
-      "HTTP_GET" => Object {
+      "HTTP_GET" => {
         "beforeExport": "",
-        "code": "({ query, path, header, body, context, proxy }: { query: {\\"username?\\": string, \\"password?\\": string}, path: never, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context, proxy }: { query: {"username?": string, "password?": string}, path: never, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {
-\\"X-Rate-Limit\\": { schema: number},
-\\"X-Expires-After\\": { schema: string}
+"X-Rate-Limit": { schema: number},
+"X-Expires-After": { schema: string}
 };
           content: {
-\\"application/xml\\": { 
+"application/xml": { 
             schema:  string
          },
-\\"application/json\\": { 
+"application/json": { 
             schema:  string
          }
 };
@@ -4668,15 +4668,15 @@ class Context {
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
-              contentType?: \\"application/xml\\",
+              contentType?: "application/xml",
               body?: string
             } | {  
               status: 200, 
-              contentType?: \\"application/json\\",
+              contentType?: "application/json",
               body?: string
             } | {  
           status: 400 
-        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
+        } | { status: 415, contentType: "text/plain", body: string } | void",
         "done": true,
         "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user~1login/get",
         "isDefault": false,
@@ -4687,13 +4687,13 @@ class Context {
       },
     },
     "externalImport": Map {
-      "ResponseBuilderFactory" => Object {
+      "ResponseBuilderFactory" => {
         "isType": true,
         "modulePath": "../../response-builder-factory.js",
       },
     },
     "imports": Map {
-      "ContextType" => Object {
+      "ContextType" => {
         "isDefault": false,
         "isType": true,
         "name": "ContextType",
@@ -4702,10 +4702,10 @@ class Context {
             "ContextTypeCoder@[object Object]:true" => "ContextType",
           },
           "exports": Map {
-            "ContextType" => Object {
+            "ContextType" => {
               "beforeExport": "",
-              "code": Object {
-                "raw": "export type { ContextType } from \\"../$.context\\"",
+              "code": {
+                "raw": "export type { ContextType } from "../$.context"",
               },
               "done": true,
               "id": "ContextTypeCoder",
@@ -4740,7 +4740,7 @@ class Context {
       "OperationTypeCoder@./petstore.yaml#/paths/~1user~1logout/get@path-types/user/logout.types.ts:true:false" => "HTTP_GET",
     },
     "exports": Map {
-      "GET" => Object {
+      "GET" => {
         "beforeExport": "",
         "code": "() => { /* no response content specified in the OpenAPI document */ }",
         "done": true,
@@ -4754,7 +4754,7 @@ class Context {
     },
     "externalImport": Map {},
     "imports": Map {
-      "HTTP_GET" => Object {
+      "HTTP_GET" => {
         "isDefault": false,
         "isType": true,
         "name": "HTTP_GET",
@@ -4764,7 +4764,7 @@ class Context {
             "ContextTypeCoder@paths/user/$.context.ts:true:false" => "ContextType",
           },
           "exports": Map {
-            "HTTP_GET" => Object {
+            "HTTP_GET" => {
               "beforeExport": "",
               "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
@@ -4773,7 +4773,7 @@ class Context {
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: number | undefined 
-        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
+        } | { status: 415, contentType: "text/plain", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user~1logout/get",
               "isDefault": false,
@@ -4784,13 +4784,13 @@ class Context {
             },
           },
           "externalImport": Map {
-            "ResponseBuilderFactory" => Object {
+            "ResponseBuilderFactory" => {
               "isType": true,
               "modulePath": "../../response-builder-factory.js",
             },
           },
           "imports": Map {
-            "ContextType" => Object {
+            "ContextType" => {
               "isDefault": false,
               "isType": true,
               "name": "ContextType",
@@ -4799,10 +4799,10 @@ class Context {
                   "ContextTypeCoder@[object Object]:true" => "ContextType",
                 },
                 "exports": Map {
-                  "ContextType" => Object {
+                  "ContextType" => {
                     "beforeExport": "",
-                    "code": Object {
-                      "raw": "export type { ContextType } from \\"../$.context\\"",
+                    "code": {
+                      "raw": "export type { ContextType } from "../$.context"",
                     },
                     "done": true,
                     "id": "ContextTypeCoder",
@@ -4846,7 +4846,7 @@ class Context {
       "ContextTypeCoder@paths/user/$.context.ts:true:false" => "ContextType",
     },
     "exports": Map {
-      "HTTP_GET" => Object {
+      "HTTP_GET" => {
         "beforeExport": "",
         "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
@@ -4855,7 +4855,7 @@ class Context {
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: number | undefined 
-        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
+        } | { status: 415, contentType: "text/plain", body: string } | void",
         "done": true,
         "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user~1logout/get",
         "isDefault": false,
@@ -4866,13 +4866,13 @@ class Context {
       },
     },
     "externalImport": Map {
-      "ResponseBuilderFactory" => Object {
+      "ResponseBuilderFactory" => {
         "isType": true,
         "modulePath": "../../response-builder-factory.js",
       },
     },
     "imports": Map {
-      "ContextType" => Object {
+      "ContextType" => {
         "isDefault": false,
         "isType": true,
         "name": "ContextType",
@@ -4881,10 +4881,10 @@ class Context {
             "ContextTypeCoder@[object Object]:true" => "ContextType",
           },
           "exports": Map {
-            "ContextType" => Object {
+            "ContextType" => {
               "beforeExport": "",
-              "code": Object {
-                "raw": "export type { ContextType } from \\"../$.context\\"",
+              "code": {
+                "raw": "export type { ContextType } from "../$.context"",
               },
               "done": true,
               "id": "ContextTypeCoder",
@@ -4923,7 +4923,7 @@ class Context {
       "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/delete@path-types/user/{username}.types.ts:true:false" => "HTTP_DELETE",
     },
     "exports": Map {
-      "GET" => Object {
+      "GET" => {
         "beforeExport": "",
         "code": "($) => {
       return $.response[200].random();
@@ -4936,7 +4936,7 @@ class Context {
         "promise": Promise {},
         "typeDeclaration": "HTTP_GET",
       },
-      "PUT" => Object {
+      "PUT" => {
         "beforeExport": "",
         "code": "() => { /* no response content specified in the OpenAPI document */ }",
         "done": true,
@@ -4947,7 +4947,7 @@ class Context {
         "promise": Promise {},
         "typeDeclaration": "HTTP_PUT",
       },
-      "DELETE" => Object {
+      "DELETE" => {
         "beforeExport": "",
         "code": "() => { /* no response content specified in the OpenAPI document */ }",
         "done": true,
@@ -4961,7 +4961,7 @@ class Context {
     },
     "externalImport": Map {},
     "imports": Map {
-      "HTTP_GET" => Object {
+      "HTTP_GET" => {
         "isDefault": false,
         "isType": true,
         "name": "HTTP_GET",
@@ -4974,16 +4974,16 @@ class Context {
             "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
           },
           "exports": Map {
-            "HTTP_GET" => Object {
+            "HTTP_GET" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"username\\": string}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"username": string}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
-\\"application/xml\\": { 
+"application/xml": { 
             schema:  User
          },
-\\"application/json\\": { 
+"application/json": { 
             schema:  User
          }
 };
@@ -4998,17 +4998,17 @@ class Context {
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
-              contentType?: \\"application/xml\\",
+              contentType?: "application/xml",
               body?: User
             } | {  
               status: 200, 
-              contentType?: \\"application/json\\",
+              contentType?: "application/json",
               body?: User
             } | {  
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
+        } | { status: 415, contentType: "text/plain", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/get",
               "isDefault": false,
@@ -5017,16 +5017,16 @@ class Context {
               "promise": Promise {},
               "typeDeclaration": "",
             },
-            "HTTP_PUT" => Object {
+            "HTTP_PUT" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"username\\": string}, header: never, body: User, context: ContextType, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"username": string}, header: never, body: User, context: ContextType, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
           headers: {};
           content: {};
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: number | undefined 
-        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
+        } | { status: 415, contentType: "text/plain", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/put",
               "isDefault": false,
@@ -5035,9 +5035,9 @@ class Context {
               "promise": Promise {},
               "typeDeclaration": "",
             },
-            "HTTP_DELETE" => Object {
+            "HTTP_DELETE" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"username\\": string}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"username": string}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 400: {
           headers: {};
           content: {};
@@ -5050,7 +5050,7 @@ class Context {
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
+        } | { status: 415, contentType: "text/plain", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/delete",
               "isDefault": false,
@@ -5061,13 +5061,13 @@ class Context {
             },
           },
           "externalImport": Map {
-            "ResponseBuilderFactory" => Object {
+            "ResponseBuilderFactory" => {
               "isType": true,
               "modulePath": "../../response-builder-factory.js",
             },
           },
           "imports": Map {
-            "ContextType" => Object {
+            "ContextType" => {
               "isDefault": false,
               "isType": true,
               "name": "ContextType",
@@ -5076,10 +5076,10 @@ class Context {
                   "ContextTypeCoder@[object Object]:true" => "ContextType",
                 },
                 "exports": Map {
-                  "ContextType" => Object {
+                  "ContextType" => {
                     "beforeExport": "",
-                    "code": Object {
-                      "raw": "export type { ContextType } from \\"../$.context\\"",
+                    "code": {
+                      "raw": "export type { ContextType } from "../$.context"",
                     },
                     "done": true,
                     "id": "ContextTypeCoder",
@@ -5100,7 +5100,7 @@ class Context {
                 "typeCache": Map {},
               },
             },
-            "User" => Object {
+            "User" => {
               "isDefault": false,
               "isType": true,
               "name": "User",
@@ -5109,9 +5109,9 @@ class Context {
                   "SchemaTypeCoder@undefined@[object Object]:true" => "User",
                 },
                 "exports": Map {
-                  "User" => Object {
+                  "User" => {
                     "beforeExport": "",
-                    "code": "{\\"id\\"?: number,\\"username\\"?: string,\\"firstName\\"?: string,\\"lastName\\"?: string,\\"email\\"?: string,\\"password\\"?: string,\\"phone\\"?: string,\\"userStatus\\"?: number}",
+                    "code": "{"id"?: number,"username"?: string,"firstName"?: string,"lastName"?: string,"email"?: string,"password"?: string,"phone"?: string,"userStatus"?: number}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isDefault": false,
@@ -5140,7 +5140,7 @@ class Context {
           "typeCache": Map {},
         },
       },
-      "HTTP_PUT" => Object {
+      "HTTP_PUT" => {
         "isDefault": false,
         "isType": true,
         "name": "HTTP_PUT",
@@ -5153,16 +5153,16 @@ class Context {
             "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
           },
           "exports": Map {
-            "HTTP_GET" => Object {
+            "HTTP_GET" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"username\\": string}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"username": string}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
-\\"application/xml\\": { 
+"application/xml": { 
             schema:  User
          },
-\\"application/json\\": { 
+"application/json": { 
             schema:  User
          }
 };
@@ -5177,17 +5177,17 @@ class Context {
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
-              contentType?: \\"application/xml\\",
+              contentType?: "application/xml",
               body?: User
             } | {  
               status: 200, 
-              contentType?: \\"application/json\\",
+              contentType?: "application/json",
               body?: User
             } | {  
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
+        } | { status: 415, contentType: "text/plain", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/get",
               "isDefault": false,
@@ -5196,16 +5196,16 @@ class Context {
               "promise": Promise {},
               "typeDeclaration": "",
             },
-            "HTTP_PUT" => Object {
+            "HTTP_PUT" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"username\\": string}, header: never, body: User, context: ContextType, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"username": string}, header: never, body: User, context: ContextType, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
           headers: {};
           content: {};
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: number | undefined 
-        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
+        } | { status: 415, contentType: "text/plain", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/put",
               "isDefault": false,
@@ -5214,9 +5214,9 @@ class Context {
               "promise": Promise {},
               "typeDeclaration": "",
             },
-            "HTTP_DELETE" => Object {
+            "HTTP_DELETE" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"username\\": string}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"username": string}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 400: {
           headers: {};
           content: {};
@@ -5229,7 +5229,7 @@ class Context {
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
+        } | { status: 415, contentType: "text/plain", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/delete",
               "isDefault": false,
@@ -5240,13 +5240,13 @@ class Context {
             },
           },
           "externalImport": Map {
-            "ResponseBuilderFactory" => Object {
+            "ResponseBuilderFactory" => {
               "isType": true,
               "modulePath": "../../response-builder-factory.js",
             },
           },
           "imports": Map {
-            "ContextType" => Object {
+            "ContextType" => {
               "isDefault": false,
               "isType": true,
               "name": "ContextType",
@@ -5255,10 +5255,10 @@ class Context {
                   "ContextTypeCoder@[object Object]:true" => "ContextType",
                 },
                 "exports": Map {
-                  "ContextType" => Object {
+                  "ContextType" => {
                     "beforeExport": "",
-                    "code": Object {
-                      "raw": "export type { ContextType } from \\"../$.context\\"",
+                    "code": {
+                      "raw": "export type { ContextType } from "../$.context"",
                     },
                     "done": true,
                     "id": "ContextTypeCoder",
@@ -5279,7 +5279,7 @@ class Context {
                 "typeCache": Map {},
               },
             },
-            "User" => Object {
+            "User" => {
               "isDefault": false,
               "isType": true,
               "name": "User",
@@ -5288,9 +5288,9 @@ class Context {
                   "SchemaTypeCoder@undefined@[object Object]:true" => "User",
                 },
                 "exports": Map {
-                  "User" => Object {
+                  "User" => {
                     "beforeExport": "",
-                    "code": "{\\"id\\"?: number,\\"username\\"?: string,\\"firstName\\"?: string,\\"lastName\\"?: string,\\"email\\"?: string,\\"password\\"?: string,\\"phone\\"?: string,\\"userStatus\\"?: number}",
+                    "code": "{"id"?: number,"username"?: string,"firstName"?: string,"lastName"?: string,"email"?: string,"password"?: string,"phone"?: string,"userStatus"?: number}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isDefault": false,
@@ -5319,7 +5319,7 @@ class Context {
           "typeCache": Map {},
         },
       },
-      "HTTP_DELETE" => Object {
+      "HTTP_DELETE" => {
         "isDefault": false,
         "isType": true,
         "name": "HTTP_DELETE",
@@ -5332,16 +5332,16 @@ class Context {
             "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
           },
           "exports": Map {
-            "HTTP_GET" => Object {
+            "HTTP_GET" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"username\\": string}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"username": string}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
-\\"application/xml\\": { 
+"application/xml": { 
             schema:  User
          },
-\\"application/json\\": { 
+"application/json": { 
             schema:  User
          }
 };
@@ -5356,17 +5356,17 @@ class Context {
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
-              contentType?: \\"application/xml\\",
+              contentType?: "application/xml",
               body?: User
             } | {  
               status: 200, 
-              contentType?: \\"application/json\\",
+              contentType?: "application/json",
               body?: User
             } | {  
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
+        } | { status: 415, contentType: "text/plain", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/get",
               "isDefault": false,
@@ -5375,16 +5375,16 @@ class Context {
               "promise": Promise {},
               "typeDeclaration": "",
             },
-            "HTTP_PUT" => Object {
+            "HTTP_PUT" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"username\\": string}, header: never, body: User, context: ContextType, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"username": string}, header: never, body: User, context: ContextType, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
           headers: {};
           content: {};
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: number | undefined 
-        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
+        } | { status: 415, contentType: "text/plain", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/put",
               "isDefault": false,
@@ -5393,9 +5393,9 @@ class Context {
               "promise": Promise {},
               "typeDeclaration": "",
             },
-            "HTTP_DELETE" => Object {
+            "HTTP_DELETE" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"username\\": string}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"username": string}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 400: {
           headers: {};
           content: {};
@@ -5408,7 +5408,7 @@ class Context {
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
+        } | { status: 415, contentType: "text/plain", body: string } | void",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/delete",
               "isDefault": false,
@@ -5419,13 +5419,13 @@ class Context {
             },
           },
           "externalImport": Map {
-            "ResponseBuilderFactory" => Object {
+            "ResponseBuilderFactory" => {
               "isType": true,
               "modulePath": "../../response-builder-factory.js",
             },
           },
           "imports": Map {
-            "ContextType" => Object {
+            "ContextType" => {
               "isDefault": false,
               "isType": true,
               "name": "ContextType",
@@ -5434,10 +5434,10 @@ class Context {
                   "ContextTypeCoder@[object Object]:true" => "ContextType",
                 },
                 "exports": Map {
-                  "ContextType" => Object {
+                  "ContextType" => {
                     "beforeExport": "",
-                    "code": Object {
-                      "raw": "export type { ContextType } from \\"../$.context\\"",
+                    "code": {
+                      "raw": "export type { ContextType } from "../$.context"",
                     },
                     "done": true,
                     "id": "ContextTypeCoder",
@@ -5458,7 +5458,7 @@ class Context {
                 "typeCache": Map {},
               },
             },
-            "User" => Object {
+            "User" => {
               "isDefault": false,
               "isType": true,
               "name": "User",
@@ -5467,9 +5467,9 @@ class Context {
                   "SchemaTypeCoder@undefined@[object Object]:true" => "User",
                 },
                 "exports": Map {
-                  "User" => Object {
+                  "User" => {
                     "beforeExport": "",
-                    "code": "{\\"id\\"?: number,\\"username\\"?: string,\\"firstName\\"?: string,\\"lastName\\"?: string,\\"email\\"?: string,\\"password\\"?: string,\\"phone\\"?: string,\\"userStatus\\"?: number}",
+                    "code": "{"id"?: number,"username"?: string,"firstName"?: string,"lastName"?: string,"email"?: string,"password"?: string,"phone"?: string,"userStatus"?: number}",
                     "done": true,
                     "id": "SchemaTypeCoder@undefined",
                     "isDefault": false,
@@ -5515,16 +5515,16 @@ class Context {
       "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
     },
     "exports": Map {
-      "HTTP_GET" => Object {
+      "HTTP_GET" => {
         "beforeExport": "",
-        "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"username\\": string}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"username": string}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
-\\"application/xml\\": { 
+"application/xml": { 
             schema:  User
          },
-\\"application/json\\": { 
+"application/json": { 
             schema:  User
          }
 };
@@ -5539,17 +5539,17 @@ class Context {
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
-              contentType?: \\"application/xml\\",
+              contentType?: "application/xml",
               body?: User
             } | {  
               status: 200, 
-              contentType?: \\"application/json\\",
+              contentType?: "application/json",
               body?: User
             } | {  
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
+        } | { status: 415, contentType: "text/plain", body: string } | void",
         "done": true,
         "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/get",
         "isDefault": false,
@@ -5558,16 +5558,16 @@ class Context {
         "promise": Promise {},
         "typeDeclaration": "",
       },
-      "HTTP_PUT" => Object {
+      "HTTP_PUT" => {
         "beforeExport": "",
-        "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"username\\": string}, header: never, body: User, context: ContextType, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"username": string}, header: never, body: User, context: ContextType, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
           headers: {};
           content: {};
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: number | undefined 
-        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
+        } | { status: 415, contentType: "text/plain", body: string } | void",
         "done": true,
         "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/put",
         "isDefault": false,
@@ -5576,9 +5576,9 @@ class Context {
         "promise": Promise {},
         "typeDeclaration": "",
       },
-      "HTTP_DELETE" => Object {
+      "HTTP_DELETE" => {
         "beforeExport": "",
-        "code": "({ query, path, header, body, context, proxy }: { query: never, path: {\\"username\\": string}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"username": string}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 400: {
           headers: {};
           content: {};
@@ -5591,7 +5591,7 @@ class Context {
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: \\"text/plain\\", body: string } | void",
+        } | { status: 415, contentType: "text/plain", body: string } | void",
         "done": true,
         "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/delete",
         "isDefault": false,
@@ -5602,13 +5602,13 @@ class Context {
       },
     },
     "externalImport": Map {
-      "ResponseBuilderFactory" => Object {
+      "ResponseBuilderFactory" => {
         "isType": true,
         "modulePath": "../../response-builder-factory.js",
       },
     },
     "imports": Map {
-      "ContextType" => Object {
+      "ContextType" => {
         "isDefault": false,
         "isType": true,
         "name": "ContextType",
@@ -5617,10 +5617,10 @@ class Context {
             "ContextTypeCoder@[object Object]:true" => "ContextType",
           },
           "exports": Map {
-            "ContextType" => Object {
+            "ContextType" => {
               "beforeExport": "",
-              "code": Object {
-                "raw": "export type { ContextType } from \\"../$.context\\"",
+              "code": {
+                "raw": "export type { ContextType } from "../$.context"",
               },
               "done": true,
               "id": "ContextTypeCoder",
@@ -5641,7 +5641,7 @@ class Context {
           "typeCache": Map {},
         },
       },
-      "User" => Object {
+      "User" => {
         "isDefault": false,
         "isType": true,
         "name": "User",
@@ -5650,9 +5650,9 @@ class Context {
             "SchemaTypeCoder@undefined@[object Object]:true" => "User",
           },
           "exports": Map {
-            "User" => Object {
+            "User" => {
               "beforeExport": "",
-              "code": "{\\"id\\"?: number,\\"username\\"?: string,\\"firstName\\"?: string,\\"lastName\\"?: string,\\"email\\"?: string,\\"password\\"?: string,\\"phone\\"?: string,\\"userStatus\\"?: number}",
+              "code": "{"id"?: number,"username"?: string,"firstName"?: string,"lastName"?: string,"email"?: string,"password"?: string,"phone"?: string,"userStatus"?: number}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
               "isDefault": false,
@@ -5686,7 +5686,7 @@ class Context {
       "ContextTypeCoder@[object Object]:true" => "ContextType",
     },
     "exports": Map {
-      "Context" => Object {
+      "Context" => {
         "beforeExport": "/**
 * This is the default context for Counterfact.
 * Change the code to suit your needs.
@@ -5697,7 +5697,7 @@ class Context {
 
   // A helper when you accessing the context object via the REPL. You can delete it if you like.
   [Symbol.for('nodejs.util.inspect.custom')](depth, options, inspect) {
-    return inspect(this, { ...options, customInspect: false }) + \\"\\\\n\\\\n ^ This is the default context object. You can edit its definition at paths/$.context.ts\\";
+    return inspect(this, { ...options, customInspect: false }) + "\\n\\n ^ This is the default context object. You can edit its definition at paths/$.context.ts";
   }
 }
 ",
@@ -5710,7 +5710,7 @@ class Context {
         "promise": Promise {},
         "typeDeclaration": "",
       },
-      "ContextType" => Object {
+      "ContextType" => {
         "beforeExport": "",
         "code": "Context",
         "done": true,
@@ -5738,9 +5738,9 @@ class Context {
       "SchemaTypeCoder@undefined@components/Tag.ts:true:false" => "Tag",
     },
     "exports": Map {
-      "Pet" => Object {
+      "Pet" => {
         "beforeExport": "",
-        "code": "{\\"id\\"?: number,\\"name\\": string,\\"category\\"?: Category,\\"photoUrls\\": Array<string>,\\"tags\\"?: Array<Tag>,\\"status\\"?: \\"available\\" | \\"pending\\" | \\"sold\\"}",
+        "code": "{"id"?: number,"name": string,"category"?: Category,"photoUrls": Array<string>,"tags"?: Array<Tag>,"status"?: "available" | "pending" | "sold"}",
         "done": true,
         "id": "SchemaTypeCoder@undefined",
         "isDefault": false,
@@ -5752,7 +5752,7 @@ class Context {
     },
     "externalImport": Map {},
     "imports": Map {
-      "Category" => Object {
+      "Category" => {
         "isDefault": false,
         "isType": true,
         "name": "Category",
@@ -5761,9 +5761,9 @@ class Context {
             "SchemaTypeCoder@undefined@[object Object]:true" => "Category",
           },
           "exports": Map {
-            "Category" => Object {
+            "Category" => {
               "beforeExport": "",
-              "code": "{\\"id\\"?: number,\\"name\\"?: string}",
+              "code": "{"id"?: number,"name"?: string}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
               "isDefault": false,
@@ -5783,7 +5783,7 @@ class Context {
           "typeCache": Map {},
         },
       },
-      "Tag" => Object {
+      "Tag" => {
         "isDefault": false,
         "isType": true,
         "name": "Tag",
@@ -5792,9 +5792,9 @@ class Context {
             "SchemaTypeCoder@undefined@[object Object]:true" => "Tag",
           },
           "exports": Map {
-            "Tag" => Object {
+            "Tag" => {
               "beforeExport": "",
-              "code": "{\\"id\\"?: number,\\"name\\"?: string}",
+              "code": "{"id"?: number,"name"?: string}",
               "done": true,
               "id": "SchemaTypeCoder@undefined",
               "isDefault": false,
@@ -5827,10 +5827,10 @@ class Context {
       "ContextTypeCoder@[object Object]:true" => "ContextType",
     },
     "exports": Map {
-      "ContextType" => Object {
+      "ContextType" => {
         "beforeExport": "",
-        "code": Object {
-          "raw": "export type { ContextType } from \\"../$.context\\"",
+        "code": {
+          "raw": "export type { ContextType } from "../$.context"",
         },
         "done": true,
         "id": "ContextTypeCoder",
@@ -5855,10 +5855,10 @@ class Context {
       "ContextTypeCoder@[object Object]:true" => "ContextType",
     },
     "exports": Map {
-      "ContextType" => Object {
+      "ContextType" => {
         "beforeExport": "",
-        "code": Object {
-          "raw": "export type { ContextType } from \\"../$.context\\"",
+        "code": {
+          "raw": "export type { ContextType } from "../$.context"",
         },
         "done": true,
         "id": "ContextTypeCoder",
@@ -5883,9 +5883,9 @@ class Context {
       "SchemaTypeCoder@undefined@[object Object]:true" => "ApiResponse",
     },
     "exports": Map {
-      "ApiResponse" => Object {
+      "ApiResponse" => {
         "beforeExport": "",
-        "code": "{\\"code\\"?: number,\\"type\\"?: string,\\"message\\"?: string}",
+        "code": "{"code"?: number,"type"?: string,"message"?: string}",
         "done": true,
         "id": "SchemaTypeCoder@undefined",
         "isDefault": false,
@@ -5909,10 +5909,10 @@ class Context {
       "ContextTypeCoder@[object Object]:true" => "ContextType",
     },
     "exports": Map {
-      "ContextType" => Object {
+      "ContextType" => {
         "beforeExport": "",
-        "code": Object {
-          "raw": "export type { ContextType } from \\"../$.context\\"",
+        "code": {
+          "raw": "export type { ContextType } from "../$.context"",
         },
         "done": true,
         "id": "ContextTypeCoder",
@@ -5937,9 +5937,9 @@ class Context {
       "SchemaTypeCoder@undefined@[object Object]:true" => "Order",
     },
     "exports": Map {
-      "Order" => Object {
+      "Order" => {
         "beforeExport": "",
-        "code": "{\\"id\\"?: number,\\"petId\\"?: number,\\"quantity\\"?: number,\\"shipDate\\"?: string,\\"status\\"?: \\"placed\\" | \\"approved\\" | \\"delivered\\",\\"complete\\"?: boolean}",
+        "code": "{"id"?: number,"petId"?: number,"quantity"?: number,"shipDate"?: string,"status"?: "placed" | "approved" | "delivered","complete"?: boolean}",
         "done": true,
         "id": "SchemaTypeCoder@undefined",
         "isDefault": false,
@@ -5963,10 +5963,10 @@ class Context {
       "ContextTypeCoder@[object Object]:true" => "ContextType",
     },
     "exports": Map {
-      "ContextType" => Object {
+      "ContextType" => {
         "beforeExport": "",
-        "code": Object {
-          "raw": "export type { ContextType } from \\"../$.context\\"",
+        "code": {
+          "raw": "export type { ContextType } from "../$.context"",
         },
         "done": true,
         "id": "ContextTypeCoder",
@@ -5991,9 +5991,9 @@ class Context {
       "SchemaTypeCoder@undefined@[object Object]:true" => "User",
     },
     "exports": Map {
-      "User" => Object {
+      "User" => {
         "beforeExport": "",
-        "code": "{\\"id\\"?: number,\\"username\\"?: string,\\"firstName\\"?: string,\\"lastName\\"?: string,\\"email\\"?: string,\\"password\\"?: string,\\"phone\\"?: string,\\"userStatus\\"?: number}",
+        "code": "{"id"?: number,"username"?: string,"firstName"?: string,"lastName"?: string,"email"?: string,"password"?: string,"phone"?: string,"userStatus"?: number}",
         "done": true,
         "id": "SchemaTypeCoder@undefined",
         "isDefault": false,
@@ -6017,10 +6017,10 @@ class Context {
       "ContextTypeCoder@[object Object]:true" => "ContextType",
     },
     "exports": Map {
-      "ContextType" => Object {
+      "ContextType" => {
         "beforeExport": "",
-        "code": Object {
-          "raw": "export type { ContextType } from \\"../$.context\\"",
+        "code": {
+          "raw": "export type { ContextType } from "../$.context"",
         },
         "done": true,
         "id": "ContextTypeCoder",
@@ -6045,9 +6045,9 @@ class Context {
       "SchemaTypeCoder@undefined@[object Object]:true" => "Category",
     },
     "exports": Map {
-      "Category" => Object {
+      "Category" => {
         "beforeExport": "",
-        "code": "{\\"id\\"?: number,\\"name\\"?: string}",
+        "code": "{"id"?: number,"name"?: string}",
         "done": true,
         "id": "SchemaTypeCoder@undefined",
         "isDefault": false,
@@ -6071,9 +6071,9 @@ class Context {
       "SchemaTypeCoder@undefined@[object Object]:true" => "Tag",
     },
     "exports": Map {
-      "Tag" => Object {
+      "Tag" => {
         "beforeExport": "",
-        "code": "{\\"id\\"?: number,\\"name\\"?: string}",
+        "code": "{"id"?: number,"name"?: string}",
         "done": true,
         "id": "SchemaTypeCoder@undefined",
         "isDefault": false,
