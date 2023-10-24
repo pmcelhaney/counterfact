@@ -51,11 +51,7 @@ async function main(source, destination) {
   const config = {
     basePath,
     includeSwaggerUi: true,
-
-    openApiPath:
-      source ||
-      nodePath.join(basePath, "../openapi.yaml").replaceAll("\\", "/"),
-
+    openApiPath: source,
     port: options.port,
     proxyEnabled: Boolean(options.proxyUrl),
     proxyUrl: options.proxyUrl,
