@@ -3979,6 +3979,10 @@ class Context {
               "isType": true,
               "modulePath": "../types.d.ts",
             },
+            "HttpStatusCode" => {
+              "isType": true,
+              "modulePath": "../types.d.ts",
+            },
           },
           "imports": Map {
             "ContextType" => {
@@ -4126,6 +4130,10 @@ class Context {
     },
     "externalImport": Map {
       "ResponseBuilderFactory" => {
+        "isType": true,
+        "modulePath": "../types.d.ts",
+      },
+      "HttpStatusCode" => {
         "isType": true,
         "modulePath": "../types.d.ts",
       },
@@ -4302,6 +4310,10 @@ class Context {
               "isType": true,
               "modulePath": "../../types.d.ts",
             },
+            "HttpStatusCode" => {
+              "isType": true,
+              "modulePath": "../../types.d.ts",
+            },
           },
           "imports": Map {
             "ContextType" => {
@@ -4432,6 +4444,10 @@ class Context {
     },
     "externalImport": Map {
       "ResponseBuilderFactory" => {
+        "isType": true,
+        "modulePath": "../../types.d.ts",
+      },
+      "HttpStatusCode" => {
         "isType": true,
         "modulePath": "../../types.d.ts",
       },
@@ -4788,6 +4804,10 @@ class Context {
               "isType": true,
               "modulePath": "../../types.d.ts",
             },
+            "HttpStatusCode" => {
+              "isType": true,
+              "modulePath": "../../types.d.ts",
+            },
           },
           "imports": Map {
             "ContextType" => {
@@ -4867,6 +4887,10 @@ class Context {
     },
     "externalImport": Map {
       "ResponseBuilderFactory" => {
+        "isType": true,
+        "modulePath": "../../types.d.ts",
+      },
+      "HttpStatusCode" => {
         "isType": true,
         "modulePath": "../../types.d.ts",
       },
@@ -5065,6 +5089,10 @@ class Context {
               "isType": true,
               "modulePath": "../../types.d.ts",
             },
+            "HttpStatusCode" => {
+              "isType": true,
+              "modulePath": "../../types.d.ts",
+            },
           },
           "imports": Map {
             "ContextType" => {
@@ -5244,6 +5272,10 @@ class Context {
               "isType": true,
               "modulePath": "../../types.d.ts",
             },
+            "HttpStatusCode" => {
+              "isType": true,
+              "modulePath": "../../types.d.ts",
+            },
           },
           "imports": Map {
             "ContextType" => {
@@ -5420,6 +5452,10 @@ class Context {
           },
           "externalImport": Map {
             "ResponseBuilderFactory" => {
+              "isType": true,
+              "modulePath": "../../types.d.ts",
+            },
+            "HttpStatusCode" => {
               "isType": true,
               "modulePath": "../../types.d.ts",
             },
@@ -5603,6 +5639,10 @@ class Context {
     },
     "externalImport": Map {
       "ResponseBuilderFactory" => {
+        "isType": true,
+        "modulePath": "../../types.d.ts",
+      },
+      "HttpStatusCode" => {
         "isType": true,
         "modulePath": "../../types.d.ts",
       },
