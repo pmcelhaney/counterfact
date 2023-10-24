@@ -1,11 +1,7 @@
 import repl from "node:repl";
 
+import type { Config } from "./config.js";
 import type { ContextRegistry } from "./context-registry.js";
-
-interface Config {
-  proxyEnabled: boolean;
-  proxyUrl: string;
-}
 
 export function startRepl(contextRegistry: ContextRegistry, config: Config) {
   const replServer = repl.start("> ");
@@ -59,4 +55,6 @@ export function startRepl(contextRegistry: ContextRegistry, config: Config) {
   replServer.context.loadContext = (path: string) => contextRegistry.find(path);
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
   replServer.context.context = replServer.context.loadContext("/");
+
+  return replServer;
 }

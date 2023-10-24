@@ -36,6 +36,18 @@ async function buildCacheDirectory(destination) {
   }
 }
 
+async function getPathsFromSpecification(specification) {
+  try {
+    return await specification.requirementAt("#/paths");
+  } catch (error) {
+    process.stderr.write(
+      `Could not find #/paths in the specification.\n${error}\n`,
+    );
+
+    return [];
+  }
+}
+
 // eslint-disable-next-line max-statements
 export async function generate(
   source,
@@ -54,9 +66,9 @@ export async function generate(
 
   debug("created specification: $o", specification);
 
-  debug("getting reading the #/paths from the specification");
+  debug("reading the #/paths from the specification");
 
-  const paths = await specification.requirementAt("#/paths");
+  const paths = await getPathsFromSpecification(specification);
 
   debug("got %i paths", paths.size);
 

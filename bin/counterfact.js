@@ -7,9 +7,7 @@ import createDebug from "debug";
 import open from "open";
 
 import { migrate } from "../dist/src/migrations/0.27.js";
-import { startRepl } from "../dist/src/server/repl.js";
-import { start } from "../dist/src/server/start.js";
-import { generate } from "../dist/src/typescript-generator/generate.js";
+import { counterfact } from "../dist/src/server/app.js";
 
 const DEFAULT_PORT = 3100;
 
@@ -23,10 +21,6 @@ async function main(source, destination) {
 
   const options = program.opts();
 
-  debug("options: %o", options);
-  debug("source: %s", source);
-  debug("destination: %s", destination);
-
   const destinationPath = nodePath
     .join(process.cwd(), destination)
     .replaceAll("\\", "/");
@@ -35,13 +29,11 @@ async function main(source, destination) {
   migrate(destinationPath);
   debug("done with migration");
 
-  debug('generating code at "%s"', destinationPath);
-
-  await generate(source, destinationPath);
-
-  debug("generated code", destinationPath);
-
   const basePath = nodePath.resolve(destinationPath).replaceAll("\\", "/");
+
+  debug("options: %o", options);
+  debug("source: %s", source);
+  debug("destination: %s", destination);
 
   const openBrowser = options.open;
 
@@ -58,11 +50,11 @@ async function main(source, destination) {
     proxyUrl: options.proxyUrl,
   };
 
-  debug("starting server (%o)", config);
+  debug("loading counterfact (%o)", config);
 
-  const { contextRegistry } = await start(config);
+  const { start } = await counterfact(config);
 
-  debug("started server");
+  debug("loaded counterfact", config);
 
   const waysToInteract = [
     `Call the REST APIs at ${url} (with your front end app, curl, Postman, etc.)`,
@@ -90,13 +82,11 @@ async function main(source, destination) {
 
   process.stdout.write("\n\n");
 
-  process.stdout.write("Starting REPL...\n");
+  debug("starting server");
 
-  debug("starting repl");
+  await start();
 
-  startRepl(contextRegistry, config);
-
-  debug("started repl");
+  debug("started server");
 
   if (openBrowser) {
     debug("opening browser");
