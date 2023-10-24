@@ -46,7 +46,9 @@ export function createKoaApp(
 
       openApiPath: config.openApiPath,
 
-      routes: registry.routes,
+      get routes() {
+        return registry.routes;
+      },
     }),
   );
 
@@ -64,7 +66,10 @@ export function createKoaApp(
   app.use(
     pageMiddleware("/counterfact/rapidoc", "rapi-doc", {
       basePath: config.basePath,
-      routes: registry.routes,
+
+      get routes() {
+        return registry.routes;
+      },
     }),
   );
 
