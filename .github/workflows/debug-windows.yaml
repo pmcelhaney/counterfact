@@ -1,6 +1,7 @@
 name: Debug Windows
 
 on:
+  pull_request:
   workflow_dispatch:
 
 env:
@@ -33,7 +34,5 @@ jobs:
         run: yarn install --frozen-lockfile --network-timeout 100000
       - name: Build
         run: yarn build
-      - name: Try running the petstore
-        run: npx . https://petstore3.swagger.io/api/v3/openapi.json out
-        timeout-minutes: 2
-        continue-on-error: true
+      - name: Show files
+        run: Get-ChildItem -Recurse
