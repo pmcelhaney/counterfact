@@ -1,7 +1,5 @@
-import {
-  createResponseBuilder,
-  type OpenApiOperation,
-} from "../../src/server/response-builder.js";
+import { createResponseBuilder } from "../../src/server/response-builder.js";
+import type { OpenApiOperation } from "../../src/server/types.d.ts";
 
 describe("a response builder", () => {
   it("starts building a response object when the status is selected", () => {

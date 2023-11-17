@@ -50,20 +50,12 @@ export class Repository {
   }
 
   copyCoreFiles(destination) {
-    const files = ["response-builder-factory.ts"];
-
-    return files.map((file) => {
-      const path = nodePath.join(destination, file).replaceAll("\\", "/");
-
-      process.stdout.write(`writing ${path}\n`);
-
-      return fs.copyFile(
-        nodePath
-          .join(__dirname, `../../templates/${file}`)
-          .replaceAll("\\", "/"),
-        path,
-      );
-    });
+    return fs.copyFile(
+      nodePath
+        .join(__dirname, "../../src/server/types.d.ts")
+        .replaceAll("\\", "/"),
+      nodePath.join(destination, "types.d.ts").replaceAll("\\", "/"),
+    );
   }
 
   async writeFiles(destination) {

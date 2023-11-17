@@ -12,8 +12,6 @@ export class ResponseTypeCoder extends Coder {
   }
 
   typeForDefaultStatusCode(listedStatusCodes) {
-    this.needsHttpStatusCodeImport = true;
-
     const definedStatusCodes = listedStatusCodes.filter(
       (key) => key !== "default",
     );
@@ -101,20 +99,20 @@ export class ResponseTypeCoder extends Coder {
 
     script.importExternalType(
       "ResponseBuilderFactory",
-      nodePath
-        .join(basePath, "response-builder-factory.js")
-        .replaceAll("\\", "/"),
+      nodePath.join(basePath, "types.d.ts").replaceAll("\\", "/"),
     );
 
-    if (this.needsHttpStatusCodeImport) {
+    const text = `ResponseBuilderFactory<${this.buildResponseObjectType(
+      script,
+    )}>`;
+
+    if (text.includes("HttpStatusCode")) {
       script.importExternalType(
         "HttpStatusCode",
-        nodePath
-          .join(basePath, "response-builder-factory.js")
-          .replaceAll("\\", "/"),
+        nodePath.join(basePath, "types.d.ts").replaceAll("\\", "/"),
       );
     }
 
-    return `ResponseBuilderFactory<${this.buildResponseObjectType(script)}>`;
+    return text;
   }
 }
