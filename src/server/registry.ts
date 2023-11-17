@@ -203,6 +203,7 @@ export class Registry {
         }
       } else {
         node = node.children[matchingChild];
+
         matchedParts.push(matchingChild);
       }
     }

@@ -26,13 +26,20 @@ function addCors(ctx: Koa.ExtendableContext, headers?: IncomingHttpHeaders) {
 
 export function koaMiddleware(
   dispatcher: Dispatcher,
-  { proxyEnabled = false, proxyUrl = "" } = {},
+  { proxyEnabled = false, proxyUrl = "", routePrefix = "" } = {},
   proxy = koaProxy,
 ): Koa.Middleware {
   // eslint-disable-next-line max-statements
   return async function middleware(ctx, next) {
+    if (!ctx.request.path.startsWith(routePrefix)) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+      return await next();
+    }
+
     /* @ts-expect-error the body comes from koa-bodyparser, not sure how to fix this */
-    const { body, headers, path, query } = ctx.request;
+    const { body, headers, query } = ctx.request;
+
+    const path = ctx.request.path.slice(routePrefix.length);
 
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
     const method = ctx.request.method as HttpMethods;

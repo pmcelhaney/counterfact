@@ -263,4 +263,41 @@ describe("koa middleware", () => {
 
     expect(ctx.set).toHaveBeenCalledWith("X-Custom-Header", "custom value");
   });
+
+  it("passes the request to the dispatcher and returns the response", async () => {
+    const registry = new Registry();
+
+    registry.add("/hello", {
+      // @ts-expect-error - not obvious how to make TS happy here, and it's just a unit test
+      POST({ body }: { body: { name: string } }) {
+        return {
+          body: `Hello, ${body.name}!`,
+        };
+      },
+    });
+
+    const dispatcher = new Dispatcher(registry, new ContextRegistry());
+    const middleware = koaMiddleware(dispatcher, { routePrefix: "/api/v1" });
+    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+    const ctx = {
+      req: {
+        path: "/api/v1/hello",
+      },
+
+      request: {
+        body: { name: "Homer" },
+        method: "POST",
+        path: "/api/v1/hello",
+      },
+
+      set: jest.fn(),
+    } as unknown as ParameterizedContext;
+
+    await middleware(ctx, async () => {
+      await Promise.resolve(undefined);
+    });
+
+    expect(ctx.status).toBe(200);
+    expect(ctx.body).toBe("Hello, Homer!");
+  });
 });
