@@ -6,8 +6,8 @@ import { program } from "commander";
 import createDebug from "debug";
 import open from "open";
 
-import { migrate } from "../dist/src/migrations/0.27.js";
-import { counterfact } from "../dist/src/server/app.js";
+import { migrate } from "../dist/migrations/0.27.js";
+import { counterfact } from "../dist/server/app.js";
 
 const DEFAULT_PORT = 3100;
 
@@ -48,6 +48,7 @@ async function main(source, destination) {
     port: options.port,
     proxyEnabled: Boolean(options.proxyUrl),
     proxyUrl: options.proxyUrl,
+    routePrefix: options.prefix,
   };
 
   debug("loading counterfact (%o)", config);
@@ -106,6 +107,10 @@ program
   .option("--swagger", "include swagger-ui")
   .option("--open", "open a browser")
   .option("--proxy-url <string>", "proxy URL")
+  .option(
+    "--prefix <string>",
+    "base path from which routes will be served (e.g. /api/v1)",
+  )
   .action(main)
   // eslint-disable-next-line sonar/process-argv
   .parse(process.argv);

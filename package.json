@@ -1,6 +1,6 @@
 {
   "name": "counterfact",
-  "version": "0.29.0",
+  "version": "0.30.0",
   "description": "a library for building a fake REST API for testing",
   "type": "module",
   "main": "./src/server/counterfact.js",
@@ -31,7 +31,7 @@
     "test": "yarn node --experimental-vm-modules ./node_modules/jest-cli/bin/jest --testPathIgnorePatterns=black-box --forceExit",
     "test:black-box": "rimraf dist && rimraf out && yarn build && yarn node --experimental-vm-modules ./node_modules/jest-cli/bin/jest black-box --forceExit --coverage=false",
     "test:mutants": "stryker run stryker.config.json",
-    "build": "tsc && copyfiles src/client/** dist && copyfiles templates/** dist",
+    "build": "tsc && copyfiles -f \"src/client/**\" dist/client",
     "prepack": "yarn build",
     "release": "npx changeset publish",
     "prepare": "husky install",
@@ -51,9 +51,9 @@
     "@swc/jest": "0.2.29",
     "@testing-library/dom": "9.3.3",
     "@types/jest": "29.5.8",
-    "@types/js-yaml": "4.0.8",
-    "@types/koa": "2.13.10",
-    "@types/koa-bodyparser": "4.3.11",
+    "@types/js-yaml": "4.0.9",
+    "@types/koa": "2.13.11",
+    "@types/koa-bodyparser": "4.3.12",
     "@types/koa-proxy": "1.0.7",
     "@types/koa-static": "4.0.4",
     "copyfiles": "2.4.1",
@@ -97,7 +97,7 @@
     "koa2-swagger-ui": "5.10.0",
     "node-fetch": "3.3.2",
     "open": "9.1.0",
-    "prettier": "3.0.3",
+    "prettier": "3.1.0",
     "typescript": "5.2.2"
   }
 }

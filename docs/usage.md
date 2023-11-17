@@ -32,15 +32,16 @@ Usage: counterfact [options] <openapi.yaml> [destination]
 Counterfact is a tool for generating a REST API from an OpenAPI document.
 
 Arguments:
-openapi.yaml path or URL to OpenAPI document
-destination path to generated code (default: ".")
+  openapi.yaml          path or URL to OpenAPI document
+  destination           path to generated code (default: ".")
 
 Options:
---serve start the server after generating code
---port <number> server port number (default: 3100)
---swagger include swagger-ui (implies --serve)
---open open a browser to swagger-ui (implies --swagger and --serve)
--h, --help display help for command
+  --port <number>       server port number (default: 3100)
+  --swagger             include swagger-ui
+  --open                open a browser
+  --proxy-url <string>  proxy URL
+  --prefix <string>     base path from which routes will be served (e.g. /api/v1)
+  -h, --help            display help for command
 
 ```
 

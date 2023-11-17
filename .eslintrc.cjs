@@ -19,6 +19,8 @@ const rules = {
     },
   ],
 
+  "max-lines": "warn",
+
   "n/shebang": "off",
 
   "no-magic-numbers": [
@@ -30,6 +32,7 @@ const rules = {
 
   "node/file-extension-in-import": "off",
   "node/no-callback-literal": "off",
+
   "node/no-missing-import": "off",
 
   "prettier/prettier": [
