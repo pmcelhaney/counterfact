@@ -1,5 +1,16 @@
 # counterfact
 
+## 0.30.0
+
+### Minor Changes
+
+- 0dc11ea: added a --prefix option to specify prefix from which routes are served (e.g. /api/v1)
+
+### Patch Changes
+
+- 4de94f0: Update dependency @types/jest to v29.5.7
+- 5f8e97b: chore(deps): update dependency @types/jest to v29.5.8
+
 ## 0.29.0
 
 ### Minor Changes
