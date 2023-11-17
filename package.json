@@ -1,6 +1,6 @@
 {
   "name": "counterfact",
-  "version": "0.29.0",
+  "version": "0.30.0",
   "description": "a library for building a fake REST API for testing",
   "type": "module",
   "main": "./src/server/counterfact.js",
