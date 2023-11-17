@@ -94,7 +94,7 @@
     "koa": "2.14.2",
     "koa-bodyparser": "4.4.1",
     "koa-proxy": "1.0.0-alpha.3",
-    "koa2-swagger-ui": "5.9.1",
+    "koa2-swagger-ui": "5.10.0",
     "node-fetch": "3.3.2",
     "open": "9.1.0",
     "prettier": "3.0.3",
