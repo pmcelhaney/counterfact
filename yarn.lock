@@ -2581,10 +2581,10 @@
     "@types/koa-compose" "*"
     "@types/node" "*"
 
-"@types/koa@2.13.10":
-  version "2.13.10"
-  resolved "https://registry.yarnpkg.com/@types/koa/-/koa-2.13.10.tgz#2c2a1cdf1252d654b05f444194328a3d23a880c4"
-  integrity sha512-weKc5IBeORLDGwD1FMgPjaZIg0/mtP7KxXAXEzPRCN78k274D9U2acmccDNPL1MwyV40Jj+hQQ5N2eaV6O0z8g==
+"@types/koa@2.13.11":
+  version "2.13.11"
+  resolved "https://registry.yarnpkg.com/@types/koa/-/koa-2.13.11.tgz#b7fd4a077d3683a9212a105f60859e631ed3a13b"
+  integrity sha512-0HZSGNdmLlLRvSxv0ngLSp09Hw98c+2XL3ZRYmkE6y8grqTweKEyyaj7LgxkyPUv0gQ5pNS/a7kHXo2Iwha1rA==
   dependencies:
     "@types/accepts" "*"
     "@types/content-disposition" "*"
