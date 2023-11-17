@@ -6,8 +6,8 @@ import { program } from "commander";
 import createDebug from "debug";
 import open from "open";
 
-import { migrate } from "../dist/src/migrations/0.27.js";
-import { counterfact } from "../dist/src/server/app.js";
+import { migrate } from "../dist/migrations/0.27.js";
+import { counterfact } from "../dist/server/app.js";
 
 const DEFAULT_PORT = 3100;
 

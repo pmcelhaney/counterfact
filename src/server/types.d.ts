@@ -1,4 +1,18 @@
-import type { OpenApiResponse } from "../src/server/types.d.ts";
+interface OpenApiHeader {
+  schema: unknown;
+}
+
+interface OpenApiContent {
+  schema: unknown;
+}
+
+interface Example {
+  description: string;
+  summary: string;
+  value: unknown;
+}
+
+type MediaType = `${string}/${string}`;
 
 type OmitValueWhenNever<Base> = Pick<
   Base,
@@ -7,7 +21,10 @@ type OmitValueWhenNever<Base> = Pick<
   }[keyof Base]
 >;
 
-type MediaType = `${string}/${string}`;
+interface OpenApiResponse {
+  content: { [key: MediaType]: OpenApiContent };
+  headers: { [key: string]: OpenApiHeader };
+}
 
 interface OpenApiResponses {
   [key: string]: OpenApiResponse;
@@ -23,7 +40,7 @@ type MaybeShortcut<
 > = IfHasKey<
   Response["content"],
   ContentType,
-  (body: Response["content"][ContentType]["schema"]) => ResponseBuilder<{
+  (body: Response["content"][ContentType]["schema"]) => GenericResponseBuilder<{
     content: Omit<Response["content"], ContentType>;
     headers: Response["headers"];
   }>,
@@ -35,7 +52,7 @@ type MatchFunction<Response extends OpenApiResponse> = <
 >(
   contentType: ContentType,
   body: Response["content"][ContentType]["schema"],
-) => ResponseBuilder<{
+) => GenericResponseBuilder<{
   content: Omit<Response["content"], ContentType>;
   headers: Response["headers"];
 }>;
@@ -45,12 +62,26 @@ type HeaderFunction<Response extends OpenApiResponse> = <
 >(
   header: Header,
   value: Response["headers"][Header]["schema"],
-) => ResponseBuilder<{
+) => GenericResponseBuilder<{
   content: Response["content"];
   headers: Omit<Response["headers"], Header>;
 }>;
 
-export type ResponseBuilder<
+interface ResponseBuilder {
+  [status: number | `${number} ${string}`]: ResponseBuilder;
+  content?: { body: unknown; type: string }[];
+  header: (name: string, value: string) => ResponseBuilder;
+  headers: { [name: string]: string };
+  html: (body: unknown) => ResponseBuilder;
+  json: (body: unknown) => ResponseBuilder;
+  match: (contentType: string, body: unknown) => ResponseBuilder;
+  random: () => ResponseBuilder;
+  randomLegacy: () => ResponseBuilder;
+  status?: number;
+  text: (body: unknown) => ResponseBuilder;
+}
+
+type GenericResponseBuilder<
   Response extends OpenApiResponse = OpenApiResponse,
 > = [keyof Response["content"]] extends [never]
   ? // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
@@ -68,13 +99,15 @@ export type ResponseBuilder<
       text: MaybeShortcut<"text/plain", Response>;
     }>;
 
-export type ResponseBuilderFactory<
+type ResponseBuilderFactory<
   Responses extends OpenApiResponses = OpenApiResponses,
 > = {
-  [StatusCode in keyof Responses]: ResponseBuilder<Responses[StatusCode]>;
-} & { [key: string]: ResponseBuilder<Responses["default"]> };
+  [StatusCode in keyof Responses]: GenericResponseBuilder<
+    Responses[StatusCode]
+  >;
+} & { [key: string]: GenericResponseBuilder<Responses["default"]> };
 
-export type HttpStatusCode =
+type HttpStatusCode =
   | 100
   | 101
   | 102
@@ -131,3 +164,38 @@ export type HttpStatusCode =
   | 506
   | 507
   | 511;
+
+interface OpenApiParameters {
+  in: "body" | "cookie" | "formData" | "header" | "path" | "query";
+  name: string;
+  schema?: {
+    type: string;
+  };
+}
+
+interface OpenApiOperation {
+  parameters?: OpenApiParameters[];
+  produces?: string[];
+  responses: {
+    [status: string]: {
+      content?: {
+        [type: number | string]: {
+          examples?: { [key: string]: Example };
+          schema: unknown;
+        };
+      };
+      examples?: { [key: string]: unknown };
+      schema?: unknown;
+    };
+  };
+}
+
+export type {
+  HttpStatusCode,
+  MediaType,
+  OpenApiOperation,
+  OpenApiParameters,
+  OpenApiResponse,
+  ResponseBuilder,
+  ResponseBuilderFactory,
+};

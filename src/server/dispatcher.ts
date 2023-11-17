@@ -1,5 +1,4 @@
 /* eslint-disable import/newline-after-import */
-/* eslint-disable max-lines */
 
 import { mediaTypes } from "@hapi/accept";
 import createDebugger from "debug";
@@ -13,11 +12,9 @@ import type {
   NormalizedCounterfactResponseObject,
   Registry,
 } from "./registry.js";
-import {
-  createResponseBuilder,
-  type OpenApiOperation,
-} from "./response-builder.js";
+import { createResponseBuilder } from "./response-builder.js";
 import { Tools } from "./tools.js";
+import type { OpenApiOperation, OpenApiParameters } from "./types.d.ts";
 
 const debug = createDebugger("counterfact:server:dispatcher");
 
@@ -39,14 +36,6 @@ interface ParameterTypes {
   };
   query: {
     [key: string]: string;
-  };
-}
-
-interface OpenApiParameters {
-  in: "body" | "cookie" | "formData" | "header" | "path" | "query";
-  name: string;
-  schema?: {
-    type: string;
   };
 }
 
@@ -304,5 +293,3 @@ export class Dispatcher {
     return normalizedResponse;
   }
 }
-
-export type { OpenApiParameters };
