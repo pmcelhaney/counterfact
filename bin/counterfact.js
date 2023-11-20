@@ -57,29 +57,19 @@ async function main(source, destination) {
 
   debug("loaded counterfact", config);
 
-  const waysToInteract = [
-    `Call the REST APIs at ${url} (with your front end app, curl, Postman, etc.)`,
-    `Change the implementation of the APIs by editing files under ${nodePath
-      .join(basePath, "paths")
-      .replaceAll("\\", "/")} (no need to restart)`,
-    `Use the GUI at ${guiUrl}`,
-    "Use the REPL below (type .counterfact for more information)",
-  ];
-
   const introduction = [
+    "____ ____ _  _ _ _ ___ ____ ____ ____ ____ ____ ___",
+    "|___ [__] |__| |\\|  |  |=== |--< |--- |--| |___  | ",
+    "       High code, low effort mock REST APIs",
     "",
-    "Welcome to Counterfact!",
+    `| API Base URL  ==> ${url}`,
+    `| Admin Console ==> ${guiUrl}`,
+    "| Instructions  ==> https://counterfact.dev/docs/usage.html",
     "",
-    "Counterfact is a mock server used to develop and test your front end app.",
-    "There are several ways to poke and prod the server in order to make it behave the way you need for testing.",
-    "",
+    "Starting REPL, type .help for more info",
   ];
 
-  process.stdout.write(`${introduction.join("\n")}\n`);
-
-  process.stdout.write(
-    waysToInteract.map((text, index) => `${index + 1}. ${text}`).join("\n"),
-  );
+  process.stdout.write(introduction.join("\n"));
 
   process.stdout.write("\n\n");
 
