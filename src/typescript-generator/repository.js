@@ -82,7 +82,7 @@ export class Repository {
             .then((stat) => stat.isFile())
             .catch(() => false))
         ) {
-          process.stdout.write(`not overwriting ${fullPath}\n`);
+          debug(`not overwriting ${fullPath}\n`);
 
           return;
         }
@@ -90,8 +90,6 @@ export class Repository {
         debug("about to write", fullPath);
         await fs.writeFile(fullPath, contents);
         debug("did write", fullPath);
-
-        process.stdout.write(`writing ${fullPath}\n`);
       },
     );
 
