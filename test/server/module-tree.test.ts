@@ -1,25 +1,38 @@
-type Module = string;
+type Module = string | undefined;
 
 interface File {
   isWildcard: boolean;
   module: Module;
+  name: string;
 }
 
 interface Directory {
   directories: { [key: string]: Directory };
   files: { [key: string]: File };
   isWildcard: boolean;
+  name: string;
+}
+
+interface Match {
+  module: Module;
+  pathVariables: { [key: string]: string };
 }
 
 function isDirectory(test: unknown): test is Directory {
   return test !== undefined;
 }
 
+const NO_MATCH = {
+  module: undefined,
+  pathVariables: {},
+};
+
 class ModuleTree {
   public readonly root: Directory = {
     directories: {},
     files: {},
     isWildcard: false,
+    name: "",
   };
 
   private addModuleToDirectory(
@@ -32,6 +45,7 @@ class ModuleTree {
       directory.files[segment.toLowerCase()] = {
         isWildcard: segment.startsWith("{"),
         module,
+        name: segment.replace(/^\{(?<name>.*)\}$/u, "$<name>"),
       };
       return;
     }
@@ -40,6 +54,7 @@ class ModuleTree {
       directories: {},
       files: {},
       isWildcard: segment.startsWith("{"),
+      name: segment.replace(/^\{(?<name>.*)\}$/u, "$<name>"),
     };
     this.addModuleToDirectory(
       directory.directories[segment.toLowerCase()],
@@ -52,27 +67,56 @@ class ModuleTree {
     this.addModuleToDirectory(this.root, url.split("/").slice(1), module);
   }
 
+  private buildMatch(
+    directory: Directory,
+    segment: string,
+    pathVariables: { [key: string]: string },
+  ) {
+    const match =
+      directory.files[segment.toLowerCase()] ??
+      Object.values(directory.files).find((file) => file.isWildcard);
+
+    if (match === undefined) {
+      return NO_MATCH;
+    }
+
+    if (match.isWildcard) {
+      return {
+        ...match,
+
+        pathVariables: {
+          ...pathVariables,
+          [match.name]: segment,
+        },
+      };
+    }
+
+    return {
+      ...match,
+
+      pathVariables,
+    };
+  }
+
   private matchWithinDirectory(
     directory: Directory,
     segments: string[],
-  ): File | undefined {
+    pathVariables: { [key: string]: string },
+  ): Match {
     if (segments.length === 0) {
-      return undefined;
+      return NO_MATCH;
     }
     const [segment, ...remainingSegments] = segments;
 
     if (remainingSegments.length === 0) {
-      console.log("directory.files", directory.files, segment);
-      return (
-        directory.files[segment.toLowerCase()] ??
-        Object.values(directory.files).find((file) => file.isWildcard)
-      );
+      return this.buildMatch(directory, segment, pathVariables);
     }
 
     if (isDirectory(directory.directories[segment.toLowerCase()])) {
       return this.matchWithinDirectory(
         directory.directories[segment.toLowerCase()],
         remainingSegments,
+        pathVariables,
       );
     }
 
@@ -81,51 +125,53 @@ class ModuleTree {
     );
 
     if (wildcardDirectory) {
-      return this.matchWithinDirectory(wildcardDirectory, remainingSegments);
+      return this.matchWithinDirectory(wildcardDirectory, remainingSegments, {
+        ...pathVariables,
+        [wildcardDirectory.name]: segment,
+      });
     }
 
-    return undefined;
+    return NO_MATCH;
   }
 
-  public match(url: string): Module | undefined {
-    return this.matchWithinDirectory(this.root, url.split("/").slice(1))
-      ?.module;
+  public match(url: string) {
+    return this.matchWithinDirectory(this.root, url.split("/").slice(1), {});
   }
 }
 
 it("returns undefined for /", () => {
   const moduleTree = new ModuleTree();
-  expect(moduleTree.match("/")).toBe(undefined);
+  expect(moduleTree.match("/").module).toBe(undefined);
 });
 
 it("finds a file at the root", () => {
   const moduleTree = new ModuleTree();
   moduleTree.add("/a", "a");
-  expect(moduleTree.match("/a")).toBe("a");
+  expect(moduleTree.match("/a").module).toBe("a");
 });
 
 it("finds a file under a subdirectory", () => {
   const moduleTree = new ModuleTree();
   moduleTree.add("/a", "a");
   moduleTree.add("/a/b", "b");
-  expect(moduleTree.match("/a")).toBe("a");
-  expect(moduleTree.match("/a/b")).toBe("b");
+  expect(moduleTree.match("/a").module).toBe("a");
+  expect(moduleTree.match("/a/b").module).toBe("b");
 });
 
 it("finds a file with a wildcard match", () => {
   const moduleTree = new ModuleTree();
   moduleTree.add("/a", "a");
   moduleTree.add("/a/{x}", "b");
-  expect(moduleTree.match("/a")).toBe("a");
-  expect(moduleTree.match("/a/b")).toBe("b");
+  expect(moduleTree.match("/a").module).toBe("a");
+  expect(moduleTree.match("/a/b").module).toBe("b");
 });
 
 it("finds a directory with a wildcard match", () => {
   const moduleTree = new ModuleTree();
   moduleTree.add("/a", "a");
   moduleTree.add("/{x}/b", "b");
-  expect(moduleTree.match("/a")).toBe("a");
-  expect(moduleTree.match("/a/b")).toBe("b");
+  expect(moduleTree.match("/a").module).toBe("a");
+  expect(moduleTree.match("/a/b").module).toBe("b");
 });
 
 it("prefers an exact match to a wildcard", () => {
@@ -133,8 +179,8 @@ it("prefers an exact match to a wildcard", () => {
   moduleTree.add("/a", "a");
   moduleTree.add("/a/b", "exact");
   moduleTree.add("/a/{x}", "wildcard");
-  expect(moduleTree.match("/a")).toBe("a");
-  expect(moduleTree.match("/a/b")).toBe("exact");
+  expect(moduleTree.match("/a").module).toBe("a");
+  expect(moduleTree.match("/a/b").module).toBe("exact");
 });
 
 it("is case-insensitive", () => {
@@ -142,8 +188,17 @@ it("is case-insensitive", () => {
   moduleTree.add("/a", "a");
   moduleTree.add("/a/b", "exact");
   moduleTree.add("/a/{x}", "wildcard");
-  expect(moduleTree.match("/A")).toBe("a");
-  expect(moduleTree.match("/A/B")).toBe("exact");
+  expect(moduleTree.match("/A").module).toBe("a");
+  expect(moduleTree.match("/A/B").module).toBe("exact");
+});
+
+it("captures the path variables", () => {
+  const moduleTree = new ModuleTree();
+  moduleTree.add("/a/{foo}/{bar}", "wildcard");
+  expect(moduleTree.match("/a/b/c").pathVariables).toEqual({
+    bar: "c",
+    foo: "b",
+  });
 });
 
 export default ModuleTree;
