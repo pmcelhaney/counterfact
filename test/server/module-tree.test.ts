@@ -67,6 +67,28 @@ class ModuleTree {
     this.addModuleToDirectory(this.root, url.split("/").slice(1), module);
   }
 
+  private removeModuleFromDirectory(directory: Directory, segments: string[]) {
+    const [segment, ...remainingSegments] = segments;
+    if (remainingSegments.length === 0) {
+      // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+      delete directory.files[segment.toLowerCase()];
+      return;
+    }
+    this.removeModuleFromDirectory(
+      directory.directories[segment.toLowerCase()],
+      remainingSegments,
+    );
+  }
+
+  public remove(url: string) {
+    const segments = url.split("/").slice(1);
+    const [segment, ...remainingSegments] = segments;
+    this.removeModuleFromDirectory(
+      this.root.directories[segment.toLowerCase()],
+      remainingSegments,
+    );
+  }
+
   private buildMatch(
     directory: Directory,
     segment: string,
@@ -199,6 +221,15 @@ it("captures the path variables", () => {
     bar: "c",
     foo: "b",
   });
+});
+
+it("removes a module", () => {
+  const moduleTree = new ModuleTree();
+  moduleTree.add("/a", "a");
+  moduleTree.add("/a/b", "b");
+  moduleTree.remove("/a/b");
+  expect(moduleTree.match("/a").module).toBe("a");
+  expect(moduleTree.match("/a/b").module).toBe(undefined);
 });
 
 export default ModuleTree;
