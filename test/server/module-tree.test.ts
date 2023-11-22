@@ -1,38 +1,42 @@
 import { ModuleTree } from "../../src/server/module-tree.js";
 
+function match(moduleTree: ModuleTree, path: string) {
+  return moduleTree.match(path).module;
+}
+
 it("returns undefined for /", () => {
   const moduleTree = new ModuleTree();
-  expect(moduleTree.match("/").module).toBe(undefined);
+  expect(match(moduleTree, "/")).toBe(undefined);
 });
 
 it("finds a file at the root", () => {
   const moduleTree = new ModuleTree();
   moduleTree.add("/a", "a");
-  expect(moduleTree.match("/a").module).toBe("a");
+  expect(match(moduleTree, "/a")).toBe("a");
 });
 
 it("finds a file under a subdirectory", () => {
   const moduleTree = new ModuleTree();
   moduleTree.add("/a", "a");
   moduleTree.add("/a/b", "b");
-  expect(moduleTree.match("/a").module).toBe("a");
-  expect(moduleTree.match("/a/b").module).toBe("b");
+  expect(match(moduleTree, "/a")).toBe("a");
+  expect(match(moduleTree, "/a/b")).toBe("b");
 });
 
 it("finds a file with a wildcard match", () => {
   const moduleTree = new ModuleTree();
   moduleTree.add("/a", "a");
   moduleTree.add("/a/{x}", "b");
-  expect(moduleTree.match("/a").module).toBe("a");
-  expect(moduleTree.match("/a/b").module).toBe("b");
+  expect(match(moduleTree, "/a")).toBe("a");
+  expect(match(moduleTree, "/a/b")).toBe("b");
 });
 
 it("finds a directory with a wildcard match", () => {
   const moduleTree = new ModuleTree();
   moduleTree.add("/a", "a");
   moduleTree.add("/{x}/b", "b");
-  expect(moduleTree.match("/a").module).toBe("a");
-  expect(moduleTree.match("/a/b").module).toBe("b");
+  expect(match(moduleTree, "/a")).toBe("a");
+  expect(match(moduleTree, "/a/b")).toBe("b");
 });
 
 it("prefers an exact match to a wildcard", () => {
@@ -40,8 +44,8 @@ it("prefers an exact match to a wildcard", () => {
   moduleTree.add("/a", "a");
   moduleTree.add("/a/b", "exact");
   moduleTree.add("/a/{x}", "wildcard");
-  expect(moduleTree.match("/a").module).toBe("a");
-  expect(moduleTree.match("/a/b").module).toBe("exact");
+  expect(match(moduleTree, "/a")).toBe("a");
+  expect(match(moduleTree, "/a/b")).toBe("exact");
 });
 
 it("is case-insensitive", () => {
@@ -49,8 +53,8 @@ it("is case-insensitive", () => {
   moduleTree.add("/a", "a");
   moduleTree.add("/a/b", "exact");
   moduleTree.add("/a/{x}", "wildcard");
-  expect(moduleTree.match("/A").module).toBe("a");
-  expect(moduleTree.match("/A/B").module).toBe("exact");
+  expect(match(moduleTree, "/A")).toBe("a");
+  expect(match(moduleTree, "/A/B")).toBe("exact");
 });
 
 it("captures the path variables", () => {
@@ -67,8 +71,8 @@ it("removes a module", () => {
   moduleTree.add("/a", "a");
   moduleTree.add("/a/b", "b");
   moduleTree.remove("/a/b");
-  expect(moduleTree.match("/a").module).toBe("a");
-  expect(moduleTree.match("/a/b").module).toBe(undefined);
+  expect(match(moduleTree, "/a")).toBe("a");
+  expect(match(moduleTree, "/a/b")).toBe(undefined);
 });
 
 export default ModuleTree;
