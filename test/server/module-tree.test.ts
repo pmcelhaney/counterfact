@@ -11,8 +11,12 @@ interface Directory {
   isWildcard: boolean;
 }
 
+function isDirectory(test: unknown): test is Directory {
+  return test !== undefined;
+}
+
 class ModuleTree {
-  private readonly root: Directory = {
+  public readonly root: Directory = {
     directories: {},
     files: {},
     isWildcard: false,
@@ -25,20 +29,20 @@ class ModuleTree {
   ) {
     const [segment, ...remainingSegments] = segments;
     if (remainingSegments.length === 0) {
-      directory.files[segment] = {
+      directory.files[segment.toLowerCase()] = {
         isWildcard: segment.startsWith("{"),
         module,
       };
       return;
     }
-    directory.directories[segment] ??= {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    directory.directories[segment.toLowerCase()] ??= {
       directories: {},
       files: {},
       isWildcard: segment.startsWith("{"),
     };
     this.addModuleToDirectory(
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      directory.directories[segment],
+      directory.directories[segment.toLowerCase()],
       remainingSegments,
       module,
     );
@@ -58,21 +62,16 @@ class ModuleTree {
     const [segment, ...remainingSegments] = segments;
 
     if (remainingSegments.length === 0) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+      console.log("directory.files", directory.files, segment);
       return (
-        directory.files[segment] ??
+        directory.files[segment.toLowerCase()] ??
         Object.values(directory.files).find((file) => file.isWildcard)
       );
     }
 
-    function isDirectory(test: unknown): test is Directory {
-      return test !== undefined;
-    }
-
-    if (isDirectory(directory.directories[segment])) {
+    if (isDirectory(directory.directories[segment.toLowerCase()])) {
       return this.matchWithinDirectory(
-        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-        directory.directories[segment] as Directory,
+        directory.directories[segment.toLowerCase()],
         remainingSegments,
       );
     }
@@ -136,6 +135,15 @@ it("prefers an exact match to a wildcard", () => {
   moduleTree.add("/a/{x}", "wildcard");
   expect(moduleTree.match("/a")).toBe("a");
   expect(moduleTree.match("/a/b")).toBe("exact");
+});
+
+it("is case-insensitive", () => {
+  const moduleTree = new ModuleTree();
+  moduleTree.add("/a", "a");
+  moduleTree.add("/a/b", "exact");
+  moduleTree.add("/a/{x}", "wildcard");
+  expect(moduleTree.match("/A")).toBe("a");
+  expect(moduleTree.match("/A/B")).toBe("exact");
 });
 
 export default ModuleTree;
