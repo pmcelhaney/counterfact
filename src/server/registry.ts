@@ -1,5 +1,6 @@
 import createDebugger from "debug";
 
+import { ModuleTree } from "./module-tree.js";
 import type { Tools } from "./tools.js";
 import type { MediaType, ResponseBuilderFactory } from "./types.d.ts";
 
@@ -44,11 +45,6 @@ interface Module {
   POST?: (requestData: RequestDataWithBody) => CounterfactResponse;
   PUT?: (requestData: RequestDataWithBody) => CounterfactResponse;
   TRACE?: (requestData: RequestData) => CounterfactResponse;
-}
-
-interface Node {
-  children?: { [key: string]: Node };
-  module?: Module;
 }
 
 type CounterfactResponseObject =
@@ -96,123 +92,33 @@ function castParameters(
   return copy;
 }
 
-function maybe(flag: object | undefined, value: string): string[] {
-  return flag ? [value] : [];
-}
-
-function stripBrackets(string: string) {
-  return string.replaceAll(/\{|\}/gu, "");
-}
-
-function routesForNode(node: Node): string[] {
-  if (!node.children) {
-    return [];
-  }
-
-  return Object.entries(node.children)
-    .flatMap(([segment, child]) => [
-      ...maybe(child.module, `/${segment}`),
-      ...routesForNode(child).map((route) => `/${segment}${route}`),
-    ])
-    .sort((segment1, segment2) =>
-      stripBrackets(segment1).localeCompare(stripBrackets(segment2)),
-    );
-}
-
 export class Registry {
-  private readonly modules: { [key: string]: Module } = {};
-
-  public readonly moduleTree: Node = { children: {} };
+  private readonly moduleTree = new ModuleTree();
 
   public get routes() {
-    return routesForNode(this.moduleTree);
+    return this.moduleTree.routes;
   }
 
   public add(url: string, module: Module) {
-    let node: Node = this.moduleTree;
-
-    for (const segment of url.split("/").slice(1)) {
-      node.children ??= {};
-
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      node.children[segment] ??= {};
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      node = node.children[segment]!;
-    }
-
-    node.module = module;
+    this.moduleTree.add(url, module);
   }
 
   public remove(url: string) {
-    let node: Node | undefined = this.moduleTree;
-
-    for (const segment of url.split("/").slice(1)) {
-      node = node.children?.[segment];
-
-      if (!node) {
-        return false;
-      }
-    }
-
-    delete node.module;
-
-    return true;
+    this.moduleTree.remove(url);
   }
 
   public exists(method: HttpMethods, url: string) {
     return Boolean(this.handler(url).module?.[method]);
   }
 
-  // eslint-disable-next-line max-statements, sonarjs/cognitive-complexity
   public handler(url: string) {
-    let node: Node | undefined = this.moduleTree;
+    const match = this.moduleTree.match(url);
 
-    const path: { [key: string]: string } = {};
-
-    const matchedParts = [""];
-
-    for (const segment of url.split("/").slice(1)) {
-      if (node === undefined) {
-        throw new Error("node or node node.children cannot be undefined");
-      }
-
-      if (node.children === undefined) {
-        throw new Error("node or node node.children cannot be undefined");
-      }
-
-      const matchingChild = Object.keys(node.children).find(
-        (candidate) => candidate.toLowerCase() === segment.toLowerCase(),
-      );
-
-      debug("segment: %s", segment);
-      debug("matching child: %s", matchingChild);
-
-      if (matchingChild === undefined) {
-        const dynamicSegment: string | undefined = Object.keys(
-          node.children,
-        ).find((ds) => ds.startsWith("{") && ds.endsWith("}"));
-
-        if (dynamicSegment !== undefined) {
-          const variableName: string = dynamicSegment.slice(1, -1);
-
-          path[variableName] = segment;
-
-          node = node.children[dynamicSegment];
-
-          matchedParts.push(dynamicSegment);
-        }
-      } else {
-        node = node.children[matchingChild];
-
-        matchedParts.push(matchingChild);
-      }
-    }
-
-    if (node === undefined) {
-      throw new Error("node cannot be undefined");
-    }
-
-    return { matchedPath: matchedParts.join("/"), module: node.module, path };
+    return {
+      matchedPath: match?.matchedPath ?? "",
+      module: match?.module,
+      path: match?.pathVariables ?? {},
+    };
   }
 
   public endpoint(
