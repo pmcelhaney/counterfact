@@ -1,5 +1,15 @@
 # counterfact
 
+## 0.31.0
+
+### Minor Changes
+
+- 24d96c3: created a new intro banner for the CLI
+
+### Patch Changes
+
+- 88cebcd: fixed an issue where if there was a directory and file with the same name, one would shadow the other
+
 ## 0.30.0
 
 ### Minor Changes
