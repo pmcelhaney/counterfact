@@ -10,13 +10,13 @@ function add(moduleTree: ModuleTree, url: string, name: string) {
 
 function match(moduleTree: ModuleTree, path: string) {
   // @ts-expect-error - not creating an entire request object
-  // eslint-disable-next-line @typescript-eslint/consistent-type-assertions, new-cap
-  return moduleTree.match(path).module.GET?.()?.body as string;
+  // eslint-disable-next-line new-cap, @typescript-eslint/no-unsafe-return
+  return moduleTree.match(path)?.module.GET?.()?.body;
 }
 
 it("returns undefined for /", () => {
   const moduleTree = new ModuleTree();
-  expect(match(moduleTree, "/")).toBe("Not found.");
+  expect(match(moduleTree, "/")).toBe(undefined);
 });
 
 it("finds a file at the root", () => {
@@ -80,9 +80,12 @@ it("removes a module", () => {
   const moduleTree = new ModuleTree();
   add(moduleTree, "/a", "a");
   add(moduleTree, "/a/b", "b");
+  add(moduleTree, "/c", "c");
   moduleTree.remove("/a/b");
+  moduleTree.remove("/c");
   expect(match(moduleTree, "/a")).toBe("a");
-  expect(match(moduleTree, "/a/b")).toBe("Not found.");
+  expect(match(moduleTree, "/a/b")).toBe(undefined);
+  expect(match(moduleTree, "/c")).toBe(undefined);
 });
 
 export default ModuleTree;

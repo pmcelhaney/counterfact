@@ -22,23 +22,6 @@ function isDirectory(test: Directory | undefined): test is Directory {
   return test !== undefined;
 }
 
-const NO_MATCH = {
-  module: new Proxy(
-    {},
-    {
-      get() {
-        return () => ({
-          body: "Not found.",
-          statusCode: 404,
-          type: "text/plain",
-        });
-      },
-    },
-  ),
-
-  pathVariables: {},
-};
-
 export class ModuleTree {
   public readonly root: Directory = {
     directories: {},
@@ -115,18 +98,8 @@ export class ModuleTree {
 
   public remove(url: string) {
     const segments = url.split("/").slice(1);
-    const [segment, ...remainingSegments] = segments;
 
-    if (segment === undefined) {
-      throw new Error(
-        "segment cannot be undefined but TypeScript doesn't know that",
-      );
-    }
-
-    this.removeModuleFromDirectory(
-      this.root.directories[segment.toLowerCase()],
-      remainingSegments,
-    );
+    this.removeModuleFromDirectory(this.root, segments);
   }
 
   private buildMatch(
@@ -139,7 +112,7 @@ export class ModuleTree {
       Object.values(directory.files).find((file) => file.isWildcard);
 
     if (match === undefined) {
-      return NO_MATCH;
+      return undefined;
     }
 
     if (match.isWildcard) {
@@ -165,9 +138,9 @@ export class ModuleTree {
     directory: Directory,
     segments: string[],
     pathVariables: { [key: string]: string | undefined },
-  ): Match {
+  ): Match | undefined {
     if (segments.length === 0) {
-      return NO_MATCH;
+      return undefined;
     }
     const [segment, ...remainingSegments] = segments;
 
@@ -202,7 +175,7 @@ export class ModuleTree {
       });
     }
 
-    return NO_MATCH;
+    return undefined;
   }
 
   public match(url: string) {

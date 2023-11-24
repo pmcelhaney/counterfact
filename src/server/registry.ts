@@ -1,5 +1,6 @@
 import createDebugger from "debug";
 
+import { ModuleTree } from "./module-tree.js";
 import type { Tools } from "./tools.js";
 import type { MediaType, ResponseBuilderFactory } from "./types.d.ts";
 
@@ -124,11 +125,14 @@ export class Registry {
 
   public readonly moduleTree: Node = { children: {} };
 
+  private readonly moduleTree2 = new ModuleTree();
+
   public get routes() {
     return routesForNode(this.moduleTree);
   }
 
   public add(url: string, module: Module) {
+    this.moduleTree2.add(url, module);
     let node: Node = this.moduleTree;
 
     for (const segment of url.split("/").slice(1)) {
@@ -144,6 +148,7 @@ export class Registry {
   }
 
   public remove(url: string) {
+    this.moduleTree2.remove(url);
     let node: Node | undefined = this.moduleTree;
 
     for (const segment of url.split("/").slice(1)) {
@@ -160,11 +165,14 @@ export class Registry {
   }
 
   public exists(method: HttpMethods, url: string) {
+    // return Boolean(this.moduleTree2.match(url)?.module[method]);
     return Boolean(this.handler(url).module?.[method]);
   }
 
   // eslint-disable-next-line max-statements, sonarjs/cognitive-complexity
   public handler(url: string) {
+    const result = this.moduleTree2.match(url);
+
     let node: Node | undefined = this.moduleTree;
 
     const path: { [key: string]: string } = {};
@@ -211,6 +219,12 @@ export class Registry {
     if (node === undefined) {
       throw new Error("node cannot be undefined");
     }
+
+    return {
+      matchedPath: matchedParts.join("/"),
+      module: result?.module,
+      path: result?.pathVariables ?? {},
+    };
 
     return { matchedPath: matchedParts.join("/"), module: node.module, path };
   }
