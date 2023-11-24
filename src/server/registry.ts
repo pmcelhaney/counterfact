@@ -47,11 +47,6 @@ interface Module {
   TRACE?: (requestData: RequestData) => CounterfactResponse;
 }
 
-interface Node {
-  children?: { [key: string]: Node };
-  module?: Module;
-}
-
 type CounterfactResponseObject =
   | string
   | {
@@ -97,58 +92,19 @@ function castParameters(
   return copy;
 }
 
-function maybe(flag: object | undefined, value: string): string[] {
-  return flag ? [value] : [];
-}
-
-function stripBrackets(string: string) {
-  return string.replaceAll(/\{|\}/gu, "");
-}
-
-function routesForNode(node: Node): string[] {
-  if (!node.children) {
-    return [];
-  }
-
-  return Object.entries(node.children)
-    .flatMap(([segment, child]) => [
-      ...maybe(child.module, `/${segment}`),
-      ...routesForNode(child).map((route) => `/${segment}${route}`),
-    ])
-    .sort((segment1, segment2) =>
-      stripBrackets(segment1).localeCompare(stripBrackets(segment2)),
-    );
-}
-
 export class Registry {
-  private readonly modules: { [key: string]: Module } = {};
-
-  public readonly moduleTree: Node = { children: {} };
-
-  private readonly moduleTree2 = new ModuleTree();
+  private readonly moduleTree = new ModuleTree();
 
   public get routes() {
-    return routesForNode(this.moduleTree);
+    return this.moduleTree.routes;
   }
 
   public add(url: string, module: Module) {
-    this.moduleTree2.add(url, module);
-    let node: Node = this.moduleTree;
-
-    for (const segment of url.split("/").slice(1)) {
-      node.children ??= {};
-
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      node.children[segment] ??= {};
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      node = node.children[segment]!;
-    }
-
-    node.module = module;
+    this.moduleTree.add(url, module);
   }
 
   public remove(url: string) {
-    this.moduleTree2.remove(url);
+    this.moduleTree.remove(url);
   }
 
   public exists(method: HttpMethods, url: string) {
@@ -156,7 +112,7 @@ export class Registry {
   }
 
   public handler(url: string) {
-    const match = this.moduleTree2.match(url);
+    const match = this.moduleTree.match(url);
 
     return {
       matchedPath: match?.matchedPath ?? "",

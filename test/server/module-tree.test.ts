@@ -100,4 +100,12 @@ it("removes a module", () => {
   expect(match(moduleTree, "/c")).toBe(undefined);
 });
 
+it("has all of the routes", () => {
+  const moduleTree = new ModuleTree();
+  add(moduleTree, "/a", "a");
+  add(moduleTree, "/a/b", "b");
+  add(moduleTree, "/a/{b}", "b");
+  add(moduleTree, "/c", "c");
+  expect(moduleTree.routes).toEqual(["/a", "/a/b", "/a/{b}", "/c"]);
+});
 export default ModuleTree;

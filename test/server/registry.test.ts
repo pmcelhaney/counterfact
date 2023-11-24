@@ -1,29 +1,7 @@
 import {
-  type Module,
   Registry,
   type RequestDataWithBody,
 } from "../../src/server/registry.js";
-
-function makeModule(name: string): Module {
-  return {
-    GET() {
-      return name;
-    },
-  };
-}
-
-async function identifyModule(
-  node: { module?: Module } | undefined,
-): Promise<unknown> {
-  // @ts-expect-error - not creating an entire request object
-  // eslint-disable-next-line new-cap
-  return await node?.module?.GET?.({
-    headers: {},
-    matchedPath: "",
-    path: {},
-    query: {},
-  });
-}
 
 describe("a registry", () => {
   it("knows if a handler exists for a request method at a path", () => {
@@ -96,30 +74,6 @@ describe("a registry", () => {
     expect(getB).toBe("GET b");
     expect(postA).toBe("POST a");
     expect(postB).toBe("POST b");
-  });
-
-  it("constructs a tree of the registered modules", async () => {
-    const registry = new Registry();
-
-    registry.add("/nc", makeModule("North Carolina"));
-    registry.add("/nc/charlotte/south-park", makeModule("South Park"));
-    registry.add("/nc/charlotte", makeModule("Charlotte"));
-
-    expect(await identifyModule(registry.moduleTree.children?.nc)).toBe(
-      "North Carolina",
-    );
-    expect(
-      await identifyModule(
-        registry.moduleTree.children?.nc?.children?.charlotte,
-      ),
-    ).toBe("Charlotte");
-    expect(
-      await identifyModule(
-        registry.moduleTree.children?.nc?.children?.charlotte?.children?.[
-          "south-park"
-        ],
-      ),
-    ).toBe("South Park");
   });
 
   it("handles a dynamic path", async () => {

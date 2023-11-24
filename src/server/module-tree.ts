@@ -204,4 +204,30 @@ export class ModuleTree {
       "",
     );
   }
+
+  public get routes(): string[] {
+    const routes: string[] = [];
+
+    function traverse(directory: Directory, path: string) {
+      Object.values(directory.directories).forEach((subdirectory) => {
+        traverse(subdirectory, `${path}/${subdirectory.rawName}`);
+      });
+
+      Object.values(directory.files).forEach((file) => {
+        routes.push(`${path}/${file.rawName}`);
+      });
+    }
+
+    // eslint-disable-next-line unicorn/consistent-function-scoping
+    function stripBrackets(string: string) {
+      return string.replaceAll(/\{|\}/gu, "");
+    }
+
+    traverse(this.root, "");
+
+    // eslint-disable-next-line etc/no-assign-mutated-array
+    return routes.sort((first, second) =>
+      stripBrackets(first).localeCompare(stripBrackets(second)),
+    );
+  }
 }
