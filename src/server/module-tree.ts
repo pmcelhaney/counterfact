@@ -31,6 +31,7 @@ export class ModuleTree {
     files: {},
     isWildcard: false,
     name: "",
+    rawName: "",
   };
 
   private addModuleToDirectory(
