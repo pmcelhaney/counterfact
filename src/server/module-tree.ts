@@ -1,4 +1,4 @@
-type Module = string | undefined;
+import type { Module } from "./registry.js";
 
 interface File {
   isWildcard: boolean;
@@ -18,12 +18,24 @@ interface Match {
   pathVariables: { [key: string]: string };
 }
 
-function isDirectory(test: unknown): test is Directory {
+function isDirectory(test: Directory | undefined): test is Directory {
   return test !== undefined;
 }
 
 const NO_MATCH = {
-  module: undefined,
+  module: new Proxy(
+    {},
+    {
+      get() {
+        return () => ({
+          body: "Not found.",
+          statusCode: 404,
+          type: "text/plain",
+        });
+      },
+    },
+  ),
+
   pathVariables: {},
 };
 
@@ -36,11 +48,20 @@ export class ModuleTree {
   };
 
   private addModuleToDirectory(
-    directory: Directory,
+    directory: Directory | undefined,
     segments: string[],
     module: Module,
   ) {
+    if (directory === undefined) {
+      return;
+    }
+
     const [segment, ...remainingSegments] = segments;
+
+    if (segment === undefined) {
+      throw new Error("segments array is empty");
+    }
+
     if (remainingSegments.length === 0) {
       directory.files[segment.toLowerCase()] = {
         isWildcard: segment.startsWith("{"),
@@ -49,6 +70,7 @@ export class ModuleTree {
       };
       return;
     }
+
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     directory.directories[segment.toLowerCase()] ??= {
       directories: {},
@@ -57,7 +79,7 @@ export class ModuleTree {
       name: segment.replace(/^\{(?<name>.*)\}$/u, "$<name>"),
     };
     this.addModuleToDirectory(
-      directory.directories[segment.toLowerCase()],
+      directory.directories[segment.toLocaleLowerCase()],
       remainingSegments,
       module,
     );
@@ -67,8 +89,19 @@ export class ModuleTree {
     this.addModuleToDirectory(this.root, url.split("/").slice(1), module);
   }
 
-  private removeModuleFromDirectory(directory: Directory, segments: string[]) {
+  private removeModuleFromDirectory(
+    directory: Directory | undefined,
+    segments: string[],
+  ) {
+    if (!isDirectory(directory)) {
+      return;
+    }
     const [segment, ...remainingSegments] = segments;
+
+    if (segment === undefined) {
+      return;
+    }
+
     if (remainingSegments.length === 0) {
       // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
       delete directory.files[segment.toLowerCase()];
@@ -83,6 +116,13 @@ export class ModuleTree {
   public remove(url: string) {
     const segments = url.split("/").slice(1);
     const [segment, ...remainingSegments] = segments;
+
+    if (segment === undefined) {
+      throw new Error(
+        "segment cannot be undefined but TypeScript doesn't know that",
+      );
+    }
+
     this.removeModuleFromDirectory(
       this.root.directories[segment.toLowerCase()],
       remainingSegments,
@@ -92,7 +132,7 @@ export class ModuleTree {
   private buildMatch(
     directory: Directory,
     segment: string,
-    pathVariables: { [key: string]: string },
+    pathVariables: { [key: string]: string | undefined },
   ) {
     const match =
       directory.files[segment.toLowerCase()] ??
@@ -124,20 +164,28 @@ export class ModuleTree {
   private matchWithinDirectory(
     directory: Directory,
     segments: string[],
-    pathVariables: { [key: string]: string },
+    pathVariables: { [key: string]: string | undefined },
   ): Match {
     if (segments.length === 0) {
       return NO_MATCH;
     }
     const [segment, ...remainingSegments] = segments;
 
+    if (segment === undefined) {
+      throw new Error(
+        "segment cannot be undefined but TypeScript doesn't know that",
+      );
+    }
+
     if (remainingSegments.length === 0) {
       return this.buildMatch(directory, segment, pathVariables);
     }
 
-    if (isDirectory(directory.directories[segment.toLowerCase()])) {
+    const exactMatch = directory.directories[segment.toLowerCase()];
+
+    if (isDirectory(exactMatch)) {
       return this.matchWithinDirectory(
-        directory.directories[segment.toLowerCase()],
+        exactMatch,
         remainingSegments,
         pathVariables,
       );
