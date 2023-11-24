@@ -149,84 +149,20 @@ export class Registry {
 
   public remove(url: string) {
     this.moduleTree2.remove(url);
-    let node: Node | undefined = this.moduleTree;
-
-    for (const segment of url.split("/").slice(1)) {
-      node = node.children?.[segment];
-
-      if (!node) {
-        return false;
-      }
-    }
-
-    delete node.module;
-
-    return true;
   }
 
   public exists(method: HttpMethods, url: string) {
-    // return Boolean(this.moduleTree2.match(url)?.module[method]);
     return Boolean(this.handler(url).module?.[method]);
   }
 
-  // eslint-disable-next-line max-statements, sonarjs/cognitive-complexity
   public handler(url: string) {
-    const result = this.moduleTree2.match(url);
-
-    let node: Node | undefined = this.moduleTree;
-
-    const path: { [key: string]: string } = {};
-
-    const matchedParts = [""];
-
-    for (const segment of url.split("/").slice(1)) {
-      if (node === undefined) {
-        throw new Error("node or node node.children cannot be undefined");
-      }
-
-      if (node.children === undefined) {
-        throw new Error("node or node node.children cannot be undefined");
-      }
-
-      const matchingChild = Object.keys(node.children).find(
-        (candidate) => candidate.toLowerCase() === segment.toLowerCase(),
-      );
-
-      debug("segment: %s", segment);
-      debug("matching child: %s", matchingChild);
-
-      if (matchingChild === undefined) {
-        const dynamicSegment: string | undefined = Object.keys(
-          node.children,
-        ).find((ds) => ds.startsWith("{") && ds.endsWith("}"));
-
-        if (dynamicSegment !== undefined) {
-          const variableName: string = dynamicSegment.slice(1, -1);
-
-          path[variableName] = segment;
-
-          node = node.children[dynamicSegment];
-
-          matchedParts.push(dynamicSegment);
-        }
-      } else {
-        node = node.children[matchingChild];
-
-        matchedParts.push(matchingChild);
-      }
-    }
-
-    if (node === undefined) {
-      throw new Error("node cannot be undefined");
-    }
+    const match = this.moduleTree2.match(url);
 
     return {
-      matchedPath: matchedParts.join("/"),
-      module: result?.module,
-      path: result?.pathVariables ?? {},
+      matchedPath: match?.matchedPath ?? "",
+      module: match?.module,
+      path: match?.pathVariables ?? {},
     };
-
-    return { matchedPath: matchedParts.join("/"), module: node.module, path };
   }
 
   public endpoint(

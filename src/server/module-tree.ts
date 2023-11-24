@@ -4,6 +4,7 @@ interface File {
   isWildcard: boolean;
   module: Module;
   name: string;
+  rawName: string;
 }
 
 interface Directory {
@@ -11,9 +12,11 @@ interface Directory {
   files: { [key: string]: File };
   isWildcard: boolean;
   name: string;
+  rawName: string;
 }
 
 interface Match {
+  matchedPath: string;
   module: Module;
   pathVariables: { [key: string]: string | undefined };
 }
@@ -50,6 +53,7 @@ export class ModuleTree {
         isWildcard: segment.startsWith("{"),
         module,
         name: segment.replace(/^\{(?<name>.*)\}$/u, "$<name>"),
+        rawName: segment,
       };
       return;
     }
@@ -60,6 +64,7 @@ export class ModuleTree {
       files: {},
       isWildcard: segment.startsWith("{"),
       name: segment.replace(/^\{(?<name>.*)\}$/u, "$<name>"),
+      rawName: segment,
     };
     this.addModuleToDirectory(
       directory.directories[segment.toLocaleLowerCase()],
@@ -106,6 +111,7 @@ export class ModuleTree {
     directory: Directory,
     segment: string,
     pathVariables: { [key: string]: string | undefined },
+    matchedPath: string,
   ) {
     const match =
       directory.files[segment.toLowerCase()] ??
@@ -119,6 +125,8 @@ export class ModuleTree {
       return {
         ...match,
 
+        matchedPath: `${matchedPath}/${match.rawName}`,
+
         pathVariables: {
           ...pathVariables,
           [match.name]: segment,
@@ -129,6 +137,8 @@ export class ModuleTree {
     return {
       ...match,
 
+      matchedPath: `${matchedPath}/${match.rawName}`,
+
       pathVariables,
     };
   }
@@ -138,6 +148,7 @@ export class ModuleTree {
     directory: Directory,
     segments: string[],
     pathVariables: { [key: string]: string | undefined },
+    matchedPath: string,
   ): Match | undefined {
     if (segments.length === 0) {
       return undefined;
@@ -151,7 +162,7 @@ export class ModuleTree {
     }
 
     if (remainingSegments.length === 0) {
-      return this.buildMatch(directory, segment, pathVariables);
+      return this.buildMatch(directory, segment, pathVariables, matchedPath);
     }
 
     const exactMatch = directory.directories[segment.toLowerCase()];
@@ -161,6 +172,7 @@ export class ModuleTree {
         exactMatch,
         remainingSegments,
         pathVariables,
+        `${matchedPath}/${segment}`,
       );
     }
 
@@ -169,16 +181,26 @@ export class ModuleTree {
     );
 
     if (wildcardDirectory) {
-      return this.matchWithinDirectory(wildcardDirectory, remainingSegments, {
-        ...pathVariables,
-        [wildcardDirectory.name]: segment,
-      });
+      return this.matchWithinDirectory(
+        wildcardDirectory,
+        remainingSegments,
+        {
+          ...pathVariables,
+          [wildcardDirectory.name]: segment,
+        },
+        `${matchedPath}/${wildcardDirectory.rawName}`,
+      );
     }
 
     return undefined;
   }
 
   public match(url: string) {
-    return this.matchWithinDirectory(this.root, url.split("/").slice(1), {});
+    return this.matchWithinDirectory(
+      this.root,
+      url.split("/").slice(1),
+      {},
+      "",
+    );
   }
 }

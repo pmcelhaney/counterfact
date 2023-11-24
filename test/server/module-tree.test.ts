@@ -70,10 +70,22 @@ it("is case-insensitive", () => {
 it("captures the path variables", () => {
   const moduleTree = new ModuleTree();
   add(moduleTree, "/a/{foo}/{bar}", "wildcard");
-  expect(moduleTree.match("/a/b/c").pathVariables).toEqual({
+  expect(moduleTree.match("/a/b/c")?.pathVariables).toEqual({
     bar: "c",
     foo: "b",
   });
+});
+
+it("captures the matched path", () => {
+  const moduleTree = new ModuleTree();
+  add(moduleTree, "/a/b/c", "simple");
+  expect(moduleTree.match("/a/b/c")?.matchedPath).toEqual("/a/b/c");
+});
+
+it("captures the matched path with wildcards", () => {
+  const moduleTree = new ModuleTree();
+  add(moduleTree, "/a/{foo}/{bar}", "wildcard");
+  expect(moduleTree.match("/a/b/c")?.matchedPath).toEqual("/a/{foo}/{bar}");
 });
 
 it("removes a module", () => {
