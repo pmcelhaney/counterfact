@@ -18,7 +18,7 @@ interface Directory {
 interface Match {
   matchedPath: string;
   module: Module;
-  pathVariables: { [key: string]: string | undefined };
+  pathVariables: { [key: string]: string };
 }
 
 function isDirectory(test: Directory | undefined): test is Directory {
@@ -107,10 +107,11 @@ export class ModuleTree {
     this.removeModuleFromDirectory(this.root, segments);
   }
 
+  // eslint-disable-next-line max-params
   private buildMatch(
     directory: Directory,
     segment: string,
-    pathVariables: { [key: string]: string | undefined },
+    pathVariables: { [key: string]: string },
     matchedPath: string,
   ) {
     const match =
@@ -143,11 +144,11 @@ export class ModuleTree {
     };
   }
 
-  // eslint-disable-next-line max-statements
+  // eslint-disable-next-line max-statements, max-params
   private matchWithinDirectory(
     directory: Directory,
     segments: string[],
-    pathVariables: { [key: string]: string | undefined },
+    pathVariables: { [key: string]: string },
     matchedPath: string,
   ): Match | undefined {
     if (segments.length === 0) {
