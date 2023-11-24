@@ -183,15 +183,15 @@ In such cases, we want to be sure the front end code responds appropriately. Get
 Another way to explore counterfactuals in real time is to interact with the running server via the read-eval-print loop (REPL), in the same way that you interact with running UI code in your browser's developer tools console. If you look in the terminal after starting Counterfact you should see a prompt like this:
 
 ```txt
-Welcome to Counterfact!
+____ ____ _  _ _ _ ___ ____ ____ ____ ____ ____ ___
+|___ [__] |__| |\|  |  |=== |--< |--- |--| |___  |
+       High code, low effort mock REST APIs
 
-Counterfact is a mock server used to develop and test your front end app.
-There are several ways to poke and prod the server in order to make it behave the way you need for testing.
+| API Base URL  ==> http://localhost:3100
+| Admin Console ==> http://localhost:3100/counterfact/
+| Instructions  ==> https://counterfact.dev/docs/usage.html
 
-1. Call the REST APIs at http://localhost:3100 (with your front end app, curl, Postman, etc.)
-2. Change the implementation of the APIs by editing files under /Users/pmcelhaney/code/counterfact/out/paths (no need to restart)
-3. Use the GUI at http://localhost:3100
-4. Use the REPL below (type .counterfact for more information)
+Starting REPL, type .help for more info
 
 >
 ```
