@@ -15,7 +15,7 @@ interface Directory {
 
 interface Match {
   module: Module;
-  pathVariables: { [key: string]: string };
+  pathVariables: { [key: string]: string | undefined };
 }
 
 function isDirectory(test: Directory | undefined): test is Directory {
