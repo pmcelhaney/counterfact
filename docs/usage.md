@@ -16,7 +16,6 @@ Counterfact is two complimentary tools in one:
 The easiest way to start is to copy and paste this command into your terminal.
 
 ```sh copy
-npm i -g ts-node
 npx counterfact@latest https://petstore3.swagger.io/api/v3/openapi.json api --open
 ```
 
