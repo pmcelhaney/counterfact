@@ -22,6 +22,8 @@ describe("a module loader", () => {
           };
       }
       `,
+      "no-extension": "ignore me",
+      "readme.md": "ignore me",
     };
 
     await withTemporaryFiles(files, async (basePath: string) => {

@@ -114,7 +114,7 @@ export class ModuleLoader extends EventTarget {
     );
 
     const imports = files.flatMap(async (file): Promise<void> => {
-      const extension = file.name.split(".").at(-1);
+      const extension = file.name.split(".").at(-1) ?? "";
 
       if (file.isDirectory()) {
         await this.load(
@@ -124,7 +124,7 @@ export class ModuleLoader extends EventTarget {
         return;
       }
 
-      if (!["js", "mjs", "mts", "ts"].includes(extension ?? "")) {
+      if (!["js", "mjs", "mts", "ts"].includes(extension)) {
         return;
       }
 

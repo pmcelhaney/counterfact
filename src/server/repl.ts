@@ -1,26 +1,38 @@
 import repl from "node:repl";
 
-import type { Config } from "./config.js";
 import type { ContextRegistry } from "./context-registry.js";
 
-export function startRepl(contextRegistry: ContextRegistry, config: Config) {
-  const replServer = repl.start("> ");
+interface ReplConfig {
+  proxyEnabled: boolean;
+  proxyUrl: string;
+}
+
+export function startRepl(
+  contextRegistry: ContextRegistry,
+  config: ReplConfig,
+  { input = process.stdin, output = process.stdout } = {},
+) {
+  const replServer = repl.start({
+    input,
+    output,
+    prompt: "counterfact> ",
+  });
 
   replServer.defineCommand("counterfact", {
     action() {
-      process.stdout.write(
+      this.output.write(
         "This is a read-eval-print loop (REPL), the same as the one you get when you run node with no arguments.\n",
       );
-      process.stdout.write(
+      this.output.write(
         "Except that it's connected to the running server, which you can access with the following globals:\n\n",
       );
-      process.stdout.write(
+      this.output.write(
         "- loadContext('/some/path'): to access the context object for a given path\n",
       );
-      process.stdout.write(
+      this.output.write(
         "- context: the root context ( same as loadContext('/') )\n",
       );
-      process.stdout.write(
+      this.output.write(
         "\nFor more information, see https://counterfact.dev/docs/usage.html\n\n",
       );
 
@@ -41,7 +53,7 @@ export function startRepl(contextRegistry: ContextRegistry, config: Config) {
         config.proxyEnabled = false;
       }
 
-      process.stdout.write(
+      this.output.write(
         `Proxy is ${config.proxyEnabled ? "on" : "off"}: ${config.proxyUrl}\n`,
       );
 
