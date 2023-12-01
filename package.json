@@ -43,7 +43,7 @@
     "counterfact": "./bin/counterfact.js"
   },
   "devDependencies": {
-    "@changesets/cli": "2.26.2",
+    "@changesets/cli": "2.27.1",
     "@stryker-mutator/core": "7.3.0",
     "@stryker-mutator/jest-runner": "7.3.0",
     "@stryker-mutator/typescript-checker": "7.3.0",
