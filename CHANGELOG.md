@@ -1,5 +1,11 @@
 # counterfact
 
+## 0.32.0
+
+### Minor Changes
+
+- 25933c2: fix an issue where the types.d.ts file was not copied over
+
 ## 0.31.0
 
 ### Minor Changes
