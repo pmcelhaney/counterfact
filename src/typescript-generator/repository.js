@@ -52,7 +52,7 @@ export class Repository {
   copyCoreFiles(destination) {
     return fs.copyFile(
       nodePath
-        .join(__dirname, "../../src/server/types.d.ts")
+        .join(__dirname, "../../dist/server/types.d.ts")
         .replaceAll("\\", "/"),
       nodePath.join(destination, "types.d.ts").replaceAll("\\", "/"),
     );
