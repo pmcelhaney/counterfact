@@ -80,7 +80,7 @@ describe("a dispatcher", () => {
     expect(html?.type).toBe("text/html");
   });
 
-  it("returns HTTP 406 if it can't return content matching the accept header", async () => {
+  it("returns HTTP 406 if it can only return content that does not match the accept header", async () => {
     const registry = new Registry();
 
     registry.add("/hello", {
@@ -109,6 +109,35 @@ describe("a dispatcher", () => {
     });
 
     expect(response.status).toBe(406);
+  });
+
+  it("does not set status to 406 if the response has no content", async () => {
+    const registry = new Registry();
+
+    registry.add("/hello", {
+      GET() {
+        return {
+          status: 200,
+        };
+      },
+    });
+
+    const dispatcher = new Dispatcher(registry, new ContextRegistry());
+    const response = await dispatcher.request({
+      body: "",
+
+      headers: {
+        accept: "application/json",
+      },
+
+      method: "GET",
+
+      path: "/hello",
+      query: {},
+      req: { path: "/hello" },
+    });
+
+    expect(response.status).toBe(200);
   });
 
   it.each([

@@ -280,6 +280,7 @@ export class Dispatcher {
     );
 
     if (
+      normalizedResponse.body !== undefined &&
       !mediaTypes(headers.accept ?? "*/*").some((type) =>
         this.isMediaType(normalizedResponse.contentType ?? "", type),
       )
