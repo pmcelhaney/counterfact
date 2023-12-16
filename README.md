@@ -46,7 +46,7 @@ For more detailed information and usage guidelines, visit our [tutorial](./docs/
 
 While Counterfact offers a unique approach to API mocking tailored for front-end development, we understand the importance of having the right tool for your specific needs. Here are some similar tools and alternatives you might find useful:
 
-[**Mirage JS**](https://miragejs.com/): has goals that are very similar to Counterfact's and very different approaches to meeting them. For example, it runs in a browser instead of Node. While it doesn't integrate with OpenAPI, it does support GraphQL.
+[**Mirage JS**](https://miragejs.com/): has goals that are very similar to Counterfact's and very different approaches to meeting them. For example, it runs in a browser instead of Node, does not integrate with OpenAPI, and does support GraphQL.
 
 [**Mockoon**](https://mockoon.com/): A user-friendly desktop application that allows you to quickly create mock APIs locally.
 
