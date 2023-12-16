@@ -38,7 +38,7 @@ The above command installs and runs Counterfact, generates TypeScript code for a
 
 ## What People Are Saying about Counteract
 
-**Steve Jobs**: "Counterfact is more than just a mock server; it's a paradigm shift in how we develop, test, and deploy web applications."
+**Steve Jobs**: "Counterfact is more than just a mock server; it's a paradigm shift in how we develop, test, and deploy web and mobile apps."
 
 **Amelia Earhart:** "The most effective way to do it, is to do it. Counterfact embodies this spirit, propelling front-end development forward with action and ease."
 
@@ -50,4 +50,4 @@ The above command installs and runs Counterfact, generates TypeScript code for a
 
 More info under [Documentation](./docs/usage.md).
 
-Please send feedback / questions to pmcelhaney@gmail.com or [create a new issue](https://github.com/pmcelhaney/counterfact/issues/new). **If you like what you see, please give this project a <mark>star!</mark>**
+Please send feedback / questions to pmcelhaney@gmail.com or [create a new issue](https://github.com/pmcelhaney/counterfact/issues/new). **If you like what you see, please give this project a ⭐️!**
