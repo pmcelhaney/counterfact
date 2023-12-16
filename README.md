@@ -23,7 +23,7 @@ _The Ultimate Mock Server Every Front-End Engineer Dreams Of_
 - **Seamless API Mocking:** Say goodbye to back-end hassles. Counterfact offers a streamlined API-first approach to building and testing your front-end.
 - **Effortless Productivity:** Utilize your existing OpenAPI/Swagger documentation to auto-generate TypeScript code.
 - **Instant Gratification:** If you have Node installed and an OpenAPI spec handy, you're one command away from a dependency-free workflow.
-- **Flexibility at Your Fingertips:** Easily toggle between mock and real services, change behavior without losing state, simulate complex use cases and error conditions, and use developer-facing APIs inside a REPL.
+- **Flexibility at Your Fingertips:** Easily toggle between mock and real services, change behavior without losing state, simulate complex use cases and error conditions, and use developer-facing APIs inside a REPL -- think "Chrome DevTools" but on the server side.
 - **Plays Well with Others:** Do you use NextJS? Are you an iOS Swiftie? Do you have the Angular logo tattooed on your forearm? Counterfact requires no alterations to your front-end code.
 
 ## 10 Second Quick Start
