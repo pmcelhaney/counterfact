@@ -43,7 +43,7 @@ This command installs Counterfact, sets up a mock server implementing the [Swagg
 
 For more detailed information and usage guidelines, visit our [tutorial](./docs/quick-start.md) and [usage guide](./docs/usage.md).
 
-> ## What Experts are Saying
+> ## What Experts Are Saying
 >
 > **Steve Jobs**: "Counterfact is more than just a mock server; it's a paradigm shift in how we develop, test, and deploy web and mobile apps."
 >
@@ -52,9 +52,11 @@ For more detailed information and usage guidelines, visit our [tutorial](./docs/
 > **Marie Curie**: "I was taught that the way of progress was neither swift nor easy. Yet, Counterfact seems to defy that norm in software engineering."
 >
 > **Donald Trump**: "You're gonna be so productive you won't even know it. You're going to look at me and you're gonna say I don't understand, where did this back-end come from? There was nothing, and then all of the sudden there's everything. And I'm gonna say I told you it's fast. I said it's fast and nobody believed me but it really is that fast. Very fast. Very productive. Faster than you've ever seen. Nobody's seen this fast before. I have, but nobody else has. Also Counterfact is fun. Very fun. Bigly fun. You're gonna have a lot of fun when you try out Counterfact yourself. Believe me."
+>
+> _Note: Counterfact is a real project. It's free and open source, and has zero budgets for the lawyers who would tell us we can't do this._
 
 ## Feedback and Contributions
 
-We value your feedback and contributions. Please [create an issue](https://github.com/pmcelhaney/counterfact/issues/new) or reach out to <pmcelhaney@counterfact.com>
+We value your feedback and contributions, including feature requests and bug reports. Please [create an issue](https://github.com/pmcelhaney/counterfact/issues/new), open a pull request, or reach out to <pmcelhaney@counterfact.com>
 
-If you like what you see, give Counterfact a ⭐️ on GitHub!
+**If you like what you see, give Counterfact a ⭐️ on GitHub!**
