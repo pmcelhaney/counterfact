@@ -44,27 +44,13 @@ For more detailed information and usage guidelines, visit our [tutorial](./docs/
 
 ## Similar Tools and Alternatives
 
-While Counterfact offers a unique approach to API mocking tailored for front-end development, we understand the importance of having the right tool for your specific needs. Here are some similar tools and alternatives you might find useful:
+While Counterfact offers a unique approach to API mocking that we believe provides the best overall DX, we understand the importance of having the right tool for your specific needs. Here are some similar tools and alternatives you might find useful:
 
-[**Mirage JS**](https://miragejs.com/): has goals that are very similar to Counterfact's and very different approaches to meeting them. For example, it runs in a browser instead of Node, does not integrate with OpenAPI, and does support GraphQL.
+[**Mirage JS**](https://miragejs.com/) has more or less the same goals as Counterfact and very different approaches to achieving those goals. Some notable differences are it runs in a browser instead of Node, does not integrate with OpenAPI, and does support GraphQL.
 
-[**Mockoon**](https://mockoon.com/): A user-friendly desktop application that allows you to quickly create mock APIs locally.
+If your goal is to get a server up and running quickly and your API doesn't do much beyond storing and retrieving data, [**JSON Server**](https://github.com/typicode/json-server) may be a great choice for you.
 
-[**WireMock**](http://wiremock.org/): An advanced tool for mocking HTTP-based APIs, suitable for more complex testing scenarios.
-
-[**Postman Mock Server**](https://www.postman.com/): Part of the popular Postman suite, this tool is great for those already using Postman for API testing.
-
-[**JSON Server**](https://github.com/typicode/json-server): Provides a quick and simple way to set up a full fake REST API using a straightforward JSON file.
-
-[**Mocky.io**](https://www.mocky.io/): An online service for creating custom HTTP responses, perfect for quick and hassle-free API response simulations.
-
-[**Beeceptor**](https://beeceptor.com/): An easy-to-use online platform for mocking and intercepting APIs without any code changes.
-
-[**Pact**](https://docs.pact.io/): Focuses on contract testing, ensuring that integrations between services are correctly maintained.
-
-[**Nock**](https://github.com/nock/nock): Specifically designed for Node.js, this tool is great for mocking HTTP requests in Node.js applications.
-
-Each of these tools has its unique features and use cases. We encourage you to explore them and choose the one that best fits your project requirements.
+If your mocking needs are relatively simple you may want to check out [**Beeceptor**](https://beeceptor.com/), [**Mockoon**](https://mockoon.com/), or [**Mocky.io**](https://www.mocky.io/), each of which provide low code / no code solutions. Mocky is free; the others have free and paid tiers.
 
 ## Feedback and Contributions
 
