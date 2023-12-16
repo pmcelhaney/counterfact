@@ -24,7 +24,7 @@ _The Ultimate Mock Server Every Front-End Engineer Dreams Of_
 - **Effortless Productivity:** Utilize your existing OpenAPI/Swagger documentation to auto-generate TypeScript code.
 - **Instant Gratification:** If you have Node installed and an OpenAPI spec handy, you're one command away from a dependency-free workflow.
 - **Flexibility at Your Fingertips:** Easily toggle between mock and real services, change behavior without losing state, simulate complex use cases and error conditions, and use developer-facing APIs inside a REPL.
-- **Plays Well with Others:** Do use NextJS? Do you love Astro? Are you a die-hard Angular fan? Counterfact requires no alterations to your front-end code.
+- **Plays Well with Others:** Do you use NextJS? Are you an iOS Swiftie? Do you have the Angular logo tattooed on your forearm? Counterfact requires no alterations to your front-end code.
 
 ## 10 Second Quick Start
 
@@ -34,7 +34,7 @@ Copy the following command to your terminal.
 npx counterfact@latest https://petstore3.swagger.io/api/v3/openapi.yaml api --open
 ```
 
-The above command installs and runs Counterfact, generates TypeScript code for a mock server based on the example OpenAPI spec (the [Swagger Petstore](https://petstore.swagger.io/)), puts the code in the `api` directory and `--open`'s a web browser.
+The above command installs and runs Counterfact, generates TypeScript code for a mock server based on the canonical OpenAPI example (the [Swagger Petstore](https://petstore.swagger.io/)), puts the code in the `api` directory and `--open`'s a web browser.
 
 ## What People Are Saying about Counteract
 
