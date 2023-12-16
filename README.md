@@ -23,7 +23,7 @@ _The Ultimate Mock Server Every Front-End Engineer Dreams Of_
 - **Seamless API Mocking:** Say goodbye to back-end hassles. Counterfact offers a streamlined API-first approach to building and testing your front-end.
 - **Effortless Productivity:** Utilize your existing OpenAPI/Swagger documentation to auto-generate TypeScript code.
 - **Instant Gratification:** If you have Node installed and an OpenAPI spec handy, you're one command away from a dependency-free workflow.
-- **Flexibility at Your Fingertips:** Easily toggle between mock and real services, change behavior without losing state, talk to your server with a REPL.
+- **Flexibility at Your Fingertips:** Easily toggle between mock and real services, change behavior without losing state, simulate complex use cases and error conditions, and use developer-facing APIs inside a REPL.
 - **Plays Well with Others:** Do use NextJS? Do you love Astro? Are you a die-hard Angular fan? Counterfact requires no alterations to your front-end code.
 
 ## 10 Second Quick Start
@@ -38,13 +38,13 @@ The above command installs and runs Counterfact, generates TypeScript code for a
 
 ## What People Are Saying about Counteract
 
-**Albert Einstein:** "The measure of intelligence is the ability to change. Counterfact represents this change in the realm of software development, enabling front-end engineers to adapt and innovate without the constraints of back-end complexities."
-
 **Steve Jobs**: "Counterfact is more than just a mock server; it's a paradigm shift in how we develop, test, and deploy web applications."
 
-**Marie Curie:** "One never notices what has been done; one can only see what remains to be done. Counterfact addresses a critical need in the development process, bridging the gap between concept and creation with remarkable efficiency."
+**Amelia Earhart:** "The most effective way to do it, is to do it. Counterfact embodies this spirit, propelling front-end development forward with action and ease."
 
-**Donald Trump**: "It's going to be so fast you don't even see it. You're going to say Donald, where did this back-end come from? There was nothing, and then all of the sudden there's everything. And I'm gonna say I told you it's fast. I said it's fast and nobody believed me but it really is that fast. Very fast. Faster than you've ever seen. Nobody's seen this fast before. I have, but nobody else has. Also Counterfact is fun. Very fun. Bigly fun. You're gonna have a lot of fun when you try it yourself. Believe me."
+**Marie Curie**: "I was taught that the way of progress was neither swift nor easy. Yet, Counterfact seems to defy that norm in software engineering."
+
+**Donald Trump**: "You're gonna be so productive you won't even know it. You're going to look at me and you're gonna say I don't understand, where did this back-end come from? There was nothing, and then all of the sudden there's everything. And I'm gonna say I told you it's fast. I said it's fast and nobody believed me but it really is that fast. Very fast. Very productive. Faster than you've ever seen. Nobody's seen this fast before. I have, but nobody else has. Also Counterfact is fun. Very fun. Bigly fun. You're gonna have a lot of fun when you try out Counterfact yourself. Believe me."
 
 ---
 
