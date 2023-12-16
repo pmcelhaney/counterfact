@@ -43,7 +43,7 @@ This command installs Counterfact, sets up a mock server implementing the [Swagg
 
 For more detailed information and usage guidelines, visit our [tutorial](./docs/quick-start.md) and [usage guide](./docs/usage.md).
 
-## What People Are Saying about Counteract
+## What Experts are Saying
 
 **Steve Jobs**: "Counterfact is more than just a mock server; it's a paradigm shift in how we develop, test, and deploy web and mobile apps."
 
