@@ -42,17 +42,29 @@ This command installs Counterfact, sets up a mock server implementing the [Swagg
 
 For more detailed information and usage guidelines, visit our [tutorial](./docs/quick-start.md) and [usage guide](./docs/usage.md).
 
-## What Experts Are Saying
+## Similar Tools and Alternatives
 
-**Steve Jobs**: "Counterfact is more than just a mock server; it's a paradigm shift in how we develop, test, and deploy web and mobile apps."
+While Counterfact offers a unique approach to API mocking tailored for front-end development, we understand the importance of having the right tool for your specific needs. Here are some similar tools and alternatives you might find useful:
 
-**Amelia Earhart:** "The most effective way to do it, is to do it. Counterfact embodies this spirit, propelling front-end development forward with action and ease."
+[**Mirage JS**](https://miragejs.com/): has goals that are very similar to Counterfact's and very different approaches to meeting them. For example, it runs in a browser instead of Node. While it doesn't integrate with OpenAPI, it does support GraphQL.
 
-**Marie Curie**: "I was taught that the way of progress was neither swift nor easy. Yet, Counterfact seems to defy that norm in software engineering."
+[**Mockoon**](https://mockoon.com/): A user-friendly desktop application that allows you to quickly create mock APIs locally.
 
-**Donald Trump**: "You're gonna be so productive you won't even know it. You're going to look at me and you're gonna say I don't understand, where did this back-end come from? There was nothing, and then all of the sudden there's everything. And I'm gonna say I told you it's fast. I said it's fast and nobody believed me but it really is that fast. Very fast. Very productive. Faster than you've ever seen. Nobody's seen this fast before. I have, but nobody else has. Also Counterfact is fun. Very fun. Bigly fun. You're gonna have a lot of fun when you try out Counterfact yourself. Believe me."
+[**WireMock**](http://wiremock.org/): An advanced tool for mocking HTTP-based APIs, suitable for more complex testing scenarios.
 
-_Note: Counterfact is a real project. It's free and open source, and has zero budgets for the lawyers who would tell us we can't do this._
+[**Postman Mock Server**](https://www.postman.com/): Part of the popular Postman suite, this tool is great for those already using Postman for API testing.
+
+[**JSON Server**](https://github.com/typicode/json-server): Provides a quick and simple way to set up a full fake REST API using a straightforward JSON file.
+
+[**Mocky.io**](https://www.mocky.io/): An online service for creating custom HTTP responses, perfect for quick and hassle-free API response simulations.
+
+[**Beeceptor**](https://beeceptor.com/): An easy-to-use online platform for mocking and intercepting APIs without any code changes.
+
+[**Pact**](https://docs.pact.io/): Focuses on contract testing, ensuring that integrations between services are correctly maintained.
+
+[**Nock**](https://github.com/nock/nock): Specifically designed for Node.js, this tool is great for mocking HTTP requests in Node.js applications.
+
+Each of these tools has its unique features and use cases. We encourage you to explore them and choose the one that best fits your project requirements.
 
 ## Feedback and Contributions
 
