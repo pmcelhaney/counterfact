@@ -50,4 +50,4 @@ The above command installs and runs Counterfact, generates TypeScript code for a
 
 More info under [Documentation](./docs/usage.md).
 
-Please send feedback / questions to pmcelhaney@gmail.com or [create a new issue](https://github.com/pmcelhaney/counterfact/issues/new). If you like what you see, please give this project a star!
+Please send feedback / questions to pmcelhaney@gmail.com or [create a new issue](https://github.com/pmcelhaney/counterfact/issues/new). **If you like what you see, please give this project a <mark>star!</mark>**
