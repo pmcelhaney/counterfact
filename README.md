@@ -58,6 +58,6 @@ If your mocking needs are relatively simple you may want to check out [**Beecept
 
 ## Feedback and Contributions
 
-We value your feedback and contributions, including feature requests and bug reports. Please [create an issue](https://github.com/pmcelhaney/counterfact/issues/new), open a pull request, or reach out to <pmcelhaney@counterfact.com>
+We value your feedback and contributions, including feature requests and bug reports. Please [create an issue](https://github.com/pmcelhaney/counterfact/issues/new), open a pull request, or reach out to <pmcelhaney@gmail.com>
 
 **If you like what you see, give Counterfact a ⭐️ on GitHub!**
