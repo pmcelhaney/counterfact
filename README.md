@@ -22,7 +22,7 @@ Counterfact is a cutting-edge mock server that stands in for a back end that eit
 
 What sets Counterfact apart from other mock servers is it starts simple and grows with your needs. It reads your OpenAPI/Swagger documentation and generates TypeScript code that returns random values for each endpoint. From there you can edit the code to add behavior and state until you reach the sweet spot between _real enough to be useful_ and _fake enough to be usable_.
 
-While one doesn't need to know TypeScript to use Counterfact, it assumes most end front end engineers have at least a working knowledge and puts those skills to use. Counterfact was born out the following question: **what would it look like to take advantage of OpenAPI, type safety and autocomplete to super-charge our productivity?**
+While one doesn't need to know TypeScript to use Counterfact, we assume most front-end engineers have at least a working knowledge. Counterfact puts that knowledge to good use. Counterfact was born out the following question: **what would it look like to take advantage of OpenAPI, type safety and autocomplete to super-charge our productivity?**
 
 ## Why Use Counterfact?
 
