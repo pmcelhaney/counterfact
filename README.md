@@ -10,7 +10,7 @@
 
 # Counterfact
 
-_The Ultimate Mock Server for Front-End Engineers_
+_A Mock Server for High-performing Front-end Teams_
 
 [Quick Start](./docs/quick-start.md) | [Documentation](./docs/usage.md) | [Contributing](CONTRIBUTING.md)
 
@@ -18,19 +18,20 @@ _The Ultimate Mock Server for Front-End Engineers_
 
 <br>
 
-Counterfact is a cutting-edge mock server that stands in for a back end that either doesn't exist yet or can't be easily stood up for local development. It's also invaluable for testing front-end workflows that depend on the server being in particular, known states. It can even be used to prototype an API before investing in the real thing.
+Counterfact is a **mock server** designed to hit the sweet spot every front-end engineers craves: **_real enough to be useful but fake enough to be usable_**. It stands in for a server that doesn't yet exist, or the one that's too complex / rigid to suit your development and testing needs.
 
-What sets Counterfact apart from other mock servers is it starts simple and grows with your needs. It reads your OpenAPI/Swagger documentation and generates TypeScript code that returns random values for each endpoint. From there you can edit the code to add behavior and state until you reach the sweet spot between _real enough to be useful_ and _fake enough to be usable_.
+Counterfact enables **API-first** development where the front-end and back-end are built in parallel. It can even be used to _prototype_ the back-end to get rapid feedback, deferring big decisions and investments until the last responsible moment.
 
-While one doesn't need to know TypeScript to use Counterfact, we assume most front-end engineers have at least a working knowledge. Counterfact puts that knowledge to good use. Counterfact was born out the following question: **what would it look like to take advantage of OpenAPI, type safety and autocomplete to super-charge our productivity?**
+Like your favorite pair of sweatpants, Counterfact is lightweight, flexible, and comfortable; it stretches and shrinks to fit your project's unique contours. Best of all, it makes your <del>ass</del> <ins>boss</ins> look good. Go ahead, [try it on](./docs/quick-start.md).
 
 ## Why Use Counterfact?
 
 - **Seamless API Mocking:** Say goodbye to back-end hassles. Counterfact offers a streamlined API-first approach to building and testing your front-end.
-- **Effortless Productivity:** Utilize your existing OpenAPI/Swagger documentation to auto-generate TypeScript code.
+- **Effortless Productivity:** Reuse your existing OpenAPI/Swagger documentation to auto-generate TypeScript code.
 - **Instant Gratification:** If you have Node installed and an OpenAPI spec handy, you're one command away from a dependency-free workflow.
-- **Flexibility at Your Fingertips:** Easily toggle between mock and real services, change behavior without losing state, simulate complex use cases and error conditions, make runtime tweaks with a REPL (like having dev tools on the server side).
-- **Plays Well with Others:** Do you use NextJS? Are you an iOS Swiftie? Do you have the Angular logo tattooed on your forearm? Counterfact requires no alterations to your front-end code.
+- **Flexibility at Your Fingertips:** Easily toggle between mock and real services, change behavior without losing state, simulate complex use cases and error conditions, make runtime tweaks with a REPL.
+- **Devtools on the server:** That's what it feels like. Make a change, see the effect instantly. It even have a REPL (like the console in your browser).
+- **Plays well with others:** Counterfact works with anything that depends on a REST API, including web apps, mobile apps, and even other APIs. It requires zero changes to your front-end code.
 
 ## 10 Second Quick Start
 
