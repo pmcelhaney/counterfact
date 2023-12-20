@@ -193,10 +193,10 @@ ____ ____ _  _ _ _ ___ ____ ____ ____ ____ ____ ___
 
 Starting REPL, type .help for more info
 
->
+
 ```
 
-At the `> ` prompt, you can enter JavaScript code to interact with the live [context object](#context-object). For example, here's a quick way to add a pet to the store.
+At the `🤖>` prompt, you can enter JavaScript code to interact with the live [context object](#context-object). For example, here's a quick way to add a pet to the store.
 
 ```js
 context.addPet({ name: "Fluffy", photoUrls: [] });
@@ -214,7 +214,7 @@ Or get a list of pets whose names start with "F"
 context.pets.find((pet) => pet.name.startsWith("F"));
 ```
 
-Using the REPL is a lot faster (and more fun) than wrangling config files and SQL and whatever else it takes to a real back end into the states you need to test your UI flows.
+Using the REPL is a lot faster (and more fun) than wrangling config files and SQL and whatever else it takes to get a real back end into the states you need to test your UI flows.
 
 ## Proxy Peek-a-boo 🫣
 

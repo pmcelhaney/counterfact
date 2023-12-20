@@ -31,7 +31,7 @@ Like your favorite pair of sweatpants, Counterfact is lightweight, flexible, and
 - **Instant Gratification:** If you have Node installed and an OpenAPI document handy, you're [one command away](./docs/quick-start.md) from a dependency-free workflow.
 - **Flexibility at Your Fingertips:** Effortlessly toggle between mock and real services, change behavior without losing state, simulate complex use cases and error conditions, etc.
 - **Dev Tools on the server:** That's what it feels like. Change code in a running server and see the effect immediately. It even has a REPL, like the JS console in your browser.
-- **High code, low effort:** Wouldn't you love the simplicity of a "low code" / "no code" tool without giving up the flexibility and power you get from knowing how to write TypeScript? Inconceivable, you say? [Don't knock it 'til youy try it](./docs/quick-start.md).
+- **High code, low effort:** Wouldn't you love the simplicity of a "low code" / "no code" tool without giving up the flexibility and power you get from knowing how to write TypeScript? Inconceivable, you say? [Don't knock it 'til you try it](./docs/quick-start.md).
 - **Plays well with others:** Counterfact works with anything that depends on a REST API, including web apps, mobile apps, desktop apps, and microservices. It requires zero changes to your front-end framework or code.
 
 ## 10 Second Quick Start
