@@ -41,6 +41,8 @@ export const taglines = [
   "close enough for government work",
   "an API in hand is worth two in the cloud",
   "where we're going, we don't need wifi",
+  "paper prototyping the back-end",
+  "the cloud natives are restless",
 ];
 
 // rejected because they don't fit
