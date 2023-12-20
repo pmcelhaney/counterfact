@@ -1,5 +1,16 @@
 # counterfact
 
+## 0.33.0
+
+### Minor Changes
+
+- 93d7607: added a 🤖 to the prompt to make it look more distinguished
+- 960105a: just for fun, the tagline when the CLI starts is different every time you run it
+
+### Patch Changes
+
+- cf203d7: ignore the HTTP accept header if the response has no body
+
 ## 0.32.0
 
 ### Minor Changes
