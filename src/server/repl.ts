@@ -4,7 +4,7 @@ import type { Config } from "./config.js";
 import type { ContextRegistry } from "./context-registry.js";
 
 export function startRepl(contextRegistry: ContextRegistry, config: Config) {
-  const replServer = repl.start("> ");
+  const replServer = repl.start("🤖> ");
 
   replServer.defineCommand("counterfact", {
     action() {

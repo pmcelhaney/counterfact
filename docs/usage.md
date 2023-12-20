@@ -20,7 +20,7 @@ npm i -g ts-node
 npx counterfact@latest https://petstore3.swagger.io/api/v3/openapi.json api --open
 ```
 
-It will generate TypeScript code for the Swagger Pet Store, start a server, and `--open` a browser running Swagger UI. We're using the pet store example because it's well known and convenient. If you have your own OpenAPI document handy, you can point to that instead. You can also change `api` to wherever you'd like to output the code.
+This will generate TypeScript code for the Swagger Pet Store, start a server, and `--open` a browser that runs Swagger UI. We're using the pet store example because it's well known and convenient. If you have your own OpenAPI document handy, you can point to that instead. You can also change `api` to wherever you'd like to output the code.
 
 <details>
 
@@ -73,13 +73,13 @@ export const POST: HTTP_POST = ($) => {
 };
 ```
 
-The file's path corresponds to the endpoint's URL. Each of the exported functions implements an HTTP request method (GET, POST, PUT, etc.). Each of these functions takes one argument -- `$` -- which is used to access request information, build a response, and interact with the server's state.
+The TypeScript file's path corresponds to the endpoint's URL. Each of the exported functions implements an HTTP request method (GET, POST, PUT, etc.). Each of these functions takes one argument -- `$` -- which is used to access request information, build a response, and interact with the server's state.
 
 > If you're familiar with Express, `$` is sort of a combination of `req` and `res` with type safety and extra super powers.
 
 ### The `$.response` object
 
-The `$.response` object is used to build a valid response for the URL and request method. It's designed to work with your IDE's autocomplete feature and help you build a valid response without consulting the docs. Try typing `$.response.` in your IDE. You should see a list of numbers corresponding to HTTP response codes (200, 404, etc). Select one and then type another `.`. At this point the IDE should present you with one or more of the following methods.
+The `$.response` object is used to build a valid response for the URL and request method. This object is designed to work with your IDE's autocomplete feature and help you build a valid response without consulting the docs. Try typing `$.response.` in your IDE. You should see a list of numbers corresponding to HTTP response codes (200, 404, etc). Select one and then type another `.`. At this point the IDE should present you with one or more of the following methods.
 
 - `.random()` returns random data, using `examples` and other metadata from the OpenAPI document.
 - `.header(name, value)` adds a response header. It will only show up when a response header is expected and you haven't already provided it.
@@ -193,10 +193,10 @@ ____ ____ _  _ _ _ ___ ____ ____ ____ ____ ____ ___
 
 Starting REPL, type .help for more info
 
->
+🤖>
 ```
 
-At the `> ` prompt, you can enter JavaScript code to interact with the live [context object](#context-object). For example, here's a quick way to add a pet to the store.
+At the `🤖>` prompt, you can enter JavaScript code to interact with the live [context object](#context-object). For example, here's a quick way to add a pet to the store.
 
 ```js
 context.addPet({ name: "Fluffy", photoUrls: [] });
@@ -214,7 +214,7 @@ Or get a list of pets whose names start with "F"
 context.pets.find((pet) => pet.name.startsWith("F"));
 ```
 
-Using the REPL is a lot faster (and more fun) than wrangling config files and SQL and whatever else it takes to a real back end into the states you need to test your UI flows.
+Using the REPL is a lot faster (and more fun) than wrangling config files and SQL and whatever else it takes to get a real back end into the states you need to test your UI flows.
 
 ## Proxy Peek-a-boo 🫣
 
@@ -229,7 +229,7 @@ To proxy an individual endpoint, you can use the `$.proxy()` function.
  };
 ```
 
-To toggle globally between Counterfact and a proxy server, pass `--proxy-url <url>` in he CLI.
+To toggle globally between Counterfact and a proxy server, pass `--proxy-url <url>` in the CLI.
 
 Then type `.proxy on` / `.proxy off` in the REPL to turn it on and off. When the global proxy is on, all requests will be sent to the proxy URL instead of the mock implementations in Counterfact.
 
@@ -253,9 +253,9 @@ More features are coming soon:
 
 - Integrate Counterfact into your workflow (Express, Koa, Webpack Dev Server, etc.)
 - Use Counterfact in your automated tests
-- Record API calls while testing the front end manually and reuse those calls in automated tests (ala [Playwright](https://playwright.dev/))
+- Record API calls while testing the front end manually and reuse those calls in automated tests (à la [Playwright](https://playwright.dev/))
 - Use [HAR](https://toolbox.googleapps.com/apps/har_analyzer/) files to recreate scenarios / bugs encountered by real users
-- Migration scripts to seed the server with test data or get it into a particular state, ala [Playwright](https://playwright.dev/).
+- Migration scripts to seed the server with test data or get it into a particular state, à la [Playwright](https://playwright.dev/).
 - Toggle between fake and real APIs, either the whole server or individual routes, at runtime, with a GUI
 
 Please send feedback / questions to pmcelhaney@gmail.com or [create a new issue](https://github.com/pmcelhaney/counterfact/issues/new).

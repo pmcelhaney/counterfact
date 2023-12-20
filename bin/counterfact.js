@@ -8,12 +8,20 @@ import open from "open";
 
 import { migrate } from "../dist/migrations/0.27.js";
 import { counterfact } from "../dist/server/app.js";
+import { taglines } from "../dist/server/taglines.js";
 
 const DEFAULT_PORT = 3100;
 
 const debug = createDebug("counterfact:bin:counterfact");
 
 debug("running ./bin/counterfact.js");
+
+function padTagLine(tagLine) {
+  const headerLength = 51;
+  const padding = " ".repeat((headerLength - tagLine.length) / 2);
+
+  return `${padding}${tagLine}`;
+}
 
 // eslint-disable-next-line max-statements
 async function main(source, destination) {
@@ -60,7 +68,7 @@ async function main(source, destination) {
   const introduction = [
     "____ ____ _  _ _ _ ___ ____ ____ ____ ____ ____ ___",
     "|___ [__] |__| |\\|  |  |=== |--< |--- |--| |___  | ",
-    "       High code, low effort mock REST APIs",
+    padTagLine(taglines[Math.floor(Math.random() * taglines.length)]),
     "",
     `| API Base URL  ==> ${url}`,
     `| Admin Console ==> ${guiUrl}`,
