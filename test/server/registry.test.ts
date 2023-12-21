@@ -143,7 +143,7 @@ describe("a registry", () => {
     registry.add("/c/{b}", {});
     registry.add("/c/c", {});
 
-    expect(registry.routes).toStrictEqual([
+    expect(registry.routes.map((route) => route.path)).toStrictEqual([
       "/a",
       "/a/in/order",
       "/b",

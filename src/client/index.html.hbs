@@ -11,6 +11,78 @@
             font-family: Helvetica, Arial, sans-serif;
             max-width: 800px;
             margin: 0 auto;
+            background-color: #1f1f1f;
+            color: #eee;
+        } 
+        
+        a {
+          color: #fff;
+        }
+
+        h1 {
+          text-align: center;
+        }
+
+        table {
+          width: 100%;
+          border-collapse: collapse;
+        }
+
+        th {
+            color: #aaa;
+        }
+        .tilt {
+          width: 1.5em;
+          position: relative;
+          padding-top: 75px;
+        }
+
+        .tilt > * {
+          display: block;
+          position: absolute;
+          transform: rotate(-90deg);
+          transform-origin: left;
+          text-align: center;
+          bottom: 0;
+          left: 20px;
+        
+        }
+
+        thead {
+          position: sticky;
+          top: 0;
+          background-color: #1f1f1f;
+        }
+
+        th.path > * {
+          visibility: hidden;
+        }
+
+        td.path {
+          font-family: monospace;
+          font-size: 1.4em;
+        }
+
+        .path {
+          text-align: left;
+          padding-left: 20px;
+        }
+        
+        .method-identifier {
+          text-align: center;
+          font-size: 1.5em;
+          font-weight: bold;
+          color: #333;
+          padding: 0 0.5em;
+        }
+
+        tbody tr:hover {
+          background-color: #0a0a0a;
+        }
+      
+        .path a {
+          color: #eee;
+          text-decoration: none;
         }
     </style>
   <body>
@@ -19,7 +91,7 @@
 
     <p>
         This server implements the OpenAPI spec at <a href="{{openApiHref}}">{{openApiPath}}</a>. 
-        You can try it out using your favorite REST client (curl, Postman, etc.) or browse the interactive API documentation in <a href="./swagger">Swagger UI</a> or <a href="./rapidoc">Rapidoc</a>. 
+        You can try it out using your favorite REST client (curl, Postman, etc.) or browse the interactive API documentation in <a href="./swagger">Swagger UI</a>. 
 
     </p>
 
@@ -29,11 +101,31 @@
         For more information, see the <a href="https://counterfact.dev/docs/usage.html">usage guide</a>.
     </p>
     
-    <ul>
-    {{#each routes as |route|}}
-        <li><a href="vscode://file/{{../basePath}}/paths/{{route}}.ts">{{route}}</a></li>
-    {{/each}}
-    </ul>
+
+    <table>
+      <thead>
+      <tr>
+        <th class="tilt"><span>GET</span></th>
+        <th class="tilt"><span>POST</span></th>
+        <th class="tilt"><span>PUT</span></th>
+        <th class="tilt"><span>DELETE</span></th>
+        <th class="tilt"><span>PATCH</span></th>
+        <th class="path"><span>Path</span></th>
+      </tr>
+      </thead>  
+      <tbody>
+      {{#each routes as |route|}}
+      <tr>  
+        <td class="method-identifier" title="{{route.methods.GET}}">{{#if route.methods.GET }}⚪️{{/if}}</td>
+        <td class="method-identifier" title="{{route.methods.POST}}">{{#if route.methods.POST }}⚪️{{/if}}</td>
+        <td class="method-identifier" title="{{route.methods.PUT}}">{{#if route.methods.PUT }}⚪️{{/if}}</td>
+        <td class="method-identifier" title="{{route.methods.DELETE}}">{{#if route.methods.DELETE }}⚪️{{/if}}</td>
+        <td class="method-identifier" title="{{route.methods.PATH}}">{{#if route.methods.PATCH }}⚪️{{/if}}</td>
+        <td class="path"><a href="vscode://file/{{../basePath}}/paths/{{route.path}}.ts">{{route.path}}</a></td>
+      </tr>
+      {{/each}}
+      </tbody>
+    </table>
 
 
     <hr>
