@@ -84,6 +84,12 @@
           color: #eee;
           text-decoration: none;
         }
+
+        #paths-container {
+          height: 300px;
+          overflow: auto;
+          border: 2px solid #333;
+        }
     </style>
   <body>
 
@@ -102,6 +108,7 @@
     </p>
     
 
+    <div id="paths-container">
     <table>
       <thead>
       <tr>
@@ -126,7 +133,7 @@
       {{/each}}
       </tbody>
     </table>
-
+    </div>
 
     <hr>
 
