@@ -9,7 +9,7 @@
     <style type="text/css">
         body { 
             font-family: Helvetica, Arial, sans-serif;
-            max-width: 800px;
+            max-width: 1000px;
             margin: 0 auto;
             background-color: #1f1f1f;
             color: #eee;
@@ -85,16 +85,37 @@
           text-decoration: none;
         }
 
-        #paths-container {
-          height: 300px;
-          overflow: auto;
-          border: 2px solid #333;
+
+        .buttons {
+          display: flex;
+          justify-content: center;
         }
+        .buttons > a {
+          display: inline-block;
+          margin: 0 0.5em;
+          padding: 0.5em 1em;
+          background-color: #1f1f1f;
+          border: 1px solid #aaa;
+          border-radius: 5px;
+          color: #aaa;
+          text-decoration: none;
+          
+        }
+      
     </style>
   <body>
 
+    <div class="buttons">
+      <a href="./swagger" class="button" target="_blank">Swagger UI</a>
+      <a href="{{openApiHref}}" class="button" target="_blank">OpenAPI</a>
+      <a href="https://counterfact.dev/docs/usage.html" target="_blank">Usage Guide</a>
+    </div>
+
+
     <h1>Counterfact</h1>
 
+
+    <h2>Overview</h2>
     <p>
         This server implements the OpenAPI spec at <a href="{{openApiHref}}">{{openApiPath}}</a>. 
         You can try it out using your favorite REST client (curl, Postman, etc.) or browse the interactive API documentation in <a href="./swagger">Swagger UI</a>. 
@@ -108,7 +129,23 @@
     </p>
     
 
+    <table>
+      <tr>
+        <th>API Base URL</th>
+        <td><code>{{baseUrl}}</code></td>
+      </tr>
+      <tr>
+        <th>Code Base Path</th>
+        <td><code>{{basePath}}</code></td>
+      </tr>
+    </table>
+
+
+    <h2>Mocked Paths</h2>
+
     <div id="paths-container">
+
+
     <table>
       <thead>
       <tr>
@@ -128,7 +165,7 @@
         <td class="method-identifier" title="{{route.methods.PUT}}">{{#if route.methods.PUT }}⚪️{{/if}}</td>
         <td class="method-identifier" title="{{route.methods.DELETE}}">{{#if route.methods.DELETE }}⚪️{{/if}}</td>
         <td class="method-identifier" title="{{route.methods.PATH}}">{{#if route.methods.PATCH }}⚪️{{/if}}</td>
-        <td class="path"><a href="vscode://file/{{../basePath}}/paths/{{route.path}}.ts">{{route.path}}</a></td>
+        <td class="path"><a href="vscode://file{{../basePath}}/paths{{route.path}}.ts">{{route.path}}</a></td>
       </tr>
       {{/each}}
       </tbody>
