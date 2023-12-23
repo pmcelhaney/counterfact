@@ -40,7 +40,7 @@ describe("a response builder", () => {
       { body: { hello: "world" }, type: "application/json" },
       { body: "<h1>Hello World</h1>", type: "text/html" },
       {
-        body: "<!-- XML is not supported yet. If you need it, open an issue at https://github.com/pmcelhaney/counterfact/issues -->",
+        body: "<root><hello>world</hello></root>",
         type: "text/xml",
       },
     ]);

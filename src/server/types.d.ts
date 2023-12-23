@@ -182,11 +182,11 @@ interface OpenApiOperation {
       content?: {
         [type: number | string]: {
           examples?: { [key: string]: Example };
-          schema: unknown;
+          schema: { [key: string]: unknown };
         };
       };
       examples?: { [key: string]: unknown };
-      schema?: unknown;
+      schema?: { [key: string]: unknown };
     };
   };
 }

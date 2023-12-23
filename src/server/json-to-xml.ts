@@ -41,7 +41,11 @@ function xmlEscape(xmlString: string): string {
   });
 }
 
-function objectToXml(json: object, schema: Schema | undefined, name): string {
+function objectToXml(
+  json: object,
+  schema: Schema | undefined,
+  name: string,
+): string {
   const xml: string[] = [];
 
   const attributes: string[] = [];
@@ -63,7 +67,7 @@ function objectToXml(json: object, schema: Schema | undefined, name): string {
 export function jsonToXml(
   json: unknown,
   schema: Schema | undefined,
-  keyName: string,
+  keyName = "root",
 ): string {
   const name = schema?.xml?.name ?? keyName;
 
