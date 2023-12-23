@@ -1,28 +1,4 @@
-function objectToXml(
-  json: { [key: string]: unknown },
-  schema: unknown,
-  name: string,
-): string {
-  const xml: string[] = [];
-  Object.entries(json).forEach(([key, value]) => {
-    xml.push(jsonToXml(value, schema?.properties?.[key], key));
-  });
-
-  return String(xml.join(""));
-}
-
-function jsonToXml(
-  json: unknown,
-  schema: { [key: string]: unknown },
-  keyName: string,
-): string {
-  const name = schema.xml?.name ?? keyName;
-  if (typeof json === "object") {
-    return `<${name}>${objectToXml(json, schema, name)}</${name}>`;
-  }
-
-  return `<${name}>${json}</${name}>`;
-}
+import { jsonToXml } from "../../src/server/json-to-xml.js";
 
 describe("JSON to XML", () => {
   it("converts a JSON object to XML", () => {
@@ -35,6 +11,7 @@ describe("JSON to XML", () => {
         },
 
         id: {
+          attribute: true,
           type: "number",
         },
 
@@ -46,7 +23,7 @@ describe("JSON to XML", () => {
     const xml = jsonToXml(json, schema, "book");
 
     expect(xml).toBe(
-      "<book><author>string</author><id>0</id><title>string</title></book>",
+      '<book id="0"><author>string</author><title>string</title></book>',
     );
   });
 
@@ -79,5 +56,3 @@ describe("JSON to XML", () => {
     );
   });
 });
-
-export default objectToXml;
