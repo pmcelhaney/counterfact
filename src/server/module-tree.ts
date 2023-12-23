@@ -1,5 +1,10 @@
 import type { Module } from "./registry.js";
 
+interface Route {
+  methods: { [key: string]: string };
+  path: string;
+}
+
 interface File {
   isWildcard: boolean;
   module: Module;
@@ -206,8 +211,8 @@ export class ModuleTree {
     );
   }
 
-  public get routes(): string[] {
-    const routes: string[] = [];
+  public get routes(): Route[] {
+    const routes: Route[] = [];
 
     function traverse(directory: Directory, path: string) {
       Object.values(directory.directories).forEach((subdirectory) => {
@@ -215,7 +220,14 @@ export class ModuleTree {
       });
 
       Object.values(directory.files).forEach((file) => {
-        routes.push(`${path}/${file.rawName}`);
+        const methods: [string, string][] = Object.entries(file.module).map(
+          ([method, implementation]) => [method, String(implementation)],
+        );
+
+        routes.push({
+          methods: Object.fromEntries(methods),
+          path: `${path}/${file.rawName}`,
+        });
       });
     }
 
@@ -228,7 +240,7 @@ export class ModuleTree {
 
     // eslint-disable-next-line etc/no-assign-mutated-array
     return routes.sort((first, second) =>
-      stripBrackets(first).localeCompare(stripBrackets(second)),
+      stripBrackets(first.path).localeCompare(stripBrackets(second.path)),
     );
   }
 }

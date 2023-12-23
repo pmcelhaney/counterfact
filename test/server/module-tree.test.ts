@@ -106,6 +106,11 @@ it("has all of the routes", () => {
   add(moduleTree, "/a/b", "b");
   add(moduleTree, "/a/{b}", "b");
   add(moduleTree, "/c", "c");
-  expect(moduleTree.routes).toEqual(["/a", "/a/b", "/a/{b}", "/c"]);
+  expect(moduleTree.routes.map((route) => route.path)).toEqual([
+    "/a",
+    "/a/b",
+    "/a/{b}",
+    "/c",
+  ]);
 });
 export default ModuleTree;
