@@ -21,7 +21,7 @@ export const taglines = [
   "a Three Kids in a Trench Coat production ",
   "a little sleight of &&",
   "there’s no place like localhost",
-  "ny favorite book is Charlatan’s Web",
+  "my favorite book is Charlatan’s Web",
   "fact follows fiction",
   "your lovely assistant",
   "my other server’s a Kubernetes cluster ",
