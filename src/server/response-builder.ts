@@ -65,13 +65,17 @@ export function createResponseBuilder(
         contentType: string,
         body: unknown,
       ): ResponseBuilder {
+        const isXml = contentType.endsWith("/xml");
+        const XML_DISCLAIMER =
+          "<!-- XML is not supported yet. If you need it, open an issue at https://github.com/pmcelhaney/counterfact/issues -->";
+
         return {
           ...this,
 
           content: [
             ...(this.content ?? []),
             {
-              body,
+              body: isXml ? XML_DISCLAIMER : body,
               type: contentType,
             },
           ],
@@ -141,6 +145,10 @@ export function createResponseBuilder(
 
       text(this: ResponseBuilder, body: unknown) {
         return this.match("text/plain", body);
+      },
+
+      xml(this: ResponseBuilder, body: unknown) {
+        return this.match("text/xml", body);
       },
     }),
   });

@@ -79,6 +79,7 @@ interface ResponseBuilder {
   randomLegacy: () => ResponseBuilder;
   status?: number;
   text: (body: unknown) => ResponseBuilder;
+  xml: (body: unknown) => ResponseBuilder;
 }
 
 type GenericResponseBuilder<

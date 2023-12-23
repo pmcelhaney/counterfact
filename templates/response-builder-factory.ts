@@ -66,6 +66,7 @@ export type ResponseBuilder<
         : MatchFunction<Response>;
       random: [keyof Response["content"]] extends [never] ? never : () => void;
       text: MaybeShortcut<"text/plain", Response>;
+      xml: MaybeShortcut<"text/xml", Response>;
     }>;
 
 export type ResponseBuilderFactory<
