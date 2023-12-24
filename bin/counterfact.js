@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 
+import { readFile } from "node:fs/promises";
 import nodePath from "node:path";
+import { fileURLToPath } from "node:url";
 
 import { program } from "commander";
 import createDebug from "debug";
@@ -8,7 +10,16 @@ import open from "open";
 
 import { migrate } from "../dist/migrations/0.27.js";
 import { counterfact } from "../dist/server/app.js";
-import { taglines } from "../dist/server/taglines.js";
+
+const taglinesFile = await readFile(
+  nodePath.join(
+    nodePath.dirname(fileURLToPath(import.meta.url)),
+    "taglines.txt",
+  ),
+  "utf8",
+);
+
+const taglines = taglinesFile.split("\n").slice(0, -1);
 
 const DEFAULT_PORT = 3100;
 

@@ -1,10 +1,23 @@
 import { JSONSchemaFaker } from "json-schema-faker";
 
+import { jsonToXml } from "./json-to-xml.js";
 import type { OpenApiOperation, ResponseBuilder } from "./types.d.ts";
 
 JSONSchemaFaker.option("useExamplesValue", true);
 JSONSchemaFaker.option("minItems", 0);
 JSONSchemaFaker.option("maxItems", 20);
+
+function convertToXmlIfNecessary(
+  type: string,
+  body: unknown,
+  schema?: { [key: string]: unknown },
+) {
+  if (type.endsWith("/xml")) {
+    return jsonToXml(body, schema, "root");
+  }
+
+  return body;
+}
 
 function oneOf(items: unknown[] | { [key: string]: unknown }): unknown {
   if (Array.isArray(items)) {
@@ -71,7 +84,14 @@ export function createResponseBuilder(
           content: [
             ...(this.content ?? []),
             {
-              body,
+              body: convertToXmlIfNecessary(
+                contentType,
+                body,
+                operation.responses[this.status ?? "default"]?.content?.[
+                  contentType
+                ]?.schema,
+              ),
+
               type: contentType,
             },
           ],
@@ -97,16 +117,19 @@ export function createResponseBuilder(
           ...this,
 
           content: Object.keys(content).map((type) => ({
-            body: content[type]?.examples
-              ? oneOf(
-                  Object.values(content[type]?.examples ?? []).map(
-                    (example) => example.value,
+            body: convertToXmlIfNecessary(
+              type,
+              content[type]?.examples
+                ? oneOf(
+                    Object.values(content[type]?.examples ?? []).map(
+                      (example) => example.value,
+                    ),
+                  )
+                : JSONSchemaFaker.generate(
+                    content[type]?.schema ?? { type: "object" },
                   ),
-                )
-              : JSONSchemaFaker.generate(
-                  // eslint-disable-next-line total-functions/no-unsafe-readonly-mutable-assignment
-                  content[type]?.schema ?? { type: "object" },
-                ),
+              content[type]?.schema,
+            ),
 
             type,
           })),
@@ -124,8 +147,7 @@ export function createResponseBuilder(
 
         const body = response.examples
           ? oneOf(response.examples)
-          : // eslint-disable-next-line total-functions/no-unsafe-readonly-mutable-assignment
-            JSONSchemaFaker.generate(response.schema ?? { type: "object" });
+          : JSONSchemaFaker.generate(response.schema ?? { type: "object" });
 
         return {
           ...this,
@@ -141,6 +163,10 @@ export function createResponseBuilder(
 
       text(this: ResponseBuilder, body: unknown) {
         return this.match("text/plain", body);
+      },
+
+      xml(this: ResponseBuilder, body: unknown) {
+        return this.match("text/xml", body);
       },
     }),
   });

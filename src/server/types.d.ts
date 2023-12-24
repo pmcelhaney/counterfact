@@ -79,6 +79,7 @@ interface ResponseBuilder {
   randomLegacy: () => ResponseBuilder;
   status?: number;
   text: (body: unknown) => ResponseBuilder;
+  xml: (body: unknown) => ResponseBuilder;
 }
 
 type GenericResponseBuilder<
@@ -181,11 +182,11 @@ interface OpenApiOperation {
       content?: {
         [type: number | string]: {
           examples?: { [key: string]: Example };
-          schema: unknown;
+          schema: { [key: string]: unknown };
         };
       };
       examples?: { [key: string]: unknown };
-      schema?: unknown;
+      schema?: { [key: string]: unknown };
     };
   };
 }

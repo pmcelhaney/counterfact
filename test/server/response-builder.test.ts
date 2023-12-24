@@ -31,13 +31,18 @@ describe("a response builder", () => {
     })[200]
       ?.text("hello")
       ?.json({ hello: "world" })
-      ?.html("<h1>Hello World</h1>");
+      ?.html("<h1>Hello World</h1>")
+      ?.xml({ hello: "world" });
 
     expect(response?.status).toBe(200);
     expect(response?.content).toStrictEqual([
       { body: "hello", type: "text/plain" },
       { body: { hello: "world" }, type: "application/json" },
       { body: "<h1>Hello World</h1>", type: "text/html" },
+      {
+        body: "<root><hello>world</hello></root>",
+        type: "text/xml",
+      },
     ]);
   });
 
