@@ -12,7 +12,7 @@
 
 _A Mock Server for High-performing Front-end Teams_
 
-[Quick Start](./docs/quick-start.md) | [Documentation](./docs/usage.md) | [Contributing](CONTRIBUTING.md)
+[Quick Start](./docs/quick-start.md) | [Documentation](./docs/usage.md) | [Changelog](CHANGELOG.md) |s [Contributing](CONTRIBUTING.md)
 
 </div>
 
