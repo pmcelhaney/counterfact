@@ -60,6 +60,8 @@ async function main(source, destination) {
 
   const guiUrl = `${url}/counterfact/`;
 
+  const swaggerUrl = `${url}/counterfact/swagger/`;
+
   const config = {
     basePath,
     includeSwaggerUi: true,
@@ -82,7 +84,7 @@ async function main(source, destination) {
     padTagLine(taglines[Math.floor(Math.random() * taglines.length)]),
     "",
     `| API Base URL  ==> ${url}`,
-    `| Admin Console ==> ${guiUrl}`,
+    `| Swagger UI    ==> ${swaggerUrl}`,
     "| Instructions  ==> https://counterfact.dev/docs/usage.html",
     "",
     "Starting REPL, type .help for more info",

@@ -16,11 +16,10 @@ Counterfact is two complimentary tools in one:
 The easiest way to start is to copy and paste this command into your terminal.
 
 ```sh copy
-npm i -g ts-node
-npx counterfact@latest https://petstore3.swagger.io/api/v3/openapi.json api --open
+npx counterfact@latest https://petstore3.swagger.io/api/v3/openapi.json api
 ```
 
-This will generate TypeScript code for the Swagger Pet Store, start a server, and `--open` a browser that runs Swagger UI. We're using the pet store example because it's well known and convenient. If you have your own OpenAPI document handy, you can point to that instead. You can also change `api` to wherever you'd like to output the code.
+This will generate TypeScript code for the Swagger Pet Store and start the server. We're using the pet store example because it's well known and convenient. If you have your own OpenAPI document handy, you can point to that instead. You can also change `api` to wherever you'd like to output the code.
 
 <details>
 

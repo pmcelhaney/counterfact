@@ -1,6 +1,6 @@
 <div align="center"  markdown="1">
 
-![MIT License](https://img.shields.io/badge/license-MIT-blue) [![TypeScript](https://badges.frapsoft.com/typescript/love/typescript.png?v=101)](https://github.com/ellerbrock/typescript-badges/) [![Coverage Status](https://coveralls.io/repos/github/pmcelhaney/counterfact/badge.svg)](https://coveralls.io/github/pmcelhaney/counterfact)
+![MIT License](https://img.shields.io/badge/license-MIT-blue) [![TypeScript](./typescript-badge.png)](https://github.com/ellerbrock/typescript-badges/) [![Coverage Status](https://coveralls.io/repos/github/pmcelhaney/counterfact/badge.svg)](https://coveralls.io/github/pmcelhaney/counterfact)
 
 </div>
 
@@ -12,7 +12,7 @@
 
 _A Mock Server for High-performing Front-end Teams_
 
-[Quick Start](./docs/quick-start.md) | [Documentation](./docs/usage.md) | [Contributing](CONTRIBUTING.md)
+[Quick Start](./docs/quick-start.md) | [Documentation](./docs/usage.md) | [Changelog](CHANGELOG.md) |s [Contributing](CONTRIBUTING.md)
 
 </div>
 
@@ -39,7 +39,7 @@ Like your favorite pair of sweatpants, Counterfact is lightweight, flexible, and
 To see Counterfact in action run the following command in your terminal:
 
 ```sh copy
-npx counterfact@latest https://petstore3.swagger.io/api/v3/openapi.yaml api --open
+npx counterfact@latest https://petstore3.swagger.io/api/v3/openapi.yaml api
 ```
 
 This command installs Counterfact from npm, sets up a mock server implementing the [Swagger Petstore](https://petstore.swagger.io/), and opens a dashboard in a web browser. As long as you have Node 16 or later installed, it should "just work".
