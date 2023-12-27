@@ -1,5 +1,17 @@
 # counterfact
 
+## 0.34.0
+
+### Minor Changes
+
+- 47374ee: Partial support for XML (if anyone still uses XML). See https://swagger.io/docs/specification/data-models/representing-xml/
+- 2366b50: Removed link to the dashboard / admin console because it's not really useful yet.
+- 5c6cce9: Until now the dashboard hasn't gotten much attention. Added a logo and took some baby steps toward the planned design. https://excalidraw.com/#json=THGkyuKCGr_69fFqUrghd,ecIPAvDtoAOajwZ9G4m3sg
+
+### Patch Changes
+
+- 5c6cce9: fix links to open in VSCode
+
 ## 0.33.0
 
 ### Minor Changes
