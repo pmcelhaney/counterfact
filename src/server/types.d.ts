@@ -67,6 +67,14 @@ type HeaderFunction<Response extends OpenApiResponse> = <
   headers: Omit<Response["headers"], Header>;
 }>;
 
+type RandomFunction<Response extends OpenApiResponse> = <
+  Header extends string & keyof Response["headers"],
+>() => GenericResponseBuilder<{
+  content: {};
+  headers: Response["headers"];
+}>;
+
+
 interface ResponseBuilder {
   [status: number | `${number} ${string}`]: ResponseBuilder;
   content?: { body: unknown; type: string }[];
@@ -96,7 +104,7 @@ type GenericResponseBuilder<
       match: [keyof Response["content"]] extends [never]
         ? never
         : MatchFunction<Response>;
-      random: [keyof Response["content"]] extends [never] ? never : () => void;
+      random: [keyof Response["content"]] extends [never] ? never : RandomFunction<Response>;
       text: MaybeShortcut<"text/plain", Response>;
     }>;
 
