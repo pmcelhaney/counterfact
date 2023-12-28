@@ -743,4 +743,29 @@ describe("given an invalid path", () => {
       "Could not find a PUT method matching /your/left/foot/in/and/your/right/foot/out\n",
     );
   });
+
+  it("responds with a 500 error if the handler function does not return", async () => {
+    const registry = new Registry();
+
+    registry.add("/hello", {
+      GET() {
+        return undefined;
+      },
+    });
+
+    const dispatcher = new Dispatcher(registry, new ContextRegistry());
+    const response = await dispatcher.request({
+      body: "",
+      headers: {},
+      method: "GET",
+      path: "/hello",
+      query: {},
+      req: { path: "/hello" },
+    });
+
+    expect(response.status).toBe(500);
+    expect(response.body).toBe(
+      "The GET function did not return anything. Did you forget a return statement?",
+    );
+  });
 });
