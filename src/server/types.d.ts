@@ -93,8 +93,7 @@ interface ResponseBuilder {
 type GenericResponseBuilder<
   Response extends OpenApiResponse = OpenApiResponse,
 > = [keyof Response["content"]] extends [never]
-  ? // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
-    void
+  ? { status: number }
   : OmitValueWhenNever<{
       header: [keyof Response["headers"]] extends [never]
         ? never
