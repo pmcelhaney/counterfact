@@ -1694,7 +1694,9 @@ class Context {
       },
       "POST" => {
         "beforeExport": "",
-        "code": "() => { /* no response content specified in the OpenAPI document */ }",
+        "code": "($) => {
+        return $.response[405];
+      }",
         "done": true,
         "id": "OperationCoder@./petstore.yaml#/paths/~1pet~1{petId}/post",
         "isDefault": false,
@@ -1705,7 +1707,9 @@ class Context {
       },
       "DELETE" => {
         "beforeExport": "",
-        "code": "() => { /* no response content specified in the OpenAPI document */ }",
+        "code": "($) => {
+        return $.response[400];
+      }",
         "done": true,
         "id": "OperationCoder@./petstore.yaml#/paths/~1pet~1{petId}/delete",
         "isDefault": false,
@@ -3414,7 +3418,9 @@ class Context {
       },
       "DELETE" => {
         "beforeExport": "",
-        "code": "() => { /* no response content specified in the OpenAPI document */ }",
+        "code": "($) => {
+        return $.response[400];
+      }",
         "done": true,
         "id": "OperationCoder@./petstore.yaml#/paths/~1store~1order~1{orderId}/delete",
         "isDefault": false,
@@ -4758,7 +4764,9 @@ class Context {
     "exports": Map {
       "GET" => {
         "beforeExport": "",
-        "code": "() => { /* no response content specified in the OpenAPI document */ }",
+        "code": "($) => {
+        return $.response[200];
+      }",
         "done": true,
         "id": "OperationCoder@./petstore.yaml#/paths/~1user~1logout/get",
         "isDefault": false,
@@ -4962,7 +4970,9 @@ class Context {
       },
       "PUT" => {
         "beforeExport": "",
-        "code": "() => { /* no response content specified in the OpenAPI document */ }",
+        "code": "($) => {
+        return $.response[200];
+      }",
         "done": true,
         "id": "OperationCoder@./petstore.yaml#/paths/~1user~1{username}/put",
         "isDefault": false,
@@ -4973,7 +4983,9 @@ class Context {
       },
       "DELETE" => {
         "beforeExport": "",
-        "code": "() => { /* no response content specified in the OpenAPI document */ }",
+        "code": "($) => {
+        return $.response[400];
+      }",
         "done": true,
         "id": "OperationCoder@./petstore.yaml#/paths/~1user~1{username}/delete",
         "isDefault": false,
