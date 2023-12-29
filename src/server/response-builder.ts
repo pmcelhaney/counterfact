@@ -166,7 +166,7 @@ export function createResponseBuilder(
       },
 
       xml(this: ResponseBuilder, body: unknown) {
-        return this.match("text/xml", body);
+        return this.match("application/xml", body).match("text/xml", body);
       },
     }),
   });

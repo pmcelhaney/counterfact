@@ -32,7 +32,7 @@ exports[`an OperationTypeCoder falls back to root level produces (OpenAPI 2) 1`]
       body?: Type;
     }
   | { status: 415; contentType: "text/plain"; body: string }
-  | void;
+  | {};
 "
 `;
 
@@ -94,7 +94,7 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2 wit
       body?: Type;
     }
   | { status: 415; contentType: "text/plain"; body: string }
-  | void;
+  | {};
 "
 `;
 
@@ -156,7 +156,7 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2) 1`
       body?: Type;
     }
   | { status: 415; contentType: "text/plain"; body: string }
-  | void;
+  | {};
 "
 `;
 
@@ -218,7 +218,7 @@ exports[`an OperationTypeCoder generates a complex post operation 1`] = `
       body?: Type;
     }
   | { status: 415; contentType: "text/plain"; body: string }
-  | void;
+  | {};
 "
 `;
 
@@ -254,7 +254,7 @@ exports[`an OperationTypeCoder generates a simple get operation (OpenAPI 2) 1`] 
       body?: Type;
     }
   | { status: 415; contentType: "text/plain"; body: string }
-  | void;
+  | {};
 "
 `;
 
@@ -290,6 +290,6 @@ exports[`an OperationTypeCoder generates a simple get operation 1`] = `
       body?: Type;
     }
   | { status: 415; contentType: "text/plain"; body: string }
-  | void;
+  | {};
 "
 `;

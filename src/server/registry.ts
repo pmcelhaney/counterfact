@@ -37,14 +37,14 @@ interface RequestDataWithBody extends RequestData {
 }
 
 interface Module {
-  DELETE?: (requestData: RequestData) => CounterfactResponse;
-  GET?: (requestData: RequestData) => CounterfactResponse;
-  HEAD?: (requestData: RequestData) => CounterfactResponse;
-  OPTIONS?: (requestData: RequestData) => CounterfactResponse;
-  PATCH?: (requestData: RequestData) => CounterfactResponse;
-  POST?: (requestData: RequestDataWithBody) => CounterfactResponse;
-  PUT?: (requestData: RequestDataWithBody) => CounterfactResponse;
-  TRACE?: (requestData: RequestData) => CounterfactResponse;
+  DELETE?: (requestData: RequestData) => CounterfactResponse | undefined;
+  GET?: (requestData: RequestData) => CounterfactResponse | undefined;
+  HEAD?: (requestData: RequestData) => CounterfactResponse | undefined;
+  OPTIONS?: (requestData: RequestData) => CounterfactResponse | undefined;
+  PATCH?: (requestData: RequestData) => CounterfactResponse | undefined;
+  POST?: (requestData: RequestDataWithBody) => CounterfactResponse | undefined;
+  PUT?: (requestData: RequestDataWithBody) => CounterfactResponse | undefined;
+  TRACE?: (requestData: RequestData) => CounterfactResponse | undefined;
 }
 
 type CounterfactResponseObject =

@@ -274,6 +274,13 @@ export class Dispatcher {
       tools: new Tools({ headers }),
     });
 
+    if (response === undefined) {
+      return {
+        body: `The ${method} function did not return anything. Did you forget a return statement?`,
+        status: 500,
+      };
+    }
+
     const normalizedResponse = this.normalizeResponse(
       response,
       headers.accept ?? "*/*",

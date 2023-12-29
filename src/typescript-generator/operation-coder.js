@@ -22,7 +22,11 @@ export class OperationCoder extends Coder {
     const [firstResponse] = responses.map((response) => response.data);
 
     if (!("content" in firstResponse || "schema" in firstResponse)) {
-      return "() => { /* no response content specified in the OpenAPI document */ }";
+      return `($) => {
+        return $.response[${
+          firstStatusCode === "default" ? 200 : firstStatusCode
+        }];
+      }`;
     }
 
     return `($) => {

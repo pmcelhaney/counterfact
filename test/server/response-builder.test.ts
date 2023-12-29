@@ -41,6 +41,10 @@ describe("a response builder", () => {
       { body: "<h1>Hello World</h1>", type: "text/html" },
       {
         body: "<root><hello>world</hello></root>",
+        type: "application/xml",
+      },
+      {
+        body: "<root><hello>world</hello></root>",
         type: "text/xml",
       },
     ]);
