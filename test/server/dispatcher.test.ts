@@ -387,8 +387,8 @@ describe("a dispatcher", () => {
     const registry = new Registry();
 
     registry.add("/a", {
-      // @ts-expect-error - not obvious how to make TypeScript happy here, and it's just a unit test
       GET({ response }) {
+        // eslint-disable-next-line total-functions/no-unsafe-readonly-mutable-assignment
         return response["200"]?.random();
       },
     });

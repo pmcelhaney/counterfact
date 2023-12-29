@@ -79,7 +79,7 @@ Map {
               body?: Pet
             } | {  
           status: 405 
-        } | { status: 415, contentType: "text/plain", body: string } | { status: number }",
+        } | { status: 415, contentType: "text/plain", body: string } | { }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet/post",
               "isDefault": false,
@@ -128,7 +128,7 @@ Map {
           status: 404 
         } | {  
           status: 405 
-        } | { status: 415, contentType: "text/plain", body: string } | { status: number }",
+        } | { status: 415, contentType: "text/plain", body: string } | { }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet/put",
               "isDefault": false,
@@ -346,7 +346,7 @@ class Context {
               body?: Pet
             } | {  
           status: 405 
-        } | { status: 415, contentType: "text/plain", body: string } | { status: number }",
+        } | { status: 415, contentType: "text/plain", body: string } | { }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet/post",
               "isDefault": false,
@@ -395,7 +395,7 @@ class Context {
           status: 404 
         } | {  
           status: 405 
-        } | { status: 415, contentType: "text/plain", body: string } | { status: number }",
+        } | { status: 415, contentType: "text/plain", body: string } | { }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet/put",
               "isDefault": false,
@@ -617,7 +617,7 @@ class Context {
               body?: Pet
             } | {  
           status: 405 
-        } | { status: 415, contentType: "text/plain", body: string } | { status: number }",
+        } | { status: 415, contentType: "text/plain", body: string } | { }",
         "done": true,
         "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet/post",
         "isDefault": false,
@@ -666,7 +666,7 @@ class Context {
           status: 404 
         } | {  
           status: 405 
-        } | { status: 415, contentType: "text/plain", body: string } | { status: number }",
+        } | { status: 415, contentType: "text/plain", body: string } | { }",
         "done": true,
         "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet/put",
         "isDefault": false,
@@ -904,7 +904,7 @@ class Context {
               body?: Array<Pet>
             } | {  
           status: 400 
-        } | { status: 415, contentType: "text/plain", body: string } | { status: number }",
+        } | { status: 415, contentType: "text/plain", body: string } | { }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1findByStatus/get",
               "isDefault": false,
@@ -1102,7 +1102,7 @@ class Context {
               body?: Array<Pet>
             } | {  
           status: 400 
-        } | { status: 415, contentType: "text/plain", body: string } | { status: number }",
+        } | { status: 415, contentType: "text/plain", body: string } | { }",
         "done": true,
         "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1findByStatus/get",
         "isDefault": false,
@@ -1317,7 +1317,7 @@ class Context {
               body?: Array<Pet>
             } | {  
           status: 400 
-        } | { status: 415, contentType: "text/plain", body: string } | { status: number }",
+        } | { status: 415, contentType: "text/plain", body: string } | { }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1findByTags/get",
               "isDefault": false,
@@ -1515,7 +1515,7 @@ class Context {
               body?: Array<Pet>
             } | {  
           status: 400 
-        } | { status: 415, contentType: "text/plain", body: string } | { status: number }",
+        } | { status: 415, contentType: "text/plain", body: string } | { }",
         "done": true,
         "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1findByTags/get",
         "isDefault": false,
@@ -1768,7 +1768,7 @@ class Context {
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: "text/plain", body: string } | { status: number }",
+        } | { status: 415, contentType: "text/plain", body: string } | { }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/get",
               "isDefault": false,
@@ -1786,7 +1786,7 @@ class Context {
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: 405 
-        } | { status: 415, contentType: "text/plain", body: string } | { status: number }",
+        } | { status: 415, contentType: "text/plain", body: string } | { }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/post",
               "isDefault": false,
@@ -1804,7 +1804,7 @@ class Context {
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: 400 
-        } | { status: 415, contentType: "text/plain", body: string } | { status: number }",
+        } | { status: 415, contentType: "text/plain", body: string } | { }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/delete",
               "isDefault": false,
@@ -2006,7 +2006,7 @@ class Context {
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: "text/plain", body: string } | { status: number }",
+        } | { status: 415, contentType: "text/plain", body: string } | { }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/get",
               "isDefault": false,
@@ -2024,7 +2024,7 @@ class Context {
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: 405 
-        } | { status: 415, contentType: "text/plain", body: string } | { status: number }",
+        } | { status: 415, contentType: "text/plain", body: string } | { }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/post",
               "isDefault": false,
@@ -2042,7 +2042,7 @@ class Context {
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: 400 
-        } | { status: 415, contentType: "text/plain", body: string } | { status: number }",
+        } | { status: 415, contentType: "text/plain", body: string } | { }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/delete",
               "isDefault": false,
@@ -2244,7 +2244,7 @@ class Context {
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: "text/plain", body: string } | { status: number }",
+        } | { status: 415, contentType: "text/plain", body: string } | { }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/get",
               "isDefault": false,
@@ -2262,7 +2262,7 @@ class Context {
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: 405 
-        } | { status: 415, contentType: "text/plain", body: string } | { status: number }",
+        } | { status: 415, contentType: "text/plain", body: string } | { }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/post",
               "isDefault": false,
@@ -2280,7 +2280,7 @@ class Context {
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: 400 
-        } | { status: 415, contentType: "text/plain", body: string } | { status: number }",
+        } | { status: 415, contentType: "text/plain", body: string } | { }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/delete",
               "isDefault": false,
@@ -2486,7 +2486,7 @@ class Context {
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: "text/plain", body: string } | { status: number }",
+        } | { status: 415, contentType: "text/plain", body: string } | { }",
         "done": true,
         "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/get",
         "isDefault": false,
@@ -2504,7 +2504,7 @@ class Context {
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: 405 
-        } | { status: 415, contentType: "text/plain", body: string } | { status: number }",
+        } | { status: 415, contentType: "text/plain", body: string } | { }",
         "done": true,
         "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/post",
         "isDefault": false,
@@ -2522,7 +2522,7 @@ class Context {
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: 400 
-        } | { status: 415, contentType: "text/plain", body: string } | { status: number }",
+        } | { status: 415, contentType: "text/plain", body: string } | { }",
         "done": true,
         "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/delete",
         "isDefault": false,
@@ -2724,7 +2724,7 @@ class Context {
               status: 200, 
               contentType?: "application/json",
               body?: ApiResponse
-            } | { status: 415, contentType: "text/plain", body: string } | { status: number }",
+            } | { status: 415, contentType: "text/plain", body: string } | { }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post",
               "isDefault": false,
@@ -2844,7 +2844,7 @@ class Context {
               status: 200, 
               contentType?: "application/json",
               body?: ApiResponse
-            } | { status: 415, contentType: "text/plain", body: string } | { status: number }",
+            } | { status: 415, contentType: "text/plain", body: string } | { }",
         "done": true,
         "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post",
         "isDefault": false,
@@ -2980,7 +2980,7 @@ class Context {
               status: 200, 
               contentType?: "application/json",
               body?: {[key: string]: number}
-            } | { status: 415, contentType: "text/plain", body: string } | { status: number }",
+            } | { status: 415, contentType: "text/plain", body: string } | { }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1store~1inventory/get",
               "isDefault": false,
@@ -3068,7 +3068,7 @@ class Context {
               status: 200, 
               contentType?: "application/json",
               body?: {[key: string]: number}
-            } | { status: 415, contentType: "text/plain", body: string } | { status: number }",
+            } | { status: 415, contentType: "text/plain", body: string } | { }",
         "done": true,
         "id": "OperationTypeCoder@./petstore.yaml#/paths/~1store~1inventory/get",
         "isDefault": false,
@@ -3180,7 +3180,7 @@ class Context {
               body?: Order
             } | {  
           status: 405 
-        } | { status: 415, contentType: "text/plain", body: string } | { status: number }",
+        } | { status: 415, contentType: "text/plain", body: string } | { }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order/post",
               "isDefault": false,
@@ -3306,7 +3306,7 @@ class Context {
               body?: Order
             } | {  
           status: 405 
-        } | { status: 415, contentType: "text/plain", body: string } | { status: number }",
+        } | { status: 415, contentType: "text/plain", body: string } | { }",
         "done": true,
         "id": "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order/post",
         "isDefault": false,
@@ -3478,7 +3478,7 @@ class Context {
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: "text/plain", body: string } | { status: number }",
+        } | { status: 415, contentType: "text/plain", body: string } | { }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order~1{orderId}/get",
               "isDefault": false,
@@ -3502,7 +3502,7 @@ class Context {
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: "text/plain", body: string } | { status: number }",
+        } | { status: 415, contentType: "text/plain", body: string } | { }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order~1{orderId}/delete",
               "isDefault": false,
@@ -3638,7 +3638,7 @@ class Context {
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: "text/plain", body: string } | { status: number }",
+        } | { status: 415, contentType: "text/plain", body: string } | { }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order~1{orderId}/get",
               "isDefault": false,
@@ -3662,7 +3662,7 @@ class Context {
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: "text/plain", body: string } | { status: number }",
+        } | { status: 415, contentType: "text/plain", body: string } | { }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order~1{orderId}/delete",
               "isDefault": false,
@@ -3802,7 +3802,7 @@ class Context {
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: "text/plain", body: string } | { status: number }",
+        } | { status: 415, contentType: "text/plain", body: string } | { }",
         "done": true,
         "id": "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order~1{orderId}/get",
         "isDefault": false,
@@ -3826,7 +3826,7 @@ class Context {
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: "text/plain", body: string } | { status: number }",
+        } | { status: 415, contentType: "text/plain", body: string } | { }",
         "done": true,
         "id": "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order~1{orderId}/delete",
         "isDefault": false,
@@ -3970,7 +3970,7 @@ class Context {
               status: number | undefined, 
               contentType?: "application/xml",
               body?: User
-            } | { status: 415, contentType: "text/plain", body: string } | { status: number }",
+            } | { status: 415, contentType: "text/plain", body: string } | { }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user/post",
               "isDefault": false,
@@ -4124,7 +4124,7 @@ class Context {
               status: number | undefined, 
               contentType?: "application/xml",
               body?: User
-            } | { status: 415, contentType: "text/plain", body: string } | { status: number }",
+            } | { status: 415, contentType: "text/plain", body: string } | { }",
         "done": true,
         "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user/post",
         "isDefault": false,
@@ -4301,7 +4301,7 @@ class Context {
               body?: User
             } | {  
           status: number | undefined 
-        } | { status: 415, contentType: "text/plain", body: string } | { status: number }",
+        } | { status: 415, contentType: "text/plain", body: string } | { }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user~1createWithList/post",
               "isDefault": false,
@@ -4438,7 +4438,7 @@ class Context {
               body?: User
             } | {  
           status: number | undefined 
-        } | { status: 415, contentType: "text/plain", body: string } | { status: number }",
+        } | { status: 415, contentType: "text/plain", body: string } | { }",
         "done": true,
         "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user~1createWithList/post",
         "isDefault": false,
@@ -4594,7 +4594,7 @@ class Context {
               body?: string
             } | {  
           status: 400 
-        } | { status: 415, contentType: "text/plain", body: string } | { status: number }",
+        } | { status: 415, contentType: "text/plain", body: string } | { }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user~1login/get",
               "isDefault": false,
@@ -4698,7 +4698,7 @@ class Context {
               body?: string
             } | {  
           status: 400 
-        } | { status: 415, contentType: "text/plain", body: string } | { status: number }",
+        } | { status: 415, contentType: "text/plain", body: string } | { }",
         "done": true,
         "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user~1login/get",
         "isDefault": false,
@@ -4797,7 +4797,7 @@ class Context {
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: number | undefined 
-        } | { status: 415, contentType: "text/plain", body: string } | { status: number }",
+        } | { status: 415, contentType: "text/plain", body: string } | { }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user~1logout/get",
               "isDefault": false,
@@ -4883,7 +4883,7 @@ class Context {
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: number | undefined 
-        } | { status: 415, contentType: "text/plain", body: string } | { status: number }",
+        } | { status: 415, contentType: "text/plain", body: string } | { }",
         "done": true,
         "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user~1logout/get",
         "isDefault": false,
@@ -5044,7 +5044,7 @@ class Context {
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: "text/plain", body: string } | { status: number }",
+        } | { status: 415, contentType: "text/plain", body: string } | { }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/get",
               "isDefault": false,
@@ -5062,7 +5062,7 @@ class Context {
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: number | undefined 
-        } | { status: 415, contentType: "text/plain", body: string } | { status: number }",
+        } | { status: 415, contentType: "text/plain", body: string } | { }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/put",
               "isDefault": false,
@@ -5086,7 +5086,7 @@ class Context {
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: "text/plain", body: string } | { status: number }",
+        } | { status: 415, contentType: "text/plain", body: string } | { }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/delete",
               "isDefault": false,
@@ -5227,7 +5227,7 @@ class Context {
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: "text/plain", body: string } | { status: number }",
+        } | { status: 415, contentType: "text/plain", body: string } | { }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/get",
               "isDefault": false,
@@ -5245,7 +5245,7 @@ class Context {
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: number | undefined 
-        } | { status: 415, contentType: "text/plain", body: string } | { status: number }",
+        } | { status: 415, contentType: "text/plain", body: string } | { }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/put",
               "isDefault": false,
@@ -5269,7 +5269,7 @@ class Context {
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: "text/plain", body: string } | { status: number }",
+        } | { status: 415, contentType: "text/plain", body: string } | { }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/delete",
               "isDefault": false,
@@ -5410,7 +5410,7 @@ class Context {
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: "text/plain", body: string } | { status: number }",
+        } | { status: 415, contentType: "text/plain", body: string } | { }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/get",
               "isDefault": false,
@@ -5428,7 +5428,7 @@ class Context {
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: number | undefined 
-        } | { status: 415, contentType: "text/plain", body: string } | { status: number }",
+        } | { status: 415, contentType: "text/plain", body: string } | { }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/put",
               "isDefault": false,
@@ -5452,7 +5452,7 @@ class Context {
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: "text/plain", body: string } | { status: number }",
+        } | { status: 415, contentType: "text/plain", body: string } | { }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/delete",
               "isDefault": false,
@@ -5597,7 +5597,7 @@ class Context {
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: "text/plain", body: string } | { status: number }",
+        } | { status: 415, contentType: "text/plain", body: string } | { }",
         "done": true,
         "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/get",
         "isDefault": false,
@@ -5615,7 +5615,7 @@ class Context {
         }
 }>, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: number | undefined 
-        } | { status: 415, contentType: "text/plain", body: string } | { status: number }",
+        } | { status: 415, contentType: "text/plain", body: string } | { }",
         "done": true,
         "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/put",
         "isDefault": false,
@@ -5639,7 +5639,7 @@ class Context {
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: "text/plain", body: string } | { status: number }",
+        } | { status: 415, contentType: "text/plain", body: string } | { }",
         "done": true,
         "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/delete",
         "isDefault": false,
