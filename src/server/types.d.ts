@@ -93,7 +93,7 @@ interface ResponseBuilder {
 type GenericResponseBuilder<
   Response extends OpenApiResponse = OpenApiResponse,
 > = [keyof Response["content"]] extends [never]
-  ? { status: number }
+  ? { }
   : OmitValueWhenNever<{
       header: [keyof Response["headers"]] extends [never]
         ? never
@@ -105,6 +105,7 @@ type GenericResponseBuilder<
         : MatchFunction<Response>;
       random: [keyof Response["content"]] extends [never] ? never : RandomFunction<Response>;
       text: MaybeShortcut<"text/plain", Response>;
+      xml: MaybeShortcut<"application/xml" | "text/xml", Response>;
     }>;
 
 type ResponseBuilderFactory<
