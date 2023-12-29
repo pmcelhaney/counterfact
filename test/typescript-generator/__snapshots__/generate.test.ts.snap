@@ -878,7 +878,7 @@ class Context {
           "exports": Map {
             "HTTP_GET" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: {"status?": "available" | "pending" | "sold"}, path: never, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: {"status"?: "available" | "pending" | "sold"}, path: never, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -1076,7 +1076,7 @@ class Context {
     "exports": Map {
       "HTTP_GET" => {
         "beforeExport": "",
-        "code": "({ query, path, header, body, context, proxy }: { query: {"status?": "available" | "pending" | "sold"}, path: never, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context, proxy }: { query: {"status"?: "available" | "pending" | "sold"}, path: never, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -1291,7 +1291,7 @@ class Context {
           "exports": Map {
             "HTTP_GET" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: {"tags?": Array<string>}, path: never, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: {"tags"?: Array<string>}, path: never, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -1489,7 +1489,7 @@ class Context {
     "exports": Map {
       "HTTP_GET" => {
         "beforeExport": "",
-        "code": "({ query, path, header, body, context, proxy }: { query: {"tags?": Array<string>}, path: never, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context, proxy }: { query: {"tags"?: Array<string>}, path: never, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -1779,7 +1779,7 @@ class Context {
             },
             "HTTP_POST" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: {"name?": number, "status?": string}, path: {"petId": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: {"name"?: number, "status"?: string}, path: {"petId": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 405: {
           headers: {};
           content: {};
@@ -1797,7 +1797,7 @@ class Context {
             },
             "HTTP_DELETE" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"petId": string}, header: {"api_key?": string}, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"petId": string}, header: {"api_key"?: string}, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 400: {
           headers: {};
           content: {};
@@ -2017,7 +2017,7 @@ class Context {
             },
             "HTTP_POST" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: {"name?": number, "status?": string}, path: {"petId": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: {"name"?: number, "status"?: string}, path: {"petId": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 405: {
           headers: {};
           content: {};
@@ -2035,7 +2035,7 @@ class Context {
             },
             "HTTP_DELETE" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"petId": string}, header: {"api_key?": string}, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"petId": string}, header: {"api_key"?: string}, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 400: {
           headers: {};
           content: {};
@@ -2255,7 +2255,7 @@ class Context {
             },
             "HTTP_POST" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: {"name?": number, "status?": string}, path: {"petId": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: {"name"?: number, "status"?: string}, path: {"petId": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 405: {
           headers: {};
           content: {};
@@ -2273,7 +2273,7 @@ class Context {
             },
             "HTTP_DELETE" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"petId": string}, header: {"api_key?": string}, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"petId": string}, header: {"api_key"?: string}, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 400: {
           headers: {};
           content: {};
@@ -2497,7 +2497,7 @@ class Context {
       },
       "HTTP_POST" => {
         "beforeExport": "",
-        "code": "({ query, path, header, body, context, proxy }: { query: {"name?": number, "status?": string}, path: {"petId": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context, proxy }: { query: {"name"?: number, "status"?: string}, path: {"petId": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 405: {
           headers: {};
           content: {};
@@ -2515,7 +2515,7 @@ class Context {
       },
       "HTTP_DELETE" => {
         "beforeExport": "",
-        "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"petId": string}, header: {"api_key?": string}, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"petId": string}, header: {"api_key"?: string}, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 400: {
           headers: {};
           content: {};
@@ -2711,7 +2711,7 @@ class Context {
           "exports": Map {
             "HTTP_POST" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: {"additionalMetadata?": number}, path: {"petId": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: {"additionalMetadata"?: number}, path: {"petId": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -2831,7 +2831,7 @@ class Context {
     "exports": Map {
       "HTTP_POST" => {
         "beforeExport": "",
-        "code": "({ query, path, header, body, context, proxy }: { query: {"additionalMetadata?": number}, path: {"petId": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context, proxy }: { query: {"additionalMetadata"?: number}, path: {"petId": number}, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -4565,7 +4565,7 @@ class Context {
           "exports": Map {
             "HTTP_GET" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: {"username?": string, "password?": string}, path: never, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
+              "code": "({ query, path, header, body, context, proxy }: { query: {"username"?: string, "password"?: string}, path: never, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {
 "X-Rate-Limit": { schema: number},
@@ -4669,7 +4669,7 @@ class Context {
     "exports": Map {
       "HTTP_GET" => {
         "beforeExport": "",
-        "code": "({ query, path, header, body, context, proxy }: { query: {"username?": string, "password?": string}, path: never, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
+        "code": "({ query, path, header, body, context, proxy }: { query: {"username"?: string, "password"?: string}, path: never, header: never, body: undefined, context: ContextType, response: ResponseBuilderFactory<{
 200: {
           headers: {
 "X-Rate-Limit": { schema: number},
