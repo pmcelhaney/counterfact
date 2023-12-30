@@ -1,5 +1,12 @@
 # counterfact
 
+## 0.34.1
+
+### Patch Changes
+
+- c000cfc: Fixed: a handler function (GET(), PUT(), etc) should always return a response, even if that response is just a status code. If the handler doesn't return, the server will response with a 500 error.
+- 4cdcb2d: fix: the optional flag for a parameter was inside quotes, making it part of the name rather than TypeScript syntax
+
 ## 0.34.0
 
 ### Minor Changes
