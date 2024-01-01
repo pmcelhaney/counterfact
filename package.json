@@ -91,7 +91,7 @@
     "json-schema-faker": "0.5.4",
     "json-schema-ref-parser": "9.0.9",
     "jsonwebtoken": "9.0.2",
-    "koa": "2.14.2",
+    "koa": "2.15.0",
     "koa-bodyparser": "4.4.1",
     "koa-proxy": "1.0.0-alpha.3",
     "koa2-swagger-ui": "5.10.0",
