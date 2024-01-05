@@ -33,6 +33,12 @@ it("finds a file under a subdirectory", () => {
   expect(match(moduleTree, "/a/b")).toBe("b");
 });
 
+it("finds a file with a trailing slash in the path", () => {
+  const moduleTree = new ModuleTree();
+  add(moduleTree, "/a", "a");
+  expect(match(moduleTree, "/a/")).toBe("a");
+});
+
 it("finds a file with a wildcard match", () => {
   const moduleTree = new ModuleTree();
   add(moduleTree, "/a", "a");
