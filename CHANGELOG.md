@@ -1,5 +1,11 @@
 # counterfact
 
+## 0.34.2
+
+### Patch Changes
+
+- 0610da9: Fix issue 703: Endpoint with trailing slash
+
 ## 0.34.1
 
 ### Patch Changes
