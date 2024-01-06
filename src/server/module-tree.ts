@@ -168,7 +168,10 @@ export class ModuleTree {
       );
     }
 
-    if (remainingSegments.length === 0) {
+    if (
+      remainingSegments.length === 0 ||
+      (remainingSegments.length === 1 && remainingSegments[0] === "")
+    ) {
       return this.buildMatch(directory, segment, pathVariables, matchedPath);
     }
 
