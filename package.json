@@ -88,7 +88,7 @@
     "handlebars": "4.7.8",
     "http-terminator": "3.2.0",
     "js-yaml": "4.1.0",
-    "json-schema-faker": "0.5.4",
+    "json-schema-faker": "0.5.5",
     "json-schema-ref-parser": "9.0.9",
     "jsonwebtoken": "9.0.2",
     "koa": "2.15.0",
