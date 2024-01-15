@@ -6,7 +6,7 @@ import { Transpiler } from "../../src/server/transpiler.js";
 import { withTemporaryFiles } from "../lib/with-temporary-files.js";
 
 const TYPESCRIPT_SOURCE = "const x:number = 1;\n";
-const JAVASCRIPT_SOURCE = "var x = 1;\n";
+const JAVASCRIPT_SOURCE = "const x = 1;\n";
 
 describe("a Transpiler", () => {
   let transpiler: Transpiler = new Transpiler("src", "dist");

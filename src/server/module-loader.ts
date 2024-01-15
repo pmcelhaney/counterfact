@@ -16,6 +16,18 @@ interface ContextModule {
   default?: Context;
 }
 
+function reportLoadError(error: unknown, fileUrl: string) {
+  if (
+    String(error) ===
+    "SyntaxError: Identifier 'Context' has already been declared"
+  ) {
+    // Not sure why Node throws this error. It doesn't seem to matter.
+    return;
+  }
+
+  process.stdout.write(`\nError loading ${fileUrl}:\n~~${String(error)}~~\n`);
+}
+
 export class ModuleLoader extends EventTarget {
   private readonly basePath: string;
 
@@ -86,9 +98,7 @@ export class ModuleLoader extends EventTarget {
           })
           // eslint-disable-next-line promise/prefer-await-to-then
           .catch((error: unknown) => {
-            process.stdout.write(
-              `\nError loading ${fileUrl}:\n${String(error)}\n`,
-            );
+            reportLoadError(error, fileUrl);
           });
       },
     );
@@ -171,6 +181,14 @@ export class ModuleLoader extends EventTarget {
         this.registry.add(url, endpoint as Module);
       }
     } catch (error: unknown) {
+      if (
+        String(error) ===
+        "SyntaxError: Identifier 'Context' has already been declared"
+      ) {
+        // Not sure why Node throws this error. It doesn't seem to matter.
+        return;
+      }
+
       process.stdout.write(`\nError loading ${fileUrl}:\n${String(error)}\n`);
     }
   }
