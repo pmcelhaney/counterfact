@@ -58,11 +58,15 @@ describe("black box test", () => {
   });
 
   it("creates a file for the /hello/kitty path", () => {
-    expect(fs.readFileSync("./out/paths/hello/kitty.ts")).toMatchSnapshot();
+    expect(
+      fs.readFileSync("./out/paths/hello/kitty.ts", "utf8"),
+    ).toMatchSnapshot();
   });
 
   it("compiles kitty.ts", () => {
-    expect(fs.readFileSync("./out/.cache/hello/kitty.mjs")).toMatchSnapshot();
+    expect(
+      fs.readFileSync("./out/.cache/hello/kitty.mjs", "utf8"),
+    ).toMatchSnapshot();
   });
 
   it("responds to a GET request", async () => {
