@@ -88,11 +88,14 @@ export class Transpiler extends EventTarget {
 
     const source = await fs.readFile(sourcePath, "utf8");
 
-    // eslint-disable-next-line import/no-named-as-default-member
+    /* eslint-disable import/no-named-as-default-member */
     const result: string = ts.transpileModule(source, {
-      // eslint-disable-next-line import/no-named-as-default-member
-      compilerOptions: { module: ts.ModuleKind.ES2022 },
+      compilerOptions: {
+        module: ts.ModuleKind.ES2022,
+        target: ts.ScriptTarget.ES2015,
+      },
     }).outputText;
+    /* eslint-enable import/no-named-as-default-member */
 
     const fullDestination = nodePath
       .join(
