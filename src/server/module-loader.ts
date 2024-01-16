@@ -81,6 +81,8 @@ export class ModuleLoader extends EventTarget {
           .then((endpoint: ContextModule | Module) => {
             this.dispatchEvent(new Event(eventName));
 
+            console.log(endpoint);
+
             if (pathName.includes("$.context")) {
               this.contextRegistry.update(
                 parts.dir,

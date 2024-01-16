@@ -101,7 +101,7 @@ export class Transpiler extends EventTarget {
       .join(
         sourcePath
           .replace(this.sourcePath, this.destinationPath)
-          .replace(".ts", ".mjs"),
+          .replace(".ts", ".js"),
       )
       .replaceAll("\\", "/");
 
