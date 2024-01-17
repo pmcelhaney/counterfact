@@ -11118,7 +11118,7 @@ uri-js@^4.2.2:
   dependencies:
     punycode "^2.1.0"
 
-using-temporary-files@^2.1.0:
+using-temporary-files@2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/using-temporary-files/-/using-temporary-files-2.1.0.tgz#4143e9209a51258160ffbe0446c10f0369c3ff51"
   integrity sha512-rBtpFh9wmGLkEfqgZqoi/CvARt9LVElu2AkSv++lwwgR64ejWjqXA/Mc38b5G8GaYwc6KuNQMbF+u53QNIHa3w==
