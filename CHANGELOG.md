@@ -1,5 +1,14 @@
 # counterfact
 
+## 0.35.0
+
+### Minor Changes
+
+- 479da6b: transpile TypeScript code to ES2022
+- 8ab35b9: emit either CommonJS or ESM files depending on whether there's a package.json with type: module
+
+  This change makes it possible to create modules that are imported into files in the paths directory.
+
 ## 0.34.2
 
 ### Patch Changes
