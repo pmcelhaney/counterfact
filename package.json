@@ -75,7 +75,7 @@
     "patch-package": "8.0.0",
     "rimraf": "5.0.5",
     "stryker-cli": "1.0.2",
-    "supertest": "6.3.3",
+    "supertest": "6.3.4",
     "using-temporary-files": "^2.1.0"
   },
   "dependencies": {
@@ -98,7 +98,7 @@
     "koa2-swagger-ui": "5.10.0",
     "node-fetch": "3.3.2",
     "open": "10.0.3",
-    "prettier": "3.2.1",
+    "prettier": "3.2.2",
     "typescript": "5.3.3"
   }
 }
