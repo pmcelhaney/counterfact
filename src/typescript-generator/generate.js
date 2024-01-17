@@ -12,28 +12,35 @@ import { Specification } from "./specification.js";
 
 const debug = createDebug("counterfact:typescript-generator:generate");
 
+// eslint-disable-next-line max-statements
 async function buildCacheDirectory(destination) {
   const gitignorePath = nodePath.join(destination, ".gitignore");
   const cacheReadmePath = nodePath.join(destination, ".cache", "README.md");
 
-  debug("got here");
+  debug("removing the cache directory");
+  await fs.rm(nodePath.join(destination, ".cache"), {
+    force: true,
+    recursive: true,
+  });
+
+  debug("ensuring the directory containing .gitgnore exists");
 
   await ensureDirectoryExists(gitignorePath);
 
-  debug("got here too");
+  debug("creating the .gitignore file if it doesn't already exist");
 
   if (!existsSync(gitignorePath)) {
     await fs.writeFile(gitignorePath, ".cache\n", "utf8");
   }
 
-  if (!existsSync(cacheReadmePath)) {
-    ensureDirectoryExists(cacheReadmePath);
-    await fs.writeFile(
-      cacheReadmePath,
-      "This directory contains compiled JS files from the paths directory. Do not edit these files directly.\n",
-      "utf8",
-    );
-  }
+  debug("creating the .cache/README.md file");
+
+  ensureDirectoryExists(cacheReadmePath);
+  await fs.writeFile(
+    cacheReadmePath,
+    "This directory contains compiled JS files from the paths directory. Do not edit these files directly.\n",
+    "utf8",
+  );
 }
 
 async function getPathsFromSpecification(specification) {
