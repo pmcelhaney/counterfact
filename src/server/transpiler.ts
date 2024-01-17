@@ -17,12 +17,19 @@ export class Transpiler extends EventTarget {
 
   private readonly destinationPath: string;
 
+  private readonly moduleKind: string;
+
   private watcher: FSWatcher | undefined;
 
-  public constructor(sourcePath: string, destinationPath: string) {
+  public constructor(
+    sourcePath: string,
+    destinationPath: string,
+    moduleKind: string,
+  ) {
     super();
     this.sourcePath = sourcePath;
     this.destinationPath = destinationPath;
+    this.moduleKind = moduleKind;
   }
 
   public async watch(): Promise<void> {
@@ -91,7 +98,9 @@ export class Transpiler extends EventTarget {
     /* eslint-disable import/no-named-as-default-member */
     const result: string = ts.transpileModule(source, {
       compilerOptions: {
-        module: ts.ModuleKind.ES2022,
+        module:
+          ts.ModuleKind[this.moduleKind === "module" ? "ES2022" : "CommonJS"],
+
         target: ts.ScriptTarget.ES2015,
       },
     }).outputText;
@@ -101,7 +110,7 @@ export class Transpiler extends EventTarget {
       .join(
         sourcePath
           .replace(this.sourcePath, this.destinationPath)
-          .replace(".ts", ".mjs"),
+          .replace(".ts", ".js"),
       )
       .replaceAll("\\", "/");
 

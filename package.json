@@ -75,7 +75,8 @@
     "patch-package": "8.0.0",
     "rimraf": "5.0.5",
     "stryker-cli": "1.0.2",
-    "supertest": "6.3.4"
+    "supertest": "6.3.4",
+    "using-temporary-files": "^2.1.0"
   },
   "dependencies": {
     "@hapi/accept": "6.0.3",

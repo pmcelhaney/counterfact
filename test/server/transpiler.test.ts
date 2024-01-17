@@ -5,11 +5,13 @@ import fs, { constants as fsConstants } from "node:fs";
 import { Transpiler } from "../../src/server/transpiler.js";
 import { withTemporaryFiles } from "../lib/with-temporary-files.js";
 
-const TYPESCRIPT_SOURCE = "const x:number = 1;\n";
-const JAVASCRIPT_SOURCE = "const x = 1;\n";
+const TYPESCRIPT_SOURCE = "export const x:number = 1;\n";
+const JAVASCRIPT_SOURCE = "export const x = 1;\n";
+const JAVASCRIPT_SOURCE_COMMONJS =
+  '"use strict";\nObject.defineProperty(exports, "__esModule", { value: true });\nexports.x = void 0;\nexports.x = 1;\n';
 
 describe("a Transpiler", () => {
-  let transpiler: Transpiler = new Transpiler("src", "dist");
+  let transpiler: Transpiler = new Transpiler("src", "dist", "");
 
   afterEach(async () => {
     await transpiler.stopWatching();
@@ -21,16 +23,16 @@ describe("a Transpiler", () => {
     };
 
     await withTemporaryFiles(files, async (basePath, { path }) => {
-      transpiler = new Transpiler(path("src"), path("dist"));
+      transpiler = new Transpiler(path("src"), path("dist"), "module");
 
       await transpiler.watch();
 
       // eslint-disable-next-line promise/avoid-new, no-promise-executor-return
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      expect(fs.existsSync(path("dist/found.mjs"))).toBe(true);
+      expect(fs.existsSync(path("dist/found.js"))).toBe(true);
 
-      expect(fs.readFileSync(path("dist/found.mjs"), "utf8")).toBe(
+      expect(fs.readFileSync(path("dist/found.js"), "utf8")).toBe(
         JAVASCRIPT_SOURCE,
       );
 
@@ -44,7 +46,7 @@ describe("a Transpiler", () => {
     await withTemporaryFiles(
       { "src/starter.ts": TYPESCRIPT_SOURCE },
       async (basePath, { add, path }) => {
-        transpiler = new Transpiler(path("src"), path("dist"));
+        transpiler = new Transpiler(path("src"), path("dist"), "module");
 
         await transpiler.watch();
 
@@ -61,7 +63,7 @@ describe("a Transpiler", () => {
 
         await Promise.race([write, error]);
 
-        expect(fs.readFileSync(path("dist/added.mjs"), "utf8")).toBe(
+        expect(fs.readFileSync(path("dist/added.js"), "utf8")).toBe(
           JAVASCRIPT_SOURCE,
         );
 
@@ -76,7 +78,7 @@ describe("a Transpiler", () => {
     };
 
     await withTemporaryFiles(files, async (basePath, { add, path }) => {
-      transpiler = new Transpiler(path("src"), path("dist"));
+      transpiler = new Transpiler(path("src"), path("dist"), "module");
 
       const initialWrite = once(transpiler, "write");
 
@@ -88,7 +90,7 @@ describe("a Transpiler", () => {
       await add("src/update-me.ts", TYPESCRIPT_SOURCE);
       await overwrite;
 
-      expect(fs.readFileSync(path("dist/update-me.mjs"), "utf8")).toBe(
+      expect(fs.readFileSync(path("dist/update-me.js"), "utf8")).toBe(
         JAVASCRIPT_SOURCE,
       );
 
@@ -102,7 +104,7 @@ describe("a Transpiler", () => {
     };
 
     await withTemporaryFiles(files, async (basePath, { path, remove }) => {
-      transpiler = new Transpiler(path("src"), path("dist"));
+      transpiler = new Transpiler(path("src"), path("dist"), "module");
 
       await transpiler.watch();
       await remove("src/delete-me.ts");
@@ -111,6 +113,29 @@ describe("a Transpiler", () => {
       expect(() => {
         fs.accessSync(path("dist/delete-me.js"), fsConstants.F_OK);
       }).toThrow(/ENOENT/u);
+
+      await transpiler.stopWatching();
+    });
+  });
+
+  it("transpiles as CommonJS when specified", async () => {
+    const files = {
+      "src/found.ts": TYPESCRIPT_SOURCE,
+    };
+
+    await withTemporaryFiles(files, async (basePath, { path }) => {
+      transpiler = new Transpiler(path("src"), path("dist"), "commonjs");
+
+      await transpiler.watch();
+
+      // eslint-disable-next-line promise/avoid-new, no-promise-executor-return
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      expect(fs.existsSync(path("dist/found.js"))).toBe(true);
+
+      expect(fs.readFileSync(path("dist/found.js"), "utf8")).toBe(
+        JAVASCRIPT_SOURCE_COMMONJS,
+      );
 
       await transpiler.stopWatching();
     });
