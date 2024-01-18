@@ -45,13 +45,13 @@ async function buildCacheDirectory(destination) {
 
 async function getPathsFromSpecification(specification) {
   try {
-    return await specification.requirementAt("#/paths");
+    return (await specification.requirementAt("#/paths")) ?? new Set();
   } catch (error) {
     process.stderr.write(
       `Could not find #/paths in the specification.\n${error}\n`,
     );
 
-    return [];
+    return new Set();
   }
 }
 

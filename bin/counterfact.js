@@ -8,7 +8,6 @@ import { program } from "commander";
 import createDebug from "debug";
 import open from "open";
 
-import { migrate } from "../dist/migrations/0.27.js";
 import { counterfact } from "../dist/server/app.js";
 
 const taglinesFile = await readFile(
@@ -43,10 +42,6 @@ async function main(source, destination) {
   const destinationPath = nodePath
     .join(process.cwd(), destination)
     .replaceAll("\\", "/");
-
-  debug("migrating code from before 0.27.0");
-  migrate(destinationPath);
-  debug("done with migration");
 
   const basePath = nodePath.resolve(destinationPath).replaceAll("\\", "/");
 

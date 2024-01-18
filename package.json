@@ -28,7 +28,7 @@
     "dist"
   ],
   "scripts": {
-    "test": "yarn node --experimental-vm-modules ./node_modules/jest-cli/bin/jest --testPathIgnorePatterns=black-box --forceExit",
+    "test": "yarn node --experimental-vm-modules ./node_modules/jest-cli/bin/jest --testPathIgnorePatterns=black-box",
     "test:black-box": "rimraf dist && rimraf out && yarn build && yarn node --experimental-vm-modules ./node_modules/jest-cli/bin/jest black-box --forceExit --coverage=false",
     "test:mutants": "stryker run stryker.config.json",
     "build": "tsc && copyfiles -f \"src/client/**\" dist/client && copyfiles -f \"src/server/*.d.ts\" dist/server",
@@ -76,7 +76,7 @@
     "rimraf": "5.0.5",
     "stryker-cli": "1.0.2",
     "supertest": "6.3.4",
-    "using-temporary-files": "2.1.0"
+    "using-temporary-files": "^2.1.1"
   },
   "dependencies": {
     "@hapi/accept": "6.0.3",
