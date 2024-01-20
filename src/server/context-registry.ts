@@ -1,4 +1,8 @@
-export interface Context {
+// eslint-disable-next-line max-classes-per-file
+export class Context {
+  // eslint-disable-next-line @typescript-eslint/no-useless-constructor, @typescript-eslint/no-empty-function
+  public constructor() {}
+
   [key: string]: unknown;
 }
 
@@ -14,14 +18,6 @@ export class ContextRegistry {
   }
 
   public add(path: string, context?: Context): void {
-    if (context === undefined) {
-      // If $.context.ts exists but only exports a type, then the context object will be undefined here.
-      // This should be handled upstream, so that add() is not called in the first place.
-      // But module-loader.ts needs to be refactored a bit using type guards and the is operator
-      // before that can be done cleanly.
-      return;
-    }
-
     this.entries.set(path, context);
   }
 

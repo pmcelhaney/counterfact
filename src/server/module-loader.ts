@@ -13,7 +13,13 @@ import type { Module, Registry } from "./registry.js";
 const debug = createDebug("counterfact:typescript-generator:module-loader");
 
 interface ContextModule {
-  default?: Context;
+  Context: Context;
+}
+
+function isContextModule(
+  module: ContextModule | Module,
+): module is ContextModule {
+  return "Context" in module && typeof module.Context === "function";
 }
 
 function reportLoadError(error: unknown, fileUrl: string) {
@@ -81,13 +87,14 @@ export class ModuleLoader extends EventTarget {
           .then((endpoint: ContextModule | Module) => {
             this.dispatchEvent(new Event(eventName));
 
-            if (pathName.includes("$.context")) {
+            if (pathName.includes("_.context")) {
               this.contextRegistry.update(
                 parts.dir,
-                // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-                (endpoint as ContextModule).default,
-              );
 
+                // @ts-expect-error TS says Context has no constructable signatures but that's not true?
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/consistent-type-assertions
+                new (endpoint as ContextModule).Context(),
+              );
               return "context";
             }
 
@@ -147,6 +154,7 @@ export class ModuleLoader extends EventTarget {
     await Promise.all(imports);
   }
 
+  // eslint-disable-next-line max-statements
   private async loadEndpoint(
     fullPath: string,
     directory: string,
@@ -162,13 +170,16 @@ export class ModuleLoader extends EventTarget {
         | ContextModule
         | Module;
 
-      if (file.name.includes("$.context")) {
-        this.contextRegistry.add(
-          `/${directory.replaceAll("\\", "/")}`,
+      if (file.name.includes("_.context")) {
+        if (isContextModule(endpoint)) {
+          this.contextRegistry.add(
+            `/${directory.replaceAll("\\", "/")}`,
 
-          // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-          (endpoint as ContextModule).default,
-        );
+            // @ts-expect-error TS says Context has no constructable signatures but that's not true?
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+            new endpoint.Context(),
+          );
+        }
       } else {
         const url = `/${nodePath.join(
           directory,

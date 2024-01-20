@@ -44,20 +44,20 @@ describe("a ContextTypeCoder", () => {
     );
 
     await expect(format(coder.write(dummyScript).raw)).resolves.toBe(
-      await format('export type { ContextType } from "../$.context";'),
+      await format('export { Context } from "../_.context.js";'),
     );
   });
 
-  it("exports ContextType in the root", async () => {
+  it("defines the Context class in the root", async () => {
     const coder = new ContextTypeCoder(new Requirement({}, "#/paths"));
 
     const dummyScriptWithRootPath = {
       ...dummyScript,
-      path: "paths/$.context.ts",
+      path: "paths/_.context.ts",
     };
 
-    await expect(format(coder.write(dummyScriptWithRootPath))).resolves.toBe(
-      await format("Context"),
-    );
+    await expect(
+      format(coder.write(dummyScriptWithRootPath).raw),
+    ).resolves.toBe(await format("export class Context {};"));
   });
 });

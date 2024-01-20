@@ -166,8 +166,8 @@ describe("a module loader", () => {
 
   it("finds a context and adds it to the context registry", async () => {
     const files: { [key: string]: string } = {
-      "$.context.mjs": 'export default "main"',
-      "hello/$.context.mjs": 'export default "hello"',
+      "_.context.mjs": 'export class Context { name = "main"};',
+      "hello/_.context.mjs": 'export class Context { name = "hello"};',
     };
 
     await withTemporaryFiles(files, async (basePath: string) => {
@@ -183,16 +183,16 @@ describe("a module loader", () => {
 
       await loader.load();
 
-      expect(contextRegistry.find("/hello")).toBe("hello");
-      expect(contextRegistry.find("/hello/world")).toBe("hello");
-      expect(contextRegistry.find("/some/other/path")).toBe("main");
+      expect(contextRegistry.find("/hello").name).toBe("hello");
+      expect(contextRegistry.find("/hello/world").name).toBe("hello");
+      expect(contextRegistry.find("/some/other/path").name).toBe("main");
     });
   });
 
-  it("provides the parent context if the locale $.context.ts doesn't export a default", async () => {
+  it("provides the parent context if the locale _.context.ts doesn't export a default", async () => {
     const files: { [key: string]: string } = {
-      "$.context.mjs": "export default { value: 0 }",
-      "hello/$.context.mjs": "export default { value: 100 }",
+      "_.context.mjs": "export class Context { value = 0 }",
+      "hello/_.context.mjs": "export class Context  { value =  100 }",
     };
 
     await withTemporaryFiles(files, async (basePath: string) => {
