@@ -25,7 +25,7 @@ jobs:
         run: echo "::set-output name=version::$(node -v)"
         id: node-version
       - name: Cache node_modules
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: "**/node_modules"
           key: ${{ runner.os }}-${{ steps.node-version.outputs.version }}-${{ hashFiles('**/yarn.lock') }}
