@@ -21,20 +21,24 @@ export class ContextTypeCoder extends Coder {
   }
 
   names() {
-    return super.names("ContextType");
+    return super.names("Context");
   }
 
   write(script) {
-    if (script.path === "paths/$.context.ts") {
-      return "Context";
+    if (script.path === "paths/_.context.ts") {
+      return {
+        raw: "export class Context {};",
+      };
     }
 
-    return { raw: 'export type { ContextType } from "../$.context"' };
+    return {
+      raw: 'export { Context } from "../_.context.js"',
+    };
   }
 
   modulePath() {
     return nodePath
-      .join("paths", nodePath.dirname(this.pathString()), "$.context.ts")
+      .join("paths", nodePath.dirname(this.pathString()), "_.context.ts")
       .replaceAll("\\", "/");
   }
 }
