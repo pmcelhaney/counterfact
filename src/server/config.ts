@@ -5,3 +5,5 @@ export interface Config {
   proxyEnabled: boolean;
   proxyUrl: string;
 }
+
+export const DUMMY_EXPORT_FOR_TEST_COVERAGE = 1;

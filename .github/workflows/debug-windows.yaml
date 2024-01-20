@@ -1,7 +1,6 @@
 name: Debug Windows
 
 on:
-  pull_request:
   workflow_dispatch:
 
 env:
