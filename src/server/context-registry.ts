@@ -17,7 +17,7 @@ export class ContextRegistry {
     this.add("/", {});
   }
 
-  public add(path: string, context?: Context): void {
+  public add(path: string, context: Context): void {
     this.entries.set(path, context);
   }
 
