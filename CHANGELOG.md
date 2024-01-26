@@ -1,5 +1,17 @@
 # counterfact
 
+## 0.36.0
+
+### Minor Changes
+
+- 6460017: minor breaking change: `$.context.ts` is now `_.context.ts` and exports a class named Context
+
+  See https://github.com/pmcelhaney/counterfact/blob/main/docs/context-change.md
+
+### Patch Changes
+
+- 8f028d5: CodeGenerator#watch() now waits until Chokidar completes its initial scan before resolving
+
 ## 0.35.0
 
 ### Minor Changes
