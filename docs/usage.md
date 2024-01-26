@@ -143,7 +143,7 @@ export const POST: HTTP_POST = ($) => {
 The `context` object is defined in `_.context.ts` in the same directory as the file that uses it. It's up to you to define the API for a context object. For example, your `_.context.ts` file might look like this.
 
 ```ts
-class PetStore {
+export class Context {
   pets: Pet[] = [];
 
   addPet(pet: Pet) {
