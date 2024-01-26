@@ -157,7 +157,6 @@ export class Context {
   }
 }
 
-export default new PetStore();
 ```
 
 By default, each `_.context.ts` delegates to its parent directory, so you can define one context object in the root `_.context.ts` and use it everywhere.
