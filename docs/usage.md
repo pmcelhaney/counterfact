@@ -120,7 +120,7 @@ The `$.path` parameters are identified by dynamic sections of the path, i.e. `/g
 
 <a id="context-object"></a>
 
-### Working with state: the `$.context` object and `$.context.ts`
+### Working with state: the `$.context` object and `_.context.ts`
 
 There's one more parameter we need to explore, the `$.context` object. It stands in for microservices, databases, and other entities with which the real API interacts. It looks something like this:
 
@@ -140,10 +140,10 @@ export const POST: HTTP_POST = ($) => {
  };
 ```
 
-The `context` object is defined in `$.context.ts` in the same directory as the file that uses it. It's up to you to define the API for a context object. For example, your `$.context.ts` file might look like this.
+The `context` object is defined in `_.context.ts` in the same directory as the file that uses it. It's up to you to define the API for a context object. For example, your `_.context.ts` file might look like this.
 
 ```ts
-class PetStore {
+export class Context {
   pets: Pet[] = [];
 
   addPet(pet: Pet) {
@@ -157,10 +157,9 @@ class PetStore {
   }
 }
 
-export default new PetStore();
 ```
 
-By default, each `$.context.ts` delegates to its parent directory, so you can define one context object in the root `$.context.ts` and use it everywhere.
+By default, each `_.context.ts` delegates to its parent directory, so you can define one context object in the root `_.context.ts` and use it everywhere.
 
 > You can make the context objects do whatever you want, including things like writing to databases. But remember that Counterfact is meant for testing, so holding on to data between sessions is an anti-pattern. Keeping everything in memory also makes it fast.
 
@@ -243,7 +242,7 @@ Using convention over configuration and automatically generated types, Counterfa
 - Each endpoint is represented by a TypeScript file where the path to the file corresponds to the path of the endpoint.
 - You can change the implementation at any time by changing these files.
 - You can and should commit the generated code to source control. Files you change will not be overwritten when you start the server again. (The _types_ will be updated if the OpenAPI document changes, but you shouldn't need to edit the type definitions by hand.)
-- Put behavior in `$.context.ts` files. These are created for you, but you should rewrite them to suit your needs. (At least update the root `$.context.ts` file.)
+- Put behavior in `_.context.ts` files. These are created for you, but you should rewrite them to suit your needs. (At least update the root `_.context.ts` file.)
 - Use the REPL to manipulate the server's state at runtime
 
 ## We're Just Getting Started 🐣
