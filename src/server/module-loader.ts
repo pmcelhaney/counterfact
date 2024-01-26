@@ -63,7 +63,7 @@ export class ModuleLoader extends EventTarget {
 
         if (pathName.includes("$.context") && eventName === "add") {
           process.stdout.write(
-            `\n\n!!! The file at ${pathName} needs a minor update.\n    See https://github.com/pmcelhaney/counterfact/blob/rework-context/docs/context-change.md\n\n\n`,
+            `\n\n!!! The file at ${pathName} needs a minor update.\n    See https://github.com/pmcelhaney/counterfact/blob/main/docs/context-change.md\n\n\n`,
           );
           return;
         }
