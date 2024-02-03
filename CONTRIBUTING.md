@@ -3,7 +3,7 @@
 ## Where I need help
 
 - **Feedback:** First and foremost, send me feedback. What makes sense? What's confusing? What's missing? What's broken? [Send me an email](pmcelhaney@gmail.com), [open an issue](https://github.com/pmcelhaney/counterfact/issues/new), or [start a discussion](https://github.com/pmcelhaney/counterfact/discussions).
-- **Documentation:** There are probably typos in this very document. Please send PRs, large and small. You can do it right from your browser. If you're viewing this document in Github, click the pencil button in the top right corner.
+- **Documentation:** There are probably typos in this very document. Please send PRs, large and small. You can do it right from your browser. If you're viewing this document in GitHub, click the pencil button in the top right corner.
 - **Graphic design:** I'm terrible at graphic design. I know good design when I see it, and I can tell you why it's good, but struggle with the creative process. Whether it's building a web site, designing a logo, brainstorming on a GUI, or fixing up some ugly Markdown code, I'll take whatever help I can get!
 - **Tests:** Test coverage is pretty good, but there are gaps. Filling those gaps is an easy way to gain some familiarity with the codebase.
 - **Code Generation:** As of this writing, the code that writes the code works okay, but it's kind of sloppy. Instead of printing strings of source code directly, I'd like to refactor everything to build ASTs. I'd also like to bring in [json-schema-to-typescript](https://github.com/bcherny/json-schema-to-typescript), which is more accurate than my hand-rolled MVP.
