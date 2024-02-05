@@ -62,4 +62,4 @@ If your mocking needs are relatively simple and you're shopping for someone who 
 
 We value _all_ of your feedback and contributions, including 💌 love letters , 💡 feature requests, 🐞 bug reports, and ✍️ grammatical nit-picks in the docs. Please [create an issue](https://github.com/pmcelhaney/counterfact/issues/new), open a pull request, or reach out to <pmcelhaney@gmail.com>.
 
-**Welcom to the bottom of the README club! Since you've come this far, go ahead and smash that like and subsc… er, uh, give this project a ⭐️ on Github!** 🙏🏼
+**Welcome to the bottom of the README club! Since you've come this far, go ahead and smash that like and subsc… er, uh, give this project a ⭐️ on GitHub!** 🙏🏼
