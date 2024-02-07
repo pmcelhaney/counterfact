@@ -98,7 +98,7 @@
     "koa2-swagger-ui": "5.10.0",
     "node-fetch": "3.3.2",
     "open": "10.0.3",
-    "prettier": "3.2.4",
+    "prettier": "3.2.5",
     "typescript": "5.3.3"
   }
 }
