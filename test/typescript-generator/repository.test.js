@@ -23,7 +23,7 @@ describe("a Repository", () => {
     "finds the relative location of the most relevant _.context.ts file (%s => %s)",
     async (importingFilePath, relativePathToNearestContext) => {
       await usingTemporaryFiles(async ({ add, path }) => {
-        const repository = new Repository(path("."));
+        const repository = new Repository();
 
         await add("./paths/_.context.ts", "export class Context");
         await add("./paths/a/b/_.context.ts", "export class Context");
@@ -34,4 +34,33 @@ describe("a Repository", () => {
       });
     },
   );
+
+  it("creates the root _.context.ts file", async () => {
+    await usingTemporaryFiles(async ({ path, read }) => {
+      const repository = new Repository();
+
+      await repository.writeFiles(path("."));
+
+      await expect(read("./paths/_.context.ts")).resolves.toContain(
+        "export class Context",
+      );
+    });
+  });
+
+  it("does not overwrite an existing _.context.ts file", async () => {
+    await usingTemporaryFiles(async ({ add, path, read }) => {
+      const repository = new Repository();
+
+      await add(
+        "./paths/_.context.ts",
+        "export class Context { /* do not overwrite me */ }",
+      );
+
+      await repository.writeFiles(path("."));
+
+      await expect(read("./paths/_.context.ts")).resolves.toContain(
+        "do not overwrite me",
+      );
+    });
+  });
 });

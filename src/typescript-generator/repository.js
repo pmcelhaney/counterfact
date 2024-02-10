@@ -129,6 +129,8 @@ export class Repository {
       return;
     }
 
+    await ensureDirectoryExists(contextFilePath);
+
     await fs.writeFile(
       contextFilePath,
       `/**
