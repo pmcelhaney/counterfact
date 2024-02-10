@@ -1,4 +1,3 @@
-import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
 import nodePath, { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -54,10 +53,6 @@ export class Repository {
     const destinationPath = nodePath
       .join(destination, "types.d.ts")
       .replaceAll("\\", "/");
-
-    if (!existsSync(destinationPath)) {
-      return false;
-    }
 
     await ensureDirectoryExists(destination);
 
