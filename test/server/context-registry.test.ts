@@ -75,6 +75,52 @@ describe("a context registry", () => {
   });
 });
 
+it("updates context properties if they changed in the code", () => {
+  class OriginalContext implements Context {
+    public prop1 = "original";
+
+    public prop2 = "original";
+
+    public prop3 = "original";
+
+    public prop4 = "original";
+
+    [key: string]: unknown;
+  }
+
+  class UpdatedContext implements Context {
+    public prop1 = "original";
+
+    public prop2 = "changed in code";
+
+    // deleted prop3
+
+    public prop4 = "original";
+
+    public prop5 = "new";
+
+    [key: string]: unknown;
+  }
+
+  const registry = new ContextRegistry();
+
+  registry.add("/", new OriginalContext());
+
+  const context = registry.find("/");
+
+  context.prop1 = "changed at runtime";
+
+  registry.update("/", new UpdatedContext());
+
+  expect({ ...context }).toEqual({
+    prop1: "changed at runtime",
+    prop2: "changed in code",
+    prop3: "original",
+    prop4: "original",
+    prop5: "new",
+  });
+});
+
 describe("parentPath()", () => {
   it("returns the parent path", () => {
     expect(parentPath("/hello/world")).toBe("/hello");
