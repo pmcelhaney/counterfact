@@ -6,6 +6,7 @@ import { fileURLToPath } from "node:url";
 import createDebug from "debug";
 
 import { ensureDirectoryExists } from "../util/ensure-directory-exists.js";
+import { CONTEXT_FILE_TOKEN } from "./context-file-token.js";
 import { Script } from "./script.js";
 
 const debug = createDebug("counterfact:server:repository");
@@ -103,7 +104,13 @@ export class Repository {
         }
 
         debug("about to write", fullPath);
-        await fs.writeFile(fullPath, contents);
+        await fs.writeFile(
+          fullPath,
+          contents.replaceAll(
+            CONTEXT_FILE_TOKEN,
+            this.findContextPath(destination, path),
+          ),
+        );
         debug("did write", fullPath);
       },
     );
