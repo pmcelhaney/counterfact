@@ -1,3 +1,4 @@
+import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
 import nodePath, { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -50,6 +51,14 @@ export class Repository {
   }
 
   async copyCoreFiles(destination) {
+    const sourcePath = nodePath
+      .join(__dirname, "../../dist/server/types.d.ts")
+      .replaceAll("\\", "/");
+
+    if (!existsSync(sourcePath)) {
+      return false;
+    }
+
     const destinationPath = nodePath
       .join(destination, "types.d.ts")
       .replaceAll("\\", "/");
