@@ -13,7 +13,7 @@ exports[`an OperationTypeCoder falls back to root level produces (OpenAPI 2) 1`]
   path: never;
   header: never;
   body: undefined;
-  context: Type;
+  context: ExternalType;
   response: ResponseBuilderFactory<{
     [statusCode in HttpStatusCode]: {
       headers: {};
@@ -49,7 +49,7 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2 wit
   path: { id?: string };
   header: { name?: string };
   body: Type;
-  context: Type;
+  context: ExternalType;
   response: ResponseBuilderFactory<{
     200: {
       headers: {};
@@ -111,7 +111,7 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2) 1`
   path: { id?: string };
   header: { name?: string };
   body: Type;
-  context: Type;
+  context: ExternalType;
   response: ResponseBuilderFactory<{
     200: {
       headers: {};
@@ -173,7 +173,7 @@ exports[`an OperationTypeCoder generates a complex post operation 1`] = `
   path: { id?: string };
   header: { name?: string };
   body: Type;
-  context: Type;
+  context: ExternalType;
   response: ResponseBuilderFactory<{
     200: {
       headers: {};
@@ -235,7 +235,7 @@ exports[`an OperationTypeCoder generates a simple get operation (OpenAPI 2) 1`] 
   path: never;
   header: never;
   body: undefined;
-  context: Type;
+  context: ExternalType;
   response: ResponseBuilderFactory<{
     [statusCode in HttpStatusCode]: {
       headers: {};
@@ -271,7 +271,7 @@ exports[`an OperationTypeCoder generates a simple get operation 1`] = `
   path: never;
   header: never;
   body: undefined;
-  context: Type;
+  context: ExternalType;
   response: ResponseBuilderFactory<{
     [statusCode in HttpStatusCode]: {
       headers: {};
