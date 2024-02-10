@@ -1,7 +1,7 @@
 import nodePath from "node:path";
 
 import { Coder } from "./coder.js";
-import { ContextTypeCoder } from "./context-type-coder.js";
+import { CONTEXT_FILE_TOKEN } from "./context-file-token.js";
 import { ParametersTypeCoder } from "./parameters-type-coder.js";
 import { ResponseTypeCoder } from "./response-type-coder.js";
 import { SchemaTypeCoder } from "./schema-type-coder.js";
@@ -68,8 +68,9 @@ export class OperationTypeCoder extends Coder {
   }
 
   write(script) {
-    const contextTypeImportName = script.importType(
-      new ContextTypeCoder(this.requirement),
+    const contextTypeImportName = script.importExternalType(
+      "Context",
+      CONTEXT_FILE_TOKEN,
     );
 
     const parameters = this.requirement.get("parameters");

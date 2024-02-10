@@ -6,6 +6,7 @@ import { fileURLToPath } from "node:url";
 import createDebug from "debug";
 
 import { ensureDirectoryExists } from "../util/ensure-directory-exists.js";
+import { CONTEXT_FILE_TOKEN } from "./context-file-token.js";
 import { Script } from "./script.js";
 
 const debug = createDebug("counterfact:server:repository");
@@ -103,7 +104,13 @@ export class Repository {
         }
 
         debug("about to write", fullPath);
-        await fs.writeFile(fullPath, contents);
+        await fs.writeFile(
+          fullPath,
+          contents.replaceAll(
+            CONTEXT_FILE_TOKEN,
+            this.findContextPath(destination, path),
+          ),
+        );
         debug("did write", fullPath);
       },
     );
@@ -111,5 +118,59 @@ export class Repository {
     await Promise.all(writeFiles);
 
     await this.copyCoreFiles(destination);
+
+    await this.createDefaultContextFile(destination);
+  }
+
+  async createDefaultContextFile(destination) {
+    const contextFilePath = nodePath.join(destination, "paths", "_.context.ts");
+
+    if (existsSync(contextFilePath)) {
+      return;
+    }
+
+    await ensureDirectoryExists(contextFilePath);
+
+    await fs.writeFile(
+      contextFilePath,
+      `/**
+* This is the default context for Counterfact.
+*
+* It defines the context object in the REPL 
+* and the $.context object in the code.
+*
+* Add properties and methods to suit your needs.
+* 
+* See https://counterfact.dev/docs/usage.html#working-with-state-the-codecontextcode-object-and-codecontexttscode
+*/
+export class Context {
+
+}
+`,
+    );
+  }
+
+  findContextPath(destination, path) {
+    return nodePath.relative(
+      nodePath.join(destination, nodePath.dirname(path)),
+      this.nearestContextFile(destination, path),
+    );
+  }
+
+  nearestContextFile(destination, path) {
+    const directory = nodePath.dirname(path).replace("path-types", "paths");
+
+    const candidate = nodePath.join(destination, directory, "_.context.ts");
+
+    if (directory.length <= 1) {
+      // No _context.ts was found so import the one that should be in the root
+      return nodePath.join(destination, "paths", "_.context.ts");
+    }
+
+    if (existsSync(candidate)) {
+      return candidate;
+    }
+
+    return this.nearestContextFile(destination, nodePath.join(path, ".."));
   }
 }

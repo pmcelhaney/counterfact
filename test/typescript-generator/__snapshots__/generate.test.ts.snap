@@ -47,7 +47,6 @@ Map {
           "cache": Map {
             "OperationTypeCoder@./petstore.yaml#/paths/~1pet/post@[object Object]:true" => "HTTP_POST",
             "OperationTypeCoder@./petstore.yaml#/paths/~1pet/put@[object Object]:true" => "HTTP_PUT",
-            "ContextTypeCoder@paths/_.context.ts:true:false" => "Context",
             "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
           },
           "exports": Map {
@@ -139,45 +138,16 @@ Map {
             },
           },
           "externalImport": Map {
+            "Context" => {
+              "isType": true,
+              "modulePath": "@@CONTEXT_FILE_TOKEN@@",
+            },
             "ResponseBuilderFactory" => {
               "isType": true,
               "modulePath": "../types.d.ts",
             },
           },
           "imports": Map {
-            "Context" => {
-              "isDefault": false,
-              "isType": true,
-              "name": "Context",
-              "script": Script {
-                "cache": Map {
-                  "ContextTypeCoder@[object Object]:true" => "Context",
-                },
-                "exports": Map {
-                  "Context" => {
-                    "beforeExport": "",
-                    "code": {
-                      "raw": "export class Context {};",
-                    },
-                    "done": true,
-                    "id": "ContextTypeCoder",
-                    "isDefault": false,
-                    "isType": true,
-                    "name": "Context",
-                    "promise": Promise {},
-                    "typeDeclaration": "",
-                  },
-                },
-                "externalImport": Map {},
-                "imports": Map {},
-                "path": "paths/_.context.ts",
-                "repository": Repository {
-                  "scripts": [Circular],
-                  "writeFiles": [Function],
-                },
-                "typeCache": Map {},
-              },
-            },
             "Pet" => {
               "isDefault": false,
               "isType": true,
@@ -291,7 +261,6 @@ Map {
           "cache": Map {
             "OperationTypeCoder@./petstore.yaml#/paths/~1pet/post@[object Object]:true" => "HTTP_POST",
             "OperationTypeCoder@./petstore.yaml#/paths/~1pet/put@[object Object]:true" => "HTTP_PUT",
-            "ContextTypeCoder@paths/_.context.ts:true:false" => "Context",
             "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
           },
           "exports": Map {
@@ -383,45 +352,16 @@ Map {
             },
           },
           "externalImport": Map {
+            "Context" => {
+              "isType": true,
+              "modulePath": "@@CONTEXT_FILE_TOKEN@@",
+            },
             "ResponseBuilderFactory" => {
               "isType": true,
               "modulePath": "../types.d.ts",
             },
           },
           "imports": Map {
-            "Context" => {
-              "isDefault": false,
-              "isType": true,
-              "name": "Context",
-              "script": Script {
-                "cache": Map {
-                  "ContextTypeCoder@[object Object]:true" => "Context",
-                },
-                "exports": Map {
-                  "Context" => {
-                    "beforeExport": "",
-                    "code": {
-                      "raw": "export class Context {};",
-                    },
-                    "done": true,
-                    "id": "ContextTypeCoder",
-                    "isDefault": false,
-                    "isType": true,
-                    "name": "Context",
-                    "promise": Promise {},
-                    "typeDeclaration": "",
-                  },
-                },
-                "externalImport": Map {},
-                "imports": Map {},
-                "path": "paths/_.context.ts",
-                "repository": Repository {
-                  "scripts": [Circular],
-                  "writeFiles": [Function],
-                },
-                "typeCache": Map {},
-              },
-            },
             "Pet" => {
               "isDefault": false,
               "isType": true,
@@ -539,7 +479,6 @@ Map {
     "cache": Map {
       "OperationTypeCoder@./petstore.yaml#/paths/~1pet/post@[object Object]:true" => "HTTP_POST",
       "OperationTypeCoder@./petstore.yaml#/paths/~1pet/put@[object Object]:true" => "HTTP_PUT",
-      "ContextTypeCoder@paths/_.context.ts:true:false" => "Context",
       "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
     },
     "exports": Map {
@@ -631,45 +570,16 @@ Map {
       },
     },
     "externalImport": Map {
+      "Context" => {
+        "isType": true,
+        "modulePath": "@@CONTEXT_FILE_TOKEN@@",
+      },
       "ResponseBuilderFactory" => {
         "isType": true,
         "modulePath": "../types.d.ts",
       },
     },
     "imports": Map {
-      "Context" => {
-        "isDefault": false,
-        "isType": true,
-        "name": "Context",
-        "script": Script {
-          "cache": Map {
-            "ContextTypeCoder@[object Object]:true" => "Context",
-          },
-          "exports": Map {
-            "Context" => {
-              "beforeExport": "",
-              "code": {
-                "raw": "export class Context {};",
-              },
-              "done": true,
-              "id": "ContextTypeCoder",
-              "isDefault": false,
-              "isType": true,
-              "name": "Context",
-              "promise": Promise {},
-              "typeDeclaration": "",
-            },
-          },
-          "externalImport": Map {},
-          "imports": Map {},
-          "path": "paths/_.context.ts",
-          "repository": Repository {
-            "scripts": [Circular],
-            "writeFiles": [Function],
-          },
-          "typeCache": Map {},
-        },
-      },
       "Pet" => {
         "isDefault": false,
         "isType": true,
@@ -803,7 +713,6 @@ Map {
         "script": Script {
           "cache": Map {
             "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1findByStatus/get@[object Object]:true" => "HTTP_GET",
-            "ContextTypeCoder@paths/pet/_.context.ts:true:false" => "Context",
             "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
           },
           "exports": Map {
@@ -846,45 +755,16 @@ Map {
             },
           },
           "externalImport": Map {
+            "Context" => {
+              "isType": true,
+              "modulePath": "@@CONTEXT_FILE_TOKEN@@",
+            },
             "ResponseBuilderFactory" => {
               "isType": true,
               "modulePath": "../../types.d.ts",
             },
           },
           "imports": Map {
-            "Context" => {
-              "isDefault": false,
-              "isType": true,
-              "name": "Context",
-              "script": Script {
-                "cache": Map {
-                  "ContextTypeCoder@[object Object]:true" => "Context",
-                },
-                "exports": Map {
-                  "Context" => {
-                    "beforeExport": "",
-                    "code": {
-                      "raw": "export { Context } from "../_.context.js"",
-                    },
-                    "done": true,
-                    "id": "ContextTypeCoder",
-                    "isDefault": false,
-                    "isType": true,
-                    "name": "Context",
-                    "promise": Promise {},
-                    "typeDeclaration": "",
-                  },
-                },
-                "externalImport": Map {},
-                "imports": Map {},
-                "path": "paths/pet/_.context.ts",
-                "repository": Repository {
-                  "scripts": [Circular],
-                  "writeFiles": [Function],
-                },
-                "typeCache": Map {},
-              },
-            },
             "Pet" => {
               "isDefault": false,
               "isType": true,
@@ -1001,7 +881,6 @@ Map {
   "path-types/pet/findByStatus.types.ts" => Script {
     "cache": Map {
       "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1findByStatus/get@[object Object]:true" => "HTTP_GET",
-      "ContextTypeCoder@paths/pet/_.context.ts:true:false" => "Context",
       "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
     },
     "exports": Map {
@@ -1044,45 +923,16 @@ Map {
       },
     },
     "externalImport": Map {
+      "Context" => {
+        "isType": true,
+        "modulePath": "@@CONTEXT_FILE_TOKEN@@",
+      },
       "ResponseBuilderFactory" => {
         "isType": true,
         "modulePath": "../../types.d.ts",
       },
     },
     "imports": Map {
-      "Context" => {
-        "isDefault": false,
-        "isType": true,
-        "name": "Context",
-        "script": Script {
-          "cache": Map {
-            "ContextTypeCoder@[object Object]:true" => "Context",
-          },
-          "exports": Map {
-            "Context" => {
-              "beforeExport": "",
-              "code": {
-                "raw": "export { Context } from "../_.context.js"",
-              },
-              "done": true,
-              "id": "ContextTypeCoder",
-              "isDefault": false,
-              "isType": true,
-              "name": "Context",
-              "promise": Promise {},
-              "typeDeclaration": "",
-            },
-          },
-          "externalImport": Map {},
-          "imports": Map {},
-          "path": "paths/pet/_.context.ts",
-          "repository": Repository {
-            "scripts": [Circular],
-            "writeFiles": [Function],
-          },
-          "typeCache": Map {},
-        },
-      },
       "Pet" => {
         "isDefault": false,
         "isType": true,
@@ -1216,7 +1066,6 @@ Map {
         "script": Script {
           "cache": Map {
             "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1findByTags/get@[object Object]:true" => "HTTP_GET",
-            "ContextTypeCoder@paths/pet/_.context.ts:true:false" => "Context",
             "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
           },
           "exports": Map {
@@ -1259,45 +1108,16 @@ Map {
             },
           },
           "externalImport": Map {
+            "Context" => {
+              "isType": true,
+              "modulePath": "@@CONTEXT_FILE_TOKEN@@",
+            },
             "ResponseBuilderFactory" => {
               "isType": true,
               "modulePath": "../../types.d.ts",
             },
           },
           "imports": Map {
-            "Context" => {
-              "isDefault": false,
-              "isType": true,
-              "name": "Context",
-              "script": Script {
-                "cache": Map {
-                  "ContextTypeCoder@[object Object]:true" => "Context",
-                },
-                "exports": Map {
-                  "Context" => {
-                    "beforeExport": "",
-                    "code": {
-                      "raw": "export { Context } from "../_.context.js"",
-                    },
-                    "done": true,
-                    "id": "ContextTypeCoder",
-                    "isDefault": false,
-                    "isType": true,
-                    "name": "Context",
-                    "promise": Promise {},
-                    "typeDeclaration": "",
-                  },
-                },
-                "externalImport": Map {},
-                "imports": Map {},
-                "path": "paths/pet/_.context.ts",
-                "repository": Repository {
-                  "scripts": [Circular],
-                  "writeFiles": [Function],
-                },
-                "typeCache": Map {},
-              },
-            },
             "Pet" => {
               "isDefault": false,
               "isType": true,
@@ -1414,7 +1234,6 @@ Map {
   "path-types/pet/findByTags.types.ts" => Script {
     "cache": Map {
       "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1findByTags/get@[object Object]:true" => "HTTP_GET",
-      "ContextTypeCoder@paths/pet/_.context.ts:true:false" => "Context",
       "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
     },
     "exports": Map {
@@ -1457,45 +1276,16 @@ Map {
       },
     },
     "externalImport": Map {
+      "Context" => {
+        "isType": true,
+        "modulePath": "@@CONTEXT_FILE_TOKEN@@",
+      },
       "ResponseBuilderFactory" => {
         "isType": true,
         "modulePath": "../../types.d.ts",
       },
     },
     "imports": Map {
-      "Context" => {
-        "isDefault": false,
-        "isType": true,
-        "name": "Context",
-        "script": Script {
-          "cache": Map {
-            "ContextTypeCoder@[object Object]:true" => "Context",
-          },
-          "exports": Map {
-            "Context" => {
-              "beforeExport": "",
-              "code": {
-                "raw": "export { Context } from "../_.context.js"",
-              },
-              "done": true,
-              "id": "ContextTypeCoder",
-              "isDefault": false,
-              "isType": true,
-              "name": "Context",
-              "promise": Promise {},
-              "typeDeclaration": "",
-            },
-          },
-          "externalImport": Map {},
-          "imports": Map {},
-          "path": "paths/pet/_.context.ts",
-          "repository": Repository {
-            "scripts": [Circular],
-            "writeFiles": [Function],
-          },
-          "typeCache": Map {},
-        },
-      },
       "Pet" => {
         "isDefault": false,
         "isType": true,
@@ -1661,7 +1451,6 @@ Map {
             "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/get@[object Object]:true" => "HTTP_GET",
             "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/post@[object Object]:true" => "HTTP_POST",
             "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/delete@[object Object]:true" => "HTTP_DELETE",
-            "ContextTypeCoder@paths/pet/_.context.ts:true:false" => "Context",
             "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
           },
           "exports": Map {
@@ -1746,45 +1535,16 @@ Map {
             },
           },
           "externalImport": Map {
+            "Context" => {
+              "isType": true,
+              "modulePath": "@@CONTEXT_FILE_TOKEN@@",
+            },
             "ResponseBuilderFactory" => {
               "isType": true,
               "modulePath": "../../types.d.ts",
             },
           },
           "imports": Map {
-            "Context" => {
-              "isDefault": false,
-              "isType": true,
-              "name": "Context",
-              "script": Script {
-                "cache": Map {
-                  "ContextTypeCoder@[object Object]:true" => "Context",
-                },
-                "exports": Map {
-                  "Context" => {
-                    "beforeExport": "",
-                    "code": {
-                      "raw": "export { Context } from "../_.context.js"",
-                    },
-                    "done": true,
-                    "id": "ContextTypeCoder",
-                    "isDefault": false,
-                    "isType": true,
-                    "name": "Context",
-                    "promise": Promise {},
-                    "typeDeclaration": "",
-                  },
-                },
-                "externalImport": Map {},
-                "imports": Map {},
-                "path": "paths/pet/_.context.ts",
-                "repository": Repository {
-                  "scripts": [Circular],
-                  "writeFiles": [Function],
-                },
-                "typeCache": Map {},
-              },
-            },
             "Pet" => {
               "isDefault": false,
               "isType": true,
@@ -1899,7 +1659,6 @@ Map {
             "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/get@[object Object]:true" => "HTTP_GET",
             "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/post@[object Object]:true" => "HTTP_POST",
             "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/delete@[object Object]:true" => "HTTP_DELETE",
-            "ContextTypeCoder@paths/pet/_.context.ts:true:false" => "Context",
             "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
           },
           "exports": Map {
@@ -1984,45 +1743,16 @@ Map {
             },
           },
           "externalImport": Map {
+            "Context" => {
+              "isType": true,
+              "modulePath": "@@CONTEXT_FILE_TOKEN@@",
+            },
             "ResponseBuilderFactory" => {
               "isType": true,
               "modulePath": "../../types.d.ts",
             },
           },
           "imports": Map {
-            "Context" => {
-              "isDefault": false,
-              "isType": true,
-              "name": "Context",
-              "script": Script {
-                "cache": Map {
-                  "ContextTypeCoder@[object Object]:true" => "Context",
-                },
-                "exports": Map {
-                  "Context" => {
-                    "beforeExport": "",
-                    "code": {
-                      "raw": "export { Context } from "../_.context.js"",
-                    },
-                    "done": true,
-                    "id": "ContextTypeCoder",
-                    "isDefault": false,
-                    "isType": true,
-                    "name": "Context",
-                    "promise": Promise {},
-                    "typeDeclaration": "",
-                  },
-                },
-                "externalImport": Map {},
-                "imports": Map {},
-                "path": "paths/pet/_.context.ts",
-                "repository": Repository {
-                  "scripts": [Circular],
-                  "writeFiles": [Function],
-                },
-                "typeCache": Map {},
-              },
-            },
             "Pet" => {
               "isDefault": false,
               "isType": true,
@@ -2137,7 +1867,6 @@ Map {
             "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/get@[object Object]:true" => "HTTP_GET",
             "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/post@[object Object]:true" => "HTTP_POST",
             "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/delete@[object Object]:true" => "HTTP_DELETE",
-            "ContextTypeCoder@paths/pet/_.context.ts:true:false" => "Context",
             "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
           },
           "exports": Map {
@@ -2222,45 +1951,16 @@ Map {
             },
           },
           "externalImport": Map {
+            "Context" => {
+              "isType": true,
+              "modulePath": "@@CONTEXT_FILE_TOKEN@@",
+            },
             "ResponseBuilderFactory" => {
               "isType": true,
               "modulePath": "../../types.d.ts",
             },
           },
           "imports": Map {
-            "Context" => {
-              "isDefault": false,
-              "isType": true,
-              "name": "Context",
-              "script": Script {
-                "cache": Map {
-                  "ContextTypeCoder@[object Object]:true" => "Context",
-                },
-                "exports": Map {
-                  "Context" => {
-                    "beforeExport": "",
-                    "code": {
-                      "raw": "export { Context } from "../_.context.js"",
-                    },
-                    "done": true,
-                    "id": "ContextTypeCoder",
-                    "isDefault": false,
-                    "isType": true,
-                    "name": "Context",
-                    "promise": Promise {},
-                    "typeDeclaration": "",
-                  },
-                },
-                "externalImport": Map {},
-                "imports": Map {},
-                "path": "paths/pet/_.context.ts",
-                "repository": Repository {
-                  "scripts": [Circular],
-                  "writeFiles": [Function],
-                },
-                "typeCache": Map {},
-              },
-            },
             "Pet" => {
               "isDefault": false,
               "isType": true,
@@ -2379,7 +2079,6 @@ Map {
       "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/get@[object Object]:true" => "HTTP_GET",
       "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/post@[object Object]:true" => "HTTP_POST",
       "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/delete@[object Object]:true" => "HTTP_DELETE",
-      "ContextTypeCoder@paths/pet/_.context.ts:true:false" => "Context",
       "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
     },
     "exports": Map {
@@ -2464,45 +2163,16 @@ Map {
       },
     },
     "externalImport": Map {
+      "Context" => {
+        "isType": true,
+        "modulePath": "@@CONTEXT_FILE_TOKEN@@",
+      },
       "ResponseBuilderFactory" => {
         "isType": true,
         "modulePath": "../../types.d.ts",
       },
     },
     "imports": Map {
-      "Context" => {
-        "isDefault": false,
-        "isType": true,
-        "name": "Context",
-        "script": Script {
-          "cache": Map {
-            "ContextTypeCoder@[object Object]:true" => "Context",
-          },
-          "exports": Map {
-            "Context" => {
-              "beforeExport": "",
-              "code": {
-                "raw": "export { Context } from "../_.context.js"",
-              },
-              "done": true,
-              "id": "ContextTypeCoder",
-              "isDefault": false,
-              "isType": true,
-              "name": "Context",
-              "promise": Promise {},
-              "typeDeclaration": "",
-            },
-          },
-          "externalImport": Map {},
-          "imports": Map {},
-          "path": "paths/pet/_.context.ts",
-          "repository": Repository {
-            "scripts": [Circular],
-            "writeFiles": [Function],
-          },
-          "typeCache": Map {},
-        },
-      },
       "Pet" => {
         "isDefault": false,
         "isType": true,
@@ -2636,7 +2306,6 @@ Map {
         "script": Script {
           "cache": Map {
             "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post@[object Object]:true" => "HTTP_POST",
-            "ContextTypeCoder@paths/pet/{petId}/_.context.ts:true:false" => "Context",
             "SchemaTypeCoder@undefined@components/ApiResponse.ts:true:false" => "ApiResponse",
           },
           "exports": Map {
@@ -2666,45 +2335,16 @@ Map {
             },
           },
           "externalImport": Map {
+            "Context" => {
+              "isType": true,
+              "modulePath": "@@CONTEXT_FILE_TOKEN@@",
+            },
             "ResponseBuilderFactory" => {
               "isType": true,
               "modulePath": "../../../types.d.ts",
             },
           },
           "imports": Map {
-            "Context" => {
-              "isDefault": false,
-              "isType": true,
-              "name": "Context",
-              "script": Script {
-                "cache": Map {
-                  "ContextTypeCoder@[object Object]:true" => "Context",
-                },
-                "exports": Map {
-                  "Context" => {
-                    "beforeExport": "",
-                    "code": {
-                      "raw": "export { Context } from "../_.context.js"",
-                    },
-                    "done": true,
-                    "id": "ContextTypeCoder",
-                    "isDefault": false,
-                    "isType": true,
-                    "name": "Context",
-                    "promise": Promise {},
-                    "typeDeclaration": "",
-                  },
-                },
-                "externalImport": Map {},
-                "imports": Map {},
-                "path": "paths/pet/{petId}/_.context.ts",
-                "repository": Repository {
-                  "scripts": [Circular],
-                  "writeFiles": [Function],
-                },
-                "typeCache": Map {},
-              },
-            },
             "ApiResponse" => {
               "isDefault": false,
               "isType": true,
@@ -2756,7 +2396,6 @@ Map {
   "path-types/pet/{petId}/uploadImage.types.ts" => Script {
     "cache": Map {
       "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post@[object Object]:true" => "HTTP_POST",
-      "ContextTypeCoder@paths/pet/{petId}/_.context.ts:true:false" => "Context",
       "SchemaTypeCoder@undefined@components/ApiResponse.ts:true:false" => "ApiResponse",
     },
     "exports": Map {
@@ -2786,45 +2425,16 @@ Map {
       },
     },
     "externalImport": Map {
+      "Context" => {
+        "isType": true,
+        "modulePath": "@@CONTEXT_FILE_TOKEN@@",
+      },
       "ResponseBuilderFactory" => {
         "isType": true,
         "modulePath": "../../../types.d.ts",
       },
     },
     "imports": Map {
-      "Context" => {
-        "isDefault": false,
-        "isType": true,
-        "name": "Context",
-        "script": Script {
-          "cache": Map {
-            "ContextTypeCoder@[object Object]:true" => "Context",
-          },
-          "exports": Map {
-            "Context" => {
-              "beforeExport": "",
-              "code": {
-                "raw": "export { Context } from "../_.context.js"",
-              },
-              "done": true,
-              "id": "ContextTypeCoder",
-              "isDefault": false,
-              "isType": true,
-              "name": "Context",
-              "promise": Promise {},
-              "typeDeclaration": "",
-            },
-          },
-          "externalImport": Map {},
-          "imports": Map {},
-          "path": "paths/pet/{petId}/_.context.ts",
-          "repository": Repository {
-            "scripts": [Circular],
-            "writeFiles": [Function],
-          },
-          "typeCache": Map {},
-        },
-      },
       "ApiResponse" => {
         "isDefault": false,
         "isType": true,
@@ -2893,7 +2503,6 @@ Map {
         "script": Script {
           "cache": Map {
             "OperationTypeCoder@./petstore.yaml#/paths/~1store~1inventory/get@[object Object]:true" => "HTTP_GET",
-            "ContextTypeCoder@paths/store/_.context.ts:true:false" => "Context",
           },
           "exports": Map {
             "HTTP_GET" => {
@@ -2922,46 +2531,16 @@ Map {
             },
           },
           "externalImport": Map {
+            "Context" => {
+              "isType": true,
+              "modulePath": "@@CONTEXT_FILE_TOKEN@@",
+            },
             "ResponseBuilderFactory" => {
               "isType": true,
               "modulePath": "../../types.d.ts",
             },
           },
-          "imports": Map {
-            "Context" => {
-              "isDefault": false,
-              "isType": true,
-              "name": "Context",
-              "script": Script {
-                "cache": Map {
-                  "ContextTypeCoder@[object Object]:true" => "Context",
-                },
-                "exports": Map {
-                  "Context" => {
-                    "beforeExport": "",
-                    "code": {
-                      "raw": "export { Context } from "../_.context.js"",
-                    },
-                    "done": true,
-                    "id": "ContextTypeCoder",
-                    "isDefault": false,
-                    "isType": true,
-                    "name": "Context",
-                    "promise": Promise {},
-                    "typeDeclaration": "",
-                  },
-                },
-                "externalImport": Map {},
-                "imports": Map {},
-                "path": "paths/store/_.context.ts",
-                "repository": Repository {
-                  "scripts": [Circular],
-                  "writeFiles": [Function],
-                },
-                "typeCache": Map {},
-              },
-            },
-          },
+          "imports": Map {},
           "path": "path-types/store/inventory.types.ts",
           "repository": Repository {
             "scripts": [Circular],
@@ -2981,7 +2560,6 @@ Map {
   "path-types/store/inventory.types.ts" => Script {
     "cache": Map {
       "OperationTypeCoder@./petstore.yaml#/paths/~1store~1inventory/get@[object Object]:true" => "HTTP_GET",
-      "ContextTypeCoder@paths/store/_.context.ts:true:false" => "Context",
     },
     "exports": Map {
       "HTTP_GET" => {
@@ -3010,46 +2588,16 @@ Map {
       },
     },
     "externalImport": Map {
+      "Context" => {
+        "isType": true,
+        "modulePath": "@@CONTEXT_FILE_TOKEN@@",
+      },
       "ResponseBuilderFactory" => {
         "isType": true,
         "modulePath": "../../types.d.ts",
       },
     },
-    "imports": Map {
-      "Context" => {
-        "isDefault": false,
-        "isType": true,
-        "name": "Context",
-        "script": Script {
-          "cache": Map {
-            "ContextTypeCoder@[object Object]:true" => "Context",
-          },
-          "exports": Map {
-            "Context" => {
-              "beforeExport": "",
-              "code": {
-                "raw": "export { Context } from "../_.context.js"",
-              },
-              "done": true,
-              "id": "ContextTypeCoder",
-              "isDefault": false,
-              "isType": true,
-              "name": "Context",
-              "promise": Promise {},
-              "typeDeclaration": "",
-            },
-          },
-          "externalImport": Map {},
-          "imports": Map {},
-          "path": "paths/store/_.context.ts",
-          "repository": Repository {
-            "scripts": [Circular],
-            "writeFiles": [Function],
-          },
-          "typeCache": Map {},
-        },
-      },
-    },
+    "imports": Map {},
     "path": "path-types/store/inventory.types.ts",
     "repository": Repository {
       "scripts": [Circular],
@@ -3086,7 +2634,6 @@ Map {
         "script": Script {
           "cache": Map {
             "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order/post@[object Object]:true" => "HTTP_POST",
-            "ContextTypeCoder@paths/store/_.context.ts:true:false" => "Context",
             "SchemaTypeCoder@undefined@components/Order.ts:true:false" => "Order",
           },
           "exports": Map {
@@ -3122,45 +2669,16 @@ Map {
             },
           },
           "externalImport": Map {
+            "Context" => {
+              "isType": true,
+              "modulePath": "@@CONTEXT_FILE_TOKEN@@",
+            },
             "ResponseBuilderFactory" => {
               "isType": true,
               "modulePath": "../../types.d.ts",
             },
           },
           "imports": Map {
-            "Context" => {
-              "isDefault": false,
-              "isType": true,
-              "name": "Context",
-              "script": Script {
-                "cache": Map {
-                  "ContextTypeCoder@[object Object]:true" => "Context",
-                },
-                "exports": Map {
-                  "Context" => {
-                    "beforeExport": "",
-                    "code": {
-                      "raw": "export { Context } from "../_.context.js"",
-                    },
-                    "done": true,
-                    "id": "ContextTypeCoder",
-                    "isDefault": false,
-                    "isType": true,
-                    "name": "Context",
-                    "promise": Promise {},
-                    "typeDeclaration": "",
-                  },
-                },
-                "externalImport": Map {},
-                "imports": Map {},
-                "path": "paths/store/_.context.ts",
-                "repository": Repository {
-                  "scripts": [Circular],
-                  "writeFiles": [Function],
-                },
-                "typeCache": Map {},
-              },
-            },
             "Order" => {
               "isDefault": false,
               "isType": true,
@@ -3212,7 +2730,6 @@ Map {
   "path-types/store/order.types.ts" => Script {
     "cache": Map {
       "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order/post@[object Object]:true" => "HTTP_POST",
-      "ContextTypeCoder@paths/store/_.context.ts:true:false" => "Context",
       "SchemaTypeCoder@undefined@components/Order.ts:true:false" => "Order",
     },
     "exports": Map {
@@ -3248,45 +2765,16 @@ Map {
       },
     },
     "externalImport": Map {
+      "Context" => {
+        "isType": true,
+        "modulePath": "@@CONTEXT_FILE_TOKEN@@",
+      },
       "ResponseBuilderFactory" => {
         "isType": true,
         "modulePath": "../../types.d.ts",
       },
     },
     "imports": Map {
-      "Context" => {
-        "isDefault": false,
-        "isType": true,
-        "name": "Context",
-        "script": Script {
-          "cache": Map {
-            "ContextTypeCoder@[object Object]:true" => "Context",
-          },
-          "exports": Map {
-            "Context" => {
-              "beforeExport": "",
-              "code": {
-                "raw": "export { Context } from "../_.context.js"",
-              },
-              "done": true,
-              "id": "ContextTypeCoder",
-              "isDefault": false,
-              "isType": true,
-              "name": "Context",
-              "promise": Promise {},
-              "typeDeclaration": "",
-            },
-          },
-          "externalImport": Map {},
-          "imports": Map {},
-          "path": "paths/store/_.context.ts",
-          "repository": Repository {
-            "scripts": [Circular],
-            "writeFiles": [Function],
-          },
-          "typeCache": Map {},
-        },
-      },
       "Order" => {
         "isDefault": false,
         "isType": true,
@@ -3371,7 +2859,6 @@ Map {
           "cache": Map {
             "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order~1{orderId}/get@[object Object]:true" => "HTTP_GET",
             "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order~1{orderId}/delete@[object Object]:true" => "HTTP_DELETE",
-            "ContextTypeCoder@paths/store/order/_.context.ts:true:false" => "Context",
             "SchemaTypeCoder@undefined@components/Order.ts:true:false" => "Order",
           },
           "exports": Map {
@@ -3444,45 +2931,16 @@ Map {
             },
           },
           "externalImport": Map {
+            "Context" => {
+              "isType": true,
+              "modulePath": "@@CONTEXT_FILE_TOKEN@@",
+            },
             "ResponseBuilderFactory" => {
               "isType": true,
               "modulePath": "../../../types.d.ts",
             },
           },
           "imports": Map {
-            "Context" => {
-              "isDefault": false,
-              "isType": true,
-              "name": "Context",
-              "script": Script {
-                "cache": Map {
-                  "ContextTypeCoder@[object Object]:true" => "Context",
-                },
-                "exports": Map {
-                  "Context" => {
-                    "beforeExport": "",
-                    "code": {
-                      "raw": "export { Context } from "../_.context.js"",
-                    },
-                    "done": true,
-                    "id": "ContextTypeCoder",
-                    "isDefault": false,
-                    "isType": true,
-                    "name": "Context",
-                    "promise": Promise {},
-                    "typeDeclaration": "",
-                  },
-                },
-                "externalImport": Map {},
-                "imports": Map {},
-                "path": "paths/store/order/_.context.ts",
-                "repository": Repository {
-                  "scripts": [Circular],
-                  "writeFiles": [Function],
-                },
-                "typeCache": Map {},
-              },
-            },
             "Order" => {
               "isDefault": false,
               "isType": true,
@@ -3531,7 +2989,6 @@ Map {
           "cache": Map {
             "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order~1{orderId}/get@[object Object]:true" => "HTTP_GET",
             "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order~1{orderId}/delete@[object Object]:true" => "HTTP_DELETE",
-            "ContextTypeCoder@paths/store/order/_.context.ts:true:false" => "Context",
             "SchemaTypeCoder@undefined@components/Order.ts:true:false" => "Order",
           },
           "exports": Map {
@@ -3604,45 +3061,16 @@ Map {
             },
           },
           "externalImport": Map {
+            "Context" => {
+              "isType": true,
+              "modulePath": "@@CONTEXT_FILE_TOKEN@@",
+            },
             "ResponseBuilderFactory" => {
               "isType": true,
               "modulePath": "../../../types.d.ts",
             },
           },
           "imports": Map {
-            "Context" => {
-              "isDefault": false,
-              "isType": true,
-              "name": "Context",
-              "script": Script {
-                "cache": Map {
-                  "ContextTypeCoder@[object Object]:true" => "Context",
-                },
-                "exports": Map {
-                  "Context" => {
-                    "beforeExport": "",
-                    "code": {
-                      "raw": "export { Context } from "../_.context.js"",
-                    },
-                    "done": true,
-                    "id": "ContextTypeCoder",
-                    "isDefault": false,
-                    "isType": true,
-                    "name": "Context",
-                    "promise": Promise {},
-                    "typeDeclaration": "",
-                  },
-                },
-                "externalImport": Map {},
-                "imports": Map {},
-                "path": "paths/store/order/_.context.ts",
-                "repository": Repository {
-                  "scripts": [Circular],
-                  "writeFiles": [Function],
-                },
-                "typeCache": Map {},
-              },
-            },
             "Order" => {
               "isDefault": false,
               "isType": true,
@@ -3695,7 +3123,6 @@ Map {
     "cache": Map {
       "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order~1{orderId}/get@[object Object]:true" => "HTTP_GET",
       "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order~1{orderId}/delete@[object Object]:true" => "HTTP_DELETE",
-      "ContextTypeCoder@paths/store/order/_.context.ts:true:false" => "Context",
       "SchemaTypeCoder@undefined@components/Order.ts:true:false" => "Order",
     },
     "exports": Map {
@@ -3768,45 +3195,16 @@ Map {
       },
     },
     "externalImport": Map {
+      "Context" => {
+        "isType": true,
+        "modulePath": "@@CONTEXT_FILE_TOKEN@@",
+      },
       "ResponseBuilderFactory" => {
         "isType": true,
         "modulePath": "../../../types.d.ts",
       },
     },
     "imports": Map {
-      "Context" => {
-        "isDefault": false,
-        "isType": true,
-        "name": "Context",
-        "script": Script {
-          "cache": Map {
-            "ContextTypeCoder@[object Object]:true" => "Context",
-          },
-          "exports": Map {
-            "Context" => {
-              "beforeExport": "",
-              "code": {
-                "raw": "export { Context } from "../_.context.js"",
-              },
-              "done": true,
-              "id": "ContextTypeCoder",
-              "isDefault": false,
-              "isType": true,
-              "name": "Context",
-              "promise": Promise {},
-              "typeDeclaration": "",
-            },
-          },
-          "externalImport": Map {},
-          "imports": Map {},
-          "path": "paths/store/order/_.context.ts",
-          "repository": Repository {
-            "scripts": [Circular],
-            "writeFiles": [Function],
-          },
-          "typeCache": Map {},
-        },
-      },
       "Order" => {
         "isDefault": false,
         "isType": true,
@@ -3875,7 +3273,6 @@ Map {
         "script": Script {
           "cache": Map {
             "OperationTypeCoder@./petstore.yaml#/paths/~1user/post@[object Object]:true" => "HTTP_POST",
-            "ContextTypeCoder@paths/_.context.ts:true:false" => "Context",
             "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
           },
           "exports": Map {
@@ -3912,6 +3309,10 @@ Map {
             },
           },
           "externalImport": Map {
+            "Context" => {
+              "isType": true,
+              "modulePath": "@@CONTEXT_FILE_TOKEN@@",
+            },
             "ResponseBuilderFactory" => {
               "isType": true,
               "modulePath": "../types.d.ts",
@@ -3922,39 +3323,6 @@ Map {
             },
           },
           "imports": Map {
-            "Context" => {
-              "isDefault": false,
-              "isType": true,
-              "name": "Context",
-              "script": Script {
-                "cache": Map {
-                  "ContextTypeCoder@[object Object]:true" => "Context",
-                },
-                "exports": Map {
-                  "Context" => {
-                    "beforeExport": "",
-                    "code": {
-                      "raw": "export class Context {};",
-                    },
-                    "done": true,
-                    "id": "ContextTypeCoder",
-                    "isDefault": false,
-                    "isType": true,
-                    "name": "Context",
-                    "promise": Promise {},
-                    "typeDeclaration": "",
-                  },
-                },
-                "externalImport": Map {},
-                "imports": Map {},
-                "path": "paths/_.context.ts",
-                "repository": Repository {
-                  "scripts": [Circular],
-                  "writeFiles": [Function],
-                },
-                "typeCache": Map {},
-              },
-            },
             "User" => {
               "isDefault": false,
               "isType": true,
@@ -4006,7 +3374,6 @@ Map {
   "path-types/user.types.ts" => Script {
     "cache": Map {
       "OperationTypeCoder@./petstore.yaml#/paths/~1user/post@[object Object]:true" => "HTTP_POST",
-      "ContextTypeCoder@paths/_.context.ts:true:false" => "Context",
       "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
     },
     "exports": Map {
@@ -4043,6 +3410,10 @@ Map {
       },
     },
     "externalImport": Map {
+      "Context" => {
+        "isType": true,
+        "modulePath": "@@CONTEXT_FILE_TOKEN@@",
+      },
       "ResponseBuilderFactory" => {
         "isType": true,
         "modulePath": "../types.d.ts",
@@ -4053,39 +3424,6 @@ Map {
       },
     },
     "imports": Map {
-      "Context" => {
-        "isDefault": false,
-        "isType": true,
-        "name": "Context",
-        "script": Script {
-          "cache": Map {
-            "ContextTypeCoder@[object Object]:true" => "Context",
-          },
-          "exports": Map {
-            "Context" => {
-              "beforeExport": "",
-              "code": {
-                "raw": "export class Context {};",
-              },
-              "done": true,
-              "id": "ContextTypeCoder",
-              "isDefault": false,
-              "isType": true,
-              "name": "Context",
-              "promise": Promise {},
-              "typeDeclaration": "",
-            },
-          },
-          "externalImport": Map {},
-          "imports": Map {},
-          "path": "paths/_.context.ts",
-          "repository": Repository {
-            "scripts": [Circular],
-            "writeFiles": [Function],
-          },
-          "typeCache": Map {},
-        },
-      },
       "User" => {
         "isDefault": false,
         "isType": true,
@@ -4154,7 +3492,6 @@ Map {
         "script": Script {
           "cache": Map {
             "OperationTypeCoder@./petstore.yaml#/paths/~1user~1createWithList/post@[object Object]:true" => "HTTP_POST",
-            "ContextTypeCoder@paths/user/_.context.ts:true:false" => "Context",
             "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
           },
           "exports": Map {
@@ -4197,6 +3534,10 @@ Map {
             },
           },
           "externalImport": Map {
+            "Context" => {
+              "isType": true,
+              "modulePath": "@@CONTEXT_FILE_TOKEN@@",
+            },
             "ResponseBuilderFactory" => {
               "isType": true,
               "modulePath": "../../types.d.ts",
@@ -4207,39 +3548,6 @@ Map {
             },
           },
           "imports": Map {
-            "Context" => {
-              "isDefault": false,
-              "isType": true,
-              "name": "Context",
-              "script": Script {
-                "cache": Map {
-                  "ContextTypeCoder@[object Object]:true" => "Context",
-                },
-                "exports": Map {
-                  "Context" => {
-                    "beforeExport": "",
-                    "code": {
-                      "raw": "export { Context } from "../_.context.js"",
-                    },
-                    "done": true,
-                    "id": "ContextTypeCoder",
-                    "isDefault": false,
-                    "isType": true,
-                    "name": "Context",
-                    "promise": Promise {},
-                    "typeDeclaration": "",
-                  },
-                },
-                "externalImport": Map {},
-                "imports": Map {},
-                "path": "paths/user/_.context.ts",
-                "repository": Repository {
-                  "scripts": [Circular],
-                  "writeFiles": [Function],
-                },
-                "typeCache": Map {},
-              },
-            },
             "User" => {
               "isDefault": false,
               "isType": true,
@@ -4291,7 +3599,6 @@ Map {
   "path-types/user/createWithList.types.ts" => Script {
     "cache": Map {
       "OperationTypeCoder@./petstore.yaml#/paths/~1user~1createWithList/post@[object Object]:true" => "HTTP_POST",
-      "ContextTypeCoder@paths/user/_.context.ts:true:false" => "Context",
       "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
     },
     "exports": Map {
@@ -4334,6 +3641,10 @@ Map {
       },
     },
     "externalImport": Map {
+      "Context" => {
+        "isType": true,
+        "modulePath": "@@CONTEXT_FILE_TOKEN@@",
+      },
       "ResponseBuilderFactory" => {
         "isType": true,
         "modulePath": "../../types.d.ts",
@@ -4344,39 +3655,6 @@ Map {
       },
     },
     "imports": Map {
-      "Context" => {
-        "isDefault": false,
-        "isType": true,
-        "name": "Context",
-        "script": Script {
-          "cache": Map {
-            "ContextTypeCoder@[object Object]:true" => "Context",
-          },
-          "exports": Map {
-            "Context" => {
-              "beforeExport": "",
-              "code": {
-                "raw": "export { Context } from "../_.context.js"",
-              },
-              "done": true,
-              "id": "ContextTypeCoder",
-              "isDefault": false,
-              "isType": true,
-              "name": "Context",
-              "promise": Promise {},
-              "typeDeclaration": "",
-            },
-          },
-          "externalImport": Map {},
-          "imports": Map {},
-          "path": "paths/user/_.context.ts",
-          "repository": Repository {
-            "scripts": [Circular],
-            "writeFiles": [Function],
-          },
-          "typeCache": Map {},
-        },
-      },
       "User" => {
         "isDefault": false,
         "isType": true,
@@ -4445,7 +3723,6 @@ Map {
         "script": Script {
           "cache": Map {
             "OperationTypeCoder@./petstore.yaml#/paths/~1user~1login/get@[object Object]:true" => "HTTP_GET",
-            "ContextTypeCoder@paths/user/_.context.ts:true:false" => "Context",
           },
           "exports": Map {
             "HTTP_GET" => {
@@ -4490,46 +3767,16 @@ Map {
             },
           },
           "externalImport": Map {
+            "Context" => {
+              "isType": true,
+              "modulePath": "@@CONTEXT_FILE_TOKEN@@",
+            },
             "ResponseBuilderFactory" => {
               "isType": true,
               "modulePath": "../../types.d.ts",
             },
           },
-          "imports": Map {
-            "Context" => {
-              "isDefault": false,
-              "isType": true,
-              "name": "Context",
-              "script": Script {
-                "cache": Map {
-                  "ContextTypeCoder@[object Object]:true" => "Context",
-                },
-                "exports": Map {
-                  "Context" => {
-                    "beforeExport": "",
-                    "code": {
-                      "raw": "export { Context } from "../_.context.js"",
-                    },
-                    "done": true,
-                    "id": "ContextTypeCoder",
-                    "isDefault": false,
-                    "isType": true,
-                    "name": "Context",
-                    "promise": Promise {},
-                    "typeDeclaration": "",
-                  },
-                },
-                "externalImport": Map {},
-                "imports": Map {},
-                "path": "paths/user/_.context.ts",
-                "repository": Repository {
-                  "scripts": [Circular],
-                  "writeFiles": [Function],
-                },
-                "typeCache": Map {},
-              },
-            },
-          },
+          "imports": Map {},
           "path": "path-types/user/login.types.ts",
           "repository": Repository {
             "scripts": [Circular],
@@ -4549,7 +3796,6 @@ Map {
   "path-types/user/login.types.ts" => Script {
     "cache": Map {
       "OperationTypeCoder@./petstore.yaml#/paths/~1user~1login/get@[object Object]:true" => "HTTP_GET",
-      "ContextTypeCoder@paths/user/_.context.ts:true:false" => "Context",
     },
     "exports": Map {
       "HTTP_GET" => {
@@ -4594,46 +3840,16 @@ Map {
       },
     },
     "externalImport": Map {
+      "Context" => {
+        "isType": true,
+        "modulePath": "@@CONTEXT_FILE_TOKEN@@",
+      },
       "ResponseBuilderFactory" => {
         "isType": true,
         "modulePath": "../../types.d.ts",
       },
     },
-    "imports": Map {
-      "Context" => {
-        "isDefault": false,
-        "isType": true,
-        "name": "Context",
-        "script": Script {
-          "cache": Map {
-            "ContextTypeCoder@[object Object]:true" => "Context",
-          },
-          "exports": Map {
-            "Context" => {
-              "beforeExport": "",
-              "code": {
-                "raw": "export { Context } from "../_.context.js"",
-              },
-              "done": true,
-              "id": "ContextTypeCoder",
-              "isDefault": false,
-              "isType": true,
-              "name": "Context",
-              "promise": Promise {},
-              "typeDeclaration": "",
-            },
-          },
-          "externalImport": Map {},
-          "imports": Map {},
-          "path": "paths/user/_.context.ts",
-          "repository": Repository {
-            "scripts": [Circular],
-            "writeFiles": [Function],
-          },
-          "typeCache": Map {},
-        },
-      },
-    },
+    "imports": Map {},
     "path": "path-types/user/login.types.ts",
     "repository": Repository {
       "scripts": [Circular],
@@ -4670,7 +3886,6 @@ Map {
         "script": Script {
           "cache": Map {
             "OperationTypeCoder@./petstore.yaml#/paths/~1user~1logout/get@[object Object]:true" => "HTTP_GET",
-            "ContextTypeCoder@paths/user/_.context.ts:true:false" => "Context",
           },
           "exports": Map {
             "HTTP_GET" => {
@@ -4693,6 +3908,10 @@ Map {
             },
           },
           "externalImport": Map {
+            "Context" => {
+              "isType": true,
+              "modulePath": "@@CONTEXT_FILE_TOKEN@@",
+            },
             "ResponseBuilderFactory" => {
               "isType": true,
               "modulePath": "../../types.d.ts",
@@ -4702,41 +3921,7 @@ Map {
               "modulePath": "../../types.d.ts",
             },
           },
-          "imports": Map {
-            "Context" => {
-              "isDefault": false,
-              "isType": true,
-              "name": "Context",
-              "script": Script {
-                "cache": Map {
-                  "ContextTypeCoder@[object Object]:true" => "Context",
-                },
-                "exports": Map {
-                  "Context" => {
-                    "beforeExport": "",
-                    "code": {
-                      "raw": "export { Context } from "../_.context.js"",
-                    },
-                    "done": true,
-                    "id": "ContextTypeCoder",
-                    "isDefault": false,
-                    "isType": true,
-                    "name": "Context",
-                    "promise": Promise {},
-                    "typeDeclaration": "",
-                  },
-                },
-                "externalImport": Map {},
-                "imports": Map {},
-                "path": "paths/user/_.context.ts",
-                "repository": Repository {
-                  "scripts": [Circular],
-                  "writeFiles": [Function],
-                },
-                "typeCache": Map {},
-              },
-            },
-          },
+          "imports": Map {},
           "path": "path-types/user/logout.types.ts",
           "repository": Repository {
             "scripts": [Circular],
@@ -4756,7 +3941,6 @@ Map {
   "path-types/user/logout.types.ts" => Script {
     "cache": Map {
       "OperationTypeCoder@./petstore.yaml#/paths/~1user~1logout/get@[object Object]:true" => "HTTP_GET",
-      "ContextTypeCoder@paths/user/_.context.ts:true:false" => "Context",
     },
     "exports": Map {
       "HTTP_GET" => {
@@ -4779,6 +3963,10 @@ Map {
       },
     },
     "externalImport": Map {
+      "Context" => {
+        "isType": true,
+        "modulePath": "@@CONTEXT_FILE_TOKEN@@",
+      },
       "ResponseBuilderFactory" => {
         "isType": true,
         "modulePath": "../../types.d.ts",
@@ -4788,41 +3976,7 @@ Map {
         "modulePath": "../../types.d.ts",
       },
     },
-    "imports": Map {
-      "Context" => {
-        "isDefault": false,
-        "isType": true,
-        "name": "Context",
-        "script": Script {
-          "cache": Map {
-            "ContextTypeCoder@[object Object]:true" => "Context",
-          },
-          "exports": Map {
-            "Context" => {
-              "beforeExport": "",
-              "code": {
-                "raw": "export { Context } from "../_.context.js"",
-              },
-              "done": true,
-              "id": "ContextTypeCoder",
-              "isDefault": false,
-              "isType": true,
-              "name": "Context",
-              "promise": Promise {},
-              "typeDeclaration": "",
-            },
-          },
-          "externalImport": Map {},
-          "imports": Map {},
-          "path": "paths/user/_.context.ts",
-          "repository": Repository {
-            "scripts": [Circular],
-            "writeFiles": [Function],
-          },
-          "typeCache": Map {},
-        },
-      },
-    },
+    "imports": Map {},
     "path": "path-types/user/logout.types.ts",
     "repository": Repository {
       "scripts": [Circular],
@@ -4891,7 +4045,6 @@ Map {
             "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/get@[object Object]:true" => "HTTP_GET",
             "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/put@[object Object]:true" => "HTTP_PUT",
             "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/delete@[object Object]:true" => "HTTP_DELETE",
-            "ContextTypeCoder@paths/user/_.context.ts:true:false" => "Context",
             "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
           },
           "exports": Map {
@@ -4982,6 +4135,10 @@ Map {
             },
           },
           "externalImport": Map {
+            "Context" => {
+              "isType": true,
+              "modulePath": "@@CONTEXT_FILE_TOKEN@@",
+            },
             "ResponseBuilderFactory" => {
               "isType": true,
               "modulePath": "../../types.d.ts",
@@ -4992,39 +4149,6 @@ Map {
             },
           },
           "imports": Map {
-            "Context" => {
-              "isDefault": false,
-              "isType": true,
-              "name": "Context",
-              "script": Script {
-                "cache": Map {
-                  "ContextTypeCoder@[object Object]:true" => "Context",
-                },
-                "exports": Map {
-                  "Context" => {
-                    "beforeExport": "",
-                    "code": {
-                      "raw": "export { Context } from "../_.context.js"",
-                    },
-                    "done": true,
-                    "id": "ContextTypeCoder",
-                    "isDefault": false,
-                    "isType": true,
-                    "name": "Context",
-                    "promise": Promise {},
-                    "typeDeclaration": "",
-                  },
-                },
-                "externalImport": Map {},
-                "imports": Map {},
-                "path": "paths/user/_.context.ts",
-                "repository": Repository {
-                  "scripts": [Circular],
-                  "writeFiles": [Function],
-                },
-                "typeCache": Map {},
-              },
-            },
             "User" => {
               "isDefault": false,
               "isType": true,
@@ -5074,7 +4198,6 @@ Map {
             "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/get@[object Object]:true" => "HTTP_GET",
             "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/put@[object Object]:true" => "HTTP_PUT",
             "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/delete@[object Object]:true" => "HTTP_DELETE",
-            "ContextTypeCoder@paths/user/_.context.ts:true:false" => "Context",
             "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
           },
           "exports": Map {
@@ -5165,6 +4288,10 @@ Map {
             },
           },
           "externalImport": Map {
+            "Context" => {
+              "isType": true,
+              "modulePath": "@@CONTEXT_FILE_TOKEN@@",
+            },
             "ResponseBuilderFactory" => {
               "isType": true,
               "modulePath": "../../types.d.ts",
@@ -5175,39 +4302,6 @@ Map {
             },
           },
           "imports": Map {
-            "Context" => {
-              "isDefault": false,
-              "isType": true,
-              "name": "Context",
-              "script": Script {
-                "cache": Map {
-                  "ContextTypeCoder@[object Object]:true" => "Context",
-                },
-                "exports": Map {
-                  "Context" => {
-                    "beforeExport": "",
-                    "code": {
-                      "raw": "export { Context } from "../_.context.js"",
-                    },
-                    "done": true,
-                    "id": "ContextTypeCoder",
-                    "isDefault": false,
-                    "isType": true,
-                    "name": "Context",
-                    "promise": Promise {},
-                    "typeDeclaration": "",
-                  },
-                },
-                "externalImport": Map {},
-                "imports": Map {},
-                "path": "paths/user/_.context.ts",
-                "repository": Repository {
-                  "scripts": [Circular],
-                  "writeFiles": [Function],
-                },
-                "typeCache": Map {},
-              },
-            },
             "User" => {
               "isDefault": false,
               "isType": true,
@@ -5257,7 +4351,6 @@ Map {
             "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/get@[object Object]:true" => "HTTP_GET",
             "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/put@[object Object]:true" => "HTTP_PUT",
             "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/delete@[object Object]:true" => "HTTP_DELETE",
-            "ContextTypeCoder@paths/user/_.context.ts:true:false" => "Context",
             "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
           },
           "exports": Map {
@@ -5348,6 +4441,10 @@ Map {
             },
           },
           "externalImport": Map {
+            "Context" => {
+              "isType": true,
+              "modulePath": "@@CONTEXT_FILE_TOKEN@@",
+            },
             "ResponseBuilderFactory" => {
               "isType": true,
               "modulePath": "../../types.d.ts",
@@ -5358,39 +4455,6 @@ Map {
             },
           },
           "imports": Map {
-            "Context" => {
-              "isDefault": false,
-              "isType": true,
-              "name": "Context",
-              "script": Script {
-                "cache": Map {
-                  "ContextTypeCoder@[object Object]:true" => "Context",
-                },
-                "exports": Map {
-                  "Context" => {
-                    "beforeExport": "",
-                    "code": {
-                      "raw": "export { Context } from "../_.context.js"",
-                    },
-                    "done": true,
-                    "id": "ContextTypeCoder",
-                    "isDefault": false,
-                    "isType": true,
-                    "name": "Context",
-                    "promise": Promise {},
-                    "typeDeclaration": "",
-                  },
-                },
-                "externalImport": Map {},
-                "imports": Map {},
-                "path": "paths/user/_.context.ts",
-                "repository": Repository {
-                  "scripts": [Circular],
-                  "writeFiles": [Function],
-                },
-                "typeCache": Map {},
-              },
-            },
             "User" => {
               "isDefault": false,
               "isType": true,
@@ -5444,7 +4508,6 @@ Map {
       "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/get@[object Object]:true" => "HTTP_GET",
       "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/put@[object Object]:true" => "HTTP_PUT",
       "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/delete@[object Object]:true" => "HTTP_DELETE",
-      "ContextTypeCoder@paths/user/_.context.ts:true:false" => "Context",
       "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
     },
     "exports": Map {
@@ -5535,6 +4598,10 @@ Map {
       },
     },
     "externalImport": Map {
+      "Context" => {
+        "isType": true,
+        "modulePath": "@@CONTEXT_FILE_TOKEN@@",
+      },
       "ResponseBuilderFactory" => {
         "isType": true,
         "modulePath": "../../types.d.ts",
@@ -5545,39 +4612,6 @@ Map {
       },
     },
     "imports": Map {
-      "Context" => {
-        "isDefault": false,
-        "isType": true,
-        "name": "Context",
-        "script": Script {
-          "cache": Map {
-            "ContextTypeCoder@[object Object]:true" => "Context",
-          },
-          "exports": Map {
-            "Context" => {
-              "beforeExport": "",
-              "code": {
-                "raw": "export { Context } from "../_.context.js"",
-              },
-              "done": true,
-              "id": "ContextTypeCoder",
-              "isDefault": false,
-              "isType": true,
-              "name": "Context",
-              "promise": Promise {},
-              "typeDeclaration": "",
-            },
-          },
-          "externalImport": Map {},
-          "imports": Map {},
-          "path": "paths/user/_.context.ts",
-          "repository": Repository {
-            "scripts": [Circular],
-            "writeFiles": [Function],
-          },
-          "typeCache": Map {},
-        },
-      },
       "User" => {
         "isDefault": false,
         "isType": true,
@@ -5611,34 +4645,6 @@ Map {
       },
     },
     "path": "path-types/user/{username}.types.ts",
-    "repository": Repository {
-      "scripts": [Circular],
-      "writeFiles": [Function],
-    },
-    "typeCache": Map {},
-  },
-  "paths/_.context.ts" => Script {
-    "cache": Map {
-      "ContextTypeCoder@[object Object]:true" => "Context",
-    },
-    "exports": Map {
-      "Context" => {
-        "beforeExport": "",
-        "code": {
-          "raw": "export class Context {};",
-        },
-        "done": true,
-        "id": "ContextTypeCoder",
-        "isDefault": false,
-        "isType": true,
-        "name": "Context",
-        "promise": Promise {},
-        "typeDeclaration": "",
-      },
-    },
-    "externalImport": Map {},
-    "imports": Map {},
-    "path": "paths/_.context.ts",
     "repository": Repository {
       "scripts": [Circular],
       "writeFiles": [Function],
@@ -5736,62 +4742,6 @@ Map {
     },
     "typeCache": Map {},
   },
-  "paths/pet/_.context.ts" => Script {
-    "cache": Map {
-      "ContextTypeCoder@[object Object]:true" => "Context",
-    },
-    "exports": Map {
-      "Context" => {
-        "beforeExport": "",
-        "code": {
-          "raw": "export { Context } from "../_.context.js"",
-        },
-        "done": true,
-        "id": "ContextTypeCoder",
-        "isDefault": false,
-        "isType": true,
-        "name": "Context",
-        "promise": Promise {},
-        "typeDeclaration": "",
-      },
-    },
-    "externalImport": Map {},
-    "imports": Map {},
-    "path": "paths/pet/_.context.ts",
-    "repository": Repository {
-      "scripts": [Circular],
-      "writeFiles": [Function],
-    },
-    "typeCache": Map {},
-  },
-  "paths/pet/{petId}/_.context.ts" => Script {
-    "cache": Map {
-      "ContextTypeCoder@[object Object]:true" => "Context",
-    },
-    "exports": Map {
-      "Context" => {
-        "beforeExport": "",
-        "code": {
-          "raw": "export { Context } from "../_.context.js"",
-        },
-        "done": true,
-        "id": "ContextTypeCoder",
-        "isDefault": false,
-        "isType": true,
-        "name": "Context",
-        "promise": Promise {},
-        "typeDeclaration": "",
-      },
-    },
-    "externalImport": Map {},
-    "imports": Map {},
-    "path": "paths/pet/{petId}/_.context.ts",
-    "repository": Repository {
-      "scripts": [Circular],
-      "writeFiles": [Function],
-    },
-    "typeCache": Map {},
-  },
   "components/ApiResponse.ts" => Script {
     "cache": Map {
       "SchemaTypeCoder@undefined@[object Object]:true" => "ApiResponse",
@@ -5812,34 +4762,6 @@ Map {
     "externalImport": Map {},
     "imports": Map {},
     "path": "components/ApiResponse.ts",
-    "repository": Repository {
-      "scripts": [Circular],
-      "writeFiles": [Function],
-    },
-    "typeCache": Map {},
-  },
-  "paths/store/_.context.ts" => Script {
-    "cache": Map {
-      "ContextTypeCoder@[object Object]:true" => "Context",
-    },
-    "exports": Map {
-      "Context" => {
-        "beforeExport": "",
-        "code": {
-          "raw": "export { Context } from "../_.context.js"",
-        },
-        "done": true,
-        "id": "ContextTypeCoder",
-        "isDefault": false,
-        "isType": true,
-        "name": "Context",
-        "promise": Promise {},
-        "typeDeclaration": "",
-      },
-    },
-    "externalImport": Map {},
-    "imports": Map {},
-    "path": "paths/store/_.context.ts",
     "repository": Repository {
       "scripts": [Circular],
       "writeFiles": [Function],
@@ -5872,34 +4794,6 @@ Map {
     },
     "typeCache": Map {},
   },
-  "paths/store/order/_.context.ts" => Script {
-    "cache": Map {
-      "ContextTypeCoder@[object Object]:true" => "Context",
-    },
-    "exports": Map {
-      "Context" => {
-        "beforeExport": "",
-        "code": {
-          "raw": "export { Context } from "../_.context.js"",
-        },
-        "done": true,
-        "id": "ContextTypeCoder",
-        "isDefault": false,
-        "isType": true,
-        "name": "Context",
-        "promise": Promise {},
-        "typeDeclaration": "",
-      },
-    },
-    "externalImport": Map {},
-    "imports": Map {},
-    "path": "paths/store/order/_.context.ts",
-    "repository": Repository {
-      "scripts": [Circular],
-      "writeFiles": [Function],
-    },
-    "typeCache": Map {},
-  },
   "components/User.ts" => Script {
     "cache": Map {
       "SchemaTypeCoder@undefined@[object Object]:true" => "User",
@@ -5920,34 +4814,6 @@ Map {
     "externalImport": Map {},
     "imports": Map {},
     "path": "components/User.ts",
-    "repository": Repository {
-      "scripts": [Circular],
-      "writeFiles": [Function],
-    },
-    "typeCache": Map {},
-  },
-  "paths/user/_.context.ts" => Script {
-    "cache": Map {
-      "ContextTypeCoder@[object Object]:true" => "Context",
-    },
-    "exports": Map {
-      "Context" => {
-        "beforeExport": "",
-        "code": {
-          "raw": "export { Context } from "../_.context.js"",
-        },
-        "done": true,
-        "id": "ContextTypeCoder",
-        "isDefault": false,
-        "isType": true,
-        "name": "Context",
-        "promise": Promise {},
-        "typeDeclaration": "",
-      },
-    },
-    "externalImport": Map {},
-    "imports": Map {},
-    "path": "paths/user/_.context.ts",
     "repository": Repository {
       "scripts": [Circular],
       "writeFiles": [Function],
