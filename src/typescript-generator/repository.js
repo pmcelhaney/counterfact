@@ -112,4 +112,28 @@ export class Repository {
 
     await this.copyCoreFiles(destination);
   }
+
+  findContextPath(destination, path) {
+    return nodePath.relative(
+      nodePath.join(destination, nodePath.dirname(path)),
+      this.nearestContextFile(destination, path),
+    );
+  }
+
+  nearestContextFile(destination, path) {
+    const directory = nodePath.dirname(path).replace("path-types", "paths");
+
+    const candidate = nodePath.join(destination, directory, "_.context.ts");
+
+    if (directory.length <= 1) {
+      // No _context.ts was found so import the one that should be in the root
+      return nodePath.join(destination, "paths", "_.context.ts");
+    }
+
+    if (existsSync(candidate)) {
+      return candidate;
+    }
+
+    return this.nearestContextFile(destination, nodePath.join(path, ".."));
+  }
 }
