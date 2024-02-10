@@ -1,5 +1,20 @@
 # counterfact
 
+## 0.37.0
+
+### Minor Changes
+
+- f1c360e: Node >= 17 is now required
+- c62b113: If a property is changed in \_.context.ts it will override runtime changes (See [#747](https://github.com/pmcelhaney/counterfact/issues/747)).
+
+### Patch Changes
+
+- ef4b6b3: fix an issue in which a file which is essential for type safety was not created (types.d.ts)
+- 317fbaa: Fixed and simplified the way `\_.context.ts` files work.
+
+  - it's no longer necessary to have a `_.context.ts` file in every directory, only the ones where you want to establish a new context
+  - removed the need for `export type ContextType`
+
 ## 0.36.0
 
 ### Minor Changes
