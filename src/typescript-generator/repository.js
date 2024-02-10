@@ -118,6 +118,34 @@ export class Repository {
     await Promise.all(writeFiles);
 
     await this.copyCoreFiles(destination);
+
+    await this.createDefaultContextFile(destination);
+  }
+
+  async createDefaultContextFile(destination) {
+    const contextFilePath = nodePath.join(destination, "paths", "_.context.ts");
+
+    if (existsSync(contextFilePath)) {
+      return;
+    }
+
+    await fs.writeFile(
+      contextFilePath,
+      `/**
+* This is the default context for Counterfact.
+*
+* It defines the context object in the REPL 
+* and the $.context object in the code.
+*
+* Add properties and methods to suit your needs.
+* 
+* See https://counterfact.dev/docs/usage.html#working-with-state-the-codecontextcode-object-and-codecontexttscode
+*/
+export class Context {
+
+}
+`,
+    );
   }
 
   findContextPath(destination, path) {
