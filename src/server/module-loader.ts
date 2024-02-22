@@ -7,8 +7,23 @@ import { pathToFileURL } from "node:url";
 import { type FSWatcher, watch } from "chokidar";
 import createDebug from "debug";
 
-import { type Context, ContextRegistry } from "./context-registry.js";
+import type { Context } from "./context-registry.js";
+import { ContextRegistry } from "./context-registry.js";
 import type { Module, Registry } from "./registry.js";
+
+async function uncachedImport<ModuleType>(pathName: string) {
+  const fileUrl = `${pathToFileURL(
+    pathName,
+  ).toString()}?cacheBust=${Date.now()}`;
+
+  process.stdout.write(fileUrl);
+
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, import/no-dynamic-require, no-unsanitized/method
+  const aModule = await import(fileUrl);
+
+  // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+  return aModule as ModuleType;
+}
 
 const debug = createDebug("counterfact:typescript-generator:module-loader");
 
@@ -82,14 +97,8 @@ export class ModuleLoader extends EventTarget {
           this.dispatchEvent(new Event("remove"));
         }
 
-        const fileUrl = `${pathToFileURL(
-          pathName,
-        ).toString()}?cacheBust=${Date.now()}`;
-
-        debug("importing module: %s", fileUrl);
-
-        // eslint-disable-next-line import/no-dynamic-require, no-unsanitized/method
-        import(fileUrl)
+        debug("importing module: %s", pathName);
+        uncachedImport<ContextModule | Module>(pathName)
           // eslint-disable-next-line promise/prefer-await-to-then
           .then((endpoint: ContextModule | Module) => {
             this.dispatchEvent(new Event(eventName));
@@ -112,7 +121,7 @@ export class ModuleLoader extends EventTarget {
           })
           // eslint-disable-next-line promise/prefer-await-to-then
           .catch((error: unknown) => {
-            reportLoadError(error, fileUrl);
+            reportLoadError(error, pathName);
           });
       },
     );
