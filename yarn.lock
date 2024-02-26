@@ -2678,10 +2678,10 @@
     "@types/koa-compose" "*"
     "@types/node" "*"
 
-"@types/koa@2.14.0":
-  version "2.14.0"
-  resolved "https://registry.yarnpkg.com/@types/koa/-/koa-2.14.0.tgz#8939e8c3b695defc12f2ef9f38064509e564be18"
-  integrity sha512-DTDUyznHGNHAl+wd1n0z1jxNajduyTh8R53xoewuerdBzGo6Ogj6F2299BFtrexJw4NtgjsI5SMPCmV9gZwGXA==
+"@types/koa@2.15.0":
+  version "2.15.0"
+  resolved "https://registry.yarnpkg.com/@types/koa/-/koa-2.15.0.tgz#eca43d76f527c803b491731f95df575636e7b6f2"
+  integrity sha512-7QFsywoE5URbuVnG3loe03QXuGajrnotr3gQkXcEBShORai23MePfFYdhz90FEtBBpkyIYQbVD+evKtloCgX3g==
   dependencies:
     "@types/accepts" "*"
     "@types/content-disposition" "*"
