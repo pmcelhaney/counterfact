@@ -2242,27 +2242,27 @@
   dependencies:
     lodash "^4.17.15"
 
-"@stryker-mutator/api@8.2.5":
-  version "8.2.5"
-  resolved "https://registry.yarnpkg.com/@stryker-mutator/api/-/api-8.2.5.tgz#a5620312affc0cf1e6157eb03f7791c924ea08f0"
-  integrity sha512-cQmngePqTLIeKbV/aCE258dK0CDofcLiG9WRvOAQu2yHJdAoHro7uy9ZyAeY5rmMvvWj/SfrriiGp4c7CTjyRA==
+"@stryker-mutator/api@8.2.6":
+  version "8.2.6"
+  resolved "https://registry.yarnpkg.com/@stryker-mutator/api/-/api-8.2.6.tgz#b2f8d6054c1ae23a4e66c12464d5ac44f44ace1d"
+  integrity sha512-ygPT37teKh2Ei3sj+cs+kNpaFiz0JyelSDEz4GiQXu8DXy79D0oglSFAKsiVBdzO6MD2eRtyclovfdr/OdPVwA==
   dependencies:
     mutation-testing-metrics "3.0.2"
     mutation-testing-report-schema "3.0.2"
     tslib "~2.6.2"
     typed-inject "~4.0.0"
 
-"@stryker-mutator/core@8.2.5":
-  version "8.2.5"
-  resolved "https://registry.yarnpkg.com/@stryker-mutator/core/-/core-8.2.5.tgz#c4b2e70068defdb4c942f5db875a386d9f593302"
-  integrity sha512-K5fLQlpoHZNAkxgmNtafQZ2BEFZCMvn7wweaIml8+EnRQQAENZcFqd82gERDuJENAq3CXzEJ2WvJ+yfDuUEb3Q==
+"@stryker-mutator/core@8.2.6":
+  version "8.2.6"
+  resolved "https://registry.yarnpkg.com/@stryker-mutator/core/-/core-8.2.6.tgz#9d531d79986c137b1e4e73aaf4c1be9745bea84a"
+  integrity sha512-F3JaVOJn+m2xEzNXFrdWl0/34WOnnqjrBADyvxTfoejP8k/oz6R89+QPrR8RwuhTVZUdrmakNkHRPXh9CsaWkw==
   dependencies:
-    "@stryker-mutator/api" "8.2.5"
-    "@stryker-mutator/instrumenter" "8.2.5"
-    "@stryker-mutator/util" "8.2.5"
+    "@stryker-mutator/api" "8.2.6"
+    "@stryker-mutator/instrumenter" "8.2.6"
+    "@stryker-mutator/util" "8.2.6"
     ajv "~8.12.0"
     chalk "~5.3.0"
-    commander "~11.1.0"
+    commander "~12.0.0"
     diff-match-patch "1.0.5"
     emoji-regex "~10.3.0"
     execa "~8.0.1"
@@ -2276,7 +2276,7 @@
     mutation-testing-elements "3.0.2"
     mutation-testing-metrics "3.0.2"
     mutation-testing-report-schema "3.0.2"
-    npm-run-path "~5.2.0"
+    npm-run-path "~5.3.0"
     progress "~2.0.3"
     rxjs "~7.8.1"
     semver "^7.5.4"
@@ -2286,45 +2286,45 @@
     typed-inject "~4.0.0"
     typed-rest-client "~1.8.11"
 
-"@stryker-mutator/instrumenter@8.2.5":
-  version "8.2.5"
-  resolved "https://registry.yarnpkg.com/@stryker-mutator/instrumenter/-/instrumenter-8.2.5.tgz#74941a770e1e4b793166505006f78714dc21fa4f"
-  integrity sha512-wEa6LO+3cOCZvRtAHqvB75My+s1BmOmsw8ePXjXC51chbeqozndPf1EFCR7xE334+DyMcfzkMywmR+uPpBcjSQ==
+"@stryker-mutator/instrumenter@8.2.6":
+  version "8.2.6"
+  resolved "https://registry.yarnpkg.com/@stryker-mutator/instrumenter/-/instrumenter-8.2.6.tgz#784cead24267496615a3378ff6385ac1035c041f"
+  integrity sha512-2o9ffO4yBxAtCbnOsOAojQmBI4IZcFTCMW9o7CaTThNTQ6j/8gLaU1suxt3IPCRGl30rph0skBAyKiiWaUVhMw==
   dependencies:
     "@babel/core" "~7.23.9"
     "@babel/generator" "~7.23.6"
     "@babel/parser" "~7.23.9"
     "@babel/plugin-proposal-decorators" "~7.23.9"
     "@babel/preset-typescript" "~7.23.3"
-    "@stryker-mutator/api" "8.2.5"
-    "@stryker-mutator/util" "8.2.5"
+    "@stryker-mutator/api" "8.2.6"
+    "@stryker-mutator/util" "8.2.6"
     angular-html-parser "~5.2.0"
     semver "~7.6.0"
     weapon-regex "~1.3.0"
 
-"@stryker-mutator/jest-runner@8.2.5":
-  version "8.2.5"
-  resolved "https://registry.yarnpkg.com/@stryker-mutator/jest-runner/-/jest-runner-8.2.5.tgz#d12a57b3af66a7bc2783ad9a0dec47703e82bfc9"
-  integrity sha512-GaHbivO326IAsYGf1PrMToB8EdZKMS1LfeKtr2oRMwRGbyDk02bcYZaezMKIFECx1rHqOJG1b2LP90+91PsxOw==
+"@stryker-mutator/jest-runner@8.2.6":
+  version "8.2.6"
+  resolved "https://registry.yarnpkg.com/@stryker-mutator/jest-runner/-/jest-runner-8.2.6.tgz#859203731ca028113ad32c6550618a6469013773"
+  integrity sha512-rGRm9kS7OR4SsYl6WHnAaD8D7tlXUOUO+4mDTq860kr+iEJNL80jygsz7+HJvnoHYzUdlQjsvJ7G8yqZZGK3nA==
   dependencies:
-    "@stryker-mutator/api" "8.2.5"
-    "@stryker-mutator/util" "8.2.5"
+    "@stryker-mutator/api" "8.2.6"
+    "@stryker-mutator/util" "8.2.6"
     semver "~7.6.0"
     tslib "~2.6.2"
 
-"@stryker-mutator/typescript-checker@8.2.5":
-  version "8.2.5"
-  resolved "https://registry.yarnpkg.com/@stryker-mutator/typescript-checker/-/typescript-checker-8.2.5.tgz#78869702bbc8f71843cfaaa87c011db9b6648729"
-  integrity sha512-anZN7ulzzcs3oz0QGpy7kF1ipYyYtg3OPudQJAFHwnCXf7W44+Y5l4Vwa8pfXVNww4slodII034UFeHq5r2dAQ==
+"@stryker-mutator/typescript-checker@8.2.6":
+  version "8.2.6"
+  resolved "https://registry.yarnpkg.com/@stryker-mutator/typescript-checker/-/typescript-checker-8.2.6.tgz#54f60222c263fcf03a714189171ebde79f67f2d9"
+  integrity sha512-8VJj/m96WCqyDr4YOgJvrO417geoE//zSdZeK+VJhDQBc3ZVE+lEGRowPG+XhgCPGWC1/400VTRvD5RyEqa8LA==
   dependencies:
-    "@stryker-mutator/api" "8.2.5"
-    "@stryker-mutator/util" "8.2.5"
+    "@stryker-mutator/api" "8.2.6"
+    "@stryker-mutator/util" "8.2.6"
     semver "~7.6.0"
 
-"@stryker-mutator/util@8.2.5":
-  version "8.2.5"
-  resolved "https://registry.yarnpkg.com/@stryker-mutator/util/-/util-8.2.5.tgz#3001502ec90fb3910565bd3daee2e13f7a5d8790"
-  integrity sha512-C4G2FPqV1+doAiDIg9mib2zluCpbZgyCe7ASsG/ejpTO7aVHpSpYChF3mvVH6abTCFBCVANGm9JwXPXI/uWBYQ==
+"@stryker-mutator/util@8.2.6":
+  version "8.2.6"
+  resolved "https://registry.yarnpkg.com/@stryker-mutator/util/-/util-8.2.6.tgz#609890d750370c73530c30dab335d7c682e90d6c"
+  integrity sha512-2jmSYmrbGqt59JBkv1TvoOwQpUccCL3c90FLZIWg1zBNwj6zeOrwh734E5dKswDaC+BudQ3FtwlWB5augSuo1w==
 
 "@swc/core-darwin-arm64@1.4.2":
   version "1.4.2"
@@ -4002,15 +4002,10 @@ combined-stream@^1.0.6, combined-stream@^1.0.8, combined-stream@~1.0.6:
   dependencies:
     delayed-stream "~1.0.0"
 
-commander@12.0.0:
+commander@12.0.0, commander@~12.0.0:
   version "12.0.0"
   resolved "https://registry.yarnpkg.com/commander/-/commander-12.0.0.tgz#b929db6df8546080adfd004ab215ed48cf6f2592"
   integrity sha512-MwVNWlYjDTtOjX5PiD7o5pK0UrFU/OYgcJfjjK4RaHZETNtjJqrZa9Y9ds88+A+f+d5lv+561eZ+yCKoS3gbAA==
-
-commander@~11.1.0:
-  version "11.1.0"
-  resolved "https://registry.yarnpkg.com/commander/-/commander-11.1.0.tgz#62fdce76006a68e5c1ab3314dc92e800eb83d906"
-  integrity sha512-yPVavfyCcRhmorC7rWlkHn15b4wDVgVmBA7kV4QVBsF7kv/9TKJAbAXVTxvTnwP8HHKjRCJDClKbciiYS7p0DQ==
 
 comment-parser@^1.1.2:
   version "1.4.0"
@@ -8621,10 +8616,10 @@ npm-run-path@^5.1.0:
   dependencies:
     path-key "^4.0.0"
 
-npm-run-path@~5.2.0:
-  version "5.2.0"
-  resolved "https://registry.yarnpkg.com/npm-run-path/-/npm-run-path-5.2.0.tgz#224cdd22c755560253dd71b83a1ef2f758b2e955"
-  integrity sha512-W4/tgAXFqFA0iL7fk0+uQ3g7wkL8xJmx3XdK0VGb4cHW//eZTtKGvFBBoRKVTpY7n6ze4NL9ly7rgXcHufqXKg==
+npm-run-path@~5.3.0:
+  version "5.3.0"
+  resolved "https://registry.yarnpkg.com/npm-run-path/-/npm-run-path-5.3.0.tgz#e23353d0ebb9317f174e93417e4a4d82d0249e9f"
+  integrity sha512-ppwTtiJZq0O/ai0z7yfudtBpWIoxM8yE6nHi1X47eFR2EWORqfbu6CnPlNsjeN683eT0qG6H/Pyf9fCcvjnnnQ==
   dependencies:
     path-key "^4.0.0"
 

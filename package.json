@@ -44,9 +44,9 @@
   },
   "devDependencies": {
     "@changesets/cli": "2.27.1",
-    "@stryker-mutator/core": "8.2.5",
-    "@stryker-mutator/jest-runner": "8.2.5",
-    "@stryker-mutator/typescript-checker": "8.2.5",
+    "@stryker-mutator/core": "8.2.6",
+    "@stryker-mutator/jest-runner": "8.2.6",
+    "@stryker-mutator/typescript-checker": "8.2.6",
     "@swc/core": "1.4.2",
     "@swc/jest": "0.2.36",
     "@testing-library/dom": "9.3.4",
