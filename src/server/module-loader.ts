@@ -2,26 +2,16 @@ import { once } from "node:events";
 import { type Dirent, existsSync } from "node:fs";
 import fs from "node:fs/promises";
 import nodePath from "node:path";
-import { pathToFileURL } from "node:url";
 
 import { type FSWatcher, watch } from "chokidar";
 import createDebug from "debug";
 
 import { type Context, ContextRegistry } from "./context-registry.js";
+import { determineModuleKind } from "./determine-module-kind.js";
 import type { Module, Registry } from "./registry.js";
+import { uncachedImport } from "./uncached-import.js";
 
-// eslint-disable-next-line etc/no-misused-generics
-async function uncachedImport<ModuleType>(pathName: string) {
-  const fileUrl = `${pathToFileURL(
-    pathName,
-  ).toString()}?cacheBust=${Date.now()}`;
-
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, import/no-dynamic-require, no-unsanitized/method
-  const aModule = await import(fileUrl);
-
-  // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-  return aModule as ModuleType;
-}
+const { uncachedRequire } = await import("./uncached-require.cjs");
 
 const debug = createDebug("counterfact:typescript-generator:module-loader");
 
@@ -55,6 +45,12 @@ export class ModuleLoader extends EventTarget {
   private watcher: FSWatcher | undefined;
 
   private readonly contextRegistry: ContextRegistry;
+
+  private uncachedImport: (moduleName: string) => Promise<unknown> =
+    // eslint-disable-next-line @typescript-eslint/require-await
+    async function (moduleName: string) {
+      throw new Error(`uncachedImport not set up; importing ${moduleName}`);
+    };
 
   public constructor(
     basePath: string,
@@ -96,9 +92,9 @@ export class ModuleLoader extends EventTarget {
         }
 
         debug("importing module: %s", pathName);
-        uncachedImport<ContextModule | Module>(pathName)
+        this.uncachedImport(pathName)
           // eslint-disable-next-line promise/prefer-await-to-then
-          .then((endpoint: ContextModule | Module) => {
+          .then((endpoint) => {
             this.dispatchEvent(new Event(eventName));
 
             if (pathName.includes("_.context")) {
@@ -131,6 +127,11 @@ export class ModuleLoader extends EventTarget {
   }
 
   public async load(directory = ""): Promise<void> {
+    const moduleKind = await determineModuleKind(this.basePath);
+
+    this.uncachedImport =
+      moduleKind === "module" ? uncachedImport : uncachedRequire;
+
     if (
       !existsSync(nodePath.join(this.basePath, directory).replaceAll("\\", "/"))
     ) {
@@ -168,21 +169,16 @@ export class ModuleLoader extends EventTarget {
     await Promise.all(imports);
   }
 
-  // eslint-disable-next-line max-statements
   private async loadEndpoint(
     fullPath: string,
     directory: string,
     file: Dirent,
   ) {
-    const fileUrl = `${pathToFileURL(
-      fullPath,
-    ).toString()}?cacheBust=${Date.now()}`;
-
     try {
-      // eslint-disable-next-line import/no-dynamic-require, no-unsanitized/method, @typescript-eslint/consistent-type-assertions
-      const endpoint: ContextModule | Module = (await import(fileUrl)) as
-        | ContextModule
-        | Module;
+      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+      const endpoint: ContextModule | Module = (await this.uncachedImport(
+        fullPath,
+      )) as ContextModule | Module;
 
       if (file.name.includes("_.context")) {
         if (isContextModule(endpoint)) {
@@ -214,7 +210,7 @@ export class ModuleLoader extends EventTarget {
         return;
       }
 
-      process.stdout.write(`\nError loading ${fileUrl}:\n${String(error)}\n`);
+      process.stdout.write(`\nError loading ${fullPath}:\n${String(error)}\n`);
     }
   }
 }
