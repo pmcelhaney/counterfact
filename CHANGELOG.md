@@ -1,5 +1,12 @@
 # counterfact
 
+## 0.37.1
+
+### Patch Changes
+
+- 7e66fba: fix issue where hot reload did not work unless the code is in a package with type: module"
+- 5742050: exit gracefully if running Node < 17
+
 ## 0.37.0
 
 ### Minor Changes
