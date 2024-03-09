@@ -7,16 +7,14 @@ import { pathToFileURL } from "node:url";
 import { type FSWatcher, watch } from "chokidar";
 import createDebug from "debug";
 
-import type { Context } from "./context-registry.js";
-import { ContextRegistry } from "./context-registry.js";
+import { type Context, ContextRegistry } from "./context-registry.js";
 import type { Module, Registry } from "./registry.js";
 
+// eslint-disable-next-line etc/no-misused-generics
 async function uncachedImport<ModuleType>(pathName: string) {
   const fileUrl = `${pathToFileURL(
     pathName,
   ).toString()}?cacheBust=${Date.now()}`;
-
-  process.stdout.write(fileUrl);
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, import/no-dynamic-require, no-unsanitized/method
   const aModule = await import(fileUrl);

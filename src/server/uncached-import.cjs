@@ -1,11 +1,10 @@
-const { pathToFileURL } = require("node:url");
+"use strict";
 
 module.exports = {
-  uncachedImport: async function uncachedImport(pathName) {
-    const fileUrl = `${pathToFileURL(
-      pathName,
-    ).toString()}?cacheBust=${Date.now()}`;
+  uncachedImport: function uncachedImport(moduleName) {
+    delete require.cache[require.resolve(moduleName)];
 
-    return require(fileUrl);
+    // eslint-disable-next-line n/global-require, security/detect-non-literal-require, import/no-dynamic-require
+    return require(moduleName);
   },
 };
