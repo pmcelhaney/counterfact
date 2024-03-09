@@ -8,20 +8,22 @@ import { withTemporaryFiles } from "../lib/with-temporary-files.js";
 describe("a module loader", () => {
   it("finds a file and adds it to the registry", async () => {
     const files: { [fileName: string]: string } = {
-      "a/b/c.mjs": `
+      "a/b/c.js": `
         export function GET() {
             return {
                 body: "GET from a/b/c"
             }; 
         }
       `,
-      "hello.mjs": `
+
+      "hello.js": `
       export function GET() {
           return {
               body: "hello"
           };
       }
       `,
+      "package.json": '{ "type": "module" }',
     };
 
     await withTemporaryFiles(files, async (basePath: string) => {
@@ -39,7 +41,7 @@ describe("a module loader", () => {
 
   it("updates the registry when a file is added", async () => {
     await withTemporaryFiles(
-      {},
+      { "package.json": '{ "type": "module" }' },
       async (
         basePath: string,
         { add }: { add: (path: string, content: string) => void },
@@ -53,7 +55,7 @@ describe("a module loader", () => {
         expect(registry.exists("GET", "/late/addition")).toBe(false);
 
         add(
-          "late/addition.mjs",
+          "late/addition.js",
           'export function GET() { return { body: "I\'m here now!" }; }',
         );
         await once(loader, "add");
@@ -68,8 +70,9 @@ describe("a module loader", () => {
   it("updates the registry when a file is deleted", async () => {
     await withTemporaryFiles(
       {
-        "delete-me.mjs":
-          'export function GET() { return { body: "Goodbye" }; }',
+        "delete-me.js": 'export function GET() { return { body: "Goodbye" }; }',
+
+        "package.json": '{ "type": "module" }',
       },
       async (
         basePath: string,
@@ -83,7 +86,7 @@ describe("a module loader", () => {
 
         expect(registry.exists("GET", "/delete-me")).toBe(true);
 
-        remove("delete-me.mjs");
+        remove("delete-me.js");
         await once(loader, "remove");
 
         expect(registry.exists("GET", "/delete-me")).toBe(false);
@@ -97,7 +100,8 @@ describe("a module loader", () => {
     const contents = 'export function GET() { return { body: "hello" }; }';
 
     const files: { [key: string]: string } = {
-      "module.mjs": contents,
+      "module.js": contents,
+      "package.json": '{"type": "module"}',
       "README.md": contents,
     };
 
@@ -132,8 +136,10 @@ describe("a module loader", () => {
   it.skip("updates the registry when a file is changed", async () => {
     await withTemporaryFiles(
       {
-        "change.mjs":
+        "change.js":
           'export function GET(): { body } { return { body: "before change" }; }',
+
+        "package.json": '{ "type": "module" }',
       },
       async (
         basePath: string,
@@ -144,7 +150,7 @@ describe("a module loader", () => {
 
         await loader.watch();
         add(
-          "change.mjs",
+          "change.js",
           'export function GET() { return { body: "after change" }; }',
         );
         await once(loader, "change");
@@ -166,8 +172,9 @@ describe("a module loader", () => {
 
   it("finds a context and adds it to the context registry", async () => {
     const files: { [key: string]: string } = {
-      "_.context.mjs": 'export class Context { name = "main"};',
-      "hello/_.context.mjs": 'export class Context { name = "hello"};',
+      "_.context.js": 'export class Context { name = "main"};',
+      "hello/_.context.js": 'export class Context { name = "hello"};',
+      "package.json": '{ "type": "module" }',
     };
 
     await withTemporaryFiles(files, async (basePath: string) => {
@@ -191,8 +198,9 @@ describe("a module loader", () => {
 
   it("provides the parent context if the locale _.context.ts doesn't export a default", async () => {
     const files: { [key: string]: string } = {
-      "_.context.mjs": "export class Context { value = 0 }",
-      "hello/_.context.mjs": "export class Context  { value =  100 }",
+      "_.context.js": "export class Context { value = 0 }",
+      "hello/_.context.js": "export class Context  { value =  100 }",
+      "package.json": '{ "type": "module" }',
     };
 
     await withTemporaryFiles(files, async (basePath: string) => {
