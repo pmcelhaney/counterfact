@@ -10,6 +10,16 @@ import open from "open";
 
 import { counterfact } from "../dist/server/app.js";
 
+const MIN_NODE_VERSION = 17;
+
+if (Number.parseInt(process.versions.node.split("."), 10) < MIN_NODE_VERSION) {
+  process.stdout.write(
+    `Counterfact works with Node version ${MIN_NODE_VERSION}+. You are running version ${process.version}`,
+  );
+  // eslint-disable-next-line n/no-process-exit
+  process.exit(1);
+}
+
 const taglinesFile = await readFile(
   nodePath.join(
     nodePath.dirname(fileURLToPath(import.meta.url)),
