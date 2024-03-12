@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { Coder } from "../../src/typescript-generator/coder.js";
 import { Repository } from "../../src/typescript-generator/repository.js";
 
@@ -183,10 +184,22 @@ describe("a Script", () => {
     ]);
   });
 
+  it("adds comments", () => {
+    const repository = new Repository("/base/path");
+
+    const script = repository.get("script.ts");
+
+    script.addComment("hello world");
+
+    expect(script.comments()).toStrictEqual(["hello world"]);
+  });
+
   it("outputs the contents (import and export statements)", async () => {
     const repository = new Repository("/base/path");
 
     const script = repository.get("script.ts");
+
+    script.comments = () => ["This is a comment."];
 
     script.importStatements = () => ["import { foo } from './foo.js';"];
 
@@ -196,7 +209,7 @@ describe("a Script", () => {
     ];
 
     await expect(script.contents()).resolves.toBe(
-      'import { foo } from "./foo.js";\n\nexport const bar = "Bar";\n\nexport default class {}\n',
+      '// This is a comment.\nimport { foo } from "./foo.js";\n\nexport const bar = "Bar";\n\nexport default class {}\n',
     );
   });
 });
