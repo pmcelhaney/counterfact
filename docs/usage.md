@@ -95,13 +95,13 @@ return $.response[200].header("x-coolness-level", 10).text("This is cool!")`.
 
 > Your IDE can help you build a valid response via autocomplete. It can also help ensure the response matches the requirements in the OpenAPI document. For example, if you leave out a required header, the function won't type check. (That's particularly useful when there are API changes. Update the OpenAPI document, regenerate the types, and let TypeScript tell you where to update the code.)
 
-### Request parameters: `$.path`, `$.query`, `$.headers`, and `$.body`
+### Request parameters: `$.path`, `$.query`, `$.header`, and `$.body`
 
 Most of the time, the server's response depends on input from various parts of the request: the path, the query string, the headers, or the body. We can use them like so:
 
 ```ts
 export const GET: HTTP_GET = ($) => {
-    if ($.headers['x-token'] !== 'super-secret') {
+    if ($.header['x-token'] !== 'super-secret') {
        return $.response[401].text('unauthorized');
     }
 
@@ -156,7 +156,6 @@ export class Context {
     return this.pets[id];
   }
 }
-
 ```
 
 By default, each `_.context.ts` delegates to its parent directory, so you can define one context object in the root `_.context.ts` and use it everywhere.
