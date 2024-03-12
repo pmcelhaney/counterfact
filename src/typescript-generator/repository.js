@@ -151,10 +151,12 @@ export class Context {
   }
 
   findContextPath(destination, path) {
-    return nodePath.relative(
-      nodePath.join(destination, nodePath.dirname(path)),
-      this.nearestContextFile(destination, path),
-    );
+    return nodePath
+      .relative(
+        nodePath.join(destination, nodePath.dirname(path)),
+        this.nearestContextFile(destination, path),
+      )
+      .replaceAll("\\", "/");
   }
 
   nearestContextFile(destination, path) {
