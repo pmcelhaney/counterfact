@@ -8,7 +8,7 @@ const debug = createDebugger("counterfact:typescript-generator:script");
 export class Script {
   constructor(repository, path) {
     this.repository = repository;
-    this.commentList = [];
+    this.comments = [];
     this.exports = new Map();
     this.imports = new Map();
     this.externalImport = new Map();
@@ -25,10 +25,6 @@ export class Script {
     }
 
     throw new Error(`could not find a unique name for ${coder.id}`);
-  }
-
-  addComment(comment) {
-    this.commentList.push(comment);
   }
 
   export(coder, isType = false, isDefault = false) {
@@ -165,10 +161,6 @@ export class Script {
     );
   }
 
-  comments() {
-    return this.commentList;
-  }
-
   importStatements() {
     return Array.from(this.imports, ([name, { isDefault, isType, script }]) => {
       const resolvedPath = nodePath
@@ -208,10 +200,8 @@ export class Script {
   contents() {
     return prettier.format(
       [
-        this.comments()
-          .map((comment) => `// ${comment}`)
-          .join("\n"),
-        "\n",
+        this.comments.map((comment) => `// ${comment}`).join("\n"),
+        this.comments.length > 0 ? "\n\n" : "",
         this.externalImportStatements().join("\n"),
         this.importStatements().join("\n"),
         "\n\n",
