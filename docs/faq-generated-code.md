@@ -26,12 +26,18 @@ This is by design. The code is generated from an OpenAPI description. If the Ope
 
 ## When do I need to restart?
 
-If your OpenAPI file is local, Counterfact will watch the file and automatically regenerate types whenever it changes.
+If your OpenAPI file is local, Counterfact will watch the file and automatically regenerate types whenever it changes. No restart required.
 
 If you point to a URL like https://petstore3.swagger.io/api/v3/openapi.yaml, Counterfact only looks up the URL once at startup. So you would need to restart to pick up any changes.
 
 If you have control over the OpenAPI (i.e. you're not getting it from a third party), we recommend working with a local file for a great developer experience.
 
+## Do I need to restart after changing a file in paths?
+
+No. The fact that you can change the code while the server is running is what makes mocking in Counterfact so pleasant. It watches for file changes and updates automatically. And the state of your context objects is preserved. You can even change the definition of a context object (`_.context.js`) and Counterfact will preserve the values of any properties you didn't explicitly change.
+
 ## After reading this FAQ and now I have even more questions!
 
 Please reach out by [creating an issue](https://github.com/pmcelhaney/counterfact/issues).
+
+We love feedback, so even if we've answered all your questions, please let us know in a [comment](https://github.com/pmcelhaney/counterfact/pull/796).
