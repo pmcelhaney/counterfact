@@ -97,7 +97,7 @@ describe("a SchemaTypeCoder", () => {
       "type x = { age?: number, name?: string, [key: string]: unknown };",
     );
 
-    await expect(format(`type x = ${coder.write()}`)).resolves.toStrictEqual(
+    await expect(format(`type x = ${coder.write({})}`)).resolves.toStrictEqual(
       expected,
     );
   });
@@ -127,7 +127,7 @@ describe("a SchemaTypeCoder", () => {
       `,
     );
 
-    await expect(format(`type x = ${coder.write()}`)).resolves.toStrictEqual(
+    await expect(format(`type x = ${coder.write({})}`)).resolves.toStrictEqual(
       expected,
     );
   });
@@ -150,7 +150,7 @@ describe("a SchemaTypeCoder", () => {
       "type x = {  age?: number, name?: string, [key: string]: unknown };",
     );
 
-    await expect(format(`type x = ${coder.write()}`)).resolves.toStrictEqual(
+    await expect(format(`type x = ${coder.write({})}`)).resolves.toStrictEqual(
       expected,
     );
   });
@@ -171,7 +171,7 @@ describe("a SchemaTypeCoder", () => {
 
     const expected = await format("type x = {  age?: number, name?: string};");
 
-    await expect(format(`type x = ${coder.write()}`)).resolves.toStrictEqual(
+    await expect(format(`type x = ${coder.write({})}`)).resolves.toStrictEqual(
       expected,
     );
   });
@@ -187,7 +187,7 @@ describe("a SchemaTypeCoder", () => {
 
     const expected = await format("type x = {  [key: string]: boolean };");
 
-    await expect(format(`type x = ${coder.write()}`)).resolves.toStrictEqual(
+    await expect(format(`type x = ${coder.write({})}`)).resolves.toStrictEqual(
       expected,
     );
   });
@@ -210,7 +210,7 @@ describe("a SchemaTypeCoder", () => {
       "type x = { anotherNumber?: number; aNumber?: number; [key: string]: number };",
     );
 
-    await expect(format(`type x = ${coder.write()}`)).resolves.toStrictEqual(
+    await expect(format(`type x = ${coder.write({})}`)).resolves.toStrictEqual(
       expected,
     );
   });
@@ -226,7 +226,7 @@ describe("a SchemaTypeCoder", () => {
 
     const expected = await format("type x = Array<string>;");
 
-    await expect(format(`type x = ${coder.write()}`)).resolves.toStrictEqual(
+    await expect(format(`type x = ${coder.write({})}`)).resolves.toStrictEqual(
       expected,
     );
   });
@@ -240,7 +240,7 @@ describe("a SchemaTypeCoder", () => {
 
     const expected = await format("type x = string & number;");
 
-    await expect(format(`type x = ${coder.write()}`)).resolves.toStrictEqual(
+    await expect(format(`type x = ${coder.write({})}`)).resolves.toStrictEqual(
       expected,
     );
   });
@@ -254,7 +254,7 @@ describe("a SchemaTypeCoder", () => {
 
     const expected = await format("type x = string | number;");
 
-    await expect(format(`type x = ${coder.write()}`)).resolves.toStrictEqual(
+    await expect(format(`type x = ${coder.write({})}`)).resolves.toStrictEqual(
       expected,
     );
   });
@@ -268,7 +268,7 @@ describe("a SchemaTypeCoder", () => {
 
     const expected = await format("type x = string | number;");
 
-    await expect(format(`type x = ${coder.write()}`)).resolves.toStrictEqual(
+    await expect(format(`type x = ${coder.write({})}`)).resolves.toStrictEqual(
       expected,
     );
   });
@@ -284,7 +284,7 @@ describe("a SchemaTypeCoder", () => {
     // The best we could do is Exclude<any, string>, but that doesn't actually exclude strings
     const expected = await format("type x = unknown;");
 
-    await expect(format(`type x = ${coder.write()}`)).resolves.toStrictEqual(
+    await expect(format(`type x = ${coder.write({})}`)).resolves.toStrictEqual(
       expected,
     );
   });
@@ -299,7 +299,7 @@ describe("a SchemaTypeCoder", () => {
 
     const expected = await format('type x = 1 | "two" | null;');
 
-    await expect(format(`type x = ${coder.write()}`)).resolves.toStrictEqual(
+    await expect(format(`type x = ${coder.write({})}`)).resolves.toStrictEqual(
       expected,
     );
   });

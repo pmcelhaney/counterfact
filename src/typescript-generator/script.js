@@ -8,6 +8,7 @@ const debug = createDebugger("counterfact:typescript-generator:script");
 export class Script {
   constructor(repository, path) {
     this.repository = repository;
+    this.comments = [];
     this.exports = new Map();
     this.imports = new Map();
     this.externalImport = new Map();
@@ -199,6 +200,8 @@ export class Script {
   contents() {
     return prettier.format(
       [
+        this.comments.map((comment) => `// ${comment}`).join("\n"),
+        this.comments.length > 0 ? "\n\n" : "",
         this.externalImportStatements().join("\n"),
         this.importStatements().join("\n"),
         "\n\n",

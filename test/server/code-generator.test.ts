@@ -44,7 +44,7 @@ describe("a CodeGenerator", () => {
 
       await generator.stopWatching();
 
-      expect(exampleComponent).toEqual("export type Example = string;\n");
+      expect(exampleComponent).toContain("export type Example = string;\n");
     });
   });
 
@@ -69,7 +69,7 @@ describe("a CodeGenerator", () => {
 
       await generator.stopWatching();
 
-      expect(exampleComponent).toEqual("export type Example = number;\n");
+      expect(exampleComponent).toContain("export type Example = number;\n");
     });
   });
 });

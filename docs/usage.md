@@ -56,6 +56,9 @@ After generating code you should have three directories:
 
 The code under `components` and `path-types` is regenerated every time you run Counterfact, so that the types can stay in sync with any OpenAPI changes. The code under paths is minimal boilerplate that you're meant to edit by hand. Counterfact will not overwrite your changes in the `paths` directory, but it will add new files when necessary.
 
+See also [Generated Code FAQ](./faq-generated-code.md)
+
+> [!TIP]
 > You don't have to use the code generator. It wasn't even part of Counterfact originally. You can also create the files under `paths` by hand. The main benefit of generating code is all the type information that's managed for you and kept in sync with OpenAPI.
 
 ## Routing is where it's at 🔀
@@ -74,6 +77,7 @@ export const POST: HTTP_POST = ($) => {
 
 The TypeScript file's path corresponds to the endpoint's URL. Each of the exported functions implements an HTTP request method (GET, POST, PUT, etc.). Each of these functions takes one argument -- `$` -- which is used to access request information, build a response, and interact with the server's state.
 
+> [!TIP]
 > If you're familiar with Express, `$` is sort of a combination of `req` and `res` with type safety and extra super powers.
 
 ### The `$.response` object
@@ -93,6 +97,7 @@ You can build a response by chaining one or more of these functions, e.g.
 return $.response[200].header("x-coolness-level", 10).text("This is cool!")`.
 ```
 
+> [!TIP]
 > Your IDE can help you build a valid response via autocomplete. It can also help ensure the response matches the requirements in the OpenAPI document. For example, if you leave out a required header, the function won't type check. (That's particularly useful when there are API changes. Update the OpenAPI document, regenerate the types, and let TypeScript tell you where to update the code.)
 
 ### Request parameters: `$.path`, `$.query`, `$.header`, and `$.body`
@@ -160,6 +165,7 @@ export class Context {
 
 By default, each `_.context.ts` delegates to its parent directory, so you can define one context object in the root `_.context.ts` and use it everywhere.
 
+> [!TIP]
 > You can make the context objects do whatever you want, including things like writing to databases. But remember that Counterfact is meant for testing, so holding on to data between sessions is an anti-pattern. Keeping everything in memory also makes it fast.
 
 ## Reloading is So Hot Right Now 🔥

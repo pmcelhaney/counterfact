@@ -116,6 +116,8 @@ export class SchemaTypeCoder extends Coder {
   }
 
   write(script) {
+    // script.comments = READ_ONLY_COMMENTS;
+
     if (this.requirement.isReference) {
       return script.importType(this);
     }
