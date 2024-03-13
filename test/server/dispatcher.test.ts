@@ -769,3 +769,53 @@ describe("given an invalid path", () => {
     );
   });
 });
+
+describe("given a request that contains the OpenApi basePath", () => {
+  it("strips the basePath from the path before finding the associated handler", async () => {
+    const registry = new Registry();
+
+    registry.add("/abc", {
+      POST() {
+        return {
+          body: "ok",
+          status: 200,
+        };
+      },
+    });
+
+    const dispatcher = new Dispatcher(registry, new ContextRegistry(), {
+      basePath: "/api",
+
+      paths: {
+        "/abc": {
+          post: {
+            responses: {
+              200: {
+                content: {
+                  "text/plain": {
+                    schema: {
+                      type: "string",
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+
+    const response = await dispatcher.request({
+      body: "",
+      headers: {},
+      method: "POST",
+      path: "/api/abc",
+      query: {},
+      req: { path: "/api/abc" },
+    });
+
+    expect(response.status).toBe(200);
+
+    expect(response.body).toBe("ok");
+  });
+});
