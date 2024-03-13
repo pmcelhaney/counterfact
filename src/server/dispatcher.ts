@@ -231,7 +231,7 @@ export class Dispatcher {
     // If the incoming path includes the base path, remove it
     if (
       this.openApiDocument?.basePath !== undefined &&
-      path.toLowerCase().includes(this.openApiDocument.basePath.toLowerCase())
+      path.toLowerCase().startsWith(this.openApiDocument.basePath.toLowerCase())
     ) {
       // eslint-disable-next-line security/detect-non-literal-regexp
       path = path.replace(new RegExp(this.openApiDocument.basePath, "iu"), "");
