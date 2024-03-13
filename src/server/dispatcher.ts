@@ -40,6 +40,7 @@ interface ParameterTypes {
 }
 
 export interface OpenApiDocument {
+  basePath?: string;
   paths: {
     [key: string]: {
       [key in Lowercase<HttpMethods>]?: OpenApiOperation;
@@ -203,7 +204,7 @@ export class Dispatcher {
     return false;
   }
 
-  // eslint-disable-next-line sonarjs/cognitive-complexity
+  // eslint-disable-next-line sonarjs/cognitive-complexity, max-statements
   public async request({
     body,
     headers = {},
@@ -226,6 +227,15 @@ export class Dispatcher {
     };
   }): Promise<NormalizedCounterfactResponseObject> {
     debug(`request: ${method} ${path}`);
+
+    // If the incoming path includes the base path, remove it
+    if (
+      this.openApiDocument?.basePath !== undefined &&
+      path.toLowerCase().startsWith(this.openApiDocument.basePath.toLowerCase())
+    ) {
+      // eslint-disable-next-line security/detect-non-literal-regexp
+      path = path.replace(new RegExp(this.openApiDocument.basePath, "iu"), "");
+    }
 
     const { matchedPath } = this.registry.handler(path);
     const operation = this.operationForPathAndMethod(matchedPath, method);
