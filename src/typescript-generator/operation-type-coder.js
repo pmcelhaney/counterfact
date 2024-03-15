@@ -115,7 +115,7 @@ export class OperationTypeCoder extends Coder {
 
     const proxyType = "(url: string) => { proxyUrl: string }";
 
-    return `({ query, path, header, body, context, proxy }: { query: ${queryType}, path: ${pathType}, header: ${headerType}, body: ${bodyType}, context: ${contextTypeImportName}, response: ${responseType}, proxy: ${proxyType} }) => ${this.responseTypes(
+    return `($: { query: ${queryType}, path: ${pathType}, header: ${headerType}, body: ${bodyType}, context: ${contextTypeImportName}, response: ${responseType}, proxy: ${proxyType} }) => ${this.responseTypes(
       script,
     )} | { status: 415, contentType: "text/plain", body: string } | { }`;
   }
