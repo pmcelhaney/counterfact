@@ -58,7 +58,7 @@ Map {
           "exports": Map {
             "HTTP_POST" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Pet, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: never, path: never, header: never, body: Pet, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -74,7 +74,7 @@ Map {
           headers: {};
           content: {};
         }
-}>, proxy: (url: string) => { proxyUrl: string } }) => {  
+}>, x: WideOperationArgument, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: "application/xml",
               body?: Pet
@@ -95,7 +95,7 @@ Map {
             },
             "HTTP_PUT" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Pet, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: never, path: never, header: never, body: Pet, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -119,7 +119,7 @@ Map {
           headers: {};
           content: {};
         }
-}>, proxy: (url: string) => { proxyUrl: string } }) => {  
+}>, x: WideOperationArgument, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: "application/xml",
               body?: Pet
@@ -144,6 +144,10 @@ Map {
             },
           },
           "externalImport": Map {
+            "WideOperationArgument" => {
+              "isType": true,
+              "modulePath": "../types.d.ts",
+            },
             "Context" => {
               "isType": true,
               "modulePath": "@@CONTEXT_FILE_TOKEN@@",
@@ -280,7 +284,7 @@ Map {
           "exports": Map {
             "HTTP_POST" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Pet, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: never, path: never, header: never, body: Pet, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -296,7 +300,7 @@ Map {
           headers: {};
           content: {};
         }
-}>, proxy: (url: string) => { proxyUrl: string } }) => {  
+}>, x: WideOperationArgument, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: "application/xml",
               body?: Pet
@@ -317,7 +321,7 @@ Map {
             },
             "HTTP_PUT" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Pet, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: never, path: never, header: never, body: Pet, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -341,7 +345,7 @@ Map {
           headers: {};
           content: {};
         }
-}>, proxy: (url: string) => { proxyUrl: string } }) => {  
+}>, x: WideOperationArgument, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: "application/xml",
               body?: Pet
@@ -366,6 +370,10 @@ Map {
             },
           },
           "externalImport": Map {
+            "WideOperationArgument" => {
+              "isType": true,
+              "modulePath": "../types.d.ts",
+            },
             "Context" => {
               "isType": true,
               "modulePath": "@@CONTEXT_FILE_TOKEN@@",
@@ -506,7 +514,7 @@ Map {
     "exports": Map {
       "HTTP_POST" => {
         "beforeExport": "",
-        "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Pet, context: Context, response: ResponseBuilderFactory<{
+        "code": "($: { query: never, path: never, header: never, body: Pet, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -522,7 +530,7 @@ Map {
           headers: {};
           content: {};
         }
-}>, proxy: (url: string) => { proxyUrl: string } }) => {  
+}>, x: WideOperationArgument, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: "application/xml",
               body?: Pet
@@ -543,7 +551,7 @@ Map {
       },
       "HTTP_PUT" => {
         "beforeExport": "",
-        "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Pet, context: Context, response: ResponseBuilderFactory<{
+        "code": "($: { query: never, path: never, header: never, body: Pet, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -567,7 +575,7 @@ Map {
           headers: {};
           content: {};
         }
-}>, proxy: (url: string) => { proxyUrl: string } }) => {  
+}>, x: WideOperationArgument, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: "application/xml",
               body?: Pet
@@ -592,6 +600,10 @@ Map {
       },
     },
     "externalImport": Map {
+      "WideOperationArgument" => {
+        "isType": true,
+        "modulePath": "../types.d.ts",
+      },
       "Context" => {
         "isType": true,
         "modulePath": "@@CONTEXT_FILE_TOKEN@@",
@@ -749,7 +761,7 @@ Map {
           "exports": Map {
             "HTTP_GET" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: {"status"?: "available" | "pending" | "sold"}, path: never, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: {"status"?: "available" | "pending" | "sold"}, path: never, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -765,7 +777,7 @@ Map {
           headers: {};
           content: {};
         }
-}>, proxy: (url: string) => { proxyUrl: string } }) => {  
+}>, x: WideOperationArgument, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: "application/xml",
               body?: Array<Pet>
@@ -786,6 +798,10 @@ Map {
             },
           },
           "externalImport": Map {
+            "WideOperationArgument" => {
+              "isType": true,
+              "modulePath": "../../types.d.ts",
+            },
             "Context" => {
               "isType": true,
               "modulePath": "@@CONTEXT_FILE_TOKEN@@",
@@ -925,7 +941,7 @@ Map {
     "exports": Map {
       "HTTP_GET" => {
         "beforeExport": "",
-        "code": "({ query, path, header, body, context, proxy }: { query: {"status"?: "available" | "pending" | "sold"}, path: never, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+        "code": "($: { query: {"status"?: "available" | "pending" | "sold"}, path: never, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -941,7 +957,7 @@ Map {
           headers: {};
           content: {};
         }
-}>, proxy: (url: string) => { proxyUrl: string } }) => {  
+}>, x: WideOperationArgument, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: "application/xml",
               body?: Array<Pet>
@@ -962,6 +978,10 @@ Map {
       },
     },
     "externalImport": Map {
+      "WideOperationArgument" => {
+        "isType": true,
+        "modulePath": "../../types.d.ts",
+      },
       "Context" => {
         "isType": true,
         "modulePath": "@@CONTEXT_FILE_TOKEN@@",
@@ -1119,7 +1139,7 @@ Map {
           "exports": Map {
             "HTTP_GET" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: {"tags"?: Array<string>}, path: never, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: {"tags"?: Array<string>}, path: never, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -1135,7 +1155,7 @@ Map {
           headers: {};
           content: {};
         }
-}>, proxy: (url: string) => { proxyUrl: string } }) => {  
+}>, x: WideOperationArgument, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: "application/xml",
               body?: Array<Pet>
@@ -1156,6 +1176,10 @@ Map {
             },
           },
           "externalImport": Map {
+            "WideOperationArgument" => {
+              "isType": true,
+              "modulePath": "../../types.d.ts",
+            },
             "Context" => {
               "isType": true,
               "modulePath": "@@CONTEXT_FILE_TOKEN@@",
@@ -1295,7 +1319,7 @@ Map {
     "exports": Map {
       "HTTP_GET" => {
         "beforeExport": "",
-        "code": "({ query, path, header, body, context, proxy }: { query: {"tags"?: Array<string>}, path: never, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+        "code": "($: { query: {"tags"?: Array<string>}, path: never, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -1311,7 +1335,7 @@ Map {
           headers: {};
           content: {};
         }
-}>, proxy: (url: string) => { proxyUrl: string } }) => {  
+}>, x: WideOperationArgument, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: "application/xml",
               body?: Array<Pet>
@@ -1332,6 +1356,10 @@ Map {
       },
     },
     "externalImport": Map {
+      "WideOperationArgument" => {
+        "isType": true,
+        "modulePath": "../../types.d.ts",
+      },
       "Context" => {
         "isType": true,
         "modulePath": "@@CONTEXT_FILE_TOKEN@@",
@@ -1521,7 +1549,7 @@ Map {
           "exports": Map {
             "HTTP_GET" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"petId": number}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: never, path: {"petId": number}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -1541,7 +1569,7 @@ Map {
           headers: {};
           content: {};
         }
-}>, proxy: (url: string) => { proxyUrl: string } }) => {  
+}>, x: WideOperationArgument, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: "application/xml",
               body?: Pet
@@ -1564,12 +1592,12 @@ Map {
             },
             "HTTP_POST" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: {"name"?: number, "status"?: string}, path: {"petId": number}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: {"name"?: number, "status"?: string}, path: {"petId": number}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
 405: {
           headers: {};
           content: {};
         }
-}>, proxy: (url: string) => { proxyUrl: string } }) => {  
+}>, x: WideOperationArgument, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: 405 
         } | { status: 415, contentType: "text/plain", body: string } | { }",
               "done": true,
@@ -1582,12 +1610,12 @@ Map {
             },
             "HTTP_DELETE" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"petId": string}, header: {"api_key"?: string}, body: undefined, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: never, path: {"petId": string}, header: {"api_key"?: string}, body: undefined, context: Context, response: ResponseBuilderFactory<{
 400: {
           headers: {};
           content: {};
         }
-}>, proxy: (url: string) => { proxyUrl: string } }) => {  
+}>, x: WideOperationArgument, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: 400 
         } | { status: 415, contentType: "text/plain", body: string } | { }",
               "done": true,
@@ -1600,6 +1628,10 @@ Map {
             },
           },
           "externalImport": Map {
+            "WideOperationArgument" => {
+              "isType": true,
+              "modulePath": "../../types.d.ts",
+            },
             "Context" => {
               "isType": true,
               "modulePath": "@@CONTEXT_FILE_TOKEN@@",
@@ -1737,7 +1769,7 @@ Map {
           "exports": Map {
             "HTTP_GET" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"petId": number}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: never, path: {"petId": number}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -1757,7 +1789,7 @@ Map {
           headers: {};
           content: {};
         }
-}>, proxy: (url: string) => { proxyUrl: string } }) => {  
+}>, x: WideOperationArgument, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: "application/xml",
               body?: Pet
@@ -1780,12 +1812,12 @@ Map {
             },
             "HTTP_POST" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: {"name"?: number, "status"?: string}, path: {"petId": number}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: {"name"?: number, "status"?: string}, path: {"petId": number}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
 405: {
           headers: {};
           content: {};
         }
-}>, proxy: (url: string) => { proxyUrl: string } }) => {  
+}>, x: WideOperationArgument, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: 405 
         } | { status: 415, contentType: "text/plain", body: string } | { }",
               "done": true,
@@ -1798,12 +1830,12 @@ Map {
             },
             "HTTP_DELETE" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"petId": string}, header: {"api_key"?: string}, body: undefined, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: never, path: {"petId": string}, header: {"api_key"?: string}, body: undefined, context: Context, response: ResponseBuilderFactory<{
 400: {
           headers: {};
           content: {};
         }
-}>, proxy: (url: string) => { proxyUrl: string } }) => {  
+}>, x: WideOperationArgument, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: 400 
         } | { status: 415, contentType: "text/plain", body: string } | { }",
               "done": true,
@@ -1816,6 +1848,10 @@ Map {
             },
           },
           "externalImport": Map {
+            "WideOperationArgument" => {
+              "isType": true,
+              "modulePath": "../../types.d.ts",
+            },
             "Context" => {
               "isType": true,
               "modulePath": "@@CONTEXT_FILE_TOKEN@@",
@@ -1953,7 +1989,7 @@ Map {
           "exports": Map {
             "HTTP_GET" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"petId": number}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: never, path: {"petId": number}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -1973,7 +2009,7 @@ Map {
           headers: {};
           content: {};
         }
-}>, proxy: (url: string) => { proxyUrl: string } }) => {  
+}>, x: WideOperationArgument, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: "application/xml",
               body?: Pet
@@ -1996,12 +2032,12 @@ Map {
             },
             "HTTP_POST" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: {"name"?: number, "status"?: string}, path: {"petId": number}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: {"name"?: number, "status"?: string}, path: {"petId": number}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
 405: {
           headers: {};
           content: {};
         }
-}>, proxy: (url: string) => { proxyUrl: string } }) => {  
+}>, x: WideOperationArgument, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: 405 
         } | { status: 415, contentType: "text/plain", body: string } | { }",
               "done": true,
@@ -2014,12 +2050,12 @@ Map {
             },
             "HTTP_DELETE" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"petId": string}, header: {"api_key"?: string}, body: undefined, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: never, path: {"petId": string}, header: {"api_key"?: string}, body: undefined, context: Context, response: ResponseBuilderFactory<{
 400: {
           headers: {};
           content: {};
         }
-}>, proxy: (url: string) => { proxyUrl: string } }) => {  
+}>, x: WideOperationArgument, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: 400 
         } | { status: 415, contentType: "text/plain", body: string } | { }",
               "done": true,
@@ -2032,6 +2068,10 @@ Map {
             },
           },
           "externalImport": Map {
+            "WideOperationArgument" => {
+              "isType": true,
+              "modulePath": "../../types.d.ts",
+            },
             "Context" => {
               "isType": true,
               "modulePath": "@@CONTEXT_FILE_TOKEN@@",
@@ -2173,7 +2213,7 @@ Map {
     "exports": Map {
       "HTTP_GET" => {
         "beforeExport": "",
-        "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"petId": number}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+        "code": "($: { query: never, path: {"petId": number}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -2193,7 +2233,7 @@ Map {
           headers: {};
           content: {};
         }
-}>, proxy: (url: string) => { proxyUrl: string } }) => {  
+}>, x: WideOperationArgument, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: "application/xml",
               body?: Pet
@@ -2216,12 +2256,12 @@ Map {
       },
       "HTTP_POST" => {
         "beforeExport": "",
-        "code": "({ query, path, header, body, context, proxy }: { query: {"name"?: number, "status"?: string}, path: {"petId": number}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+        "code": "($: { query: {"name"?: number, "status"?: string}, path: {"petId": number}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
 405: {
           headers: {};
           content: {};
         }
-}>, proxy: (url: string) => { proxyUrl: string } }) => {  
+}>, x: WideOperationArgument, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: 405 
         } | { status: 415, contentType: "text/plain", body: string } | { }",
         "done": true,
@@ -2234,12 +2274,12 @@ Map {
       },
       "HTTP_DELETE" => {
         "beforeExport": "",
-        "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"petId": string}, header: {"api_key"?: string}, body: undefined, context: Context, response: ResponseBuilderFactory<{
+        "code": "($: { query: never, path: {"petId": string}, header: {"api_key"?: string}, body: undefined, context: Context, response: ResponseBuilderFactory<{
 400: {
           headers: {};
           content: {};
         }
-}>, proxy: (url: string) => { proxyUrl: string } }) => {  
+}>, x: WideOperationArgument, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: 400 
         } | { status: 415, contentType: "text/plain", body: string } | { }",
         "done": true,
@@ -2252,6 +2292,10 @@ Map {
       },
     },
     "externalImport": Map {
+      "WideOperationArgument" => {
+        "isType": true,
+        "modulePath": "../../types.d.ts",
+      },
       "Context" => {
         "isType": true,
         "modulePath": "@@CONTEXT_FILE_TOKEN@@",
@@ -2409,7 +2453,7 @@ Map {
           "exports": Map {
             "HTTP_POST" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: {"additionalMetadata"?: number}, path: {"petId": number}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: {"additionalMetadata"?: number}, path: {"petId": number}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -2418,7 +2462,7 @@ Map {
          }
 };
         }
-}>, proxy: (url: string) => { proxyUrl: string } }) => {  
+}>, x: WideOperationArgument, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: "application/json",
               body?: ApiResponse
@@ -2433,6 +2477,10 @@ Map {
             },
           },
           "externalImport": Map {
+            "WideOperationArgument" => {
+              "isType": true,
+              "modulePath": "../../../types.d.ts",
+            },
             "Context" => {
               "isType": true,
               "modulePath": "@@CONTEXT_FILE_TOKEN@@",
@@ -2505,7 +2553,7 @@ Map {
     "exports": Map {
       "HTTP_POST" => {
         "beforeExport": "",
-        "code": "({ query, path, header, body, context, proxy }: { query: {"additionalMetadata"?: number}, path: {"petId": number}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+        "code": "($: { query: {"additionalMetadata"?: number}, path: {"petId": number}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -2514,7 +2562,7 @@ Map {
          }
 };
         }
-}>, proxy: (url: string) => { proxyUrl: string } }) => {  
+}>, x: WideOperationArgument, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: "application/json",
               body?: ApiResponse
@@ -2529,6 +2577,10 @@ Map {
       },
     },
     "externalImport": Map {
+      "WideOperationArgument" => {
+        "isType": true,
+        "modulePath": "../../../types.d.ts",
+      },
       "Context" => {
         "isType": true,
         "modulePath": "@@CONTEXT_FILE_TOKEN@@",
@@ -2618,7 +2670,7 @@ Map {
           "exports": Map {
             "HTTP_GET" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: never, path: never, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -2627,7 +2679,7 @@ Map {
          }
 };
         }
-}>, proxy: (url: string) => { proxyUrl: string } }) => {  
+}>, x: WideOperationArgument, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: "application/json",
               body?: {[key: string]: number}
@@ -2642,6 +2694,10 @@ Map {
             },
           },
           "externalImport": Map {
+            "WideOperationArgument" => {
+              "isType": true,
+              "modulePath": "../../types.d.ts",
+            },
             "Context" => {
               "isType": true,
               "modulePath": "@@CONTEXT_FILE_TOKEN@@",
@@ -2680,7 +2736,7 @@ Map {
     "exports": Map {
       "HTTP_GET" => {
         "beforeExport": "",
-        "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+        "code": "($: { query: never, path: never, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -2689,7 +2745,7 @@ Map {
          }
 };
         }
-}>, proxy: (url: string) => { proxyUrl: string } }) => {  
+}>, x: WideOperationArgument, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: "application/json",
               body?: {[key: string]: number}
@@ -2704,6 +2760,10 @@ Map {
       },
     },
     "externalImport": Map {
+      "WideOperationArgument" => {
+        "isType": true,
+        "modulePath": "../../types.d.ts",
+      },
       "Context" => {
         "isType": true,
         "modulePath": "@@CONTEXT_FILE_TOKEN@@",
@@ -2761,7 +2821,7 @@ Map {
           "exports": Map {
             "HTTP_POST" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Order, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: never, path: never, header: never, body: Order, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -2774,7 +2834,7 @@ Map {
           headers: {};
           content: {};
         }
-}>, proxy: (url: string) => { proxyUrl: string } }) => {  
+}>, x: WideOperationArgument, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: "application/json",
               body?: Order
@@ -2791,6 +2851,10 @@ Map {
             },
           },
           "externalImport": Map {
+            "WideOperationArgument" => {
+              "isType": true,
+              "modulePath": "../../types.d.ts",
+            },
             "Context" => {
               "isType": true,
               "modulePath": "@@CONTEXT_FILE_TOKEN@@",
@@ -2863,7 +2927,7 @@ Map {
     "exports": Map {
       "HTTP_POST" => {
         "beforeExport": "",
-        "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Order, context: Context, response: ResponseBuilderFactory<{
+        "code": "($: { query: never, path: never, header: never, body: Order, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -2876,7 +2940,7 @@ Map {
           headers: {};
           content: {};
         }
-}>, proxy: (url: string) => { proxyUrl: string } }) => {  
+}>, x: WideOperationArgument, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: "application/json",
               body?: Order
@@ -2893,6 +2957,10 @@ Map {
       },
     },
     "externalImport": Map {
+      "WideOperationArgument" => {
+        "isType": true,
+        "modulePath": "../../types.d.ts",
+      },
       "Context" => {
         "isType": true,
         "modulePath": "@@CONTEXT_FILE_TOKEN@@",
@@ -2999,7 +3067,7 @@ Map {
           "exports": Map {
             "HTTP_GET" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"orderId": number}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: never, path: {"orderId": number}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -3019,7 +3087,7 @@ Map {
           headers: {};
           content: {};
         }
-}>, proxy: (url: string) => { proxyUrl: string } }) => {  
+}>, x: WideOperationArgument, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: "application/xml",
               body?: Order
@@ -3042,7 +3110,7 @@ Map {
             },
             "HTTP_DELETE" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"orderId": number}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: never, path: {"orderId": number}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
 400: {
           headers: {};
           content: {};
@@ -3051,7 +3119,7 @@ Map {
           headers: {};
           content: {};
         }
-}>, proxy: (url: string) => { proxyUrl: string } }) => {  
+}>, x: WideOperationArgument, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: 400 
         } | {  
           status: 404 
@@ -3066,6 +3134,10 @@ Map {
             },
           },
           "externalImport": Map {
+            "WideOperationArgument" => {
+              "isType": true,
+              "modulePath": "../../../types.d.ts",
+            },
             "Context" => {
               "isType": true,
               "modulePath": "@@CONTEXT_FILE_TOKEN@@",
@@ -3135,7 +3207,7 @@ Map {
           "exports": Map {
             "HTTP_GET" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"orderId": number}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: never, path: {"orderId": number}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -3155,7 +3227,7 @@ Map {
           headers: {};
           content: {};
         }
-}>, proxy: (url: string) => { proxyUrl: string } }) => {  
+}>, x: WideOperationArgument, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: "application/xml",
               body?: Order
@@ -3178,7 +3250,7 @@ Map {
             },
             "HTTP_DELETE" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"orderId": number}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: never, path: {"orderId": number}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
 400: {
           headers: {};
           content: {};
@@ -3187,7 +3259,7 @@ Map {
           headers: {};
           content: {};
         }
-}>, proxy: (url: string) => { proxyUrl: string } }) => {  
+}>, x: WideOperationArgument, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: 400 
         } | {  
           status: 404 
@@ -3202,6 +3274,10 @@ Map {
             },
           },
           "externalImport": Map {
+            "WideOperationArgument" => {
+              "isType": true,
+              "modulePath": "../../../types.d.ts",
+            },
             "Context" => {
               "isType": true,
               "modulePath": "@@CONTEXT_FILE_TOKEN@@",
@@ -3275,7 +3351,7 @@ Map {
     "exports": Map {
       "HTTP_GET" => {
         "beforeExport": "",
-        "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"orderId": number}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+        "code": "($: { query: never, path: {"orderId": number}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -3295,7 +3371,7 @@ Map {
           headers: {};
           content: {};
         }
-}>, proxy: (url: string) => { proxyUrl: string } }) => {  
+}>, x: WideOperationArgument, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: "application/xml",
               body?: Order
@@ -3318,7 +3394,7 @@ Map {
       },
       "HTTP_DELETE" => {
         "beforeExport": "",
-        "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"orderId": number}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+        "code": "($: { query: never, path: {"orderId": number}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
 400: {
           headers: {};
           content: {};
@@ -3327,7 +3403,7 @@ Map {
           headers: {};
           content: {};
         }
-}>, proxy: (url: string) => { proxyUrl: string } }) => {  
+}>, x: WideOperationArgument, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: 400 
         } | {  
           status: 404 
@@ -3342,6 +3418,10 @@ Map {
       },
     },
     "externalImport": Map {
+      "WideOperationArgument" => {
+        "isType": true,
+        "modulePath": "../../../types.d.ts",
+      },
       "Context" => {
         "isType": true,
         "modulePath": "@@CONTEXT_FILE_TOKEN@@",
@@ -3432,7 +3512,7 @@ Map {
           "exports": Map {
             "HTTP_POST" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: User, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: never, path: never, header: never, body: User, context: Context, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
           headers: {};
           content: {
@@ -3444,7 +3524,7 @@ Map {
          }
 };
         }
-}>, proxy: (url: string) => { proxyUrl: string } }) => {  
+}>, x: WideOperationArgument, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: number | undefined, 
               contentType?: "application/json",
               body?: User
@@ -3463,6 +3543,10 @@ Map {
             },
           },
           "externalImport": Map {
+            "WideOperationArgument" => {
+              "isType": true,
+              "modulePath": "../types.d.ts",
+            },
             "Context" => {
               "isType": true,
               "modulePath": "@@CONTEXT_FILE_TOKEN@@",
@@ -3539,7 +3623,7 @@ Map {
     "exports": Map {
       "HTTP_POST" => {
         "beforeExport": "",
-        "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: User, context: Context, response: ResponseBuilderFactory<{
+        "code": "($: { query: never, path: never, header: never, body: User, context: Context, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
           headers: {};
           content: {
@@ -3551,7 +3635,7 @@ Map {
          }
 };
         }
-}>, proxy: (url: string) => { proxyUrl: string } }) => {  
+}>, x: WideOperationArgument, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: number | undefined, 
               contentType?: "application/json",
               body?: User
@@ -3570,6 +3654,10 @@ Map {
       },
     },
     "externalImport": Map {
+      "WideOperationArgument" => {
+        "isType": true,
+        "modulePath": "../types.d.ts",
+      },
       "Context" => {
         "isType": true,
         "modulePath": "@@CONTEXT_FILE_TOKEN@@",
@@ -3664,7 +3752,7 @@ Map {
           "exports": Map {
             "HTTP_POST" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Array<User>, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: never, path: never, header: never, body: Array<User>, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -3680,7 +3768,7 @@ Map {
           headers: {};
           content: {};
         }
-}>, proxy: (url: string) => { proxyUrl: string } }) => {  
+}>, x: WideOperationArgument, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: "application/xml",
               body?: User
@@ -3701,6 +3789,10 @@ Map {
             },
           },
           "externalImport": Map {
+            "WideOperationArgument" => {
+              "isType": true,
+              "modulePath": "../../types.d.ts",
+            },
             "Context" => {
               "isType": true,
               "modulePath": "@@CONTEXT_FILE_TOKEN@@",
@@ -3777,7 +3869,7 @@ Map {
     "exports": Map {
       "HTTP_POST" => {
         "beforeExport": "",
-        "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: Array<User>, context: Context, response: ResponseBuilderFactory<{
+        "code": "($: { query: never, path: never, header: never, body: Array<User>, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -3793,7 +3885,7 @@ Map {
           headers: {};
           content: {};
         }
-}>, proxy: (url: string) => { proxyUrl: string } }) => {  
+}>, x: WideOperationArgument, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: "application/xml",
               body?: User
@@ -3814,6 +3906,10 @@ Map {
       },
     },
     "externalImport": Map {
+      "WideOperationArgument" => {
+        "isType": true,
+        "modulePath": "../../types.d.ts",
+      },
       "Context" => {
         "isType": true,
         "modulePath": "@@CONTEXT_FILE_TOKEN@@",
@@ -3907,7 +4003,7 @@ Map {
           "exports": Map {
             "HTTP_GET" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: {"username"?: string, "password"?: string}, path: never, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: {"username"?: string, "password"?: string}, path: never, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {
 "X-Rate-Limit": { schema: number},
@@ -3926,7 +4022,7 @@ Map {
           headers: {};
           content: {};
         }
-}>, proxy: (url: string) => { proxyUrl: string } }) => {  
+}>, x: WideOperationArgument, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: "application/xml",
               body?: string
@@ -3947,6 +4043,10 @@ Map {
             },
           },
           "externalImport": Map {
+            "WideOperationArgument" => {
+              "isType": true,
+              "modulePath": "../../types.d.ts",
+            },
             "Context" => {
               "isType": true,
               "modulePath": "@@CONTEXT_FILE_TOKEN@@",
@@ -3985,7 +4085,7 @@ Map {
     "exports": Map {
       "HTTP_GET" => {
         "beforeExport": "",
-        "code": "({ query, path, header, body, context, proxy }: { query: {"username"?: string, "password"?: string}, path: never, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+        "code": "($: { query: {"username"?: string, "password"?: string}, path: never, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {
 "X-Rate-Limit": { schema: number},
@@ -4004,7 +4104,7 @@ Map {
           headers: {};
           content: {};
         }
-}>, proxy: (url: string) => { proxyUrl: string } }) => {  
+}>, x: WideOperationArgument, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: "application/xml",
               body?: string
@@ -4025,6 +4125,10 @@ Map {
       },
     },
     "externalImport": Map {
+      "WideOperationArgument" => {
+        "isType": true,
+        "modulePath": "../../types.d.ts",
+      },
       "Context" => {
         "isType": true,
         "modulePath": "@@CONTEXT_FILE_TOKEN@@",
@@ -4081,12 +4185,12 @@ Map {
           "exports": Map {
             "HTTP_GET" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: never, path: never, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
           headers: {};
           content: {};
         }
-}>, proxy: (url: string) => { proxyUrl: string } }) => {  
+}>, x: WideOperationArgument, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: number | undefined 
         } | { status: 415, contentType: "text/plain", body: string } | { }",
               "done": true,
@@ -4099,6 +4203,10 @@ Map {
             },
           },
           "externalImport": Map {
+            "WideOperationArgument" => {
+              "isType": true,
+              "modulePath": "../../types.d.ts",
+            },
             "Context" => {
               "isType": true,
               "modulePath": "@@CONTEXT_FILE_TOKEN@@",
@@ -4141,12 +4249,12 @@ Map {
     "exports": Map {
       "HTTP_GET" => {
         "beforeExport": "",
-        "code": "({ query, path, header, body, context, proxy }: { query: never, path: never, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+        "code": "($: { query: never, path: never, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
           headers: {};
           content: {};
         }
-}>, proxy: (url: string) => { proxyUrl: string } }) => {  
+}>, x: WideOperationArgument, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: number | undefined 
         } | { status: 415, contentType: "text/plain", body: string } | { }",
         "done": true,
@@ -4159,6 +4267,10 @@ Map {
       },
     },
     "externalImport": Map {
+      "WideOperationArgument" => {
+        "isType": true,
+        "modulePath": "../../types.d.ts",
+      },
       "Context" => {
         "isType": true,
         "modulePath": "@@CONTEXT_FILE_TOKEN@@",
@@ -4252,7 +4364,7 @@ Map {
           "exports": Map {
             "HTTP_GET" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"username": string}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: never, path: {"username": string}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -4272,7 +4384,7 @@ Map {
           headers: {};
           content: {};
         }
-}>, proxy: (url: string) => { proxyUrl: string } }) => {  
+}>, x: WideOperationArgument, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: "application/xml",
               body?: User
@@ -4295,12 +4407,12 @@ Map {
             },
             "HTTP_PUT" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"username": string}, header: never, body: User, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: never, path: {"username": string}, header: never, body: User, context: Context, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
           headers: {};
           content: {};
         }
-}>, proxy: (url: string) => { proxyUrl: string } }) => {  
+}>, x: WideOperationArgument, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: number | undefined 
         } | { status: 415, contentType: "text/plain", body: string } | { }",
               "done": true,
@@ -4313,7 +4425,7 @@ Map {
             },
             "HTTP_DELETE" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"username": string}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: never, path: {"username": string}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
 400: {
           headers: {};
           content: {};
@@ -4322,7 +4434,7 @@ Map {
           headers: {};
           content: {};
         }
-}>, proxy: (url: string) => { proxyUrl: string } }) => {  
+}>, x: WideOperationArgument, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: 400 
         } | {  
           status: 404 
@@ -4337,6 +4449,10 @@ Map {
             },
           },
           "externalImport": Map {
+            "WideOperationArgument" => {
+              "isType": true,
+              "modulePath": "../../types.d.ts",
+            },
             "Context" => {
               "isType": true,
               "modulePath": "@@CONTEXT_FILE_TOKEN@@",
@@ -4411,7 +4527,7 @@ Map {
           "exports": Map {
             "HTTP_GET" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"username": string}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: never, path: {"username": string}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -4431,7 +4547,7 @@ Map {
           headers: {};
           content: {};
         }
-}>, proxy: (url: string) => { proxyUrl: string } }) => {  
+}>, x: WideOperationArgument, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: "application/xml",
               body?: User
@@ -4454,12 +4570,12 @@ Map {
             },
             "HTTP_PUT" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"username": string}, header: never, body: User, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: never, path: {"username": string}, header: never, body: User, context: Context, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
           headers: {};
           content: {};
         }
-}>, proxy: (url: string) => { proxyUrl: string } }) => {  
+}>, x: WideOperationArgument, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: number | undefined 
         } | { status: 415, contentType: "text/plain", body: string } | { }",
               "done": true,
@@ -4472,7 +4588,7 @@ Map {
             },
             "HTTP_DELETE" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"username": string}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: never, path: {"username": string}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
 400: {
           headers: {};
           content: {};
@@ -4481,7 +4597,7 @@ Map {
           headers: {};
           content: {};
         }
-}>, proxy: (url: string) => { proxyUrl: string } }) => {  
+}>, x: WideOperationArgument, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: 400 
         } | {  
           status: 404 
@@ -4496,6 +4612,10 @@ Map {
             },
           },
           "externalImport": Map {
+            "WideOperationArgument" => {
+              "isType": true,
+              "modulePath": "../../types.d.ts",
+            },
             "Context" => {
               "isType": true,
               "modulePath": "@@CONTEXT_FILE_TOKEN@@",
@@ -4570,7 +4690,7 @@ Map {
           "exports": Map {
             "HTTP_GET" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"username": string}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: never, path: {"username": string}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -4590,7 +4710,7 @@ Map {
           headers: {};
           content: {};
         }
-}>, proxy: (url: string) => { proxyUrl: string } }) => {  
+}>, x: WideOperationArgument, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: "application/xml",
               body?: User
@@ -4613,12 +4733,12 @@ Map {
             },
             "HTTP_PUT" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"username": string}, header: never, body: User, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: never, path: {"username": string}, header: never, body: User, context: Context, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
           headers: {};
           content: {};
         }
-}>, proxy: (url: string) => { proxyUrl: string } }) => {  
+}>, x: WideOperationArgument, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: number | undefined 
         } | { status: 415, contentType: "text/plain", body: string } | { }",
               "done": true,
@@ -4631,7 +4751,7 @@ Map {
             },
             "HTTP_DELETE" => {
               "beforeExport": "",
-              "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"username": string}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: never, path: {"username": string}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
 400: {
           headers: {};
           content: {};
@@ -4640,7 +4760,7 @@ Map {
           headers: {};
           content: {};
         }
-}>, proxy: (url: string) => { proxyUrl: string } }) => {  
+}>, x: WideOperationArgument, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: 400 
         } | {  
           status: 404 
@@ -4655,6 +4775,10 @@ Map {
             },
           },
           "externalImport": Map {
+            "WideOperationArgument" => {
+              "isType": true,
+              "modulePath": "../../types.d.ts",
+            },
             "Context" => {
               "isType": true,
               "modulePath": "@@CONTEXT_FILE_TOKEN@@",
@@ -4733,7 +4857,7 @@ Map {
     "exports": Map {
       "HTTP_GET" => {
         "beforeExport": "",
-        "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"username": string}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+        "code": "($: { query: never, path: {"username": string}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -4753,7 +4877,7 @@ Map {
           headers: {};
           content: {};
         }
-}>, proxy: (url: string) => { proxyUrl: string } }) => {  
+}>, x: WideOperationArgument, proxy: (url: string) => { proxyUrl: string } }) => {  
               status: 200, 
               contentType?: "application/xml",
               body?: User
@@ -4776,12 +4900,12 @@ Map {
       },
       "HTTP_PUT" => {
         "beforeExport": "",
-        "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"username": string}, header: never, body: User, context: Context, response: ResponseBuilderFactory<{
+        "code": "($: { query: never, path: {"username": string}, header: never, body: User, context: Context, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
           headers: {};
           content: {};
         }
-}>, proxy: (url: string) => { proxyUrl: string } }) => {  
+}>, x: WideOperationArgument, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: number | undefined 
         } | { status: 415, contentType: "text/plain", body: string } | { }",
         "done": true,
@@ -4794,7 +4918,7 @@ Map {
       },
       "HTTP_DELETE" => {
         "beforeExport": "",
-        "code": "({ query, path, header, body, context, proxy }: { query: never, path: {"username": string}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+        "code": "($: { query: never, path: {"username": string}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
 400: {
           headers: {};
           content: {};
@@ -4803,7 +4927,7 @@ Map {
           headers: {};
           content: {};
         }
-}>, proxy: (url: string) => { proxyUrl: string } }) => {  
+}>, x: WideOperationArgument, proxy: (url: string) => { proxyUrl: string } }) => {  
           status: 400 
         } | {  
           status: 404 
@@ -4818,6 +4942,10 @@ Map {
       },
     },
     "externalImport": Map {
+      "WideOperationArgument" => {
+        "isType": true,
+        "modulePath": "../../types.d.ts",
+      },
       "Context" => {
         "isType": true,
         "modulePath": "@@CONTEXT_FILE_TOKEN@@",

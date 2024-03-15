@@ -199,6 +199,26 @@ interface OpenApiOperation {
   };
 }
 
+type WideResponseBuilder  = {   
+  header: (body: unknown) => WideResponseBuilder;
+  html: (body: unknown) => WideResponseBuilder;
+  json: (body: unknown) => WideResponseBuilder;
+  match: (contentType: string, body: unknown) => WideResponseBuilder;
+  random: () => WideResponseBuilder;
+  text: (body: unknown) => WideResponseBuilder;
+  xml: (body: unknown) => WideResponseBuilder;
+}
+
+type WideOperationArgument = {
+  path: Record<string, string>;
+  query: Record<string, string>;
+  header: Record<string, string>;
+  body: unknown;
+  response: Record<number, WideResponseBuilder>;
+  proxy: (url: string) => { proxyUrl: string };
+  context: unknown
+};
+
 export type {
   HttpStatusCode,
   MediaType,
@@ -207,4 +227,5 @@ export type {
   OpenApiResponse,
   ResponseBuilder,
   ResponseBuilderFactory,
+  WideOperationArgument
 };

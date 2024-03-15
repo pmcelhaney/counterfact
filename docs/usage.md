@@ -168,6 +168,26 @@ By default, each `_.context.ts` delegates to its parent directory, so you can de
 > [!TIP]
 > You can make the context objects do whatever you want, including things like writing to databases. But remember that Counterfact is meant for testing, so holding on to data between sessions is an anti-pattern. Keeping everything in memory also makes it fast.
 
+### x-scape Hatch
+
+Counterfact does a good job translating an OpenAPI description into TypeScript types. But if your OpenAPI documentation is incorrect or incomplete, or you want to try something that's not documented yet, the type safety can get in your way.
+
+To work around that problem, Counterfact provides a "loose" types mode in the form of the `$.x` object. The `$.x` object is an alias of `$` in which all of the types are wider.
+
+The best way to explain is with a couple of examples.
+
+```ts
+export function GET($): HTTP_GET {
+  // There are no headers specified in OpenAPI
+  $.headers["my-undocumented-header"]; // TypeScript error
+  $.x.headers["my-undocumented-header"]; // ok
+
+  // There is no 500 response type specified in OpenAPI
+  return $.response[500].text("Error!"); // TypeScript error
+  return $.x.response[500].text("Error!"); // ok
+}
+```
+
 ## Reloading is So Hot Right Now 🔥
 
 Changes you make will be picked up by the running server immediately. _There's no need to restart!_
