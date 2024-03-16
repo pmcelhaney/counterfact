@@ -15,7 +15,7 @@ export class ParametersTypeCoder extends Coder {
   }
 
   write(script) {
-    const typeDefinitions = this.requirement.data
+    const typeDefinitions = (this.requirement?.data ?? [])
       .filter((parameter) => parameter.in === this.placement)
       .map((parameter, index) => {
         const requirement = this.requirement.get(String(index));

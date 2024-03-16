@@ -91,20 +91,15 @@ export class OperationTypeCoder extends Coder {
 
     const parameters = this.requirement.get("parameters");
 
-    const queryType =
-      parameters === undefined
-        ? "never"
-        : new ParametersTypeCoder(parameters, "query").write(script);
+    const queryType = new ParametersTypeCoder(parameters, "query").write(
+      script,
+    );
 
-    const pathType =
-      parameters === undefined
-        ? "never"
-        : new ParametersTypeCoder(parameters, "path").write(script);
+    const pathType = new ParametersTypeCoder(parameters, "path").write(script);
 
-    const headerType =
-      parameters === undefined
-        ? "never"
-        : new ParametersTypeCoder(parameters, "header").write(script);
+    const headerType = new ParametersTypeCoder(parameters, "header").write(
+      script,
+    );
 
     const bodyRequirement = this.requirement.get("consumes")
       ? parameters
