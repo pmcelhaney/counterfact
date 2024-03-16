@@ -65,16 +65,16 @@ type HeaderFunction<Response extends OpenApiResponse> = <
   header: Header,
   value: Response["headers"][Header]["schema"]
 ) => GenericResponseBuilder<{
-  content: Response["content"];
+  content: NeverIfEmpty<Response["content"]>;
   headers: NeverIfEmpty<Omit<Response["headers"], Header>>;
 }>;
 
 type RandomFunction<Response extends OpenApiResponse> = <
   Header extends string & keyof Response["headers"],
->() => GenericResponseBuilder<{
-  content: {};
-  headers: Response["headers"];
-}>;
+>() => GenericResponseBuilder<OmitValueWhenNever<{
+  content: never;
+  headers: NeverIfEmpty<Response["headers"]>;
+}>>;
 
 interface ResponseBuilder {
   [status: number | `${number} ${string}`]: ResponseBuilder;
