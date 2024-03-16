@@ -73,6 +73,17 @@ export class OperationTypeCoder extends Coder {
     // eslint-disable-next-line no-param-reassign
     script.comments = READ_ONLY_COMMENTS;
 
+    const basePath = script.path
+      .split("/")
+      .slice(0, -1)
+      .map(() => "..")
+      .join("/");
+
+    const xType = script.importExternalType(
+      "WideOperationArgument",
+      nodePath.join(basePath, "types.d.ts").replaceAll("\\", "/"),
+    );
+
     const contextTypeImportName = script.importExternalType(
       "Context",
       CONTEXT_FILE_TOKEN,
@@ -115,7 +126,7 @@ export class OperationTypeCoder extends Coder {
 
     const proxyType = "(url: string) => { proxyUrl: string }";
 
-    return `({ query, path, header, body, context, proxy }: { query: ${queryType}, path: ${pathType}, header: ${headerType}, body: ${bodyType}, context: ${contextTypeImportName}, response: ${responseType}, proxy: ${proxyType} }) => ${this.responseTypes(
+    return `($: { query: ${queryType}, path: ${pathType}, header: ${headerType}, body: ${bodyType}, context: ${contextTypeImportName}, response: ${responseType}, x: ${xType}, proxy: ${proxyType} }) => ${this.responseTypes(
       script,
     )} | { status: 415, contentType: "text/plain", body: string } | { }`;
   }

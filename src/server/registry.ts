@@ -144,18 +144,22 @@ export class Registry {
       });
     }
 
-    return async ({ ...requestData }: RequestDataWithBody) =>
-      await execute({
+    return async ({ ...requestData }: RequestDataWithBody) => {
+      const operationArgument: RequestDataWithBody & {
+        x?: RequestDataWithBody;
+      } = {
         ...requestData,
-
         headers: castParameters(requestData.headers, parameterTypes.header),
-
         matchedPath: handler.matchedPath,
-
         path: castParameters(handler.path, parameterTypes.path),
-
         query: castParameters(requestData.query, parameterTypes.query),
-      });
+      };
+
+      // eslint-disable-next-line id-length
+      operationArgument.x = operationArgument;
+
+      return await execute(operationArgument);
+    };
   }
 }
 
