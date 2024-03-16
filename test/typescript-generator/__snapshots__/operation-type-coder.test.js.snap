@@ -5,7 +5,7 @@ exports[`an OperationTypeCoder falls back to root level produces (OpenAPI 2) 1`]
   query: never;
   path: never;
   header: never;
-  body: undefined;
+  body: never;
   context: ExternalType;
   response: ResponseBuilderFactory<{
     [statusCode in HttpStatusCode]: {
@@ -203,7 +203,7 @@ exports[`an OperationTypeCoder generates a simple get operation (OpenAPI 2) 1`] 
   query: never;
   path: never;
   header: never;
-  body: undefined;
+  body: never;
   context: ExternalType;
   response: ResponseBuilderFactory<{
     [statusCode in HttpStatusCode]: {
@@ -233,7 +233,7 @@ exports[`an OperationTypeCoder generates a simple get operation 1`] = `
   query: never;
   path: never;
   header: never;
-  body: undefined;
+  body: never;
   context: ExternalType;
   response: ResponseBuilderFactory<{
     [statusCode in HttpStatusCode]: {

@@ -111,7 +111,7 @@ export class OperationTypeCoder extends Coder {
 
     const bodyType =
       bodyRequirement === undefined
-        ? "undefined"
+        ? "never"
         : new SchemaTypeCoder(bodyRequirement).write(script);
 
     const responseType = new ResponseTypeCoder(

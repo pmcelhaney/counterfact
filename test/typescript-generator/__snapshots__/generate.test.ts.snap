@@ -761,7 +761,7 @@ Map {
           "exports": Map {
             "HTTP_GET" => {
               "beforeExport": "",
-              "code": "($: { query: {"status"?: "available" | "pending" | "sold"}, path: never, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: {"status"?: "available" | "pending" | "sold"}, path: never, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -941,7 +941,7 @@ Map {
     "exports": Map {
       "HTTP_GET" => {
         "beforeExport": "",
-        "code": "($: { query: {"status"?: "available" | "pending" | "sold"}, path: never, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+        "code": "($: { query: {"status"?: "available" | "pending" | "sold"}, path: never, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -1139,7 +1139,7 @@ Map {
           "exports": Map {
             "HTTP_GET" => {
               "beforeExport": "",
-              "code": "($: { query: {"tags"?: Array<string>}, path: never, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: {"tags"?: Array<string>}, path: never, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -1319,7 +1319,7 @@ Map {
     "exports": Map {
       "HTTP_GET" => {
         "beforeExport": "",
-        "code": "($: { query: {"tags"?: Array<string>}, path: never, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+        "code": "($: { query: {"tags"?: Array<string>}, path: never, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -1549,7 +1549,7 @@ Map {
           "exports": Map {
             "HTTP_GET" => {
               "beforeExport": "",
-              "code": "($: { query: never, path: {"petId": number}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: never, path: {"petId": number}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -1592,7 +1592,7 @@ Map {
             },
             "HTTP_POST" => {
               "beforeExport": "",
-              "code": "($: { query: {"name"?: number, "status"?: string}, path: {"petId": number}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: {"name"?: number, "status"?: string}, path: {"petId": number}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 405: {
           headers: {};
           content: {};
@@ -1610,7 +1610,7 @@ Map {
             },
             "HTTP_DELETE" => {
               "beforeExport": "",
-              "code": "($: { query: never, path: {"petId": string}, header: {"api_key"?: string}, body: undefined, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: never, path: {"petId": string}, header: {"api_key"?: string}, body: never, context: Context, response: ResponseBuilderFactory<{
 400: {
           headers: {};
           content: {};
@@ -1769,7 +1769,7 @@ Map {
           "exports": Map {
             "HTTP_GET" => {
               "beforeExport": "",
-              "code": "($: { query: never, path: {"petId": number}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: never, path: {"petId": number}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -1812,7 +1812,7 @@ Map {
             },
             "HTTP_POST" => {
               "beforeExport": "",
-              "code": "($: { query: {"name"?: number, "status"?: string}, path: {"petId": number}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: {"name"?: number, "status"?: string}, path: {"petId": number}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 405: {
           headers: {};
           content: {};
@@ -1830,7 +1830,7 @@ Map {
             },
             "HTTP_DELETE" => {
               "beforeExport": "",
-              "code": "($: { query: never, path: {"petId": string}, header: {"api_key"?: string}, body: undefined, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: never, path: {"petId": string}, header: {"api_key"?: string}, body: never, context: Context, response: ResponseBuilderFactory<{
 400: {
           headers: {};
           content: {};
@@ -1989,7 +1989,7 @@ Map {
           "exports": Map {
             "HTTP_GET" => {
               "beforeExport": "",
-              "code": "($: { query: never, path: {"petId": number}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: never, path: {"petId": number}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -2032,7 +2032,7 @@ Map {
             },
             "HTTP_POST" => {
               "beforeExport": "",
-              "code": "($: { query: {"name"?: number, "status"?: string}, path: {"petId": number}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: {"name"?: number, "status"?: string}, path: {"petId": number}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 405: {
           headers: {};
           content: {};
@@ -2050,7 +2050,7 @@ Map {
             },
             "HTTP_DELETE" => {
               "beforeExport": "",
-              "code": "($: { query: never, path: {"petId": string}, header: {"api_key"?: string}, body: undefined, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: never, path: {"petId": string}, header: {"api_key"?: string}, body: never, context: Context, response: ResponseBuilderFactory<{
 400: {
           headers: {};
           content: {};
@@ -2213,7 +2213,7 @@ Map {
     "exports": Map {
       "HTTP_GET" => {
         "beforeExport": "",
-        "code": "($: { query: never, path: {"petId": number}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+        "code": "($: { query: never, path: {"petId": number}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -2256,7 +2256,7 @@ Map {
       },
       "HTTP_POST" => {
         "beforeExport": "",
-        "code": "($: { query: {"name"?: number, "status"?: string}, path: {"petId": number}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+        "code": "($: { query: {"name"?: number, "status"?: string}, path: {"petId": number}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 405: {
           headers: {};
           content: {};
@@ -2274,7 +2274,7 @@ Map {
       },
       "HTTP_DELETE" => {
         "beforeExport": "",
-        "code": "($: { query: never, path: {"petId": string}, header: {"api_key"?: string}, body: undefined, context: Context, response: ResponseBuilderFactory<{
+        "code": "($: { query: never, path: {"petId": string}, header: {"api_key"?: string}, body: never, context: Context, response: ResponseBuilderFactory<{
 400: {
           headers: {};
           content: {};
@@ -2453,7 +2453,7 @@ Map {
           "exports": Map {
             "HTTP_POST" => {
               "beforeExport": "",
-              "code": "($: { query: {"additionalMetadata"?: number}, path: {"petId": number}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: {"additionalMetadata"?: number}, path: {"petId": number}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -2553,7 +2553,7 @@ Map {
     "exports": Map {
       "HTTP_POST" => {
         "beforeExport": "",
-        "code": "($: { query: {"additionalMetadata"?: number}, path: {"petId": number}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+        "code": "($: { query: {"additionalMetadata"?: number}, path: {"petId": number}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -2670,7 +2670,7 @@ Map {
           "exports": Map {
             "HTTP_GET" => {
               "beforeExport": "",
-              "code": "($: { query: never, path: never, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: never, path: never, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -2736,7 +2736,7 @@ Map {
     "exports": Map {
       "HTTP_GET" => {
         "beforeExport": "",
-        "code": "($: { query: never, path: never, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+        "code": "($: { query: never, path: never, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -3067,7 +3067,7 @@ Map {
           "exports": Map {
             "HTTP_GET" => {
               "beforeExport": "",
-              "code": "($: { query: never, path: {"orderId": number}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: never, path: {"orderId": number}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -3110,7 +3110,7 @@ Map {
             },
             "HTTP_DELETE" => {
               "beforeExport": "",
-              "code": "($: { query: never, path: {"orderId": number}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: never, path: {"orderId": number}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 400: {
           headers: {};
           content: {};
@@ -3207,7 +3207,7 @@ Map {
           "exports": Map {
             "HTTP_GET" => {
               "beforeExport": "",
-              "code": "($: { query: never, path: {"orderId": number}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: never, path: {"orderId": number}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -3250,7 +3250,7 @@ Map {
             },
             "HTTP_DELETE" => {
               "beforeExport": "",
-              "code": "($: { query: never, path: {"orderId": number}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: never, path: {"orderId": number}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 400: {
           headers: {};
           content: {};
@@ -3351,7 +3351,7 @@ Map {
     "exports": Map {
       "HTTP_GET" => {
         "beforeExport": "",
-        "code": "($: { query: never, path: {"orderId": number}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+        "code": "($: { query: never, path: {"orderId": number}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -3394,7 +3394,7 @@ Map {
       },
       "HTTP_DELETE" => {
         "beforeExport": "",
-        "code": "($: { query: never, path: {"orderId": number}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+        "code": "($: { query: never, path: {"orderId": number}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 400: {
           headers: {};
           content: {};
@@ -4003,7 +4003,7 @@ Map {
           "exports": Map {
             "HTTP_GET" => {
               "beforeExport": "",
-              "code": "($: { query: {"username"?: string, "password"?: string}, path: never, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: {"username"?: string, "password"?: string}, path: never, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {
 "X-Rate-Limit": { schema: number},
@@ -4085,7 +4085,7 @@ Map {
     "exports": Map {
       "HTTP_GET" => {
         "beforeExport": "",
-        "code": "($: { query: {"username"?: string, "password"?: string}, path: never, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+        "code": "($: { query: {"username"?: string, "password"?: string}, path: never, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {
 "X-Rate-Limit": { schema: number},
@@ -4185,7 +4185,7 @@ Map {
           "exports": Map {
             "HTTP_GET" => {
               "beforeExport": "",
-              "code": "($: { query: never, path: never, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: never, path: never, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
           headers: {};
           content: {};
@@ -4249,7 +4249,7 @@ Map {
     "exports": Map {
       "HTTP_GET" => {
         "beforeExport": "",
-        "code": "($: { query: never, path: never, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+        "code": "($: { query: never, path: never, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
           headers: {};
           content: {};
@@ -4364,7 +4364,7 @@ Map {
           "exports": Map {
             "HTTP_GET" => {
               "beforeExport": "",
-              "code": "($: { query: never, path: {"username": string}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: never, path: {"username": string}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -4425,7 +4425,7 @@ Map {
             },
             "HTTP_DELETE" => {
               "beforeExport": "",
-              "code": "($: { query: never, path: {"username": string}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: never, path: {"username": string}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 400: {
           headers: {};
           content: {};
@@ -4527,7 +4527,7 @@ Map {
           "exports": Map {
             "HTTP_GET" => {
               "beforeExport": "",
-              "code": "($: { query: never, path: {"username": string}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: never, path: {"username": string}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -4588,7 +4588,7 @@ Map {
             },
             "HTTP_DELETE" => {
               "beforeExport": "",
-              "code": "($: { query: never, path: {"username": string}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: never, path: {"username": string}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 400: {
           headers: {};
           content: {};
@@ -4690,7 +4690,7 @@ Map {
           "exports": Map {
             "HTTP_GET" => {
               "beforeExport": "",
-              "code": "($: { query: never, path: {"username": string}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: never, path: {"username": string}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -4751,7 +4751,7 @@ Map {
             },
             "HTTP_DELETE" => {
               "beforeExport": "",
-              "code": "($: { query: never, path: {"username": string}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+              "code": "($: { query: never, path: {"username": string}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 400: {
           headers: {};
           content: {};
@@ -4857,7 +4857,7 @@ Map {
     "exports": Map {
       "HTTP_GET" => {
         "beforeExport": "",
-        "code": "($: { query: never, path: {"username": string}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+        "code": "($: { query: never, path: {"username": string}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
           content: {
@@ -4918,7 +4918,7 @@ Map {
       },
       "HTTP_DELETE" => {
         "beforeExport": "",
-        "code": "($: { query: never, path: {"username": string}, header: never, body: undefined, context: Context, response: ResponseBuilderFactory<{
+        "code": "($: { query: never, path: {"username": string}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 400: {
           headers: {};
           content: {};
