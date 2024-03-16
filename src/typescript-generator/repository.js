@@ -52,26 +52,16 @@ export class Repository {
   }
 
   async copyCoreFiles(destination) {
-    const sourcePath = nodePath
-      .join(__dirname, "../../dist/server/types.d.ts")
-      .replaceAll("\\", "/");
+    const sourcePath = nodePath.join(__dirname, "../../dist/server/types.d.ts");
+    const destinationPath = nodePath.join(destination, "types.d.ts");
 
     if (!existsSync(sourcePath)) {
       return false;
     }
 
-    const destinationPath = nodePath
-      .join(destination, "types.d.ts")
-      .replaceAll("\\", "/");
-
     await ensureDirectoryExists(destination);
 
-    return fs.copyFile(
-      nodePath
-        .join(__dirname, "../../dist/server/types.d.ts")
-        .replaceAll("\\", "/"),
-      destinationPath,
-    );
+    return fs.copyFile(sourcePath, destinationPath);
   }
 
   async writeFiles(destination) {
