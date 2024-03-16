@@ -109,9 +109,10 @@ export class OperationTypeCoder extends Coder {
           .get("schema")
       : this.requirement.select("requestBody/content/application~1json/schema");
 
-    const bodyType = bodyRequirement
-      ? new SchemaTypeCoder(bodyRequirement).write(script)
-      : "undefined";
+    const bodyType =
+      bodyRequirement === undefined
+        ? "undefined"
+        : new SchemaTypeCoder(bodyRequirement).write(script);
 
     const responseType = new ResponseTypeCoder(
       this.requirement.get("responses"),
