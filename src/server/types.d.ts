@@ -227,5 +227,6 @@ export type {
   OpenApiResponse,
   ResponseBuilder,
   ResponseBuilderFactory,
-  WideOperationArgument
+  WideOperationArgument,
+  OmitValueWhenNever
 };

@@ -73,16 +73,9 @@ export class OperationTypeCoder extends Coder {
     // eslint-disable-next-line no-param-reassign
     script.comments = READ_ONLY_COMMENTS;
 
-    const basePath = script.path
-      .split("/")
-      .slice(0, -1)
-      .map(() => "..")
-      .join("/");
+    const xType = script.importSharedType("WideOperationArgument");
 
-    const xType = script.importExternalType(
-      "WideOperationArgument",
-      nodePath.join(basePath, "types.d.ts").replaceAll("\\", "/"),
-    );
+    script.importSharedType("OmitValueWhenNever");
 
     const contextTypeImportName = script.importExternalType(
       "Context",
@@ -122,7 +115,7 @@ export class OperationTypeCoder extends Coder {
 
     const proxyType = "(url: string) => { proxyUrl: string }";
 
-    return `($: { query: ${queryType}, path: ${pathType}, header: ${headerType}, body: ${bodyType}, context: ${contextTypeImportName}, response: ${responseType}, x: ${xType}, proxy: ${proxyType} }) => ${this.responseTypes(
+    return `($: OmitValueWhenNever<{ query: ${queryType}, path: ${pathType}, header: ${headerType}, body: ${bodyType}, context: ${contextTypeImportName}, response: ${responseType}, x: ${xType}, proxy: ${proxyType} }>) => ${this.responseTypes(
       script,
     )} | { status: 415, contentType: "text/plain", body: string } | { }`;
   }
