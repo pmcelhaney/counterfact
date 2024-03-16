@@ -1,5 +1,3 @@
-import nodePath from "node:path";
-
 import { Coder } from "./coder.js";
 import { printObject, printObjectWithoutQuotes } from "./printers.js";
 import { SchemaTypeCoder } from "./schema-type-coder.js";
@@ -91,26 +89,14 @@ export class ResponseTypeCoder extends Coder {
   }
 
   write(script) {
-    const basePath = script.path
-      .split("/")
-      .slice(0, -1)
-      .map(() => "..")
-      .join("/");
-
-    script.importExternalType(
-      "ResponseBuilderFactory",
-      nodePath.join(basePath, "types.d.ts").replaceAll("\\", "/"),
-    );
+    script.importSharedType("ResponseBuilderFactory");
 
     const text = `ResponseBuilderFactory<${this.buildResponseObjectType(
       script,
     )}>`;
 
     if (text.includes("HttpStatusCode")) {
-      script.importExternalType(
-        "HttpStatusCode",
-        nodePath.join(basePath, "types.d.ts").replaceAll("\\", "/"),
-      );
+      script.importSharedType("HttpStatusCode");
     }
 
     return text;

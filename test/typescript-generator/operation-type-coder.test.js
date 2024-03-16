@@ -21,6 +21,10 @@ const dummyScript = {
     return "ExternalType";
   },
 
+  importSharedType() {
+    return "SharedType";
+  },
+
   importType() {
     return "Type";
   },
