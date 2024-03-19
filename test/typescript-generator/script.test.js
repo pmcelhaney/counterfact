@@ -116,6 +116,24 @@ describe("a Script", () => {
     ]);
   });
 
+  it("creates import statements for shared types", () => {
+    const repository = new Repository("/base/path");
+
+    const script1 = repository.get("paths/import-to-me.ts");
+    const script2 = repository.get("paths/sub/sub/import-to-me.ts");
+
+    script1.importSharedType("SomeType");
+    script2.importSharedType("SomeType");
+
+    expect(script1.externalImportStatements()).toStrictEqual([
+      'import type { SomeType } from "../types.d.ts";',
+    ]);
+
+    expect(script2.externalImportStatements()).toStrictEqual([
+      'import type { SomeType } from "../../../types.d.ts";',
+    ]);
+  });
+
   it("handles relative import statements", () => {
     const repository = new Repository("/base/path");
 

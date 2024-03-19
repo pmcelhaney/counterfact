@@ -17,6 +17,14 @@ export class Script {
     this.path = path;
   }
 
+  get relativePathToBase() {
+    return this.path
+      .split("/")
+      .slice(0, -1)
+      .map(() => "..")
+      .join("/");
+  }
+
   firstUniqueName(coder) {
     for (const name of coder.names()) {
       if (!this.imports.has(name) && !this.exports.has(name)) {
@@ -133,6 +141,16 @@ export class Script {
 
   importExternalType(name, modulePath) {
     return this.importExternal(name, modulePath, true);
+  }
+
+  importSharedType(name) {
+    return this.importExternal(
+      name,
+      nodePath
+        .join(this.relativePathToBase, "types.d.ts")
+        .replaceAll("\\", "/"),
+      true,
+    );
   }
 
   exportType(coder) {

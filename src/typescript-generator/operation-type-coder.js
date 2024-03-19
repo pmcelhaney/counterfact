@@ -73,16 +73,9 @@ export class OperationTypeCoder extends Coder {
     // eslint-disable-next-line no-param-reassign
     script.comments = READ_ONLY_COMMENTS;
 
-    const basePath = script.path
-      .split("/")
-      .slice(0, -1)
-      .map(() => "..")
-      .join("/");
+    const xType = script.importSharedType("WideOperationArgument");
 
-    const xType = script.importExternalType(
-      "WideOperationArgument",
-      nodePath.join(basePath, "types.d.ts").replaceAll("\\", "/"),
-    );
+    script.importSharedType("OmitValueWhenNever");
 
     const contextTypeImportName = script.importExternalType(
       "Context",
@@ -91,20 +84,15 @@ export class OperationTypeCoder extends Coder {
 
     const parameters = this.requirement.get("parameters");
 
-    const queryType =
-      parameters === undefined
-        ? "never"
-        : new ParametersTypeCoder(parameters, "query").write(script);
+    const queryType = new ParametersTypeCoder(parameters, "query").write(
+      script,
+    );
 
-    const pathType =
-      parameters === undefined
-        ? "never"
-        : new ParametersTypeCoder(parameters, "path").write(script);
+    const pathType = new ParametersTypeCoder(parameters, "path").write(script);
 
-    const headerType =
-      parameters === undefined
-        ? "never"
-        : new ParametersTypeCoder(parameters, "header").write(script);
+    const headerType = new ParametersTypeCoder(parameters, "header").write(
+      script,
+    );
 
     const bodyRequirement = this.requirement.get("consumes")
       ? parameters
@@ -114,9 +102,10 @@ export class OperationTypeCoder extends Coder {
           .get("schema")
       : this.requirement.select("requestBody/content/application~1json/schema");
 
-    const bodyType = bodyRequirement
-      ? new SchemaTypeCoder(bodyRequirement).write(script)
-      : "undefined";
+    const bodyType =
+      bodyRequirement === undefined
+        ? "never"
+        : new SchemaTypeCoder(bodyRequirement).write(script);
 
     const responseType = new ResponseTypeCoder(
       this.requirement.get("responses"),
@@ -126,7 +115,7 @@ export class OperationTypeCoder extends Coder {
 
     const proxyType = "(url: string) => { proxyUrl: string }";
 
-    return `($: { query: ${queryType}, path: ${pathType}, header: ${headerType}, body: ${bodyType}, context: ${contextTypeImportName}, response: ${responseType}, x: ${xType}, proxy: ${proxyType} }) => ${this.responseTypes(
+    return `($: OmitValueWhenNever<{ query: ${queryType}, path: ${pathType}, header: ${headerType}, body: ${bodyType}, context: ${contextTypeImportName}, response: ${responseType}, x: ${xType}, proxy: ${proxyType} }>) => ${this.responseTypes(
       script,
     )} | { status: 415, contentType: "text/plain", body: string } | { }`;
   }
