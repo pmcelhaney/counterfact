@@ -113,10 +113,10 @@ export class OperationTypeCoder extends Coder {
         this.requirement.specification?.rootRequirement?.get("produces")?.data,
     ).write(script);
 
-    const proxyType = "(url: string) => { proxyUrl: string }";
+    const proxyType = '(url: string) => "COUNTERFACT_RESPONSE"';
 
     return `($: OmitValueWhenNever<{ query: ${queryType}, path: ${pathType}, header: ${headerType}, body: ${bodyType}, context: ${contextTypeImportName}, response: ${responseType}, x: ${xType}, proxy: ${proxyType} }>) => ${this.responseTypes(
       script,
-    )} | { status: 415, contentType: "text/plain", body: string } | { }`;
+    )} | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE"`;
   }
 }
