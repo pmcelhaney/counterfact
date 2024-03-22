@@ -61,7 +61,7 @@ Map {
               "code": "($: OmitValueWhenNever<{ query: never, path: never, header: never, body: Pet, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {
 "application/xml": { 
             schema:  Pet
@@ -73,7 +73,7 @@ Map {
         },
 405: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
@@ -100,7 +100,7 @@ Map {
               "code": "($: OmitValueWhenNever<{ query: never, path: never, header: never, body: Pet, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {
 "application/xml": { 
             schema:  Pet
@@ -112,17 +112,17 @@ Map {
         },
 400: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         },
 404: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         },
 405: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
@@ -297,7 +297,7 @@ Map {
               "code": "($: OmitValueWhenNever<{ query: never, path: never, header: never, body: Pet, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {
 "application/xml": { 
             schema:  Pet
@@ -309,7 +309,7 @@ Map {
         },
 405: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
@@ -336,7 +336,7 @@ Map {
               "code": "($: OmitValueWhenNever<{ query: never, path: never, header: never, body: Pet, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {
 "application/xml": { 
             schema:  Pet
@@ -348,17 +348,17 @@ Map {
         },
 400: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         },
 404: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         },
 405: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
@@ -537,7 +537,7 @@ Map {
         "code": "($: OmitValueWhenNever<{ query: never, path: never, header: never, body: Pet, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {
 "application/xml": { 
             schema:  Pet
@@ -549,7 +549,7 @@ Map {
         },
 405: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
@@ -576,7 +576,7 @@ Map {
         "code": "($: OmitValueWhenNever<{ query: never, path: never, header: never, body: Pet, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {
 "application/xml": { 
             schema:  Pet
@@ -588,17 +588,17 @@ Map {
         },
 400: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         },
 404: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         },
 405: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
@@ -794,7 +794,7 @@ Map {
               "code": "($: OmitValueWhenNever<{ query: {"status"?: "available" | "pending" | "sold"}, path: never, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {
 "application/xml": { 
             schema:  Array<Pet>
@@ -806,7 +806,7 @@ Map {
         },
 400: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
@@ -980,7 +980,7 @@ Map {
         "code": "($: OmitValueWhenNever<{ query: {"status"?: "available" | "pending" | "sold"}, path: never, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {
 "application/xml": { 
             schema:  Array<Pet>
@@ -992,7 +992,7 @@ Map {
         },
 400: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
@@ -1184,7 +1184,7 @@ Map {
               "code": "($: OmitValueWhenNever<{ query: {"tags"?: Array<string>}, path: never, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {
 "application/xml": { 
             schema:  Array<Pet>
@@ -1196,7 +1196,7 @@ Map {
         },
 400: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
@@ -1370,7 +1370,7 @@ Map {
         "code": "($: OmitValueWhenNever<{ query: {"tags"?: Array<string>}, path: never, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {
 "application/xml": { 
             schema:  Array<Pet>
@@ -1382,7 +1382,7 @@ Map {
         },
 400: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
@@ -1606,7 +1606,7 @@ Map {
               "code": "($: OmitValueWhenNever<{ query: never, path: {"petId": number}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {
 "application/xml": { 
             schema:  Pet
@@ -1618,12 +1618,12 @@ Map {
         },
 400: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         },
 404: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
@@ -1652,7 +1652,7 @@ Map {
               "code": "($: OmitValueWhenNever<{ query: {"name"?: number, "status"?: string}, path: {"petId": number}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 405: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
@@ -1671,7 +1671,7 @@ Map {
               "code": "($: OmitValueWhenNever<{ query: never, path: {"petId": string}, header: {"api_key"?: string}, body: never, context: Context, response: ResponseBuilderFactory<{
 400: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
@@ -1835,7 +1835,7 @@ Map {
               "code": "($: OmitValueWhenNever<{ query: never, path: {"petId": number}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {
 "application/xml": { 
             schema:  Pet
@@ -1847,12 +1847,12 @@ Map {
         },
 400: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         },
 404: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
@@ -1881,7 +1881,7 @@ Map {
               "code": "($: OmitValueWhenNever<{ query: {"name"?: number, "status"?: string}, path: {"petId": number}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 405: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
@@ -1900,7 +1900,7 @@ Map {
               "code": "($: OmitValueWhenNever<{ query: never, path: {"petId": string}, header: {"api_key"?: string}, body: never, context: Context, response: ResponseBuilderFactory<{
 400: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
@@ -2064,7 +2064,7 @@ Map {
               "code": "($: OmitValueWhenNever<{ query: never, path: {"petId": number}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {
 "application/xml": { 
             schema:  Pet
@@ -2076,12 +2076,12 @@ Map {
         },
 400: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         },
 404: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
@@ -2110,7 +2110,7 @@ Map {
               "code": "($: OmitValueWhenNever<{ query: {"name"?: number, "status"?: string}, path: {"petId": number}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 405: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
@@ -2129,7 +2129,7 @@ Map {
               "code": "($: OmitValueWhenNever<{ query: never, path: {"petId": string}, header: {"api_key"?: string}, body: never, context: Context, response: ResponseBuilderFactory<{
 400: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
@@ -2297,7 +2297,7 @@ Map {
         "code": "($: OmitValueWhenNever<{ query: never, path: {"petId": number}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {
 "application/xml": { 
             schema:  Pet
@@ -2309,12 +2309,12 @@ Map {
         },
 400: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         },
 404: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
@@ -2343,7 +2343,7 @@ Map {
         "code": "($: OmitValueWhenNever<{ query: {"name"?: number, "status"?: string}, path: {"petId": number}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 405: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
@@ -2362,7 +2362,7 @@ Map {
         "code": "($: OmitValueWhenNever<{ query: never, path: {"petId": string}, header: {"api_key"?: string}, body: never, context: Context, response: ResponseBuilderFactory<{
 400: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
@@ -2546,7 +2546,7 @@ Map {
               "code": "($: OmitValueWhenNever<{ query: {"additionalMetadata"?: number}, path: {"petId": number}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {
 "application/json": { 
             schema:  ApiResponse
@@ -2651,7 +2651,7 @@ Map {
         "code": "($: OmitValueWhenNever<{ query: {"additionalMetadata"?: number}, path: {"petId": number}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {
 "application/json": { 
             schema:  ApiResponse
@@ -2773,7 +2773,7 @@ Map {
               "code": "($: OmitValueWhenNever<{ query: never, path: never, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {
 "application/json": { 
             schema:  {[key: string]: number}
@@ -2844,7 +2844,7 @@ Map {
         "code": "($: OmitValueWhenNever<{ query: never, path: never, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {
 "application/json": { 
             schema:  {[key: string]: number}
@@ -2934,7 +2934,7 @@ Map {
               "code": "($: OmitValueWhenNever<{ query: never, path: never, header: never, body: Order, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {
 "application/json": { 
             schema:  Order
@@ -2943,7 +2943,7 @@ Map {
         },
 405: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
@@ -3046,7 +3046,7 @@ Map {
         "code": "($: OmitValueWhenNever<{ query: never, path: never, header: never, body: Order, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {
 "application/json": { 
             schema:  Order
@@ -3055,7 +3055,7 @@ Map {
         },
 405: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
@@ -3192,7 +3192,7 @@ Map {
               "code": "($: OmitValueWhenNever<{ query: never, path: {"orderId": number}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {
 "application/xml": { 
             schema:  Order
@@ -3204,12 +3204,12 @@ Map {
         },
 400: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         },
 404: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
@@ -3238,12 +3238,12 @@ Map {
               "code": "($: OmitValueWhenNever<{ query: never, path: {"orderId": number}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 400: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         },
 404: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
@@ -3341,7 +3341,7 @@ Map {
               "code": "($: OmitValueWhenNever<{ query: never, path: {"orderId": number}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {
 "application/xml": { 
             schema:  Order
@@ -3353,12 +3353,12 @@ Map {
         },
 400: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         },
 404: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
@@ -3387,12 +3387,12 @@ Map {
               "code": "($: OmitValueWhenNever<{ query: never, path: {"orderId": number}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 400: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         },
 404: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
@@ -3494,7 +3494,7 @@ Map {
         "code": "($: OmitValueWhenNever<{ query: never, path: {"orderId": number}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {
 "application/xml": { 
             schema:  Order
@@ -3506,12 +3506,12 @@ Map {
         },
 400: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         },
 404: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
@@ -3540,12 +3540,12 @@ Map {
         "code": "($: OmitValueWhenNever<{ query: never, path: {"orderId": number}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 400: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         },
 404: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
@@ -3664,7 +3664,7 @@ Map {
               "code": "($: OmitValueWhenNever<{ query: never, path: never, header: never, body: User, context: Context, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {
 "application/json": { 
             schema:  User
@@ -3780,7 +3780,7 @@ Map {
         "code": "($: OmitValueWhenNever<{ query: never, path: never, header: never, body: User, context: Context, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {
 "application/json": { 
             schema:  User
@@ -3914,7 +3914,7 @@ Map {
               "code": "($: OmitValueWhenNever<{ query: never, path: never, header: never, body: Array<User>, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {
 "application/xml": { 
             schema:  User
@@ -3926,7 +3926,7 @@ Map {
         },
 [statusCode in Exclude<HttpStatusCode, 200>]: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
@@ -4037,7 +4037,7 @@ Map {
         "code": "($: OmitValueWhenNever<{ query: never, path: never, header: never, body: Array<User>, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {
 "application/xml": { 
             schema:  User
@@ -4049,7 +4049,7 @@ Map {
         },
 [statusCode in Exclude<HttpStatusCode, 200>]: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
@@ -4180,7 +4180,7 @@ Map {
 "X-Rate-Limit": { schema: number},
 "X-Expires-After": { schema: string}
 };
-          optionalHeaders: "X-Rate-Limit" | "X-Expires-After";
+          requiredHeaders: never;
           content: {
 "application/xml": { 
             schema:  string
@@ -4192,7 +4192,7 @@ Map {
         },
 400: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
@@ -4268,7 +4268,7 @@ Map {
 "X-Rate-Limit": { schema: number},
 "X-Expires-After": { schema: string}
 };
-          optionalHeaders: "X-Rate-Limit" | "X-Expires-After";
+          requiredHeaders: never;
           content: {
 "application/xml": { 
             schema:  string
@@ -4280,7 +4280,7 @@ Map {
         },
 400: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
@@ -4371,7 +4371,7 @@ Map {
               "code": "($: OmitValueWhenNever<{ query: never, path: never, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
@@ -4440,7 +4440,7 @@ Map {
         "code": "($: OmitValueWhenNever<{ query: never, path: never, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
@@ -4560,7 +4560,7 @@ Map {
               "code": "($: OmitValueWhenNever<{ query: never, path: {"username": string}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {
 "application/xml": { 
             schema:  User
@@ -4572,12 +4572,12 @@ Map {
         },
 400: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         },
 404: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
@@ -4606,7 +4606,7 @@ Map {
               "code": "($: OmitValueWhenNever<{ query: never, path: {"username": string}, header: never, body: User, context: Context, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
@@ -4625,12 +4625,12 @@ Map {
               "code": "($: OmitValueWhenNever<{ query: never, path: {"username": string}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 400: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         },
 404: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
@@ -4733,7 +4733,7 @@ Map {
               "code": "($: OmitValueWhenNever<{ query: never, path: {"username": string}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {
 "application/xml": { 
             schema:  User
@@ -4745,12 +4745,12 @@ Map {
         },
 400: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         },
 404: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
@@ -4779,7 +4779,7 @@ Map {
               "code": "($: OmitValueWhenNever<{ query: never, path: {"username": string}, header: never, body: User, context: Context, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
@@ -4798,12 +4798,12 @@ Map {
               "code": "($: OmitValueWhenNever<{ query: never, path: {"username": string}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 400: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         },
 404: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
@@ -4906,7 +4906,7 @@ Map {
               "code": "($: OmitValueWhenNever<{ query: never, path: {"username": string}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {
 "application/xml": { 
             schema:  User
@@ -4918,12 +4918,12 @@ Map {
         },
 400: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         },
 404: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
@@ -4952,7 +4952,7 @@ Map {
               "code": "($: OmitValueWhenNever<{ query: never, path: {"username": string}, header: never, body: User, context: Context, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
@@ -4971,12 +4971,12 @@ Map {
               "code": "($: OmitValueWhenNever<{ query: never, path: {"username": string}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 400: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         },
 404: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
@@ -5083,7 +5083,7 @@ Map {
         "code": "($: OmitValueWhenNever<{ query: never, path: {"username": string}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 200: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {
 "application/xml": { 
             schema:  User
@@ -5095,12 +5095,12 @@ Map {
         },
 400: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         },
 404: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
@@ -5129,7 +5129,7 @@ Map {
         "code": "($: OmitValueWhenNever<{ query: never, path: {"username": string}, header: never, body: User, context: Context, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
@@ -5148,12 +5148,12 @@ Map {
         "code": "($: OmitValueWhenNever<{ query: never, path: {"username": string}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 400: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         },
 404: {
           headers: {};
-          optionalHeaders: never;
+          requiredHeaders: never;
           content: {};
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  

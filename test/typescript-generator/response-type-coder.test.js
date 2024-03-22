@@ -41,7 +41,7 @@ describe("a ResponseTypeCoder", () => {
     );
   });
 
-  it("prints optional headers", () => {
+  it("prints required headers", () => {
     const coder = new ResponseTypeCoder({
       data: {
         default: {},
@@ -54,13 +54,15 @@ describe("a ResponseTypeCoder", () => {
           required: true,
         },
 
+        mandatory: {
+          required: true,
+        },
+
         occasionally: {},
         sometimes: {},
       },
     });
 
-    expect(coder.printOptionalHeaders(headers)).toBe(
-      '"occasionally" | "sometimes"',
-    );
+    expect(coder.printRequiredHeaders(headers)).toBe('"always" | "mandatory"');
   });
 });

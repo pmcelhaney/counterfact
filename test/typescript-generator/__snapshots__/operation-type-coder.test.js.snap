@@ -11,7 +11,7 @@ exports[`an OperationTypeCoder falls back to root level produces (OpenAPI 2) 1`]
     response: ResponseBuilderFactory<{
       [statusCode in HttpStatusCode]: {
         headers: {};
-        optionalHeaders: never;
+        requiredHeaders: never;
         content: {
           "text/plain": {
             schema: Type;
@@ -44,7 +44,7 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2 wit
     response: ResponseBuilderFactory<{
       200: {
         headers: {};
-        optionalHeaders: never;
+        requiredHeaders: never;
         content: {
           "application/json": {
             schema: Type;
@@ -53,7 +53,7 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2 wit
       };
       400: {
         headers: {};
-        optionalHeaders: never;
+        requiredHeaders: never;
         content: {
           "application/json": {
             schema: Type;
@@ -62,7 +62,7 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2 wit
       };
       [statusCode in Exclude<HttpStatusCode, 200 | 400>]: {
         headers: {};
-        optionalHeaders: never;
+        requiredHeaders: never;
         content: {
           "application/json": {
             schema: Type;
@@ -105,7 +105,7 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2) 1`
     response: ResponseBuilderFactory<{
       200: {
         headers: {};
-        optionalHeaders: never;
+        requiredHeaders: never;
         content: {
           "application/json": {
             schema: Type;
@@ -114,7 +114,7 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2) 1`
       };
       400: {
         headers: {};
-        optionalHeaders: never;
+        requiredHeaders: never;
         content: {
           "application/json": {
             schema: Type;
@@ -123,7 +123,7 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2) 1`
       };
       [statusCode in Exclude<HttpStatusCode, 200 | 400>]: {
         headers: {};
-        optionalHeaders: never;
+        requiredHeaders: never;
         content: {
           "application/json": {
             schema: Type;
@@ -166,7 +166,7 @@ exports[`an OperationTypeCoder generates a complex post operation 1`] = `
     response: ResponseBuilderFactory<{
       200: {
         headers: {};
-        optionalHeaders: never;
+        requiredHeaders: never;
         content: {
           "application/json": {
             schema: Type;
@@ -175,7 +175,7 @@ exports[`an OperationTypeCoder generates a complex post operation 1`] = `
       };
       400: {
         headers: {};
-        optionalHeaders: never;
+        requiredHeaders: never;
         content: {
           "application/json": {
             schema: Type;
@@ -184,7 +184,7 @@ exports[`an OperationTypeCoder generates a complex post operation 1`] = `
       };
       [statusCode in Exclude<HttpStatusCode, 200 | 400>]: {
         headers: {};
-        optionalHeaders: never;
+        requiredHeaders: never;
         content: {
           "application/json": {
             schema: Type;
@@ -227,7 +227,7 @@ exports[`an OperationTypeCoder generates a simple get operation (OpenAPI 2) 1`] 
     response: ResponseBuilderFactory<{
       [statusCode in HttpStatusCode]: {
         headers: {};
-        optionalHeaders: never;
+        requiredHeaders: never;
         content: {
           "application/json": {
             schema: Type;
@@ -260,7 +260,7 @@ exports[`an OperationTypeCoder generates a simple get operation 1`] = `
     response: ResponseBuilderFactory<{
       [statusCode in HttpStatusCode]: {
         headers: {};
-        optionalHeaders: never;
+        requiredHeaders: never;
         content: {
           "application/json": {
             schema: Type;
