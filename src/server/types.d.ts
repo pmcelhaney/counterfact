@@ -71,10 +71,7 @@ type HeaderFunction<Response extends OpenApiResponse> = <
 
 type RandomFunction<Response extends OpenApiResponse> = <
   Header extends string & keyof Response["headers"],
->() => GenericResponseBuilder<OmitValueWhenNever<{
-  content: never;
-  headers: NeverIfEmpty<Response["headers"]>;
-}>>;
+>() => "COUNTERFACT_RESPONSE";
 
 interface ResponseBuilder {
   [status: number | `${number} ${string}`]: ResponseBuilder;
