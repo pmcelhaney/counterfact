@@ -10,7 +10,7 @@ exports[`an OperationTypeCoder falls back to root level produces (OpenAPI 2) 1`]
     context: ExternalType;
     response: ResponseBuilderFactory<{
       [statusCode in HttpStatusCode]: {
-        headers: {};
+        headers: never;
         requiredHeaders: never;
         content: {
           "text/plain": {
@@ -44,7 +44,7 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2 wit
     context: ExternalType;
     response: ResponseBuilderFactory<{
       200: {
-        headers: {};
+        headers: never;
         requiredHeaders: never;
         content: {
           "application/json": {
@@ -53,7 +53,7 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2 wit
         };
       };
       400: {
-        headers: {};
+        headers: never;
         requiredHeaders: never;
         content: {
           "application/json": {
@@ -62,7 +62,7 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2 wit
         };
       };
       [statusCode in Exclude<HttpStatusCode, 200 | 400>]: {
-        headers: {};
+        headers: never;
         requiredHeaders: never;
         content: {
           "application/json": {
@@ -106,7 +106,7 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2) 1`
     context: ExternalType;
     response: ResponseBuilderFactory<{
       200: {
-        headers: {};
+        headers: never;
         requiredHeaders: never;
         content: {
           "application/json": {
@@ -115,7 +115,7 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2) 1`
         };
       };
       400: {
-        headers: {};
+        headers: never;
         requiredHeaders: never;
         content: {
           "application/json": {
@@ -124,7 +124,7 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2) 1`
         };
       };
       [statusCode in Exclude<HttpStatusCode, 200 | 400>]: {
-        headers: {};
+        headers: never;
         requiredHeaders: never;
         content: {
           "application/json": {
@@ -168,7 +168,7 @@ exports[`an OperationTypeCoder generates a complex post operation 1`] = `
     context: ExternalType;
     response: ResponseBuilderFactory<{
       200: {
-        headers: {};
+        headers: never;
         requiredHeaders: never;
         content: {
           "application/json": {
@@ -177,7 +177,7 @@ exports[`an OperationTypeCoder generates a complex post operation 1`] = `
         };
       };
       400: {
-        headers: {};
+        headers: never;
         requiredHeaders: never;
         content: {
           "application/json": {
@@ -186,7 +186,7 @@ exports[`an OperationTypeCoder generates a complex post operation 1`] = `
         };
       };
       [statusCode in Exclude<HttpStatusCode, 200 | 400>]: {
-        headers: {};
+        headers: never;
         requiredHeaders: never;
         content: {
           "application/json": {
@@ -230,7 +230,7 @@ exports[`an OperationTypeCoder generates a simple get operation (OpenAPI 2) 1`] 
     context: ExternalType;
     response: ResponseBuilderFactory<{
       [statusCode in HttpStatusCode]: {
-        headers: {};
+        headers: never;
         requiredHeaders: never;
         content: {
           "application/json": {
@@ -264,7 +264,7 @@ exports[`an OperationTypeCoder generates a simple get operation 1`] = `
     context: ExternalType;
     response: ResponseBuilderFactory<{
       [statusCode in HttpStatusCode]: {
-        headers: {};
+        headers: never;
         requiredHeaders: never;
         content: {
           "application/json": {

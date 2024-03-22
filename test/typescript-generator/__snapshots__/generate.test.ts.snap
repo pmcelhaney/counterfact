@@ -60,7 +60,7 @@ Map {
               "beforeExport": "",
               "code": "($: OmitValueWhenNever<{ query: never, path: never, header: never, body: Pet, context: Context, response: ResponseBuilderFactory<{
 200: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
           content: {
 "application/xml": { 
@@ -72,9 +72,9 @@ Map {
 };
         },
 405: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
               status: 200, 
@@ -99,7 +99,7 @@ Map {
               "beforeExport": "",
               "code": "($: OmitValueWhenNever<{ query: never, path: never, header: never, body: Pet, context: Context, response: ResponseBuilderFactory<{
 200: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
           content: {
 "application/xml": { 
@@ -111,19 +111,19 @@ Map {
 };
         },
 400: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         },
 404: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         },
 405: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
               status: 200, 
@@ -296,7 +296,7 @@ Map {
               "beforeExport": "",
               "code": "($: OmitValueWhenNever<{ query: never, path: never, header: never, body: Pet, context: Context, response: ResponseBuilderFactory<{
 200: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
           content: {
 "application/xml": { 
@@ -308,9 +308,9 @@ Map {
 };
         },
 405: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
               status: 200, 
@@ -335,7 +335,7 @@ Map {
               "beforeExport": "",
               "code": "($: OmitValueWhenNever<{ query: never, path: never, header: never, body: Pet, context: Context, response: ResponseBuilderFactory<{
 200: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
           content: {
 "application/xml": { 
@@ -347,19 +347,19 @@ Map {
 };
         },
 400: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         },
 404: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         },
 405: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
               status: 200, 
@@ -536,7 +536,7 @@ Map {
         "beforeExport": "",
         "code": "($: OmitValueWhenNever<{ query: never, path: never, header: never, body: Pet, context: Context, response: ResponseBuilderFactory<{
 200: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
           content: {
 "application/xml": { 
@@ -548,9 +548,9 @@ Map {
 };
         },
 405: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
               status: 200, 
@@ -575,7 +575,7 @@ Map {
         "beforeExport": "",
         "code": "($: OmitValueWhenNever<{ query: never, path: never, header: never, body: Pet, context: Context, response: ResponseBuilderFactory<{
 200: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
           content: {
 "application/xml": { 
@@ -587,19 +587,19 @@ Map {
 };
         },
 400: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         },
 404: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         },
 405: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
               status: 200, 
@@ -793,7 +793,7 @@ Map {
               "beforeExport": "",
               "code": "($: OmitValueWhenNever<{ query: {"status"?: "available" | "pending" | "sold"}, path: never, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 200: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
           content: {
 "application/xml": { 
@@ -805,9 +805,9 @@ Map {
 };
         },
 400: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
               status: 200, 
@@ -979,7 +979,7 @@ Map {
         "beforeExport": "",
         "code": "($: OmitValueWhenNever<{ query: {"status"?: "available" | "pending" | "sold"}, path: never, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 200: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
           content: {
 "application/xml": { 
@@ -991,9 +991,9 @@ Map {
 };
         },
 400: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
               status: 200, 
@@ -1183,7 +1183,7 @@ Map {
               "beforeExport": "",
               "code": "($: OmitValueWhenNever<{ query: {"tags"?: Array<string>}, path: never, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 200: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
           content: {
 "application/xml": { 
@@ -1195,9 +1195,9 @@ Map {
 };
         },
 400: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
               status: 200, 
@@ -1369,7 +1369,7 @@ Map {
         "beforeExport": "",
         "code": "($: OmitValueWhenNever<{ query: {"tags"?: Array<string>}, path: never, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 200: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
           content: {
 "application/xml": { 
@@ -1381,9 +1381,9 @@ Map {
 };
         },
 400: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
               status: 200, 
@@ -1605,7 +1605,7 @@ Map {
               "beforeExport": "",
               "code": "($: OmitValueWhenNever<{ query: never, path: {"petId": number}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 200: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
           content: {
 "application/xml": { 
@@ -1617,14 +1617,14 @@ Map {
 };
         },
 400: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         },
 404: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
               status: 200, 
@@ -1651,9 +1651,9 @@ Map {
               "beforeExport": "",
               "code": "($: OmitValueWhenNever<{ query: {"name"?: number, "status"?: string}, path: {"petId": number}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 405: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
           status: 405 
@@ -1670,9 +1670,9 @@ Map {
               "beforeExport": "",
               "code": "($: OmitValueWhenNever<{ query: never, path: {"petId": string}, header: {"api_key"?: string}, body: never, context: Context, response: ResponseBuilderFactory<{
 400: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
           status: 400 
@@ -1834,7 +1834,7 @@ Map {
               "beforeExport": "",
               "code": "($: OmitValueWhenNever<{ query: never, path: {"petId": number}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 200: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
           content: {
 "application/xml": { 
@@ -1846,14 +1846,14 @@ Map {
 };
         },
 400: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         },
 404: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
               status: 200, 
@@ -1880,9 +1880,9 @@ Map {
               "beforeExport": "",
               "code": "($: OmitValueWhenNever<{ query: {"name"?: number, "status"?: string}, path: {"petId": number}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 405: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
           status: 405 
@@ -1899,9 +1899,9 @@ Map {
               "beforeExport": "",
               "code": "($: OmitValueWhenNever<{ query: never, path: {"petId": string}, header: {"api_key"?: string}, body: never, context: Context, response: ResponseBuilderFactory<{
 400: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
           status: 400 
@@ -2063,7 +2063,7 @@ Map {
               "beforeExport": "",
               "code": "($: OmitValueWhenNever<{ query: never, path: {"petId": number}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 200: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
           content: {
 "application/xml": { 
@@ -2075,14 +2075,14 @@ Map {
 };
         },
 400: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         },
 404: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
               status: 200, 
@@ -2109,9 +2109,9 @@ Map {
               "beforeExport": "",
               "code": "($: OmitValueWhenNever<{ query: {"name"?: number, "status"?: string}, path: {"petId": number}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 405: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
           status: 405 
@@ -2128,9 +2128,9 @@ Map {
               "beforeExport": "",
               "code": "($: OmitValueWhenNever<{ query: never, path: {"petId": string}, header: {"api_key"?: string}, body: never, context: Context, response: ResponseBuilderFactory<{
 400: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
           status: 400 
@@ -2296,7 +2296,7 @@ Map {
         "beforeExport": "",
         "code": "($: OmitValueWhenNever<{ query: never, path: {"petId": number}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 200: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
           content: {
 "application/xml": { 
@@ -2308,14 +2308,14 @@ Map {
 };
         },
 400: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         },
 404: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
               status: 200, 
@@ -2342,9 +2342,9 @@ Map {
         "beforeExport": "",
         "code": "($: OmitValueWhenNever<{ query: {"name"?: number, "status"?: string}, path: {"petId": number}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 405: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
           status: 405 
@@ -2361,9 +2361,9 @@ Map {
         "beforeExport": "",
         "code": "($: OmitValueWhenNever<{ query: never, path: {"petId": string}, header: {"api_key"?: string}, body: never, context: Context, response: ResponseBuilderFactory<{
 400: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
           status: 400 
@@ -2545,7 +2545,7 @@ Map {
               "beforeExport": "",
               "code": "($: OmitValueWhenNever<{ query: {"additionalMetadata"?: number}, path: {"petId": number}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 200: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
           content: {
 "application/json": { 
@@ -2650,7 +2650,7 @@ Map {
         "beforeExport": "",
         "code": "($: OmitValueWhenNever<{ query: {"additionalMetadata"?: number}, path: {"petId": number}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 200: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
           content: {
 "application/json": { 
@@ -2772,7 +2772,7 @@ Map {
               "beforeExport": "",
               "code": "($: OmitValueWhenNever<{ query: never, path: never, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 200: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
           content: {
 "application/json": { 
@@ -2843,7 +2843,7 @@ Map {
         "beforeExport": "",
         "code": "($: OmitValueWhenNever<{ query: never, path: never, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 200: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
           content: {
 "application/json": { 
@@ -2933,7 +2933,7 @@ Map {
               "beforeExport": "",
               "code": "($: OmitValueWhenNever<{ query: never, path: never, header: never, body: Order, context: Context, response: ResponseBuilderFactory<{
 200: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
           content: {
 "application/json": { 
@@ -2942,9 +2942,9 @@ Map {
 };
         },
 405: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
               status: 200, 
@@ -3045,7 +3045,7 @@ Map {
         "beforeExport": "",
         "code": "($: OmitValueWhenNever<{ query: never, path: never, header: never, body: Order, context: Context, response: ResponseBuilderFactory<{
 200: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
           content: {
 "application/json": { 
@@ -3054,9 +3054,9 @@ Map {
 };
         },
 405: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
               status: 200, 
@@ -3191,7 +3191,7 @@ Map {
               "beforeExport": "",
               "code": "($: OmitValueWhenNever<{ query: never, path: {"orderId": number}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 200: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
           content: {
 "application/xml": { 
@@ -3203,14 +3203,14 @@ Map {
 };
         },
 400: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         },
 404: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
               status: 200, 
@@ -3237,14 +3237,14 @@ Map {
               "beforeExport": "",
               "code": "($: OmitValueWhenNever<{ query: never, path: {"orderId": number}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 400: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         },
 404: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
           status: 400 
@@ -3340,7 +3340,7 @@ Map {
               "beforeExport": "",
               "code": "($: OmitValueWhenNever<{ query: never, path: {"orderId": number}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 200: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
           content: {
 "application/xml": { 
@@ -3352,14 +3352,14 @@ Map {
 };
         },
 400: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         },
 404: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
               status: 200, 
@@ -3386,14 +3386,14 @@ Map {
               "beforeExport": "",
               "code": "($: OmitValueWhenNever<{ query: never, path: {"orderId": number}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 400: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         },
 404: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
           status: 400 
@@ -3493,7 +3493,7 @@ Map {
         "beforeExport": "",
         "code": "($: OmitValueWhenNever<{ query: never, path: {"orderId": number}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 200: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
           content: {
 "application/xml": { 
@@ -3505,14 +3505,14 @@ Map {
 };
         },
 400: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         },
 404: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
               status: 200, 
@@ -3539,14 +3539,14 @@ Map {
         "beforeExport": "",
         "code": "($: OmitValueWhenNever<{ query: never, path: {"orderId": number}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 400: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         },
 404: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
           status: 400 
@@ -3663,7 +3663,7 @@ Map {
               "beforeExport": "",
               "code": "($: OmitValueWhenNever<{ query: never, path: never, header: never, body: User, context: Context, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
           content: {
 "application/json": { 
@@ -3779,7 +3779,7 @@ Map {
         "beforeExport": "",
         "code": "($: OmitValueWhenNever<{ query: never, path: never, header: never, body: User, context: Context, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
           content: {
 "application/json": { 
@@ -3913,7 +3913,7 @@ Map {
               "beforeExport": "",
               "code": "($: OmitValueWhenNever<{ query: never, path: never, header: never, body: Array<User>, context: Context, response: ResponseBuilderFactory<{
 200: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
           content: {
 "application/xml": { 
@@ -3925,9 +3925,9 @@ Map {
 };
         },
 [statusCode in Exclude<HttpStatusCode, 200>]: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
               status: 200, 
@@ -4036,7 +4036,7 @@ Map {
         "beforeExport": "",
         "code": "($: OmitValueWhenNever<{ query: never, path: never, header: never, body: Array<User>, context: Context, response: ResponseBuilderFactory<{
 200: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
           content: {
 "application/xml": { 
@@ -4048,9 +4048,9 @@ Map {
 };
         },
 [statusCode in Exclude<HttpStatusCode, 200>]: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
               status: 200, 
@@ -4191,9 +4191,9 @@ Map {
 };
         },
 400: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
               status: 200, 
@@ -4279,9 +4279,9 @@ Map {
 };
         },
 400: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
               status: 200, 
@@ -4370,9 +4370,9 @@ Map {
               "beforeExport": "",
               "code": "($: OmitValueWhenNever<{ query: never, path: never, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
           status: number | undefined 
@@ -4439,9 +4439,9 @@ Map {
         "beforeExport": "",
         "code": "($: OmitValueWhenNever<{ query: never, path: never, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
           status: number | undefined 
@@ -4559,7 +4559,7 @@ Map {
               "beforeExport": "",
               "code": "($: OmitValueWhenNever<{ query: never, path: {"username": string}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 200: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
           content: {
 "application/xml": { 
@@ -4571,14 +4571,14 @@ Map {
 };
         },
 400: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         },
 404: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
               status: 200, 
@@ -4605,9 +4605,9 @@ Map {
               "beforeExport": "",
               "code": "($: OmitValueWhenNever<{ query: never, path: {"username": string}, header: never, body: User, context: Context, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
           status: number | undefined 
@@ -4624,14 +4624,14 @@ Map {
               "beforeExport": "",
               "code": "($: OmitValueWhenNever<{ query: never, path: {"username": string}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 400: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         },
 404: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
           status: 400 
@@ -4732,7 +4732,7 @@ Map {
               "beforeExport": "",
               "code": "($: OmitValueWhenNever<{ query: never, path: {"username": string}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 200: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
           content: {
 "application/xml": { 
@@ -4744,14 +4744,14 @@ Map {
 };
         },
 400: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         },
 404: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
               status: 200, 
@@ -4778,9 +4778,9 @@ Map {
               "beforeExport": "",
               "code": "($: OmitValueWhenNever<{ query: never, path: {"username": string}, header: never, body: User, context: Context, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
           status: number | undefined 
@@ -4797,14 +4797,14 @@ Map {
               "beforeExport": "",
               "code": "($: OmitValueWhenNever<{ query: never, path: {"username": string}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 400: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         },
 404: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
           status: 400 
@@ -4905,7 +4905,7 @@ Map {
               "beforeExport": "",
               "code": "($: OmitValueWhenNever<{ query: never, path: {"username": string}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 200: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
           content: {
 "application/xml": { 
@@ -4917,14 +4917,14 @@ Map {
 };
         },
 400: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         },
 404: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
               status: 200, 
@@ -4951,9 +4951,9 @@ Map {
               "beforeExport": "",
               "code": "($: OmitValueWhenNever<{ query: never, path: {"username": string}, header: never, body: User, context: Context, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
           status: number | undefined 
@@ -4970,14 +4970,14 @@ Map {
               "beforeExport": "",
               "code": "($: OmitValueWhenNever<{ query: never, path: {"username": string}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 400: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         },
 404: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
           status: 400 
@@ -5082,7 +5082,7 @@ Map {
         "beforeExport": "",
         "code": "($: OmitValueWhenNever<{ query: never, path: {"username": string}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 200: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
           content: {
 "application/xml": { 
@@ -5094,14 +5094,14 @@ Map {
 };
         },
 400: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         },
 404: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
               status: 200, 
@@ -5128,9 +5128,9 @@ Map {
         "beforeExport": "",
         "code": "($: OmitValueWhenNever<{ query: never, path: {"username": string}, header: never, body: User, context: Context, response: ResponseBuilderFactory<{
 [statusCode in HttpStatusCode]: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
           status: number | undefined 
@@ -5147,14 +5147,14 @@ Map {
         "beforeExport": "",
         "code": "($: OmitValueWhenNever<{ query: never, path: {"username": string}, header: never, body: never, context: Context, response: ResponseBuilderFactory<{
 400: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         },
 404: {
-          headers: {};
+          headers: never;
           requiredHeaders: never;
-          content: {};
+          content: never;
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
           status: 400 

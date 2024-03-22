@@ -54,7 +54,7 @@ export class ResponseTypeCoder extends Coder {
       return printObject(this.buildContentObjectType(script, response));
     }
 
-    return "{}";
+    return "never";
   }
 
   buildHeaders(script, response) {
@@ -70,7 +70,7 @@ export class ResponseTypeCoder extends Coder {
 
   printHeaders(script, response) {
     if (!response.has("headers")) {
-      return "{}";
+      return "never";
     }
 
     return printObject(this.buildHeaders(script, response));
