@@ -1,5 +1,12 @@
 # counterfact
 
+## 0.38.1
+
+### Patch Changes
+
+- b3ab833: fix a type checking issue where the response type has no headers or content
+- 30440ae: fixed an edge case with types when the response type has some optional headers
+
 ## 0.38.0
 
 ### Minor Changes
