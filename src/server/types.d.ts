@@ -108,12 +108,11 @@ type GenericResponseBuilderInner<
     : RandomFunction<Response>;
   text: MaybeShortcut<"text/plain", Response>;
   xml: MaybeShortcut<"application/xml" | "text/xml", Response>;
-  allHeadersAreOptional: {} extends Response["headers"] ? "COUNTERFACT_RESPONSE" : never;
 }>;
 
 type GenericResponseBuilder<
   Response extends OpenApiResponse = OpenApiResponse,
-> = {} extends OmitValueWhenNever<Response> ? "COUNTERFACT_RESPONSE" : GenericResponseBuilderInner<Response>;
+> = {} extends OmitValueWhenNever<Response> ? "COUNTERFACT_RESPONSE" :  keyof OmitValueWhenNever<Response> extends "headers" ? { header: HeaderFunction<Response>, ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" } : GenericResponseBuilderInner<Response>;
 
 type ResponseBuilderFactory<
   Responses extends OpenApiResponses = OpenApiResponses,

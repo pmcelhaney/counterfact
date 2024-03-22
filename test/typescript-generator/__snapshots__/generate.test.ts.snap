@@ -86,7 +86,7 @@ Map {
               body?: Pet
             } | {  
           status: 405 
-        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE"",
+        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE" | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet/post",
               "isDefault": false,
@@ -139,7 +139,7 @@ Map {
           status: 404 
         } | {  
           status: 405 
-        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE"",
+        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE" | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet/put",
               "isDefault": false,
@@ -322,7 +322,7 @@ Map {
               body?: Pet
             } | {  
           status: 405 
-        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE"",
+        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE" | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet/post",
               "isDefault": false,
@@ -375,7 +375,7 @@ Map {
           status: 404 
         } | {  
           status: 405 
-        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE"",
+        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE" | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet/put",
               "isDefault": false,
@@ -562,7 +562,7 @@ Map {
               body?: Pet
             } | {  
           status: 405 
-        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE"",
+        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE" | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" }",
         "done": true,
         "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet/post",
         "isDefault": false,
@@ -615,7 +615,7 @@ Map {
           status: 404 
         } | {  
           status: 405 
-        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE"",
+        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE" | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" }",
         "done": true,
         "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet/put",
         "isDefault": false,
@@ -819,7 +819,7 @@ Map {
               body?: Array<Pet>
             } | {  
           status: 400 
-        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE"",
+        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE" | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1findByStatus/get",
               "isDefault": false,
@@ -1005,7 +1005,7 @@ Map {
               body?: Array<Pet>
             } | {  
           status: 400 
-        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE"",
+        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE" | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" }",
         "done": true,
         "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1findByStatus/get",
         "isDefault": false,
@@ -1209,7 +1209,7 @@ Map {
               body?: Array<Pet>
             } | {  
           status: 400 
-        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE"",
+        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE" | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1findByTags/get",
               "isDefault": false,
@@ -1395,7 +1395,7 @@ Map {
               body?: Array<Pet>
             } | {  
           status: 400 
-        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE"",
+        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE" | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" }",
         "done": true,
         "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1findByTags/get",
         "isDefault": false,
@@ -1638,7 +1638,7 @@ Map {
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE"",
+        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE" | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/get",
               "isDefault": false,
@@ -1657,7 +1657,7 @@ Map {
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
           status: 405 
-        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE"",
+        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE" | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/post",
               "isDefault": false,
@@ -1676,7 +1676,7 @@ Map {
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
           status: 400 
-        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE"",
+        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE" | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/delete",
               "isDefault": false,
@@ -1867,7 +1867,7 @@ Map {
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE"",
+        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE" | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/get",
               "isDefault": false,
@@ -1886,7 +1886,7 @@ Map {
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
           status: 405 
-        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE"",
+        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE" | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/post",
               "isDefault": false,
@@ -1905,7 +1905,7 @@ Map {
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
           status: 400 
-        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE"",
+        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE" | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/delete",
               "isDefault": false,
@@ -2096,7 +2096,7 @@ Map {
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE"",
+        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE" | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/get",
               "isDefault": false,
@@ -2115,7 +2115,7 @@ Map {
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
           status: 405 
-        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE"",
+        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE" | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/post",
               "isDefault": false,
@@ -2134,7 +2134,7 @@ Map {
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
           status: 400 
-        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE"",
+        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE" | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/delete",
               "isDefault": false,
@@ -2329,7 +2329,7 @@ Map {
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE"",
+        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE" | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" }",
         "done": true,
         "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/get",
         "isDefault": false,
@@ -2348,7 +2348,7 @@ Map {
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
           status: 405 
-        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE"",
+        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE" | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" }",
         "done": true,
         "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/post",
         "isDefault": false,
@@ -2367,7 +2367,7 @@ Map {
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
           status: 400 
-        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE"",
+        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE" | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" }",
         "done": true,
         "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/delete",
         "isDefault": false,
@@ -2557,7 +2557,7 @@ Map {
               status: 200, 
               contentType?: "application/json",
               body?: ApiResponse
-            } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE"",
+            } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE" | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post",
               "isDefault": false,
@@ -2662,7 +2662,7 @@ Map {
               status: 200, 
               contentType?: "application/json",
               body?: ApiResponse
-            } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE"",
+            } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE" | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" }",
         "done": true,
         "id": "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post",
         "isDefault": false,
@@ -2784,7 +2784,7 @@ Map {
               status: 200, 
               contentType?: "application/json",
               body?: {[key: string]: number}
-            } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE"",
+            } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE" | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1store~1inventory/get",
               "isDefault": false,
@@ -2855,7 +2855,7 @@ Map {
               status: 200, 
               contentType?: "application/json",
               body?: {[key: string]: number}
-            } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE"",
+            } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE" | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" }",
         "done": true,
         "id": "OperationTypeCoder@./petstore.yaml#/paths/~1store~1inventory/get",
         "isDefault": false,
@@ -2952,7 +2952,7 @@ Map {
               body?: Order
             } | {  
           status: 405 
-        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE"",
+        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE" | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order/post",
               "isDefault": false,
@@ -3064,7 +3064,7 @@ Map {
               body?: Order
             } | {  
           status: 405 
-        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE"",
+        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE" | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" }",
         "done": true,
         "id": "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order/post",
         "isDefault": false,
@@ -3224,7 +3224,7 @@ Map {
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE"",
+        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE" | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order~1{orderId}/get",
               "isDefault": false,
@@ -3250,7 +3250,7 @@ Map {
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE"",
+        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE" | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order~1{orderId}/delete",
               "isDefault": false,
@@ -3373,7 +3373,7 @@ Map {
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE"",
+        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE" | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order~1{orderId}/get",
               "isDefault": false,
@@ -3399,7 +3399,7 @@ Map {
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE"",
+        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE" | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order~1{orderId}/delete",
               "isDefault": false,
@@ -3526,7 +3526,7 @@ Map {
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE"",
+        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE" | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" }",
         "done": true,
         "id": "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order~1{orderId}/get",
         "isDefault": false,
@@ -3552,7 +3552,7 @@ Map {
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE"",
+        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE" | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" }",
         "done": true,
         "id": "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order~1{orderId}/delete",
         "isDefault": false,
@@ -3682,7 +3682,7 @@ Map {
               status: number | undefined, 
               contentType?: "application/xml",
               body?: User
-            } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE"",
+            } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE" | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user/post",
               "isDefault": false,
@@ -3798,7 +3798,7 @@ Map {
               status: number | undefined, 
               contentType?: "application/xml",
               body?: User
-            } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE"",
+            } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE" | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" }",
         "done": true,
         "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user/post",
         "isDefault": false,
@@ -3939,7 +3939,7 @@ Map {
               body?: User
             } | {  
           status: number | undefined 
-        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE"",
+        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE" | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user~1createWithList/post",
               "isDefault": false,
@@ -4062,7 +4062,7 @@ Map {
               body?: User
             } | {  
           status: number | undefined 
-        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE"",
+        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE" | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" }",
         "done": true,
         "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user~1createWithList/post",
         "isDefault": false,
@@ -4205,7 +4205,7 @@ Map {
               body?: string
             } | {  
           status: 400 
-        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE"",
+        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE" | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user~1login/get",
               "isDefault": false,
@@ -4293,7 +4293,7 @@ Map {
               body?: string
             } | {  
           status: 400 
-        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE"",
+        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE" | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" }",
         "done": true,
         "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user~1login/get",
         "isDefault": false,
@@ -4376,7 +4376,7 @@ Map {
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
           status: number | undefined 
-        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE"",
+        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE" | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user~1logout/get",
               "isDefault": false,
@@ -4445,7 +4445,7 @@ Map {
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
           status: number | undefined 
-        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE"",
+        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE" | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" }",
         "done": true,
         "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user~1logout/get",
         "isDefault": false,
@@ -4592,7 +4592,7 @@ Map {
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE"",
+        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE" | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/get",
               "isDefault": false,
@@ -4611,7 +4611,7 @@ Map {
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
           status: number | undefined 
-        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE"",
+        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE" | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/put",
               "isDefault": false,
@@ -4637,7 +4637,7 @@ Map {
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE"",
+        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE" | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/delete",
               "isDefault": false,
@@ -4765,7 +4765,7 @@ Map {
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE"",
+        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE" | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/get",
               "isDefault": false,
@@ -4784,7 +4784,7 @@ Map {
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
           status: number | undefined 
-        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE"",
+        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE" | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/put",
               "isDefault": false,
@@ -4810,7 +4810,7 @@ Map {
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE"",
+        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE" | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/delete",
               "isDefault": false,
@@ -4938,7 +4938,7 @@ Map {
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE"",
+        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE" | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/get",
               "isDefault": false,
@@ -4957,7 +4957,7 @@ Map {
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
           status: number | undefined 
-        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE"",
+        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE" | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/put",
               "isDefault": false,
@@ -4983,7 +4983,7 @@ Map {
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE"",
+        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE" | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" }",
               "done": true,
               "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/delete",
               "isDefault": false,
@@ -5115,7 +5115,7 @@ Map {
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE"",
+        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE" | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" }",
         "done": true,
         "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/get",
         "isDefault": false,
@@ -5134,7 +5134,7 @@ Map {
         }
 }>, x: WideOperationArgument, proxy: (url: string) => "COUNTERFACT_RESPONSE" }>) => {  
           status: number | undefined 
-        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE"",
+        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE" | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" }",
         "done": true,
         "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/put",
         "isDefault": false,
@@ -5160,7 +5160,7 @@ Map {
           status: 400 
         } | {  
           status: 404 
-        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE"",
+        } | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE" | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" }",
         "done": true,
         "id": "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/delete",
         "isDefault": false,
