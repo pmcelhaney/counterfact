@@ -117,6 +117,6 @@ export class OperationTypeCoder extends Coder {
 
     return `($: OmitValueWhenNever<{ query: ${queryType}, path: ${pathType}, header: ${headerType}, body: ${bodyType}, context: ${contextTypeImportName}, response: ${responseType}, x: ${xType}, proxy: ${proxyType} }>) => ${this.responseTypes(
       script,
-    )} | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE"`;
+    )} | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE" | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" }`;
   }
 }

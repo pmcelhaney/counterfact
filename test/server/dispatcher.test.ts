@@ -388,7 +388,6 @@ describe("a dispatcher", () => {
 
     registry.add("/a", {
       GET({ response }) {
-        // eslint-disable-next-line total-functions/no-unsafe-readonly-mutable-assignment
         return response["200"]?.random();
       },
     });

@@ -24,6 +24,7 @@ type OmitValueWhenNever<Base> = Pick<
 interface OpenApiResponse {
   content: { [key: MediaType]: OpenApiContent };
   headers: { [key: string]: OpenApiHeader };
+  requiredHeaders: string
 }
 
 interface OpenApiResponses {
@@ -43,6 +44,7 @@ type MaybeShortcut<
   (body: Response["content"][ContentType]["schema"]) => GenericResponseBuilder<{
     content: NeverIfEmpty<Omit<Response["content"], ContentType>>;
     headers: Response["headers"];
+    requiredHeaders: Response["requiredHeaders"];
   }>,
   never
 >;
@@ -57,6 +59,7 @@ type MatchFunction<Response extends OpenApiResponse> = <
 ) => GenericResponseBuilder<{
   content: NeverIfEmpty<Omit<Response["content"], ContentType>>;
   headers: Response["headers"];
+  requiredHeaders: Response["requiredHeaders"];
 }>;
 
 type HeaderFunction<Response extends OpenApiResponse> = <
@@ -67,6 +70,7 @@ type HeaderFunction<Response extends OpenApiResponse> = <
 ) => GenericResponseBuilder<{
   content: NeverIfEmpty<Response["content"]>;
   headers: NeverIfEmpty<Omit<Response["headers"], Header>>;
+  requiredHeaders: Exclude<Response["requiredHeaders"], Header>;
 }>;
 
 type RandomFunction<Response extends OpenApiResponse> = <
@@ -108,7 +112,7 @@ type GenericResponseBuilderInner<
 
 type GenericResponseBuilder<
   Response extends OpenApiResponse = OpenApiResponse,
-> = {} extends OmitValueWhenNever<Response> ? "COUNTERFACT_RESPONSE" : GenericResponseBuilderInner<Response>;
+> = {} extends OmitValueWhenNever<Response> ? "COUNTERFACT_RESPONSE" :  keyof OmitValueWhenNever<Response> extends "headers" ? { header: HeaderFunction<Response>, ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" } : GenericResponseBuilderInner<Response>;
 
 type ResponseBuilderFactory<
   Responses extends OpenApiResponses = OpenApiResponses,
@@ -232,3 +236,5 @@ export type {
   WideOperationArgument,
   OmitValueWhenNever
 };
+
+

@@ -76,12 +76,22 @@ export class ResponseTypeCoder extends Coder {
     return printObject(this.buildHeaders(script, response));
   }
 
+  printRequiredHeaders(response) {
+    const requiredHeaders = (response.get("headers") ?? [])
+      .map((value, name) => ({ name, required: value.data.required }))
+      .filter(({ required }) => required)
+      .map(({ name }) => `"${name}"`);
+
+    return requiredHeaders.length === 0 ? "never" : requiredHeaders.join(" | ");
+  }
+
   buildResponseObjectType(script) {
     return printObjectWithoutQuotes(
       this.requirement.map((response, responseCode) => [
         this.normalizeStatusCode(responseCode),
         `{
           headers: ${this.printHeaders(script, response)};
+          requiredHeaders: ${this.printRequiredHeaders(response)};
           content: ${this.printContentObjectType(script, response)};
         }`,
       ]),
