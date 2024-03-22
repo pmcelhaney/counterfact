@@ -1,5 +1,13 @@
 # counterfact
 
+## 0.38.0
+
+### Minor Changes
+
+- 9e7923c: strengthen the return type of an operation (the return value of GET(), POST(), etc.)
+- f4f377e: useless properties (like $.query when there are no query parameters) are now excluded from types
+- b888e11: added a $.x object which is the same as $ but less type safe
+
 ## 0.37.2
 
 ### Patch Changes
