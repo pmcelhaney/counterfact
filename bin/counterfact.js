@@ -90,7 +90,12 @@ async function main(source, destination) {
     "",
     `| API Base URL  ==> ${url}`,
     `| Swagger UI    ==> ${swaggerUrl}`,
+    "",
     "| Instructions  ==> https://counterfact.dev/docs/usage.html",
+    "| Help/feedback ==> https://github.com/pmcelhaney/counterfact/issues",
+    "",
+    "🎉 VERSION 1.0 IS COMING! LEARN MORE:",
+    "   https://github.com/pmcelhaney/counterfact/issues/823",
     "",
     "Starting REPL, type .help for more info",
   ];
