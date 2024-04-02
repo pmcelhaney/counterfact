@@ -1,5 +1,11 @@
 # counterfact
 
+## 0.38.2
+
+### Patch Changes
+
+- 729a8e1: added an announcement about impeding 1.0 release
+
 ## 0.38.1
 
 ### Patch Changes
