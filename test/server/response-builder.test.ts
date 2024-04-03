@@ -151,6 +151,31 @@ describe("a response builder", () => {
         },
       ]);
     });
+
+    it("returns 500 if it doesn't know what to do with the status code", () => {
+      const operationWithInvalidSchema = structuredClone(operation);
+
+      // @ts-expect-error TypeScript can't track the type with structuredClone()
+      operationWithInvalidSchema.responses[200].content[
+        "application/json"
+      ].schema.type = "file";
+
+      const response = createResponseBuilder(
+        operationWithInvalidSchema,
+      )[200]?.random();
+
+      expect(response?.status).toBe(200);
+      expect(response?.content).toStrictEqual([
+        {
+          body: undefined,
+          type: "application/json",
+        },
+        {
+          body: "example text response",
+          type: "text/plain",
+        },
+      ]);
+    });
   });
 
   describe("builds a random response based on an Open API operation object (OpenAPI 2)", () => {

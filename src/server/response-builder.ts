@@ -6,6 +6,8 @@ import type { OpenApiOperation, ResponseBuilder } from "./types.d.ts";
 JSONSchemaFaker.option("useExamplesValue", true);
 JSONSchemaFaker.option("minItems", 0);
 JSONSchemaFaker.option("maxItems", 20);
+JSONSchemaFaker.option("failOnInvalidTypes", false);
+JSONSchemaFaker.option("failOnInvalidFormat", false);
 
 function convertToXmlIfNecessary(
   type: string,
