@@ -1,5 +1,11 @@
 # counterfact
 
+## 0.38.3
+
+### Patch Changes
+
+- 49733d6: configure JSONSchemaFaker to not fail on invalid types
+
 ## 0.38.2
 
 ### Patch Changes
