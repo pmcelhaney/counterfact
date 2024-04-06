@@ -25,18 +25,6 @@ function isContextModule(
   return "Context" in module && typeof module.Context === "function";
 }
 
-function reportLoadError(error: unknown, fileUrl: string) {
-  if (
-    String(error) ===
-    "SyntaxError: Identifier 'Context' has already been declared"
-  ) {
-    // Not sure why Node throws this error. It doesn't seem to matter.
-    return;
-  }
-
-  process.stdout.write(`\nError loading ${fileUrl}:\n~~${String(error)}~~\n`);
-}
-
 export class ModuleLoader extends EventTarget {
   private readonly basePath: string;
 
@@ -66,8 +54,8 @@ export class ModuleLoader extends EventTarget {
   public async watch(): Promise<void> {
     this.watcher = watch(`${this.basePath}/**/*.{js,mjs,ts,mts}`).on(
       "all",
-      // eslint-disable-next-line max-statements
-      (eventName: string, pathNameOriginal: string) => {
+      // eslint-disable-next-line max-statements, @typescript-eslint/no-misused-promises
+      async (eventName: string, pathNameOriginal: string) => {
         const pathName = pathNameOriginal.replaceAll("\\", "/");
 
         if (pathName.includes("$.context") && eventName === "add") {
@@ -92,31 +80,23 @@ export class ModuleLoader extends EventTarget {
         }
 
         debug("importing module: %s", pathName);
-        this.uncachedImport(pathName)
-          // eslint-disable-next-line promise/prefer-await-to-then
-          .then((endpoint) => {
-            this.dispatchEvent(new Event(eventName));
+        const endpoint = await this.uncachedImport(pathName);
 
-            if (pathName.includes("_.context")) {
-              this.contextRegistry.update(
-                parts.dir,
+        this.dispatchEvent(new Event(eventName));
 
-                // @ts-expect-error TS says Context has no constructable signatures but that's not true?
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/consistent-type-assertions
-                new (endpoint as ContextModule).Context(),
-              );
-              return "context";
-            }
+        if (pathName.includes("_.context")) {
+          this.contextRegistry.update(
+            parts.dir,
 
-            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-            this.registry.add(url, endpoint as Module);
+            // @ts-expect-error TS says Context has no constructable signatures but that's not true?
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/consistent-type-assertions
+            new (endpoint as ContextModule).Context(),
+          );
+          return;
+        }
 
-            return "path";
-          })
-          // eslint-disable-next-line promise/prefer-await-to-then
-          .catch((error: unknown) => {
-            reportLoadError(error, pathName);
-          });
+        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+        this.registry.add(url, endpoint as Module);
       },
     );
     await once(this.watcher, "ready");
