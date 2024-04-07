@@ -99,6 +99,6 @@
     "node-fetch": "3.3.2",
     "open": "10.1.0",
     "prettier": "3.2.5",
-    "typescript": "5.4.3"
+    "typescript": "5.4.4"
   }
 }
