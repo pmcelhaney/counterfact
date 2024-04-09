@@ -97,15 +97,28 @@ export class Dispatcher {
     return types;
   }
 
+  private findOperation(
+    path: string,
+    method: HttpMethods,
+  ): OpenApiOperation | undefined {
+    for (const key in this.openApiDocument?.paths) {
+      if (key.toLowerCase() === path.toLowerCase()) {
+        return this.openApiDocument.paths[key]?.[
+          // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+          method.toLowerCase() as Lowercase<HttpMethods>
+        ];
+        break;
+      }
+    }
+
+    return undefined;
+  }
+
   public operationForPathAndMethod(
     path: string,
     method: HttpMethods,
   ): OpenApiOperation | undefined {
-    const operation: OpenApiOperation | undefined =
-      this.openApiDocument?.paths[path]?.[
-        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-        method.toLowerCase() as Lowercase<HttpMethods>
-      ];
+    const operation = this.findOperation(path, method);
 
     if (operation === undefined) {
       return undefined;
