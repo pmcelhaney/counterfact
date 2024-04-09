@@ -69,7 +69,7 @@ export class OperationTypeCoder extends Coder {
   }
 
   // eslint-disable-next-line max-statements
-  write(script) {
+  writeCode(script) {
     // eslint-disable-next-line no-param-reassign
     script.comments = READ_ONLY_COMMENTS;
 

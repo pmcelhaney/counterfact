@@ -52,10 +52,14 @@ export class SchemaCoder extends Coder {
   }
 
   write(script) {
-    if (this.requirement.isReference) {
+    if (this.requirement?.isReference) {
       return script.import(this);
     }
 
+    return this.writeCode(script);
+  }
+
+  writeCode(script) {
     const { type } = this.requirement.data;
 
     if (type === "object") {

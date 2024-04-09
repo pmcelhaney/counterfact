@@ -36,7 +36,7 @@ describe("a Coder", () => {
 
   it("writes code synchronously given a requirement that is loaded", () => {
     class JsonCoder extends Coder {
-      write() {
+      writeCode() {
         return JSON.stringify(this.requirement.data);
       }
     }

@@ -30,7 +30,7 @@ describe("integration Test", () => {
         yield `HTTP_${this.requirement.url.split("/").at(-1).toUpperCase()}`;
       }
 
-      write() {
+      writeCode() {
         return "() => {}";
       }
     }

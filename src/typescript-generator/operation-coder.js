@@ -13,7 +13,7 @@ export class OperationCoder extends Coder {
     return super.names(this.requestMethod());
   }
 
-  write() {
+  writeCode() {
     const responses = this.requirement.get("responses");
 
     const [firstStatusCode] = responses.map(

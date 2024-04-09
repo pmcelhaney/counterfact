@@ -180,7 +180,7 @@ describe("a Script", () => {
         }
       }
 
-      write() {
+      writeCode() {
         return "{ }";
       }
     }

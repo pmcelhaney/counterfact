@@ -98,7 +98,7 @@ export class ResponseTypeCoder extends Coder {
     );
   }
 
-  write(script) {
+  writeCode(script) {
     script.importSharedType("ResponseBuilderFactory");
 
     const text = `ResponseBuilderFactory<${this.buildResponseObjectType(

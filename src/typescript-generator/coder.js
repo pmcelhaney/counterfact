@@ -15,10 +15,12 @@ export class Coder {
     return "";
   }
 
-  write() {
-    // This method should be overridden by a subclass.
+  write(script) {
+    if (this.requirement?.isReference) {
+      return script.importType(this);
+    }
 
-    return `/* ${this.id} */`;
+    return this.writeCode(script);
   }
 
   async delegate() {

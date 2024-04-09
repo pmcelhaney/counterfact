@@ -33,6 +33,10 @@ describe("a SchemaCoder", () => {
 
         return "aVariable";
       },
+
+      importType() {
+        return "aType";
+      },
     };
 
     const result = coder.write(script);

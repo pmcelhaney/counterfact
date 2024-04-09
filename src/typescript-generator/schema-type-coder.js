@@ -115,13 +115,7 @@ export class SchemaTypeCoder extends Coder {
     return `components/${this.requirement.data.$ref.split("/").at(-1)}.ts`;
   }
 
-  write(script) {
-    // script.comments = READ_ONLY_COMMENTS;
-
-    if (this.requirement.isReference) {
-      return script.importType(this);
-    }
-
+  writeCode(script) {
     const { allOf, anyOf, oneOf, type } = this.requirement.data;
 
     if (allOf ?? anyOf ?? oneOf) {
