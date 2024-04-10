@@ -1,3 +1,4 @@
+import { describe, expect, it } from "@jest/globals";
 import prettier from "prettier";
 
 import { ParametersTypeCoder } from "../../src/typescript-generator/parameters-type-coder.js";

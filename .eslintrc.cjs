@@ -84,15 +84,17 @@ module.exports = {
       rules: {
         ...rules,
         "@typescript-eslint/naming-convention": "off",
+        "@typescript-eslint/no-shadow": "off",
         "id-length": ["off"],
-
+        "import/no-extraneous-dependencies": "off",
         "import/unambiguous": "off",
-
         "jest/prefer-expect-assertions": "off",
 
         "jest/unbound-method": "off",
 
         "max-lines": "off",
+
+        "n/no-extraneous-import": "off",
 
         "new-cap": [
           "error",
@@ -100,6 +102,8 @@ module.exports = {
         ],
 
         "no-magic-numbers": ["off"],
+
+        "no-shadow": "off",
         "node/no-unpublished-import": "off",
       },
     },

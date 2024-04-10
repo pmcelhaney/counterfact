@@ -1,4 +1,6 @@
 /* eslint-disable max-len */
+import { describe, expect, it } from "@jest/globals";
+
 import { Coder } from "../../src/typescript-generator/coder.js";
 import { Repository } from "../../src/typescript-generator/repository.js";
 

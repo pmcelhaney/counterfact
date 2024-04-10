@@ -8,7 +8,7 @@
 import { exec } from "node:child_process";
 import fs from "node:fs";
 
-// eslint-disable-next-line @typescript-eslint/no-shadow, no-shadow
+import { afterAll, beforeAll, describe, expect, it } from "@jest/globals";
 import fetch from "node-fetch";
 
 const SERVER_START_WAIT_SECONDS = 10;
