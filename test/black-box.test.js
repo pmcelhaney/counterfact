@@ -63,6 +63,12 @@ describe("black box test", () => {
     ).toMatchSnapshot();
   });
 
+  it("creates a type for the /hello/kitty path", () => {
+    expect(
+      fs.readFileSync("./out/path-types/hello/kitty.types.ts", "utf8"),
+    ).toMatchSnapshot();
+  });
+
   it("compiles kitty.ts", () => {
     expect(
       fs.readFileSync("./out/.cache/hello/kitty.js", "utf8"),

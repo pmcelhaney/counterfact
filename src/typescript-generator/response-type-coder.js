@@ -1,6 +1,12 @@
+import createDebug from "debug";
+
 import { Coder } from "./coder.js";
 import { printObject, printObjectWithoutQuotes } from "./printers.js";
 import { SchemaTypeCoder } from "./schema-type-coder.js";
+
+const debug = createDebug(
+  "countefact:typescript-generator:coder:response-type",
+);
 
 export class ResponseTypeCoder extends Coder {
   constructor(requirement, openApi2MediaTypes = []) {
@@ -99,6 +105,8 @@ export class ResponseTypeCoder extends Coder {
   }
 
   writeCode(script) {
+    debug("writing code for %s", script.path);
+
     script.importSharedType("ResponseBuilderFactory");
 
     const text = `ResponseBuilderFactory<${this.buildResponseObjectType(

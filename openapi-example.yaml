@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: 1.0.0 
+  version: 1.0.0
   title: Sample API
   description: A sample API to illustrate OpenAPI concepts
 paths:
@@ -12,9 +12,8 @@ paths:
           description: Successful response
           content:
             application/json:
-              schema: 
-                type: 
-                  string
+              schema:
+                type: string
               examples:
                 no visits:
                   value: You have not visited anyone yet
@@ -26,9 +25,8 @@ paths:
           description: Successful response
           content:
             application/json:
-              schema: 
-                type: 
-                  string
+              schema:
+                type: string
               examples:
                 hello kitty:
                   value: >-
@@ -53,12 +51,39 @@ paths:
                 type: string
           content:
             application/json:
-              schema: 
-                type: 
-                  string
+              schema:
+                type: string
                 example: an example string
               examples:
                 hello-example1:
                   value: Hello, example1
                 hello-example2:
                   value: Hello, example2
+  /path-one:
+    get:
+      responses:
+        "400":
+          $ref: "#/components/responses/BadRequest"
+
+components:
+  responses:
+    BadRequest:
+      description: The request is malformed and so cannot be processed
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+  schemas:
+    Error:
+      title: Error
+      description: A generic error message suitable for 4xx and 5xx responses
+      type: object
+      properties:
+        code:
+          type: string
+          description: A machine readable error code
+        message:
+          type: string
+          description: A detailed description of the error
+      required:
+        - message

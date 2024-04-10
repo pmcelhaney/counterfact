@@ -1,11 +1,17 @@
 import nodePath from "node:path";
 
+import createDebug from "debug";
+
 import { Coder } from "./coder.js";
 import { CONTEXT_FILE_TOKEN } from "./context-file-token.js";
 import { ParametersTypeCoder } from "./parameters-type-coder.js";
 import { READ_ONLY_COMMENTS } from "./read-only-comments.js";
 import { ResponseTypeCoder } from "./response-type-coder.js";
 import { SchemaTypeCoder } from "./schema-type-coder.js";
+
+const debug = createDebug(
+  "counterfact:typescript-generator:coder:operation-type",
+);
 
 export class OperationTypeCoder extends Coder {
   names() {
@@ -14,14 +20,32 @@ export class OperationTypeCoder extends Coder {
     );
   }
 
+  hackyDereference(originalResponse) {
+    const reference = originalResponse.data.$ref;
+
+    if (!reference.startsWith("#/")) {
+      throw new Error(
+        `Cannot look up "${reference}"; this is a bug in Counterfact.`,
+      );
+    }
+
+    return this.requirement.specification.rootRequirement.select(
+      reference.slice(2),
+    );
+  }
+
   responseTypes(script) {
     return this.requirement
       .get("responses")
-      .flatMap((response, responseCode) => {
+      .flatMap((originalResponse, responseCode) => {
         const status =
           responseCode === "default"
             ? "number | undefined"
             : Number.parseInt(responseCode, 10);
+
+        const response = originalResponse.isReference
+          ? this.hackyDereference(originalResponse)
+          : originalResponse;
 
         if (response.has("content")) {
           return response.get("content").map(
@@ -70,6 +94,8 @@ export class OperationTypeCoder extends Coder {
 
   // eslint-disable-next-line max-statements
   writeCode(script) {
+    debug("writing code for %s", script.path);
+
     // eslint-disable-next-line no-param-reassign
     script.comments = READ_ONLY_COMMENTS;
 
