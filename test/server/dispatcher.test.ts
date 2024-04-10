@@ -852,13 +852,26 @@ describe("given a request that contains the differently cased path", () => {
       },
     });
 
-    const response = await dispatcher.request({
+    let response = await dispatcher.request({
       body: "",
       headers: {},
       method: "POST",
       path: "/abc",
       query: {},
       req: { path: "/abc" },
+    });
+
+    expect(response.status).toBe(200);
+
+    expect(response.body).toBe("ok");
+
+    response = await dispatcher.request({
+      body: "",
+      headers: {},
+      method: "POST",
+      path: "/ABC",
+      query: {},
+      req: { path: "/ABC" },
     });
 
     expect(response.status).toBe(200);

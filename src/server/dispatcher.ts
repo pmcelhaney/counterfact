@@ -101,13 +101,14 @@ export class Dispatcher {
     path: string,
     method: HttpMethods,
   ): OpenApiOperation | undefined {
-    for (const key in this.openApiDocument?.paths) {
-      if (key.toLowerCase() === path.toLowerCase()) {
-        return this.openApiDocument.paths[key]?.[
-          // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-          method.toLowerCase() as Lowercase<HttpMethods>
-        ];
-        break;
+    if (this.openApiDocument) {
+      for (const key in this.openApiDocument.paths) {
+        if (key.toLowerCase() === path.toLowerCase()) {
+          return this.openApiDocument.paths[key]?.[
+            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+            method.toLowerCase() as Lowercase<HttpMethods>
+          ];
+        }
       }
     }
 
