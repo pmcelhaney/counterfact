@@ -80,8 +80,10 @@ export async function generate(
 
   paths.forEach((pathDefinition, key) => {
     debug("processing path %s", key);
-    pathDefinition.forEach((operation) => {
-      repository.get(`paths${key}.ts`).export(new OperationCoder(operation));
+    pathDefinition.forEach((operation, requestMethod) => {
+      repository
+        .get(`paths${key}.ts`)
+        .export(new OperationCoder(operation, requestMethod));
     });
   });
 
