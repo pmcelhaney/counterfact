@@ -46,6 +46,21 @@ Options:
 
 </details>
 
+## Using with npm or yarn 🧶
+
+If you prefer not to use `npx` against the `@latest` version, you can install Counterfact as a dependency with a specific version in npm or yarn. The following example adds a start script to your `package.json` file and adds Counterfact as a dev dependency.
+
+```json
+"scripts": {
+  "start": "npx counterfact https://petstore3.swagger.io/api/v3/openapi.json api"
+},
+"devDependencies": {
+  "counterfact": "^0.38.3",
+}
+```
+This will let your team use the same version of Counterfact across all environments. You can also use `npm run start` or `yarn start` to start the server.
+</details>
+
 ## Generated Code 🏖
 
 After generating code you should have three directories:
