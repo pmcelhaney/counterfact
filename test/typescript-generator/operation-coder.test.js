@@ -9,23 +9,21 @@ function format(code) {
 
 describe("an OperationCoder", () => {
   it("generates a list of potential names", () => {
-    const coder = new OperationCoder(new Requirement({}, "#/paths/hello/get"));
+    const coder = new OperationCoder(
+      new Requirement({}, "#/paths/hello/get"),
+      "get",
+    );
 
     const [one, two, three] = coder.names();
 
     expect([one, two, three]).toStrictEqual(["GET", "GET2", "GET3"]);
   });
 
-  it("finds the request method in the URL", () => {
-    const get = new OperationCoder(new Requirement({}, "#/paths/hello/get"));
-    const put = new OperationCoder(new Requirement({}, "#/paths/hello/put"));
-
-    expect(get.requestMethod()).toBe("GET");
-    expect(put.requestMethod()).toBe("PUT");
-  });
-
   it("creates a type declaration", () => {
-    const coder = new OperationCoder(new Requirement({}, "#/paths/hello/get"));
+    const coder = new OperationCoder(
+      new Requirement({}, "#/paths/hello/get"),
+      "get",
+    );
 
     const script = {
       importType() {
@@ -38,7 +36,8 @@ describe("an OperationCoder", () => {
 
   it("returns the module path", () => {
     const coder = new OperationCoder(
-      new Requirement({}, "#/paths/hello~1world/get"),
+      new Requirement({}, "#/paths/hello~1world/get", "get"),
+      "get",
     );
 
     expect(coder.modulePath()).toBe("path/hello/world.types.ts");
@@ -91,7 +90,7 @@ describe("an OperationCoder", () => {
       "#/paths/hello/get",
     );
 
-    const coder = new OperationCoder(requirement);
+    const coder = new OperationCoder(requirement, "get");
 
     await expect(
       format(
@@ -124,7 +123,7 @@ describe("an OperationCoder", () => {
       "#/paths/hello/post",
     );
 
-    const coder = new OperationCoder(requirement);
+    const coder = new OperationCoder(requirement, "get");
 
     await expect(
       format(

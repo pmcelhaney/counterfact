@@ -8,10 +8,18 @@ import { ResponseTypeCoder } from "./response-type-coder.js";
 import { SchemaTypeCoder } from "./schema-type-coder.js";
 
 export class OperationTypeCoder extends Coder {
+  constructor(requirement, requestMethod) {
+    super(requirement);
+
+    if (requestMethod === undefined) {
+      throw new Error("requestMethod is required");
+    }
+
+    this.requestMethod = requestMethod;
+  }
+
   names() {
-    return super.names(
-      `HTTP_${this.requirement.url.split("/").at(-1).toUpperCase()}`,
-    );
+    return super.names(`HTTP_${this.requestMethod.toUpperCase()}`);
   }
 
   responseTypes(script) {
