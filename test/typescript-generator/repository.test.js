@@ -1,3 +1,4 @@
+import { describe, expect, it } from "@jest/globals";
 import { usingTemporaryFiles } from "using-temporary-files";
 
 import { Repository } from "../../src/typescript-generator/repository.js";

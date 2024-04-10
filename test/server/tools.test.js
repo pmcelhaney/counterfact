@@ -1,3 +1,5 @@
+import { describe, expect, it } from "@jest/globals";
+
 import { Tools } from "../../src/server/tools.ts";
 
 describe("tools", () => {

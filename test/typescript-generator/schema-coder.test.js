@@ -1,3 +1,4 @@
+import { describe, expect, it } from "@jest/globals";
 import prettier from "prettier";
 
 import { Requirement } from "../../src/typescript-generator/requirement.js";

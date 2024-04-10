@@ -1,3 +1,4 @@
+import { describe, expect, it } from "@jest/globals";
 import prettier from "prettier";
 
 import { OperationCoder } from "../../src/typescript-generator/operation-coder.js";

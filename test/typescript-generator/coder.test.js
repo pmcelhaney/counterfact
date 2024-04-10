@@ -1,3 +1,5 @@
+import { describe, expect, it } from "@jest/globals";
+
 import { Coder } from "../../src/typescript-generator/coder.js";
 import { Requirement } from "../../src/typescript-generator/requirement.js";
 import { Specification } from "../../src/typescript-generator/specification.js";

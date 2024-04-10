@@ -1,5 +1,6 @@
 import { pathToFileURL } from "node:url";
 
+import { describe, expect, it } from "@jest/globals";
 import Koa from "koa";
 
 import { Requirement } from "../../src/typescript-generator/requirement.js";
