@@ -5,12 +5,18 @@ import { Coder } from "./coder.js";
 import { OperationTypeCoder } from "./operation-type-coder.js";
 
 export class OperationCoder extends Coder {
-  requestMethod() {
-    return this.requirement.url.split("/").at(-1).toUpperCase();
+  constructor(requirement, requestMethod) {
+    super(requirement);
+
+    if (requestMethod === undefined) {
+      throw new Error("requestMethod is required");
+    }
+
+    this.requestMethod = requestMethod;
   }
 
   names() {
-    return super.names(this.requestMethod());
+    return super.names(this.requestMethod.toUpperCase());
   }
 
   write() {
@@ -37,7 +43,10 @@ export class OperationCoder extends Coder {
   }
 
   typeDeclaration(namespace, script) {
-    const operationTypeCoder = new OperationTypeCoder(this.requirement);
+    const operationTypeCoder = new OperationTypeCoder(
+      this.requirement,
+      this.requestMethod,
+    );
 
     return script.importType(operationTypeCoder);
   }

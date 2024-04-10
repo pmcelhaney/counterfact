@@ -36,6 +36,7 @@ describe("an OperationTypeCoder", () => {
   it("generates a list of potential names", () => {
     const coder = new OperationTypeCoder(
       new Requirement({}, "#/paths/hello/get"),
+      "get",
     );
 
     const [one, two, three] = coder.names();
@@ -50,6 +51,7 @@ describe("an OperationTypeCoder", () => {
   it("creates a type declaration", () => {
     const coder = new OperationTypeCoder(
       new Requirement({}, "#/paths/hello/get"),
+      "get",
     );
 
     expect(coder.typeDeclaration(undefined, dummyScript)).toBe("");
@@ -58,6 +60,7 @@ describe("an OperationTypeCoder", () => {
   it("returns the module path", () => {
     const coder = new OperationTypeCoder(
       new Requirement({}, "#/paths/hello~1world/get"),
+      "get",
     );
 
     expect(coder.modulePath()).toBe("path-types/hello/world.types.ts");
@@ -119,7 +122,7 @@ describe("an OperationTypeCoder", () => {
       "#/paths/hello/post",
     );
 
-    const coder = new OperationTypeCoder(requirement);
+    const coder = new OperationTypeCoder(requirement, "get");
 
     await expect(
       format(`type TestType = ${coder.write(dummyScript)}`),
@@ -161,7 +164,7 @@ describe("an OperationTypeCoder", () => {
       "#/paths/hello/post",
     );
 
-    const coder = new OperationTypeCoder(requirement);
+    const coder = new OperationTypeCoder(requirement, "get");
 
     await expect(
       format(`type TestType = ${coder.write(dummyScript)}`),
@@ -210,7 +213,7 @@ describe("an OperationTypeCoder", () => {
       specification,
     );
 
-    const coder = new OperationTypeCoder(requirement);
+    const coder = new OperationTypeCoder(requirement, "get");
 
     await expect(
       format(`type TestType = ${coder.write(dummyScript)}`),
@@ -233,7 +236,7 @@ describe("an OperationTypeCoder", () => {
       "#/paths/hello/get",
     );
 
-    const coder = new OperationTypeCoder(requirement);
+    const coder = new OperationTypeCoder(requirement, "get");
 
     await expect(
       format(`type TestType =${coder.write(dummyScript)}`),
@@ -254,7 +257,7 @@ describe("an OperationTypeCoder", () => {
       "#/paths/hello/get",
     );
 
-    const coder = new OperationTypeCoder(requirement);
+    const coder = new OperationTypeCoder(requirement, "get");
 
     await expect(
       format(`type TestType =${coder.write(dummyScript)}`),
@@ -275,7 +278,7 @@ describe("an OperationTypeCoder", () => {
       "#/paths/hello/get",
     );
 
-    const coder = new OperationTypeCoder(requirement);
+    const coder = new OperationTypeCoder(requirement, "get");
 
     await expect(
       format(`type TestType =${coder.write(dummyScript)}`),
