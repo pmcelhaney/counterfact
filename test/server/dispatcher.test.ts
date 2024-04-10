@@ -818,3 +818,64 @@ describe("given a request that contains the OpenApi basePath", () => {
     expect(response.body).toBe("ok");
   });
 });
+
+describe("given a request that contains the differently cased path", () => {
+  it("correctly returns the desired path response even when case of path does not match", async () => {
+    const registry = new Registry();
+
+    registry.add("/abc", {
+      POST() {
+        return {
+          body: "ok",
+          status: 200,
+        };
+      },
+    });
+
+    const dispatcher = new Dispatcher(registry, new ContextRegistry(), {
+      paths: {
+        "/Abc": {
+          post: {
+            responses: {
+              200: {
+                content: {
+                  "text/plain": {
+                    schema: {
+                      type: "string",
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+
+    let response = await dispatcher.request({
+      body: "",
+      headers: {},
+      method: "POST",
+      path: "/abc",
+      query: {},
+      req: { path: "/abc" },
+    });
+
+    expect(response.status).toBe(200);
+
+    expect(response.body).toBe("ok");
+
+    response = await dispatcher.request({
+      body: "",
+      headers: {},
+      method: "POST",
+      path: "/ABC",
+      query: {},
+      req: { path: "/ABC" },
+    });
+
+    expect(response.status).toBe(200);
+
+    expect(response.body).toBe("ok");
+  });
+});
