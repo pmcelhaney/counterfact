@@ -1,6 +1,6 @@
-import { Coder } from "./coder.js";
+import { TypeCoder } from "./type-coder.js";
 
-export class SchemaTypeCoder extends Coder {
+export class SchemaTypeCoder extends TypeCoder {
   names() {
     return super.names(this.requirement.data.$ref.split("/").at(-1));
   }

@@ -15,10 +15,14 @@ export class Coder {
     return "";
   }
 
-  write() {
-    // This method should be overridden by a subclass.
+  writeToScript(script) {
+    return this.write(script);
+  }
 
-    return `/* ${this.id} */`;
+  write() {
+    throw new Error(
+      "write() is abstract and should be overwritten by a subclass",
+    );
   }
 
   async delegate() {

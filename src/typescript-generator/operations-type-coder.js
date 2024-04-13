@@ -1,13 +1,13 @@
 import nodePath from "node:path";
 
-import { Coder } from "./coder.js";
 import { CONTEXT_FILE_TOKEN } from "./context-file-token.js";
 import { ParametersTypeCoder } from "./parameters-type-coder.js";
 import { READ_ONLY_COMMENTS } from "./read-only-comments.js";
 import { ResponsesTypeCoder } from "./responses-type-coder.js";
 import { SchemaTypeCoder } from "./schema-type-coder.js";
+import { TypeCoder } from "./type-coder.js";
 
-export class OperationsTypeCoder extends Coder {
+export class OperationsTypeCoder extends TypeCoder {
   constructor(requirement, requestMethod) {
     super(requirement);
 

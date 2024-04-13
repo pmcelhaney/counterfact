@@ -1,9 +1,9 @@
-import { Coder } from "./coder.js";
 import { printObject, printObjectWithoutQuotes } from "./printers.js";
 import { ResponseTypeCoder } from "./response-type-coder.js";
 import { SchemaTypeCoder } from "./schema-type-coder.js";
+import { TypeCoder } from "./type-coder.js";
 
-export class ResponsesTypeCoder extends Coder {
+export class ResponsesTypeCoder extends TypeCoder {
   constructor(requirement, openApi2MediaTypes = []) {
     super(requirement);
 

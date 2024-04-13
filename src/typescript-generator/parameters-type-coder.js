@@ -1,9 +1,9 @@
 import nodePath from "node:path";
 
-import { Coder } from "./coder.js";
 import { SchemaTypeCoder } from "./schema-type-coder.js";
+import { TypeCoder } from "./type-coder.js";
 
-export class ParametersTypeCoder extends Coder {
+export class ParametersTypeCoder extends TypeCoder {
   constructor(requirement, placement) {
     super(requirement);
 
