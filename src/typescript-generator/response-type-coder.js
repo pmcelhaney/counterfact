@@ -9,6 +9,10 @@ export class ResponseTypeCoder extends Coder {
     this.openApi2MediaTypes = openApi2MediaTypes;
   }
 
+  names() {
+    return super.names(this.requirement.data.$ref.split("/").at(-1));
+  }
+
   typeForDefaultStatusCode(listedStatusCodes) {
     const definedStatusCodes = listedStatusCodes.filter(
       (key) => key !== "default",
@@ -85,8 +89,14 @@ export class ResponseTypeCoder extends Coder {
     return requiredHeaders.length === 0 ? "never" : requiredHeaders.join(" | ");
   }
 
+  modulePath() {
+    return `components/${this.requirement.data.$ref.split("/").at(-1)}.ts`;
+  }
+
   write(script) {
-    script.importSharedType("ResponseBuilderFactory");
+    if (this.requirement.isReference) {
+      return script.importType(this);
+    }
 
     const text = `{
           headers: ${this.printHeaders(script, this.requirement)};
