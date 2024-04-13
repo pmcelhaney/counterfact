@@ -15,11 +15,15 @@ export class Coder {
     return "";
   }
 
-  writeToScript(script) {
-    return this.write(script);
+  write(script) {
+    if (this.requirement.isReference) {
+      return script.import(this);
+    }
+
+    return this.writeCode(script);
   }
 
-  write() {
+  writeCode() {
     throw new Error(
       "write() is abstract and should be overwritten by a subclass",
     );

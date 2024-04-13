@@ -93,11 +93,7 @@ export class ResponseTypeCoder extends Coder {
     return `components/${this.requirement.data.$ref.split("/").at(-1)}.ts`;
   }
 
-  write(script) {
-    if (this.requirement.isReference) {
-      return script.importType(this);
-    }
-
+  writeCode(script) {
     const text = `{
           headers: ${this.printHeaders(script, this.requirement)};
           requiredHeaders: ${this.printRequiredHeaders(this.requirement)};

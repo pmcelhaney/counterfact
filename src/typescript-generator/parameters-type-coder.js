@@ -14,7 +14,7 @@ export class ParametersTypeCoder extends TypeCoder {
     return super.names("parameters");
   }
 
-  write(script) {
+  writeCode(script) {
     const typeDefinitions = (this.requirement?.data ?? [])
       .filter((parameter) => parameter.in === this.placement)
       .map((parameter, index) => {

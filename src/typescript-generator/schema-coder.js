@@ -51,11 +51,7 @@ export class SchemaCoder extends Coder {
     return `components/${this.requirement.data.$ref.split("/").at(-1)}.ts`;
   }
 
-  write(script) {
-    if (this.requirement.isReference) {
-      return script.import(this);
-    }
-
+  writeCode(script) {
     const { type } = this.requirement.data;
 
     if (type === "object") {

@@ -62,7 +62,7 @@ export class Script {
       // eslint-disable-next-line promise/prefer-await-to-then
       .then((availableCoder) => {
         exportStatement.name = name;
-        exportStatement.code = availableCoder.writeToScript(this);
+        exportStatement.code = availableCoder.write(this);
 
         return availableCoder;
       })
