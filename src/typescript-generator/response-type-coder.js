@@ -1,9 +1,8 @@
 import { Coder } from "./coder.js";
-import { printObject, printObjectWithoutQuotes } from "./printers.js";
-import { ResponseTypeCoder } from "./response-type-coder.js";
+import { printObject } from "./printers.js";
 import { SchemaTypeCoder } from "./schema-type-coder.js";
 
-export class ResponsesTypeCoder extends Coder {
+export class ResponseTypeCoder extends Coder {
   constructor(requirement, openApi2MediaTypes = []) {
     super(requirement);
 
@@ -86,21 +85,14 @@ export class ResponsesTypeCoder extends Coder {
     return requiredHeaders.length === 0 ? "never" : requiredHeaders.join(" | ");
   }
 
-  buildResponseObjectType(script) {
-    return printObjectWithoutQuotes(
-      this.requirement.map((response, responseCode) => [
-        this.normalizeStatusCode(responseCode),
-        new ResponseTypeCoder(response, this.openApi2MediaTypes).write(script),
-      ]),
-    );
-  }
-
   write(script) {
     script.importSharedType("ResponseBuilderFactory");
 
-    const text = `ResponseBuilderFactory<${this.buildResponseObjectType(
-      script,
-    )}>`;
+    const text = `{
+          headers: ${this.printHeaders(script, this.requirement)};
+          requiredHeaders: ${this.printRequiredHeaders(this.requirement)};
+          content: ${this.printContentObjectType(script, this.requirement)};
+        }`;
 
     if (text.includes("HttpStatusCode")) {
       script.importSharedType("HttpStatusCode");
