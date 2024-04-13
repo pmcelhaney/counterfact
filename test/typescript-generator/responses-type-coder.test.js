@@ -1,11 +1,11 @@
 import { describe, expect, it } from "@jest/globals";
 
 import { Requirement } from "../../src/typescript-generator/requirement.js";
-import { ResponseTypeCoder } from "../../src/typescript-generator/response-type-coder.js";
+import { ResponsesTypeCoder } from "../../src/typescript-generator/responses-type-coder.js";
 
-describe("a ResponseTypeCoder", () => {
+describe("a ResponsesTypeCoder", () => {
   it("creates a type for a status code", () => {
-    const coder = new ResponseTypeCoder({
+    const coder = new ResponsesTypeCoder({
       data: {
         200: {},
         default: {},
@@ -18,7 +18,7 @@ describe("a ResponseTypeCoder", () => {
   });
 
   it("creates a type for a default status code when some status codes are defined", () => {
-    const coder = new ResponseTypeCoder({
+    const coder = new ResponsesTypeCoder({
       data: {
         200: {},
         201: {},
@@ -32,7 +32,7 @@ describe("a ResponseTypeCoder", () => {
   });
 
   it("creates a type for a default status code when its the only entry, so it could represent any status code", () => {
-    const coder = new ResponseTypeCoder({
+    const coder = new ResponsesTypeCoder({
       data: {
         default: {},
       },
@@ -44,7 +44,7 @@ describe("a ResponseTypeCoder", () => {
   });
 
   it("prints required headers", () => {
-    const coder = new ResponseTypeCoder({
+    const coder = new ResponsesTypeCoder({
       data: {
         default: {},
       },

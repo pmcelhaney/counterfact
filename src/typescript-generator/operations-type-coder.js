@@ -7,7 +7,7 @@ import { READ_ONLY_COMMENTS } from "./read-only-comments.js";
 import { ResponsesTypeCoder } from "./responses-type-coder.js";
 import { SchemaTypeCoder } from "./schema-type-coder.js";
 
-export class OperationTypeCoder extends Coder {
+export class OperationsTypeCoder extends Coder {
   constructor(requirement, requestMethod) {
     super(requirement);
 
