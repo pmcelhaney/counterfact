@@ -87,8 +87,6 @@ export async function generate(
     });
   });
 
-  //   repository.get("paths/$.context.ts").exportDefault(new ContextCoder(paths));
-
   debug("telling the repository to write the files to %s", destination);
 
   await repository.writeFiles(destination);
