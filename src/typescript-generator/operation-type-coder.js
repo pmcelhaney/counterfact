@@ -1,13 +1,13 @@
 import nodePath from "node:path";
 
-import { Coder } from "./coder.js";
 import { CONTEXT_FILE_TOKEN } from "./context-file-token.js";
 import { ParametersTypeCoder } from "./parameters-type-coder.js";
 import { READ_ONLY_COMMENTS } from "./read-only-comments.js";
-import { ResponseTypeCoder } from "./response-type-coder.js";
+import { ResponsesTypeCoder } from "./responses-type-coder.js";
 import { SchemaTypeCoder } from "./schema-type-coder.js";
+import { TypeCoder } from "./type-coder.js";
 
-export class OperationTypeCoder extends Coder {
+export class OperationTypeCoder extends TypeCoder {
   constructor(requirement, requestMethod) {
     super(requirement);
 
@@ -77,7 +77,7 @@ export class OperationTypeCoder extends Coder {
   }
 
   // eslint-disable-next-line max-statements
-  write(script) {
+  writeCode(script) {
     // eslint-disable-next-line no-param-reassign
     script.comments = READ_ONLY_COMMENTS;
 
@@ -115,7 +115,7 @@ export class OperationTypeCoder extends Coder {
         ? "never"
         : new SchemaTypeCoder(bodyRequirement).write(script);
 
-    const responseType = new ResponseTypeCoder(
+    const responseType = new ResponsesTypeCoder(
       this.requirement.get("responses"),
       this.requirement.get("produces")?.data ??
         this.requirement.specification?.rootRequirement?.get("produces")?.data,

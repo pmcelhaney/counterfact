@@ -1,6 +1,6 @@
-import { Coder } from "./coder.js";
+import { TypeCoder } from "./type-coder.js";
 
-export class SchemaTypeCoder extends Coder {
+export class SchemaTypeCoder extends TypeCoder {
   names() {
     return super.names(this.requirement.data.$ref.split("/").at(-1));
   }
@@ -115,12 +115,8 @@ export class SchemaTypeCoder extends Coder {
     return `components/${this.requirement.data.$ref.split("/").at(-1)}.ts`;
   }
 
-  write(script) {
+  writeCode(script) {
     // script.comments = READ_ONLY_COMMENTS;
-
-    if (this.requirement.isReference) {
-      return script.importType(this);
-    }
 
     const { allOf, anyOf, oneOf, type } = this.requirement.data;
 

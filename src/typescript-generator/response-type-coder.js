@@ -1,34 +1,16 @@
-import { Coder } from "./coder.js";
-import { printObject, printObjectWithoutQuotes } from "./printers.js";
+import { printObject } from "./printers.js";
 import { SchemaTypeCoder } from "./schema-type-coder.js";
+import { TypeCoder } from "./type-coder.js";
 
-export class ResponseTypeCoder extends Coder {
+export class ResponseTypeCoder extends TypeCoder {
   constructor(requirement, openApi2MediaTypes = []) {
     super(requirement);
 
     this.openApi2MediaTypes = openApi2MediaTypes;
   }
 
-  typeForDefaultStatusCode(listedStatusCodes) {
-    const definedStatusCodes = listedStatusCodes.filter(
-      (key) => key !== "default",
-    );
-
-    if (definedStatusCodes.length === 0) {
-      return "[statusCode in HttpStatusCode]";
-    }
-
-    return `[statusCode in Exclude<HttpStatusCode, ${definedStatusCodes.join(
-      " | ",
-    )}>]`;
-  }
-
-  normalizeStatusCode(statusCode) {
-    if (statusCode === "default") {
-      return this.typeForDefaultStatusCode(Object.keys(this.requirement.data));
-    }
-
-    return statusCode;
+  names() {
+    return super.names(this.requirement.data.$ref.split("/").at(-1));
   }
 
   buildContentObjectType(script, response) {
@@ -85,30 +67,15 @@ export class ResponseTypeCoder extends Coder {
     return requiredHeaders.length === 0 ? "never" : requiredHeaders.join(" | ");
   }
 
-  buildResponseObjectType(script) {
-    return printObjectWithoutQuotes(
-      this.requirement.map((response, responseCode) => [
-        this.normalizeStatusCode(responseCode),
-        `{
-          headers: ${this.printHeaders(script, response)};
-          requiredHeaders: ${this.printRequiredHeaders(response)};
-          content: ${this.printContentObjectType(script, response)};
-        }`,
-      ]),
-    );
+  modulePath() {
+    return `components/${this.requirement.data.$ref.split("/").at(-1)}.ts`;
   }
 
-  write(script) {
-    script.importSharedType("ResponseBuilderFactory");
-
-    const text = `ResponseBuilderFactory<${this.buildResponseObjectType(
-      script,
-    )}>`;
-
-    if (text.includes("HttpStatusCode")) {
-      script.importSharedType("HttpStatusCode");
-    }
-
-    return text;
+  writeCode(script) {
+    return `{
+          headers: ${this.printHeaders(script, this.requirement)};
+          requiredHeaders: ${this.printRequiredHeaders(this.requirement)};
+          content: ${this.printContentObjectType(script, this.requirement)};
+        }`;
   }
 }
