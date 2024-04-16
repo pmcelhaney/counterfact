@@ -226,6 +226,7 @@ export class Dispatcher {
     path,
     query,
     req,
+    user,
   }: {
     body: unknown;
     headers: {
@@ -238,6 +239,10 @@ export class Dispatcher {
     };
     req: {
       path?: string;
+    };
+    user?: {
+      password?: string;
+      username?: string;
     };
   }): Promise<NormalizedCounterfactResponseObject> {
     debug(`request: ${method} ${path}`);
@@ -296,6 +301,8 @@ export class Dispatcher {
       response: createResponseBuilder(operation ?? { responses: {} }),
 
       tools: new Tools({ headers }),
+
+      user,
     });
 
     if (response === undefined) {
