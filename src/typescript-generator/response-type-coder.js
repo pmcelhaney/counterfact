@@ -13,28 +13,6 @@ export class ResponseTypeCoder extends TypeCoder {
     return super.names(this.requirement.data.$ref.split("/").at(-1));
   }
 
-  typeForDefaultStatusCode(listedStatusCodes) {
-    const definedStatusCodes = listedStatusCodes.filter(
-      (key) => key !== "default",
-    );
-
-    if (definedStatusCodes.length === 0) {
-      return "[statusCode in HttpStatusCode]";
-    }
-
-    return `[statusCode in Exclude<HttpStatusCode, ${definedStatusCodes.join(
-      " | ",
-    )}>]`;
-  }
-
-  normalizeStatusCode(statusCode) {
-    if (statusCode === "default") {
-      return this.typeForDefaultStatusCode(Object.keys(this.requirement.data));
-    }
-
-    return statusCode;
-  }
-
   buildContentObjectType(script, response) {
     if (response.has("content")) {
       return response.get("content").map((content, mediaType) => [
@@ -94,16 +72,10 @@ export class ResponseTypeCoder extends TypeCoder {
   }
 
   writeCode(script) {
-    const text = `{
+    return `{
           headers: ${this.printHeaders(script, this.requirement)};
           requiredHeaders: ${this.printRequiredHeaders(this.requirement)};
           content: ${this.printContentObjectType(script, this.requirement)};
         }`;
-
-    if (text.includes("HttpStatusCode")) {
-      script.importSharedType("HttpStatusCode");
-    }
-
-    return text;
   }
 }
