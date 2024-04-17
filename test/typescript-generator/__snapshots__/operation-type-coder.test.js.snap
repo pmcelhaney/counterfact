@@ -21,6 +21,7 @@ exports[`an OperationTypeCoder falls back to root level produces (OpenAPI 2) 1`]
     }>;
     x: SharedType;
     proxy: (url: string) => "COUNTERFACT_RESPONSE";
+    user: never;
   }>,
 ) =>
   | {
@@ -73,6 +74,7 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2 wit
     }>;
     x: SharedType;
     proxy: (url: string) => "COUNTERFACT_RESPONSE";
+    user: never;
   }>,
 ) =>
   | {
@@ -135,6 +137,7 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2) 1`
     }>;
     x: SharedType;
     proxy: (url: string) => "COUNTERFACT_RESPONSE";
+    user: never;
   }>,
 ) =>
   | {
@@ -197,6 +200,7 @@ exports[`an OperationTypeCoder generates a complex post operation 1`] = `
     }>;
     x: SharedType;
     proxy: (url: string) => "COUNTERFACT_RESPONSE";
+    user: never;
   }>,
 ) =>
   | {
@@ -241,6 +245,7 @@ exports[`an OperationTypeCoder generates a simple get operation (OpenAPI 2) 1`] 
     }>;
     x: SharedType;
     proxy: (url: string) => "COUNTERFACT_RESPONSE";
+    user: never;
   }>,
 ) =>
   | {
@@ -275,6 +280,7 @@ exports[`an OperationTypeCoder generates a simple get operation 1`] = `
     }>;
     x: SharedType;
     proxy: (url: string) => "COUNTERFACT_RESPONSE";
+    user: never;
   }>,
 ) =>
   | {
