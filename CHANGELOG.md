@@ -1,5 +1,17 @@
 # counterfact
 
+## 0.39.0
+
+### Minor Changes
+
+- 1f7bfb9: support for basic auth ($.auth.username and $.auth.password)
+
+### Patch Changes
+
+- d0f6f5a: Updates dispatcher class to ignore case when matching paths
+- c4e5ca0: make $ref work everywhere, not just inside schemas (#838)
+- d00f6d7: Update usage docs for installing Counterfact as a dependency
+
 ## 0.38.3
 
 ### Patch Changes
