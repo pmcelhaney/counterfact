@@ -24,7 +24,7 @@ function addCors(ctx: Koa.ExtendableContext, headers?: IncomingHttpHeaders) {
   ctx.set("Access-Control-Allow-Credentials", "true");
 }
 
-function getBasicAuthCredentials(
+function getAuthObject(
   ctx: Koa.ExtendableContext & { user?: { [key: string]: string } },
 ):
   | {
@@ -60,7 +60,7 @@ export function koaMiddleware(
       return await next();
     }
 
-    const user = getBasicAuthCredentials(ctx);
+    const auth = getAuthObject(ctx);
 
     /* @ts-expect-error the body comes from koa-bodyparser, not sure how to fix this */
     const { body, headers, query } = ctx.request;
@@ -84,6 +84,7 @@ export function koaMiddleware(
     }
 
     const response = await dispatcher.request({
+      auth,
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       body,
       /* @ts-expect-error the value of a header can be an array and we don't have a solution for that yet */
@@ -93,7 +94,6 @@ export function koaMiddleware(
       /* @ts-expect-error the value of a querystring item can be an array and we don't have a solution for that yet */
       query,
       req: { path: "", ...ctx.req },
-      user,
     });
 
     /* eslint-disable require-atomic-updates */

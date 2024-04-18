@@ -220,14 +220,18 @@ export class Dispatcher {
 
   // eslint-disable-next-line sonarjs/cognitive-complexity, max-statements
   public async request({
+    auth,
     body,
     headers = {},
     method,
     path,
     query,
     req,
-    user,
   }: {
+    auth?: {
+      password?: string;
+      username?: string;
+    };
     body: unknown;
     headers: {
       [key: string]: string;
@@ -239,10 +243,6 @@ export class Dispatcher {
     };
     req: {
       path?: string;
-    };
-    user?: {
-      password?: string;
-      username?: string;
     };
   }): Promise<NormalizedCounterfactResponseObject> {
     debug(`request: ${method} ${path}`);
@@ -264,8 +264,10 @@ export class Dispatcher {
       path,
       this.parameterTypes(operation?.parameters),
     )({
+      auth,
       body,
       context: this.contextRegistry.find(matchedPath),
+
       headers,
 
       proxy: async (url: string) => {
@@ -301,8 +303,6 @@ export class Dispatcher {
       response: createResponseBuilder(operation ?? { responses: {} }),
 
       tools: new Tools({ headers }),
-
-      user,
     });
 
     if (response === undefined) {

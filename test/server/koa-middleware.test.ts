@@ -310,9 +310,9 @@ describe("koa middleware", () => {
     const registry = new Registry();
 
     registry.add("/hello", {
-      GET({ user }: { user?: { password?: string; username?: string } }) {
+      GET({ auth }: { auth?: { password?: string; username?: string } }) {
         return {
-          body: `${user?.username ?? ""} / ${user?.password ?? ""}`,
+          body: `${auth?.username ?? ""} / ${auth?.password ?? ""}`,
         };
       },
     });
