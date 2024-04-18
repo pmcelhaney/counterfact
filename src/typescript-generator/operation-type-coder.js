@@ -8,7 +8,7 @@ import { SchemaTypeCoder } from "./schema-type-coder.js";
 import { TypeCoder } from "./type-coder.js";
 
 export class OperationTypeCoder extends TypeCoder {
-  constructor(requirement, requestMethod, security = []) {
+  constructor(requirement, requestMethod, securitySchemes = []) {
     super(requirement);
 
     if (requestMethod === undefined) {
@@ -16,7 +16,7 @@ export class OperationTypeCoder extends TypeCoder {
     }
 
     this.requestMethod = requestMethod;
-    this.security = security;
+    this.securitySchemes = securitySchemes;
   }
 
   names() {
@@ -79,7 +79,7 @@ export class OperationTypeCoder extends TypeCoder {
 
   userType() {
     if (
-      this.security.some(
+      this.securitySchemes.some(
         ({ scheme, type }) => type.includes("http") && scheme.includes("basic"),
       )
     ) {

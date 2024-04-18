@@ -285,4 +285,32 @@ describe("an OperationTypeCoder", () => {
       format(`type TestType =${coder.write(dummyScript)}`),
     ).resolves.toMatchSnapshot();
   });
+
+  it("generates an auth object for basic authentication", async () => {
+    const requirement = new Requirement(
+      {
+        responses: {
+          default: {
+            content: {
+              "application/json": {
+                schema: { $ref: "#/components/schemas/Example" },
+              },
+            },
+          },
+        },
+      },
+      "#/paths/hello/get",
+    );
+
+    const coder = new OperationTypeCoder(requirement, "get", [
+      {
+        scheme: "basic",
+        type: "http",
+      },
+    ]);
+
+    await expect(
+      format(`type TestType =${coder.write(dummyScript)}`),
+    ).resolves.toMatchSnapshot();
+  });
 });

@@ -3,9 +3,6 @@ info:
   version: 1.0.0
   title: Sample API
   description: A sample API to illustrate OpenAPI concepts
-security:
-  - type: ["http"]
-    scheme: ["basic"]
 paths:
   /count:
     get:
@@ -97,3 +94,8 @@ components:
           description: A detailed description of the error
       required:
         - message
+
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic

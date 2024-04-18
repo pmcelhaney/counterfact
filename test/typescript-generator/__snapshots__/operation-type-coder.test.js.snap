@@ -293,3 +293,38 @@ exports[`an OperationTypeCoder generates a simple get operation 1`] = `
   | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" };
 "
 `;
+
+exports[`an OperationTypeCoder generates an auth object for basic authentication 1`] = `
+"type TestType = (
+  $: OmitValueWhenNever<{
+    query: never;
+    path: never;
+    header: never;
+    body: never;
+    context: ExternalType;
+    response: ResponseBuilderFactory<{
+      [statusCode in HttpStatusCode]: {
+        headers: never;
+        requiredHeaders: never;
+        content: {
+          "application/json": {
+            schema: Type;
+          };
+        };
+      };
+    }>;
+    x: SharedType;
+    proxy: (url: string) => "COUNTERFACT_RESPONSE";
+    user: { username?: string; password?: string };
+  }>,
+) =>
+  | {
+      status: number | undefined;
+      contentType?: "application/json";
+      body?: Type;
+    }
+  | { status: 415; contentType: "text/plain"; body: string }
+  | "COUNTERFACT_RESPONSE"
+  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" };
+"
+`;

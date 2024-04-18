@@ -78,9 +78,11 @@ export async function generate(
 
   debug("got %i paths", paths.size);
 
-  const securityRequirement = await specification.requirementAt("#/security");
+  const securityRequirement = await specification.requirementAt(
+    "#/components/securitySchemes",
+  );
 
-  const security = securityRequirement?.data ?? [];
+  const securitySchemes = Object.values(securityRequirement?.data ?? {});
 
   paths.forEach((pathDefinition, key) => {
     debug("processing path %s", key);
@@ -88,7 +90,7 @@ export async function generate(
     pathDefinition.forEach((operation, requestMethod) => {
       repository
         .get(`paths${key}.ts`)
-        .export(new OperationCoder(operation, requestMethod, security));
+        .export(new OperationCoder(operation, requestMethod, securitySchemes));
     });
   });
 

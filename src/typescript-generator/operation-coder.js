@@ -5,7 +5,7 @@ import { Coder } from "./coder.js";
 import { OperationTypeCoder } from "./operation-type-coder.js";
 
 export class OperationCoder extends Coder {
-  constructor(requirement, requestMethod, security = []) {
+  constructor(requirement, requestMethod, securitySchemes = {}) {
     super(requirement);
 
     if (requestMethod === undefined) {
@@ -13,7 +13,7 @@ export class OperationCoder extends Coder {
     }
 
     this.requestMethod = requestMethod;
-    this.security = security;
+    this.securitySchemes = securitySchemes;
   }
 
   names() {
@@ -47,7 +47,7 @@ export class OperationCoder extends Coder {
     const operationTypeCoder = new OperationTypeCoder(
       this.requirement,
       this.requestMethod,
-      this.security,
+      this.securitySchemes,
     );
 
     return script.importType(operationTypeCoder);
