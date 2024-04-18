@@ -80,7 +80,7 @@ export class OperationTypeCoder extends TypeCoder {
   userType() {
     if (
       this.securitySchemes.some(
-        ({ scheme, type }) => type.includes("http") && scheme.includes("basic"),
+        ({ scheme, type }) => type === "http" && scheme === "basic",
       )
     ) {
       return "{username?: string, password?: string}";
