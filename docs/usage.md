@@ -58,7 +58,9 @@ If you prefer not to use `npx` against the `@latest` version, you can install Co
   "counterfact": "^0.38.3",
 }
 ```
+
 This will let your team use the same version of Counterfact across all environments. You can also use `npm run start` or `yarn start` to start the server.
+
 </details>
 
 ## Generated Code 🏖
@@ -182,6 +184,12 @@ By default, each `_.context.ts` delegates to its parent directory, so you can de
 
 > [!TIP]
 > You can make the context objects do whatever you want, including things like writing to databases. But remember that Counterfact is meant for testing, so holding on to data between sessions is an anti-pattern. Keeping everything in memory also makes it fast.
+
+### Security: the `$.auth` object
+
+If a username and password are sent via basic authentication, the username and password can be found via `$.auth.username` and `$.auth.password` respectively.
+
+Support for other security schemes ("apiKey", "mutualTLS", "oauth2", "openIdConnect") are coming. You can speed things along by [opening an issue](https://github.com/pmcelhaney/counterfact/issues).
 
 ### x-scape Hatch
 
