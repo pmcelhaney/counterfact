@@ -24,6 +24,30 @@ function addCors(ctx: Koa.ExtendableContext, headers?: IncomingHttpHeaders) {
   ctx.set("Access-Control-Allow-Credentials", "true");
 }
 
+function getAuthObject(
+  ctx: Koa.ExtendableContext & { user?: { [key: string]: string } },
+):
+  | {
+      password?: string;
+      username?: string;
+    }
+  | undefined {
+  const authHeader = ctx.request.headers.authorization;
+  if (authHeader === undefined) {
+    return undefined;
+  }
+
+  const [, base64Credentials] = authHeader.split(" ");
+
+  if (base64Credentials === undefined) {
+    return undefined;
+  }
+
+  const user = Buffer.from(base64Credentials, "base64").toString("utf8");
+  const [username, password] = user.split(":");
+  return { password, username };
+}
+
 export function koaMiddleware(
   dispatcher: Dispatcher,
   { proxyEnabled = false, proxyUrl = "", routePrefix = "" } = {},
@@ -35,6 +59,8 @@ export function koaMiddleware(
       // eslint-disable-next-line @typescript-eslint/no-unsafe-return
       return await next();
     }
+
+    const auth = getAuthObject(ctx);
 
     /* @ts-expect-error the body comes from koa-bodyparser, not sure how to fix this */
     const { body, headers, query } = ctx.request;
@@ -58,6 +84,7 @@ export function koaMiddleware(
     }
 
     const response = await dispatcher.request({
+      auth,
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       body,
       /* @ts-expect-error the value of a header can be an array and we don't have a solution for that yet */

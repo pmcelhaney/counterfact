@@ -220,6 +220,7 @@ export class Dispatcher {
 
   // eslint-disable-next-line sonarjs/cognitive-complexity, max-statements
   public async request({
+    auth,
     body,
     headers = {},
     method,
@@ -227,6 +228,10 @@ export class Dispatcher {
     query,
     req,
   }: {
+    auth?: {
+      password?: string;
+      username?: string;
+    };
     body: unknown;
     headers: {
       [key: string]: string;
@@ -259,8 +264,10 @@ export class Dispatcher {
       path,
       this.parameterTypes(operation?.parameters),
     )({
+      auth,
       body,
       context: this.contextRegistry.find(matchedPath),
+
       headers,
 
       proxy: async (url: string) => {

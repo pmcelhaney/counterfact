@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 // eslint-disable-next-line import/no-extraneous-dependencies, n/no-extraneous-import
 import { jest } from "@jest/globals";
 import type { Context as KoaContext, ParameterizedContext } from "koa";
@@ -36,6 +37,7 @@ describe("koa middleware", () => {
 
       request: {
         body: { name: "Homer" },
+        headers: {},
         method: "POST",
         path: "/hello",
       },
@@ -65,7 +67,7 @@ describe("koa middleware", () => {
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
     const middleware = koaMiddleware(dispatcher);
     const ctx = {
-      request: { method: "GET", path: "/not-modified" },
+      request: { headers: {}, method: "GET", path: "/not-modified" },
 
       set: () => undefined,
       status: undefined,
@@ -96,7 +98,7 @@ describe("koa middleware", () => {
     );
     const ctx = {
       mockProxyHost: undefined,
-      request: { method: "GET", path: "/proxy" },
+      request: { headers: {}, method: "GET", path: "/proxy" },
     };
 
     // @ts-expect-error - not obvious how to make TS happy here, and it's just a unit test
@@ -130,6 +132,7 @@ describe("koa middleware", () => {
 
       request: {
         body: { name: "Homer" },
+        headers: {},
         method: "POST",
         path: "/hello",
       },
@@ -244,6 +247,7 @@ describe("koa middleware", () => {
 
       request: {
         body: { name: "Homer" },
+        headers: {},
         method: "POST",
         path: "/hello",
       },
@@ -286,6 +290,7 @@ describe("koa middleware", () => {
 
       request: {
         body: { name: "Homer" },
+        headers: {},
         method: "POST",
         path: "/api/v1/hello",
       },
@@ -299,5 +304,45 @@ describe("koa middleware", () => {
 
     expect(ctx.status).toBe(200);
     expect(ctx.body).toBe("Hello, Homer!");
+  });
+
+  it("collects basic authorization headers", async () => {
+    const registry = new Registry();
+
+    registry.add("/hello", {
+      GET({ auth }: { auth?: { password?: string; username?: string } }) {
+        return {
+          body: `${auth?.username ?? ""} / ${auth?.password ?? ""}`,
+        };
+      },
+    });
+
+    const dispatcher = new Dispatcher(registry, new ContextRegistry());
+    const middleware = koaMiddleware(dispatcher);
+    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+    const ctx = {
+      req: {
+        path: "/hello",
+      },
+
+      request: {
+        body: { name: "Homer" },
+
+        headers: {
+          authorization: `Basic ${btoa("user:secret")}`,
+        },
+
+        method: "GET",
+        path: "/hello",
+      },
+
+      set: jest.fn(),
+    } as unknown as ParameterizedContext;
+
+    await middleware(ctx, async () => {
+      await Promise.resolve(undefined);
+    });
+
+    expect(ctx.body).toEqual("user / secret");
   });
 });

@@ -94,3 +94,8 @@ components:
           description: A detailed description of the error
       required:
         - message
+
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic

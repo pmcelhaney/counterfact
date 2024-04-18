@@ -8,7 +8,7 @@ import { SchemaTypeCoder } from "./schema-type-coder.js";
 import { TypeCoder } from "./type-coder.js";
 
 export class OperationTypeCoder extends TypeCoder {
-  constructor(requirement, requestMethod) {
+  constructor(requirement, requestMethod, securitySchemes = []) {
     super(requirement);
 
     if (requestMethod === undefined) {
@@ -16,6 +16,7 @@ export class OperationTypeCoder extends TypeCoder {
     }
 
     this.requestMethod = requestMethod;
+    this.securitySchemes = securitySchemes;
   }
 
   names() {
@@ -76,6 +77,18 @@ export class OperationTypeCoder extends TypeCoder {
       .replaceAll("\\", "/")}.types.ts`;
   }
 
+  userType() {
+    if (
+      this.securitySchemes.some(
+        ({ scheme, type }) => type === "http" && scheme === "basic",
+      )
+    ) {
+      return "{username?: string, password?: string}";
+    }
+
+    return "never";
+  }
+
   // eslint-disable-next-line max-statements
   writeCode(script) {
     // eslint-disable-next-line no-param-reassign
@@ -123,7 +136,7 @@ export class OperationTypeCoder extends TypeCoder {
 
     const proxyType = '(url: string) => "COUNTERFACT_RESPONSE"';
 
-    return `($: OmitValueWhenNever<{ query: ${queryType}, path: ${pathType}, header: ${headerType}, body: ${bodyType}, context: ${contextTypeImportName}, response: ${responseType}, x: ${xType}, proxy: ${proxyType} }>) => ${this.responseTypes(
+    return `($: OmitValueWhenNever<{ query: ${queryType}, path: ${pathType}, header: ${headerType}, body: ${bodyType}, context: ${contextTypeImportName}, response: ${responseType}, x: ${xType}, proxy: ${proxyType}, user: ${this.userType()} }>) => ${this.responseTypes(
       script,
     )} | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE" | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" }`;
   }

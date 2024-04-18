@@ -30,6 +30,10 @@ interface RequestData {
   query: { [key: string]: number | string };
   response: ResponseBuilderFactory;
   tools: Tools;
+  user?: {
+    password?: string;
+    username?: string;
+  };
 }
 
 interface RequestDataWithBody extends RequestData {

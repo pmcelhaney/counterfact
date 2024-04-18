@@ -19,7 +19,7 @@ const rules = {
     },
   ],
 
-  "max-lines": "warn",
+  "max-lines": ["warn", { max: 305 }],
 
   "n/shebang": "off",
 
