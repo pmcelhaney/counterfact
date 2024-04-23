@@ -54,49 +54,13 @@ export class ModuleLoader extends EventTarget {
   public async watch(): Promise<void> {
     this.watcher = watch(`${this.basePath}/**/*.{js,mjs,ts,mts}`).on(
       "all",
-      // eslint-disable-next-line max-statements, @typescript-eslint/no-misused-promises
-      async (eventName: string, pathNameOriginal: string) => {
-        const pathName = pathNameOriginal.replaceAll("\\", "/");
-
-        if (pathName.includes("$.context") && eventName === "add") {
-          process.stdout.write(
-            `\n\n!!! The file at ${pathName} needs a minor update.\n    See https://github.com/pmcelhaney/counterfact/blob/main/docs/context-change.md\n\n\n`,
-          );
-          return;
-        }
-
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises
+      async (eventName: string) => {
         if (!["add", "change", "unlink"].includes(eventName)) {
           return;
         }
 
-        const parts = nodePath.parse(pathName.replace(this.basePath, ""));
-        const url = `/${parts.dir}/${parts.name}`
-          .replaceAll("\\", "/")
-          .replaceAll(/\/+/gu, "/");
-
-        if (eventName === "unlink") {
-          this.registry.remove(url);
-          this.dispatchEvent(new Event("remove"));
-        }
-
-        debug("importing module: %s", pathName);
-        const endpoint = await this.uncachedImport(pathName);
-
-        this.dispatchEvent(new Event(eventName));
-
-        if (pathName.includes("_.context")) {
-          this.contextRegistry.update(
-            parts.dir,
-
-            // @ts-expect-error TS says Context has no constructable signatures but that's not true?
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/consistent-type-assertions
-            new (endpoint as ContextModule).Context(),
-          );
-          return;
-        }
-
-        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-        this.registry.add(url, endpoint as Module);
+        await this.load();
       },
     );
     await once(this.watcher, "ready");
@@ -149,6 +113,7 @@ export class ModuleLoader extends EventTarget {
     });
 
     await Promise.all(imports);
+    this.dispatchEvent(new Event("load"));
   }
 
   private async loadEndpoint(

@@ -90,7 +90,7 @@ describe("a module loader", () => {
           "late/addition.js",
           'export function GET() { return { body: "I\'m here now!" }; }',
         );
-        await once(loader, "add");
+        await once(loader, "load");
 
         expect(registry.exists("GET", "/late/addition")).toBe(true);
 
@@ -108,7 +108,7 @@ describe("a module loader", () => {
       },
       async (
         basePath: string,
-        { remove }: { remove: (path: string) => void },
+        { remove }: { remove: (path: string) => Promise<void> },
       ) => {
         const registry: Registry = new Registry();
         const loader: ModuleLoader = new ModuleLoader(basePath, registry);
@@ -118,8 +118,9 @@ describe("a module loader", () => {
 
         expect(registry.exists("GET", "/delete-me")).toBe(true);
 
-        remove("delete-me.js");
-        await once(loader, "remove");
+        await remove("delete-me.js");
+
+        await once(loader, "load");
 
         expect(registry.exists("GET", "/delete-me")).toBe(false);
 
