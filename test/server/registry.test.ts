@@ -20,6 +20,22 @@ describe("a registry", () => {
     expect(registry.exists("GET", "/goodbye")).toBe(false);
   });
 
+  it("can be cleared", () => {
+    const registry = new Registry();
+
+    registry.add("/hello", {
+      async GET() {
+        await Promise.resolve("noop");
+
+        return { body: "hello", headers: {}, status: 200 };
+      },
+    });
+
+    registry.clear();
+
+    expect(registry.exists("GET", "/hello")).toBe(false);
+  });
+
   it.todo("returns debug information if path does not exist");
 
   it("returns a function matching the URL and request method", async () => {

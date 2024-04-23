@@ -97,7 +97,7 @@ function castParameters(
 }
 
 export class Registry {
-  private readonly moduleTree = new ModuleTree();
+  private moduleTree = new ModuleTree();
 
   public get routes() {
     return this.moduleTree.routes;
@@ -109,6 +109,10 @@ export class Registry {
 
   public remove(url: string) {
     this.moduleTree.remove(url);
+  }
+
+  public clear() {
+    this.moduleTree = new ModuleTree();
   }
 
   public exists(method: HttpMethods, url: string) {
