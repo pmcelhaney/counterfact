@@ -52,6 +52,8 @@ export class ModuleLoader extends EventTarget {
   }
 
   public async watch(): Promise<void> {
+    debug("watching: %s", this.basePath);
+
     this.watcher = watch(`${this.basePath}/**/*.{js,mjs,ts,mts}`).on(
       "all",
       // eslint-disable-next-line @typescript-eslint/no-misused-promises
@@ -70,7 +72,9 @@ export class ModuleLoader extends EventTarget {
     await this.watcher?.close();
   }
 
+  // eslint-disable-next-line max-statements
   public async load(directory = ""): Promise<void> {
+    debug("loading: %s", this.basePath);
     const moduleKind = await determineModuleKind(this.basePath);
 
     this.registry.clear();
@@ -114,6 +118,7 @@ export class ModuleLoader extends EventTarget {
 
     await Promise.all(imports);
     this.dispatchEvent(new Event("load"));
+    debug("finshed loading: %s", this.basePath);
   }
 
   private async loadEndpoint(
