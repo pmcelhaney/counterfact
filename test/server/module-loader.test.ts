@@ -76,7 +76,7 @@ describe("a module loader", () => {
       { "package.json": '{ "type": "module" }' },
       async (
         basePath: string,
-        { add }: { add: (path: string, content: string) => void },
+        { add }: { add: (path: string, content: string) => Promise<void> },
       ) => {
         const registry: Registry = new Registry();
         const loader: ModuleLoader = new ModuleLoader(basePath, registry);
@@ -86,7 +86,7 @@ describe("a module loader", () => {
 
         expect(registry.exists("GET", "/late/addition")).toBe(false);
 
-        add(
+        await add(
           "late/addition.js",
           'export function GET() { return { body: "I\'m here now!" }; }',
         );
