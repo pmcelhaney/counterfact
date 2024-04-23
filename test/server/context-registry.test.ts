@@ -35,6 +35,21 @@ describe("a context registry", () => {
     expect(registry.find("/goodbye/world")).toStrictEqual({});
   });
 
+  it("can be cleared", () => {
+    const helloContext = { name: "hello" };
+    const helloWorldContext = { name: "hello world" };
+
+    const registry = new ContextRegistry();
+
+    registry.add("/hello", helloContext);
+    registry.add("/hello/world", helloWorldContext);
+    registry.clear();
+
+    registry.add("/hello", helloContext);
+
+    expect(registry.find("/hello/world")).toEqual({ name: "hello" });
+  });
+
   it("updates an existing context by changing methods but not properties", () => {
     class SingleContext implements Context {
       public count = 0;

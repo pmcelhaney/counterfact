@@ -7,6 +7,9 @@ export class Context {
 }
 
 export function parentPath(path: string): string {
+  if (path === "/") {
+    throw new Error("root context does not exist!");
+  }
   return String(path.split("/").slice(0, -1).join("/")) || "/";
 }
 
@@ -15,13 +18,24 @@ export class ContextRegistry {
 
   private readonly cache = new Map<string, Context>();
 
+  public loadAfterClear = false;
+
   public constructor() {
     this.add("/", {});
   }
 
   public add(path: string, context: Context): void {
+    console.log("adding", path);
     this.entries.set(path, context);
     this.cache.set(path, structuredClone(context));
+    this.loadAfterClear = true;
+  }
+
+  public clear() {
+    this.cache.clear();
+    this.entries.clear();
+    this.add("/", { name: "cleared" });
+    this.loadAfterClear = false;
   }
 
   public find(path: string): Context {

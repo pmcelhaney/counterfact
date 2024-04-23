@@ -78,6 +78,7 @@ export class ModuleLoader extends EventTarget {
     const moduleKind = await determineModuleKind(this.basePath);
 
     this.registry.clear();
+    this.contextRegistry.clear();
 
     this.uncachedImport =
       moduleKind === "module" ? uncachedImport : uncachedRequire;
@@ -118,7 +119,7 @@ export class ModuleLoader extends EventTarget {
 
     await Promise.all(imports);
     this.dispatchEvent(new Event("load"));
-    debug("finshed loading: %s", this.basePath);
+    debug("finished loading: %s", this.basePath);
   }
 
   private async loadEndpoint(
@@ -126,43 +127,29 @@ export class ModuleLoader extends EventTarget {
     directory: string,
     file: Dirent,
   ) {
-    try {
+    console.log(fullPath);
+    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+    const endpoint: ContextModule | Module = (await this.uncachedImport(
+      fullPath,
+    )) as ContextModule | Module;
+
+    if (file.name.includes("_.context")) {
+      if (isContextModule(endpoint)) {
+        this.contextRegistry.add(
+          `/${directory.replaceAll("\\", "/")}`,
+
+          // @ts-expect-error TS says Context has no constructable signatures but that's not true?
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+          new endpoint.Context(),
+        );
+      }
+    } else {
+      const url = `/${nodePath.join(directory, nodePath.parse(file.name).name)}`
+        .replaceAll("\\", "/")
+        .replaceAll(/\/+/gu, "/");
+
       // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-      const endpoint: ContextModule | Module = (await this.uncachedImport(
-        fullPath,
-      )) as ContextModule | Module;
-
-      if (file.name.includes("_.context")) {
-        if (isContextModule(endpoint)) {
-          this.contextRegistry.add(
-            `/${directory.replaceAll("\\", "/")}`,
-
-            // @ts-expect-error TS says Context has no constructable signatures but that's not true?
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-            new endpoint.Context(),
-          );
-        }
-      } else {
-        const url = `/${nodePath.join(
-          directory,
-          nodePath.parse(file.name).name,
-        )}`
-          .replaceAll("\\", "/")
-          .replaceAll(/\/+/gu, "/");
-
-        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-        this.registry.add(url, endpoint as Module);
-      }
-    } catch (error: unknown) {
-      if (
-        String(error) ===
-        "SyntaxError: Identifier 'Context' has already been declared"
-      ) {
-        // Not sure why Node throws this error. It doesn't seem to matter.
-        return;
-      }
-
-      process.stdout.write(`\nError loading ${fullPath}:\n${String(error)}\n`);
+      this.registry.add(url, endpoint as Module);
     }
   }
 }

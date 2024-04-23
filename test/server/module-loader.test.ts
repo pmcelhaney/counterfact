@@ -41,6 +41,7 @@ describe("a module loader", () => {
 
   it("clears out an preexisting files", async () => {
     const files: { [fileName: string]: string } = {
+      "_.context.js": 'export class Context { name = "root"};',
       "hello.js": `
       export function GET() {
           return {
@@ -48,6 +49,7 @@ describe("a module loader", () => {
           };
       }
       `,
+      "hello/_.context.js": 'export class Context { name = "hello"};',
       "package.json": '{ "type": "module" }',
     };
 
@@ -58,15 +60,23 @@ describe("a module loader", () => {
         { remove }: { remove: (path: string) => Promise<void> },
       ) => {
         const registry: Registry = new Registry();
-        const loader: ModuleLoader = new ModuleLoader(basePath, registry);
+        const contextRegistry: ContextRegistry = new ContextRegistry();
+        const loader: ModuleLoader = new ModuleLoader(
+          basePath,
+          registry,
+          contextRegistry,
+        );
 
         await loader.load();
 
         await remove("hello.js");
+        await remove("hello/_.context.js");
 
         await loader.load();
 
         expect(registry.exists("GET", "/hello")).toBe(false);
+        expect(contextRegistry.find("/")).toEqual({ name: "root" });
+        expect(contextRegistry.find("/hello/world")).toEqual({ name: "root" });
       },
     );
   });
