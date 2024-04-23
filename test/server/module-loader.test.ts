@@ -39,6 +39,38 @@ describe("a module loader", () => {
     });
   });
 
+  it("clears out an preexisting files", async () => {
+    const files: { [fileName: string]: string } = {
+      "hello.js": `
+      export function GET() {
+          return {
+              body: "hello"
+          };
+      }
+      `,
+      "package.json": '{ "type": "module" }',
+    };
+
+    await withTemporaryFiles(
+      files,
+      async (
+        basePath: string,
+        { remove }: { remove: (path: string) => Promise<void> },
+      ) => {
+        const registry: Registry = new Registry();
+        const loader: ModuleLoader = new ModuleLoader(basePath, registry);
+
+        await loader.load();
+
+        await remove("hello.js");
+
+        await loader.load();
+
+        expect(registry.exists("GET", "/hello")).toBe(false);
+      },
+    );
+  });
+
   it("updates the registry when a file is added", async () => {
     await withTemporaryFiles(
       { "package.json": '{ "type": "module" }' },

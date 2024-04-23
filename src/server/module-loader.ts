@@ -109,6 +109,8 @@ export class ModuleLoader extends EventTarget {
   public async load(directory = ""): Promise<void> {
     const moduleKind = await determineModuleKind(this.basePath);
 
+    this.registry.clear();
+
     this.uncachedImport =
       moduleKind === "module" ? uncachedImport : uncachedRequire;
 
