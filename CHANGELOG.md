@@ -1,5 +1,11 @@
 # counterfact
 
+## 0.39.1
+
+### Patch Changes
+
+- cb1e12b: move patch-package to dependencies so it won't mess up install
+
 ## 0.39.0
 
 ### Minor Changes
