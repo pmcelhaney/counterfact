@@ -137,7 +137,7 @@ export class ModuleLoader extends EventTarget {
 
     if (file.name.includes("_.context")) {
       if (isContextModule(endpoint)) {
-        this.contextRegistry.add(
+        this.contextRegistry.update(
           `/${directory.replaceAll("\\", "/")}`,
 
           // @ts-expect-error TS says Context has no constructable signatures but that's not true?

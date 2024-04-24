@@ -31,8 +31,14 @@ export class ContextRegistry {
     return this.entries.get(path) ?? this.find(parentPath(path));
   }
 
+  // eslint-disable-next-line max-statements
   public update(path: string, updatedContext?: Context): void {
     if (updatedContext === undefined) {
+      return;
+    }
+
+    if (!this.entries.has(path)) {
+      this.add(path, updatedContext);
       return;
     }
 
