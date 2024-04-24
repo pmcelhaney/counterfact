@@ -27,12 +27,6 @@ export class ContextRegistry {
     this.cache.set(path, structuredClone(context));
   }
 
-  public clear() {
-    this.cache.clear();
-    this.entries.clear();
-    this.add("/", {});
-  }
-
   public find(path: string): Context {
     return this.entries.get(path) ?? this.find(parentPath(path));
   }

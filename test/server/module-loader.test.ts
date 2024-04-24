@@ -60,12 +60,7 @@ describe("a module loader", () => {
         { remove }: { remove: (path: string) => Promise<void> },
       ) => {
         const registry: Registry = new Registry();
-        const contextRegistry: ContextRegistry = new ContextRegistry();
-        const loader: ModuleLoader = new ModuleLoader(
-          basePath,
-          registry,
-          contextRegistry,
-        );
+        const loader: ModuleLoader = new ModuleLoader(basePath, registry);
 
         await loader.load();
 
@@ -75,8 +70,6 @@ describe("a module loader", () => {
         await loader.load();
 
         expect(registry.exists("GET", "/hello")).toBe(false);
-        expect(contextRegistry.find("/")).toEqual({ name: "root" });
-        expect(contextRegistry.find("/hello/world")).toEqual({ name: "root" });
       },
     );
   });

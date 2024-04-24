@@ -79,7 +79,6 @@ export class ModuleLoader extends EventTarget {
 
     if (isRoot) {
       this.registry.clear();
-      this.contextRegistry.clear();
     }
 
     this.uncachedImport =
