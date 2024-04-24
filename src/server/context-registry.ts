@@ -18,24 +18,19 @@ export class ContextRegistry {
 
   private readonly cache = new Map<string, Context>();
 
-  public loadAfterClear = false;
-
   public constructor() {
     this.add("/", {});
   }
 
   public add(path: string, context: Context): void {
-    console.log("adding", path);
     this.entries.set(path, context);
     this.cache.set(path, structuredClone(context));
-    this.loadAfterClear = true;
   }
 
   public clear() {
     this.cache.clear();
     this.entries.clear();
-    this.add("/", { name: "cleared" });
-    this.loadAfterClear = false;
+    this.add("/", {});
   }
 
   public find(path: string): Context {

@@ -73,12 +73,14 @@ export class ModuleLoader extends EventTarget {
   }
 
   // eslint-disable-next-line max-statements
-  public async load(directory = ""): Promise<void> {
+  public async load(directory = "", isRoot = true): Promise<void> {
     debug("loading: %s", this.basePath);
     const moduleKind = await determineModuleKind(this.basePath);
 
-    this.registry.clear();
-    this.contextRegistry.clear();
+    if (isRoot) {
+      this.registry.clear();
+      this.contextRegistry.clear();
+    }
 
     this.uncachedImport =
       moduleKind === "module" ? uncachedImport : uncachedRequire;
@@ -102,6 +104,7 @@ export class ModuleLoader extends EventTarget {
       if (file.isDirectory()) {
         await this.load(
           nodePath.join(directory, file.name).replaceAll("\\", "/"),
+          false,
         );
 
         return;
@@ -118,6 +121,7 @@ export class ModuleLoader extends EventTarget {
     });
 
     await Promise.all(imports);
+
     this.dispatchEvent(new Event("load"));
     debug("finished loading: %s", this.basePath);
   }
@@ -127,7 +131,6 @@ export class ModuleLoader extends EventTarget {
     directory: string,
     file: Dirent,
   ) {
-    console.log(fullPath);
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
     const endpoint: ContextModule | Module = (await this.uncachedImport(
       fullPath,
