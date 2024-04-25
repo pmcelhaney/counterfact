@@ -37,6 +37,7 @@ export class Transpiler extends EventTarget {
     this.watcher = chokidarWatch(`${this.sourcePath}/**/*.{ts,mts,js,mjs}`, {
       ...CHOKIDAR_OPTIONS,
       ignored: `${this.sourcePath}/js`,
+      ignoreInitial: false,
     });
 
     const transpiles: Promise<void>[] = [];
