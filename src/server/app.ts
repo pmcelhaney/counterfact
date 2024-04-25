@@ -5,8 +5,8 @@ import { createHttpTerminator, type HttpTerminator } from "http-terminator";
 import yaml from "js-yaml";
 import $RefParser from "json-schema-ref-parser";
 
+import { CodeGenerator } from "../typescript-generator/code-generator.js";
 import { readFile } from "../util/read-file.js";
-import { CodeGenerator } from "./code-generator.js";
 import type { Config } from "./config.js";
 import { ContextRegistry } from "./context-registry.js";
 import { createKoaApp } from "./create-koa-app.js";
@@ -44,7 +44,11 @@ export async function counterfact(config: Config) {
 
   const contextRegistry = new ContextRegistry();
 
-  const codeGenerator = new CodeGenerator(config.openApiPath, config.basePath);
+  const codeGenerator = new CodeGenerator(
+    config.openApiPath,
+    config.basePath,
+    config.generate,
+  );
 
   const dispatcher = new Dispatcher(
     registry,
@@ -69,18 +73,28 @@ export async function counterfact(config: Config) {
   const koaApp = createKoaApp(registry, middleware, config);
 
   // eslint-disable-next-line max-statements
-  async function start(options: { http?: boolean } = {}) {
-    const http = options.http ?? true;
+  async function start(options: Config) {
+    const {
+      generate,
+      startRepl: shouldStartRepl,
+      startServer,
+      watch,
+    } = options;
 
-    await codeGenerator.watch();
-    await transpiler.watch();
-    await moduleLoader.load();
-    await moduleLoader.watch();
+    if (generate.routes || generate.types) {
+      await codeGenerator.generate();
+    }
+    if (watch.routes || watch.types) {
+      await codeGenerator.watch();
+    }
 
     // eslint-disable-next-line @typescript-eslint/init-declarations
     let httpTerminator: HttpTerminator | undefined;
 
-    if (http) {
+    if (startServer) {
+      await transpiler.watch();
+      await moduleLoader.load();
+      await moduleLoader.watch();
       const server = koaApp.listen({
         port: config.port,
       });
@@ -90,7 +104,7 @@ export async function counterfact(config: Config) {
       });
     }
 
-    const replServer = startRepl(contextRegistry, config);
+    const replServer = shouldStartRepl && startRepl(contextRegistry, config);
 
     return {
       replServer,

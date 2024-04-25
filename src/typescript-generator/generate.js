@@ -11,16 +11,9 @@ import { Specification } from "./specification.js";
 
 const debug = createDebug("counterfact:typescript-generator:generate");
 
-// eslint-disable-next-line max-statements
 async function buildCacheDirectory(destination) {
   const gitignorePath = nodePath.join(destination, ".gitignore");
   const cacheReadmePath = nodePath.join(destination, ".cache", "README.md");
-
-  debug("removing the cache directory");
-  await fs.rm(nodePath.join(destination, ".cache"), {
-    force: true,
-    recursive: true,
-  });
 
   debug("ensuring the directory containing .gitgnore exists");
 
@@ -54,10 +47,11 @@ async function getPathsFromSpecification(specification) {
   }
 }
 
-// eslint-disable-next-line max-statements
+// eslint-disable-next-line max-statements, max-params
 export async function generate(
   source,
   destination,
+  generateOptions,
   repository = new Repository(),
 ) {
   debug("generating code from %s to %s", source, destination);
@@ -96,7 +90,7 @@ export async function generate(
 
   debug("telling the repository to write the files to %s", destination);
 
-  await repository.writeFiles(destination);
+  await repository.writeFiles(destination, generateOptions);
 
   debug("finished writing the files");
 }

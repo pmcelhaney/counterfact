@@ -40,10 +40,22 @@ describe("a Repository", () => {
     await usingTemporaryFiles(async ({ path, read }) => {
       const repository = new Repository();
 
-      await repository.writeFiles(path("."));
+      await repository.writeFiles(path("."), { routes: true, types: true });
 
       await expect(read("./paths/_.context.ts")).resolves.toContain(
         "export class Context",
+      );
+    });
+  });
+
+  it("does not create the root _.context.ts file when generate routes is false", async () => {
+    await usingTemporaryFiles(async ({ path, read }) => {
+      const repository = new Repository();
+
+      await repository.writeFiles(path("."), { routes: false, types: true });
+
+      await expect(read("./paths/_.context.ts")).rejects.toThrow(
+        "no such file or directory",
       );
     });
   });
@@ -57,7 +69,7 @@ describe("a Repository", () => {
         "export class Context { /* do not overwrite me */ }",
       );
 
-      await repository.writeFiles(path("."));
+      await repository.writeFiles(path("."), { routes: true, types: true });
 
       await expect(read("./paths/_.context.ts")).resolves.toContain(
         "do not overwrite me",
