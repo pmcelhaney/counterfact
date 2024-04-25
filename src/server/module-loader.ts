@@ -74,7 +74,9 @@ export class ModuleLoader extends EventTarget {
 
   // eslint-disable-next-line max-statements
   public async load(directory = "", isRoot = true): Promise<void> {
-    debug("loading: %s", this.basePath);
+    const path = nodePath.join(this.basePath, directory).replaceAll("\\", "/");
+
+    debug("loading: %s", path);
     const moduleKind = await determineModuleKind(this.basePath);
 
     if (isRoot) {
@@ -84,18 +86,13 @@ export class ModuleLoader extends EventTarget {
     this.uncachedImport =
       moduleKind === "module" ? uncachedImport : uncachedRequire;
 
-    if (
-      !existsSync(nodePath.join(this.basePath, directory).replaceAll("\\", "/"))
-    ) {
+    if (!existsSync(path)) {
       throw new Error(`Directory does not exist ${this.basePath}`);
     }
 
-    const files = await fs.readdir(
-      nodePath.join(this.basePath, directory).replaceAll("\\", "/"),
-      {
-        withFileTypes: true,
-      },
-    );
+    const files = await fs.readdir(path, {
+      withFileTypes: true,
+    });
 
     const imports = files.flatMap(async (file): Promise<void> => {
       const extension = file.name.split(".").at(-1);
@@ -113,16 +110,14 @@ export class ModuleLoader extends EventTarget {
         return;
       }
 
-      const fullPath = nodePath
-        .join(this.basePath, directory, file.name)
-        .replaceAll("\\", "/");
+      const fullPath = nodePath.join(path, file.name).replaceAll("\\", "/");
       await this.loadEndpoint(fullPath, directory, file);
     });
 
     await Promise.all(imports);
 
     this.dispatchEvent(new Event("load"));
-    debug("finished loading: %s", this.basePath);
+    debug("finished loading: %s", path);
   }
 
   private async loadEndpoint(
