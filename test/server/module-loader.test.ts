@@ -264,4 +264,31 @@ describe("a module loader", () => {
       expect(contextRegistry.find("/hello/world").value).toBe(101);
     });
   });
+
+  it("ignores a file that has a syntax error", async () => {
+    const files: { [fileName: string]: string } = {
+      "error.js": `
+      export function GET() {
+          syntax error
+      }
+      `,
+      "hello.js": `
+      export function GET() {
+          return {
+              body: "hello"
+          };
+      }
+      `,
+      "package.json": '{ "type": "module" }',
+    };
+
+    await withTemporaryFiles(files, async (basePath: string) => {
+      const registry: Registry = new Registry();
+      const loader: ModuleLoader = new ModuleLoader(basePath, registry);
+
+      await loader.load();
+
+      expect(registry.exists("GET", "/hello")).toBe(true);
+    });
+  });
 });

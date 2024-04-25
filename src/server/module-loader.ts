@@ -125,10 +125,16 @@ export class ModuleLoader extends EventTarget {
     directory: string,
     file: Dirent,
   ) {
-    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-    const endpoint: ContextModule | Module = (await this.uncachedImport(
-      fullPath,
-    )) as ContextModule | Module;
+    let endpoint: ContextModule | Module = {};
+    try {
+      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+      endpoint = (await this.uncachedImport(fullPath)) as
+        | ContextModule
+        | Module;
+    } catch (error) {
+      debug("error loading %s: %s", fullPath, error);
+      return;
+    }
 
     if (file.name.includes("_.context")) {
       if (isContextModule(endpoint)) {
