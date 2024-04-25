@@ -6,6 +6,7 @@ import nodePath from "node:path";
 import { type FSWatcher, watch } from "chokidar";
 import createDebug from "debug";
 
+import { CHOKIDAR_OPTIONS } from "./constants.js";
 import { type Context, ContextRegistry } from "./context-registry.js";
 import { determineModuleKind } from "./determine-module-kind.js";
 import type { Module, Registry } from "./registry.js";
@@ -64,7 +65,10 @@ export class ModuleLoader extends EventTarget {
   }
 
   public async watch(): Promise<void> {
-    this.watcher = watch(`${this.basePath}/**/*.{js,mjs,ts,mts}`).on(
+    this.watcher = watch(
+      `${this.basePath}/**/*.{js,mjs,ts,mts}`,
+      CHOKIDAR_OPTIONS,
+    ).on(
       "all",
       // eslint-disable-next-line max-statements
       (eventName: string, pathNameOriginal: string) => {

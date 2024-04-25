@@ -2,6 +2,7 @@ import { type FSWatcher, watch } from "chokidar";
 
 import { generate } from "../typescript-generator/generate.js";
 import { waitForEvent } from "../util/wait-for-event.js";
+import { CHOKIDAR_OPTIONS } from "./constants.js";
 
 export class CodeGenerator extends EventTarget {
   private readonly openapiPath: string;
@@ -23,19 +24,22 @@ export class CodeGenerator extends EventTarget {
       return;
     }
 
-    this.watcher = watch(this.openapiPath).on("change", () => {
-      // eslint-disable-next-line promise/prefer-await-to-then
-      void generate(this.openapiPath, this.destination).then(
-        () => {
-          this.dispatchEvent(new Event("generate"));
-          return true;
-        },
-        () => {
-          this.dispatchEvent(new Event("failed"));
-          return false;
-        },
-      );
-    });
+    this.watcher = watch(this.openapiPath, CHOKIDAR_OPTIONS).on(
+      "change",
+      () => {
+        // eslint-disable-next-line promise/prefer-await-to-then
+        void generate(this.openapiPath, this.destination).then(
+          () => {
+            this.dispatchEvent(new Event("generate"));
+            return true;
+          },
+          () => {
+            this.dispatchEvent(new Event("failed"));
+            return false;
+          },
+        );
+      },
+    );
 
     await waitForEvent(this.watcher, "ready");
   }
