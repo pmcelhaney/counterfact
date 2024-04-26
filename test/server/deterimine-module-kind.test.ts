@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 // To do: add types to usingTemporaryFiles package
 
 import { usingTemporaryFiles } from "using-temporary-files";
