@@ -43,6 +43,9 @@ describe("module dependency graph", () => {
     });
   });
 
+  it.todo("finds indirect dependencies");
+  it.todo("handles circular dependencies");
+  it.todo("ignores a file it can't process due to syntax errors")
   
 
 });
