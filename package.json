@@ -73,9 +73,14 @@
     "jest": "29.7.0",
     "node-mocks-http": "1.14.1",
     "nodemon": "3.1.0",
+    "precinct": "^12.1.1",
     "rimraf": "5.0.5",
     "stryker-cli": "1.0.2",
+<<<<<<< HEAD
     "supertest": "7.0.0",
+=======
+    "supertest": "6.3.4",
+>>>>>>> 2766107 (created a class that keeps track of which modules depend on a given module)
     "using-temporary-files": "2.2.1"
   },
   "dependencies": {

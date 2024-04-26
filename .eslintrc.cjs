@@ -4,6 +4,12 @@ const rules = {
   "@microsoft/sdl/no-html-method": "off",
   "@typescript-eslint/lines-around-comment": "off",
   "@typescript-eslint/naming-convention": "off",
+
+  "id-length": {
+    exceptions: ["$"],
+    min: 2,
+  },
+
   "import/default": "off",
 
   "import/namespace": "off",
@@ -31,6 +37,7 @@ const rules = {
   ],
 
   "node/file-extension-in-import": "off",
+
   "node/no-callback-literal": "off",
 
   "node/no-missing-import": "off",
