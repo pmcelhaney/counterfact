@@ -5,10 +5,13 @@ const rules = {
   "@typescript-eslint/lines-around-comment": "off",
   "@typescript-eslint/naming-convention": "off",
 
-  "id-length": {
-    exceptions: ["$"],
-    min: 2,
-  },
+  "id-length": [
+    "error",
+    {
+      exceptions: ["$"],
+      min: 2,
+    },
+  ],
 
   "import/default": "off",
 
