@@ -73,7 +73,6 @@
     "jest": "29.7.0",
     "node-mocks-http": "1.14.1",
     "nodemon": "3.1.0",
-    "precinct": "^12.1.1",
     "rimraf": "5.0.5",
     "stryker-cli": "1.0.2",
 <<<<<<< HEAD
@@ -104,6 +103,7 @@
     "node-fetch": "3.3.2",
     "open": "10.1.0",
     "patch-package": "8.0.0",
+    "precinct": "^12.1.1",
     "prettier": "3.2.5",
     "typescript": "5.4.5"
   }
