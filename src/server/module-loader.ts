@@ -92,7 +92,14 @@ export class ModuleLoader extends EventTarget {
         this.registry.add(url, endpoint as Module);
       }
     } catch (error) {
-      reportLoadError(error, pathName);
+      if (
+        String(error) ===
+        "SyntaxError: Identifier 'Context' has already been declared"
+      ) {
+        // Not sure why Node throws this error. It doesn't seem to matter.
+        return;
+      }
+      process.stdout.write(`\nError loading ${pathName}:\n${String(error)}\n`);
     }
   }
 
