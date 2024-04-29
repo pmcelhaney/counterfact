@@ -83,8 +83,6 @@ export class ModuleLoader extends EventTarget {
           this.dispatchEvent(new Event("remove"));
         }
 
-        debug("importing module: %s", pathName);
-
         void this.loadEndpoint(pathName, parts.dir, url);
       },
     );
@@ -146,7 +144,10 @@ export class ModuleLoader extends EventTarget {
     await Promise.all(imports);
   }
 
+  // eslint-disable-next-line max-statements
   private async loadEndpoint(pathName: string, directory: string, url: string) {
+    debug("importing module: %s", pathName);
+
     try {
       // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
       const endpoint = (await this.uncachedImport(pathName)) as
