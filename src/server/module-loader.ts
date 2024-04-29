@@ -82,13 +82,10 @@ export class ModuleLoader extends EventTarget {
           // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/consistent-type-assertions
           new (endpoint as ContextModule).Context(),
         );
-        return "context";
+      } else {
+        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+        this.registry.add(url, endpoint as Module);
       }
-
-      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-      this.registry.add(url, endpoint as Module);
-
-      return "path";
     } catch (error) {
       reportLoadError(error, pathName);
     }
