@@ -52,45 +52,6 @@ export class ModuleLoader extends EventTarget {
     this.contextRegistry = contextRegistry;
   }
 
-  private async loadEndpointFromWatch(
-    pathName: string,
-    directory: string,
-    url: string,
-  ) {
-    try {
-      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-      const endpoint = (await this.uncachedImport(pathName)) as
-        | ContextModule
-        | Module;
-
-      this.dispatchEvent(new Event("add"));
-
-      if (basename(pathName).startsWith("_.context")) {
-        if (isContextModule(endpoint)) {
-          this.contextRegistry.update(
-            `/${directory.replaceAll("\\", "/")}`,
-
-            // @ts-expect-error TS says Context has no constructable signatures but that's not true?
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-            new endpoint.Context(),
-          );
-        }
-      } else {
-        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-        this.registry.add(url, endpoint as Module);
-      }
-    } catch (error) {
-      if (
-        String(error) ===
-        "SyntaxError: Identifier 'Context' has already been declared"
-      ) {
-        // Not sure why Node throws this error. It doesn't seem to matter.
-        return;
-      }
-      process.stdout.write(`\nError loading ${pathName}:\n${String(error)}\n`);
-    }
-  }
-
   public async watch(): Promise<void> {
     this.watcher = watch(
       `${this.basePath}/**/*.{js,mjs,ts,mts}`,
@@ -124,7 +85,7 @@ export class ModuleLoader extends EventTarget {
 
         debug("importing module: %s", pathName);
 
-        void this.loadEndpointFromWatch(pathName, parts.dir, url);
+        void this.loadEndpoint(pathName, parts.dir, url);
       },
     );
     await once(this.watcher, "ready");
