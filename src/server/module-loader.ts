@@ -69,12 +69,12 @@ export class ModuleLoader extends EventTarget {
     directory: string,
     url: string,
   ) {
-    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-    const endpoint = (await this.uncachedImport(pathName)) as
-      | ContextModule
-      | Module;
-
     try {
+      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+      const endpoint = (await this.uncachedImport(pathName)) as
+        | ContextModule
+        | Module;
+
       this.dispatchEvent(new Event("add"));
 
       if (basename(pathName).startsWith("_.context")) {
