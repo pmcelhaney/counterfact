@@ -48,7 +48,30 @@ describe("module dependency graph", () => {
     });
   });
 
-  it.todo("finds indirect dependencies");
+  it("finds indirect dependencies", async () => {
+    const graph = new ModuleDependencyGraph();
+
+    await usingTemporaryFiles(async ($) => {
+      await $.add(
+        "file.js",
+        'import intermediate from "./intermediate.js"; import other from "./other.js";',
+      );
+      await $.add("intermediate.js", 'import leaf from "./leaf.js";');
+      await $.add("other.js", 'import leaf from "./leaf.js";');
+
+      graph.load($.path("file.js"));
+      graph.load($.path("intermediate.js"));
+      graph.load($.path("other.js"));
+
+      expect(graph.dependentsOf($.path("./leaf.js"))).toEqual(
+        new Set([
+          $.path("file.js"),
+          $.path("intermediate.js"),
+          $.path("other.js"),
+        ]),
+      );
+    });
+  });
   it.todo("handles circular dependencies");
   it.todo("ignores a file it can't process due to syntax errors");
 });

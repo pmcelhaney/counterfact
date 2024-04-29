@@ -14,14 +14,22 @@ export class ModuleDependencyGraph {
       }
 
       const key = resolve(dirname(path), dependency);
-      if (!this.dependents.has(dependency)) {
+      if (!this.dependents.has(key)) {
         this.dependents.set(key, new Set());
       }
-      this.dependents.get(key)!.add(path);
+      this.dependents.get(key)?.add(path);
     }
   }
 
   public dependentsOf(path: string) {
-    return this.dependents.get(path) ?? new Set();
+    const dependents = new Set(this.dependents.get(path) ?? []);
+
+    for (const file of dependents) {
+      for (const secondary of this.dependentsOf(file)) {
+        dependents.add(secondary);
+      }
+    }
+
+    return dependents;
   }
 }
