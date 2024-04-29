@@ -78,13 +78,15 @@ export class ModuleLoader extends EventTarget {
       this.dispatchEvent(new Event("add"));
 
       if (basename(pathName).startsWith("_.context")) {
-        this.contextRegistry.update(
-          directory,
+        if (isContextModule(endpoint)) {
+          this.contextRegistry.update(
+            directory,
 
-          // @ts-expect-error TS says Context has no constructable signatures but that's not true?
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/consistent-type-assertions
-          new (endpoint as ContextModule).Context(),
-        );
+            // @ts-expect-error TS says Context has no constructable signatures but that's not true?
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+            new endpoint.Context(),
+          );
+        }
       } else {
         // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
         this.registry.add(url, endpoint as Module);
