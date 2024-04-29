@@ -72,6 +72,59 @@ describe("module dependency graph", () => {
       );
     });
   });
-  it.todo("handles circular dependencies");
-  it.todo("ignores a file it can't process due to syntax errors");
+  it("handles circular dependencies", async () => {
+    const graph = new ModuleDependencyGraph();
+
+    await usingTemporaryFiles(async ($) => {
+      await $.add("a.js", 'import b from "./b.js";');
+      await $.add("b.js", 'import c from "./c.js";');
+      await $.add("c.js", 'import a from "./a.js";');
+
+      graph.load($.path("a.js"));
+      graph.load($.path("b.js"));
+      graph.load($.path("c.js"));
+
+      expect(graph.dependentsOf($.path("./a.js"))).toEqual(
+        new Set([$.path("a.js"), $.path("b.js"), $.path("c.js")]),
+      );
+    });
+  });
+  it("ignores a file it can't process due to syntax errors", async () => {
+    const graph = new ModuleDependencyGraph();
+
+    await usingTemporaryFiles(async ($) => {
+      await $.add("error.js", "syntax error");
+      graph.load($.path("error.js"));
+
+      expect(graph.dependentsOf($.path("error.js"))).toEqual(new Set([]));
+    });
+  });
+
+  it("ignores a file it can't find", async () => {
+    const graph = new ModuleDependencyGraph();
+
+    await usingTemporaryFiles(async ($) => {
+      await $.add("found.js", "/* */");
+      graph.load($.path("missing.js"));
+
+      expect(graph.dependentsOf($.path("missing.js"))).toEqual(new Set([]));
+    });
+  });
+  it("updates dependencies when a file is reloaded", async () => {
+    const graph = new ModuleDependencyGraph();
+
+    await usingTemporaryFiles(async ($) => {
+      await $.add("file.js", 'import "./old.js";');
+      graph.load($.path("file.js"));
+
+      await $.add("file.js", 'import  "./new.js";');
+      graph.load($.path("file.js"));
+
+      expect(graph.dependentsOf($.path("./new.js"))).toEqual(
+        new Set([$.path("file.js")]),
+      );
+
+      expect(graph.dependentsOf($.path("./old.js"))).toEqual(new Set());
+    });
+  });
 });

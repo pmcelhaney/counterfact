@@ -7,8 +7,23 @@ import precinct from "precinct";
 export class ModuleDependencyGraph {
   private readonly dependents = new Map<string, Set<string>>();
 
+  private loadDependencies(path: string) {
+    try {
+      return precinct.paperwork(path);
+    } catch {
+      return [];
+    }
+  }
+
+  private clearDependents(path: string) {
+    this.dependents.forEach((group) => {
+      group.delete(path);
+    });
+  }
+
   public load(path: string) {
-    for (const dependency of precinct.paperwork(path)) {
+    this.clearDependents(path);
+    for (const dependency of this.loadDependencies(path)) {
       if (!dependency.startsWith(".")) {
         return;
       }
@@ -21,12 +36,23 @@ export class ModuleDependencyGraph {
     }
   }
 
+  // eslint-disable-next-line max-statements, sonarjs/cognitive-complexity
   public dependentsOf(path: string) {
-    const dependents = new Set(this.dependents.get(path) ?? []);
+    const marked = new Set<string>();
+    const dependents = new Set<string>();
+    const queue = [path];
 
-    for (const file of dependents) {
-      for (const secondary of this.dependentsOf(file)) {
-        dependents.add(secondary);
+    while (queue.length > 0) {
+      const file = queue.shift();
+      if (file !== undefined && !marked.has(file)) {
+        marked.add(file);
+        const fileDependents = this.dependents.get(file);
+        if (fileDependents) {
+          for (const dependent of fileDependents) {
+            dependents.add(dependent);
+            queue.push(dependent);
+          }
+        }
       }
     }
 
