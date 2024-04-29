@@ -69,7 +69,10 @@ export class ModuleLoader extends EventTarget {
     directory: string,
     url: string,
   ) {
-    const endpoint = await this.uncachedImport(pathName);
+    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+    const endpoint = (await this.uncachedImport(pathName)) as
+      | ContextModule
+      | Module;
 
     try {
       this.dispatchEvent(new Event("add"));
@@ -185,14 +188,14 @@ export class ModuleLoader extends EventTarget {
     await Promise.all(imports);
   }
 
-  private async loadEndpoint(fullPath: string, directory: string, url: string) {
+  private async loadEndpoint(pathName: string, directory: string, url: string) {
     try {
       // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-      const endpoint: ContextModule | Module = (await this.uncachedImport(
-        fullPath,
-      )) as ContextModule | Module;
+      const endpoint = (await this.uncachedImport(pathName)) as
+        | ContextModule
+        | Module;
 
-      if (basename(fullPath).startsWith("_.context")) {
+      if (basename(pathName).startsWith("_.context")) {
         if (isContextModule(endpoint)) {
           this.contextRegistry.add(
             `/${directory.replaceAll("\\", "/")}`,
@@ -215,7 +218,7 @@ export class ModuleLoader extends EventTarget {
         return;
       }
 
-      process.stdout.write(`\nError loading ${fullPath}:\n${String(error)}\n`);
+      process.stdout.write(`\nError loading ${pathName}:\n${String(error)}\n`);
     }
   }
 }
