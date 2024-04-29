@@ -11307,10 +11307,10 @@ uri-js@^4.2.2:
   dependencies:
     punycode "^2.1.0"
 
-using-temporary-files@2.1.1:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/using-temporary-files/-/using-temporary-files-2.1.1.tgz#6cfbf8fd1da9f45d6b0e09c86f24ce9d9ae0c4a7"
-  integrity sha512-+JuVdSvvj3HTEW39jaLWu1SqDjQ6F+kF9mchtIMqpLc7iMs3Ytkj5ZqTntoSJPTSOml5CME+74piHBtCMjYq6A==
+using-temporary-files@2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/using-temporary-files/-/using-temporary-files-2.2.1.tgz#cd0d537c631b8ee085ac4ac13a6909a23e473a6b"
+  integrity sha512-/G/iAtiPmlFhGOuMDLpqa3HUYiKpeOepgC9VJ4GzOAo0c/Xt6YYTk9g9mHB8zi/MJhZkn4YFRSYvRtYMDIHuOg==
 
 util-deprecate@^1.0.1, util-deprecate@^1.0.2, util-deprecate@~1.0.1:
   version "1.0.2"
