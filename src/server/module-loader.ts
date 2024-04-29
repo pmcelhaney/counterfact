@@ -80,7 +80,7 @@ export class ModuleLoader extends EventTarget {
       if (basename(pathName).startsWith("_.context")) {
         if (isContextModule(endpoint)) {
           this.contextRegistry.update(
-            directory,
+            `/${directory.replaceAll("\\", "/")}`,
 
             // @ts-expect-error TS says Context has no constructable signatures but that's not true?
             // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
