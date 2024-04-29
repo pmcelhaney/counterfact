@@ -195,6 +195,8 @@ export class ModuleLoader extends EventTarget {
         | ContextModule
         | Module;
 
+      this.dispatchEvent(new Event("add"));
+
       if (basename(pathName).startsWith("_.context")) {
         if (isContextModule(endpoint)) {
           this.contextRegistry.add(
