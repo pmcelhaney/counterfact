@@ -76,7 +76,7 @@
     "rimraf": "5.0.5",
     "stryker-cli": "1.0.2",
     "supertest": "7.0.0",
-    "using-temporary-files": "2.1.1"
+    "using-temporary-files": "2.2.1"
   },
   "dependencies": {
     "@hapi/accept": "6.0.3",
