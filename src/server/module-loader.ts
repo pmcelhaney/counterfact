@@ -64,6 +64,36 @@ export class ModuleLoader extends EventTarget {
     this.contextRegistry = contextRegistry;
   }
 
+  private async loadEndpointFromWatch(
+    pathName: string,
+    directory: string,
+    url: string,
+  ) {
+    const endpoint = await this.uncachedImport(pathName);
+
+    try {
+      this.dispatchEvent(new Event("add"));
+
+      if (basename(pathName).startsWith("_.context")) {
+        this.contextRegistry.update(
+          directory,
+
+          // @ts-expect-error TS says Context has no constructable signatures but that's not true?
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/consistent-type-assertions
+          new (endpoint as ContextModule).Context(),
+        );
+        return "context";
+      }
+
+      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+      this.registry.add(url, endpoint as Module);
+
+      return "path";
+    } catch (error) {
+      reportLoadError(error, pathName);
+    }
+  }
+
   public async watch(): Promise<void> {
     this.watcher = watch(
       `${this.basePath}/**/*.{js,mjs,ts,mts}`,
@@ -97,31 +127,7 @@ export class ModuleLoader extends EventTarget {
 
         debug("importing module: %s", pathName);
 
-        this.uncachedImport(pathName)
-          // eslint-disable-next-line promise/prefer-await-to-then
-          .then((endpoint) => {
-            this.dispatchEvent(new Event(eventName));
-
-            if (pathName.includes("_.context")) {
-              this.contextRegistry.update(
-                parts.dir,
-
-                // @ts-expect-error TS says Context has no constructable signatures but that's not true?
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/consistent-type-assertions
-                new (endpoint as ContextModule).Context(),
-              );
-              return "context";
-            }
-
-            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-            this.registry.add(url, endpoint as Module);
-
-            return "path";
-          })
-          // eslint-disable-next-line promise/prefer-await-to-then
-          .catch((error: unknown) => {
-            reportLoadError(error, pathName);
-          });
+        void this.loadEndpointFromWatch(pathName, parts.dir, url);
       },
     );
     await once(this.watcher, "ready");
@@ -168,13 +174,21 @@ export class ModuleLoader extends EventTarget {
       const fullPath = nodePath
         .join(this.basePath, directory, file.name)
         .replaceAll("\\", "/");
-      await this.loadEndpoint(fullPath, directory);
+
+      const url = `/${nodePath.join(
+        directory,
+        nodePath.parse(basename(fullPath)).name,
+      )}`
+        .replaceAll("\\", "/")
+        .replaceAll(/\/+/gu, "/");
+
+      await this.loadEndpoint(fullPath, directory, url);
     });
 
     await Promise.all(imports);
   }
 
-  private async loadEndpoint(fullPath: string, directory: string) {
+  private async loadEndpoint(fullPath: string, directory: string, url: string) {
     try {
       // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
       const endpoint: ContextModule | Module = (await this.uncachedImport(
@@ -192,13 +206,6 @@ export class ModuleLoader extends EventTarget {
           );
         }
       } else {
-        const url = `/${nodePath.join(
-          directory,
-          nodePath.parse(basename(fullPath)).name,
-        )}`
-          .replaceAll("\\", "/")
-          .replaceAll(/\/+/gu, "/");
-
         // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
         this.registry.add(url, endpoint as Module);
       }
