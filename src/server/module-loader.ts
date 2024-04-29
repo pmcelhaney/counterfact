@@ -1,7 +1,7 @@
 import { once } from "node:events";
-import { type Dirent, existsSync } from "node:fs";
+import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
-import nodePath from "node:path";
+import nodePath, { basename } from "node:path";
 
 import { type FSWatcher, watch } from "chokidar";
 import createDebug from "debug";
@@ -96,6 +96,7 @@ export class ModuleLoader extends EventTarget {
         }
 
         debug("importing module: %s", pathName);
+
         this.uncachedImport(pathName)
           // eslint-disable-next-line promise/prefer-await-to-then
           .then((endpoint) => {
@@ -167,24 +168,20 @@ export class ModuleLoader extends EventTarget {
       const fullPath = nodePath
         .join(this.basePath, directory, file.name)
         .replaceAll("\\", "/");
-      await this.loadEndpoint(fullPath, directory, file);
+      await this.loadEndpoint(fullPath, directory);
     });
 
     await Promise.all(imports);
   }
 
-  private async loadEndpoint(
-    fullPath: string,
-    directory: string,
-    file: Dirent,
-  ) {
+  private async loadEndpoint(fullPath: string, directory: string) {
     try {
       // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
       const endpoint: ContextModule | Module = (await this.uncachedImport(
         fullPath,
       )) as ContextModule | Module;
 
-      if (file.name.includes("_.context")) {
+      if (basename(fullPath).startsWith("_.context")) {
         if (isContextModule(endpoint)) {
           this.contextRegistry.add(
             `/${directory.replaceAll("\\", "/")}`,
@@ -197,7 +194,7 @@ export class ModuleLoader extends EventTarget {
       } else {
         const url = `/${nodePath.join(
           directory,
-          nodePath.parse(file.name).name,
+          nodePath.parse(basename(fullPath)).name,
         )}`
           .replaceAll("\\", "/")
           .replaceAll(/\/+/gu, "/");
