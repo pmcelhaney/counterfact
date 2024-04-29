@@ -26,18 +26,6 @@ function isContextModule(
   return "Context" in module && typeof module.Context === "function";
 }
 
-function reportLoadError(error: unknown, fileUrl: string) {
-  if (
-    String(error) ===
-    "SyntaxError: Identifier 'Context' has already been declared"
-  ) {
-    // Not sure why Node throws this error. It doesn't seem to matter.
-    return;
-  }
-
-  process.stdout.write(`\nError loading ${fileUrl}:\n~~${String(error)}~~\n`);
-}
-
 export class ModuleLoader extends EventTarget {
   private readonly basePath: string;
 
@@ -208,7 +196,7 @@ export class ModuleLoader extends EventTarget {
 
       if (basename(pathName).startsWith("_.context")) {
         if (isContextModule(endpoint)) {
-          this.contextRegistry.add(
+          this.contextRegistry.update(
             `/${directory.replaceAll("\\", "/")}`,
 
             // @ts-expect-error TS says Context has no constructable signatures but that's not true?
