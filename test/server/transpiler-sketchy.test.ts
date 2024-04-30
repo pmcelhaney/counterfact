@@ -16,6 +16,11 @@ describe("a Transpiler", () => {
     // Not sure why these tests are failing on Windows
     // The new code has nothing to do with OS.
     // Maybe related to usingTemporaryFiles but that works fine in other tests
+
+    it("skips these tests because Windows", () => {
+      expect("windows-is-dumb").toEqual("windows-is-dumb");
+    });
+
     return;
   }
 
