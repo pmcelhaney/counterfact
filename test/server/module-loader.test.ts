@@ -41,7 +41,6 @@ describe("a module loader", () => {
       expect(registry.exists("GET", "/a/b/c")).toBe(true);
     });
   });
-
   it("updates the registry when a file is added", async () => {
     await usingTemporaryFiles(async ($) => {
       await $.add("package.json", '{ "type": "module" }');
@@ -179,7 +178,7 @@ describe("a module loader", () => {
     });
   });
 
-  it("provides the parent context if the locale _.context.ts doesn't export a default", async () => {
+  it("provides the parent context if the local _.context.ts doesn't export a default", async () => {
     await usingTemporaryFiles(async ($) => {
       await $.add("_.context.js", "export class Context { value = 0 }");
       await $.add(
@@ -210,6 +209,37 @@ describe("a module loader", () => {
       expect(contextRegistry.find("/other").value).toBe(1);
       expect(contextRegistry.find("/hello").value).toBe(101);
       expect(contextRegistry.find("/hello/world").value).toBe(101);
+    });
+  });
+
+  // can't test because I can't get Jest to refresh modules
+  it.skip("updates the registry when a dependency is updated", async () => {
+    await usingTemporaryFiles(async ($) => {
+      await $.add("package.json", '{ "type": "module" }');
+
+      await $.add("x.js", 'export const x = "original";');
+
+      await $.add(
+        "main.js",
+        'import { x } from "./x.js"; export function GET() { return x; }',
+      );
+
+      const registry: Registry = new Registry();
+      const loader: ModuleLoader = new ModuleLoader($.path("."), registry);
+
+      await loader.load();
+      await loader.watch();
+
+      // @ts-expect-error - not going to create a whole request object for a test
+      const response = await registry.endpoint("GET", "/main")({});
+
+      await $.add("x.js", 'export const x = "changed";');
+
+      await once(loader, "add");
+
+      expect(response).toEqual("changed");
+
+      await loader.stopWatching();
     });
   });
 });
