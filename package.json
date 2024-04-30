@@ -81,6 +81,7 @@
   "dependencies": {
     "@hapi/accept": "6.0.3",
     "@types/json-schema": "7.0.15",
+    "ast-types": "^0.14.2",
     "chokidar": "3.6.0",
     "commander": "12.0.0",
     "debug": "4.3.4",
@@ -101,6 +102,7 @@
     "patch-package": "8.0.0",
     "precinct": "^12.1.1",
     "prettier": "3.2.5",
+    "recast": "^0.23.6",
     "typescript": "5.4.5"
   }
 }
