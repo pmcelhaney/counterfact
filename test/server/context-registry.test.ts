@@ -10,7 +10,7 @@ describe("a context registry", () => {
 
     const registry = new ContextRegistry();
 
-    registry.add("/hello", helloContext);
+    registry.update("/hello", helloContext);
 
     expect(registry.find("/hello")).toBe(helloContext);
   });
@@ -60,7 +60,7 @@ describe("a context registry", () => {
 
     const registry = new ContextRegistry();
 
-    registry.add("/", originalContext);
+    registry.update("/", originalContext);
     originalContext.increment();
 
     expect(registry.find("/").count).toBe(1);
@@ -87,7 +87,6 @@ it("updates context properties if they changed in the code", () => {
 
     [key: string]: unknown;
   }
-
   class UpdatedContext implements Context {
     public prop1 = "original";
 
@@ -104,7 +103,7 @@ it("updates context properties if they changed in the code", () => {
 
   const registry = new ContextRegistry();
 
-  registry.add("/", new OriginalContext());
+  registry.update("/", new OriginalContext());
 
   const context = registry.find("/");
 

@@ -1,34 +1,37 @@
 import { once } from "node:events";
 
+import { usingTemporaryFiles } from "using-temporary-files";
+
 import { ContextRegistry } from "../../src/server/context-registry.js";
 import { ModuleLoader } from "../../src/server/module-loader.js";
 import { Registry } from "../../src/server/registry.js";
-import { withTemporaryFiles } from "../lib/with-temporary-files.js";
 
 describe("a module loader", () => {
   it("finds a file and adds it to the registry", async () => {
-    const files: { [fileName: string]: string } = {
-      "a/b/c.js": `
-        export function GET() {
-            return {
-                body: "GET from a/b/c"
-            }; 
-        }
-      `,
+    await usingTemporaryFiles(async ($) => {
+      await $.add(
+        "a/b/c.js",
+        `export function GET() {
+          return {
+              body: "GET from a/b/c"
+          }; 
+      }`,
+      );
 
-      "hello.js": `
+      await $.add(
+        "hello.js",
+        `
       export function GET() {
           return {
               body: "hello"
           };
-      }
-      `,
-      "package.json": '{ "type": "module" }',
-    };
+      }`,
+      );
 
-    await withTemporaryFiles(files, async (basePath: string) => {
+      await $.add("package.json", '{ "type": "module" }');
+
       const registry: Registry = new Registry();
-      const loader: ModuleLoader = new ModuleLoader(basePath, registry);
+      const loader: ModuleLoader = new ModuleLoader($.path(""), registry);
 
       await loader.load();
 
@@ -38,95 +41,55 @@ describe("a module loader", () => {
       expect(registry.exists("GET", "/a/b/c")).toBe(true);
     });
   });
-
-  it("updates the registry when a file is added", async () => {
-    await withTemporaryFiles(
-      { "package.json": '{ "type": "module" }' },
-      async (
-        basePath: string,
-        { add }: { add: (path: string, content: string) => void },
-      ) => {
-        const registry: Registry = new Registry();
-        const loader: ModuleLoader = new ModuleLoader(basePath, registry);
-
-        await loader.load();
-        await loader.watch();
-
-        expect(registry.exists("GET", "/late/addition")).toBe(false);
-
-        add(
-          "late/addition.js",
-          'export function GET() { return { body: "I\'m here now!" }; }',
-        );
-        await once(loader, "add");
-
-        expect(registry.exists("GET", "/late/addition")).toBe(true);
-
-        await loader.stopWatching();
-      },
-    );
-  });
-
   it("updates the registry when a file is deleted", async () => {
-    await withTemporaryFiles(
-      {
-        "delete-me.js": 'export function GET() { return { body: "Goodbye" }; }',
+    await usingTemporaryFiles(async ($) => {
+      await $.add(
+        "delete-me.js",
+        'export function GET() { return { body: "Goodbye" }; }',
+      );
+      await $.add("package.json", '{ "type": "module" }');
 
-        "package.json": '{ "type": "module" }',
-      },
-      async (
-        basePath: string,
-        { remove }: { remove: (path: string) => void },
-      ) => {
-        const registry: Registry = new Registry();
-        const loader: ModuleLoader = new ModuleLoader(basePath, registry);
+      const registry: Registry = new Registry();
+      const loader: ModuleLoader = new ModuleLoader($.path("."), registry);
 
-        await loader.load();
-        await loader.watch();
+      await loader.load();
+      await loader.watch();
 
-        expect(registry.exists("GET", "/delete-me")).toBe(true);
+      expect(registry.exists("GET", "/delete-me")).toBe(true);
 
-        remove("delete-me.js");
-        await once(loader, "remove");
+      await $.remove("delete-me.js");
+      await once(loader, "remove");
 
-        expect(registry.exists("GET", "/delete-me")).toBe(false);
+      expect(registry.exists("GET", "/delete-me")).toBe(false);
 
-        await loader.stopWatching();
-      },
-    );
+      await loader.stopWatching();
+    });
   });
 
   it("ignores files with the wrong file extension", async () => {
-    const contents = 'export function GET() { return { body: "hello" }; }';
+    await usingTemporaryFiles(async ($) => {
+      const registry: Registry = new Registry();
+      const loader: ModuleLoader = new ModuleLoader($.path("."), registry);
 
-    const files: { [key: string]: string } = {
-      "module.js": contents,
-      "package.json": '{"type": "module"}',
-      "README.md": contents,
-    };
+      await $.add(
+        "module.js",
+        'export function GET() { return { body: "hello" }; }',
+      );
+      await $.add("package.json", '{"type": "module"}');
+      await $.add("README.md", "readme");
 
-    await withTemporaryFiles(
-      files,
-      async (
-        basePath: string,
-        { add }: { add: (path: string, content: string) => void },
-      ) => {
-        const registry: Registry = new Registry();
-        const loader: ModuleLoader = new ModuleLoader(basePath, registry);
+      await loader.load();
+      await loader.watch();
 
-        await loader.load();
-        await loader.watch();
+      await $.add("other.txt", "should not be loaded");
 
-        add("other.txt", "should not be loaded");
+      expect(registry.exists("GET", "/module")).toBe(true);
+      expect(registry.exists("GET", "/READMEx")).toBe(false);
+      expect(registry.exists("GET", "/other")).toBe(false);
+      expect(registry.exists("GET", "/types")).toBe(false);
 
-        expect(registry.exists("GET", "/module")).toBe(true);
-        expect(registry.exists("GET", "/READMEx")).toBe(false);
-        expect(registry.exists("GET", "/other")).toBe(false);
-        expect(registry.exists("GET", "/types")).toBe(false);
-
-        await loader.stopWatching();
-      },
-    );
+      await loader.stopWatching();
+    });
   });
 
   // This should work but I can't figure out how to break the
@@ -134,56 +97,52 @@ describe("a module loader", () => {
   // experimental module API).
 
   it.skip("updates the registry when a file is changed", async () => {
-    await withTemporaryFiles(
-      {
-        "change.js":
-          'export function GET(): { body } { return { body: "before change" }; }',
+    await usingTemporaryFiles(async ($) => {
+      const registry: Registry = new Registry();
+      const loader: ModuleLoader = new ModuleLoader($.path("."), registry);
 
-        "package.json": '{ "type": "module" }',
-      },
-      async (
-        basePath: string,
-        { add }: { add: (path: string, content: string) => void },
-      ) => {
-        const registry: Registry = new Registry();
-        const loader: ModuleLoader = new ModuleLoader(basePath, registry);
+      await $.add(
+        "change.js",
+        'export function GET(): { body } { return { body: "before change" }; }',
+      );
+      await $.add("package.json", '{ "type": "module" }');
 
-        await loader.watch();
-        add(
-          "change.js",
-          'export function GET() { return { body: "after change" }; }',
-        );
-        await once(loader, "change");
+      await loader.watch();
+      await $.add(
+        "change.js",
+        'export function GET() { return { body: "after change" }; }',
+      );
+      await once(loader, "change");
 
-        const response = registry.endpoint(
-          "GET",
-          "/change",
-          // @ts-expect-error - not going to create a whole context object for a test
-        )({ headers: {}, matchedPath: "", path: {}, query: {} });
+      const response = registry.endpoint(
+        "GET",
+        "/change",
+        // @ts-expect-error - not going to create a whole context object for a test
+      )({ headers: {}, matchedPath: "", path: {}, query: {} });
 
-        // @ts-expect-error - TypeScript doesn't know that the response will have a body property
-        expect(response.body).toBe("after change");
-        expect(registry.exists("GET", "/late/addition")).toBe(true);
+      // @ts-expect-error - TypeScript doesn't know that the response will have a body property
+      expect(response.body).toBe("after change");
+      expect(registry.exists("GET", "/late/addition")).toBe(true);
 
-        await loader.stopWatching();
-      },
-    );
+      await loader.stopWatching();
+    });
   });
 
   it("finds a context and adds it to the context registry", async () => {
-    const files: { [key: string]: string } = {
-      "_.context.js": 'export class Context { name = "main"};',
-      "hello/_.context.js": 'export class Context { name = "hello"};',
-      "package.json": '{ "type": "module" }',
-    };
+    await usingTemporaryFiles(async ($) => {
+      await $.add("_.context.js", 'export class Context { name = "main"};');
+      await $.add(
+        "hello/_.context.js",
+        'export class Context { name = "hello"};',
+      );
+      await $.add("package.json", '{ "type": "module" }');
 
-    await withTemporaryFiles(files, async (basePath: string) => {
       const registry: Registry = new Registry();
 
       const contextRegistry: ContextRegistry = new ContextRegistry();
 
       const loader: ModuleLoader = new ModuleLoader(
-        basePath,
+        $.path("."),
         registry,
         contextRegistry,
       );
@@ -196,20 +155,22 @@ describe("a module loader", () => {
     });
   });
 
-  it("provides the parent context if the locale _.context.ts doesn't export a default", async () => {
-    const files: { [key: string]: string } = {
-      "_.context.js": "export class Context { value = 0 }",
-      "hello/_.context.js": "export class Context  { value =  100 }",
-      "package.json": '{ "type": "module" }',
-    };
+  it("provides the parent context if the local _.context.ts doesn't export a default", async () => {
+    await usingTemporaryFiles(async ($) => {
+      await $.add("_.context.js", "export class Context { value = 0 }");
+      await $.add(
+        "hello/_.context.js",
+        "export class Context  { value =  100 }",
+      );
+      await $.add("package.json", '{ "type": "module" }');
 
-    await withTemporaryFiles(files, async (basePath: string) => {
       const registry: Registry = new Registry();
 
       const contextRegistry: ContextRegistry = new ContextRegistry();
 
       const loader: ModuleLoader = new ModuleLoader(
-        basePath,
+        $.path("."),
+
         registry,
         contextRegistry,
       );
@@ -226,6 +187,37 @@ describe("a module loader", () => {
       expect(contextRegistry.find("/other").value).toBe(1);
       expect(contextRegistry.find("/hello").value).toBe(101);
       expect(contextRegistry.find("/hello/world").value).toBe(101);
+    });
+  });
+
+  // can't test because I can't get Jest to refresh modules
+  it.skip("updates the registry when a dependency is updated", async () => {
+    await usingTemporaryFiles(async ($) => {
+      await $.add("package.json", '{ "type": "module" }');
+
+      await $.add("x.js", 'export const x = "original";');
+
+      await $.add(
+        "main.js",
+        'import { x } from "./x.js"; export function GET() { return x; }',
+      );
+
+      const registry: Registry = new Registry();
+      const loader: ModuleLoader = new ModuleLoader($.path("."), registry);
+
+      await loader.load();
+      await loader.watch();
+
+      // @ts-expect-error - not going to create a whole request object for a test
+      const response = await registry.endpoint("GET", "/main")({});
+
+      await $.add("x.js", 'export const x = "changed";');
+
+      await once(loader, "add");
+
+      expect(response).toEqual("changed");
+
+      await loader.stopWatching();
     });
   });
 });

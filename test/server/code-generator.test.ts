@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { usingTemporaryFiles } from "using-temporary-files";
 
 import { CodeGenerator } from "../../src/server/code-generator.js";

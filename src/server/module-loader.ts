@@ -1,7 +1,7 @@
 import { once } from "node:events";
-import { type Dirent, existsSync } from "node:fs";
+import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
-import nodePath from "node:path";
+import nodePath, { basename, dirname } from "node:path";
 
 import { type FSWatcher, watch } from "chokidar";
 import createDebug from "debug";
@@ -24,18 +24,6 @@ function isContextModule(
   module: ContextModule | Module,
 ): module is ContextModule {
   return "Context" in module && typeof module.Context === "function";
-}
-
-function reportLoadError(error: unknown, fileUrl: string) {
-  if (
-    String(error) ===
-    "SyntaxError: Identifier 'Context' has already been declared"
-  ) {
-    // Not sure why Node throws this error. It doesn't seem to matter.
-    return;
-  }
-
-  process.stdout.write(`\nError loading ${fileUrl}:\n~~${String(error)}~~\n`);
 }
 
 export class ModuleLoader extends EventTarget {
@@ -95,32 +83,7 @@ export class ModuleLoader extends EventTarget {
           this.dispatchEvent(new Event("remove"));
         }
 
-        debug("importing module: %s", pathName);
-        this.uncachedImport(pathName)
-          // eslint-disable-next-line promise/prefer-await-to-then
-          .then((endpoint) => {
-            this.dispatchEvent(new Event(eventName));
-
-            if (pathName.includes("_.context")) {
-              this.contextRegistry.update(
-                parts.dir,
-
-                // @ts-expect-error TS says Context has no constructable signatures but that's not true?
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/consistent-type-assertions
-                new (endpoint as ContextModule).Context(),
-              );
-              return "context";
-            }
-
-            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-            this.registry.add(url, endpoint as Module);
-
-            return "path";
-          })
-          // eslint-disable-next-line promise/prefer-await-to-then
-          .catch((error: unknown) => {
-            reportLoadError(error, pathName);
-          });
+        void this.loadEndpoint(pathName);
       },
     );
     await once(this.watcher, "ready");
@@ -167,27 +130,41 @@ export class ModuleLoader extends EventTarget {
       const fullPath = nodePath
         .join(this.basePath, directory, file.name)
         .replaceAll("\\", "/");
-      await this.loadEndpoint(fullPath, directory, file);
+
+      await this.loadEndpoint(fullPath);
     });
 
     await Promise.all(imports);
   }
 
-  private async loadEndpoint(
-    fullPath: string,
-    directory: string,
-    file: Dirent,
-  ) {
+  // eslint-disable-next-line max-statements
+  private async loadEndpoint(pathName: string) {
+    debug("importing module: %s", pathName);
+
+    const directory = dirname(pathName.slice(this.basePath.length)).replaceAll(
+      "\\",
+      "/",
+    );
+
+    const url = `/${nodePath.join(
+      directory,
+      nodePath.parse(basename(pathName)).name,
+    )}`
+      .replaceAll("\\", "/")
+      .replaceAll(/\/+/gu, "/");
+
     try {
       // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-      const endpoint: ContextModule | Module = (await this.uncachedImport(
-        fullPath,
-      )) as ContextModule | Module;
+      const endpoint = (await this.uncachedImport(pathName)) as
+        | ContextModule
+        | Module;
 
-      if (file.name.includes("_.context")) {
+      this.dispatchEvent(new Event("add"));
+
+      if (basename(pathName).startsWith("_.context")) {
         if (isContextModule(endpoint)) {
-          this.contextRegistry.add(
-            `/${directory.replaceAll("\\", "/")}`,
+          this.contextRegistry.update(
+            directory,
 
             // @ts-expect-error TS says Context has no constructable signatures but that's not true?
             // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
@@ -195,13 +172,6 @@ export class ModuleLoader extends EventTarget {
           );
         }
       } else {
-        const url = `/${nodePath.join(
-          directory,
-          nodePath.parse(file.name).name,
-        )}`
-          .replaceAll("\\", "/")
-          .replaceAll(/\/+/gu, "/");
-
         // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
         this.registry.add(url, endpoint as Module);
       }
@@ -214,7 +184,7 @@ export class ModuleLoader extends EventTarget {
         return;
       }
 
-      process.stdout.write(`\nError loading ${fullPath}:\n${String(error)}\n`);
+      process.stdout.write(`\nError loading ${pathName}:\n${String(error)}\n`);
     }
   }
 }

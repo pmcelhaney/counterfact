@@ -15,6 +15,8 @@ export class ContextRegistry {
 
   private readonly cache = new Map<string, Context>();
 
+  private readonly seen = new Set<string>();
+
   public constructor() {
     this.add("/", {});
   }
@@ -28,8 +30,15 @@ export class ContextRegistry {
     return this.entries.get(path) ?? this.find(parentPath(path));
   }
 
+  // eslint-disable-next-line max-statements
   public update(path: string, updatedContext?: Context): void {
     if (updatedContext === undefined) {
+      return;
+    }
+
+    if (!this.seen.has(path)) {
+      this.seen.add(path);
+      this.add(path, updatedContext);
       return;
     }
 
