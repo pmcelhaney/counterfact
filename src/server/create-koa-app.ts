@@ -20,7 +20,12 @@ export function createKoaApp(
 ) {
   const app = new Koa();
 
-  app.use(openapiMiddleware(config.openApiPath, `//localhost:${config.port}`));
+  app.use(
+    openapiMiddleware(
+      config.openApiPath,
+      `//localhost:${config.port}${config.routePrefix}`,
+    ),
+  );
 
   app.use(
     koaSwagger({
