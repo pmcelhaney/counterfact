@@ -6,6 +6,18 @@ import { usingTemporaryFiles } from "using-temporary-files";
 
 import { Transpiler } from "../../src/server/transpiler.js";
 
+function outputDirectoryContents(directoryPath) {
+  // eslint-disable-next-line n/prefer-promises/fs, @typescript-eslint/no-unsafe-argument
+  fs.readdir(directoryPath, (error, files) => {
+    if (error) {
+      return;
+    }
+
+    // eslint-disable-next-line no-console
+    console.log(`Contents of ${directoryPath}:`, files);
+  });
+}
+
 const TYPESCRIPT_SOURCE = "export const x:number = 1;\n";
 const JAVASCRIPT_SOURCE = "export const x = 1;\n";
 const JAVASCRIPT_SOURCE_COMMONJS =
@@ -27,6 +39,8 @@ describe("a Transpiler", () => {
 
       // eslint-disable-next-line promise/avoid-new, no-promise-executor-return
       await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      outputDirectoryContents($.path("./dist"));
 
       expect(fs.existsSync($.path("dist/found.js"))).toBe(true);
 
@@ -60,6 +74,8 @@ describe("a Transpiler", () => {
 
       await Promise.race([write, error]);
 
+      outputDirectoryContents($.path("./dist"));
+
       expect(fs.readFileSync($.path("dist/added.js"), "utf8")).toBe(
         JAVASCRIPT_SOURCE,
       );
@@ -83,6 +99,8 @@ describe("a Transpiler", () => {
       await $.add("src/update-me.ts", TYPESCRIPT_SOURCE);
       await overwrite;
 
+      outputDirectoryContents($.path("./dist"));
+
       expect(fs.readFileSync($.path("dist/update-me.js"), "utf8")).toBe(
         JAVASCRIPT_SOURCE,
       );
@@ -100,6 +118,7 @@ describe("a Transpiler", () => {
       await $.remove("src/delete-me.ts");
       await once(transpiler, "delete");
 
+      outputDirectoryContents($.path("./dist"));
       expect(() => {
         fs.accessSync($.path("dist/delete-me.js"), fsConstants.F_OK);
       }).toThrow(/ENOENT/u);
@@ -116,6 +135,7 @@ describe("a Transpiler", () => {
 
       await transpiler.watch();
 
+      outputDirectoryContents($.path("./dist"));
       expect(fs.existsSync($.path("dist/found.cjs"))).toBe(true);
 
       expect(fs.readFileSync($.path("dist/found.cjs"), "utf8")).toBe(
@@ -136,7 +156,7 @@ describe("a Transpiler", () => {
       transpiler = new Transpiler($.path("src"), $.path("dist"), "commonjs");
 
       await transpiler.watch();
-
+      outputDirectoryContents($.path("./dist"));
       // eslint-disable-next-line promise/avoid-new, no-promise-executor-return
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
