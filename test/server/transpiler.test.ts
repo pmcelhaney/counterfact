@@ -1,15 +1,15 @@
 /* eslint-disable n/no-sync */
 import { once } from "node:events";
 import fs, { constants as fsConstants } from "node:fs";
+import { EOL } from "node:os";
 
 import { usingTemporaryFiles } from "using-temporary-files";
 
 import { Transpiler } from "../../src/server/transpiler.js";
 
-const TYPESCRIPT_SOURCE = "export const x:number = 1;\n";
-const JAVASCRIPT_SOURCE = "export const x = 1;\n";
-const JAVASCRIPT_SOURCE_COMMONJS =
-  '"use strict";\nObject.defineProperty(exports, "__esModule", { value: true });\nexports.x = void 0;\nexports.x = 1;\n';
+const TYPESCRIPT_SOURCE = `export const x:number = 1;${EOL}`;
+const JAVASCRIPT_SOURCE = `export const x = 1;${EOL}`;
+const JAVASCRIPT_SOURCE_COMMONJS = `"use strict";${EOL}Object.defineProperty(exports, "__esModule", { value: true });${EOL}exports.x = void 0;${EOL}exports.x = 1;${EOL}`;
 
 describe("a Transpiler", () => {
   let transpiler: Transpiler = new Transpiler("src", "dist", "");
@@ -79,7 +79,10 @@ describe("a Transpiler", () => {
     await usingTemporaryFiles(async ($) => {
       transpiler = new Transpiler($.path("src"), $.path("dist"), "module");
 
-      await $.add("src/update-me.ts", "const x = 'code to be overwritten';\n");
+      await $.add(
+        "src/update-me.ts",
+        `const x = 'code to be overwritten';${EOL}`,
+      );
       const initialWrite = once(transpiler, "write");
 
       await transpiler.watch();
