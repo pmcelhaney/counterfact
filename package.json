@@ -99,7 +99,7 @@
     "node-fetch": "3.3.2",
     "open": "10.1.0",
     "patch-package": "8.0.0",
-    "precinct": "^12.1.1",
+    "precinct": "12.1.1",
     "prettier": "3.2.5",
     "typescript": "5.4.5"
   }
