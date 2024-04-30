@@ -15,7 +15,7 @@ import { uncachedImport } from "./uncached-import.js";
 
 const { uncachedRequire } = await import("./uncached-require.cjs");
 
-const debug = createDebug("counterfact:typescript-generator:module-loader");
+const debug = createDebug("counterfact:server:module-loader");
 
 interface ContextModule {
   Context: Context;
@@ -87,7 +87,7 @@ export class ModuleLoader extends EventTarget {
         }
         const dependencies = this.dependencyGraph.dependentsOf(pathName);
 
-        dependencies.add(pathName);
+        void this.loadEndpoint(pathName);
         for (const dependency of dependencies) {
           void this.loadEndpoint(dependency);
         }
