@@ -22,7 +22,10 @@ export function convertFileExtensionsToCjs(code: string) {
         node.arguments[0].value.startsWith(".")
       ) {
         // Change the module string from "foo.js" to "foo.cjs"
-        node.arguments[0].value = "foo.cjs";
+        node.arguments[0].value = node.arguments[0].value.replace(
+          /\.js$/u,
+          ".cjs",
+        );
       }
 
       // Continue traversing the AST

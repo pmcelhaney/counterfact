@@ -54,7 +54,7 @@ export class ModuleLoader extends EventTarget {
 
   public async watch(): Promise<void> {
     this.watcher = watch(
-      `${this.basePath}/**/*.{js,mjs,ts,mts}`,
+      `${this.basePath}/**/*.{js,mjs,ts,mts,cjs,cts}`,
       CHOKIDAR_OPTIONS,
     ).on(
       "all",
@@ -123,7 +123,7 @@ export class ModuleLoader extends EventTarget {
         return;
       }
 
-      if (!["js", "mjs", "mts", "ts"].includes(extension ?? "")) {
+      if (!["cjs", "cts", "js", "mjs", "mts", "ts"].includes(extension ?? "")) {
         return;
       }
 

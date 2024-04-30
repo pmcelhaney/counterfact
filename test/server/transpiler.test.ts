@@ -1,4 +1,3 @@
-/* eslint-disable id-length */
 /* eslint-disable n/no-sync */
 import { once } from "node:events";
 import fs, { constants as fsConstants } from "node:fs";
@@ -117,14 +116,33 @@ describe("a Transpiler", () => {
 
       await transpiler.watch();
 
+      expect(fs.existsSync($.path("dist/found.cjs"))).toBe(true);
+
+      expect(fs.readFileSync($.path("dist/found.cjs"), "utf8")).toBe(
+        JAVASCRIPT_SOURCE_COMMONJS,
+      );
+
+      await transpiler.stopWatching();
+    });
+  });
+
+  it("converts requires of .js files to .cjs", async () => {
+    await usingTemporaryFiles(async ($) => {
+      await $.add(
+        "src/importer.ts",
+        'import local from "./local.js"; local();',
+      );
+
+      transpiler = new Transpiler($.path("src"), $.path("dist"), "commonjs");
+
+      await transpiler.watch();
+
       // eslint-disable-next-line promise/avoid-new, no-promise-executor-return
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      expect(fs.existsSync($.path("dist/found.js"))).toBe(true);
+      const contents = fs.readFileSync($.path("dist/importer.cjs"));
 
-      expect(fs.readFileSync($.path("dist/found.js"), "utf8")).toBe(
-        JAVASCRIPT_SOURCE_COMMONJS,
-      );
+      expect(contents.includes('require("./local.cjs")')).toBe(true);
 
       await transpiler.stopWatching();
     });
