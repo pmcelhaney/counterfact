@@ -1,7 +1,7 @@
 import { once } from "node:events";
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
-import nodePath, { basename } from "node:path";
+import nodePath, { basename, dirname } from "node:path";
 
 import { type FSWatcher, watch } from "chokidar";
 import createDebug from "debug";
@@ -90,7 +90,7 @@ export class ModuleLoader extends EventTarget {
 
         dependencies.add(pathName);
         for (const dependency of dependencies) {
-          void this.loadEndpoint(dependency, parts.dir, url);
+          void this.loadEndpoint(dependency);
         }
       },
     );
@@ -139,22 +139,27 @@ export class ModuleLoader extends EventTarget {
         .join(this.basePath, directory, file.name)
         .replaceAll("\\", "/");
 
-      const url = `/${nodePath.join(
-        directory,
-        nodePath.parse(basename(fullPath)).name,
-      )}`
-        .replaceAll("\\", "/")
-        .replaceAll(/\/+/gu, "/");
-
-      await this.loadEndpoint(fullPath, directory, url);
+      await this.loadEndpoint(fullPath);
     });
 
     await Promise.all(imports);
   }
 
   // eslint-disable-next-line max-statements
-  private async loadEndpoint(pathName: string, directory: string, url: string) {
+  private async loadEndpoint(pathName: string) {
     debug("importing module: %s", pathName);
+
+    const directory = dirname(pathName.slice(this.basePath.length)).replaceAll(
+      "\\",
+      "/",
+    );
+
+    const url = `/${nodePath.join(
+      directory,
+      nodePath.parse(basename(pathName)).name,
+    )}`
+      .replaceAll("\\", "/")
+      .replaceAll(/\/+/gu, "/");
 
     this.dependencyGraph.load(pathName);
 
@@ -169,7 +174,7 @@ export class ModuleLoader extends EventTarget {
       if (basename(pathName).startsWith("_.context")) {
         if (isContextModule(endpoint)) {
           this.contextRegistry.update(
-            `/${directory.replaceAll("\\", "/")}`.replaceAll(/\/+/gu, "/"),
+            directory,
 
             // @ts-expect-error TS says Context has no constructable signatures but that's not true?
             // eslint-disable-next-line @typescript-eslint/no-unsafe-argument

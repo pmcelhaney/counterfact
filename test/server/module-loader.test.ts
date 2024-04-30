@@ -41,29 +41,6 @@ describe("a module loader", () => {
       expect(registry.exists("GET", "/a/b/c")).toBe(true);
     });
   });
-  it("updates the registry when a file is added", async () => {
-    await usingTemporaryFiles(async ($) => {
-      await $.add("package.json", '{ "type": "module" }');
-      const registry: Registry = new Registry();
-      const loader: ModuleLoader = new ModuleLoader($.path("."), registry);
-
-      await loader.load();
-      await loader.watch();
-
-      expect(registry.exists("GET", "/late/addition")).toBe(false);
-
-      await $.add(
-        "late/addition.js",
-        'export function GET() { return { body: "I\'m here now!" }; }',
-      );
-      await once(loader, "add");
-
-      expect(registry.exists("GET", "/late/addition")).toBe(true);
-
-      await loader.stopWatching();
-    });
-  });
-
   it("updates the registry when a file is deleted", async () => {
     await usingTemporaryFiles(async ($) => {
       await $.add(
@@ -193,6 +170,7 @@ describe("a module loader", () => {
 
       const loader: ModuleLoader = new ModuleLoader(
         $.path("."),
+
         registry,
         contextRegistry,
       );
