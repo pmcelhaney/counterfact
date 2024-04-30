@@ -9,7 +9,6 @@ import { CodeGenerator } from "./code-generator.js";
 import type { Config } from "./config.js";
 import { ContextRegistry } from "./context-registry.js";
 import { createKoaApp } from "./create-koa-app.js";
-import { determineModuleKind } from "./determine-module-kind.js";
 import { Dispatcher, type OpenApiDocument } from "./dispatcher.js";
 import { koaMiddleware } from "./koa-middleware.js";
 import { ModuleLoader } from "./module-loader.js";
@@ -50,12 +49,10 @@ export async function counterfact(config: Config) {
     await loadOpenApiDocument(config.openApiPath),
   );
 
-  const moduleKind = await determineModuleKind(compiledPathsDirectory);
-
   const transpiler = new Transpiler(
     nodePath.join(modulesPath, "paths").replaceAll("\\", "/"),
     compiledPathsDirectory,
-    moduleKind,
+    "commonjs",
   );
 
   const moduleLoader = new ModuleLoader(

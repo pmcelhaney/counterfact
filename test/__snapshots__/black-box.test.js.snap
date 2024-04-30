@@ -1,9 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`black box test compiles kitty.ts 1`] = `
-"export const GET = ($) => {
+""use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.GET = void 0;
+const GET = ($) => {
     return $.response[200].random();
 };
+exports.GET = GET;
 "
 `;
 
