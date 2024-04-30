@@ -9,7 +9,6 @@ import createDebug from "debug";
 import { CHOKIDAR_OPTIONS } from "./constants.js";
 import { type Context, ContextRegistry } from "./context-registry.js";
 import { determineModuleKind } from "./determine-module-kind.js";
-import { ModuleDependencyGraph } from "./module-dependency-graph.js";
 import type { Module, Registry } from "./registry.js";
 import { uncachedImport } from "./uncached-import.js";
 
@@ -35,8 +34,6 @@ export class ModuleLoader extends EventTarget {
   private watcher: FSWatcher | undefined;
 
   private readonly contextRegistry: ContextRegistry;
-
-  private readonly dependencyGraph = new ModuleDependencyGraph();
 
   private uncachedImport: (moduleName: string) => Promise<unknown> =
     // eslint-disable-next-line @typescript-eslint/require-await
@@ -86,12 +83,7 @@ export class ModuleLoader extends EventTarget {
           this.dispatchEvent(new Event("remove"));
         }
 
-        const dependencies = this.dependencyGraph.dependentsOf(pathName);
-
-        dependencies.add(pathName);
-        for (const dependency of dependencies) {
-          void this.loadEndpoint(dependency);
-        }
+        void this.loadEndpoint(pathName);
       },
     );
     await once(this.watcher, "ready");
@@ -160,8 +152,6 @@ export class ModuleLoader extends EventTarget {
     )}`
       .replaceAll("\\", "/")
       .replaceAll(/\/+/gu, "/");
-
-    this.dependencyGraph.load(pathName);
 
     try {
       // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
