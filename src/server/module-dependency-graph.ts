@@ -1,5 +1,3 @@
-import "./precinct.d.ts";
-
 import { dirname, resolve } from "node:path";
 
 import precinct from "precinct";
