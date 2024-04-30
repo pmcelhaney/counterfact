@@ -9,12 +9,13 @@ import createDebug from "debug";
 import { CHOKIDAR_OPTIONS } from "./constants.js";
 import { type Context, ContextRegistry } from "./context-registry.js";
 import { determineModuleKind } from "./determine-module-kind.js";
+import { ModuleDependencyGraph } from "./module-dependency-graph.js";
 import type { Module, Registry } from "./registry.js";
 import { uncachedImport } from "./uncached-import.js";
 
 const { uncachedRequire } = await import("./uncached-require.cjs");
 
-const debug = createDebug("counterfact:typescript-generator:module-loader");
+const debug = createDebug("counterfact:server:module-loader");
 
 interface ContextModule {
   Context: Context;
@@ -35,6 +36,8 @@ export class ModuleLoader extends EventTarget {
 
   private readonly contextRegistry: ContextRegistry;
 
+  private readonly dependencyGraph = new ModuleDependencyGraph();
+
   private uncachedImport: (moduleName: string) => Promise<unknown> =
     // eslint-disable-next-line @typescript-eslint/require-await
     async function (moduleName: string) {
@@ -54,7 +57,7 @@ export class ModuleLoader extends EventTarget {
 
   public async watch(): Promise<void> {
     this.watcher = watch(
-      `${this.basePath}/**/*.{js,mjs,ts,mts}`,
+      `${this.basePath}/**/*.{js,mjs,ts,mts,cjs,cts}`,
       CHOKIDAR_OPTIONS,
     ).on(
       "all",
@@ -82,8 +85,12 @@ export class ModuleLoader extends EventTarget {
           this.registry.remove(url);
           this.dispatchEvent(new Event("remove"));
         }
+        const dependencies = this.dependencyGraph.dependentsOf(pathName);
 
         void this.loadEndpoint(pathName);
+        for (const dependency of dependencies) {
+          void this.loadEndpoint(dependency);
+        }
       },
     );
     await once(this.watcher, "ready");
@@ -123,7 +130,7 @@ export class ModuleLoader extends EventTarget {
         return;
       }
 
-      if (!["js", "mjs", "mts", "ts"].includes(extension ?? "")) {
+      if (!["cjs", "cts", "js", "mjs", "mts", "ts"].includes(extension ?? "")) {
         return;
       }
 
@@ -152,6 +159,8 @@ export class ModuleLoader extends EventTarget {
     )}`
       .replaceAll("\\", "/")
       .replaceAll(/\/+/gu, "/");
+
+    this.dependencyGraph.load(pathName);
 
     try {
       // eslint-disable-next-line @typescript-eslint/consistent-type-assertions

@@ -65,7 +65,7 @@ describe("black box test", () => {
 
   it("compiles kitty.ts", () => {
     expect(
-      fs.readFileSync("./out/.cache/hello/kitty.js", "utf8"),
+      fs.readFileSync("./out/.cache/hello/kitty.cjs", "utf8"),
     ).toMatchSnapshot();
   });
 

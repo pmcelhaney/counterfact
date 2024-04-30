@@ -10,6 +10,7 @@ import ts from "typescript";
 
 import { ensureDirectoryExists } from "../util/ensure-directory-exists.js";
 import { CHOKIDAR_OPTIONS } from "./constants.js";
+import { convertFileExtensionsToCjs } from "./convert-js-extensions-to-cjs.js";
 
 const debug = createDebug("counterfact:server:transpiler");
 export class Transpiler extends EventTarget {
@@ -30,6 +31,10 @@ export class Transpiler extends EventTarget {
     this.sourcePath = sourcePath;
     this.destinationPath = destinationPath;
     this.moduleKind = moduleKind;
+  }
+
+  private get extension() {
+    return this.moduleKind.toLowerCase() === "commonjs" ? ".cjs" : ".js";
   }
 
   public async watch(): Promise<void> {
@@ -53,7 +58,7 @@ export class Transpiler extends EventTarget {
         const destinationPath = sourcePath
           .replace(this.sourcePath, this.destinationPath)
           .replaceAll("\\", "/")
-          .replace(".ts", ".js");
+          .replace(".ts", this.extension);
 
         if (["add", "change"].includes(eventName)) {
           transpiles.push(
@@ -87,6 +92,7 @@ export class Transpiler extends EventTarget {
     await this.watcher?.close();
   }
 
+  // eslint-disable-next-line max-statements
   private async transpileFile(
     eventName: string,
     sourcePath: string,
@@ -100,7 +106,9 @@ export class Transpiler extends EventTarget {
     const result: string = ts.transpileModule(source, {
       compilerOptions: {
         module:
-          ts.ModuleKind[this.moduleKind === "module" ? "ES2022" : "CommonJS"],
+          ts.ModuleKind[
+            this.moduleKind.toLowerCase() === "module" ? "ES2022" : "CommonJS"
+          ],
 
         target: ts.ScriptTarget.ES2015,
       },
@@ -111,12 +119,16 @@ export class Transpiler extends EventTarget {
       .join(
         sourcePath
           .replace(this.sourcePath, this.destinationPath)
-          .replace(".ts", ".js"),
+          .replace(".ts", this.extension),
       )
       .replaceAll("\\", "/");
 
+    const resultWithTransformedFileExtensions =
+      convertFileExtensionsToCjs(result);
+
     try {
-      await fs.writeFile(fullDestination, result);
+      // eslint-disable-next-line total-functions/no-unsafe-readonly-mutable-assignment
+      await fs.writeFile(fullDestination, resultWithTransformedFileExtensions);
     } catch {
       debug("error transpiling %s", fullDestination);
       this.dispatchEvent(new Event("error"));

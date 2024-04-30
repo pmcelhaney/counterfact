@@ -1,15 +1,14 @@
 /* eslint-disable n/no-sync */
 import { once } from "node:events";
 import fs, { constants as fsConstants } from "node:fs";
+import { EOL } from "node:os";
 
 import { Transpiler } from "../../src/server/transpiler.js";
 import { withTemporaryFiles } from "../lib/with-temporary-files.js";
 
-const TYPESCRIPT_SOURCE = "export const x:number = 1;\n";
-const JAVASCRIPT_SOURCE = "export const x = 1;\n";
-const JAVASCRIPT_SOURCE_COMMONJS =
-  '"use strict";\nObject.defineProperty(exports, "__esModule", { value: true });\nexports.x = void 0;\nexports.x = 1;\n';
-
+const TYPESCRIPT_SOURCE = `export const x:number = 1;${EOL}`;
+const JAVASCRIPT_SOURCE = `export const x = 1;${EOL}`;
+const JAVASCRIPT_SOURCE_COMMONJS = `"use strict";${EOL}Object.defineProperty(exports, "__esModule", { value: true });${EOL}exports.x = void 0;${EOL}exports.x = 1;${EOL}`;
 describe("a Transpiler", () => {
   let transpiler: Transpiler = new Transpiler("src", "dist", "");
 
@@ -131,9 +130,9 @@ describe("a Transpiler", () => {
       // eslint-disable-next-line promise/avoid-new, no-promise-executor-return
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      expect(fs.existsSync(path("dist/found.js"))).toBe(true);
+      expect(fs.existsSync(path("dist/found.cjs"))).toBe(true);
 
-      expect(fs.readFileSync(path("dist/found.js"), "utf8")).toBe(
+      expect(fs.readFileSync(path("dist/found.cjs"), "utf8")).toBe(
         JAVASCRIPT_SOURCE_COMMONJS,
       );
 
