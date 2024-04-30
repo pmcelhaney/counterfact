@@ -1,5 +1,17 @@
 # counterfact
 
+## 0.40.0
+
+### Minor Changes
+
+- 678c51b: when a file is changed, all files on which it depends are hot-reloaded (fixes [#835](https://github.com/pmcelhaney/counterfact/issues/835))
+- bb0a11c: performance fix that should significantly reduce startup time
+
+### Patch Changes
+
+- 5503a8e: a lot of refactoring of the code that loads modules
+- ef57997: fixed: make --prefix work with Swagger
+
 ## 0.39.1
 
 ### Patch Changes
