@@ -3510,10 +3510,10 @@ ast-types-flow@^0.0.7:
   resolved "https://registry.yarnpkg.com/ast-types-flow/-/ast-types-flow-0.0.7.tgz#f70b735c6bca1a5c9c22d982c3e39e7feba3bdad"
   integrity sha512-eBvWn1lvIApYMhzQMsu9ciLfkBY499mFZlNqG+/9WR7PVlroQw0vG30cOQQbaKz3sCEc44TAOu2ykzqXSNnwag==
 
-ast-types@0.14.2:
-  version "0.14.2"
-  resolved "https://registry.yarnpkg.com/ast-types/-/ast-types-0.14.2.tgz#600b882df8583e3cd4f2df5fa20fa83759d4bdfd"
-  integrity sha512-O0yuUDnZeQDL+ncNGlJ78BiO4jnYI3bvMsD5prT0/nsgijG/LpNBIr63gTjVTNsiGkgQhiyCShTgxt8oXOrklA==
+ast-types@0.16.0:
+  version "0.16.0"
+  resolved "https://registry.yarnpkg.com/ast-types/-/ast-types-0.16.0.tgz#1d54e2e6be96f839b79fe655eb3c45d5cfbaca57"
+  integrity sha512-Z5gaEzPSWKDPGFvb+EVqqlcKdOY7Uz9New9MtOhrh8s0JSW9SsOVk6wmbiVghllIFXmeXog3loPBp25JpU7vDw==
   dependencies:
     tslib "^2.0.1"
 

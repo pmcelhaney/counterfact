@@ -1,6 +1,6 @@
 {
   "name": "counterfact",
-  "version": "0.40.1",
+  "version": "0.40.0",
   "description": "a library for building a fake REST API for testing",
   "type": "module",
   "main": "./src/server/counterfact.js",
@@ -81,7 +81,7 @@
   "dependencies": {
     "@hapi/accept": "6.0.3",
     "@types/json-schema": "7.0.15",
-    "ast-types": "0.14.2",
+    "ast-types": "0.16.0",
     "chokidar": "3.6.0",
     "commander": "12.0.0",
     "debug": "4.3.4",
