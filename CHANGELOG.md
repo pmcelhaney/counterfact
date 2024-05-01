@@ -1,5 +1,11 @@
 # counterfact
 
+## 0.40.1
+
+### Patch Changes
+
+- a5a728a: delete the .cache directory at startup so old leftover files don't make trouble
+
 ## 0.40.0
 
 ### Minor Changes
