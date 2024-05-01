@@ -1,3 +1,4 @@
+import { rm } from "node:fs/promises";
 import nodePath from "node:path";
 
 import { createHttpTerminator, type HttpTerminator } from "http-terminator";
@@ -36,6 +37,8 @@ export async function counterfact(config: Config) {
   const compiledPathsDirectory = nodePath
     .join(modulesPath, ".cache")
     .replaceAll("\\", "/");
+
+  await rm(compiledPathsDirectory, { force: true, recursive: true });
 
   const registry = new Registry();
 
