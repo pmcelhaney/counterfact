@@ -89,7 +89,7 @@ async function main(source, destination) {
     padTagLine(taglines[Math.floor(Math.random() * taglines.length)]),
     "",
     `| API Base URL  ==> ${url}`,
-    `| Swagger UI    ==> ${swaggerUrl}`,
+    source === "_" ? undefined : `| Swagger UI    ==> ${swaggerUrl}`,
     "",
     "| Instructions  ==> https://counterfact.dev/docs/usage.html",
     "| Help/feedback ==> https://github.com/pmcelhaney/counterfact/issues",
@@ -100,7 +100,9 @@ async function main(source, destination) {
     "Starting REPL, type .help for more info",
   ];
 
-  process.stdout.write(introduction.join("\n"));
+  process.stdout.write(
+    introduction.filter((line) => line !== undefined).join("\n"),
+  );
 
   process.stdout.write("\n\n");
 
@@ -120,9 +122,13 @@ async function main(source, destination) {
 program
   .name("counterfact")
   .description(
-    "Counterfact is a tool for generating a REST API from an OpenAPI document.",
+    "Counterfact is a tool for mocking REST APIs in development. See https://counterfact.dev for more info.",
   )
-  .argument("<openapi.yaml>", "path or URL to OpenAPI document")
+  .argument(
+    "[openapi.yaml]",
+    'path or URL to OpenAPI document or "_" to run without OpenAPI',
+    "_",
+  )
   .argument("[destination]", "path to generated code", ".")
   .option("--port <number>", "server port number", DEFAULT_PORT)
   .option("--swagger", "include swagger-ui")
