@@ -4,9 +4,9 @@ exports[`end-to-end test generates the same code for pet store that it did on th
 Map {
   "paths/pet.ts" => Script {
     "cache": Map {
-      "OperationCoder@./petstore.yaml#/paths/~1pet/post@[object Object]:false" => "POST",
+      "OperationCoder@./petstore.yaml#/paths/~1pet/post:false" => "POST",
       "OperationTypeCoder@./petstore.yaml#/paths/~1pet/post@path-types/pet.types.ts:true:false" => "HTTP_POST",
-      "OperationCoder@./petstore.yaml#/paths/~1pet/put@[object Object]:false" => "PUT",
+      "OperationCoder@./petstore.yaml#/paths/~1pet/put:false" => "PUT",
       "OperationTypeCoder@./petstore.yaml#/paths/~1pet/put@path-types/pet.types.ts:true:false" => "HTTP_PUT",
     },
     "comments": [],
@@ -46,8 +46,8 @@ Map {
         "name": "HTTP_POST",
         "script": Script {
           "cache": Map {
-            "OperationTypeCoder@./petstore.yaml#/paths/~1pet/post@[object Object]:true" => "HTTP_POST",
-            "OperationTypeCoder@./petstore.yaml#/paths/~1pet/put@[object Object]:true" => "HTTP_PUT",
+            "OperationTypeCoder@./petstore.yaml#/paths/~1pet/post:true" => "HTTP_POST",
+            "OperationTypeCoder@./petstore.yaml#/paths/~1pet/put:true" => "HTTP_PUT",
             "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
           },
           "comments": [
@@ -174,7 +174,7 @@ Map {
               "name": "Pet",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined@[object Object]:true" => "Pet",
+                  "SchemaTypeCoder@undefined:true" => "Pet",
                   "SchemaTypeCoder@undefined@components/Category.ts:true:false" => "Category",
                   "SchemaTypeCoder@undefined@components/Tag.ts:true:false" => "Tag",
                 },
@@ -200,7 +200,7 @@ Map {
                     "name": "Category",
                     "script": Script {
                       "cache": Map {
-                        "SchemaTypeCoder@undefined@[object Object]:true" => "Category",
+                        "SchemaTypeCoder@undefined:true" => "Category",
                       },
                       "comments": [],
                       "exports": Map {
@@ -232,7 +232,7 @@ Map {
                     "name": "Tag",
                     "script": Script {
                       "cache": Map {
-                        "SchemaTypeCoder@undefined@[object Object]:true" => "Tag",
+                        "SchemaTypeCoder@undefined:true" => "Tag",
                       },
                       "comments": [],
                       "exports": Map {
@@ -282,8 +282,8 @@ Map {
         "name": "HTTP_PUT",
         "script": Script {
           "cache": Map {
-            "OperationTypeCoder@./petstore.yaml#/paths/~1pet/post@[object Object]:true" => "HTTP_POST",
-            "OperationTypeCoder@./petstore.yaml#/paths/~1pet/put@[object Object]:true" => "HTTP_PUT",
+            "OperationTypeCoder@./petstore.yaml#/paths/~1pet/post:true" => "HTTP_POST",
+            "OperationTypeCoder@./petstore.yaml#/paths/~1pet/put:true" => "HTTP_PUT",
             "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
           },
           "comments": [
@@ -410,7 +410,7 @@ Map {
               "name": "Pet",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined@[object Object]:true" => "Pet",
+                  "SchemaTypeCoder@undefined:true" => "Pet",
                   "SchemaTypeCoder@undefined@components/Category.ts:true:false" => "Category",
                   "SchemaTypeCoder@undefined@components/Tag.ts:true:false" => "Tag",
                 },
@@ -436,7 +436,7 @@ Map {
                     "name": "Category",
                     "script": Script {
                       "cache": Map {
-                        "SchemaTypeCoder@undefined@[object Object]:true" => "Category",
+                        "SchemaTypeCoder@undefined:true" => "Category",
                       },
                       "comments": [],
                       "exports": Map {
@@ -468,7 +468,7 @@ Map {
                     "name": "Tag",
                     "script": Script {
                       "cache": Map {
-                        "SchemaTypeCoder@undefined@[object Object]:true" => "Tag",
+                        "SchemaTypeCoder@undefined:true" => "Tag",
                       },
                       "comments": [],
                       "exports": Map {
@@ -522,8 +522,8 @@ Map {
   },
   "path-types/pet.types.ts" => Script {
     "cache": Map {
-      "OperationTypeCoder@./petstore.yaml#/paths/~1pet/post@[object Object]:true" => "HTTP_POST",
-      "OperationTypeCoder@./petstore.yaml#/paths/~1pet/put@[object Object]:true" => "HTTP_PUT",
+      "OperationTypeCoder@./petstore.yaml#/paths/~1pet/post:true" => "HTTP_POST",
+      "OperationTypeCoder@./petstore.yaml#/paths/~1pet/put:true" => "HTTP_PUT",
       "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
     },
     "comments": [
@@ -650,7 +650,7 @@ Map {
         "name": "Pet",
         "script": Script {
           "cache": Map {
-            "SchemaTypeCoder@undefined@[object Object]:true" => "Pet",
+            "SchemaTypeCoder@undefined:true" => "Pet",
             "SchemaTypeCoder@undefined@components/Category.ts:true:false" => "Category",
             "SchemaTypeCoder@undefined@components/Tag.ts:true:false" => "Tag",
           },
@@ -676,7 +676,7 @@ Map {
               "name": "Category",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined@[object Object]:true" => "Category",
+                  "SchemaTypeCoder@undefined:true" => "Category",
                 },
                 "comments": [],
                 "exports": Map {
@@ -708,7 +708,7 @@ Map {
               "name": "Tag",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined@[object Object]:true" => "Tag",
+                  "SchemaTypeCoder@undefined:true" => "Tag",
                 },
                 "comments": [],
                 "exports": Map {
@@ -753,7 +753,7 @@ Map {
   },
   "paths/pet/findByStatus.ts" => Script {
     "cache": Map {
-      "OperationCoder@./petstore.yaml#/paths/~1pet~1findByStatus/get@[object Object]:false" => "GET",
+      "OperationCoder@./petstore.yaml#/paths/~1pet~1findByStatus/get:false" => "GET",
       "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1findByStatus/get@path-types/pet/findByStatus.types.ts:true:false" => "HTTP_GET",
     },
     "comments": [],
@@ -780,7 +780,7 @@ Map {
         "name": "HTTP_GET",
         "script": Script {
           "cache": Map {
-            "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1findByStatus/get@[object Object]:true" => "HTTP_GET",
+            "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1findByStatus/get:true" => "HTTP_GET",
             "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
           },
           "comments": [
@@ -854,7 +854,7 @@ Map {
               "name": "Pet",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined@[object Object]:true" => "Pet",
+                  "SchemaTypeCoder@undefined:true" => "Pet",
                   "SchemaTypeCoder@undefined@components/Category.ts:true:false" => "Category",
                   "SchemaTypeCoder@undefined@components/Tag.ts:true:false" => "Tag",
                 },
@@ -880,7 +880,7 @@ Map {
                     "name": "Category",
                     "script": Script {
                       "cache": Map {
-                        "SchemaTypeCoder@undefined@[object Object]:true" => "Category",
+                        "SchemaTypeCoder@undefined:true" => "Category",
                       },
                       "comments": [],
                       "exports": Map {
@@ -912,7 +912,7 @@ Map {
                     "name": "Tag",
                     "script": Script {
                       "cache": Map {
-                        "SchemaTypeCoder@undefined@[object Object]:true" => "Tag",
+                        "SchemaTypeCoder@undefined:true" => "Tag",
                       },
                       "comments": [],
                       "exports": Map {
@@ -966,7 +966,7 @@ Map {
   },
   "path-types/pet/findByStatus.types.ts" => Script {
     "cache": Map {
-      "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1findByStatus/get@[object Object]:true" => "HTTP_GET",
+      "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1findByStatus/get:true" => "HTTP_GET",
       "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
     },
     "comments": [
@@ -1040,7 +1040,7 @@ Map {
         "name": "Pet",
         "script": Script {
           "cache": Map {
-            "SchemaTypeCoder@undefined@[object Object]:true" => "Pet",
+            "SchemaTypeCoder@undefined:true" => "Pet",
             "SchemaTypeCoder@undefined@components/Category.ts:true:false" => "Category",
             "SchemaTypeCoder@undefined@components/Tag.ts:true:false" => "Tag",
           },
@@ -1066,7 +1066,7 @@ Map {
               "name": "Category",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined@[object Object]:true" => "Category",
+                  "SchemaTypeCoder@undefined:true" => "Category",
                 },
                 "comments": [],
                 "exports": Map {
@@ -1098,7 +1098,7 @@ Map {
               "name": "Tag",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined@[object Object]:true" => "Tag",
+                  "SchemaTypeCoder@undefined:true" => "Tag",
                 },
                 "comments": [],
                 "exports": Map {
@@ -1143,7 +1143,7 @@ Map {
   },
   "paths/pet/findByTags.ts" => Script {
     "cache": Map {
-      "OperationCoder@./petstore.yaml#/paths/~1pet~1findByTags/get@[object Object]:false" => "GET",
+      "OperationCoder@./petstore.yaml#/paths/~1pet~1findByTags/get:false" => "GET",
       "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1findByTags/get@path-types/pet/findByTags.types.ts:true:false" => "HTTP_GET",
     },
     "comments": [],
@@ -1170,7 +1170,7 @@ Map {
         "name": "HTTP_GET",
         "script": Script {
           "cache": Map {
-            "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1findByTags/get@[object Object]:true" => "HTTP_GET",
+            "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1findByTags/get:true" => "HTTP_GET",
             "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
           },
           "comments": [
@@ -1244,7 +1244,7 @@ Map {
               "name": "Pet",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined@[object Object]:true" => "Pet",
+                  "SchemaTypeCoder@undefined:true" => "Pet",
                   "SchemaTypeCoder@undefined@components/Category.ts:true:false" => "Category",
                   "SchemaTypeCoder@undefined@components/Tag.ts:true:false" => "Tag",
                 },
@@ -1270,7 +1270,7 @@ Map {
                     "name": "Category",
                     "script": Script {
                       "cache": Map {
-                        "SchemaTypeCoder@undefined@[object Object]:true" => "Category",
+                        "SchemaTypeCoder@undefined:true" => "Category",
                       },
                       "comments": [],
                       "exports": Map {
@@ -1302,7 +1302,7 @@ Map {
                     "name": "Tag",
                     "script": Script {
                       "cache": Map {
-                        "SchemaTypeCoder@undefined@[object Object]:true" => "Tag",
+                        "SchemaTypeCoder@undefined:true" => "Tag",
                       },
                       "comments": [],
                       "exports": Map {
@@ -1356,7 +1356,7 @@ Map {
   },
   "path-types/pet/findByTags.types.ts" => Script {
     "cache": Map {
-      "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1findByTags/get@[object Object]:true" => "HTTP_GET",
+      "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1findByTags/get:true" => "HTTP_GET",
       "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
     },
     "comments": [
@@ -1430,7 +1430,7 @@ Map {
         "name": "Pet",
         "script": Script {
           "cache": Map {
-            "SchemaTypeCoder@undefined@[object Object]:true" => "Pet",
+            "SchemaTypeCoder@undefined:true" => "Pet",
             "SchemaTypeCoder@undefined@components/Category.ts:true:false" => "Category",
             "SchemaTypeCoder@undefined@components/Tag.ts:true:false" => "Tag",
           },
@@ -1456,7 +1456,7 @@ Map {
               "name": "Category",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined@[object Object]:true" => "Category",
+                  "SchemaTypeCoder@undefined:true" => "Category",
                 },
                 "comments": [],
                 "exports": Map {
@@ -1488,7 +1488,7 @@ Map {
               "name": "Tag",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined@[object Object]:true" => "Tag",
+                  "SchemaTypeCoder@undefined:true" => "Tag",
                 },
                 "comments": [],
                 "exports": Map {
@@ -1533,11 +1533,11 @@ Map {
   },
   "paths/pet/{petId}.ts" => Script {
     "cache": Map {
-      "OperationCoder@./petstore.yaml#/paths/~1pet~1{petId}/get@[object Object]:false" => "GET",
+      "OperationCoder@./petstore.yaml#/paths/~1pet~1{petId}/get:false" => "GET",
       "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/get@path-types/pet/{petId}.types.ts:true:false" => "HTTP_GET",
-      "OperationCoder@./petstore.yaml#/paths/~1pet~1{petId}/post@[object Object]:false" => "POST",
+      "OperationCoder@./petstore.yaml#/paths/~1pet~1{petId}/post:false" => "POST",
       "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/post@path-types/pet/{petId}.types.ts:true:false" => "HTTP_POST",
-      "OperationCoder@./petstore.yaml#/paths/~1pet~1{petId}/delete@[object Object]:false" => "DELETE",
+      "OperationCoder@./petstore.yaml#/paths/~1pet~1{petId}/delete:false" => "DELETE",
       "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/delete@path-types/pet/{petId}.types.ts:true:false" => "HTTP_DELETE",
     },
     "comments": [],
@@ -1590,9 +1590,9 @@ Map {
         "name": "HTTP_GET",
         "script": Script {
           "cache": Map {
-            "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/get@[object Object]:true" => "HTTP_GET",
-            "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/post@[object Object]:true" => "HTTP_POST",
-            "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/delete@[object Object]:true" => "HTTP_DELETE",
+            "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/get:true" => "HTTP_GET",
+            "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/post:true" => "HTTP_POST",
+            "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/delete:true" => "HTTP_DELETE",
             "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
           },
           "comments": [
@@ -1711,7 +1711,7 @@ Map {
               "name": "Pet",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined@[object Object]:true" => "Pet",
+                  "SchemaTypeCoder@undefined:true" => "Pet",
                   "SchemaTypeCoder@undefined@components/Category.ts:true:false" => "Category",
                   "SchemaTypeCoder@undefined@components/Tag.ts:true:false" => "Tag",
                 },
@@ -1737,7 +1737,7 @@ Map {
                     "name": "Category",
                     "script": Script {
                       "cache": Map {
-                        "SchemaTypeCoder@undefined@[object Object]:true" => "Category",
+                        "SchemaTypeCoder@undefined:true" => "Category",
                       },
                       "comments": [],
                       "exports": Map {
@@ -1769,7 +1769,7 @@ Map {
                     "name": "Tag",
                     "script": Script {
                       "cache": Map {
-                        "SchemaTypeCoder@undefined@[object Object]:true" => "Tag",
+                        "SchemaTypeCoder@undefined:true" => "Tag",
                       },
                       "comments": [],
                       "exports": Map {
@@ -1819,9 +1819,9 @@ Map {
         "name": "HTTP_POST",
         "script": Script {
           "cache": Map {
-            "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/get@[object Object]:true" => "HTTP_GET",
-            "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/post@[object Object]:true" => "HTTP_POST",
-            "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/delete@[object Object]:true" => "HTTP_DELETE",
+            "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/get:true" => "HTTP_GET",
+            "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/post:true" => "HTTP_POST",
+            "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/delete:true" => "HTTP_DELETE",
             "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
           },
           "comments": [
@@ -1940,7 +1940,7 @@ Map {
               "name": "Pet",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined@[object Object]:true" => "Pet",
+                  "SchemaTypeCoder@undefined:true" => "Pet",
                   "SchemaTypeCoder@undefined@components/Category.ts:true:false" => "Category",
                   "SchemaTypeCoder@undefined@components/Tag.ts:true:false" => "Tag",
                 },
@@ -1966,7 +1966,7 @@ Map {
                     "name": "Category",
                     "script": Script {
                       "cache": Map {
-                        "SchemaTypeCoder@undefined@[object Object]:true" => "Category",
+                        "SchemaTypeCoder@undefined:true" => "Category",
                       },
                       "comments": [],
                       "exports": Map {
@@ -1998,7 +1998,7 @@ Map {
                     "name": "Tag",
                     "script": Script {
                       "cache": Map {
-                        "SchemaTypeCoder@undefined@[object Object]:true" => "Tag",
+                        "SchemaTypeCoder@undefined:true" => "Tag",
                       },
                       "comments": [],
                       "exports": Map {
@@ -2048,9 +2048,9 @@ Map {
         "name": "HTTP_DELETE",
         "script": Script {
           "cache": Map {
-            "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/get@[object Object]:true" => "HTTP_GET",
-            "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/post@[object Object]:true" => "HTTP_POST",
-            "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/delete@[object Object]:true" => "HTTP_DELETE",
+            "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/get:true" => "HTTP_GET",
+            "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/post:true" => "HTTP_POST",
+            "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/delete:true" => "HTTP_DELETE",
             "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
           },
           "comments": [
@@ -2169,7 +2169,7 @@ Map {
               "name": "Pet",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined@[object Object]:true" => "Pet",
+                  "SchemaTypeCoder@undefined:true" => "Pet",
                   "SchemaTypeCoder@undefined@components/Category.ts:true:false" => "Category",
                   "SchemaTypeCoder@undefined@components/Tag.ts:true:false" => "Tag",
                 },
@@ -2195,7 +2195,7 @@ Map {
                     "name": "Category",
                     "script": Script {
                       "cache": Map {
-                        "SchemaTypeCoder@undefined@[object Object]:true" => "Category",
+                        "SchemaTypeCoder@undefined:true" => "Category",
                       },
                       "comments": [],
                       "exports": Map {
@@ -2227,7 +2227,7 @@ Map {
                     "name": "Tag",
                     "script": Script {
                       "cache": Map {
-                        "SchemaTypeCoder@undefined@[object Object]:true" => "Tag",
+                        "SchemaTypeCoder@undefined:true" => "Tag",
                       },
                       "comments": [],
                       "exports": Map {
@@ -2281,9 +2281,9 @@ Map {
   },
   "path-types/pet/{petId}.types.ts" => Script {
     "cache": Map {
-      "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/get@[object Object]:true" => "HTTP_GET",
-      "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/post@[object Object]:true" => "HTTP_POST",
-      "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/delete@[object Object]:true" => "HTTP_DELETE",
+      "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/get:true" => "HTTP_GET",
+      "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/post:true" => "HTTP_POST",
+      "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}/delete:true" => "HTTP_DELETE",
       "SchemaTypeCoder@undefined@components/Pet.ts:true:false" => "Pet",
     },
     "comments": [
@@ -2402,7 +2402,7 @@ Map {
         "name": "Pet",
         "script": Script {
           "cache": Map {
-            "SchemaTypeCoder@undefined@[object Object]:true" => "Pet",
+            "SchemaTypeCoder@undefined:true" => "Pet",
             "SchemaTypeCoder@undefined@components/Category.ts:true:false" => "Category",
             "SchemaTypeCoder@undefined@components/Tag.ts:true:false" => "Tag",
           },
@@ -2428,7 +2428,7 @@ Map {
               "name": "Category",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined@[object Object]:true" => "Category",
+                  "SchemaTypeCoder@undefined:true" => "Category",
                 },
                 "comments": [],
                 "exports": Map {
@@ -2460,7 +2460,7 @@ Map {
               "name": "Tag",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined@[object Object]:true" => "Tag",
+                  "SchemaTypeCoder@undefined:true" => "Tag",
                 },
                 "comments": [],
                 "exports": Map {
@@ -2505,7 +2505,7 @@ Map {
   },
   "paths/pet/{petId}/uploadImage.ts" => Script {
     "cache": Map {
-      "OperationCoder@./petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post@[object Object]:false" => "POST",
+      "OperationCoder@./petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post:false" => "POST",
       "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post@path-types/pet/{petId}/uploadImage.types.ts:true:false" => "HTTP_POST",
     },
     "comments": [],
@@ -2532,7 +2532,7 @@ Map {
         "name": "HTTP_POST",
         "script": Script {
           "cache": Map {
-            "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post@[object Object]:true" => "HTTP_POST",
+            "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post:true" => "HTTP_POST",
             "SchemaTypeCoder@undefined@components/ApiResponse.ts:true:false" => "ApiResponse",
           },
           "comments": [
@@ -2592,7 +2592,7 @@ Map {
               "name": "ApiResponse",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined@[object Object]:true" => "ApiResponse",
+                  "SchemaTypeCoder@undefined:true" => "ApiResponse",
                 },
                 "comments": [],
                 "exports": Map {
@@ -2637,7 +2637,7 @@ Map {
   },
   "path-types/pet/{petId}/uploadImage.types.ts" => Script {
     "cache": Map {
-      "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post@[object Object]:true" => "HTTP_POST",
+      "OperationTypeCoder@./petstore.yaml#/paths/~1pet~1{petId}~1uploadImage/post:true" => "HTTP_POST",
       "SchemaTypeCoder@undefined@components/ApiResponse.ts:true:false" => "ApiResponse",
     },
     "comments": [
@@ -2697,7 +2697,7 @@ Map {
         "name": "ApiResponse",
         "script": Script {
           "cache": Map {
-            "SchemaTypeCoder@undefined@[object Object]:true" => "ApiResponse",
+            "SchemaTypeCoder@undefined:true" => "ApiResponse",
           },
           "comments": [],
           "exports": Map {
@@ -2733,7 +2733,7 @@ Map {
   },
   "paths/store/inventory.ts" => Script {
     "cache": Map {
-      "OperationCoder@./petstore.yaml#/paths/~1store~1inventory/get@[object Object]:false" => "GET",
+      "OperationCoder@./petstore.yaml#/paths/~1store~1inventory/get:false" => "GET",
       "OperationTypeCoder@./petstore.yaml#/paths/~1store~1inventory/get@path-types/store/inventory.types.ts:true:false" => "HTTP_GET",
     },
     "comments": [],
@@ -2760,7 +2760,7 @@ Map {
         "name": "HTTP_GET",
         "script": Script {
           "cache": Map {
-            "OperationTypeCoder@./petstore.yaml#/paths/~1store~1inventory/get@[object Object]:true" => "HTTP_GET",
+            "OperationTypeCoder@./petstore.yaml#/paths/~1store~1inventory/get:true" => "HTTP_GET",
           },
           "comments": [
             "This code was automatically generated from an OpenAPI description.",
@@ -2831,7 +2831,7 @@ Map {
   },
   "path-types/store/inventory.types.ts" => Script {
     "cache": Map {
-      "OperationTypeCoder@./petstore.yaml#/paths/~1store~1inventory/get@[object Object]:true" => "HTTP_GET",
+      "OperationTypeCoder@./petstore.yaml#/paths/~1store~1inventory/get:true" => "HTTP_GET",
     },
     "comments": [
       "This code was automatically generated from an OpenAPI description.",
@@ -2893,7 +2893,7 @@ Map {
   },
   "paths/store/order.ts" => Script {
     "cache": Map {
-      "OperationCoder@./petstore.yaml#/paths/~1store~1order/post@[object Object]:false" => "POST",
+      "OperationCoder@./petstore.yaml#/paths/~1store~1order/post:false" => "POST",
       "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order/post@path-types/store/order.types.ts:true:false" => "HTTP_POST",
     },
     "comments": [],
@@ -2920,7 +2920,7 @@ Map {
         "name": "HTTP_POST",
         "script": Script {
           "cache": Map {
-            "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order/post@[object Object]:true" => "HTTP_POST",
+            "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order/post:true" => "HTTP_POST",
             "SchemaTypeCoder@undefined@components/Order.ts:true:false" => "Order",
           },
           "comments": [
@@ -2987,7 +2987,7 @@ Map {
               "name": "Order",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined@[object Object]:true" => "Order",
+                  "SchemaTypeCoder@undefined:true" => "Order",
                 },
                 "comments": [],
                 "exports": Map {
@@ -3032,7 +3032,7 @@ Map {
   },
   "path-types/store/order.types.ts" => Script {
     "cache": Map {
-      "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order/post@[object Object]:true" => "HTTP_POST",
+      "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order/post:true" => "HTTP_POST",
       "SchemaTypeCoder@undefined@components/Order.ts:true:false" => "Order",
     },
     "comments": [
@@ -3099,7 +3099,7 @@ Map {
         "name": "Order",
         "script": Script {
           "cache": Map {
-            "SchemaTypeCoder@undefined@[object Object]:true" => "Order",
+            "SchemaTypeCoder@undefined:true" => "Order",
           },
           "comments": [],
           "exports": Map {
@@ -3135,9 +3135,9 @@ Map {
   },
   "paths/store/order/{orderId}.ts" => Script {
     "cache": Map {
-      "OperationCoder@./petstore.yaml#/paths/~1store~1order~1{orderId}/get@[object Object]:false" => "GET",
+      "OperationCoder@./petstore.yaml#/paths/~1store~1order~1{orderId}/get:false" => "GET",
       "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order~1{orderId}/get@path-types/store/order/{orderId}.types.ts:true:false" => "HTTP_GET",
-      "OperationCoder@./petstore.yaml#/paths/~1store~1order~1{orderId}/delete@[object Object]:false" => "DELETE",
+      "OperationCoder@./petstore.yaml#/paths/~1store~1order~1{orderId}/delete:false" => "DELETE",
       "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order~1{orderId}/delete@path-types/store/order/{orderId}.types.ts:true:false" => "HTTP_DELETE",
     },
     "comments": [],
@@ -3177,8 +3177,8 @@ Map {
         "name": "HTTP_GET",
         "script": Script {
           "cache": Map {
-            "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order~1{orderId}/get@[object Object]:true" => "HTTP_GET",
-            "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order~1{orderId}/delete@[object Object]:true" => "HTTP_DELETE",
+            "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order~1{orderId}/get:true" => "HTTP_GET",
+            "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order~1{orderId}/delete:true" => "HTTP_DELETE",
             "SchemaTypeCoder@undefined@components/Order.ts:true:false" => "Order",
           },
           "comments": [
@@ -3285,7 +3285,7 @@ Map {
               "name": "Order",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined@[object Object]:true" => "Order",
+                  "SchemaTypeCoder@undefined:true" => "Order",
                 },
                 "comments": [],
                 "exports": Map {
@@ -3326,8 +3326,8 @@ Map {
         "name": "HTTP_DELETE",
         "script": Script {
           "cache": Map {
-            "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order~1{orderId}/get@[object Object]:true" => "HTTP_GET",
-            "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order~1{orderId}/delete@[object Object]:true" => "HTTP_DELETE",
+            "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order~1{orderId}/get:true" => "HTTP_GET",
+            "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order~1{orderId}/delete:true" => "HTTP_DELETE",
             "SchemaTypeCoder@undefined@components/Order.ts:true:false" => "Order",
           },
           "comments": [
@@ -3434,7 +3434,7 @@ Map {
               "name": "Order",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined@[object Object]:true" => "Order",
+                  "SchemaTypeCoder@undefined:true" => "Order",
                 },
                 "comments": [],
                 "exports": Map {
@@ -3479,8 +3479,8 @@ Map {
   },
   "path-types/store/order/{orderId}.types.ts" => Script {
     "cache": Map {
-      "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order~1{orderId}/get@[object Object]:true" => "HTTP_GET",
-      "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order~1{orderId}/delete@[object Object]:true" => "HTTP_DELETE",
+      "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order~1{orderId}/get:true" => "HTTP_GET",
+      "OperationTypeCoder@./petstore.yaml#/paths/~1store~1order~1{orderId}/delete:true" => "HTTP_DELETE",
       "SchemaTypeCoder@undefined@components/Order.ts:true:false" => "Order",
     },
     "comments": [
@@ -3587,7 +3587,7 @@ Map {
         "name": "Order",
         "script": Script {
           "cache": Map {
-            "SchemaTypeCoder@undefined@[object Object]:true" => "Order",
+            "SchemaTypeCoder@undefined:true" => "Order",
           },
           "comments": [],
           "exports": Map {
@@ -3623,7 +3623,7 @@ Map {
   },
   "paths/user.ts" => Script {
     "cache": Map {
-      "OperationCoder@./petstore.yaml#/paths/~1user/post@[object Object]:false" => "POST",
+      "OperationCoder@./petstore.yaml#/paths/~1user/post:false" => "POST",
       "OperationTypeCoder@./petstore.yaml#/paths/~1user/post@path-types/user.types.ts:true:false" => "HTTP_POST",
     },
     "comments": [],
@@ -3650,7 +3650,7 @@ Map {
         "name": "HTTP_POST",
         "script": Script {
           "cache": Map {
-            "OperationTypeCoder@./petstore.yaml#/paths/~1user/post@[object Object]:true" => "HTTP_POST",
+            "OperationTypeCoder@./petstore.yaml#/paths/~1user/post:true" => "HTTP_POST",
             "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
           },
           "comments": [
@@ -3721,7 +3721,7 @@ Map {
               "name": "User",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined@[object Object]:true" => "User",
+                  "SchemaTypeCoder@undefined:true" => "User",
                 },
                 "comments": [],
                 "exports": Map {
@@ -3766,7 +3766,7 @@ Map {
   },
   "path-types/user.types.ts" => Script {
     "cache": Map {
-      "OperationTypeCoder@./petstore.yaml#/paths/~1user/post@[object Object]:true" => "HTTP_POST",
+      "OperationTypeCoder@./petstore.yaml#/paths/~1user/post:true" => "HTTP_POST",
       "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
     },
     "comments": [
@@ -3837,7 +3837,7 @@ Map {
         "name": "User",
         "script": Script {
           "cache": Map {
-            "SchemaTypeCoder@undefined@[object Object]:true" => "User",
+            "SchemaTypeCoder@undefined:true" => "User",
           },
           "comments": [],
           "exports": Map {
@@ -3873,7 +3873,7 @@ Map {
   },
   "paths/user/createWithList.ts" => Script {
     "cache": Map {
-      "OperationCoder@./petstore.yaml#/paths/~1user~1createWithList/post@[object Object]:false" => "POST",
+      "OperationCoder@./petstore.yaml#/paths/~1user~1createWithList/post:false" => "POST",
       "OperationTypeCoder@./petstore.yaml#/paths/~1user~1createWithList/post@path-types/user/createWithList.types.ts:true:false" => "HTTP_POST",
     },
     "comments": [],
@@ -3900,7 +3900,7 @@ Map {
         "name": "HTTP_POST",
         "script": Script {
           "cache": Map {
-            "OperationTypeCoder@./petstore.yaml#/paths/~1user~1createWithList/post@[object Object]:true" => "HTTP_POST",
+            "OperationTypeCoder@./petstore.yaml#/paths/~1user~1createWithList/post:true" => "HTTP_POST",
             "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
           },
           "comments": [
@@ -3978,7 +3978,7 @@ Map {
               "name": "User",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined@[object Object]:true" => "User",
+                  "SchemaTypeCoder@undefined:true" => "User",
                 },
                 "comments": [],
                 "exports": Map {
@@ -4023,7 +4023,7 @@ Map {
   },
   "path-types/user/createWithList.types.ts" => Script {
     "cache": Map {
-      "OperationTypeCoder@./petstore.yaml#/paths/~1user~1createWithList/post@[object Object]:true" => "HTTP_POST",
+      "OperationTypeCoder@./petstore.yaml#/paths/~1user~1createWithList/post:true" => "HTTP_POST",
       "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
     },
     "comments": [
@@ -4101,7 +4101,7 @@ Map {
         "name": "User",
         "script": Script {
           "cache": Map {
-            "SchemaTypeCoder@undefined@[object Object]:true" => "User",
+            "SchemaTypeCoder@undefined:true" => "User",
           },
           "comments": [],
           "exports": Map {
@@ -4137,7 +4137,7 @@ Map {
   },
   "paths/user/login.ts" => Script {
     "cache": Map {
-      "OperationCoder@./petstore.yaml#/paths/~1user~1login/get@[object Object]:false" => "GET",
+      "OperationCoder@./petstore.yaml#/paths/~1user~1login/get:false" => "GET",
       "OperationTypeCoder@./petstore.yaml#/paths/~1user~1login/get@path-types/user/login.types.ts:true:false" => "HTTP_GET",
     },
     "comments": [],
@@ -4164,7 +4164,7 @@ Map {
         "name": "HTTP_GET",
         "script": Script {
           "cache": Map {
-            "OperationTypeCoder@./petstore.yaml#/paths/~1user~1login/get@[object Object]:true" => "HTTP_GET",
+            "OperationTypeCoder@./petstore.yaml#/paths/~1user~1login/get:true" => "HTTP_GET",
           },
           "comments": [
             "This code was automatically generated from an OpenAPI description.",
@@ -4252,7 +4252,7 @@ Map {
   },
   "path-types/user/login.types.ts" => Script {
     "cache": Map {
-      "OperationTypeCoder@./petstore.yaml#/paths/~1user~1login/get@[object Object]:true" => "HTTP_GET",
+      "OperationTypeCoder@./petstore.yaml#/paths/~1user~1login/get:true" => "HTTP_GET",
     },
     "comments": [
       "This code was automatically generated from an OpenAPI description.",
@@ -4331,7 +4331,7 @@ Map {
   },
   "paths/user/logout.ts" => Script {
     "cache": Map {
-      "OperationCoder@./petstore.yaml#/paths/~1user~1logout/get@[object Object]:false" => "GET",
+      "OperationCoder@./petstore.yaml#/paths/~1user~1logout/get:false" => "GET",
       "OperationTypeCoder@./petstore.yaml#/paths/~1user~1logout/get@path-types/user/logout.types.ts:true:false" => "HTTP_GET",
     },
     "comments": [],
@@ -4358,7 +4358,7 @@ Map {
         "name": "HTTP_GET",
         "script": Script {
           "cache": Map {
-            "OperationTypeCoder@./petstore.yaml#/paths/~1user~1logout/get@[object Object]:true" => "HTTP_GET",
+            "OperationTypeCoder@./petstore.yaml#/paths/~1user~1logout/get:true" => "HTTP_GET",
           },
           "comments": [
             "This code was automatically generated from an OpenAPI description.",
@@ -4427,7 +4427,7 @@ Map {
   },
   "path-types/user/logout.types.ts" => Script {
     "cache": Map {
-      "OperationTypeCoder@./petstore.yaml#/paths/~1user~1logout/get@[object Object]:true" => "HTTP_GET",
+      "OperationTypeCoder@./petstore.yaml#/paths/~1user~1logout/get:true" => "HTTP_GET",
     },
     "comments": [
       "This code was automatically generated from an OpenAPI description.",
@@ -4487,11 +4487,11 @@ Map {
   },
   "paths/user/{username}.ts" => Script {
     "cache": Map {
-      "OperationCoder@./petstore.yaml#/paths/~1user~1{username}/get@[object Object]:false" => "GET",
+      "OperationCoder@./petstore.yaml#/paths/~1user~1{username}/get:false" => "GET",
       "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/get@path-types/user/{username}.types.ts:true:false" => "HTTP_GET",
-      "OperationCoder@./petstore.yaml#/paths/~1user~1{username}/put@[object Object]:false" => "PUT",
+      "OperationCoder@./petstore.yaml#/paths/~1user~1{username}/put:false" => "PUT",
       "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/put@path-types/user/{username}.types.ts:true:false" => "HTTP_PUT",
-      "OperationCoder@./petstore.yaml#/paths/~1user~1{username}/delete@[object Object]:false" => "DELETE",
+      "OperationCoder@./petstore.yaml#/paths/~1user~1{username}/delete:false" => "DELETE",
       "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/delete@path-types/user/{username}.types.ts:true:false" => "HTTP_DELETE",
     },
     "comments": [],
@@ -4544,9 +4544,9 @@ Map {
         "name": "HTTP_GET",
         "script": Script {
           "cache": Map {
-            "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/get@[object Object]:true" => "HTTP_GET",
-            "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/put@[object Object]:true" => "HTTP_PUT",
-            "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/delete@[object Object]:true" => "HTTP_DELETE",
+            "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/get:true" => "HTTP_GET",
+            "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/put:true" => "HTTP_PUT",
+            "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/delete:true" => "HTTP_DELETE",
             "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
           },
           "comments": [
@@ -4676,7 +4676,7 @@ Map {
               "name": "User",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined@[object Object]:true" => "User",
+                  "SchemaTypeCoder@undefined:true" => "User",
                 },
                 "comments": [],
                 "exports": Map {
@@ -4717,9 +4717,9 @@ Map {
         "name": "HTTP_PUT",
         "script": Script {
           "cache": Map {
-            "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/get@[object Object]:true" => "HTTP_GET",
-            "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/put@[object Object]:true" => "HTTP_PUT",
-            "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/delete@[object Object]:true" => "HTTP_DELETE",
+            "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/get:true" => "HTTP_GET",
+            "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/put:true" => "HTTP_PUT",
+            "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/delete:true" => "HTTP_DELETE",
             "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
           },
           "comments": [
@@ -4849,7 +4849,7 @@ Map {
               "name": "User",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined@[object Object]:true" => "User",
+                  "SchemaTypeCoder@undefined:true" => "User",
                 },
                 "comments": [],
                 "exports": Map {
@@ -4890,9 +4890,9 @@ Map {
         "name": "HTTP_DELETE",
         "script": Script {
           "cache": Map {
-            "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/get@[object Object]:true" => "HTTP_GET",
-            "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/put@[object Object]:true" => "HTTP_PUT",
-            "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/delete@[object Object]:true" => "HTTP_DELETE",
+            "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/get:true" => "HTTP_GET",
+            "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/put:true" => "HTTP_PUT",
+            "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/delete:true" => "HTTP_DELETE",
             "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
           },
           "comments": [
@@ -5022,7 +5022,7 @@ Map {
               "name": "User",
               "script": Script {
                 "cache": Map {
-                  "SchemaTypeCoder@undefined@[object Object]:true" => "User",
+                  "SchemaTypeCoder@undefined:true" => "User",
                 },
                 "comments": [],
                 "exports": Map {
@@ -5067,9 +5067,9 @@ Map {
   },
   "path-types/user/{username}.types.ts" => Script {
     "cache": Map {
-      "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/get@[object Object]:true" => "HTTP_GET",
-      "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/put@[object Object]:true" => "HTTP_PUT",
-      "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/delete@[object Object]:true" => "HTTP_DELETE",
+      "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/get:true" => "HTTP_GET",
+      "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/put:true" => "HTTP_PUT",
+      "OperationTypeCoder@./petstore.yaml#/paths/~1user~1{username}/delete:true" => "HTTP_DELETE",
       "SchemaTypeCoder@undefined@components/User.ts:true:false" => "User",
     },
     "comments": [
@@ -5199,7 +5199,7 @@ Map {
         "name": "User",
         "script": Script {
           "cache": Map {
-            "SchemaTypeCoder@undefined@[object Object]:true" => "User",
+            "SchemaTypeCoder@undefined:true" => "User",
           },
           "comments": [],
           "exports": Map {
@@ -5235,7 +5235,7 @@ Map {
   },
   "components/Pet.ts" => Script {
     "cache": Map {
-      "SchemaTypeCoder@undefined@[object Object]:true" => "Pet",
+      "SchemaTypeCoder@undefined:true" => "Pet",
       "SchemaTypeCoder@undefined@components/Category.ts:true:false" => "Category",
       "SchemaTypeCoder@undefined@components/Tag.ts:true:false" => "Tag",
     },
@@ -5261,7 +5261,7 @@ Map {
         "name": "Category",
         "script": Script {
           "cache": Map {
-            "SchemaTypeCoder@undefined@[object Object]:true" => "Category",
+            "SchemaTypeCoder@undefined:true" => "Category",
           },
           "comments": [],
           "exports": Map {
@@ -5293,7 +5293,7 @@ Map {
         "name": "Tag",
         "script": Script {
           "cache": Map {
-            "SchemaTypeCoder@undefined@[object Object]:true" => "Tag",
+            "SchemaTypeCoder@undefined:true" => "Tag",
           },
           "comments": [],
           "exports": Map {
@@ -5329,7 +5329,7 @@ Map {
   },
   "components/ApiResponse.ts" => Script {
     "cache": Map {
-      "SchemaTypeCoder@undefined@[object Object]:true" => "ApiResponse",
+      "SchemaTypeCoder@undefined:true" => "ApiResponse",
     },
     "comments": [],
     "exports": Map {
@@ -5356,7 +5356,7 @@ Map {
   },
   "components/Order.ts" => Script {
     "cache": Map {
-      "SchemaTypeCoder@undefined@[object Object]:true" => "Order",
+      "SchemaTypeCoder@undefined:true" => "Order",
     },
     "comments": [],
     "exports": Map {
@@ -5383,7 +5383,7 @@ Map {
   },
   "components/User.ts" => Script {
     "cache": Map {
-      "SchemaTypeCoder@undefined@[object Object]:true" => "User",
+      "SchemaTypeCoder@undefined:true" => "User",
     },
     "comments": [],
     "exports": Map {
@@ -5410,7 +5410,7 @@ Map {
   },
   "components/Category.ts" => Script {
     "cache": Map {
-      "SchemaTypeCoder@undefined@[object Object]:true" => "Category",
+      "SchemaTypeCoder@undefined:true" => "Category",
     },
     "comments": [],
     "exports": Map {
@@ -5437,7 +5437,7 @@ Map {
   },
   "components/Tag.ts" => Script {
     "cache": Map {
-      "SchemaTypeCoder@undefined@[object Object]:true" => "Tag",
+      "SchemaTypeCoder@undefined:true" => "Tag",
     },
     "comments": [],
     "exports": Map {
