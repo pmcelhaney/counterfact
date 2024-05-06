@@ -172,14 +172,9 @@ describe("a Script", () => {
   it("creates export statements", async () => {
     const repository = new Repository("/base/path");
 
-    class CoderThatWantsToImportAccount extends Coder {
+    class AccountCoder extends Coder {
       *names() {
-        let index = 0;
-
-        while (true) {
-          yield `Account${index}`;
-          index += 1;
-        }
+        yield "Account";
       }
 
       write() {
@@ -187,20 +182,26 @@ describe("a Script", () => {
       }
     }
 
-    const coder = new CoderThatWantsToImportAccount({});
+    class AccountTypeCoder extends Coder {
+      *names() {
+        yield "AccountType";
+      }
+
+      write() {
+        return "{ }";
+      }
+    }
 
     const script = repository.get("export-to-me.ts");
 
-    script.export(coder);
-    script.exportType(coder);
-    script.exportDefault(coder);
+    script.export(new AccountCoder({}));
+    script.exportType(new AccountTypeCoder({}));
 
     await script.finished();
 
     expect(script.exportStatements()).toStrictEqual([
-      "export const Account0 = { };",
-      "export type Account1 = { };",
-      "export default { };",
+      "export const Account = { };",
+      "export type AccountType = { };",
     ]);
   });
 

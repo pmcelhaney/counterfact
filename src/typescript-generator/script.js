@@ -27,7 +27,7 @@ export class Script {
 
   firstUniqueName(coder) {
     for (const name of coder.names()) {
-      if (!this.imports.has(name) && !this.exports.has(name)) {
+      if (!this.imports.has(name)) {
         return name;
       }
     }
@@ -36,9 +36,7 @@ export class Script {
   }
 
   export(coder, isType = false, isDefault = false) {
-    const cacheKey = isDefault
-      ? "default"
-      : `${coder.id}@${nodePath}:${isType}`;
+    const cacheKey = isDefault ? "default" : `${coder.id}:${isType}`;
 
     if (this.cache.has(cacheKey)) {
       return this.cache.get(cacheKey);
