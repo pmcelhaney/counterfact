@@ -27,7 +27,7 @@ export class Script {
 
   firstUniqueName(coder) {
     for (const name of coder.names()) {
-      if (!this.imports.has(name) && !this.exports.has(name)) {
+      if (!this.imports.has(name)) {
         return name;
       }
     }
