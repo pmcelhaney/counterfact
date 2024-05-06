@@ -1,5 +1,11 @@
 # counterfact
 
+## 0.40.2
+
+### Patch Changes
+
+- b731a44: fix invalid TypeScript generated for recursive types
+
 ## 0.40.1
 
 ### Patch Changes
