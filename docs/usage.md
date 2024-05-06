@@ -26,12 +26,12 @@ This will generate TypeScript code for the Swagger Pet Store and start the serve
 <summary>Here are the full details on CLI usage</summary>
 
 ```txt
-Usage: counterfact [options] <openapi.yaml> [destination]
+Usage: counterfact [options] [openapi.yaml] [destination]
 
-Counterfact is a tool for generating a REST API from an OpenAPI document.
+Counterfact is a tool for mocking REST APIs in development. See https://counterfact.dev for more info.
 
 Arguments:
-  openapi.yaml          path or URL to OpenAPI document
+  openapi.yaml          path or URL to OpenAPI document or "_" to run without OpenAPI (default: "_")
   destination           path to generated code (default: ".")
 
 Options:
@@ -41,7 +41,6 @@ Options:
   --proxy-url <string>  proxy URL
   --prefix <string>     base path from which routes will be served (e.g. /api/v1)
   -h, --help            display help for command
-
 ```
 
 </details>
@@ -76,7 +75,7 @@ The code under `components` and `path-types` is regenerated every time you run C
 See also [Generated Code FAQ](./faq-generated-code.md)
 
 > [!TIP]
-> You don't have to use the code generator. It wasn't even part of Counterfact originally. You can also create the files under `paths` by hand. The main benefit of generating code is all the type information that's managed for you and kept in sync with OpenAPI.
+> You don't have to use the code generator. It wasn't even part of Counterfact originally. You can also create the files under `paths` by hand. The main benefit of generating code is all the type information that's managed for you and kept in sync with OpenAPI. See [What if I don't have an OpenAPI document?](./usage-without-openapi.md)
 
 ## Routing is where it's at 🔀
 
