@@ -3,6 +3,7 @@ import type { IncomingHttpHeaders } from "node:http";
 import type Koa from "koa";
 import koaProxy from "koa-proxy";
 
+import type { Config } from "./config.js";
 import type { Dispatcher } from "./dispatcher.js";
 import type { HttpMethods } from "./registry.js";
 
@@ -50,11 +51,13 @@ function getAuthObject(
 
 export function koaMiddleware(
   dispatcher: Dispatcher,
-  { proxyEnabled = false, proxyUrl = "", routePrefix = "" } = {},
+  config: Config,
   proxy = koaProxy,
 ): Koa.Middleware {
   // eslint-disable-next-line max-statements
   return async function middleware(ctx, next) {
+    const { proxyEnabled, proxyUrl, routePrefix } = config;
+
     if (!ctx.request.path.startsWith(routePrefix)) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-return
       return await next();
