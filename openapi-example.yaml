@@ -67,7 +67,7 @@ paths:
           content:
             application/json:
               schema:
-                type: string
+                $ref: "#/components/schemas/Recursive"
         "400":
           $ref: "#/components/responses/BadRequest"
 
@@ -94,6 +94,9 @@ components:
           description: A detailed description of the error
       required:
         - message
+    Recursive:
+      oneOf:
+        - { $ref: "#/components/schemas/Recursive" }
 
   securitySchemes:
     basicAuth:
