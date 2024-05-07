@@ -26,11 +26,12 @@ export function pageMiddleware(
       .join(__dirname, `../client/${templateName}.html.hbs`)
       .replaceAll("\\", "/");
 
-    debug("pathToHandlebarsTemplate: %s", pathToHandlebarsTemplate);
-
     const render = Handlebars.compile(await readFile(pathToHandlebarsTemplate));
 
     if (ctx.URL.pathname === pathname) {
+      debug("rendering page: %s", pathname);
+      debug("locals: %o", locals);
+
       ctx.body = render(locals);
 
       return;
