@@ -137,6 +137,7 @@ program
   .option(
     "--prefix <string>",
     "base path from which routes will be served (e.g. /api/v1)",
+    "",
   )
   .action(main)
   // eslint-disable-next-line sonar/process-argv

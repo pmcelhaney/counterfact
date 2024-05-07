@@ -1,11 +1,14 @@
 import type { IncomingHttpHeaders } from "node:http";
 
+import createDebug from "debug";
 import type Koa from "koa";
 import koaProxy from "koa-proxy";
 
 import type { Config } from "./config.js";
 import type { Dispatcher } from "./dispatcher.js";
 import type { HttpMethods } from "./registry.js";
+
+const debug = createDebug("counterfact:server:create-koa-app");
 
 const HTTP_STATUS_CODE_OK = 200;
 
@@ -57,6 +60,9 @@ export function koaMiddleware(
   // eslint-disable-next-line max-statements
   return async function middleware(ctx, next) {
     const { proxyEnabled, proxyUrl, routePrefix } = config;
+
+    debug("middleware running for path: %s", ctx.request.path);
+    debug("routePrefix: %s", routePrefix);
 
     if (!ctx.request.path.startsWith(routePrefix)) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-return
