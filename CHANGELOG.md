@@ -1,5 +1,15 @@
 # counterfact
 
+## 0.41.0
+
+### Minor Changes
+
+- 46bd016: option to run Counterfact without OpenAPI (#834)
+
+### Patch Changes
+
+- 1f44f3d: fixed #721: .proxy on / .proxy off commands in REPL have no effect
+
 ## 0.40.2
 
 ### Patch Changes
