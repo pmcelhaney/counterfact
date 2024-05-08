@@ -38,7 +38,7 @@ export class ModuleLoader extends EventTarget {
 
   private readonly dependencyGraph = new ModuleDependencyGraph();
 
-  private uncachedImport: (moduleName: string) => Promise<unknown> =
+  private readonly uncachedImport: (moduleName: string) => Promise<unknown> =
     // eslint-disable-next-line @typescript-eslint/require-await
     async function (moduleName: string) {
       throw new Error(`uncachedImport not set up; importing ${moduleName}`);
@@ -101,11 +101,6 @@ export class ModuleLoader extends EventTarget {
   }
 
   public async load(directory = ""): Promise<void> {
-    const moduleKind = await determineModuleKind(this.basePath);
-
-    this.uncachedImport =
-      moduleKind === "module" ? uncachedImport : uncachedRequire;
-
     if (
       !existsSync(nodePath.join(this.basePath, directory).replaceAll("\\", "/"))
     ) {
@@ -163,10 +158,13 @@ export class ModuleLoader extends EventTarget {
     this.dependencyGraph.load(pathName);
 
     try {
+      const doImport =
+        (await determineModuleKind(pathName)) === "commonjs"
+          ? uncachedRequire
+          : uncachedImport;
+
       // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-      const endpoint = (await this.uncachedImport(pathName)) as
-        | ContextModule
-        | Module;
+      const endpoint = (await doImport(pathName)) as ContextModule | Module;
 
       this.dispatchEvent(new Event("add"));
 

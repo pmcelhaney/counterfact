@@ -8,12 +8,20 @@ interface PackageJsonWithType {
   type?: string;
 }
 // eslint-disable-next-line max-statements
-export async function determineModuleKind(directory: string) {
-  const packageJsonPath = path.join(directory, "package.json");
+export async function determineModuleKind(modulePath: string) {
+  if (modulePath.endsWith(".cjs")) {
+    return "commonjs";
+  }
 
-  if (directory === path.parse(directory).root) {
+  if (modulePath.endsWith(".mjs")) {
+    return "module";
+  }
+
+  if (modulePath === path.parse(modulePath).root) {
     return DEFAULT_MODULE_KIND;
   }
+
+  const packageJsonPath = path.join(modulePath, "package.json");
 
   if (existsSync(packageJsonPath)) {
     try {
@@ -34,5 +42,5 @@ export async function determineModuleKind(directory: string) {
     }
   }
 
-  return await determineModuleKind(path.dirname(directory));
+  return await determineModuleKind(path.dirname(modulePath));
 }
