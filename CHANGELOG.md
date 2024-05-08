@@ -1,5 +1,11 @@
 # counterfact
 
+## 0.41.1
+
+### Patch Changes
+
+- ab15645: fix #898 hot reloading broken due to cache issues
+
 ## 0.41.0
 
 ### Minor Changes
