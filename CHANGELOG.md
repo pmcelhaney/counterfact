@@ -1,5 +1,11 @@
 # counterfact
 
+## 0.42.0
+
+### Minor Changes
+
+- e355b66: Add command line options for granular control of the different parts of CF
+
 ## 0.41.1
 
 ### Patch Changes
