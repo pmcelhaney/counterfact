@@ -16,7 +16,12 @@ describe("end-to-end test", () => {
         await Promise.resolve(undefined);
       };
 
-      await generate("./petstore.yaml", basePath, repository);
+      await generate(
+        "./petstore.yaml",
+        basePath,
+        { routes: true, types: true },
+        repository,
+      );
       await repository.finished();
 
       expect(repository.scripts).toMatchSnapshot();

@@ -37,7 +37,15 @@ Arguments:
 Options:
   --port <number>       server port number (default: 3100)
   --swagger             include swagger-ui
-  --open                open a browser
+  -o, --open            open a browser
+  -g, --generate        generate all code for both routes and types
+  --generate-types      generate types
+  --generate-routes     generate routes
+  -w, --watch           generate + watch all code for changes
+  --watch-types         generate + watch types for changes
+  --watch-routes        generate + watch routes for changes
+  -s, --serve           start the mock server
+  -r, --repl            start the REPL
   --proxy-url <string>  proxy URL
   --prefix <string>     base path from which routes will be served (e.g. /api/v1)
   -h, --help            display help for command
@@ -70,7 +78,7 @@ After generating code you should have three directories:
 - 📂 **paths** contains the implementation of each endpoint, a.k.a. routes. Counterfact uses the word "paths" because it corresponds to the `/paths` section of the spec.
 - 📂 **path-types** contains the type information for paths.
 
-The code under `components` and `path-types` is regenerated every time you run Counterfact, so that the types can stay in sync with any OpenAPI changes. The code under paths is minimal boilerplate that you're meant to edit by hand. Counterfact will not overwrite your changes in the `paths` directory, but it will add new files when necessary.
+When you launch Counterfact with no command line options, the code under `components` and `path-types` is regenerated every time you run Counterfact, so that the types can stay in sync with any OpenAPI changes. The code under paths is minimal boilerplate that you're meant to edit by hand. Counterfact will not overwrite your changes in the `paths` directory, but it will add new files when necessary. If you use any of the command line options then it will only regenerate the code when you tell it to via the `--watch` or `--generate` options.
 
 See also [Generated Code FAQ](./faq-generated-code.md)
 

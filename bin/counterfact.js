@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+/* eslint-disable complexity */
 
 import { readFile } from "node:fs/promises";
 import nodePath from "node:path";
@@ -44,16 +45,79 @@ function padTagLine(tagLine) {
 }
 
 // eslint-disable-next-line max-statements
+function createWatchMessage(config) {
+  let watchMessage = "";
+
+  switch (true) {
+    case config.watch.routes && config.watch.types: {
+      watchMessage = "Watching for changes";
+
+      break;
+    }
+    case config.watch.routes: {
+      watchMessage = "Watching routes for changes";
+
+      break;
+    }
+    case config.watch.types: {
+      watchMessage = "Watching types for changes";
+
+      break;
+    }
+
+    default: {
+      watchMessage = undefined;
+    }
+  }
+
+  if (!watchMessage) {
+    switch (true) {
+      case config.generate.routes && config.generate.types: {
+        watchMessage = "Generating routes and types";
+
+        break;
+      }
+      case config.generate.routes: {
+        watchMessage = "Generating routes";
+
+        break;
+      }
+      case config.generate.types: {
+        watchMessage = "Generating types";
+
+        break;
+      }
+
+      default: {
+        watchMessage = undefined;
+      }
+    }
+  }
+
+  return watchMessage;
+}
+
+// eslint-disable-next-line max-statements
 async function main(source, destination) {
   debug("executing the main function");
 
   const options = program.opts();
+  // eslint-disable-next-line sonar/process-argv
+  const args = process.argv;
 
   const destinationPath = nodePath
     .join(process.cwd(), destination)
     .replaceAll("\\", "/");
 
   const basePath = nodePath.resolve(destinationPath).replaceAll("\\", "/");
+
+  // If no options are provided, default to all options
+  if (!args.some((argument) => argument.startsWith("-"))) {
+    options.repl = true;
+    options.serve = true;
+    options.watch = true;
+    options.generate = true;
+  }
 
   debug("options: %o", options);
   debug("source: %s", source);
@@ -69,12 +133,34 @@ async function main(source, destination) {
 
   const config = {
     basePath,
+
+    generate: {
+      routes:
+        options.generate ||
+        options.generateRoutes ||
+        options.watch ||
+        options.watchRoutes,
+
+      types:
+        options.generate ||
+        options.generateTypes ||
+        options.watch ||
+        options.watchTypes,
+    },
+
     includeSwaggerUi: true,
     openApiPath: source,
     port: options.port,
     proxyEnabled: Boolean(options.proxyUrl),
     proxyUrl: options.proxyUrl,
     routePrefix: options.prefix,
+    startRepl: options.repl,
+    startServer: options.serve,
+
+    watch: {
+      routes: options.watch || options.watchRoutes,
+      types: options.watch || options.watchTypes,
+    },
   };
 
   debug("loading counterfact (%o)", config);
@@ -82,6 +168,8 @@ async function main(source, destination) {
   const { start } = await counterfact(config);
 
   debug("loaded counterfact", config);
+
+  const watchMessage = createWatchMessage(config);
 
   const introduction = [
     "____ ____ _  _ _ _ ___ ____ ____ ____ ____ ____ ___",
@@ -97,7 +185,9 @@ async function main(source, destination) {
     "🎉 VERSION 1.0 IS COMING! LEARN MORE:",
     "   https://github.com/pmcelhaney/counterfact/issues/823",
     "",
-    "Starting REPL, type .help for more info",
+    watchMessage,
+    config.startServer ? "Starting server" : undefined,
+    config.startRepl ? "Starting REPL, type .help for more info" : undefined,
   ];
 
   process.stdout.write(
@@ -107,9 +197,7 @@ async function main(source, destination) {
   process.stdout.write("\n\n");
 
   debug("starting server");
-
-  await start();
-
+  await start(config);
   debug("started server");
 
   if (openBrowser) {
@@ -130,9 +218,17 @@ program
     "_",
   )
   .argument("[destination]", "path to generated code", ".")
-  .option("--port <number>", "server port number", DEFAULT_PORT)
+  .option("-p, --port <number>", "server port number", DEFAULT_PORT)
   .option("--swagger", "include swagger-ui")
-  .option("--open", "open a browser")
+  .option("-o, --open", "open a browser")
+  .option("-g, --generate", "generate all code for both routes and types")
+  .option("--generate-types", "generate types")
+  .option("--generate-routes", "generate routes")
+  .option("-w, --watch", "generate + watch all code for changes")
+  .option("--watch-types", "generate + watch types for changes")
+  .option("--watch-routes", "generate + watch routes for changes")
+  .option("-s, --serve", "start the server")
+  .option("-r, --repl", "start the REPL")
   .option("--proxy-url <string>", "proxy URL")
   .option(
     "--prefix <string>",

@@ -1,3 +1,4 @@
+/* eslint-disable max-statements */
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
 import nodePath, { dirname } from "node:path";
@@ -64,7 +65,7 @@ export class Repository {
     return fs.copyFile(sourcePath, destinationPath);
   }
 
-  async writeFiles(destination) {
+  async writeFiles(destination, { routes, types }) {
     debug(
       "waiting for %i or more scripts to finish before writing files",
       this.scripts.size,
@@ -81,8 +82,11 @@ export class Repository {
 
         await ensureDirectoryExists(fullPath);
 
+        const shouldWriteRoutes = routes && path.startsWith("paths");
+        const shouldWriteTypes = types && !path.startsWith("paths");
+
         if (
-          path.startsWith("paths") &&
+          shouldWriteRoutes &&
           (await fs
             .stat(fullPath)
             .then((stat) => stat.isFile())
@@ -93,15 +97,17 @@ export class Repository {
           return;
         }
 
-        debug("about to write", fullPath);
-        await fs.writeFile(
-          fullPath,
-          contents.replaceAll(
-            CONTEXT_FILE_TOKEN,
-            this.findContextPath(destination, path),
-          ),
-        );
-        debug("did write", fullPath);
+        if (shouldWriteRoutes || shouldWriteTypes) {
+          debug("about to write", fullPath);
+          await fs.writeFile(
+            fullPath,
+            contents.replaceAll(
+              CONTEXT_FILE_TOKEN,
+              this.findContextPath(destination, path),
+            ),
+          );
+          debug("did write", fullPath);
+        }
       },
     );
 
@@ -109,7 +115,9 @@ export class Repository {
 
     await this.copyCoreFiles(destination);
 
-    await this.createDefaultContextFile(destination);
+    if (routes) {
+      await this.createDefaultContextFile(destination);
+    }
   }
 
   async createDefaultContextFile(destination) {
