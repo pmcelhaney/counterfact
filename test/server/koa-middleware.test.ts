@@ -1,26 +1,41 @@
 /* eslint-disable max-lines */
 // eslint-disable-next-line import/no-extraneous-dependencies, n/no-extraneous-import
 import { jest } from "@jest/globals";
-import type { Context as KoaContext, ParameterizedContext } from "koa";
+import type { ParameterizedContext } from "koa";
 import type KoaProxy from "koa-proxy";
 
+import type { Config } from "../../src/server/config.js";
 import { ContextRegistry } from "../../src/server/context-registry.js";
 import { Dispatcher } from "../../src/server/dispatcher.js";
 import { koaMiddleware } from "../../src/server/koa-middleware.js";
 import { Registry } from "../../src/server/registry.js";
 
-const CONFIG = {
+const CONFIG: Config = {
   basePath: "",
+
+  generate: {
+    routes: true,
+    types: true,
+  },
+
   openApiPath: "",
   port: 9999,
   proxyEnabled: false,
+  proxyPaths: new Map([]),
   proxyUrl: "",
   routePrefix: "",
+  startRepl: false,
+  startServer: true,
+
+  watch: {
+    routes: true,
+    types: true,
+  },
 };
 
-const mockKoaProxy = (options: KoaProxy.Options | undefined) =>
-  function proxy(ctx: KoaContext) {
-    ctx.mockProxyHost = options?.host;
+const mockKoaProxy: typeof KoaProxy = (options) =>
+  function proxy(context) {
+    context.mockProxyHost = options?.host;
   };
 
 describe("koa middleware", () => {
@@ -102,12 +117,21 @@ describe("koa middleware", () => {
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
     const middleware = koaMiddleware(
       dispatcher,
-      { ...CONFIG, proxyEnabled: true, proxyUrl: "https://example.com" },
+      {
+        ...CONFIG,
+        proxyPaths: new Map([["", true]]),
+        proxyUrl: "https://example.com",
+      },
+
       mockKoaProxy,
     );
     const ctx = {
       mockProxyHost: undefined,
       request: { headers: {}, method: "GET", path: "/proxy" },
+
+      set() {
+        /* set a header */
+      },
     };
 
     // @ts-expect-error - not obvious how to make TS happy here, and it's just a unit test
@@ -290,7 +314,10 @@ describe("koa middleware", () => {
     });
 
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
-    const middleware = koaMiddleware(dispatcher, { routePrefix: "/api/v1" });
+    const middleware = koaMiddleware(dispatcher, {
+      ...CONFIG,
+      routePrefix: "/api/v1",
+    });
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
     const ctx = {
       req: {
