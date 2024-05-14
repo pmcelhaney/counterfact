@@ -9,7 +9,7 @@ import { program } from "commander";
 import createDebug from "debug";
 import open from "open";
 
-import { counterfact } from "../dist/server/app.js";
+import { counterfact } from "../dist/app.js";
 
 const MIN_NODE_VERSION = 17;
 
