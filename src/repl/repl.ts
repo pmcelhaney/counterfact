@@ -34,16 +34,14 @@ export function startRepl(contextRegistry: ContextRegistry, config: Config) {
   replServer.defineCommand("proxy", {
     action(state) {
       if (state === "on") {
-        config.proxyEnabled = true;
+        config.proxyPaths.set("", true);
       }
 
       if (state === "off") {
-        config.proxyEnabled = false;
+        config.proxyPaths.set("", false);
       }
 
-      process.stdout.write(
-        `Proxy is ${config.proxyEnabled ? "on" : "off"}: ${config.proxyUrl}\n`,
-      );
+      process.stdout.write(`Proxy is ${state}: ${config.proxyUrl}\n`);
 
       this.clearBufferedCommand();
       this.displayPrompt();
