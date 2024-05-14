@@ -3,8 +3,17 @@ import repl from "node:repl";
 import type { Config } from "../server/config.js";
 import type { ContextRegistry } from "../server/context-registry.js";
 
-export function startRepl(contextRegistry: ContextRegistry, config: Config) {
-  const replServer = repl.start("🤖> ");
+const defaultIo = {
+  input: process.stdin,
+  output: process.stdout,
+};
+
+export function startRepl(
+  contextRegistry: ContextRegistry,
+  config: Config,
+  { input, output } = defaultIo,
+) {
+  const replServer = repl.start({ input, output, prompt: "🤖> " });
 
   replServer.defineCommand("counterfact", {
     action() {
