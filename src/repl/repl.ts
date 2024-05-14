@@ -1,7 +1,7 @@
 import repl from "node:repl";
 
-import type { Config } from "./config.js";
-import type { ContextRegistry } from "./context-registry.js";
+import type { Config } from "../server/config.js";
+import type { ContextRegistry } from "../server/context-registry.js";
 
 export function startRepl(contextRegistry: ContextRegistry, config: Config) {
   const replServer = repl.start("🤖> ");

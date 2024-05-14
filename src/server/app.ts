@@ -5,6 +5,7 @@ import { createHttpTerminator, type HttpTerminator } from "http-terminator";
 import yaml from "js-yaml";
 import $RefParser from "json-schema-ref-parser";
 
+import { startRepl } from "../repl/repl.js";
 import { CodeGenerator } from "../typescript-generator/code-generator.js";
 import { readFile } from "../util/read-file.js";
 import type { Config } from "./config.js";
@@ -14,7 +15,6 @@ import { Dispatcher, type OpenApiDocument } from "./dispatcher.js";
 import { koaMiddleware } from "./koa-middleware.js";
 import { ModuleLoader } from "./module-loader.js";
 import { Registry } from "./registry.js";
-import { startRepl } from "./repl.js";
 import { Transpiler } from "./transpiler.js";
 
 async function loadOpenApiDocument(source: string) {
