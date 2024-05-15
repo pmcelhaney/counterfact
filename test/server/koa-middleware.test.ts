@@ -20,7 +20,6 @@ const CONFIG: Config = {
 
   openApiPath: "",
   port: 9999,
-  proxyEnabled: false,
   proxyPaths: new Map([]),
   proxyUrl: "",
   routePrefix: "",

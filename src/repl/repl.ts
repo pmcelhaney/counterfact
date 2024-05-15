@@ -17,19 +17,19 @@ export function startRepl(
 
   replServer.defineCommand("counterfact", {
     action() {
-      process.stdout.write(
+      output.write(
         "This is a read-eval-print loop (REPL), the same as the one you get when you run node with no arguments.\n",
       );
-      process.stdout.write(
+      output.write(
         "Except that it's connected to the running server, which you can access with the following globals:\n\n",
       );
-      process.stdout.write(
+      output.write(
         "- loadContext('/some/path'): to access the context object for a given path\n",
       );
-      process.stdout.write(
+      output.write(
         "- context: the root context ( same as loadContext('/') )\n",
       );
-      process.stdout.write(
+      output.write(
         "\nFor more information, see https://counterfact.dev/docs/usage.html\n\n",
       );
 
@@ -50,7 +50,7 @@ export function startRepl(
         config.proxyPaths.set("", false);
       }
 
-      process.stdout.write(`Proxy is ${state}: ${config.proxyUrl}\n`);
+      output.write(`Proxy is ${state}: ${config.proxyUrl}\n`);
 
       this.clearBufferedCommand();
       this.displayPrompt();
