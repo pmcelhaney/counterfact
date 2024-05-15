@@ -23,7 +23,8 @@ export function convertFileExtensionsToCjs(code: string) {
       ) {
         // Change the module string from "foo.js" to "foo.cjs"
         node.arguments[0].value = node.arguments[0].value.replace(
-          /\.js$/u,
+          // eslint-disable-next-line prefer-named-capture-group, regexp/no-unused-capturing-group, regexp/prefer-named-capture-group
+          /(\.js|\.ts)?$/u,
           ".cjs",
         );
       }
