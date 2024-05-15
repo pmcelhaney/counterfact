@@ -1,5 +1,11 @@
 # counterfact
 
+## 0.42.1
+
+### Patch Changes
+
+- 88adb61: fixes an issue where imports without a file extension were not transpiled properly
+
 ## 0.42.0
 
 ### Minor Changes
