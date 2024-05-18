@@ -73,7 +73,7 @@ export function startRepl(
 
         print(
           `Requests to /foo/bar will be proxied to ${
-            config.proxyUrl ?? "<proxy URL>"
+            config.proxyUrl || "<proxy URL>"
           }${printEndpoint}`,
         );
       }
@@ -82,7 +82,7 @@ export function startRepl(
       this.displayPrompt();
     },
 
-    help: ".proxy [on|off] [path]; .proxy set-url <url>; .proxy info",
+    help: ".proxy [on|off] [path]; .proxy set-url <url>; .proxy info; .proxy help",
   });
 
   replServer.context.loadContext = (path: string) => contextRegistry.find(path);
