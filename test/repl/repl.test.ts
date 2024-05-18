@@ -15,7 +15,7 @@ const CONFIG: Config = {
   openApiPath: "",
   port: 9999,
   proxyPaths: new Map([]),
-  proxyUrl: "",
+  proxyUrl: "https://example.com/test",
   routePrefix: "",
   startRepl: false,
   startServer: true,
@@ -47,8 +47,12 @@ class ReplHarness {
 
   private readonly mock = new MockRepl();
 
-  public constructor(server: REPLServer) {
-    this.server = server;
+  public output: string[] = [];
+
+  public constructor(contextRegistry: ContextRegistry, config: Config) {
+    this.server = startRepl(contextRegistry, config, (line) =>
+      this.output.push(line),
+    );
   }
 
   public call(name: string, options: string) {
@@ -63,15 +67,20 @@ class ReplHarness {
   }
 }
 
+function createHarness() {
+  const contextRegistry = new ContextRegistry();
+  const config = { ...CONFIG };
+
+  config.proxyPaths = new Map();
+
+  const harness = new ReplHarness(contextRegistry, config);
+
+  return { config, contextRegistry, harness };
+}
+
 describe("REPL", () => {
   it("turns on the proxy globally", () => {
-    const contextRegistry = new ContextRegistry();
-    const config = { ...CONFIG };
-
-    const repl = startRepl(contextRegistry, config);
-
-    const harness = new ReplHarness(repl);
-
+    const { config, harness } = createHarness();
     harness.call("proxy", "on");
 
     expect(config.proxyPaths.get("")).toBe(true);
@@ -79,16 +88,75 @@ describe("REPL", () => {
   });
 
   it("turns off the proxy globally", () => {
-    const contextRegistry = new ContextRegistry();
-    const config = { ...CONFIG };
-
-    const repl = startRepl(contextRegistry, config);
-
-    const harness = new ReplHarness(repl);
+    const { config, harness } = createHarness();
 
     harness.call("proxy", "off");
 
     expect(config.proxyPaths.get("")).toBe(false);
     expect(harness.isReset()).toBe(true);
+  });
+
+  it("turns on the proxy for the root", () => {
+    const { config, harness } = createHarness();
+    harness.call("proxy", "on /");
+
+    expect(config.proxyPaths.get("")).toBe(true);
+    expect(harness.isReset()).toBe(true);
+  });
+
+  it("turns off the proxy for the root", () => {
+    const { config, harness } = createHarness();
+
+    harness.call("proxy", "off /");
+
+    expect(config.proxyPaths.get("")).toBe(false);
+    expect(harness.isReset()).toBe(true);
+  });
+
+  it("turns on the proxy for an endpoint", () => {
+    const { config, harness } = createHarness();
+    harness.call("proxy", "on /foo/bar");
+
+    expect(config.proxyPaths.get("/foo/bar")).toBe(true);
+    expect(harness.isReset()).toBe(true);
+  });
+
+  it("turns off the proxy for an endpoint", () => {
+    const { config, harness } = createHarness();
+    harness.call("proxy", "off /foo/bar");
+
+    expect(config.proxyPaths.get("/foo/bar")).toBe(false);
+    expect(harness.isReset()).toBe(true);
+  });
+
+  it("shows the proxy status", () => {
+    const { config, harness } = createHarness();
+
+    config.proxyPaths.set("/foo", true);
+    config.proxyPaths.set("/foo/bar", false);
+
+    harness.call("proxy", "");
+
+    expect(harness.output).toEqual([
+      "Proxy Configuration:",
+      "",
+      "The proxy URL is https://example.com/test",
+      "",
+      "Paths prefixed with [+] will be proxied.",
+      "Paths prefixed with [-] will not be proxied.",
+      "",
+      "[+] /foo/",
+      "[-] /foo/bar/",
+    ]);
+    expect(harness.isReset()).toBe(true);
+  });
+
+  it("displays an explanatory message after turning the proxy on for an endpoint", () => {
+    const { harness } = createHarness();
+    harness.call("proxy", "on /foo/bar");
+
+    expect(harness.output).toEqual([
+      "Requests to /foo/bar will be proxied to https://example.com/test/foo/bar",
+    ]);
   });
 });

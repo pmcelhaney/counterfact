@@ -151,7 +151,7 @@ async function main(source, destination) {
     includeSwaggerUi: true,
     openApiPath: source,
     port: options.port,
-    proxyPaths: new Set([["", Boolean(options.proxyUrl)]]),
+    proxyPaths: new Map([["", Boolean(options.proxyUrl)]]),
     proxyUrl: options.proxyUrl,
     routePrefix: options.prefix,
     startRepl: options.repl,

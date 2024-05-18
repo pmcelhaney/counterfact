@@ -3,35 +3,51 @@ import repl from "node:repl";
 import type { Config } from "../server/config.js";
 import type { ContextRegistry } from "../server/context-registry.js";
 
-const defaultIo = {
-  input: process.stdin,
-  output: process.stdout,
-};
+function printToStdout(line: string) {
+  process.stdout.write(`${line}\n`);
+}
 
 export function startRepl(
   contextRegistry: ContextRegistry,
   config: Config,
-  { input, output } = defaultIo,
+  print = printToStdout,
 ) {
-  const replServer = repl.start({ input, output, prompt: "🤖> " });
+  function printProxyStatus() {
+    print("Proxy Configuration:");
+    print("");
+    print(`The proxy URL is ${config.proxyUrl}`);
+    print("");
+    print("Paths prefixed with [+] will be proxied.");
+    print("Paths prefixed with [-] will not be proxied.");
+    print("");
+
+    for (const [path, state] of Array.from(config.proxyPaths.entries()).sort(
+      ([path1], [path2]) => (path1 < path2 ? -1 : 1),
+    )) {
+      print(`${state ? "[+]" : "[-]"} ${path}/`);
+    }
+  }
+
+  const replServer = repl.start({ prompt: "🤖> " });
 
   replServer.defineCommand("counterfact", {
     action() {
-      output.write(
-        "This is a read-eval-print loop (REPL), the same as the one you get when you run node with no arguments.\n",
+      print(
+        "This is a read-eval-print loop (REPL), the same as the one you get when you run node with no arguments.",
       );
-      output.write(
-        "Except that it's connected to the running server, which you can access with the following globals:\n\n",
+      print(
+        "Except that it's connected to the running server, which you can access with the following globals:",
       );
-      output.write(
-        "- loadContext('/some/path'): to access the context object for a given path\n",
+      print("");
+      print(
+        "- loadContext('/some/path'): to access the context object for a given path",
       );
-      output.write(
-        "- context: the root context ( same as loadContext('/') )\n",
+      print("- context: the root context ( same as loadContext('/') )");
+      print("");
+      print(
+        "For more information, see https://counterfact.dev/docs/usage.html",
       );
-      output.write(
-        "\nFor more information, see https://counterfact.dev/docs/usage.html\n\n",
-      );
+      print("");
 
       this.clearBufferedCommand();
       this.displayPrompt();
@@ -41,22 +57,32 @@ export function startRepl(
   });
 
   replServer.defineCommand("proxy", {
-    action(state) {
-      if (state === "on") {
-        config.proxyPaths.set("", true);
-      }
+    action(text) {
+      if (text === "") {
+        printProxyStatus();
+      } else {
+        const [command, endpoint] = text.split(" ");
 
-      if (state === "off") {
-        config.proxyPaths.set("", false);
-      }
+        const printEndpoint =
+          endpoint === undefined || endpoint === "" ? "/" : endpoint;
 
-      output.write(`Proxy is ${state}: ${config.proxyUrl}\n`);
+        config.proxyPaths.set(
+          (endpoint ?? "").replace(/\/$/u, ""),
+          command === "on",
+        );
+
+        print(
+          `Requests to /foo/bar will be proxied to ${
+            config.proxyUrl ?? "<proxy URL>"
+          }${printEndpoint}`,
+        );
+      }
 
       this.clearBufferedCommand();
       this.displayPrompt();
     },
 
-    help: "proxy [on|off] - turn the proxy on or off; proxy - print proxy info",
+    help: ".proxy [on|off] [path]; .proxy set-url <url>; .proxy info",
   });
 
   replServer.context.loadContext = (path: string) => contextRegistry.find(path);
