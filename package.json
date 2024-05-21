@@ -83,7 +83,7 @@
     "@types/json-schema": "7.0.15",
     "ast-types": "0.14.2",
     "chokidar": "3.6.0",
-    "commander": "12.0.0",
+    "commander": "12.1.0",
     "debug": "4.3.4",
     "fetch": "1.1.0",
     "fs-extra": "11.2.0",
