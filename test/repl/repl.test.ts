@@ -135,7 +135,7 @@ describe("REPL", () => {
     config.proxyPaths.set("/foo", true);
     config.proxyPaths.set("/foo/bar", false);
 
-    harness.call("proxy", "");
+    harness.call("proxy", "status");
 
     expect(harness.output).toEqual([
       "Proxy Configuration:",
@@ -166,6 +166,18 @@ describe("REPL", () => {
 
     expect(harness.output).toEqual([
       "Requests to /foo/bar will be handled by local code",
+    ]);
+  });
+
+  it.each(["", "help"])("displays a proxy help message (%s)", () => {
+    const { harness } = createHarness();
+    harness.call("proxy", "help");
+
+    expect(harness.output).toEqual([
+      ".proxy [on|off] - turn the proxy on/off at the root level",
+      ".proxy [on|off] <path> - turn the proxy on for a path",
+      ".proxy status - show the proxy status",
+      ".proxy help - show this message",
     ]);
   });
 });
