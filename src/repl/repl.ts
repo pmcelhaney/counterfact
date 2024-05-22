@@ -31,6 +31,16 @@ export function startRepl(
     }
   }
 
+  function setProxyUrl(url: string | undefined) {
+    if (url === undefined) {
+      print("usage: .proxy url <url>");
+      return;
+    }
+
+    config.proxyUrl = url;
+    print(`proxy URL is set to ${url}`);
+  }
+
   function turnProxyOnOrOff(text: string) {
     const [command, endpoint] = text.split(" ");
 
@@ -90,6 +100,8 @@ export function startRepl(
         print(".proxy [on|off] <path> - turn the proxy on for a path");
         print(".proxy status - show the proxy status");
         print(".proxy help - show this message");
+      } else if (text.startsWith("url")) {
+        setProxyUrl(text.split(" ")[1]);
       } else if (text === "status") {
         printProxyStatus();
       } else {

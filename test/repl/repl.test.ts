@@ -180,4 +180,23 @@ describe("REPL", () => {
       ".proxy help - show this message",
     ]);
   });
+
+  it("sets the proxy url", () => {
+    const { config, harness } = createHarness();
+    harness.call("proxy", "url https://example.com/new-url");
+
+    expect(config.proxyUrl).toBe("https://example.com/new-url");
+    expect(harness.output).toEqual([
+      "proxy URL is set to https://example.com/new-url",
+    ]);
+    expect(harness.isReset()).toBe(true);
+  });
+
+  it("displays a message if 'proxy url' is entered without a URL", () => {
+    const { harness } = createHarness();
+    harness.call("proxy", "url");
+
+    expect(harness.output).toEqual(["usage: .proxy url <url>"]);
+    expect(harness.isReset()).toBe(true);
+  });
 });
