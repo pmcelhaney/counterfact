@@ -127,7 +127,6 @@ export class Transpiler extends EventTarget {
       convertFileExtensionsToCjs(result);
 
     try {
-      // eslint-disable-next-line total-functions/no-unsafe-readonly-mutable-assignment
       await fs.writeFile(fullDestination, resultWithTransformedFileExtensions);
     } catch {
       debug("error transpiling %s", fullDestination);
