@@ -159,4 +159,13 @@ describe("REPL", () => {
       "Requests to /foo/bar will be proxied to https://example.com/test/foo/bar",
     ]);
   });
+
+  it("displays an explanatory message after turning the proxy off for an endpoint", () => {
+    const { harness } = createHarness();
+    harness.call("proxy", "off /foo/bar");
+
+    expect(harness.output).toEqual([
+      "Requests to /foo/bar will be handled by local code",
+    ]);
+  });
 });

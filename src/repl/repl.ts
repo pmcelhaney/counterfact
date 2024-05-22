@@ -31,6 +31,30 @@ export function startRepl(
     }
   }
 
+  function turnProxyOnOrOff(text: string) {
+    const [command, endpoint] = text.split(" ");
+
+    const printEndpoint =
+      endpoint === undefined || endpoint === "" ? "/" : endpoint;
+
+    config.proxyPaths.set(
+      (endpoint ?? "").replace(/\/$/u, ""),
+      command === "on",
+    );
+
+    if (command === "on") {
+      print(
+        `Requests to ${printEndpoint} will be proxied to ${
+          config.proxyUrl || "<proxy URL>"
+        }${printEndpoint}`,
+      );
+    }
+
+    if (command === "off") {
+      print(`Requests to ${printEndpoint} will be handled by local code`);
+    }
+  }
+
   const replServer = repl.start({ prompt: "🤖> " });
 
   replServer.defineCommand("counterfact", {
@@ -64,21 +88,7 @@ export function startRepl(
       if (text === "") {
         printProxyStatus();
       } else {
-        const [command, endpoint] = text.split(" ");
-
-        const printEndpoint =
-          endpoint === undefined || endpoint === "" ? "/" : endpoint;
-
-        config.proxyPaths.set(
-          (endpoint ?? "").replace(/\/$/u, ""),
-          command === "on",
-        );
-
-        print(
-          `Requests to /foo/bar will be proxied to ${
-            config.proxyUrl || "<proxy URL>"
-          }${printEndpoint}`,
-        );
+        turnProxyOnOrOff(text);
       }
 
       this.clearBufferedCommand();
