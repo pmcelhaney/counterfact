@@ -24,7 +24,10 @@ describe("end-to-end test", () => {
       );
       await repository.finished();
 
-      expect(repository.scripts).toMatchSnapshot();
+      for (const [scriptPath, script] of repository.scripts.entries()) {
+        // eslint-disable-next-line no-await-in-loop, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+        expect(`${scriptPath}:${await script.contents()}`).toMatchSnapshot();
+      }
 
       expect(
         await fs.readFile(nodePath.join(basePath, ".gitignore"), "utf8"),
