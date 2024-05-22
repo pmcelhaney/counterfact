@@ -21,9 +21,12 @@ export function startRepl(
     print("Paths prefixed with [-] will not be proxied.");
     print("");
 
-    for (const [path, state] of Array.from(config.proxyPaths.entries()).sort(
-      ([path1], [path2]) => (path1 < path2 ? -1 : 1),
-    )) {
+    // eslint-disable-next-line array-func/prefer-array-from
+    const entries = [...config.proxyPaths.entries()].sort(([path1], [path2]) =>
+      path1 < path2 ? -1 : 1,
+    );
+
+    for (const [path, state] of entries) {
       print(`${state ? "[+]" : "[-]"} ${path}/`);
     }
   }
