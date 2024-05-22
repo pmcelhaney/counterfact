@@ -151,6 +151,22 @@ describe("REPL", () => {
     expect(harness.isReset()).toBe(true);
   });
 
+  it("shows the proxy status when no URL is set", () => {
+    const { config, harness } = createHarness();
+
+    config.proxyUrl = "";
+    config.proxyPaths.set("/foo", true);
+    config.proxyPaths.set("/foo/bar", false);
+
+    harness.call("proxy", "status");
+
+    expect(harness.output).toEqual([
+      "The proxy URL is not set.",
+      'To set it, type ".proxy url <url>',
+    ]);
+    expect(harness.isReset()).toBe(true);
+  });
+
   it("displays an explanatory message after turning the proxy on for an endpoint", () => {
     const { harness } = createHarness();
     harness.call("proxy", "on /foo/bar");

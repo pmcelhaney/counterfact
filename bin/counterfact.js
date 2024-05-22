@@ -152,7 +152,7 @@ async function main(source, destination) {
     openApiPath: source,
     port: options.port,
     proxyPaths: new Map([["", Boolean(options.proxyUrl)]]),
-    proxyUrl: options.proxyUrl,
+    proxyUrl: options.proxyUrl ?? "",
     routePrefix: options.prefix,
     startRepl: options.repl,
     startServer: options.serve,

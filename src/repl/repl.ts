@@ -12,7 +12,14 @@ export function startRepl(
   config: Config,
   print = printToStdout,
 ) {
+  // eslint-disable-next-line max-statements
   function printProxyStatus() {
+    if (config.proxyUrl === "") {
+      print("The proxy URL is not set.");
+      print('To set it, type ".proxy url <url>');
+      return;
+    }
+
     print("Proxy Configuration:");
     print("");
     print(`The proxy URL is ${config.proxyUrl}`);
