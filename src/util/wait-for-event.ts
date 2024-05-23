@@ -1,4 +1,4 @@
-import type { EventEmitter } from "koa";
+import { EventEmitter } from "node:events";
 
 /**
  * Creates a promise that resolves when a specified event is fired on the given EventTarget.
@@ -19,10 +19,10 @@ export async function waitForEvent(
       resolve(event);
     };
 
-    if (target instanceof EventTarget) {
-      target.addEventListener(eventName, handler);
-    } else {
+    if (target instanceof EventEmitter) {
       target.once(eventName, handler);
+    } else {
+      target.addEventListener(eventName, handler);
     }
   });
 }

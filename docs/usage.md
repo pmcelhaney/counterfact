@@ -282,11 +282,9 @@ To proxy an individual endpoint, you can use the `$.proxy()` function.
  };
 ```
 
-To toggle globally between Counterfact and a proxy server, pass `--proxy-url <url>` in the CLI.
+To set up a proxy for the entire API, add `--proxy <url>` in the CLI.
 
-Then type `.proxy on` / `.proxy off` in the REPL to turn it on and off. When the global proxy is on, all requests will be sent to the proxy URL instead of the mock implementations in Counterfact.
-
-This feature is hot off the presses and somewhat experimental. We have plans to introduce more granular controls over what gets proxied when, but we want to see how this works first. Please send feedback!
+From there, you can switch back and forth between the proxy and mocks by typing `.proxy [on|off] <path-prefix>`. Type `.proxy help` for detailed information on using the `.proxy` command.
 
 ## No Cap Recap 🧢
 

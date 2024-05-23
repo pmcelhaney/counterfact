@@ -6,7 +6,7 @@ export interface Config {
   };
   openApiPath: string;
   port: number;
-  proxyEnabled: boolean;
+  proxyPaths: Map<string, boolean>;
   proxyUrl: string;
   routePrefix: string;
   startRepl: boolean;

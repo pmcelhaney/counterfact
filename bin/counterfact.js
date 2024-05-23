@@ -9,7 +9,7 @@ import { program } from "commander";
 import createDebug from "debug";
 import open from "open";
 
-import { counterfact } from "../dist/server/app.js";
+import { counterfact } from "../dist/app.js";
 
 const MIN_NODE_VERSION = 17;
 
@@ -151,8 +151,8 @@ async function main(source, destination) {
     includeSwaggerUi: true,
     openApiPath: source,
     port: options.port,
-    proxyEnabled: Boolean(options.proxyUrl),
-    proxyUrl: options.proxyUrl,
+    proxyPaths: new Map([["", Boolean(options.proxyUrl)]]),
+    proxyUrl: options.proxyUrl ?? "",
     routePrefix: options.prefix,
     startRepl: options.repl,
     startServer: options.serve,

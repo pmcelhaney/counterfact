@@ -6,6 +6,7 @@ import koaProxy from "koa-proxy";
 
 import type { Config } from "./config.js";
 import type { Dispatcher } from "./dispatcher.js";
+import { isProxyEnabledForPath } from "./is-proxy-enabled-for-path.js";
 import type { HttpMethods } from "./registry.js";
 
 const debug = createDebug("counterfact:server:create-koa-app");
@@ -59,7 +60,7 @@ export function koaMiddleware(
 ): Koa.Middleware {
   // eslint-disable-next-line max-statements
   return async function middleware(ctx, next) {
-    const { proxyEnabled, proxyUrl, routePrefix } = config;
+    const { proxyUrl, routePrefix } = config;
 
     debug("middleware running for path: %s", ctx.request.path);
     debug("routePrefix: %s", routePrefix);
@@ -79,7 +80,7 @@ export function koaMiddleware(
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
     const method = ctx.request.method as HttpMethods;
 
-    if (proxyEnabled && proxyUrl) {
+    if (isProxyEnabledForPath(path, config) && proxyUrl) {
       /* @ts-expect-error the body comes from koa-bodyparser, not sure how to fix this */
       // eslint-disable-next-line @typescript-eslint/no-unsafe-return
       return proxy({ host: proxyUrl })(ctx, next);

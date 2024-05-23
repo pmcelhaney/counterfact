@@ -17,6 +17,10 @@ type HttpMethods =
   | "TRACE";
 
 interface RequestData {
+  auth?: {
+    password?: string;
+    username?: string;
+  };
   context: unknown;
   headers: { [key: string]: number | string };
   matchedPath?: string;
@@ -30,10 +34,6 @@ interface RequestData {
   query: { [key: string]: number | string };
   response: ResponseBuilderFactory;
   tools: Tools;
-  user?: {
-    password?: string;
-    username?: string;
-  };
 }
 
 interface RequestDataWithBody extends RequestData {
