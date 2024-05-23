@@ -191,7 +191,7 @@ describe("REPL", () => {
 
     expect(harness.output).toEqual([
       ".proxy [on|off] - turn the proxy on/off at the root level",
-      ".proxy [on|off] <path> - turn the proxy on for a path",
+      ".proxy [on|off] <path-prefix> - turn the proxy on for a path",
       ".proxy status - show the proxy status",
       ".proxy help - show this message",
     ]);

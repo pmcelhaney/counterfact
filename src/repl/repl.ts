@@ -104,7 +104,7 @@ export function startRepl(
     action(text) {
       if (text === "help" || text === "") {
         print(".proxy [on|off] - turn the proxy on/off at the root level");
-        print(".proxy [on|off] <path> - turn the proxy on for a path");
+        print(".proxy [on|off] <path-prefix> - turn the proxy on for a path");
         print(".proxy status - show the proxy status");
         print(".proxy help - show this message");
       } else if (text.startsWith("url")) {
