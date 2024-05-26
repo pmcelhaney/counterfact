@@ -101,8 +101,8 @@
 
 ### Patch Changes
 
-- 7f70c2c: added a comment to the top of files under path-types which links to an [FAQ on generated code](https://github.com/pmcelhaney/counterfact/blob/main/docs/faq-generated-code.md) -- thanks @ingovals for the [nudge](https://github.com/pmcelhaney/counterfact/issues/787)
-- 7b4bdc2: fixed [#788](https://github.com/pmcelhaney/counterfact/issues/788): On Windows, the import field from path-types to context gets wrong slashes while others are fine
+- 7f70c2c: added a comment to the top of files under types/paths which links to an [FAQ on generated code](https://github.com/pmcelhaney/counterfact/blob/main/docs/faq-generated-code.md) -- thanks @ingovals for the [nudge](https://github.com/pmcelhaney/counterfact/issues/787)
+- 7b4bdc2: fixed [#788](https://github.com/pmcelhaney/counterfact/issues/788): On Windows, the import field from types/paths to context gets wrong slashes while others are fine
 - 9601b20: Allows Counterfact to handle requests that contain the OpenApi basePath
 
 ## 0.37.1

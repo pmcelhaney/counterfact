@@ -74,20 +74,20 @@ This will let your team use the same version of Counterfact across all environme
 
 After generating code you should have three directories:
 
-- 📂 **components** contains the TypeScript types for the objects used in your REST API. These components correspond to the `/schema/components` section of the [OpenAPI spec](https://swagger.io/specification/).
-- 📂 **paths** contains the implementation of each endpoint, a.k.a. routes. Counterfact uses the word "paths" because it corresponds to the `/paths` section of the spec.
-- 📂 **path-types** contains the type information for paths.
+- 📂 **routes** contains the implementation of each endpoint / path.
+- 📂 **types/paths** contains the type information for paths.
+- 📂 **types/components** contains the TypeScript types for the objects used in your REST API. These components correspond to the `/components/schema` section of the [OpenAPI spec](https://swagger.io/specification/).
 
-When you launch Counterfact with no command line options, the code under `components` and `path-types` is regenerated every time you run Counterfact, so that the types can stay in sync with any OpenAPI changes. The code under paths is minimal boilerplate that you're meant to edit by hand. Counterfact will not overwrite your changes in the `paths` directory, but it will add new files when necessary. If you use any of the command line options then it will only regenerate the code when you tell it to via the `--watch` or `--generate` options.
+The code under `types` is regenerated every time you run Counterfact, so that the types can stay in sync with any OpenAPI changes. The code under `routes` is minimal boilerplate that you're meant to edit by hand. Counterfact will not overwrite your changes in the `routes` directory, but it will add new files when necessary. If you use any of the command line options then it will only regenerate the code when you tell it to via the `--watch` or `--generate` options.
 
 See also [Generated Code FAQ](./faq-generated-code.md)
 
 > [!TIP]
-> You don't have to use the code generator. It wasn't even part of Counterfact originally. You can also create the files under `paths` by hand. The main benefit of generating code is all the type information that's managed for you and kept in sync with OpenAPI. See [What if I don't have an OpenAPI document?](./usage-without-openapi.md)
+> You don't have to use the code generator. It wasn't even part of Counterfact originally. You can also create the files under `routes` by hand. The main benefit of generating code is all the type information that's managed for you and kept in sync with OpenAPI. See [What if I don't have an OpenAPI document?](./usage-without-openapi.md)
 
 ## Routing is where it's at 🔀
 
-In the `paths` directory, you should find TypeScript files with code like the following.
+In the `routes` directory, you should find TypeScript files with code like the following.
 
 ```ts
 export const GET: HTTP_GET = ($) => {

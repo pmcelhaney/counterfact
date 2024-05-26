@@ -60,7 +60,7 @@ export class OperationCoder extends Coder {
       .replaceAll("~1", "/");
 
     return `${nodePath
-      .join("path", pathString)
+      .join("routes", pathString)
       .replaceAll("\\", "/")}.types.ts`;
   }
 }

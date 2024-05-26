@@ -50,7 +50,9 @@ describe("a CodeGenerator", () => {
 
       await generator.generate();
 
-      const exampleComponent = await read("./out/components/Example.ts");
+      const exampleComponent = await read(
+        "./out/types/components/schemas/Example.ts",
+      );
 
       await generator.stopWatching();
 
@@ -93,7 +95,9 @@ describe("a CodeGenerator", () => {
 
       await waitForEvent(generator, "generate");
 
-      const exampleComponent = await read("./out/components/Example.ts");
+      const exampleComponent = await read(
+        "./out/types/components/schemas/Example.ts",
+      );
 
       await generator.stopWatching();
 

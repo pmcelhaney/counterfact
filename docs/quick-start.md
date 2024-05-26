@@ -14,6 +14,6 @@ npx counterfact@latest https://petstore3.swagger.io/api/v3/openapi.json api --op
 4. starts a server which implements the API
 5. opens your browser to [Swagger UI](https://swagger.io/tools/swagger-ui/) (`--open`)
 
-You can use Swagger to try out the auto-generated API. Out of the box, it returns random responses using metadata from the OpenAPI document. Edit the files under `./api/paths` to add more realistic behavior. There's no need to restart the server.
+You can use Swagger to try out the auto-generated API. Out of the box, it returns random responses using metadata from the OpenAPI document. Edit the files under `./api/routes` to add more realistic behavior. There's no need to restart the server.
 
 To learn more, see the [Usage Guide](./usage.md).

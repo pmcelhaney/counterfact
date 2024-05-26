@@ -64,7 +64,7 @@ describe("an OperationTypeCoder", () => {
       "get",
     );
 
-    expect(coder.modulePath()).toBe("path-types/hello/world.types.ts");
+    expect(coder.modulePath()).toBe("types/paths/hello/world.types.ts");
   });
 
   it("generates a complex post operation", async () => {
