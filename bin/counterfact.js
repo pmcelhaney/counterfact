@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 /* eslint-disable complexity */
 
+import fs from "node:fs";
 import { readFile } from "node:fs/promises";
 import nodePath from "node:path";
 import { fileURLToPath } from "node:url";
@@ -10,6 +11,7 @@ import createDebug from "debug";
 import open from "open";
 
 import { counterfact } from "../dist/app.js";
+import { pathsToRoutes } from "../dist/migrate/paths-to-routes.js";
 
 const MIN_NODE_VERSION = 17;
 
@@ -164,6 +166,12 @@ async function main(source, destination) {
   };
 
   debug("loading counterfact (%o)", config);
+
+  // eslint-disable-next-line n/no-sync
+  if (fs.existsSync(nodePath.join(config.basePath, "paths"))) {
+    console.log("migrating");
+    await pathsToRoutes(config.basePath);
+  }
 
   const { start } = await counterfact(config);
 
