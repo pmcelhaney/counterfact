@@ -59,7 +59,7 @@ describe("black box test", () => {
 
   it("creates a file for the /hello/kitty path", () => {
     expect(
-      fs.readFileSync("./out/paths/hello/kitty.ts", "utf8"),
+      fs.readFileSync("./out/routes/hello/kitty.ts", "utf8"),
     ).toMatchSnapshot();
   });
 
