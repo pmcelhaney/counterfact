@@ -163,7 +163,10 @@ export class Context {
   }
 
   nearestContextFile(destination, path) {
-    const directory = nodePath.dirname(path).replace("types/paths", "routes");
+    const directory = nodePath
+      .dirname(path)
+      .replaceAll("\\", "/")
+      .replace("types/paths", "routes");
 
     const candidate = nodePath.join(destination, directory, "_.context.ts");
 
