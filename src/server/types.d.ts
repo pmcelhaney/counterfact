@@ -99,7 +99,7 @@ type GenericResponseBuilderInner<
     ? never
     : HeaderFunction<Response>;
   html: MaybeShortcut<"text/html", Response>;
-  json: MaybeShortcut<"application/json", Response>;
+  json: MaybeShortcut<"application/json" | "text/json" | "text/x-json" | "application/xml" | "text/xml", Response>;
   match: [keyof Response["content"]] extends [never]
     ? never
     : MatchFunction<Response>;
