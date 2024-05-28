@@ -72,7 +72,11 @@ export function createResponseBuilder(
       },
 
       json(this: ResponseBuilder, body: unknown) {
-        return this.match("application/json", body);
+        return this.match("application/json", body)
+          .match("text/json", body)
+          .match("text/x-json", body)
+          .match("application/xml", body)
+          .match("text/xml", body);
       },
 
       match(
