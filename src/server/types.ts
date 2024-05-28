@@ -72,6 +72,7 @@ type MaybeShortcut<
   never
 >;
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 type NeverIfEmpty<Record> = {} extends Record ? never : Record;
 
 type MatchFunction<Response extends OpenApiResponse> = <
@@ -97,6 +98,7 @@ type HeaderFunction<Response extends OpenApiResponse> = <
 }>;
 
 type RandomFunction<Response extends OpenApiResponse> = <
+  // eslint-disable-next-line etc/no-misused-generics, unused-imports/no-unused-vars
   Header extends string & keyof Response["headers"],
 >() => COUNTERFACT_RESPONSE;
 
@@ -146,6 +148,7 @@ type GenericResponseBuilderInner<
 
 type GenericResponseBuilder<
   Response extends OpenApiResponse = OpenApiResponse,
+  // eslint-disable-next-line @typescript-eslint/ban-types
 > = {} extends OmitValueWhenNever<Response>
   ? COUNTERFACT_RESPONSE
   : keyof OmitValueWhenNever<Response> extends "headers"
