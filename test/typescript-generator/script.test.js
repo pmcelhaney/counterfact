@@ -128,11 +128,11 @@ describe("a Script", () => {
     script2.importSharedType("SomeType");
 
     expect(script1.externalImportStatements()).toStrictEqual([
-      'import type { SomeType } from "../types.d.ts";',
+      'import type { SomeType } from "../types.ts";',
     ]);
 
     expect(script2.externalImportStatements()).toStrictEqual([
-      'import type { SomeType } from "../../../types.d.ts";',
+      'import type { SomeType } from "../../../types.ts";',
     ]);
   });
 

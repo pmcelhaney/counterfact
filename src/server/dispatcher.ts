@@ -14,7 +14,7 @@ import type {
 } from "./registry.js";
 import { createResponseBuilder } from "./response-builder.js";
 import { Tools } from "./tools.js";
-import type { OpenApiOperation, OpenApiParameters } from "./types.d.ts";
+import type { OpenApiOperation, OpenApiParameters } from "./types.ts";
 
 const debug = createDebugger("counterfact:server:dispatcher");
 

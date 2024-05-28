@@ -12,6 +12,14 @@ interface Example {
   value: unknown;
 }
 
+const counterfactResponse = Symbol("Counterfact Response");
+
+const counterfactResponseObject = {
+  [counterfactResponse]: counterfactResponse,
+};
+
+type COUNTERFACT_RESPONSE = typeof counterfactResponseObject;
+
 type MediaType = `${string}/${string}`;
 
 type OmitAll<T, K extends (keyof T)[]> = {
@@ -90,7 +98,7 @@ type HeaderFunction<Response extends OpenApiResponse> = <
 
 type RandomFunction<Response extends OpenApiResponse> = <
   Header extends string & keyof Response["headers"],
->() => "COUNTERFACT_RESPONSE";
+>() => COUNTERFACT_RESPONSE;
 
 interface ResponseBuilder {
   [status: number | `${number} ${string}`]: ResponseBuilder;
@@ -139,10 +147,10 @@ type GenericResponseBuilderInner<
 type GenericResponseBuilder<
   Response extends OpenApiResponse = OpenApiResponse,
 > = {} extends OmitValueWhenNever<Response>
-  ? "COUNTERFACT_RESPONSE"
+  ? COUNTERFACT_RESPONSE
   : keyof OmitValueWhenNever<Response> extends "headers"
   ? {
-      ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE";
+      ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE;
       header: HeaderFunction<Response>;
     }
   : GenericResponseBuilderInner<Response>;
@@ -257,6 +265,8 @@ interface WideOperationArgument {
   query: { [key: string]: string };
   response: { [key: number]: WideResponseBuilder };
 }
+
+export type { COUNTERFACT_RESPONSE };
 
 export type {
   HttpStatusCode,
