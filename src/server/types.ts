@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable etc/no-t */
 interface OpenApiHeader {
   schema: unknown;
 }
