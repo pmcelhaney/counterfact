@@ -1,5 +1,11 @@
 # counterfact
 
+## 0.43.2
+
+### Patch Changes
+
+- b09fb59: fixed the type system to address that fact that json() handles multiple content types
+
 ## 0.43.1
 
 ### Patch Changes
