@@ -1,5 +1,12 @@
 # counterfact
 
+## 0.43.0
+
+### Minor Changes
+
+- 425e893: turn the proxy on or off for individual paths
+- 4fed190: expand the .json() shortcut to include variations of JSON and XML content types
+
 ## 0.42.1
 
 ### Patch Changes
