@@ -1,5 +1,11 @@
 # counterfact
 
+## 0.43.1
+
+### Patch Changes
+
+- 9e285a5: reverted type change for .json() -- it had unintended consequences
+
 ## 0.43.0
 
 ### Minor Changes
