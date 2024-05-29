@@ -111,10 +111,9 @@ The `$.response` object is used to build a valid response for the URL and reques
 - `.random()` returns random data, using `examples` and other metadata from the OpenAPI document.
 - `.header(name, value)` adds a response header. It will only show up when a response header is expected and you haven't already provided it.
 - `.match(contentType, content)` is used to return content which matches the content type. If the API is intended to serve one of multiple content types, depending on the client's `Accepts:` header, you can chain multiple `match()` calls.
-- `.json(content)` is shorthand for `.match("application/json", content)`
-- `.text(content)` is shorthand for `.match("text/plain", content)`
-- `.html(content)` is shorthand for `.match("text/html", content)`
-- `.xml(content)` is shorthand for `.match("application/xml", content)`
+  - `.json(content)`, `.text(content)`, `.html(content)`, and `.xml(content)` are shorthands for the `match()` function, e.g. `.text(content)` is shorthand for `.match("text/plain", content)`.
+  - if the content type is XML, you can pass a JSON object, and Counterfact will automatically convert it to XML for you
+  - The `.json()` shortcut handles both JSON and XML.
 
 You can build a response by chaining one or more of these functions, e.g.
 
