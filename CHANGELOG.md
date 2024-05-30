@@ -1,5 +1,11 @@
 # counterfact
 
+## 0.44.0
+
+### Minor Changes
+
+- 11518ab: **New file structure** - In preparation for the 1.0 release, `paths` has moved to `routes`; `path-types` and `components` are now under `types`. Counterfact will automatically migrate your code for you. We don't like making disruptive changes like this; this will be the last one for the foreseeable future.
+
 ## 0.43.2
 
 ### Patch Changes
