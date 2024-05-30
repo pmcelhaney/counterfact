@@ -68,7 +68,7 @@ export class ResponseTypeCoder extends TypeCoder {
   }
 
   modulePath() {
-    return `components/${this.requirement.data.$ref.split("/").at(-1)}.ts`;
+    return `types/${this.requirement.data.$ref}.ts`;
   }
 
   writeCode(script) {

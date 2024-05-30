@@ -135,6 +135,6 @@ describe("a SchemaCoder", () => {
       }),
     );
 
-    expect(coder.modulePath()).toBe("components/baz.ts");
+    expect(coder.modulePath()).toBe("types/foo/bar/baz.ts");
   });
 });

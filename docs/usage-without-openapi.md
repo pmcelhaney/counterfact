@@ -18,7 +18,7 @@ npx counterfact _ api
 
 ## Creating routes
 
-In the file where the code is generated, you should find a directory -- initially empty -- called `paths`. Here you can start adding mock APIs by adding JS or TS files. For example, to mock an API that responds to `GET /hello/world`, with "World says hello!" you would create `paths/hello/world.js` that looks like this.
+In the file where the code is generated, you should find a directory -- initially empty -- called `routes`. Here you can start adding mock APIs by adding JS or TS files. For example, to mock an API that responds to `GET /hello/world`, with "World says hello!" you would create `routes/hello/world.js` that looks like this.
 
 ```js
 // hello/world.js

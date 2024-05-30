@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 /* eslint-disable complexity */
 
+import fs from "node:fs";
 import { readFile } from "node:fs/promises";
 import nodePath from "node:path";
 import { fileURLToPath } from "node:url";
@@ -97,7 +98,7 @@ function createWatchMessage(config) {
   return watchMessage;
 }
 
-// eslint-disable-next-line max-statements
+// eslint-disable-next-line max-statements, sonarjs/cognitive-complexity
 async function main(source, destination) {
   debug("executing the main function");
 
@@ -165,6 +166,23 @@ async function main(source, destination) {
 
   debug("loading counterfact (%o)", config);
 
+  let didMigrate = false;
+
+  // eslint-disable-next-line n/no-sync
+  if (fs.existsSync(nodePath.join(config.basePath, "paths"))) {
+    await fs.promises.rmdir(nodePath.join(config.basePath, "paths"), {
+      recursive: true,
+    });
+    await fs.promises.rmdir(nodePath.join(config.basePath, "path-types"), {
+      recursive: true,
+    });
+    await fs.promises.rmdir(nodePath.join(config.basePath, "components"), {
+      recursive: true,
+    });
+
+    didMigrate = true;
+  }
+
   const { start } = await counterfact(config);
 
   debug("loaded counterfact", config);
@@ -204,6 +222,23 @@ async function main(source, destination) {
     debug("opening browser");
     await open(guiUrl);
     debug("opened browser");
+  }
+
+  if (didMigrate) {
+    process.stdout.write("\n\n\n*******************************\n");
+    process.stdout.write("MIGRATING TO NEW FILE STRUCTURE\n\n");
+    process.stdout.write(
+      "In preparation for version 1.0, Counterfact has migrated to a new file structure.\n",
+    );
+    process.stdout.write("- The paths directory has been renamed to routes.\n");
+    process.stdout.write(
+      "- The path-types and components directories are now stored under types.\n",
+    );
+    process.stdout.write("Your files have automatically been migrated.\n");
+    process.stdout.write(
+      "Please report any issues to https://github.com/pmcelhaney/counterfact/issues\n",
+    );
+    process.stdout.write("*******************************\n\n\n");
   }
 }
 

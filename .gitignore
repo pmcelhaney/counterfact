@@ -10,7 +10,7 @@ out
 templates/typescript/counterfact/components
 templates/typescript/counterfact/internal
 templates/typescript/counterfact/openapi
-templates/typescript/counterfact/path-types
+templates/typescript/counterfact/types/paths
 templates/typescript/counterfact/paths
 templates/typescript/package-lock.json
 templates/typescript/yarn.lock

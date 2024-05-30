@@ -83,7 +83,7 @@ export async function generate(
 
     pathDefinition.forEach((operation, requestMethod) => {
       repository
-        .get(`paths${key}.ts`)
+        .get(`routes${key}.ts`)
         .export(new OperationCoder(operation, requestMethod, securitySchemes));
     });
   });

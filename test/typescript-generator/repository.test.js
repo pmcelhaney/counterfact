@@ -16,18 +16,18 @@ describe("a Repository", () => {
   });
 
   it.each([
-    ["./path-types/x.ts", "../paths/_.context.ts"],
-    ["./path-types/a/x.ts", "../../paths/_.context.ts"],
-    ["./path-types/a/b/x.ts", "../../../paths/a/b/_.context.ts"],
-    ["./path-types/a/b/c/x.ts", "../../../../paths/a/b/_.context.ts"],
+    ["./types/paths/x.ts", "../../routes/_.context.ts"],
+    ["./types/paths/a/x.ts", "../../../routes/_.context.ts"],
+    ["./types/paths/a/b/x.ts", "../../../../routes/a/b/_.context.ts"],
+    ["./types/paths/a/b/c/x.ts", "../../../../../routes/a/b/_.context.ts"],
   ])(
     "finds the relative location of the most relevant _.context.ts file (%s => %s)",
     async (importingFilePath, relativePathToNearestContext) => {
       await usingTemporaryFiles(async ({ add, path }) => {
         const repository = new Repository();
 
-        await add("./paths/_.context.ts", "export class Context");
-        await add("./paths/a/b/_.context.ts", "export class Context");
+        await add("./routes/_.context.ts", "export class Context");
+        await add("./routes/a/b/_.context.ts", "export class Context");
 
         expect(repository.findContextPath(path("."), importingFilePath)).toBe(
           relativePathToNearestContext,
@@ -42,7 +42,7 @@ describe("a Repository", () => {
 
       await repository.writeFiles(path("."), { routes: true, types: true });
 
-      await expect(read("./paths/_.context.ts")).resolves.toContain(
+      await expect(read("./routes/_.context.ts")).resolves.toContain(
         "export class Context",
       );
     });

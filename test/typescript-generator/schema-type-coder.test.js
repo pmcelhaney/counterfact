@@ -324,6 +324,6 @@ describe("a SchemaTypeCoder", () => {
       }),
     );
 
-    expect(coder.modulePath()).toBe("components/Example.ts");
+    expect(coder.modulePath()).toBe("types/components/Example.ts");
   });
 });

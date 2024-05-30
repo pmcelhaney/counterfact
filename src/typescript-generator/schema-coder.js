@@ -48,7 +48,7 @@ export class SchemaCoder extends Coder {
   }
 
   modulePath() {
-    return `components/${this.requirement.data.$ref.split("/").at(-1)}.ts`;
+    return `types/${this.requirement.data.$ref}.ts`;
   }
 
   writeCode(script) {

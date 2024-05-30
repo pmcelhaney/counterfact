@@ -75,6 +75,7 @@ export class Repository {
 
     const writeFiles = Array.from(
       this.scripts.entries(),
+
       async ([path, script]) => {
         const contents = await script.contents();
 
@@ -82,8 +83,8 @@ export class Repository {
 
         await ensureDirectoryExists(fullPath);
 
-        const shouldWriteRoutes = routes && path.startsWith("paths");
-        const shouldWriteTypes = types && !path.startsWith("paths");
+        const shouldWriteRoutes = routes && path.startsWith("routes");
+        const shouldWriteTypes = types && !path.startsWith("routes");
 
         if (
           shouldWriteRoutes &&
@@ -121,7 +122,11 @@ export class Repository {
   }
 
   async createDefaultContextFile(destination) {
-    const contextFilePath = nodePath.join(destination, "paths", "_.context.ts");
+    const contextFilePath = nodePath.join(
+      destination,
+      "routes",
+      "_.context.ts",
+    );
 
     if (existsSync(contextFilePath)) {
       return;
@@ -158,13 +163,16 @@ export class Context {
   }
 
   nearestContextFile(destination, path) {
-    const directory = nodePath.dirname(path).replace("path-types", "paths");
+    const directory = nodePath
+      .dirname(path)
+      .replaceAll("\\", "/")
+      .replace("types/paths", "routes");
 
     const candidate = nodePath.join(destination, directory, "_.context.ts");
 
     if (directory.length <= 1) {
       // No _context.ts was found so import the one that should be in the root
-      return nodePath.join(destination, "paths", "_.context.ts");
+      return nodePath.join(destination, "routes", "_.context.ts");
     }
 
     if (existsSync(candidate)) {
