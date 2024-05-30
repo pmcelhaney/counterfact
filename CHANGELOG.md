@@ -1,5 +1,24 @@
 # counterfact
 
+## 0.43.2
+
+### Patch Changes
+
+- b09fb59: fixed the type system to address that fact that json() handles multiple content types
+
+## 0.43.1
+
+### Patch Changes
+
+- 9e285a5: reverted type change for .json() -- it had unintended consequences
+
+## 0.43.0
+
+### Minor Changes
+
+- 425e893: turn the proxy on or off for individual paths
+- 4fed190: expand the .json() shortcut to include variations of JSON and XML content types
+
 ## 0.42.1
 
 ### Patch Changes

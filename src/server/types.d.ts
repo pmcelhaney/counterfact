@@ -14,6 +14,10 @@ interface Example {
 
 type MediaType = `${string}/${string}`;
 
+type OmitAll<T, K extends (keyof T)[]> = {
+  [P in keyof T as P extends K[number] ? never : P]: T[P];
+};
+
 type OmitValueWhenNever<Base> = Pick<
   Base,
   {
@@ -24,25 +28,34 @@ type OmitValueWhenNever<Base> = Pick<
 interface OpenApiResponse {
   content: { [key: MediaType]: OpenApiContent };
   headers: { [key: string]: OpenApiHeader };
-  requiredHeaders: string
+  requiredHeaders: string;
 }
 
 interface OpenApiResponses {
   [key: string]: OpenApiResponse;
 }
 
-type IfHasKey<SomeObject, Key, Yes, No> = Key extends keyof SomeObject
-  ? Yes
+type IfHasKey<SomeObject, Keys extends (keyof any)[], Yes, No> = Keys extends [
+  infer FirstKey,
+  ...infer RestKeys,
+]
+  ? FirstKey extends keyof SomeObject
+    ? Yes
+    : RestKeys extends (keyof any)[]
+    ? IfHasKey<SomeObject, RestKeys, Yes, No>
+    : No
   : No;
 
 type MaybeShortcut<
-  ContentType extends MediaType,
+  ContentTypes extends MediaType[],
   Response extends OpenApiResponse,
 > = IfHasKey<
   Response["content"],
-  ContentType,
-  (body: Response["content"][ContentType]["schema"]) => GenericResponseBuilder<{
-    content: NeverIfEmpty<Omit<Response["content"], ContentType>>;
+  ContentTypes,
+  (
+    body: Response["content"][ArrayToUnion<ContentTypes>]["schema"],
+  ) => GenericResponseBuilder<{
+    content: NeverIfEmpty<OmitAll<Response["content"], ContentTypes>>;
     headers: Response["headers"];
     requiredHeaders: Response["requiredHeaders"];
   }>,
@@ -55,7 +68,7 @@ type MatchFunction<Response extends OpenApiResponse> = <
   ContentType extends MediaType & keyof Response["content"],
 >(
   contentType: ContentType,
-  body: Response["content"][ContentType]["schema"]
+  body: Response["content"][ContentType]["schema"],
 ) => GenericResponseBuilder<{
   content: NeverIfEmpty<Omit<Response["content"], ContentType>>;
   headers: Response["headers"];
@@ -66,7 +79,7 @@ type HeaderFunction<Response extends OpenApiResponse> = <
   Header extends string & keyof Response["headers"],
 >(
   header: Header,
-  value: Response["headers"][Header]["schema"]
+  value: Response["headers"][Header]["schema"],
 ) => GenericResponseBuilder<{
   content: NeverIfEmpty<Response["content"]>;
   headers: NeverIfEmpty<Omit<Response["headers"], Header>>;
@@ -92,27 +105,36 @@ interface ResponseBuilder {
   xml: (body: unknown) => ResponseBuilder;
 }
 
+type ArrayToUnion<T extends readonly any[]> = T[number];
+
 type GenericResponseBuilderInner<
   Response extends OpenApiResponse = OpenApiResponse,
 > = OmitValueWhenNever<{
   header: [keyof Response["headers"]] extends [never]
     ? never
     : HeaderFunction<Response>;
-  html: MaybeShortcut<"text/html", Response>;
-  json: MaybeShortcut<"application/json", Response>;
+  html: MaybeShortcut<["text/html"], Response>;
+  json: MaybeShortcut<["application/json", "text/json", "text/x-json", "application/xml", "text/xml"], Response>;
   match: [keyof Response["content"]] extends [never]
     ? never
     : MatchFunction<Response>;
   random: [keyof Response["content"]] extends [never]
     ? never
     : RandomFunction<Response>;
-  text: MaybeShortcut<"text/plain", Response>;
-  xml: MaybeShortcut<"application/xml" | "text/xml", Response>;
+  text: MaybeShortcut<["text/plain"], Response>;
+  xml: MaybeShortcut<["application/xml", "text/xml"], Response>;
 }>;
 
 type GenericResponseBuilder<
   Response extends OpenApiResponse = OpenApiResponse,
-> = {} extends OmitValueWhenNever<Response> ? "COUNTERFACT_RESPONSE" :  keyof OmitValueWhenNever<Response> extends "headers" ? { header: HeaderFunction<Response>, ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" } : GenericResponseBuilderInner<Response>;
+> = {} extends OmitValueWhenNever<Response>
+  ? "COUNTERFACT_RESPONSE"
+  : keyof OmitValueWhenNever<Response> extends "headers"
+  ? {
+      ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE";
+      header: HeaderFunction<Response>;
+    }
+  : GenericResponseBuilderInner<Response>;
 
 type ResponseBuilderFactory<
   Responses extends OpenApiResponses = OpenApiResponses,
@@ -205,7 +227,7 @@ interface OpenApiOperation {
   };
 }
 
-type WideResponseBuilder  = {   
+interface WideResponseBuilder {
   header: (body: unknown) => WideResponseBuilder;
   html: (body: unknown) => WideResponseBuilder;
   json: (body: unknown) => WideResponseBuilder;
@@ -215,26 +237,24 @@ type WideResponseBuilder  = {
   xml: (body: unknown) => WideResponseBuilder;
 }
 
-type WideOperationArgument = {
-  path: Record<string, string>;
-  query: Record<string, string>;
-  header: Record<string, string>;
+interface WideOperationArgument {
   body: unknown;
-  response: Record<number, WideResponseBuilder>;
+  context: unknown;
+  header: { [key: string]: string };
+  path: { [key: string]: string };
   proxy: (url: string) => { proxyUrl: string };
-  context: unknown
-};
+  query: { [key: string]: string };
+  response: { [key: number]: WideResponseBuilder };
+}
 
 export type {
   HttpStatusCode,
   MediaType,
+  OmitValueWhenNever,
   OpenApiOperation,
   OpenApiParameters,
   OpenApiResponse,
   ResponseBuilder,
   ResponseBuilderFactory,
   WideOperationArgument,
-  OmitValueWhenNever
 };
-
-
