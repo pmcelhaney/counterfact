@@ -46,15 +46,17 @@ type IfHasKey<SomeObject, Keys extends (keyof any)[], Yes, No> = Keys extends [
     : No
   : No;
 
+type SchemasOf<T extends { [key: string]: { schema: any } }> = {
+  [K in keyof T]: T[K]["schema"];
+}[keyof T];
+
 type MaybeShortcut<
   ContentTypes extends MediaType[],
   Response extends OpenApiResponse,
 > = IfHasKey<
   Response["content"],
   ContentTypes,
-  (
-    body: Response["content"][ArrayToUnion<ContentTypes>]["schema"],
-  ) => GenericResponseBuilder<{
+  (body: SchemasOf<Response["content"]>) => GenericResponseBuilder<{
     content: NeverIfEmpty<OmitAll<Response["content"], ContentTypes>>;
     headers: Response["headers"];
     requiredHeaders: Response["requiredHeaders"];
@@ -114,7 +116,16 @@ type GenericResponseBuilderInner<
     ? never
     : HeaderFunction<Response>;
   html: MaybeShortcut<["text/html"], Response>;
-  json: MaybeShortcut<["application/json", "text/json", "text/x-json", "application/xml", "text/xml"], Response>;
+  json: MaybeShortcut<
+    [
+      "application/json",
+      "text/json",
+      "text/x-json",
+      "application/xml",
+      "text/xml",
+    ],
+    Response
+  >;
   match: [keyof Response["content"]] extends [never]
     ? never
     : MatchFunction<Response>;
