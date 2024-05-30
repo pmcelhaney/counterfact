@@ -1,5 +1,11 @@
 # counterfact
 
+## 0.45.0
+
+### Minor Changes
+
+- 0bcf083: fix argument type for .json() (third time's a charm?)
+
 ## 0.44.0
 
 ### Minor Changes
