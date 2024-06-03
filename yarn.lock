@@ -9889,10 +9889,10 @@ readdirp@~3.6.0:
   dependencies:
     picomatch "^2.2.1"
 
-recast@0.23.7:
-  version "0.23.7"
-  resolved "https://registry.yarnpkg.com/recast/-/recast-0.23.7.tgz#1e08f164e10402b075c904a2b01022b3da039c72"
-  integrity sha512-MpQlLZVpqbbxYcqEjwpRWo88sGvjOYoXptySz710RuddNMHx+wPkoNX6YyLZJlXAh5VZr1qmPrTwcTuFMh0Lag==
+recast@0.23.8:
+  version "0.23.8"
+  resolved "https://registry.yarnpkg.com/recast/-/recast-0.23.8.tgz#cf7bed87a82a0bca7ba04aa5122d0c1d1d329b5e"
+  integrity sha512-D8izEmRtY34O+B5k2kgNmPx4b/be4MGPGFiNzWUGtezDCWDyj/1w1uQQvzySRzAO/b+6TD05FwGPuYR4X52sVw==
   dependencies:
     ast-types "^0.16.1"
     esprima "~4.0.0"
