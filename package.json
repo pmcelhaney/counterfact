@@ -102,7 +102,7 @@
     "patch-package": "8.0.0",
     "precinct": "12.1.1",
     "prettier": "3.3.0",
-    "recast": "0.23.8",
+    "recast": "0.23.9",
     "typescript": "5.4.5"
   }
 }
