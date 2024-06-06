@@ -1,5 +1,11 @@
 # counterfact
 
+## 0.45.1
+
+### Patch Changes
+
+- 4339e42: Fix paths to routes migration
+
 ## 0.45.0
 
 ### Minor Changes
