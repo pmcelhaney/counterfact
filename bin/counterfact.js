@@ -11,6 +11,7 @@ import createDebug from "debug";
 import open from "open";
 
 import { counterfact } from "../dist/app.js";
+import { pathsToRoutes } from "../dist/migrate/paths-to-routes.js";
 
 const MIN_NODE_VERSION = 17;
 
@@ -170,6 +171,7 @@ async function main(source, destination) {
 
   // eslint-disable-next-line n/no-sync
   if (fs.existsSync(nodePath.join(config.basePath, "paths"))) {
+    await pathsToRoutes(config.basePath);
     await fs.promises.rmdir(nodePath.join(config.basePath, "paths"), {
       recursive: true,
     });
