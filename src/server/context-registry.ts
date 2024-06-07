@@ -21,13 +21,26 @@ export class ContextRegistry {
     this.add("/", {});
   }
 
+  private getContextIgnoreCase(map: Map<string, Context>, key: string) {
+    const lowerCaseKey = key.toLowerCase();
+    for (const currentKey of map.keys()) {
+      if (currentKey.toLowerCase() === lowerCaseKey) {
+        return map.get(currentKey);
+      }
+    }
+    return undefined;
+  }
+
   public add(path: string, context: Context): void {
     this.entries.set(path, context);
     this.cache.set(path, structuredClone(context));
   }
 
   public find(path: string): Context {
-    return this.entries.get(path) ?? this.find(parentPath(path));
+    return (
+      this.getContextIgnoreCase(this.entries, path) ??
+      this.find(parentPath(path))
+    );
   }
 
   // eslint-disable-next-line max-statements
