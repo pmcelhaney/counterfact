@@ -25,6 +25,16 @@ describe("a context registry", () => {
     expect(registry.find("/hello/world")).toBe(helloContext);
   });
 
+  it("finds a context at a parent path with alternate casing", () => {
+    const helloContext = { name: "hello" };
+
+    const registry = new ContextRegistry();
+
+    registry.add("/hello", helloContext);
+
+    expect(registry.find("/Hello/world")).toBe(helloContext);
+  });
+
   it("returns an empty object when there is no matching context", () => {
     const helloContext = { name: "hello" };
 
