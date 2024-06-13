@@ -48,7 +48,7 @@
     "@stryker-mutator/core": "8.2.6",
     "@stryker-mutator/jest-runner": "8.2.6",
     "@stryker-mutator/typescript-checker": "8.2.6",
-    "@swc/core": "1.5.24",
+    "@swc/core": "1.5.27",
     "@swc/jest": "0.2.36",
     "@testing-library/dom": "10.1.0",
     "@types/jest": "29.5.12",
@@ -65,7 +65,7 @@
     "eslint-plugin-etc": "2.0.3",
     "eslint-plugin-file-progress": "1.4.0",
     "eslint-plugin-import": "2.29.1",
-    "eslint-plugin-jest": "28.5.0",
+    "eslint-plugin-jest": "28.6.0",
     "eslint-plugin-jest-dom": "5.4.0",
     "eslint-plugin-no-explicit-type-exports": "0.12.1",
     "eslint-plugin-unused-imports": "4.0.0",
@@ -101,7 +101,7 @@
     "open": "10.1.0",
     "patch-package": "8.0.0",
     "precinct": "12.1.1",
-    "prettier": "3.3.0",
+    "prettier": "3.3.1",
     "recast": "0.23.9",
     "typescript": "5.4.5"
   }
