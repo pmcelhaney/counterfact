@@ -1,5 +1,11 @@
 # counterfact
 
+## 0.45.2
+
+### Patch Changes
+
+- 33ccdbf: Update context-registry find logic for bug with mixed path casing
+
 ## 0.45.1
 
 ### Patch Changes
