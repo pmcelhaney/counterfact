@@ -134,7 +134,7 @@ export const GET: HTTP_GET = ($) => {
        return $.response[401].text('unauthorized');
     }
 
-    const content = `TODO: output the results for "${query.keyword}"`
+    const content = `TODO: output the results for "${$.query.keyword}"`
       + `in ${$.path.groupName}`
       + `that have the following tags: ${$.body.tags.join(',')}.`.
 
@@ -163,9 +163,9 @@ export const POST: HTTP_POST = ($) => {
 ```ts copy
 // pet/{id}.ts
  export const GET: HTTP_GET ($) => {
-    const pet = $.context.getPetById(body);
-    if (pet === undefined) return response[404].text(`Pet ${$.path.id} not found.`);
-    return response.json(context.getPetById($.body));
+    const pet = $.context.getPetById($.path.id);
+    if (pet === undefined) return $.response[404].text(`Pet ${$.path.id} not found.`);
+    return $.response.json(pet);
  };
 ```
 
