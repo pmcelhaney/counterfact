@@ -50,7 +50,7 @@
     "@stryker-mutator/typescript-checker": "8.2.6",
     "@swc/core": "1.6.5",
     "@swc/jest": "0.2.36",
-    "@testing-library/dom": "10.1.0",
+    "@testing-library/dom": "10.2.0",
     "@types/jest": "29.5.12",
     "@types/js-yaml": "4.0.9",
     "@types/koa": "2.15.0",
