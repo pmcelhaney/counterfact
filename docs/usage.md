@@ -192,6 +192,17 @@ By default, each `_.context.ts` delegates to its parent directory, so you can de
 > [!TIP]
 > You can make the context objects do whatever you want, including things like writing to databases. But remember that Counterfact is meant for testing, so holding on to data between sessions is an anti-pattern. Keeping everything in memory also makes it fast.
 
+> [!TIP]
+> An object with loadContext() function is passed to the constructor of a context class. You can use it load the context from another directory at runtime. This is an advanced use case.
+>
+> ```ts
+> class Context {
+>   constructor({ loadContext }) {
+>     this.rootContext = loadContext("/");
+>   }
+> }
+> ```
+
 ### Security: the `$.auth` object
 
 If a username and password are sent via basic authentication, the username and password can be found via `$.auth.username` and `$.auth.password` respectively.
