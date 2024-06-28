@@ -170,13 +170,15 @@ export class ModuleLoader extends EventTarget {
 
       if (basename(pathName).startsWith("_.context")) {
         if (isContextModule(endpoint)) {
+          const loadContext = (path: string) => this.contextRegistry.find(path);
+
           this.contextRegistry.update(
             directory,
 
             // @ts-expect-error TS says Context has no constructable signatures but that's not true?
             // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
             new endpoint.Context({
-              loadContext: (path: string) => this.contextRegistry.find(path),
+              loadContext,
             }),
           );
         }
@@ -192,6 +194,8 @@ export class ModuleLoader extends EventTarget {
         // Not sure why Node throws this error. It doesn't seem to matter.
         return;
       }
+
+      throw error;
 
       process.stdout.write(`\nError loading ${pathName}:\n${String(error)}\n`);
     }

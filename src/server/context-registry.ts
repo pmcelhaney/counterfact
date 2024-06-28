@@ -1,4 +1,7 @@
-// eslint-disable-next-line max-classes-per-file
+/* eslint-disable max-classes-per-file */
+/* eslint-disable max-statements */
+import cloneDeep from "lodash/cloneDeep.js";
+
 export class Context {
   // eslint-disable-next-line @typescript-eslint/no-useless-constructor, @typescript-eslint/no-empty-function
   public constructor() {}
@@ -33,7 +36,8 @@ export class ContextRegistry {
 
   public add(path: string, context: Context): void {
     this.entries.set(path, context);
-    this.cache.set(path, structuredClone(context));
+
+    this.cache.set(path, cloneDeep(context));
   }
 
   public find(path: string): Context {
@@ -43,7 +47,6 @@ export class ContextRegistry {
     );
   }
 
-  // eslint-disable-next-line max-statements
   public update(path: string, updatedContext?: Context): void {
     if (updatedContext === undefined) {
       return;
@@ -66,6 +69,6 @@ export class ContextRegistry {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     Object.setPrototypeOf(context, Object.getPrototypeOf(updatedContext));
 
-    this.cache.set(path, structuredClone(updatedContext));
+    this.cache.set(path, cloneDeep(updatedContext));
   }
 }
