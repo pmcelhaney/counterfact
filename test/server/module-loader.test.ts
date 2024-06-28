@@ -190,6 +190,36 @@ describe("a module loader", () => {
     });
   });
 
+  it("provides the parent context if the local _.context.ts doesn't export a default", async () => {
+    await usingTemporaryFiles(async ($) => {
+      await $.add(
+        "_.context.js",
+        "export class Context  { constructor({loadContext}) { this.loadContext = loadContext } }",
+      );
+      await $.add("a/_.context.js", "export class Context  { name = 'a' }");
+      await $.add("package.json", '{ "type": "module" }');
+
+      const registry: Registry = new Registry();
+
+      const contextRegistry: ContextRegistry = new ContextRegistry();
+
+      const loader: ModuleLoader = new ModuleLoader(
+        $.path("."),
+
+        registry,
+        contextRegistry,
+      );
+
+      await loader.load();
+
+      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any
+      const rootContext = contextRegistry.find("/") as any;
+
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+      expect(rootContext?.loadContext("/a")?.name).toBe("a");
+    });
+  });
+
   // can't test because I can't get Jest to refresh modules
   it.skip("updates the registry when a dependency is updated", async () => {
     await usingTemporaryFiles(async ($) => {

@@ -175,7 +175,9 @@ export class ModuleLoader extends EventTarget {
 
             // @ts-expect-error TS says Context has no constructable signatures but that's not true?
             // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-            new endpoint.Context(),
+            new endpoint.Context({
+              loadContext: (path: string) => this.contextRegistry.find(path),
+            }),
           );
         }
       } else {
