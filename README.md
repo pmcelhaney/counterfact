@@ -8,7 +8,7 @@
 
 <div align="center" markdown="1">
 
-# Counterfact
+<h1><img src="./counterfact.svg" alt="Counterfact"></h1>
 
 _A Mock Server for High-performing Front-end Teams_
 

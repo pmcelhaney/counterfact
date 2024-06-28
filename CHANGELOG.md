@@ -220,7 +220,7 @@
 
 ### Minor Changes
 
-- 93d7607: added a 🤖 to the prompt to make it look more distinguished
+- 93d7607: added a ⬣> to the prompt to make it look more distinguished
 - 960105a: just for fun, the tagline when the CLI starts is different every time you run it
 
 ### Patch Changes
