@@ -72,7 +72,7 @@ export function startRepl(
     }
   }
 
-  const replServer = repl.start({ prompt: "🤖> " });
+  const replServer = repl.start({ prompt: "⬣> " });
 
   replServer.defineCommand("counterfact", {
     action() {

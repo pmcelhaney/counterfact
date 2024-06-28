@@ -246,10 +246,10 @@ ____ ____ _  _ _ _ ___ ____ ____ ____ ____ ____ ___
 
 Starting REPL, type .help for more info
 
-🤖>
+⬣>
 ```
 
-At the `🤖>` prompt, you can enter JavaScript code to interact with the live [context object](#context-object). For example, here's a quick way to add a pet to the store.
+At the `⬣>` prompt, you can enter JavaScript code to interact with the live [context object](#context-object). For example, here's a quick way to add a pet to the store.
 
 ```js
 context.addPet({ name: "Fluffy", photoUrls: [] });
