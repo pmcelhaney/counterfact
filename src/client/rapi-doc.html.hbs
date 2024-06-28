@@ -21,11 +21,11 @@
           > 
       </div>
       {{#each routes as |route|}}
-        <a slot="get-{{escape_route route}}" href="vscode://file/{{../basePath}}/paths/{{.}}.ts">Edit in VSCode</a>
-        <a slot="put-{{escape_route route}}" href="vscode://file/{{../basePath}}/paths/{{.}}.ts">Edit in VSCode</a>
-        <a slot="post-{{escape_route route}}" href="vscode://file/{{../basePath}}/paths/{{.}}.ts">Edit in VSCode</a>
-        <a slot="delete-{{escape_route route}}" href="vscode://file/{{../basePath}}/paths/{{.}}.ts">Edit in VSCode</a>
-        <a slot="patch-{{escape_route route}}" href="vscode://file/{{../basePath}}/paths/{{.}}.ts">Edit in VSCode</a>
+        <a slot="get-{{escape_route route}}" href="vscode://file/{{../basePath}}/routes/{{.}}.ts">Edit in VSCode</a>
+        <a slot="put-{{escape_route route}}" href="vscode://file/{{../basePath}}/routes/{{.}}.ts">Edit in VSCode</a>
+        <a slot="post-{{escape_route route}}" href="vscode://file/{{../basePath}}/routes/{{.}}.ts">Edit in VSCode</a>
+        <a slot="delete-{{escape_route route}}" href="vscode://file/{{../basePath}}/routes/{{.}}.ts">Edit in VSCode</a>
+        <a slot="patch-{{escape_route route}}" href="vscode://file/{{../basePath}}/routes/{{.}}.ts">Edit in VSCode</a>
 
       {{/each}}
       </rapi-doc>
