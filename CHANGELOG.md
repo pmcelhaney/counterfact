@@ -1,5 +1,12 @@
 # counterfact
 
+## 0.46.0
+
+### Minor Changes
+
+- 48a0c78: ability at runtime for a context object to access other context objects
+- c45fcba: New logo! It's not perfect, but the best I can do by myself. If you have graphic design skills, I could use some help cleaning it up.
+
 ## 0.45.2
 
 ### Patch Changes
