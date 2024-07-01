@@ -1,6 +1,6 @@
 {
   "name": "counterfact",
-  "version": "0.46.0",
+  "version": "1.0.0",
   "description": "a library for building a fake REST API for testing",
   "type": "module",
   "main": "./src/server/counterfact.js",
@@ -96,7 +96,7 @@
     "jsonwebtoken": "9.0.2",
     "koa": "2.15.3",
     "koa-bodyparser": "4.4.1",
-    "koa-proxies": "^0.12.4",
+    "koa-proxies": "0.12.4",
     "koa2-swagger-ui": "5.10.0",
     "lodash": "4.17.21",
     "node-fetch": "3.3.2",
