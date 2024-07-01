@@ -1,5 +1,15 @@
 # counterfact
 
+## 1.0.0
+
+### Major Changes
+
+- e2f8ac8: Version 1.0!
+
+### Patch Changes
+
+- e2f8ac8: replaced koa-proxy with koa-proxies to get rid of a deprecation warning (as it turns out, koa-proxies had a different deprecation, but I was able to fix it with patch-package; unfortunately none of the alternatives seem to be currently maintained)
+
 ## 0.46.0
 
 ### Minor Changes
