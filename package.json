@@ -80,6 +80,7 @@
     "using-temporary-files": "2.2.1"
   },
   "dependencies": {
+    "@apidevtools/json-schema-ref-parser": "^11.6.4",
     "@hapi/accept": "6.0.3",
     "@types/json-schema": "7.0.15",
     "ast-types": "0.14.2",
@@ -92,7 +93,6 @@
     "http-terminator": "3.2.0",
     "js-yaml": "4.1.0",
     "json-schema-faker": "0.5.6",
-    "json-schema-ref-parser": "9.0.9",
     "jsonwebtoken": "9.0.2",
     "koa": "2.15.3",
     "koa-bodyparser": "4.4.1",
