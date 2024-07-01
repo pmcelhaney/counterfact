@@ -2,7 +2,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies, n/no-extraneous-import
 import { jest } from "@jest/globals";
 import type { ParameterizedContext } from "koa";
-import type KoaProxy from "koa-proxy";
+import type { IBaseKoaProxiesOptions } from "koa-proxies";
 
 import type { Config } from "../../src/server/config.js";
 import { ContextRegistry } from "../../src/server/context-registry.js";
@@ -32,9 +32,9 @@ const CONFIG: Config = {
   },
 };
 
-const mockKoaProxy: typeof KoaProxy = (options) =>
-  function proxy(context) {
-    context.mockProxyHost = options?.host;
+const mockKoaProxy = (path: string, options: IBaseKoaProxiesOptions) =>
+  function proxy(context: { mockProxyTarget: string }) {
+    context.mockProxyTarget = options.target;
   };
 
 describe("koa middleware", () => {
@@ -122,10 +122,11 @@ describe("koa middleware", () => {
         proxyUrl: "https://example.com",
       },
 
+      // @ts-expect-error - not worried about matching the type exactly for a mock
       mockKoaProxy,
     );
     const ctx = {
-      mockProxyHost: undefined,
+      mockProxyTarget: "not-set",
       request: { headers: {}, method: "GET", path: "/proxy" },
 
       set() {
@@ -138,7 +139,7 @@ describe("koa middleware", () => {
       await Promise.resolve(undefined);
     });
 
-    expect(ctx.mockProxyHost).toBe("https://example.com");
+    expect(ctx.mockProxyTarget).toBe("https://example.com");
   });
 
   it("adds default CORS headers if none are requested", async () => {

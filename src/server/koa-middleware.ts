@@ -2,7 +2,7 @@ import type { IncomingHttpHeaders } from "node:http";
 
 import createDebug from "debug";
 import type Koa from "koa";
-import koaProxy from "koa-proxy";
+import koaProxy from "koa-proxies";
 
 import type { Config } from "./config.js";
 import type { Dispatcher } from "./dispatcher.js";
@@ -81,9 +81,8 @@ export function koaMiddleware(
     const method = ctx.request.method as HttpMethods;
 
     if (isProxyEnabledForPath(path, config) && proxyUrl) {
-      /* @ts-expect-error the body comes from koa-bodyparser, not sure how to fix this */
       // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-      return proxy({ host: proxyUrl })(ctx, next);
+      return proxy("/", { changeOrigin: true, target: proxyUrl })(ctx, next);
     }
 
     addCors(ctx, headers);
