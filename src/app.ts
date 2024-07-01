@@ -1,9 +1,9 @@
 import { rm } from "node:fs/promises";
 import nodePath from "node:path";
 
+import { dereference } from "@apidevtools/json-schema-ref-parser";
 import { createHttpTerminator, type HttpTerminator } from "http-terminator";
 import yaml from "js-yaml";
-import $RefParser from "json-schema-ref-parser";
 
 import { startRepl } from "./repl/repl.js";
 import type { Config } from "./server/config.js";
@@ -20,11 +20,11 @@ import { readFile } from "./util/read-file.js";
 async function loadOpenApiDocument(source: string) {
   try {
     const text = await readFile(source);
-    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-    const openApiDocument = (await yaml.load(text)) as $RefParser.JSONSchema;
 
-    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-    return (await $RefParser.dereference(openApiDocument)) as OpenApiDocument;
+    const openApiDocument = await yaml.load(text);
+
+    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions, @typescript-eslint/no-unnecessary-type-assertion
+    return (await dereference(openApiDocument)) as OpenApiDocument;
   } catch {
     return undefined;
   }
