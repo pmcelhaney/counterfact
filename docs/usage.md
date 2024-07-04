@@ -4,7 +4,7 @@ Counterfact is three complimentary tools in one:
 
 - a code generator that converts [OpenAPI](https://support.smartbear.com/swaggerhub/docs/tutorials/openapi-3-tutorial.html) to [TypeScript](https://www.typescriptlang.org/)
 - a fast and flexible mock server that's optimized around front end dev workflows
-- a JavaScript REPL for accessing to the server's internal state at runtime
+- a JavaScript REPL for accessing the server's internal state at runtime
 
 ## Hello <del>World</del> Pet Store 👋
 
@@ -153,7 +153,7 @@ The `$.context` object contains in-memory state and business logic, allowing you
 ```ts copy
 // pet.ts
 export const POST: HTTP_POST = ($) => {
-  return $.response.json($.context.addPet($.body));
+  return $.response[200].json($.context.addPet($.body));
 };
 ```
 
