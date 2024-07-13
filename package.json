@@ -105,6 +105,6 @@
     "precinct": "12.1.1",
     "prettier": "3.3.2",
     "recast": "0.23.9",
-    "typescript": "5.4.5"
+    "typescript": "5.5.2"
   }
 }
