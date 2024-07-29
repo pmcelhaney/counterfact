@@ -17,7 +17,7 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
-          node-version: 18.x
+          node-version: lts/*
           cache: yarn
         id: setup-node
       - name: Get Node Version
