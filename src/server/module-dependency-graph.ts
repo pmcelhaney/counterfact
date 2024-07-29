@@ -7,6 +7,7 @@ export class ModuleDependencyGraph {
 
   private loadDependencies(path: string) {
     try {
+      // eslint-disable-next-line import/no-named-as-default-member
       return precinct.paperwork(path);
     } catch {
       return [];
