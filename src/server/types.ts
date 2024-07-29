@@ -119,8 +119,6 @@ interface ResponseBuilder {
   xml: (body: unknown) => ResponseBuilder;
 }
 
-type ArrayToUnion<T extends readonly any[]> = T[number];
-
 type GenericResponseBuilderInner<
   Response extends OpenApiResponse = OpenApiResponse,
 > = OmitValueWhenNever<{
