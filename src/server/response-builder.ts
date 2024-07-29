@@ -127,6 +127,7 @@ export function createResponseBuilder(
               type,
               content[type]?.examples
                 ? oneOf(
+                    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                     Object.values(content[type]?.examples ?? []).map(
                       (example) => example.value,
                     ),
