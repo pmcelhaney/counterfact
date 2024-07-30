@@ -2,7 +2,7 @@ import createDebugger from "debug";
 
 import { ModuleTree } from "./module-tree.js";
 import type { Tools } from "./tools.js";
-import type { MediaType, ResponseBuilderFactory } from "./types.d.ts";
+import type { MediaType, ResponseBuilderFactory } from "./types.ts";
 
 const debug = createDebugger("counterfact:server:registry");
 

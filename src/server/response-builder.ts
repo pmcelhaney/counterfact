@@ -1,7 +1,7 @@
 import { JSONSchemaFaker } from "json-schema-faker";
 
 import { jsonToXml } from "./json-to-xml.js";
-import type { OpenApiOperation, ResponseBuilder } from "./types.d.ts";
+import type { OpenApiOperation, ResponseBuilder } from "./types.ts";
 
 JSONSchemaFaker.option("useExamplesValue", true);
 JSONSchemaFaker.option("minItems", 0);

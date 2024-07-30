@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable etc/no-t */
 interface OpenApiHeader {
   schema: unknown;
 }
@@ -11,6 +13,14 @@ interface Example {
   summary: string;
   value: unknown;
 }
+
+const counterfactResponse = Symbol("Counterfact Response");
+
+const counterfactResponseObject = {
+  [counterfactResponse]: counterfactResponse,
+};
+
+type COUNTERFACT_RESPONSE = typeof counterfactResponseObject;
 
 type MediaType = `${string}/${string}`;
 
@@ -64,6 +74,7 @@ type MaybeShortcut<
   never
 >;
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 type NeverIfEmpty<Record> = {} extends Record ? never : Record;
 
 type MatchFunction<Response extends OpenApiResponse> = <
@@ -89,8 +100,9 @@ type HeaderFunction<Response extends OpenApiResponse> = <
 }>;
 
 type RandomFunction<Response extends OpenApiResponse> = <
+  // eslint-disable-next-line etc/no-misused-generics, unused-imports/no-unused-vars
   Header extends string & keyof Response["headers"],
->() => "COUNTERFACT_RESPONSE";
+>() => COUNTERFACT_RESPONSE;
 
 interface ResponseBuilder {
   [status: number | `${number} ${string}`]: ResponseBuilder;
@@ -106,8 +118,6 @@ interface ResponseBuilder {
   text: (body: unknown) => ResponseBuilder;
   xml: (body: unknown) => ResponseBuilder;
 }
-
-type ArrayToUnion<T extends readonly any[]> = T[number];
 
 type GenericResponseBuilderInner<
   Response extends OpenApiResponse = OpenApiResponse,
@@ -138,11 +148,12 @@ type GenericResponseBuilderInner<
 
 type GenericResponseBuilder<
   Response extends OpenApiResponse = OpenApiResponse,
+  // eslint-disable-next-line @typescript-eslint/ban-types
 > = {} extends OmitValueWhenNever<Response>
-  ? "COUNTERFACT_RESPONSE"
+  ? COUNTERFACT_RESPONSE
   : keyof OmitValueWhenNever<Response> extends "headers"
   ? {
-      ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE";
+      ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE;
       header: HeaderFunction<Response>;
     }
   : GenericResponseBuilderInner<Response>;
@@ -257,6 +268,8 @@ interface WideOperationArgument {
   query: { [key: string]: string };
   response: { [key: number]: WideResponseBuilder };
 }
+
+export type { COUNTERFACT_RESPONSE };
 
 export type {
   HttpStatusCode,

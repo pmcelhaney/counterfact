@@ -53,8 +53,8 @@ export class Repository {
   }
 
   async copyCoreFiles(destination) {
-    const sourcePath = nodePath.join(__dirname, "../../dist/server/types.d.ts");
-    const destinationPath = nodePath.join(destination, "types.d.ts");
+    const sourcePath = nodePath.join(__dirname, "../../dist/server/types.ts");
+    const destinationPath = nodePath.join(destination, "types.ts");
 
     if (!existsSync(sourcePath)) {
       return false;

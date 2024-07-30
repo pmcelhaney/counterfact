@@ -1,4 +1,4 @@
-import type { OpenApiResponse } from "../src/server/types.d.ts";
+import type { OpenApiResponse } from "../src/server/types.ts";
 
 type OmitValueWhenNever<Base> = Pick<
   Base,
