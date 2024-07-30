@@ -97,6 +97,7 @@ export class OperationTypeCoder extends TypeCoder {
     const xType = script.importSharedType("WideOperationArgument");
 
     script.importSharedType("OmitValueWhenNever");
+    script.importSharedType("COUNTERFACT_RESPONSE");
 
     const contextTypeImportName = script.importExternalType(
       "Context",
@@ -134,10 +135,10 @@ export class OperationTypeCoder extends TypeCoder {
         this.requirement.specification?.rootRequirement?.get("produces")?.data,
     ).write(script);
 
-    const proxyType = '(url: string) => "COUNTERFACT_RESPONSE"';
+    const proxyType = "(url: string) => COUNTERFACT_RESPONSE";
 
     return `($: OmitValueWhenNever<{ query: ${queryType}, path: ${pathType}, header: ${headerType}, body: ${bodyType}, context: ${contextTypeImportName}, response: ${responseType}, x: ${xType}, proxy: ${proxyType}, user: ${this.userType()} }>) => ${this.responseTypes(
       script,
-    )} | { status: 415, contentType: "text/plain", body: string } | "COUNTERFACT_RESPONSE" | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: "COUNTERFACT_RESPONSE" }`;
+    )} | { status: 415, contentType: "text/plain", body: string } | COUNTERFACT_RESPONSE | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }`;
   }
 }
