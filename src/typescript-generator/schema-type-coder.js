@@ -67,7 +67,16 @@ export class SchemaTypeCoder extends TypeCoder {
     return value;
   }
 
+  // eslint-disable-next-line max-statements
   writeType(script, type) {
+    if (Array.isArray(type)) {
+      return type.map((item) => this.writeType(script, item)).join(" | ");
+    }
+
+    if (typeof type !== "string") {
+      return "unknown";
+    }
+
     if (type === "object") {
       return this.objectSchema(script);
     }
