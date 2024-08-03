@@ -1,5 +1,11 @@
 # counterfact
 
+## 1.0.1
+
+### Patch Changes
+
+- fcc9682: support arrays in JSON schema type property ([#1005](https://github.com/pmcelhaney/counterfact/issues/1005))
+
 ## 1.0.0
 
 ### Major Changes
