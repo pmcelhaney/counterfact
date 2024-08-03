@@ -246,6 +246,34 @@ describe("a SchemaTypeCoder", () => {
     );
   });
 
+  it("generates a type declaration for an array of types", async () => {
+    const coder = new SchemaTypeCoder(
+      new Requirement({
+        type: ["string", "number"],
+      }),
+    );
+
+    const expected = await format("type x = string | number;");
+
+    await expect(format(`type x = ${coder.write({})}`)).resolves.toStrictEqual(
+      expected,
+    );
+  });
+
+  it("generates unknown with a comment if the type is not an array or string", async () => {
+    const coder = new SchemaTypeCoder(
+      new Requirement({
+        type: 100,
+      }),
+    );
+
+    const expected = await format("type x = unknown;");
+
+    await expect(format(`type x = ${coder.write({})}`)).resolves.toStrictEqual(
+      expected,
+    );
+  });
+
   it("generates a type declaration for anyOf", async () => {
     const coder = new SchemaTypeCoder(
       new Requirement({
