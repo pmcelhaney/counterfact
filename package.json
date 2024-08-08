@@ -60,7 +60,7 @@
     "@types/lodash": "4.17.7",
     "copyfiles": "2.4.1",
     "eslint": "8.57.0",
-    "eslint-config-hardcore": "42",
+    "eslint-config-hardcore": "43",
     "eslint-formatter-github-annotations": "0.1.0",
     "eslint-import-resolver-typescript": "3.6.1",
     "eslint-plugin-etc": "2.0.3",
