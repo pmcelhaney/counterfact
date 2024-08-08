@@ -97,6 +97,7 @@ it("updates context properties if they changed in the code", () => {
 
     [key: string]: unknown;
   }
+
   class UpdatedContext implements Context {
     public prop1 = "original";
 

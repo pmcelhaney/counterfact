@@ -180,7 +180,7 @@ export class Script {
       const resolvedPath = nodePath
         .relative(
           nodePath.dirname(this.path).replaceAll("\\", "/"),
-          script.path.replace(/\.ts$/u, ".js"),
+          script.path.replace(/\.ts$/v, ".js"),
         )
         .replaceAll("\\", "/");
 

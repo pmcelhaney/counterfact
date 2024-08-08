@@ -16,17 +16,20 @@ function match(moduleTree: ModuleTree, path: string) {
 
 it("returns undefined for /", () => {
   const moduleTree = new ModuleTree();
+
   expect(match(moduleTree, "/")).toBe(undefined);
 });
 
 it("finds a file at the root", () => {
   const moduleTree = new ModuleTree();
+
   add(moduleTree, "/a", "a");
   expect(match(moduleTree, "/a")).toBe("a");
 });
 
 it("finds a file under a subdirectory", () => {
   const moduleTree = new ModuleTree();
+
   add(moduleTree, "/a", "a");
   add(moduleTree, "/a/b", "b");
   expect(match(moduleTree, "/a")).toBe("a");
@@ -35,12 +38,14 @@ it("finds a file under a subdirectory", () => {
 
 it("finds a file with a trailing slash in the path", () => {
   const moduleTree = new ModuleTree();
+
   add(moduleTree, "/a", "a");
   expect(match(moduleTree, "/a/")).toBe("a");
 });
 
 it("finds a file with a wildcard match", () => {
   const moduleTree = new ModuleTree();
+
   add(moduleTree, "/a", "a");
   add(moduleTree, "/a/{x}", "b");
   expect(match(moduleTree, "/a")).toBe("a");
@@ -49,6 +54,7 @@ it("finds a file with a wildcard match", () => {
 
 it("finds a directory with a wildcard match", () => {
   const moduleTree = new ModuleTree();
+
   add(moduleTree, "/a", "a");
   add(moduleTree, "/{x}/b", "b");
   expect(match(moduleTree, "/a")).toBe("a");
@@ -57,6 +63,7 @@ it("finds a directory with a wildcard match", () => {
 
 it("prefers an exact match to a wildcard", () => {
   const moduleTree = new ModuleTree();
+
   add(moduleTree, "/a", "a");
   add(moduleTree, "/a/b", "exact");
   add(moduleTree, "/a/{x}", "wildcard");
@@ -66,6 +73,7 @@ it("prefers an exact match to a wildcard", () => {
 
 it("is case-insensitive", () => {
   const moduleTree = new ModuleTree();
+
   add(moduleTree, "/a", "a");
   add(moduleTree, "/a/b", "exact");
   add(moduleTree, "/a/{x}", "wildcard");
@@ -75,6 +83,7 @@ it("is case-insensitive", () => {
 
 it("captures the path variables", () => {
   const moduleTree = new ModuleTree();
+
   add(moduleTree, "/a/{foo}/{bar}", "wildcard");
   expect(moduleTree.match("/a/b/c")?.pathVariables).toEqual({
     bar: "c",
@@ -84,18 +93,21 @@ it("captures the path variables", () => {
 
 it("captures the matched path", () => {
   const moduleTree = new ModuleTree();
+
   add(moduleTree, "/a/b/c", "simple");
   expect(moduleTree.match("/a/b/c")?.matchedPath).toEqual("/a/b/c");
 });
 
 it("captures the matched path with wildcards", () => {
   const moduleTree = new ModuleTree();
+
   add(moduleTree, "/a/{foo}/{bar}", "wildcard");
   expect(moduleTree.match("/a/b/c")?.matchedPath).toEqual("/a/{foo}/{bar}");
 });
 
 it("removes a module", () => {
   const moduleTree = new ModuleTree();
+
   add(moduleTree, "/a", "a");
   add(moduleTree, "/a/b", "b");
   add(moduleTree, "/c", "c");
@@ -108,6 +120,7 @@ it("removes a module", () => {
 
 it("has all of the routes", () => {
   const moduleTree = new ModuleTree();
+
   add(moduleTree, "/a", "a");
   add(moduleTree, "/a/b", "b");
   add(moduleTree, "/a/{b}", "b");
@@ -119,4 +132,5 @@ it("has all of the routes", () => {
     "/c",
   ]);
 });
+
 export default ModuleTree;

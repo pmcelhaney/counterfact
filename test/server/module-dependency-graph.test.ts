@@ -5,6 +5,7 @@ import { ModuleDependencyGraph } from "../../src/server/module-dependency-graph.
 describe("module dependency graph", () => {
   it("identifies a file that has no dependents", () => {
     const graph = new ModuleDependencyGraph();
+
     expect(graph.dependentsOf("file.js")).toEqual(new Set());
   });
 

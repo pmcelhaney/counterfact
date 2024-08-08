@@ -84,6 +84,7 @@ export async function counterfact(config: Config) {
     if (generate.routes || generate.types) {
       await codeGenerator.generate();
     }
+
     if (watch.routes || watch.types) {
       await codeGenerator.watch();
     }
@@ -95,6 +96,7 @@ export async function counterfact(config: Config) {
       await transpiler.watch();
       await moduleLoader.load();
       await moduleLoader.watch();
+
       const server = koaApp.listen({
         port: config.port,
       });

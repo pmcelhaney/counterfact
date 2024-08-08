@@ -32,9 +32,9 @@ const CONFIG: Config = {
   },
 };
 
-const mockKoaProxy = (path: string, options: IBaseKoaProxiesOptions) =>
+const mockKoaProxy = (path: string, { target }: IBaseKoaProxiesOptions) =>
   function proxy(context: { mockProxyTarget: string }) {
-    context.mockProxyTarget = options.target;
+    context.mockProxyTarget = target;
   };
 
 describe("koa middleware", () => {

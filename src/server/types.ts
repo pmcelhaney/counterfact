@@ -52,8 +52,8 @@ type IfHasKey<SomeObject, Keys extends (keyof any)[], Yes, No> = Keys extends [
   ? FirstKey extends keyof SomeObject
     ? Yes
     : RestKeys extends (keyof any)[]
-    ? IfHasKey<SomeObject, RestKeys, Yes, No>
-    : No
+      ? IfHasKey<SomeObject, RestKeys, Yes, No>
+      : No
   : No;
 
 type SchemasOf<T extends { [key: string]: { schema: any } }> = {
@@ -148,15 +148,15 @@ type GenericResponseBuilderInner<
 
 type GenericResponseBuilder<
   Response extends OpenApiResponse = OpenApiResponse,
-  // eslint-disable-next-line @typescript-eslint/ban-types
-> = {} extends OmitValueWhenNever<Response>
-  ? COUNTERFACT_RESPONSE
-  : keyof OmitValueWhenNever<Response> extends "headers"
-  ? {
-      ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE;
-      header: HeaderFunction<Response>;
-    }
-  : GenericResponseBuilderInner<Response>;
+> =
+  object extends OmitValueWhenNever<Response>
+    ? COUNTERFACT_RESPONSE
+    : keyof OmitValueWhenNever<Response> extends "headers"
+      ? {
+          ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE;
+          header: HeaderFunction<Response>;
+        }
+      : GenericResponseBuilderInner<Response>;
 
 type ResponseBuilderFactory<
   Responses extends OpenApiResponses = OpenApiResponses,

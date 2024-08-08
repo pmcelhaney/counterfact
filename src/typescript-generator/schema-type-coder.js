@@ -121,7 +121,7 @@ export class SchemaTypeCoder extends TypeCoder {
   }
 
   modulePath() {
-    return `types/${this.requirement.data.$ref.replace(/^#\//u, "")}.ts`;
+    return `types/${this.requirement.data.$ref.replace(/^#\//v, "")}.ts`;
   }
 
   writeCode(script) {
