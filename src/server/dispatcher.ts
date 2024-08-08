@@ -218,7 +218,7 @@ export class Dispatcher {
     return false;
   }
 
-  // eslint-disable-next-line sonarjs/cognitive-complexity, max-statements
+  // eslint-disable-next-line max-statements
   public async request({
     auth,
     body,

@@ -193,7 +193,7 @@ async function main(source, destination) {
 
   const introduction = [
     "____ ____ _  _ _ _ ___ ____ ____ ____ ____ ____ ___",
-    "|___ [__] |__| |\\|  |  |=== |--< |--- |--| |___  | ",
+    String.raw`|___ [__] |__| |\|  |  |=== |--< |--- |--| |___  | `,
     padTagLine(taglines[Math.floor(Math.random() * taglines.length)]),
     "",
     `| API Base URL  ==> ${url}`,

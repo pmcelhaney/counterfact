@@ -1,4 +1,3 @@
-/* eslint-disable n/no-missing-import */
 import nodePath from "node:path";
 
 import createDebug from "debug";

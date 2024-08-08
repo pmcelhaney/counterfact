@@ -18,6 +18,7 @@ describe("a dispatcher passes a proxy function to the operation", () => {
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
 
     dispatcher.fetch = async (url) =>
+
       /* @ts-expect-error not mocking all properties of fetch response */
       await Promise.resolve({
         headers: new Headers([["content-type", "application/json"]]),

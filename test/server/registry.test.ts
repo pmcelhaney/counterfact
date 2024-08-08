@@ -61,12 +61,16 @@ describe("a registry", () => {
 
       query: {},
     };
+
     // @ts-expect-error - chill out, TypeScript
     const getA = await registry.endpoint("GET", "/a")(props);
+
     // @ts-expect-error - chill out, TypeScript
     const getB = await registry.endpoint("GET", "/b")(props);
+
     // @ts-expect-error - chill out, TypeScript
     const postA = await registry.endpoint("POST", "/a")(props);
+
     // @ts-expect-error - chill out, TypeScript
     const postB = await registry.endpoint("POST", "/b")(props);
 
@@ -97,6 +101,7 @@ describe("a registry", () => {
       await registry.endpoint(
         "GET",
         "/acme/users/alice/friends/2",
+
         // @ts-expect-error - not creating an entire request object
       )({ headers: {}, matchedPath: "", path: {}, query: {} }),
     ).toStrictEqual({

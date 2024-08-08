@@ -99,10 +99,12 @@ export function koaMiddleware(
       auth,
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       body,
+
       /* @ts-expect-error the value of a header can be an array and we don't have a solution for that yet */
       headers,
       method,
       path,
+
       /* @ts-expect-error the value of a querystring item can be an array and we don't have a solution for that yet */
       query,
       req: { path: "", ...ctx.req },

@@ -117,6 +117,7 @@ describe("a module loader", () => {
       const response = registry.endpoint(
         "GET",
         "/change",
+
         // @ts-expect-error - not going to create a whole context object for a test
       )({ headers: {}, matchedPath: "", path: {}, query: {} });
 

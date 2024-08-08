@@ -10,7 +10,7 @@ function add(moduleTree: ModuleTree, url: string, name: string) {
 
 function match(moduleTree: ModuleTree, path: string) {
   // @ts-expect-error - not creating an entire request object
-  // eslint-disable-next-line new-cap, @typescript-eslint/no-unsafe-return
+  // eslint-disable-next-line new-cap, @typescript-eslint/no-unsafe-return, sonar/new-cap
   return moduleTree.match(path)?.module.GET?.()?.body;
 }
 

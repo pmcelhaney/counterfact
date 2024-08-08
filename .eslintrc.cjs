@@ -2,6 +2,7 @@
 
 const rules = {
   "@microsoft/sdl/no-html-method": "off",
+  "@stylistic/max-len": "off",
   "@typescript-eslint/lines-around-comment": "off",
   "@typescript-eslint/naming-convention": "off",
 
@@ -29,12 +30,14 @@ const rules = {
     "warn",
     {
       code: 120,
-      ignorePattern: "eslint|it\\(|describe\\(",
+      ignorePattern: String.raw`eslint|it\(|describe\(`,
       ignoreTemplateLiterals: true,
     },
   ],
 
   "max-lines": ["warn", { max: 305 }],
+
+  "n/no-missing-import": ["warn"],
 
   "n/shebang": "off",
 
@@ -53,16 +56,11 @@ const rules = {
 
   "prefer-destructuring": "off",
 
-  "prettier/prettier": [
-    "error",
-    {
-      endOfLine: "auto",
-    },
-  ],
-
   "putout/putout": "off",
 
   "yml/no-empty-mapping-value": "off",
+
+
 };
 
 module.exports = {
@@ -81,6 +79,7 @@ module.exports = {
     "_includes",
     ".stryker-tmp",
     ".mise.toml",
+    "codeql.yml",
   ],
 
   overrides: [
@@ -98,7 +97,7 @@ module.exports = {
     },
 
     {
-      extends: ["hardcore", "hardcore/ts", "hardcore/node", "hardcore/jest"],
+      extends: ["hardcore", "hardcore/ts", "hardcore/node", "hardcore/jest", "plugin:prettier/recommended"],
 
       files: ["*.test.js"],
 
