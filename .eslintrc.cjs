@@ -21,6 +21,8 @@ const rules = {
 
   "import/prefer-default-export": "off",
 
+  "lines-around-comment": "warn",
+
   "max-len": [
     "warn",
     {
@@ -57,6 +59,8 @@ const rules = {
   ],
 
   "putout/putout": "off",
+
+  "yml/no-empty-mapping-value": "off",
 };
 
 module.exports = {
@@ -74,6 +78,7 @@ module.exports = {
     "/out/",
     "_includes",
     ".stryker-tmp",
+    ".mise.toml",
   ],
 
   overrides: [
