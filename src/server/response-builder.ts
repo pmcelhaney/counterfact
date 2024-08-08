@@ -50,7 +50,7 @@ export function createResponseBuilder(
 ): ResponseBuilder {
   // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
   return new Proxy({} as ResponseBuilder, {
-    // eslint-disable-next-line sonarjs/cognitive-complexity
+     
     get: (target, statusCode: string) => ({
       header(
         this: ResponseBuilder,

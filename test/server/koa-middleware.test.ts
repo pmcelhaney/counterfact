@@ -130,6 +130,7 @@ describe("koa middleware", () => {
       request: { headers: {}, method: "GET", path: "/proxy" },
 
       set() {
+
         /* set a header */
       },
     };
