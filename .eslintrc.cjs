@@ -7,6 +7,8 @@ const rules = {
 
   "@typescript-eslint/prefer-destructuring": "off",
 
+  "compat/compat": "off",
+
   "id-length": [
     "error",
     {
