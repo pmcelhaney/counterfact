@@ -16,7 +16,7 @@ describe("a response builder", () => {
       responses: { 200: { content: {}, schema: {} } },
     })[200]
       ?.match("text/plain", "hello")
-      ?.match("application/json", { hello: "world" });
+      .match("application/json", { hello: "world" });
 
     expect(response?.status).toBe(200);
     expect(response?.content).toStrictEqual([
@@ -30,9 +30,9 @@ describe("a response builder", () => {
       responses: { 200: { content: {}, schema: {} } },
     })[200]
       ?.text("hello")
-      ?.json({ hello: "world" })
-      ?.html("<h1>Hello World</h1>")
-      ?.xml({ hello: "world" });
+      .json({ hello: "world" })
+      .html("<h1>Hello World</h1>")
+      .xml({ hello: "world" });
 
     expect(response?.status).toBe(200);
     expect(response?.content).toStrictEqual([
@@ -65,7 +65,7 @@ describe("a response builder", () => {
       responses: { 200: { content: {}, schema: {} } },
     })[200]
       ?.header("x-one", "one")
-      ?.header("x-two", "2");
+      .header("x-two", "2");
 
     expect(response?.status).toBe(200);
     expect(response?.headers).toStrictEqual({

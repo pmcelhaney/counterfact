@@ -29,11 +29,11 @@ describe("a Specification", () => {
       async (temporaryDirectory, { path }) => {
         const specification = new Specification();
 
-        const url = pathToFileURL(path("openapi.yaml")).href;
+        const { href } = pathToFileURL(path("openapi.yaml"));
 
-        await specification.loadFile(url);
+        await specification.loadFile(href);
 
-        expect(specification.cache.get(url)).toStrictEqual({
+        expect(specification.cache.get(href)).toStrictEqual({
           hello: "world",
         });
       },

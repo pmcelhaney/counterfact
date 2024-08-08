@@ -41,8 +41,8 @@ export class Coder {
 
   *names(rawName = this.requirement.url.split("/").at(-1)) {
     const name = rawName
-      .replace(/^\d/u, (digit) => `_${digit}`)
-      .replaceAll(/[^\w$]/gu, "_");
+      .replace(/^\d/v, (digit) => `_${digit}`)
+      .replaceAll(/[^\w$]/gv, "_");
 
     yield name;
 

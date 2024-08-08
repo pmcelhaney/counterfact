@@ -58,18 +58,18 @@ export class ModuleTree {
       directory.files[segment.toLowerCase()] = {
         isWildcard: segment.startsWith("{"),
         module,
-        name: segment.replace(/^\{(?<name>.*)\}$/u, "$<name>"),
+        name: segment.replace(/^\{(?<name>.*)\}$/v, "$<name>"),
         rawName: segment,
       };
+
       return;
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     directory.directories[segment.toLowerCase()] ??= {
       directories: {},
       files: {},
       isWildcard: segment.startsWith("{"),
-      name: segment.replace(/^\{(?<name>.*)\}$/u, "$<name>"),
+      name: segment.replace(/^\{(?<name>.*)\}$/v, "$<name>"),
       rawName: segment,
     };
     this.addModuleToDirectory(
@@ -90,6 +90,7 @@ export class ModuleTree {
     if (!isDirectory(directory)) {
       return;
     }
+
     const [segment, ...remainingSegments] = segments;
 
     if (segment === undefined) {
@@ -99,8 +100,10 @@ export class ModuleTree {
     if (remainingSegments.length === 0) {
       // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
       delete directory.files[segment.toLowerCase()];
+
       return;
     }
+
     this.removeModuleFromDirectory(
       directory.directories[segment.toLowerCase()],
       remainingSegments,
@@ -113,7 +116,7 @@ export class ModuleTree {
     this.removeModuleFromDirectory(this.root, segments);
   }
 
-  // eslint-disable-next-line max-params
+  // eslint-disable-next-line @typescript-eslint/max-params
   private buildMatch(
     directory: Directory,
     segment: string,
@@ -150,7 +153,7 @@ export class ModuleTree {
     };
   }
 
-  // eslint-disable-next-line max-statements, max-params
+  // eslint-disable-next-line max-statements, @typescript-eslint/max-params
   private matchWithinDirectory(
     directory: Directory,
     segments: string[],
@@ -160,6 +163,7 @@ export class ModuleTree {
     if (segments.length === 0) {
       return undefined;
     }
+
     const [segment, ...remainingSegments] = segments;
 
     if (segment === undefined) {
@@ -236,7 +240,7 @@ export class ModuleTree {
 
     // eslint-disable-next-line unicorn/consistent-function-scoping
     function stripBrackets(string: string) {
-      return string.replaceAll(/\{|\}/gu, "");
+      return string.replaceAll(/\{|\}/gv, "");
     }
 
     traverse(this.root, "");

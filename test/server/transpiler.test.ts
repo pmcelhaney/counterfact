@@ -9,6 +9,7 @@ import { withTemporaryFiles } from "../lib/with-temporary-files.js";
 const TYPESCRIPT_SOURCE = `export const x:number = 1;${EOL}`;
 const JAVASCRIPT_SOURCE = `export const x = 1;${EOL}`;
 const JAVASCRIPT_SOURCE_COMMONJS = `"use strict";${EOL}Object.defineProperty(exports, "__esModule", { value: true });${EOL}exports.x = void 0;${EOL}exports.x = 1;${EOL}`;
+
 describe("a Transpiler", () => {
   let transpiler: Transpiler = new Transpiler("src", "dist", "");
 
@@ -111,7 +112,7 @@ describe("a Transpiler", () => {
 
       expect(() => {
         fs.accessSync(path("dist/delete-me.js"), fsConstants.F_OK);
-      }).toThrow(/ENOENT/u);
+      }).toThrow(/ENOENT/v);
 
       await transpiler.stopWatching();
     });

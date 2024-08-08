@@ -26,11 +26,13 @@ export class ContextRegistry {
 
   private getContextIgnoreCase(map: Map<string, Context>, key: string) {
     const lowerCaseKey = key.toLowerCase();
+
     for (const currentKey of map.keys()) {
       if (currentKey.toLowerCase() === lowerCaseKey) {
         return map.get(currentKey);
       }
     }
+
     return undefined;
   }
 
@@ -55,6 +57,7 @@ export class ContextRegistry {
     if (!this.seen.has(path)) {
       this.seen.add(path);
       this.add(path, updatedContext);
+
       return;
     }
 

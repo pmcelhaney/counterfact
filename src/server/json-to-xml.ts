@@ -17,7 +17,7 @@ interface Schema {
 
 function xmlEscape(xmlString: string): string {
   // eslint-disable-next-line unicorn/prefer-string-replace-all
-  return xmlString.replace(/["&'<>]/gu, (character: string) => {
+  return xmlString.replace(/["&'<>]/gv, (character: string) => {
     switch (character) {
       case "<": {
         return "&lt;";
@@ -34,6 +34,7 @@ function xmlEscape(xmlString: string): string {
       case '"': {
         return "&quot;";
       }
+
       default: {
         return character;
       }
@@ -52,6 +53,7 @@ function objectToXml(
 
   Object.entries(json).forEach(([key, value]) => {
     const properties = schema?.properties?.[key];
+
     // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
     if (properties?.attribute) {
       attributes.push(` ${key}="${xmlEscape(String(value))}"`);

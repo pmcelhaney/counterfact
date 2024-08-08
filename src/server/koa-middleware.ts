@@ -38,6 +38,7 @@ function getAuthObject(
     }
   | undefined {
   const authHeader = ctx.request.headers.authorization;
+
   if (authHeader === undefined) {
     return undefined;
   }
@@ -50,6 +51,7 @@ function getAuthObject(
 
   const user = Buffer.from(base64Credentials, "base64").toString("utf8");
   const [username, password] = user.split(":");
+
   return { password, username };
 }
 
@@ -89,6 +91,7 @@ export function koaMiddleware(
 
     if (method === "OPTIONS") {
       ctx.status = HTTP_STATUS_CODE_OK;
+
       return undefined;
     }
 
@@ -96,10 +99,12 @@ export function koaMiddleware(
       auth,
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       body,
+
       /* @ts-expect-error the value of a header can be an array and we don't have a solution for that yet */
       headers,
       method,
       path,
+
       /* @ts-expect-error the value of a querystring item can be an array and we don't have a solution for that yet */
       query,
       req: { path: "", ...ctx.req },
@@ -107,11 +112,13 @@ export function koaMiddleware(
 
     /* eslint-disable require-atomic-updates */
     ctx.body = response.body;
+
     if (response.headers) {
       for (const [key, value] of Object.entries(response.headers)) {
         ctx.set(key, value.toString());
       }
     }
+
     ctx.status = response.status ?? HTTP_STATUS_CODE_OK;
     /* eslint-enable require-atomic-updates */
 
