@@ -5,6 +5,8 @@ const rules = {
   "@typescript-eslint/lines-around-comment": "off",
   "@typescript-eslint/naming-convention": "off",
 
+  "@typescript-eslint/prefer-destructuring": "off",
+
   "id-length": [
     "error",
     {
@@ -44,6 +46,8 @@ const rules = {
   "node/no-callback-literal": "off",
 
   "node/no-missing-import": "off",
+
+  "prefer-destructuring": "off",
 
   "prettier/prettier": [
     "error",

@@ -41,10 +41,12 @@ export class CodeGenerator extends EventTarget {
           .then(
             () => {
               this.dispatchEvent(new Event("generate"));
+
               return true;
             },
             () => {
               this.dispatchEvent(new Event("failed"));
+
               return false;
             },
           );

@@ -22,15 +22,18 @@ export class ModuleDependencyGraph {
 
   public load(path: string) {
     this.clearDependents(path);
+
     for (const dependency of this.loadDependencies(path)) {
       if (!dependency.startsWith(".")) {
         return;
       }
 
       const key = resolve(dirname(path), dependency);
+
       if (!this.dependents.has(key)) {
         this.dependents.set(key, new Set());
       }
+
       this.dependents.get(key)?.add(path);
     }
   }
@@ -43,9 +46,12 @@ export class ModuleDependencyGraph {
 
     while (queue.length > 0) {
       const file = queue.shift();
+
       if (file !== undefined && !marked.has(file)) {
         marked.add(file);
+
         const fileDependents = this.dependents.get(file);
+
         if (fileDependents) {
           for (const dependent of fileDependents) {
             dependents.add(dependent);

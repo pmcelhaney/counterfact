@@ -1,3 +1,4 @@
+/* eslint-disable n/no-sync */
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
 import path from "node:path";
@@ -7,6 +8,7 @@ const DEFAULT_MODULE_KIND = "commonjs";
 interface PackageJsonWithType {
   type?: string;
 }
+
 // eslint-disable-next-line max-statements
 export async function determineModuleKind(modulePath: string) {
   if (modulePath.endsWith(".cjs")) {

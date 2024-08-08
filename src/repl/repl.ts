@@ -17,6 +17,7 @@ export function startRepl(
     if (config.proxyUrl === "") {
       print("The proxy URL is not set.");
       print('To set it, type ".proxy url <url>');
+
       return;
     }
 
@@ -41,6 +42,7 @@ export function startRepl(
   function setProxyUrl(url: string | undefined) {
     if (url === undefined) {
       print("usage: .proxy url <url>");
+
       return;
     }
 
@@ -55,7 +57,7 @@ export function startRepl(
       endpoint === undefined || endpoint === "" ? "/" : endpoint;
 
     config.proxyPaths.set(
-      (endpoint ?? "").replace(/\/$/u, ""),
+      (endpoint ?? "").replace(/\/$/v, ""),
       command === "on",
     );
 

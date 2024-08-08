@@ -13,6 +13,7 @@ import { CHOKIDAR_OPTIONS } from "./constants.js";
 import { convertFileExtensionsToCjs } from "./convert-js-extensions-to-cjs.js";
 
 const debug = createDebug("counterfact:server:transpiler");
+
 export class Transpiler extends EventTarget {
   private readonly sourcePath: string;
 
@@ -53,6 +54,7 @@ export class Transpiler extends EventTarget {
       // eslint-disable-next-line @typescript-eslint/no-misused-promises, max-statements
       async (eventName: string, sourcePathOriginal: string) => {
         debug("transpiler event: %s <%s>", eventName, sourcePathOriginal);
+
         const sourcePath = sourcePathOriginal.replaceAll("\\", "/");
 
         const destinationPath = sourcePath
@@ -74,6 +76,7 @@ export class Transpiler extends EventTarget {
             if ((error as { code: string }).code !== "ENOENT") {
               debug("error removing %s: %o", destinationPath, error);
               this.dispatchEvent(new Event("error"));
+
               throw error;
             }
           }
@@ -131,6 +134,7 @@ export class Transpiler extends EventTarget {
     } catch {
       debug("error transpiling %s", fullDestination);
       this.dispatchEvent(new Event("error"));
+
       throw new Error("could not transpile");
     }
 
