@@ -82,6 +82,7 @@ module.exports = {
     ".stryker-tmp",
     ".mise.toml",
     "codeql.yml",
+    "/.yarn/"
   ],
 
   overrides: [
