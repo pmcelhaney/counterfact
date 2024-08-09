@@ -17,7 +17,7 @@ interface Schema {
 
 function xmlEscape(xmlString: string): string {
   // eslint-disable-next-line unicorn/prefer-string-replace-all
-  return xmlString.replace(/["&'<>]/gv, (character: string) => {
+  return xmlString.replace(/["&'<>]/gu, (character: string) => {
     switch (character) {
       case "<": {
         return "&lt;";

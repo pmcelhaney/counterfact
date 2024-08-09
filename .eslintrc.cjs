@@ -58,6 +58,8 @@ const rules = {
 
   "putout/putout": "off",
 
+  "regexp/require-unicode-sets-regexp": "off",
+
   "yml/no-empty-mapping-value": "off",
 
 

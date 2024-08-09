@@ -31,7 +31,7 @@ export class Specification {
     const filePath = nodePath
       .join(fromUrl.split("#").at(0), file)
       .replaceAll("\\", "/")
-      // eslint-disable-next-line prefer-named-capture-group, regexp/prefer-named-capture-group, regexp/require-unicode-sets-regexp
+      // eslint-disable-next-line prefer-named-capture-group, regexp/prefer-named-capture-group
       .replace(/:\/([^/])/u, "://$1");
     const fileUrl = filePath === "." ? this.rootUrl : filePath;
 

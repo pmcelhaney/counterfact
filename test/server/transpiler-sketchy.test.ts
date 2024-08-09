@@ -129,7 +129,7 @@ describe("a Transpiler", () => {
 
       expect(() => {
         fs.accessSync($.path("dist/delete-me.js"), fsConstants.F_OK);
-      }).toThrow(/ENOENT/v);
+      }).toThrow(/ENOENT/u);
 
       await transpiler.stopWatching();
     });

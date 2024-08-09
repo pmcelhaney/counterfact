@@ -57,7 +57,7 @@ export function startRepl(
       endpoint === undefined || endpoint === "" ? "/" : endpoint;
 
     config.proxyPaths.set(
-      (endpoint ?? "").replace(/\/$/v, ""),
+      (endpoint ?? "").replace(/\/$/u, ""),
       command === "on",
     );
 

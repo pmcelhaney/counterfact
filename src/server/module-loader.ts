@@ -81,7 +81,7 @@ export class ModuleLoader extends EventTarget {
         const parts = nodePath.parse(pathName.replace(this.basePath, ""));
         const url = `/${parts.dir}/${parts.name}`
           .replaceAll("\\", "/")
-          .replaceAll(/\/+/gv, "/");
+          .replaceAll(/\/+/gu, "/");
 
         if (eventName === "unlink") {
           this.registry.remove(url);
@@ -157,7 +157,7 @@ export class ModuleLoader extends EventTarget {
       nodePath.parse(basename(pathName)).name,
     )}`
       .replaceAll("\\", "/")
-      .replaceAll(/\/+/gv, "/");
+      .replaceAll(/\/+/gu, "/");
 
     this.dependencyGraph.load(pathName);
 

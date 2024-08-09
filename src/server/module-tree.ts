@@ -58,7 +58,7 @@ export class ModuleTree {
       directory.files[segment.toLowerCase()] = {
         isWildcard: segment.startsWith("{"),
         module,
-        name: segment.replace(/^\{(?<name>.*)\}$/v, "$<name>"),
+        name: segment.replace(/^\{(?<name>.*)\}$/u, "$<name>"),
         rawName: segment,
       };
 
@@ -69,7 +69,7 @@ export class ModuleTree {
       directories: {},
       files: {},
       isWildcard: segment.startsWith("{"),
-      name: segment.replace(/^\{(?<name>.*)\}$/v, "$<name>"),
+      name: segment.replace(/^\{(?<name>.*)\}$/u, "$<name>"),
       rawName: segment,
     };
     this.addModuleToDirectory(
@@ -240,7 +240,7 @@ export class ModuleTree {
 
     // eslint-disable-next-line unicorn/consistent-function-scoping
     function stripBrackets(string: string) {
-      return string.replaceAll(/\{|\}/gv, "");
+      return string.replaceAll(/\{|\}/gu, "");
     }
 
     traverse(this.root, "");
