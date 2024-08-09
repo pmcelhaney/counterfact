@@ -2863,10 +2863,10 @@
     "@stryker-mutator/util" "8.4.0"
     semver "~7.6.3"
 
-"@stryker-mutator/util@8.3.0":
-  version "8.3.0"
-  resolved "https://registry.yarnpkg.com/@stryker-mutator/util/-/util-8.3.0.tgz#ee2aa166adc74fb124fce835160e3f5883706885"
-  integrity sha512-750ldEV3CRdDuBhxD1c2HEY4CYW4oz45u6Hm0Ca/FVefU4tCWYwf9kS87khw3FZGZC/gbkI6Xn3fGnXYyHa+cA==
+"@stryker-mutator/util@8.4.0":
+  version "8.4.0"
+  resolved "https://registry.yarnpkg.com/@stryker-mutator/util/-/util-8.4.0.tgz#9d14b3b1363769a0872eb9861485d743433bd07d"
+  integrity sha512-dvDBmIrKpkqICO/7kcmfTzs+dsS1dA61q6XbbF+uB+WSsNLUHMfft0XKQg6BwLY+NLlis4pFN5CJz6gI7bfwxA==
 
 "@stylistic/eslint-plugin-js@2.6.2", "@stylistic/eslint-plugin-js@^2.1.0", "@stylistic/eslint-plugin-js@^2.6.2":
   version "2.6.2"
@@ -9688,7 +9688,7 @@ minimatch@9.0.3, minimatch@^9.0.3:
   dependencies:
     brace-expansion "^2.0.1"
 
-minimatch@^10.0.0, minimatch@~10.0.1:
+minimatch@^10.0.0:
   version "10.0.1"
   resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-10.0.1.tgz#ce0521856b453c86e25f2c4c0d03e6ff7ddc440b"
   integrity sha512-ethXTt3SGGR+95gudmqJ1eNhRO7eGEGIgYA9vnPatK4/etz2MEVDno5GMCibdMTuBMyElzIlgxMna3K94XDIDQ==
@@ -9709,7 +9709,7 @@ minimatch@^9.0.4:
   dependencies:
     brace-expansion "^2.0.1"
 
-minimatch@^9.0.5:
+minimatch@^9.0.5, minimatch@~9.0.5:
   version "9.0.5"
   resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-9.0.5.tgz#d74f9dd6b57d83d8e98cfb82133b03978bc929e5"
   integrity sha512-G6T0ZX48xgozx7587koeX9Ys2NYy6Gmv//P89sEte9V9whIapMNF4idKxnW2QtCcLiTWlb/wfCabAtAFWhhBow==
