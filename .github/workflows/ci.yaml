@@ -38,8 +38,10 @@ jobs:
       - name: Patch packages
         run: yarn patch-package
       - name: ESlint
+        if: runner.os != 'windows-latest'
         run: yarn eslint -f github-annotations .
       - name: TypeScript
+        if: runner.os != 'windows-latest'
         run: yarn tsc --noEmit
       - name: Unit Tests
         timeout-minutes: 2
