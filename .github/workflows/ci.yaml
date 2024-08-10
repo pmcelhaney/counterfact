@@ -16,6 +16,8 @@ jobs:
         os: [windows-latest, ubuntu-latest]
     runs-on: ${{ matrix.os }}
     steps:
+      - name: Debug
+        run: echo ${{ matrix.os }}
       - name: Check Out Repo
         uses: actions/checkout@v4
         with:
@@ -31,7 +33,7 @@ jobs:
       - name: Cache node_modules
         uses: actions/cache@v4
         with:
-          path: "**/node_modules"
+          path: "node_modules"
           key: ${{ runner.os }}-${{ steps.node-version.outputs.version }}-${{ hashFiles('**/yarn.lock') }}
       - name: Install Packages
         run: yarn install --frozen-lockfile --network-timeout 100000
