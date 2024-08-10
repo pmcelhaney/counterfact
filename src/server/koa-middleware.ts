@@ -74,7 +74,6 @@ export function koaMiddleware(
 
     const auth = getAuthObject(ctx);
 
-    /* @ts-expect-error the body comes from koa-bodyparser, not sure how to fix this */
     const { body, headers, query } = ctx.request;
 
     const path = ctx.request.path.slice(routePrefix.length);
