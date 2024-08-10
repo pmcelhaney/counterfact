@@ -17,7 +17,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - name: Debug
-        run: echo ${{ matrix.os }}
+        run: echo "${{ matrix.os }}"
       - name: Check Out Repo
         uses: actions/checkout@v4
         with:
@@ -40,10 +40,10 @@ jobs:
       - name: Patch packages
         run: yarn patch-package
       - name: ESlint
-        if: runner.os != 'windows-latest'
+        if: matrix.os != 'windows-latest'
         run: yarn eslint -f github-annotations .
       - name: TypeScript
-        if: runner.os != 'windows-latest'
+        if: matrix.os != 'windows-latest'
         run: yarn tsc --noEmit
       - name: Unit Tests
         timeout-minutes: 2
