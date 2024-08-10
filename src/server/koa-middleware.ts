@@ -96,7 +96,7 @@ export function koaMiddleware(
 
     const response = await dispatcher.request({
       auth,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+       
       body,
 
       /* @ts-expect-error the value of a header can be an array and we don't have a solution for that yet */

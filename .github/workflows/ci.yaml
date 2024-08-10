@@ -33,7 +33,7 @@ jobs:
       - name: Cache node_modules
         uses: actions/cache@v4
         with:
-          path: "node_modules"
+          path: node_modules
           key: ${{ runner.os }}-${{ steps.node-version.outputs.version }}-${{ hashFiles('**/yarn.lock') }}
       - name: Install Packages
         run: yarn install --frozen-lockfile --network-timeout 100000
