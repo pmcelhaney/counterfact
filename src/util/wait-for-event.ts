@@ -16,6 +16,7 @@ export async function waitForEvent(
       if (target instanceof EventTarget) {
         target.removeEventListener(eventName, handler);
       }
+
       resolve(event);
     };
 

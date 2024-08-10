@@ -33,5 +33,6 @@ export function convertFileExtensionsToCjs(code: string) {
       this.traverse(path);
     },
   });
+
   return print(ast).code;
 }

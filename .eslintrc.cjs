@@ -2,8 +2,13 @@
 
 const rules = {
   "@microsoft/sdl/no-html-method": "off",
+  "@stylistic/max-len": "off",
   "@typescript-eslint/lines-around-comment": "off",
   "@typescript-eslint/naming-convention": "off",
+
+  "@typescript-eslint/prefer-destructuring": "off",
+
+  "compat/compat": "off",
 
   "id-length": [
     "error",
@@ -19,16 +24,20 @@ const rules = {
 
   "import/prefer-default-export": "off",
 
+  "lines-around-comment": "warn",
+
   "max-len": [
     "warn",
     {
       code: 120,
-      ignorePattern: "eslint|it\\(|describe\\(",
+      ignorePattern: String.raw`eslint|it\(|describe\(`,
       ignoreTemplateLiterals: true,
     },
   ],
 
   "max-lines": ["warn", { max: 305 }],
+
+  "n/no-missing-import": ["warn"],
 
   "n/shebang": "off",
 
@@ -45,14 +54,15 @@ const rules = {
 
   "node/no-missing-import": "off",
 
-  "prettier/prettier": [
-    "error",
-    {
-      endOfLine: "auto",
-    },
-  ],
+  "prefer-destructuring": "off",
 
   "putout/putout": "off",
+
+  "regexp/require-unicode-sets-regexp": "off",
+
+  "yml/no-empty-mapping-value": "off",
+
+
 };
 
 module.exports = {
@@ -70,6 +80,9 @@ module.exports = {
     "/out/",
     "_includes",
     ".stryker-tmp",
+    ".mise.toml",
+    "codeql.yml",
+    "/.yarn/"
   ],
 
   overrides: [
@@ -87,7 +100,7 @@ module.exports = {
     },
 
     {
-      extends: ["hardcore", "hardcore/ts", "hardcore/node", "hardcore/jest"],
+      extends: ["hardcore", "hardcore/ts", "hardcore/node", "hardcore/jest", "plugin:prettier/recommended"],
 
       files: ["*.test.js"],
 

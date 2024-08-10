@@ -95,6 +95,7 @@ describe("a Transpiler", () => {
         "src/update-me.ts",
         `const x = 'code to be overwritten';${EOL}`,
       );
+
       const initialWrite = once(transpiler, "write");
 
       await transpiler.watch();

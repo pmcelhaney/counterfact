@@ -1,3 +1,4 @@
+/* eslint-disable n/no-sync */
 import { once } from "node:events";
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
@@ -69,6 +70,7 @@ export class ModuleLoader extends EventTarget {
           process.stdout.write(
             `\n\n!!! The file at ${pathName} needs a minor update.\n    See https://github.com/pmcelhaney/counterfact/blob/main/docs/context-change.md\n\n\n`,
           );
+
           return;
         }
 
@@ -85,9 +87,11 @@ export class ModuleLoader extends EventTarget {
           this.registry.remove(url);
           this.dispatchEvent(new Event("remove"));
         }
+
         const dependencies = this.dependencyGraph.dependentsOf(pathName);
 
         void this.loadEndpoint(pathName);
+
         for (const dependency of dependencies) {
           void this.loadEndpoint(dependency);
         }

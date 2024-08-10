@@ -81,6 +81,7 @@ function createHarness() {
 describe("REPL", () => {
   it("turns on the proxy globally", () => {
     const { config, harness } = createHarness();
+
     harness.call("proxy", "on");
 
     expect(config.proxyPaths.get("")).toBe(true);
@@ -98,6 +99,7 @@ describe("REPL", () => {
 
   it("turns on the proxy for the root", () => {
     const { config, harness } = createHarness();
+
     harness.call("proxy", "on /");
 
     expect(config.proxyPaths.get("")).toBe(true);
@@ -115,6 +117,7 @@ describe("REPL", () => {
 
   it("turns on the proxy for an endpoint", () => {
     const { config, harness } = createHarness();
+
     harness.call("proxy", "on /foo/bar");
 
     expect(config.proxyPaths.get("/foo/bar")).toBe(true);
@@ -123,6 +126,7 @@ describe("REPL", () => {
 
   it("turns off the proxy for an endpoint", () => {
     const { config, harness } = createHarness();
+
     harness.call("proxy", "off /foo/bar");
 
     expect(config.proxyPaths.get("/foo/bar")).toBe(false);
@@ -169,6 +173,7 @@ describe("REPL", () => {
 
   it("displays an explanatory message after turning the proxy on for an endpoint", () => {
     const { harness } = createHarness();
+
     harness.call("proxy", "on /foo/bar");
 
     expect(harness.output).toEqual([
@@ -178,6 +183,7 @@ describe("REPL", () => {
 
   it("displays an explanatory message after turning the proxy off for an endpoint", () => {
     const { harness } = createHarness();
+
     harness.call("proxy", "off /foo/bar");
 
     expect(harness.output).toEqual([
@@ -187,6 +193,7 @@ describe("REPL", () => {
 
   it.each(["", "help"])("displays a proxy help message (%s)", () => {
     const { harness } = createHarness();
+
     harness.call("proxy", "help");
 
     expect(harness.output).toEqual([
@@ -199,6 +206,7 @@ describe("REPL", () => {
 
   it("sets the proxy url", () => {
     const { config, harness } = createHarness();
+
     harness.call("proxy", "url https://example.com/new-url");
 
     expect(config.proxyUrl).toBe("https://example.com/new-url");
@@ -210,6 +218,7 @@ describe("REPL", () => {
 
   it("displays a message if 'proxy url' is entered without a URL", () => {
     const { harness } = createHarness();
+
     harness.call("proxy", "url");
 
     expect(harness.output).toEqual(["usage: .proxy url <url>"]);

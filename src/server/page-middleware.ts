@@ -13,6 +13,7 @@ const __dirname = nodePath.dirname(fileURLToPath(import.meta.url));
 const debug = createDebug("counterfact:server:page-middleware");
 
 Handlebars.registerHelper("escape_route", (route: string) =>
+   
   route.replaceAll(/[^\w/]/gu, "-"),
 );
 

@@ -34,6 +34,7 @@ function xmlEscape(xmlString: string): string {
       case '"': {
         return "&quot;";
       }
+
       default: {
         return character;
       }
@@ -52,6 +53,7 @@ function objectToXml(
 
   Object.entries(json).forEach(([key, value]) => {
     const properties = schema?.properties?.[key];
+
     // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
     if (properties?.attribute) {
       attributes.push(` ${key}="${xmlEscape(String(value))}"`);

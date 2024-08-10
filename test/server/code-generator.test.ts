@@ -42,6 +42,7 @@ describe("a CodeGenerator", () => {
   it("generates code for a component", async () => {
     await usingTemporaryFiles(async ({ add, path, read }) => {
       await add("openapi.json", JSON.stringify(OPENAPI));
+
       const generator = new CodeGenerator(
         path("./openapi.json"),
         path("./out"),
@@ -63,6 +64,7 @@ describe("a CodeGenerator", () => {
   it("does not generate code for a component when generate types is false", async () => {
     await usingTemporaryFiles(async ({ add, path, read }) => {
       await add("openapi.json", JSON.stringify(OPENAPI));
+
       const generator = new CodeGenerator(
         path("./openapi.json"),
         path("./out"),
@@ -80,6 +82,7 @@ describe("a CodeGenerator", () => {
   it("updates the code when the spec changes", async () => {
     await usingTemporaryFiles(async ({ add, path, read }) => {
       await add("openapi.json", JSON.stringify(OPENAPI));
+
       const generator = new CodeGenerator(
         path("./openapi.json"),
         path("./out"),
@@ -87,6 +90,7 @@ describe("a CodeGenerator", () => {
       );
 
       const changed = { ...OPENAPI };
+
       changed.components.schemas.Example.type = "integer";
 
       await generator.watch();
@@ -108,6 +112,7 @@ describe("a CodeGenerator", () => {
   it("does not update the code when the spec changes if watch is false", async () => {
     await usingTemporaryFiles(async ({ add, path, read }) => {
       await add("openapi.json", JSON.stringify(OPENAPI));
+
       const generator = new CodeGenerator(
         path("./openapi.json"),
         path("./out"),
@@ -115,6 +120,7 @@ describe("a CodeGenerator", () => {
       );
 
       const changed = { ...OPENAPI };
+
       changed.components.schemas.Example.type = "integer";
 
       await generator.watch();

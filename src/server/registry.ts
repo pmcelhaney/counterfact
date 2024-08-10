@@ -137,6 +137,7 @@ export class Registry {
     const handler = this.handler(url);
 
     debug("handler for %s: %o", url, handler);
+
     const execute = handler.module?.[httpRequestMethod];
 
     if (!execute) {

@@ -13,9 +13,11 @@ jobs:
     name: CI Checks
     strategy:
       matrix:
-        os: ["windows-latest", "ubuntu-latest"]
+        os: [windows-latest, ubuntu-latest]
     runs-on: ${{ matrix.os }}
     steps:
+      - name: Debug
+        run: echo "${{ matrix.os }}"
       - name: Check Out Repo
         uses: actions/checkout@v4
         with:
@@ -31,15 +33,17 @@ jobs:
       - name: Cache node_modules
         uses: actions/cache@v4
         with:
-          path: "**/node_modules"
+          path: node_modules
           key: ${{ runner.os }}-${{ steps.node-version.outputs.version }}-${{ hashFiles('**/yarn.lock') }}
       - name: Install Packages
         run: yarn install --frozen-lockfile --network-timeout 100000
       - name: Patch packages
         run: yarn patch-package
       - name: ESlint
+        if: matrix.os != 'windows-latest'
         run: yarn eslint -f github-annotations .
       - name: TypeScript
+        if: matrix.os != 'windows-latest'
         run: yarn tsc --noEmit
       - name: Unit Tests
         timeout-minutes: 2
