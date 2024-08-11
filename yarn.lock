@@ -5228,10 +5228,10 @@ eslint-plugin-jest-formatting@^3.1.0:
   resolved "https://registry.yarnpkg.com/eslint-plugin-jest-formatting/-/eslint-plugin-jest-formatting-3.1.0.tgz#b26dd5a40f432b642dcc880021a771bb1c93dcd2"
   integrity sha512-XyysraZ1JSgGbLSDxjj5HzKKh0glgWf+7CkqxbTqb7zEhW7X2WHo5SBQ8cGhnszKN+2Lj3/oevBlHNbHezoc/A==
 
-eslint-plugin-jest@28.7.0:
-  version "28.7.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-28.7.0.tgz#8ff262c26520242492f85f9268995bbf624758a4"
-  integrity sha512-fzPGN7awL2ftVRQh/bsCi+16ArUZWujZnD1b8EGJqy8nr4//7tZ3BIdc/9edcJBtB3hpci3GtdMNFVDwHU0Eag==
+eslint-plugin-jest@28.8.0, eslint-plugin-jest@^28.6.0:
+  version "28.8.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-28.8.0.tgz#54f597b5a3295ad04ec946baa245ad02b9b2bca0"
+  integrity sha512-Tubj1hooFxCl52G4qQu0edzV/+EZzPUeN8p2NnW5uu4fbDs+Yo7+qDVDc4/oG3FbCqEBmu/OC3LSsyiU22oghw==
   dependencies:
     "@typescript-eslint/utils" "^6.0.0 || ^7.0.0 || ^8.0.0"
 
@@ -5241,13 +5241,6 @@ eslint-plugin-jest@^27.2.3:
   integrity sha512-QIT7FH7fNmd9n4se7FFKHbsLKGQiw885Ds6Y/sxKgCZ6natwCsXdgPOADnYVxN2QrRweF0FZWbJ6S7Rsn7llug==
   dependencies:
     "@typescript-eslint/utils" "^5.10.0"
-
-eslint-plugin-jest@^28.6.0:
-  version "28.8.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-28.8.0.tgz#54f597b5a3295ad04ec946baa245ad02b9b2bca0"
-  integrity sha512-Tubj1hooFxCl52G4qQu0edzV/+EZzPUeN8p2NnW5uu4fbDs+Yo7+qDVDc4/oG3FbCqEBmu/OC3LSsyiU22oghw==
-  dependencies:
-    "@typescript-eslint/utils" "^6.0.0 || ^7.0.0 || ^8.0.0"
 
 eslint-plugin-json@^3.1.0:
   version "3.1.0"
