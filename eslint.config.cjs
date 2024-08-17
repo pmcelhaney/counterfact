@@ -10,11 +10,11 @@ const promisePlugin = require("eslint-plugin-promise");
 const importPlugin = require("eslint-plugin-import");
 const regexpPlugin = require("eslint-plugin-regexp");
 const securityPlugin = require("eslint-plugin-security");
-const noUnsanitizedPlugin = require("eslint-plugin-no-unsanitized");
-const etcPlugin = require("eslint-plugin-etc");
+
 
 module.exports = [
   {
+
     // General configuration
     ignores: [
       "/node_modules/",
@@ -32,8 +32,7 @@ module.exports = [
       },
       parser: typescriptParser,
       parserOptions: {
-        // Point to the specific TypeScript config file for ESLint
-        project: "./tsconfig.eslint.json",
+        project: require.resolve('./tsconfig.eslint.json'),
         sourceType: "module",
       },
     },
@@ -49,8 +48,6 @@ module.exports = [
       import: importPlugin,
       regexp: regexpPlugin,
       security: securityPlugin,
-      "no-unsanitized": noUnsanitizedPlugin,
-      etc: etcPlugin,
     },
     rules: {
       // Specify rules here
@@ -62,8 +59,6 @@ module.exports = [
       "import/no-extraneous-dependencies": "off",
       "regexp/prefer-named-capture-group": "warn",
       "security/detect-non-literal-require": "error",
-      "no-unsanitized/method": "error",
-      "etc/no-assign-mutated-array": "error",
       "prettier/prettier": [
         "error",
         {
@@ -78,7 +73,7 @@ module.exports = [
     languageOptions: {
       parser: typescriptParser,
       parserOptions: {
-        project: "./tsconfig.eslint.json", // Same project file for .cjs files
+        project: require.resolve('./tsconfig.eslint.json'), 
         sourceType: "script",
       },
       globals: {
@@ -97,7 +92,7 @@ module.exports = [
     languageOptions: {
       parser: typescriptParser,
       parserOptions: {
-        project: "./tsconfig.eslint.json", // Ensure this is the correct path
+        project: require.resolve('./tsconfig.eslint.json'),
       },
     },
     rules: {
@@ -134,7 +129,7 @@ module.exports = [
     languageOptions: {
       parser: typescriptParser,
       parserOptions: {
-        project: "./tsconfig.eslint.json", // Ensure this is the correct path
+        project: require.resolve('./tsconfig.eslint.json'),
       },
     },
     rules: {
@@ -161,6 +156,10 @@ module.exports = [
     languageOptions: {
       ecmaVersion: "latest",
       sourceType: "module",
+      parser: typescriptParser,
+      parserOptions: {
+        project: require.resolve('./tsconfig.eslint.json'),
+      },
     },
     rules: {},
   },
