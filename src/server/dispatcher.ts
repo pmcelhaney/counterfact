@@ -1,8 +1,6 @@
-/* eslint-disable import/newline-after-import */
-
 import { mediaTypes } from "@hapi/accept";
 import createDebugger from "debug";
-// eslint-disable-next-line @typescript-eslint/no-shadow
+
 import fetch, { Headers } from "node-fetch";
 
 import type { ContextRegistry } from "./context-registry.js";
@@ -105,7 +103,6 @@ export class Dispatcher {
       for (const key in this.openApiDocument.paths) {
         if (key.toLowerCase() === path.toLowerCase()) {
           return this.openApiDocument.paths[key]?.[
-            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
             method.toLowerCase() as Lowercase<HttpMethods>
           ];
         }
@@ -161,7 +158,7 @@ export class Dispatcher {
 
       const normalizedResponse = {
         ...response,
-        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+
         body: content.body as string | undefined,
         contentType: content.type,
       };
@@ -218,7 +215,6 @@ export class Dispatcher {
     return false;
   }
 
-  // eslint-disable-next-line max-statements
   public async request({
     auth,
     body,
@@ -252,7 +248,6 @@ export class Dispatcher {
       this.openApiDocument?.basePath !== undefined &&
       path.toLowerCase().startsWith(this.openApiDocument.basePath.toLowerCase())
     ) {
-      // eslint-disable-next-line security/detect-non-literal-regexp
       path = path.replace(new RegExp(this.openApiDocument.basePath, "iu"), "");
     }
 

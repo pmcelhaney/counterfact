@@ -10,7 +10,6 @@ export async function waitForEvent(
   target: EventEmitter | EventTarget,
   eventName: string,
 ) {
-  // eslint-disable-next-line promise/avoid-new
   return await new Promise((resolve) => {
     const handler = (event: unknown) => {
       if (target instanceof EventTarget) {

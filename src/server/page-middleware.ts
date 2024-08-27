@@ -7,13 +7,11 @@ import type Koa from "koa";
 
 import { readFile } from "../util/read-file.js";
 
-// eslint-disable-next-line no-underscore-dangle
 const __dirname = nodePath.dirname(fileURLToPath(import.meta.url));
 
 const debug = createDebug("counterfact:server:page-middleware");
 
 Handlebars.registerHelper("escape_route", (route: string) =>
-   
   route.replaceAll(/[^\w/]/gu, "-"),
 );
 
@@ -38,7 +36,6 @@ export function pageMiddleware(
       return;
     }
 
-    // eslint-disable-next-line  n/callback-return
     await next();
   };
 }

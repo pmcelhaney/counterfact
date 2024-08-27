@@ -53,7 +53,6 @@ export async function withTemporaryFiles(
   files: { [name: string]: string },
   ...callbacks: ((directory: string, operations: Operations) => Promise<void>)[]
 ) {
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const baseDirectory = DEBUG
     ? nodePath.resolve(process.cwd(), "./")
     : os.tmpdir();
@@ -77,7 +76,6 @@ export async function withTemporaryFiles(
     await Promise.all(writes);
 
     for (const callback of callbacks) {
-      // eslint-disable-next-line no-await-in-loop, n/callback-return
       await callback(temporaryDirectory, {
         add: createAddFunction(temporaryDirectory),
         addDirectory: createAddDirectoryFunction(temporaryDirectory),
@@ -92,7 +90,6 @@ export async function withTemporaryFiles(
       });
     }
   } finally {
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (!DEBUG) {
       await fs.rm(temporaryDirectory, { recursive: true });
     }

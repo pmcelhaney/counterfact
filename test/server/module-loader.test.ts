@@ -213,10 +213,8 @@ describe("a module loader", () => {
 
       await loader.load();
 
-      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any
       const rootContext = contextRegistry.find("/") as any;
 
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
       expect(rootContext?.loadContext("/a")?.name).toBe("a");
     });
   });

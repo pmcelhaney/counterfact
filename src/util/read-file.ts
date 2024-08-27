@@ -10,7 +10,6 @@ export async function readFile(urlOrPath: string) {
   }
 
   if (urlOrPath.startsWith("file")) {
-    // eslint-disable-next-line total-functions/no-partial-url-constructor
     return await fs.readFile(new URL(urlOrPath), "utf8");
   }
 

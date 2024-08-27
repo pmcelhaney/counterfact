@@ -60,7 +60,6 @@ export function koaMiddleware(
   config: Config,
   proxy = koaProxy,
 ): Koa.Middleware {
-  // eslint-disable-next-line max-statements
   return async function middleware(ctx, next) {
     const { proxyUrl, routePrefix } = config;
 
@@ -68,7 +67,6 @@ export function koaMiddleware(
     debug("routePrefix: %s", routePrefix);
 
     if (!ctx.request.path.startsWith(routePrefix)) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
       return await next();
     }
 
@@ -78,11 +76,9 @@ export function koaMiddleware(
 
     const path = ctx.request.path.slice(routePrefix.length);
 
-    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
     const method = ctx.request.method as HttpMethods;
 
     if (isProxyEnabledForPath(path, config) && proxyUrl) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
       return proxy("/", { changeOrigin: true, target: proxyUrl })(ctx, next);
     }
 
@@ -96,7 +92,7 @@ export function koaMiddleware(
 
     const response = await dispatcher.request({
       auth,
-       
+
       body,
 
       /* @ts-expect-error the value of a header can be an array and we don't have a solution for that yet */
@@ -109,7 +105,6 @@ export function koaMiddleware(
       req: { path: "", ...ctx.req },
     });
 
-    /* eslint-disable require-atomic-updates */
     ctx.body = response.body;
 
     if (response.headers) {
@@ -119,7 +114,6 @@ export function koaMiddleware(
     }
 
     ctx.status = response.status ?? HTTP_STATUS_CODE_OK;
-    /* eslint-enable require-atomic-updates */
 
     return undefined;
   };

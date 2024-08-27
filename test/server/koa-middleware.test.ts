@@ -1,5 +1,3 @@
-/* eslint-disable max-lines */
-// eslint-disable-next-line import/no-extraneous-dependencies, n/no-extraneous-import
 import { jest } from "@jest/globals";
 import type { ParameterizedContext } from "koa";
 import type { IBaseKoaProxiesOptions } from "koa-proxies";
@@ -52,7 +50,7 @@ describe("koa middleware", () => {
 
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
     const middleware = koaMiddleware(dispatcher, CONFIG);
-    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+
     const ctx = {
       req: {
         path: "/hello",
@@ -130,7 +128,6 @@ describe("koa middleware", () => {
       request: { headers: {}, method: "GET", path: "/proxy" },
 
       set() {
-
         /* set a header */
       },
     };
@@ -149,7 +146,6 @@ describe("koa middleware", () => {
     registry.add("/hello", {
       POST({ body }) {
         return {
-          // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
           body: `Hello, ${(body as { name: string }).name}!`,
         };
       },
@@ -183,7 +179,6 @@ describe("koa middleware", () => {
 
     expect(ctx.status).toBe(200);
     expect(ctx.body).toBe("Hello, Homer!");
-    // eslint-disable-next-line sonar/cors
     expect(ctx.set).toHaveBeenCalledWith("Access-Control-Allow-Origin", "*");
     expect(ctx.set).toHaveBeenCalledWith(
       "Access-Control-Allow-Methods",
@@ -199,7 +194,6 @@ describe("koa middleware", () => {
     registry.add("/hello", {
       POST({ body }) {
         return {
-          // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
           body: `Hello, ${(body as { name: string }).name}!`,
         };
       },
@@ -260,7 +254,6 @@ describe("koa middleware", () => {
     registry.add("/hello", {
       POST({ body }) {
         return {
-          // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
           body: `Hello, ${(body as { name: string }).name}!`,
 
           headers: {
@@ -319,7 +312,7 @@ describe("koa middleware", () => {
       ...CONFIG,
       routePrefix: "/api/v1",
     });
-    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+
     const ctx = {
       req: {
         path: "/api/v1/hello",
@@ -356,7 +349,7 @@ describe("koa middleware", () => {
 
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
     const middleware = koaMiddleware(dispatcher, CONFIG);
-    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+
     const ctx = {
       req: {
         path: "/hello",

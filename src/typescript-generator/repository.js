@@ -1,5 +1,5 @@
 /* eslint-disable n/no-sync */
-/* eslint-disable max-statements */
+
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
 import nodePath, { dirname } from "node:path";
@@ -13,7 +13,6 @@ import { Script } from "./script.js";
 
 const debug = createDebug("counterfact:server:repository");
 
-// eslint-disable-next-line no-underscore-dangle
 const __dirname = dirname(fileURLToPath(import.meta.url)).replaceAll("\\", "/");
 
 debug("dirname is %s", __dirname);
@@ -46,7 +45,7 @@ export class Repository {
       Array.from(this.scripts.values()).some((script) => script.isInProgress())
     ) {
       debug("waiting for %i scripts to finish", this.scripts.size);
-      // eslint-disable-next-line no-await-in-loop
+
       await Promise.all(
         Array.from(this.scripts.values(), (script) => script.finished()),
       );

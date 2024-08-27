@@ -2,7 +2,6 @@ import { type ASTNode, namedTypes, visit } from "ast-types";
 import { parse, print } from "recast";
 
 export function convertFileExtensionsToCjs(code: string) {
-  // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
   const ast = parse(code) as ASTNode;
 
   // Visit the nodes in the AST looking for `require` calls
@@ -23,7 +22,7 @@ export function convertFileExtensionsToCjs(code: string) {
       ) {
         // Change the module string from "foo.js" to "foo.cjs"
         node.arguments[0].value = node.arguments[0].value.replace(
-          // eslint-disable-next-line prefer-named-capture-group, regexp/no-unused-capturing-group, regexp/prefer-named-capture-group
+          // eslint-disable-next-line regexp/prefer-named-capture-group
           /(\.js|\.ts)?$/u,
           ".cjs",
         );

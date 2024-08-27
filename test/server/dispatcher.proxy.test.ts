@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/no-shadow
 import { Headers } from "node-fetch";
 
 import { ContextRegistry } from "../../src/server/context-registry.js";
@@ -18,7 +17,6 @@ describe("a dispatcher passes a proxy function to the operation", () => {
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
 
     dispatcher.fetch = async (url) =>
-
       /* @ts-expect-error not mocking all properties of fetch response */
       await Promise.resolve({
         headers: new Headers([["content-type", "application/json"]]),

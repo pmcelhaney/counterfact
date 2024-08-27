@@ -48,7 +48,6 @@ async function getPathsFromSpecification(specification) {
   }
 }
 
-// eslint-disable-next-line max-statements, max-params
 export async function generate(
   source,
   destination,

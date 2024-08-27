@@ -23,14 +23,12 @@ async function loadOpenApiDocument(source: string) {
 
     const openApiDocument = await yaml.load(text);
 
-    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions, @typescript-eslint/no-unnecessary-type-assertion
     return (await dereference(openApiDocument)) as OpenApiDocument;
   } catch {
     return undefined;
   }
 }
 
-// eslint-disable-next-line max-statements
 export async function counterfact(config: Config) {
   const modulesPath = config.basePath;
 
@@ -72,7 +70,6 @@ export async function counterfact(config: Config) {
 
   const koaApp = createKoaApp(registry, middleware, config);
 
-  // eslint-disable-next-line max-statements
   async function start(options: Config) {
     const {
       generate,
@@ -89,7 +86,6 @@ export async function counterfact(config: Config) {
       await codeGenerator.watch();
     }
 
-    // eslint-disable-next-line @typescript-eslint/init-declarations
     let httpTerminator: HttpTerminator | undefined;
 
     if (startServer) {

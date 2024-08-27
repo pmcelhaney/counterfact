@@ -128,7 +128,6 @@ describe("a registry", () => {
       await registry.endpoint(
         "GET",
         "/Acme/users/alice/Friends/2",
-        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
       )({} as RequestDataWithBody),
     ).toStrictEqual({
       body: "page 2 of alice's friends in Acme",

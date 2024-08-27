@@ -48,9 +48,7 @@ function unknownStatusCodeResponse(statusCode: number | undefined) {
 export function createResponseBuilder(
   operation: OpenApiOperation,
 ): ResponseBuilder {
-  // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
   return new Proxy({} as ResponseBuilder, {
-     
     get: (target, statusCode: string) => ({
       header(
         this: ResponseBuilder,
@@ -127,7 +125,6 @@ export function createResponseBuilder(
               type,
               content[type]?.examples
                 ? oneOf(
-                    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                     Object.values(content[type]?.examples ?? []).map(
                       (example) => example.value,
                     ),

@@ -12,7 +12,6 @@ export class Tools {
   }
 
   public oneOf<Item>(array: Item[]): Item {
-    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
     return array[Math.floor(Math.random() * array.length)] as Item;
   }
 

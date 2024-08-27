@@ -1,5 +1,3 @@
-/* eslint-disable max-lines */
-
 // Note: I cut a few corners here on type checking. Since these are tests, I'm more
 // concerned about the tests passing at runtime than lining up the types perfectly.
 
@@ -10,7 +8,6 @@ import {
 } from "../../src/server/dispatcher.js";
 import { Registry } from "../../src/server/registry.js";
 
-// eslint-disable-next-line max-statements
 describe("a dispatcher", () => {
   it("dispatches a get request to a server and returns the response", async () => {
     const registry = new Registry();
@@ -215,7 +212,6 @@ describe("a dispatcher", () => {
 
     registry.add("/a", {
       POST({ body }) {
-        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
         const typeSafeBody = body as { name: string; place: string };
 
         return {
@@ -518,7 +514,6 @@ describe("a dispatcher", () => {
     contextRegistry.add("/", { id: "test context" });
     registry.add("/echo", {
       GET({ context }) {
-        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
         return { body: (context as { id: string }).id };
       },
     });
@@ -546,7 +541,6 @@ describe("a dispatcher", () => {
     contextRegistry.add("/echo/{id}", { id: "echo context" });
     registry.add("/echo/{id}", {
       GET({ context }) {
-        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
         return { body: (context as { id: string }).id };
       },
     });

@@ -10,19 +10,21 @@ const promisePlugin = require("eslint-plugin-promise");
 const importPlugin = require("eslint-plugin-import");
 const regexpPlugin = require("eslint-plugin-regexp");
 const securityPlugin = require("eslint-plugin-security");
-
+const espreeParser = require("espree");
 
 module.exports = [
   {
-
     // General configuration
     ignores: [
-      "/node_modules/",
-      "/coverage/",
-      "/reports/",
-      "/out/",
+      "node_modules/**",
+      "coverage/**",
+      "reports/**",
+      "out/**",
       "_includes",
       ".stryker-tmp",
+      ".yarn/**",
+      "jest.config.js",
+      ".eslintrc.cjs",
     ],
     languageOptions: {
       globals: {
@@ -32,7 +34,7 @@ module.exports = [
       },
       parser: typescriptParser,
       parserOptions: {
-        project: require.resolve('./tsconfig.eslint.json'),
+        project: require.resolve("./tsconfig.eslint.json"),
         sourceType: "module",
       },
     },
@@ -67,13 +69,15 @@ module.exports = [
       ],
     },
   },
+
   {
     // Configuration for .cjs files
     files: ["*.cjs"],
+    ignores: [".yarn"],
     languageOptions: {
       parser: typescriptParser,
       parserOptions: {
-        project: require.resolve('./tsconfig.eslint.json'), 
+        project: require.resolve("./tsconfig.eslint.json"),
         sourceType: "script",
       },
       globals: {
@@ -92,7 +96,7 @@ module.exports = [
     languageOptions: {
       parser: typescriptParser,
       parserOptions: {
-        project: require.resolve('./tsconfig.eslint.json'),
+        project: require.resolve("./tsconfig.eslint.json"),
       },
     },
     rules: {
@@ -129,7 +133,7 @@ module.exports = [
     languageOptions: {
       parser: typescriptParser,
       parserOptions: {
-        project: require.resolve('./tsconfig.eslint.json'),
+        project: require.resolve("./tsconfig.eslint.json"),
       },
     },
     rules: {
@@ -158,7 +162,7 @@ module.exports = [
       sourceType: "module",
       parser: typescriptParser,
       parserOptions: {
-        project: require.resolve('./tsconfig.eslint.json'),
+        project: require.resolve("./tsconfig.eslint.json"),
       },
     },
     rules: {},
@@ -166,9 +170,20 @@ module.exports = [
   {
     // Configuration for bin files
     files: ["bin/**.js"],
+    languageOptions: {
+      ecmaVersion: "latest",
+      sourceType: "module",
+      parser: espreeParser,
+    },
     rules: {
       "import/no-unresolved": "off",
       "n/no-missing-import": "off",
+    },
+  },
+  {
+    files: [".yarn/releases/*.cjs"],
+    rules: {
+      "node/no-deprecated-api": "off",
     },
   },
 ];

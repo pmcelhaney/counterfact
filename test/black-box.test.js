@@ -1,10 +1,5 @@
-/* eslint-disable sonar/no-os-command-from-path */
-/* eslint-disable sonar/os-command */
-/* eslint-disable no-console */
-/* eslint-disable n/no-process-env */
-/* eslint-disable jest/no-restricted-matchers */
 /* eslint-disable n/no-sync */
-/* eslint-disable jest/no-hooks */
+
 import { exec } from "node:child_process";
 import fs from "node:fs";
 
@@ -14,7 +9,6 @@ import fetch from "node-fetch";
 const SERVER_START_WAIT_SECONDS = 10;
 
 describe("black box test", () => {
-  // eslint-disable-next-line init-declarations
   let counterfactProcess;
 
   beforeAll(async () => {
@@ -28,13 +22,12 @@ describe("black box test", () => {
     counterfactProcess.stderr.pipe(process.stderr);
     counterfactProcess.stdout.pipe(process.stdout);
 
-    // eslint-disable-next-line promise/avoid-new
     await new Promise((resolve) => {
       counterfactProcess.stdout.on("data", resolve);
     });
 
     // wait a few seconds to make sure the server is up
-    // eslint-disable-next-line promise/avoid-new
+
     await new Promise((resolve) => {
       console.log(
         `waiting ${SERVER_START_WAIT_SECONDS} seconds for server to start`,
