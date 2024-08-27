@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable etc/no-t */
 interface OpenApiHeader {
   schema: unknown;
 }
@@ -74,7 +72,6 @@ type MaybeShortcut<
   never
 >;
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 type NeverIfEmpty<Record> = {} extends Record ? never : Record;
 
 type MatchFunction<Response extends OpenApiResponse> = <
@@ -100,7 +97,6 @@ type HeaderFunction<Response extends OpenApiResponse> = <
 }>;
 
 type RandomFunction<Response extends OpenApiResponse> = <
-  // eslint-disable-next-line etc/no-misused-generics, unused-imports/no-unused-vars
   Header extends string & keyof Response["headers"],
 >() => COUNTERFACT_RESPONSE;
 

@@ -37,7 +37,6 @@ describe("a Transpiler", () => {
 
       await transpiler.watch();
 
-      // eslint-disable-next-line promise/avoid-new, no-promise-executor-return
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
       expect(fs.readdirSync($.path("./dist"))).toEqual(["found.js"]);
@@ -167,7 +166,6 @@ describe("a Transpiler", () => {
       await transpiler.watch();
       expect(fs.readdirSync($.path("./dist"))).toEqual(["importer.cjs"]);
 
-      // eslint-disable-next-line promise/avoid-new, no-promise-executor-return
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
       const contents = fs.readFileSync($.path("dist/importer.cjs"));

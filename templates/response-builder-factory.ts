@@ -53,8 +53,7 @@ type HeaderFunction<Response extends OpenApiResponse> = <
 export type ResponseBuilder<
   Response extends OpenApiResponse = OpenApiResponse,
 > = [keyof Response["content"]] extends [never]
-  ? // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
-    void
+  ? void
   : OmitValueWhenNever<{
       header: [keyof Response["headers"]] extends [never]
         ? never

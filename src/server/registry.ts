@@ -88,8 +88,7 @@ function castParameters(
   Object.entries(copy).forEach(([key, value]) => {
     copy[key] =
       parameterTypes?.[key] === "number"
-        ? // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-          Number.parseInt(value as string, 10)
+        ? Number.parseInt(value as string, 10)
         : value;
   });
 
@@ -160,7 +159,6 @@ export class Registry {
         query: castParameters(requestData.query, parameterTypes.query),
       };
 
-      // eslint-disable-next-line id-length
       operationArgument.x = operationArgument;
 
       return await execute(operationArgument);

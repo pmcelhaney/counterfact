@@ -12,7 +12,6 @@ import type { Registry } from "./registry.js";
 
 const debug = createDebug("counterfact:server:create-koa-app");
 
-// eslint-disable-next-line max-statements
 export function createKoaApp(
   registry: Registry,
   koaMiddleware: Koa.Middleware,
@@ -64,7 +63,6 @@ export function createKoaApp(
       return;
     }
 
-    // eslint-disable-next-line  n/callback-return
     await next();
   });
 

@@ -7,7 +7,6 @@ export class ModuleDependencyGraph {
 
   private loadDependencies(path: string) {
     try {
-      // eslint-disable-next-line import/no-named-as-default-member
       return precinct.paperwork(path);
     } catch {
       return [];
@@ -38,7 +37,6 @@ export class ModuleDependencyGraph {
     }
   }
 
-  // eslint-disable-next-line max-statements, sonarjs/cognitive-complexity
   public dependentsOf(path: string) {
     const marked = new Set<string>();
     const dependents = new Set<string>();

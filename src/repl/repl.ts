@@ -12,7 +12,6 @@ export function startRepl(
   config: Config,
   print = printToStdout,
 ) {
-  // eslint-disable-next-line max-statements
   function printProxyStatus() {
     if (config.proxyUrl === "") {
       print("The proxy URL is not set.");
@@ -29,7 +28,6 @@ export function startRepl(
     print("Paths prefixed with [-] will not be proxied.");
     print("");
 
-    // eslint-disable-next-line array-func/prefer-array-from
     const entries = [...config.proxyPaths.entries()].sort(([path1], [path2]) =>
       path1 < path2 ? -1 : 1,
     );
@@ -125,7 +123,7 @@ export function startRepl(
   });
 
   replServer.context.loadContext = (path: string) => contextRegistry.find(path);
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
+
   replServer.context.context = replServer.context.loadContext("/");
 
   return replServer;

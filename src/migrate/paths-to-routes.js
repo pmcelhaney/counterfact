@@ -1,9 +1,6 @@
-/* eslint-disable no-await-in-loop */
-/* eslint-disable no-console */
 import { promises as fs } from "node:fs";
 import path from "node:path";
 
-// eslint-disable-next-line max-statements
 async function copyAndModifyFiles(sourceDirectory, destinationDirectory) {
   try {
     const entries = await fs.readdir(sourceDirectory, { withFileTypes: true });

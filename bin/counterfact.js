@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-/* eslint-disable complexity */
 
 import fs from "node:fs";
 import { readFile } from "node:fs/promises";
@@ -19,7 +18,7 @@ if (Number.parseInt(process.versions.node.split("."), 10) < MIN_NODE_VERSION) {
   process.stdout.write(
     `Counterfact works with Node version ${MIN_NODE_VERSION}+. You are running version ${process.version}`,
   );
-  // eslint-disable-next-line n/no-process-exit
+
   process.exit(1);
 }
 
@@ -46,7 +45,6 @@ function padTagLine(tagLine) {
   return `${padding}${tagLine}`;
 }
 
-// eslint-disable-next-line max-statements
 function createWatchMessage(config) {
   let watchMessage = "";
 
@@ -98,13 +96,10 @@ function createWatchMessage(config) {
 
   return watchMessage;
 }
-
-// eslint-disable-next-line max-statements, sonarjs/cognitive-complexity
 async function main(source, destination) {
   debug("executing the main function");
 
   const options = program.opts();
-  // eslint-disable-next-line sonar/process-argv
   const args = process.argv;
 
   const destinationPath = nodePath
@@ -270,5 +265,4 @@ program
     "",
   )
   .action(main)
-  // eslint-disable-next-line sonar/process-argv
   .parse(process.argv);

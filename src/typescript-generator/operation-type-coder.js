@@ -89,9 +89,7 @@ export class OperationTypeCoder extends TypeCoder {
     return "never";
   }
 
-  // eslint-disable-next-line max-statements
   writeCode(script) {
-    // eslint-disable-next-line no-param-reassign
     script.comments = READ_ONLY_COMMENTS;
 
     const xType = script.importSharedType("WideOperationArgument");

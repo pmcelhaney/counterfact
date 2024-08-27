@@ -5,6 +5,5 @@ export async function uncachedImport(pathName: string) {
     pathName,
   ).toString()}?cacheBust=${Date.now()}`;
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return, import/no-dynamic-require, no-unsanitized/method
   return await import(fileUrl);
 }

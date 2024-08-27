@@ -16,7 +16,6 @@ interface Schema {
 }
 
 function xmlEscape(xmlString: string): string {
-  // eslint-disable-next-line unicorn/prefer-string-replace-all
   return xmlString.replace(/["&'<>]/gu, (character: string) => {
     switch (character) {
       case "<": {
@@ -54,11 +53,9 @@ function objectToXml(
   Object.entries(json).forEach(([key, value]) => {
     const properties = schema?.properties?.[key];
 
-    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
     if (properties?.attribute) {
       attributes.push(` ${key}="${xmlEscape(String(value))}"`);
     } else {
-      // eslint-disable-next-line @typescript-eslint/no-use-before-define
       xml.push(jsonToXml(value, properties, key));
     }
   });
@@ -78,7 +75,6 @@ export function jsonToXml(
       .map((item) => jsonToXml(item, schema?.items, name))
       .join("");
 
-    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
     if (schema?.xml?.wrapped) {
       return `<${name}>${items}</${name}>`;
     }

@@ -1,4 +1,3 @@
-/* eslint-disable no-magic-numbers */
 import nodePath from "node:path";
 
 import { Coder } from "./coder.js";

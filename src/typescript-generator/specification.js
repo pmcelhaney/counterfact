@@ -3,7 +3,6 @@ import nodePath from "node:path";
 import createDebug from "debug";
 import yaml from "js-yaml";
 
-// eslint-disable-next-line import/no-unresolved
 import { readFile } from "../util/read-file.js";
 import { Requirement } from "./requirement.js";
 
@@ -31,7 +30,7 @@ export class Specification {
     const filePath = nodePath
       .join(fromUrl.split("#").at(0), file)
       .replaceAll("\\", "/")
-      // eslint-disable-next-line prefer-named-capture-group, regexp/prefer-named-capture-group
+      // eslint-disable-next-line regexp/prefer-named-capture-group
       .replace(/:\/([^/])/u, "://$1");
     const fileUrl = filePath === "." ? this.rootUrl : filePath;
 
@@ -46,7 +45,6 @@ export class Specification {
     return rootRequirement.select(path.slice(1));
   }
 
-  // eslint-disable-next-line max-statements
   async loadFile(urlOrPath) {
     debug("loading file %s", urlOrPath);
 

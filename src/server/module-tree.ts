@@ -98,7 +98,6 @@ export class ModuleTree {
     }
 
     if (remainingSegments.length === 0) {
-      // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
       delete directory.files[segment.toLowerCase()];
 
       return;
@@ -116,7 +115,6 @@ export class ModuleTree {
     this.removeModuleFromDirectory(this.root, segments);
   }
 
-  // eslint-disable-next-line @typescript-eslint/max-params
   private buildMatch(
     directory: Directory,
     segment: string,
@@ -153,7 +151,6 @@ export class ModuleTree {
     };
   }
 
-  // eslint-disable-next-line max-statements, @typescript-eslint/max-params
   private matchWithinDirectory(
     directory: Directory,
     segments: string[],
@@ -238,14 +235,12 @@ export class ModuleTree {
       });
     }
 
-    // eslint-disable-next-line unicorn/consistent-function-scoping
     function stripBrackets(string: string) {
       return string.replaceAll(/\{|\}/gu, "");
     }
 
     traverse(this.root, "");
 
-    // eslint-disable-next-line etc/no-assign-mutated-array
     return routes.sort((first, second) =>
       stripBrackets(first.path).localeCompare(stripBrackets(second.path)),
     );

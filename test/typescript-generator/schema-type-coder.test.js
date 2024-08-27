@@ -1,4 +1,3 @@
-/* eslint-disable max-statements */
 import { describe, expect, it } from "@jest/globals";
 import prettier from "prettier";
 
@@ -321,7 +320,6 @@ describe("a SchemaTypeCoder", () => {
   it("generates a type declaration for enum", async () => {
     const coder = new SchemaTypeCoder(
       new Requirement({
-        // eslint-disable-next-line unicorn/no-null
         enum: [1, "two", null],
       }),
     );

@@ -36,20 +36,22 @@ export class CodeGenerator extends EventTarget {
     this.watcher = watch(this.openapiPath, CHOKIDAR_OPTIONS).on(
       "change",
       () => {
-        void generate(this.openapiPath, this.destination, this.generateOptions)
-          // eslint-disable-next-line promise/prefer-await-to-then
-          .then(
-            () => {
-              this.dispatchEvent(new Event("generate"));
+        void generate(
+          this.openapiPath,
+          this.destination,
+          this.generateOptions,
+        ).then(
+          () => {
+            this.dispatchEvent(new Event("generate"));
 
-              return true;
-            },
-            () => {
-              this.dispatchEvent(new Event("failed"));
+            return true;
+          },
+          () => {
+            this.dispatchEvent(new Event("failed"));
 
-              return false;
-            },
-          );
+            return false;
+          },
+        );
       },
     );
 

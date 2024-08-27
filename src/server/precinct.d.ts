@@ -1,3 +1,3 @@
-declare module 'precinct' {
+declare module "precinct" {
   export function paperwork(path: string): string[];
 }

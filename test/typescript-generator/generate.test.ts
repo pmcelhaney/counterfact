@@ -25,7 +25,6 @@ describe("end-to-end test", () => {
       await repository.finished();
 
       for (const [scriptPath, script] of repository.scripts.entries()) {
-        // eslint-disable-next-line no-await-in-loop, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
         expect(`${scriptPath}:${await script.contents()}`).toMatchSnapshot();
       }
 

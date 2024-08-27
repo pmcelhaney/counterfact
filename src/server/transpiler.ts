@@ -51,7 +51,6 @@ export class Transpiler extends EventTarget {
     this.watcher.on(
       "all",
 
-      // eslint-disable-next-line @typescript-eslint/no-misused-promises, max-statements
       async (eventName: string, sourcePathOriginal: string) => {
         debug("transpiler event: %s <%s>", eventName, sourcePathOriginal);
 
@@ -72,7 +71,6 @@ export class Transpiler extends EventTarget {
           try {
             await fs.rm(destinationPath);
           } catch (error) {
-            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
             if ((error as { code: string }).code !== "ENOENT") {
               debug("error removing %s: %o", destinationPath, error);
               this.dispatchEvent(new Event("error"));
@@ -95,7 +93,6 @@ export class Transpiler extends EventTarget {
     await this.watcher?.close();
   }
 
-  // eslint-disable-next-line max-statements
   private async transpileFile(
     eventName: string,
     sourcePath: string,
@@ -105,7 +102,6 @@ export class Transpiler extends EventTarget {
 
     const source = await fs.readFile(sourcePath, "utf8");
 
-    /* eslint-disable import/no-named-as-default-member */
     const result: string = ts.transpileModule(source, {
       compilerOptions: {
         module:
@@ -116,7 +112,6 @@ export class Transpiler extends EventTarget {
         target: ts.ScriptTarget.ES2015,
       },
     }).outputText;
-    /* eslint-enable import/no-named-as-default-member */
 
     const fullDestination = nodePath
       .join(

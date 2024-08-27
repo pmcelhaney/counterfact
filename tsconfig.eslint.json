@@ -1,5 +1,12 @@
 {
   "$schema": "http://json.schemastore.org/tsconfig",
   "extends": "./tsconfig.json",
-  "include": ["src", "templates", "test"]
+  "include": [
+    "src",
+    "templates",
+    "test",
+    "jest.config.js",
+    "eslint.config.cjs"
+  ],
+  "exclude": [".yarn"]
 }

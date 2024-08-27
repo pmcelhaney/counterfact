@@ -40,7 +40,6 @@ export class ModuleLoader extends EventTarget {
   private readonly dependencyGraph = new ModuleDependencyGraph();
 
   private readonly uncachedImport: (moduleName: string) => Promise<unknown> =
-    // eslint-disable-next-line @typescript-eslint/require-await
     async function (moduleName: string) {
       throw new Error(`uncachedImport not set up; importing ${moduleName}`);
     };
@@ -62,7 +61,7 @@ export class ModuleLoader extends EventTarget {
       CHOKIDAR_OPTIONS,
     ).on(
       "all",
-      // eslint-disable-next-line max-statements
+
       (eventName: string, pathNameOriginal: string) => {
         const pathName = pathNameOriginal.replaceAll("\\", "/");
 
@@ -143,7 +142,6 @@ export class ModuleLoader extends EventTarget {
     await Promise.all(imports);
   }
 
-  // eslint-disable-next-line max-statements
   private async loadEndpoint(pathName: string) {
     debug("importing module: %s", pathName);
 
@@ -167,7 +165,6 @@ export class ModuleLoader extends EventTarget {
           ? uncachedRequire
           : uncachedImport;
 
-      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
       const endpoint = (await doImport(pathName)) as ContextModule | Module;
 
       this.dispatchEvent(new Event("add"));
@@ -180,14 +177,13 @@ export class ModuleLoader extends EventTarget {
             directory,
 
             // @ts-expect-error TS says Context has no constructable signatures but that's not true?
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+
             new endpoint.Context({
               loadContext,
             }),
           );
         }
       } else {
-        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
         this.registry.add(url, endpoint as Module);
       }
     } catch (error: unknown) {

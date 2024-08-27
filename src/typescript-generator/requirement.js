@@ -58,23 +58,19 @@ export class Requirement {
   map(callback) {
     const result = [];
 
-    // eslint-disable-next-line array-callback-return
     this.forEach((value, key) => result.push(callback(value, key)));
 
     return result;
   }
 
   flatMap(callback) {
-    // eslint-disable-next-line unicorn/prefer-array-flat-map
     return this.map(callback).flat();
   }
 
   find(callback) {
-    // eslint-disable-next-line init-declarations
     let result;
 
     this.forEach((value, key) => {
-      // eslint-disable-next-line  n/callback-return
       if (result === undefined && callback(value, key)) {
         result = value;
       }

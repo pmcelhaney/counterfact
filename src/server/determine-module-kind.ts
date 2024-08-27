@@ -9,7 +9,6 @@ interface PackageJsonWithType {
   type?: string;
 }
 
-// eslint-disable-next-line max-statements
 export async function determineModuleKind(modulePath: string) {
   if (modulePath.endsWith(".cjs")) {
     return "commonjs";
@@ -27,7 +26,6 @@ export async function determineModuleKind(modulePath: string) {
 
   if (existsSync(packageJsonPath)) {
     try {
-      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
       const packageJson: PackageJsonWithType = JSON.parse(
         await fs.readFile(packageJsonPath, "utf8"),
       ) as PackageJsonWithType;

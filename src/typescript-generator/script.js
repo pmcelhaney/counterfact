@@ -57,19 +57,19 @@ export class Script {
 
     exportStatement.promise = coder
       .delegate()
-      // eslint-disable-next-line promise/prefer-await-to-then
+
       .then((availableCoder) => {
         exportStatement.name = name;
         exportStatement.code = availableCoder.write(this);
 
         return availableCoder;
       })
-      // eslint-disable-next-line promise/prefer-await-to-then
+
       .catch((error) => {
         exportStatement.code = `{/* error creating export "${name}" for ${this.path}: ${error.stack} */}`;
         exportStatement.error = error;
       })
-      // eslint-disable-next-line promise/prefer-await-to-then
+
       .finally(() => {
         exportStatement.done = true;
       });
@@ -83,7 +83,6 @@ export class Script {
     this.export(coder, isType, true);
   }
 
-  // eslint-disable-next-line max-statements
   import(coder, isType = false, isDefault = false) {
     debug("import coder: %s", coder.id);
 
