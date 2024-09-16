@@ -85,7 +85,7 @@
     "@hapi/accept": "6.0.3",
     "@types/json-schema": "7.0.15",
     "ast-types": "0.14.2",
-    "chokidar": "3.6.0",
+    "chokidar": "4.0.0",
     "commander": "12.1.0",
     "debug": "4.3.7",
     "fetch": "1.1.0",
