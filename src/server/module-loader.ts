@@ -56,13 +56,19 @@ export class ModuleLoader extends EventTarget {
   }
 
   public async watch(): Promise<void> {
-    this.watcher = watch(
-      `${this.basePath}/**/*.{js,mjs,ts,mts,cjs,cts}`,
-      CHOKIDAR_OPTIONS,
-    ).on(
+    this.watcher = watch(this.basePath, CHOKIDAR_OPTIONS).on(
       "all",
 
       (eventName: string, pathNameOriginal: string) => {
+        // const JS_EXTENSIONS = ["js", "mjs", "cjs", "ts", "mts", "cts"];
+
+        // if (
+        //   !JS_EXTENSIONS.some((extension) =>
+        //     pathNameOriginal.endsWith(`.${extension}`),
+        //   )
+        // )
+        //   return;
+
         const pathName = pathNameOriginal.replaceAll("\\", "/");
 
         if (pathName.includes("$.context") && eventName === "add") {
