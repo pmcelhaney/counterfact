@@ -59,7 +59,7 @@
     "@types/koa-static": "4.0.4",
     "@types/lodash": "4.17.9",
     "copyfiles": "2.4.1",
-    "eslint": "9.11.0",
+    "eslint": "9.11.1",
     "eslint-config-hardcore": "47.0.1",
     "eslint-formatter-github-annotations": "0.1.0",
     "eslint-import-resolver-typescript": "3.6.3",
