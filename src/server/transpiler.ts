@@ -40,7 +40,7 @@ export class Transpiler extends EventTarget {
 
   public async watch(): Promise<void> {
     debug("transpiler: watch");
-    this.watcher = chokidarWatch(`${this.sourcePath}/**/*.{ts,mts,js,mjs}`, {
+    this.watcher = chokidarWatch(this.sourcePath, {
       ...CHOKIDAR_OPTIONS,
       ignored: `${this.sourcePath}/js`,
       ignoreInitial: false,
@@ -53,6 +53,15 @@ export class Transpiler extends EventTarget {
 
       async (eventName: string, sourcePathOriginal: string) => {
         debug("transpiler event: %s <%s>", eventName, sourcePathOriginal);
+
+        const JS_EXTENSIONS = ["js", "mjs", "ts", "mts"];
+
+        if (
+          !JS_EXTENSIONS.some((extension) =>
+            sourcePathOriginal.endsWith(`.${extension}`),
+          )
+        )
+          return;
 
         const sourcePath = sourcePathOriginal.replaceAll("\\", "/");
 
