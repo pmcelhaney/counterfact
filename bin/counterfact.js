@@ -145,7 +145,6 @@ async function main(source, destination) {
         options.watchTypes,
     },
 
-    includeSwaggerUi: true,
     openApiPath: source,
     port: options.port,
     proxyPaths: new Map([["", Boolean(options.proxyUrl)]]),
@@ -248,7 +247,6 @@ program
   )
   .argument("[destination]", "path to generated code", ".")
   .option("-p, --port <number>", "server port number", DEFAULT_PORT)
-  .option("--swagger", "include swagger-ui")
   .option("-o, --open", "open a browser")
   .option("-g, --generate", "generate all code for both routes and types")
   .option("--generate-types", "generate types")
