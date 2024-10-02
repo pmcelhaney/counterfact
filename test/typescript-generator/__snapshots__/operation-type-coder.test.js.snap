@@ -161,6 +161,69 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2) 1`
 "
 `;
 
+exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2, consumes in root) 1`] = `
+"type TestType = (
+  $: OmitValueWhenNever<{
+    query: { name?: string };
+    path: { id?: string };
+    header: { name?: string };
+    body: Type;
+    context: ExternalType;
+    response: ResponseBuilderFactory<{
+      200: {
+        headers: never;
+        requiredHeaders: never;
+        content: {
+          "application/json": {
+            schema: Type;
+          };
+        };
+      };
+      400: {
+        headers: never;
+        requiredHeaders: never;
+        content: {
+          "application/json": {
+            schema: Type;
+          };
+        };
+      };
+      [statusCode in Exclude<HttpStatusCode, 200 | 400>]: {
+        headers: never;
+        requiredHeaders: never;
+        content: {
+          "application/json": {
+            schema: Type;
+          };
+        };
+      };
+    }>;
+    x: SharedType;
+    proxy: (url: string) => COUNTERFACT_RESPONSE;
+    user: never;
+  }>,
+) =>
+  | {
+      status: 200;
+      contentType?: "application/json";
+      body?: Type;
+    }
+  | {
+      status: 400;
+      contentType?: "application/json";
+      body?: Type;
+    }
+  | {
+      status: number | undefined;
+      contentType?: "application/json";
+      body?: Type;
+    }
+  | { status: 415; contentType: "text/plain"; body: string }
+  | COUNTERFACT_RESPONSE
+  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE };
+"
+`;
+
 exports[`an OperationTypeCoder generates a complex post operation 1`] = `
 "type TestType = (
   $: OmitValueWhenNever<{
