@@ -41,6 +41,30 @@ describe("a module loader", () => {
       expect(registry.exists("GET", "/a/b/c")).toBe(true);
     });
   });
+
+  it("maps /index to /", async () => {
+    await usingTemporaryFiles(async ($) => {
+      await $.add(
+        "index.js",
+        `export function GET() {
+          return {
+              body: "GET from a/b/c"
+          }; 
+      }`,
+      );
+
+      await $.add("package.json", '{ "type": "module" }');
+
+      const registry: Registry = new Registry();
+      const loader: ModuleLoader = new ModuleLoader($.path(""), registry);
+
+      await loader.load();
+
+      expect(registry.exists("GET", "/index")).toBe(true);
+      expect(registry.exists("GET", "/")).toBe(true);
+    });
+  });
+
   it("updates the registry when a file is deleted", async () => {
     await usingTemporaryFiles(async ($) => {
       await $.add(
