@@ -100,6 +100,7 @@ async function main(source, destination) {
   debug("executing the main function");
 
   const options = program.opts();
+
   const args = process.argv;
 
   const destinationPath = nodePath
@@ -108,12 +109,17 @@ async function main(source, destination) {
 
   const basePath = nodePath.resolve(destinationPath).replaceAll("\\", "/");
 
-  // If no options are provided, default to all options
-  if (!args.some((argument) => argument.startsWith("-"))) {
-    options.repl = true;
-    options.serve = true;
-    options.watch = true;
-    options.generate = true;
+  // If no action-related option is provided, default to all options
+
+  const actions = ["repl", "serve", "watch", "generate"];
+  if (
+    !Object.keys(options).some((argument) =>
+      actions.some((action) => argument.startsWith(action)),
+    )
+  ) {
+    for (const action of actions) {
+      options[action] = true;
+    }
   }
 
   debug("options: %o", options);
