@@ -114,13 +114,17 @@ export class OperationTypeCoder extends TypeCoder {
       script,
     );
 
-    const bodyRequirement = this.requirement.get("consumes")
-      ? parameters
-          .find((parameter) =>
-            ["body", "formData"].includes(parameter.get("in").data),
-          )
-          .get("schema")
-      : this.requirement.select("requestBody/content/application~1json/schema");
+    const bodyRequirement =
+      this.requirement.get("consumes") ||
+      this.requirement.specification?.rootRequirement?.get("consumes")
+        ? parameters
+            ?.find((parameter) =>
+              ["body", "formData"].includes(parameter.get("in").data),
+            )
+            ?.get("schema")
+        : this.requirement.select(
+            "requestBody/content/application~1json/schema",
+          );
 
     const bodyType =
       bodyRequirement === undefined
