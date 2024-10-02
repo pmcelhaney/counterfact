@@ -60,14 +60,14 @@ export class ModuleLoader extends EventTarget {
       "all",
 
       (eventName: string, pathNameOriginal: string) => {
-        // const JS_EXTENSIONS = ["js", "mjs", "cjs", "ts", "mts", "cts"];
+        const JS_EXTENSIONS = ["js", "mjs", "cjs", "ts", "mts", "cts"];
 
-        // if (
-        //   !JS_EXTENSIONS.some((extension) =>
-        //     pathNameOriginal.endsWith(`.${extension}`),
-        //   )
-        // )
-        //   return;
+        if (
+          !JS_EXTENSIONS.some((extension) =>
+            pathNameOriginal.endsWith(`.${extension}`),
+          )
+        )
+          return;
 
         const pathName = pathNameOriginal.replaceAll("\\", "/");
 
