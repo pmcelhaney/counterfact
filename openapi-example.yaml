@@ -4,6 +4,20 @@ info:
   title: Sample API
   description: A sample API to illustrate OpenAPI concepts
 paths:
+  /:
+    get:
+      description: the root
+      responses:
+        default:
+          description: root
+          content:
+            text/plain:
+              schema:
+                type: string
+              examples:
+                root:
+                  value: This is the root.
+
   /count:
     get:
       description: outputs the number of time each URL was visited

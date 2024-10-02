@@ -73,7 +73,7 @@ export class OperationTypeCoder extends TypeCoder {
       .replaceAll("~1", "/");
 
     return `${nodePath
-      .join("types/paths", pathString)
+      .join("types/paths", pathString === "/" ? "/index" : pathString)
       .replaceAll("\\", "/")}.types.ts`;
   }
 

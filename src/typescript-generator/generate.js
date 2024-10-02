@@ -81,9 +81,10 @@ export async function generate(
   paths.forEach((pathDefinition, key) => {
     debug("processing path %s", key);
 
+    const path = key === "/" ? "/index" : key;
     pathDefinition.forEach((operation, requestMethod) => {
       repository
-        .get(`routes${key}.ts`)
+        .get(`routes${path}.ts`)
         .export(new OperationCoder(operation, requestMethod, securitySchemes));
     });
   });

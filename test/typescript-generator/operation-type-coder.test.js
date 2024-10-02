@@ -67,6 +67,15 @@ describe("an OperationTypeCoder", () => {
     expect(coder.modulePath()).toBe("types/paths/hello/world.types.ts");
   });
 
+  it("returns the module path for / ", () => {
+    const coder = new OperationTypeCoder(
+      new Requirement({}, "#/paths/~1/get"),
+      "get",
+    );
+
+    expect(coder.modulePath()).toBe("types/paths/index.types.ts");
+  });
+
   it("generates a complex post operation", async () => {
     const requirement = new Requirement(
       {

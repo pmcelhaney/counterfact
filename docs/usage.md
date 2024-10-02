@@ -83,7 +83,7 @@ See [Generated Code FAQ](./faq-generated-code.md) for details.
 
 ## Routing is where it's at 🔀
 
-In the `routes` directory, you should find TypeScript files with code like the following.
+In the `routes` directory, you should find a TypeScript file corresponding to each of the paths in your OpenAPI file. For example "/users/{userid}" will create `./routes/users/{userid}.ts`. (If you have a path for the root, "/", it will map to `./routes/index.ts`.) The contents of each file will look something like this:
 
 ```ts
 export const GET: HTTP_GET = ($) => {
@@ -95,7 +95,7 @@ export const POST: HTTP_POST = ($) => {
 };
 ```
 
-The TypeScript file's path corresponds to the endpoint's URL. Each of the exported functions implements an HTTP request method (GET, POST, PUT, etc.). Each of these functions takes one argument -- `$` -- which is used to access request information, build a response, and interact with the server's state.
+Each of the exported functions implements an HTTP request method (GET, POST, PUT, etc.). Each of these functions takes one argument -- `$` -- which is used to access request information, build a response, and interact with the server's state.
 
 > [!TIP]
 > If you're familiar with Express, `$` is sort of a combination of `req` and `res` with type safety and extra super powers.

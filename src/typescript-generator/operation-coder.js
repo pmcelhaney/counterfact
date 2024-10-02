@@ -2,6 +2,7 @@ import nodePath from "node:path";
 
 import { Coder } from "./coder.js";
 import { OperationTypeCoder } from "./operation-type-coder.js";
+import path from "node:path";
 
 export class OperationCoder extends Coder {
   constructor(requirement, requestMethod, securitySchemes = {}) {
