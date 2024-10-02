@@ -67,6 +67,15 @@ describe("an OperationTypeCoder", () => {
     expect(coder.modulePath()).toBe("types/paths/hello/world.types.ts");
   });
 
+  it("returns the module path for / ", () => {
+    const coder = new OperationTypeCoder(
+      new Requirement({}, "#/paths/~1/get"),
+      "get",
+    );
+
+    expect(coder.modulePath()).toBe("types/paths/index.types.ts");
+  });
+
   it("generates a complex post operation", async () => {
     const requirement = new Requirement(
       {
@@ -164,6 +173,52 @@ describe("an OperationTypeCoder", () => {
       },
       "#/paths/hello/post",
     );
+
+    const coder = new OperationTypeCoder(requirement, "get");
+
+    await expect(
+      format(`type TestType = ${coder.write(dummyScript)}`),
+    ).resolves.toMatchSnapshot();
+  });
+
+  it("generates a complex post operation (OpenAPI 2, consumes in root)", async () => {
+    const requirement = new Requirement(
+      {
+        parameters: [
+          { in: "path", name: "id", type: "string" },
+          { in: "query", name: "name", type: "string" },
+          { in: "header", name: "name", type: "string" },
+          {
+            in: "body",
+            name: "body",
+            schema: { $ref: "#/components/schemas/Example" },
+          },
+        ],
+
+        produces: ["application/json"],
+
+        responses: {
+          200: {
+            schema: { $ref: "#/components/schemas/Example" },
+          },
+
+          400: {
+            schema: { $ref: "#/components/schemas/Error" },
+          },
+
+          default: {
+            schema: { $ref: "#/components/schemas/Error" },
+          },
+        },
+      },
+      "#/paths/hello/post",
+    );
+
+    requirement.specification = {
+      rootRequirement: new Requirement({
+        consumes: ["application/json"],
+      }),
+    };
 
     const coder = new OperationTypeCoder(requirement, "get");
 

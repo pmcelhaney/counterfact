@@ -73,7 +73,7 @@ export class OperationTypeCoder extends TypeCoder {
       .replaceAll("~1", "/");
 
     return `${nodePath
-      .join("types/paths", pathString)
+      .join("types/paths", pathString === "/" ? "/index" : pathString)
       .replaceAll("\\", "/")}.types.ts`;
   }
 
@@ -114,13 +114,17 @@ export class OperationTypeCoder extends TypeCoder {
       script,
     );
 
-    const bodyRequirement = this.requirement.get("consumes")
-      ? parameters
-          .find((parameter) =>
-            ["body", "formData"].includes(parameter.get("in").data),
-          )
-          .get("schema")
-      : this.requirement.select("requestBody/content/application~1json/schema");
+    const bodyRequirement =
+      this.requirement.get("consumes") ||
+      this.requirement.specification?.rootRequirement?.get("consumes")
+        ? parameters
+            ?.find((parameter) =>
+              ["body", "formData"].includes(parameter.get("in").data),
+            )
+            ?.get("schema")
+        : this.requirement.select(
+            "requestBody/content/application~1json/schema",
+          );
 
     const bodyType =
       bodyRequirement === undefined

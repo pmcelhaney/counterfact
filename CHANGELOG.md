@@ -1,5 +1,11 @@
 # counterfact
 
+## 1.0.2
+
+### Patch Changes
+
+- 2748fa2: fix: request body type is not found in OpenAPI 2 when consumes is in the root
+
 ## 1.0.1
 
 ### Patch Changes

@@ -190,6 +190,7 @@ export class ModuleLoader extends EventTarget {
           );
         }
       } else {
+        if (url === "/index") this.registry.add("/", endpoint as Module);
         this.registry.add(url, endpoint as Module);
       }
     } catch (error: unknown) {
