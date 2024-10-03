@@ -33,7 +33,6 @@ This command will generate TypeScript code for the Swagger Pet Store and start t
 >
 > Options:
 >   --port <number>       server port number (default: 3100)
->   --swagger             include swagger-ui
 >   -o, --open            open a browser
 >   -g, --generate        generate all code for both routes and types
 >   --generate-types      generate types
