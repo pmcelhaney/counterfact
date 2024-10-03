@@ -93,7 +93,7 @@ module.exports = [
   },
   {
     // Configuration for test files
-    files: ["*.test.js"],
+    files: ["*.test.js", "*.test.ts"],
     languageOptions: {
       parser: typescriptParser,
       parserOptions: {
