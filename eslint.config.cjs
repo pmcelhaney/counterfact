@@ -20,6 +20,7 @@ module.exports = [
       "coverage/**",
       "reports/**",
       "out/**",
+      "dist/**",
       "_includes",
       ".stryker-tmp",
       ".yarn/**",
@@ -130,6 +131,7 @@ module.exports = [
   {
     // Configuration for TypeScript files
     files: ["**/*.ts"],
+    ignores: ["dist/**", "out/**"],
     languageOptions: {
       parser: typescriptParser,
       parserOptions: {
