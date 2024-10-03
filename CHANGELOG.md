@@ -1,5 +1,12 @@
 # counterfact
 
+## 1.1.0
+
+### Minor Changes
+
+- c586ab8: minor change to REPL: if no action-related argument is passed (--generate, --watch, --serve, --repl), do all of the actions
+- e4e1009: If a path is defined at the root (/) it's mapped to index.ts
+
 ## 1.0.2
 
 ### Patch Changes
