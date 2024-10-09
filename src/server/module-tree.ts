@@ -187,12 +187,12 @@ export class ModuleTree {
       );
     }
 
-    const wildcardDirectory = Object.values(directory.directories).find(
+    const wildcardDirectories = Object.values(directory.directories).filter(
       (subdirectory) => subdirectory.isWildcard,
     );
 
-    if (wildcardDirectory) {
-      return this.matchWithinDirectory(
+    for (const wildcardDirectory of wildcardDirectories) {
+      const match = this.matchWithinDirectory(
         wildcardDirectory,
         remainingSegments,
         {
@@ -201,6 +201,10 @@ export class ModuleTree {
         },
         `${matchedPath}/${wildcardDirectory.rawName}`,
       );
+
+      if (match !== undefined) {
+        return match;
+      }
     }
 
     return undefined;
