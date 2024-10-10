@@ -1,5 +1,11 @@
 # counterfact
 
+## 1.1.1
+
+### Patch Changes
+
+- 1af9ec9: Fixes logic in module-tree when a path has multiple wildcard children at the same position
+
 ## 1.1.0
 
 ### Minor Changes
