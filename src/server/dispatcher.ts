@@ -251,7 +251,7 @@ export class Dispatcher {
       path = path.replace(new RegExp(this.openApiDocument.basePath, "iu"), "");
     }
 
-    const { matchedPath } = this.registry.handler(path);
+    const { matchedPath } = this.registry.handler(path, method);
     const operation = this.operationForPathAndMethod(matchedPath, method);
 
     const response = await this.registry.endpoint(

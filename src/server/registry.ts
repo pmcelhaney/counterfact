@@ -111,11 +111,11 @@ export class Registry {
   }
 
   public exists(method: HttpMethods, url: string) {
-    return Boolean(this.handler(url).module?.[method]);
+    return Boolean(this.handler(url, method).module?.[method]);
   }
 
-  public handler(url: string) {
-    const match = this.moduleTree.match(url);
+  public handler(url: string, method: string) {
+    const match = this.moduleTree.match(url, method);
 
     return {
       matchedPath: match?.matchedPath ?? "",
@@ -133,7 +133,7 @@ export class Registry {
       query?: { [key: string]: string };
     } = {},
   ) {
-    const handler = this.handler(url);
+    const handler = this.handler(url, httpRequestMethod);
 
     debug("handler for %s: %o", url, handler);
 

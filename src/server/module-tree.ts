@@ -115,15 +115,22 @@ export class ModuleTree {
     this.removeModuleFromDirectory(this.root, segments);
   }
 
+  private fileModuleDefined(file: File, method: string) {
+    return (file.module as { [key: string]: any })[method] !== undefined;
+  }
+
   private buildMatch(
     directory: Directory,
     segment: string,
     pathVariables: { [key: string]: string },
     matchedPath: string,
+    method: string,
   ) {
     const match =
       directory.files[segment.toLowerCase()] ??
-      Object.values(directory.files).find((file) => file.isWildcard);
+      Object.values(directory.files).find(
+        (file) => file.isWildcard && this.fileModuleDefined(file, method),
+      );
 
     if (match === undefined) {
       return undefined;
@@ -156,6 +163,7 @@ export class ModuleTree {
     segments: string[],
     pathVariables: { [key: string]: string },
     matchedPath: string,
+    method: string,
   ): Match | undefined {
     if (segments.length === 0) {
       return undefined;
@@ -173,7 +181,13 @@ export class ModuleTree {
       remainingSegments.length === 0 ||
       (remainingSegments.length === 1 && remainingSegments[0] === "")
     ) {
-      return this.buildMatch(directory, segment, pathVariables, matchedPath);
+      return this.buildMatch(
+        directory,
+        segment,
+        pathVariables,
+        matchedPath,
+        method,
+      );
     }
 
     const exactMatch = directory.directories[segment.toLowerCase()];
@@ -184,15 +198,16 @@ export class ModuleTree {
         remainingSegments,
         pathVariables,
         `${matchedPath}/${segment}`,
+        method,
       );
     }
 
-    const wildcardDirectory = Object.values(directory.directories).find(
+    const wildcardDirectories = Object.values(directory.directories).filter(
       (subdirectory) => subdirectory.isWildcard,
     );
 
-    if (wildcardDirectory) {
-      return this.matchWithinDirectory(
+    for (const wildcardDirectory of wildcardDirectories) {
+      const match = this.matchWithinDirectory(
         wildcardDirectory,
         remainingSegments,
         {
@@ -200,18 +215,24 @@ export class ModuleTree {
           [wildcardDirectory.name]: segment,
         },
         `${matchedPath}/${wildcardDirectory.rawName}`,
+        method,
       );
+
+      if (match !== undefined) {
+        return match;
+      }
     }
 
     return undefined;
   }
 
-  public match(url: string) {
+  public match(url: string, method: string) {
     return this.matchWithinDirectory(
       this.root,
       url.split("/").slice(1),
       {},
       "",
+      method,
     );
   }
 
