@@ -1,5 +1,11 @@
 # counterfact
 
+## 1.1.2
+
+### Patch Changes
+
+- b5578b5: fix vscode:// links on Windows (#1058)
+
 ## 1.1.1
 
 ### Patch Changes
