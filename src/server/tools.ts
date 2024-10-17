@@ -1,6 +1,7 @@
 import { JSONSchemaFaker, type Schema } from "json-schema-faker";
 
 JSONSchemaFaker.option("useExamplesValue", true);
+JSONSchemaFaker.option("fillProperties", false);
 
 export class Tools {
   private readonly headers: { [key: string]: string[] | string | undefined };
