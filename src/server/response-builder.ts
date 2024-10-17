@@ -8,6 +8,7 @@ JSONSchemaFaker.option("minItems", 0);
 JSONSchemaFaker.option("maxItems", 20);
 JSONSchemaFaker.option("failOnInvalidTypes", false);
 JSONSchemaFaker.option("failOnInvalidFormat", false);
+JSONSchemaFaker.option("fillProperties", false);
 
 function convertToXmlIfNecessary(
   type: string,
