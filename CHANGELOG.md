@@ -1,5 +1,11 @@
 # counterfact
 
+## 1.1.3
+
+### Patch Changes
+
+- 707a0ec: Updates JSONSchemaFaker to have the fillProperties option false so it will not make up fake object properties
+
 ## 1.1.2
 
 ### Patch Changes
