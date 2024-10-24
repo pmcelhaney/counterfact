@@ -3,29 +3,28 @@ import { describe, expect, it } from "@jest/globals";
 import { Coder } from "../../src/typescript-generator/coder.js";
 import { Repository } from "../../src/typescript-generator/repository.js";
 import { Specification } from "../../src/typescript-generator/specification.js";
+import { Requirement } from "../../src/typescript-generator/requirement.js";
 
 describe("integration Test", () => {
   it("writes some code", async () => {
-    const specification = new Specification();
+    const specification = new Specification(
+      new Requirement({
+        paths: {
+          "/accounts": {
+            get: {},
+            post: {},
+          },
 
-    specification.cache.set("openapi.yaml", {
-      paths: {
-        "/accounts": {
-          get: {},
-          post: {},
+          "/accounts/{id}": {
+            get: {},
+            put: {},
+          },
         },
-
-        "/accounts/{id}": {
-          get: {},
-          put: {},
-        },
-      },
-    });
+      }),
+    );
 
     const repository = new Repository();
-    const requirement = await specification.requirementAt(
-      "openapi.yaml#/paths",
-    );
+    const requirement = await specification.getRequirement("#/paths");
 
     class OperationCoder extends Coder {
       *names() {

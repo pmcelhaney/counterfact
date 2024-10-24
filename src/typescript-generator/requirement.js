@@ -10,7 +10,7 @@ export class Requirement {
   }
 
   reference() {
-    return this.specification.requirementAt(this.data.$ref, this.url);
+    return this.specification.getRequirement(this.data.$ref);
   }
 
   has(item) {

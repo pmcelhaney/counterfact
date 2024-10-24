@@ -12,11 +12,11 @@ describe("a Specification", () => {
     await withTemporaryFiles(
       { "openapi.yaml": "hello:\n  world" },
       async (temporaryDirectory, { path }) => {
-        const specification = new Specification();
+        const specification = await Specification.fromFile(
+          path("openapi.yaml"),
+        );
 
-        await specification.loadFile(path("openapi.yaml"));
-
-        expect(specification.cache.get(path("openapi.yaml"))).toStrictEqual({
+        expect(specification.rootRequirement.data).toStrictEqual({
           hello: "world",
         });
       },
@@ -27,13 +27,11 @@ describe("a Specification", () => {
     await withTemporaryFiles(
       { "openapi.yaml": "hello:\n  world" },
       async (temporaryDirectory, { path }) => {
-        const specification = new Specification();
-
         const { href } = pathToFileURL(path("openapi.yaml"));
 
-        await specification.loadFile(href);
+        const specification = await Specification.fromFile(href);
 
-        expect(specification.cache.get(href)).toStrictEqual({
+        expect(specification.rootRequirement.data).toStrictEqual({
           hello: "world",
         });
       },
@@ -49,12 +47,9 @@ describe("a Specification", () => {
 
     const server = app.listen(0);
     const url = `http://localhost:${server.address().port}/`;
+    const specification = await Specification.fromFile(url);
 
-    const specification = new Specification();
-
-    await specification.loadFile(url);
-
-    expect(specification.cache.get(url)).toStrictEqual({
+    expect(specification.rootRequirement.data).toStrictEqual({
       hello: "world",
     });
 
@@ -69,87 +64,30 @@ describe("a Specification", () => {
     });
   });
 
-  it("returns a requirement for a URL", async () => {
-    const specification = new Specification();
+  it("looks for requirements in the root document if no path is provided", () => {
+    const person = {
+      properties: {
+        name: { type: "string" },
+        phone: { type: "string" },
+      },
 
-    specification.cache.set(
-      "openapi.yaml",
-      Promise.resolve({
+      type: "object",
+    };
+
+    const specification = new Specification(
+      new Requirement({
         components: {
           schemas: {
-            Person: {
-              properties: {
-                name: { type: "string" },
-                phone: { type: "string" },
-              },
-
-              type: "object",
-            },
+            Person: person,
           },
         },
       }),
     );
 
-    const person = new Requirement(
-      {
-        properties: {
-          name: { type: "string" },
-          phone: { type: "string" },
-        },
-
-        type: "object",
-      },
-
-      "openapi.yaml#/components/schemas/Person",
-      specification,
-    );
-
-    const requirement = await specification.requirementAt(
-      "openapi.yaml#/components/schemas/Person",
-    );
-
-    expect(requirement).toStrictEqual(person);
-  });
-
-  it("looks for requirements in the root document if no path is provided", async () => {
-    const specification = new Specification("openapi.yaml");
-
-    specification.cache.set(
-      "openapi.yaml",
-      Promise.resolve({
-        components: {
-          schemas: {
-            Person: {
-              properties: {
-                name: { type: "string" },
-                phone: { type: "string" },
-              },
-
-              type: "object",
-            },
-          },
-        },
-      }),
-    );
-
-    const person = new Requirement(
-      {
-        properties: {
-          name: { type: "string" },
-          phone: { type: "string" },
-        },
-
-        type: "object",
-      },
-
-      "openapi.yaml#/components/schemas/Person",
-      specification,
-    );
-
-    const requirement = await specification.requirementAt(
+    const requirement = specification.getRequirement(
       "#/components/schemas/Person",
     );
 
-    expect(requirement).toStrictEqual(person);
+    expect(requirement.data).toStrictEqual(person);
   });
 });
