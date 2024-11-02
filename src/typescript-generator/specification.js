@@ -1,23 +1,10 @@
 import nodePath from "node:path";
 
 import createDebug from "debug";
-import yaml from "js-yaml";
-
-import { readFile } from "../util/read-file.js";
 import { Requirement } from "./requirement.js";
 import { bundle } from "@apidevtools/json-schema-ref-parser";
-import { url } from "node:inspector";
 
 const debug = createDebug("counterfact:typescript-generator:specification");
-
-const EMPTY_OPENAPI = `{
-    "openapi": "3.0.0",
-    "info": {
-      "title": "Sample API",
-      "version": "1.0.0"
-    },
-    "paths": {}
-  }`;
 
 export class Specification {
   constructor(rootRequirement) {
