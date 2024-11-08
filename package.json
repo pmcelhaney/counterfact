@@ -93,7 +93,7 @@
     "handlebars": "4.7.8",
     "http-terminator": "3.2.0",
     "js-yaml": "4.1.0",
-    "json-schema-faker": "0.5.6",
+    "json-schema-faker": "0.5.8",
     "jsonwebtoken": "9.0.2",
     "koa": "2.15.3",
     "koa-bodyparser": "4.4.1",
