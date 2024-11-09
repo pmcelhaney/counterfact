@@ -21,9 +21,9 @@ export class Requirement {
     return item in this.data;
   }
 
-  get(item) {
+  get(item, escape = false) {
     if (this.isReference) {
-      return this.reference().get(item);
+      return this.reference().get(item, escape);
     }
 
     if (!this.has(item)) {
@@ -32,7 +32,9 @@ export class Requirement {
 
     return new Requirement(
       this.data[item],
-      `${this.url}/${item}`,
+      escape
+        ? `${this.url}/${this.escapeJsonPointer(item)}`
+        : `${this.url}/${item}`,
       this.specification,
     );
   }
@@ -41,8 +43,9 @@ export class Requirement {
     const parts = path.split("/").map(this.unescapeJsonPointer);
 
     let result = this;
+
     for (const part of parts) {
-      result = result.get(part);
+      result = result.get(part, true);
 
       if (result === undefined) {
         return undefined;
