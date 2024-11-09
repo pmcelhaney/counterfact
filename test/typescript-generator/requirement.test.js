@@ -59,12 +59,8 @@ describe("a Requirement", () => {
     expect(root.select("a/b/c").data).toStrictEqual({ name: "c" });
   });
 
-  it.skip("select(path) with $ref", () => {
-    const b = root.select("a/b");
-    expect(b.select("target").data).toStrictEqual({
-      name: "target",
-      found: "yep",
-    });
+  it("select(path) with $ref", () => {
+    expect(root.select("a/b/target/name").data).toStrictEqual("target");
   });
 
   it("get(name) - does not escape special characters", () => {
