@@ -14,10 +14,18 @@ export class Requirement {
   }
 
   has(item) {
+    if (this.isReference) {
+      return this.reference().has(item);
+    }
+
     return item in this.data;
   }
 
   get(item) {
+    if (this.isReference) {
+      return this.reference().get(item);
+    }
+
     if (!this.has(item)) {
       return undefined;
     }
@@ -30,23 +38,18 @@ export class Requirement {
   }
 
   select(path, data = this.data, basePath = "") {
-    const [head, ...tail] = path.split("/");
+    const parts = path.split("/").map(this.unescapeJsonPointer);
 
-    const branch = data[this.unescapeJsonPointer(head)];
+    let result = this;
+    for (const part of parts) {
+      result = result.get(part);
 
-    if (!branch) {
-      return undefined;
+      if (result === undefined) {
+        return undefined;
+      }
     }
 
-    if (tail.length === 0) {
-      return new Requirement(
-        branch,
-        `${this.url}/${basePath}${head}`,
-        this.specification,
-      );
-    }
-
-    return this.select(tail.join("/"), branch, `${basePath}${head}/`);
+    return result;
   }
 
   forEach(callback) {
