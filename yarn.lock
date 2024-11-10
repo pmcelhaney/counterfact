@@ -5198,13 +5198,13 @@ eslint-plugin-ext@^0.1.0:
   resolved "https://registry.yarnpkg.com/eslint-plugin-ext/-/eslint-plugin-ext-0.1.0.tgz#db674e42a5f9b4535aaeefe10d78e9694482d820"
   integrity sha512-CbZgte+kC8u6uymkwtgDPHLgA3IRbhermH88o9VXDh4Pa1ds1QIo0ojJc+mvq5zjf3mm4GT/pTTFYZT9nQORyg==
 
-eslint-plugin-file-progress@1.5.0:
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-file-progress/-/eslint-plugin-file-progress-1.5.0.tgz#beceb622875d3cad8f2c05afe23d2426ffa80be8"
-  integrity sha512-get8oNfacIagP+igSzrEZhepPgodtdwACVeKQsE1fVvTL15tZvgCv8K4B2lKT4FZOZOyhxSkQGnWyjEOx1uoIw==
+eslint-plugin-file-progress@3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-file-progress/-/eslint-plugin-file-progress-3.0.0.tgz#7d180dd6efb491080738d60a331a85a69e771bfc"
+  integrity sha512-9/KRlIK5J//PLwSHnOk11Rl1FV1hhNaYWP4tCte7dPus7ylwnC3fNuukCgh5faQELqxY5JrSWQbQ8wUP8nfEPQ==
   dependencies:
-    nanospinner "^1.1.0"
-    picocolors "^1.0.1"
+    nanospinner "^1.2.0"
+    picocolors "^1.1.1"
 
 eslint-plugin-functional@^6.6.0:
   version "6.6.3"
@@ -8614,12 +8614,12 @@ nanoid@^3.3.7:
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.7.tgz#d0c301a691bc8d54efa0a2226ccf3fe2fd656bd8"
   integrity sha512-eSRppjcPIatRIMC1U6UngP8XFcz8MQWGQdt1MTBQ7NaAmvXDfvNxbvWV3x2y6CdEUciCSsDHDQZbhYaB8QEo2g==
 
-nanospinner@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/nanospinner/-/nanospinner-1.1.0.tgz#d17ff621cb1784b0a206b400da88a0ef6db39b97"
-  integrity sha512-yFvNYMig4AthKYfHFl1sLj7B2nkHL4lzdig4osvl9/LdGbXwrdFRoqBS98gsEsOakr0yH+r5NZ/1Y9gdVB8trA==
+nanospinner@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/nanospinner/-/nanospinner-1.2.0.tgz#3b133ea6d67e67f10eb9c74bc304f72f44c8fff1"
+  integrity sha512-dGxYcEj8YhuxjVO3PYmnj1nBhtwUkvuwYbLl/MduBPmQUPy3xBtG/ScJgqZgntQkX44UQaCSlFeW4rS5fUR/Sw==
   dependencies:
-    picocolors "^1.0.0"
+    picocolors "^1.1.1"
 
 natural-compare-lite@^1.4.0:
   version "1.4.0"
@@ -9158,6 +9158,11 @@ picocolors@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/picocolors/-/picocolors-1.1.0.tgz#5358b76a78cde483ba5cef6a9dc9671440b27d59"
   integrity sha512-TQ92mBOW0l3LeMeyLV6mzy/kWr8lkd/hp3mTg7wYK7zJhuBStmGMBG0BdeDZS/dZx1IukaX6Bk11zcln25o1Aw==
+
+picocolors@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/picocolors/-/picocolors-1.1.1.tgz#3d321af3eab939b083c8f929a1d12cda81c26b6b"
+  integrity sha512-xceH2snhtb5M9liqDsmEw56le376mTZkEX/jEb/RxNFyegNul7eNslCXP9FDj/Lcu0X8KEyMceP2ntpaHrDEVA==
 
 picomatch@^2.0.4, picomatch@^2.2.1, picomatch@^2.2.3, picomatch@^2.3.1:
   version "2.3.1"
