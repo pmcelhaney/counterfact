@@ -5198,10 +5198,10 @@ eslint-plugin-ext@^0.1.0:
   resolved "https://registry.yarnpkg.com/eslint-plugin-ext/-/eslint-plugin-ext-0.1.0.tgz#db674e42a5f9b4535aaeefe10d78e9694482d820"
   integrity sha512-CbZgte+kC8u6uymkwtgDPHLgA3IRbhermH88o9VXDh4Pa1ds1QIo0ojJc+mvq5zjf3mm4GT/pTTFYZT9nQORyg==
 
-eslint-plugin-file-progress@3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-file-progress/-/eslint-plugin-file-progress-3.0.0.tgz#7d180dd6efb491080738d60a331a85a69e771bfc"
-  integrity sha512-9/KRlIK5J//PLwSHnOk11Rl1FV1hhNaYWP4tCte7dPus7ylwnC3fNuukCgh5faQELqxY5JrSWQbQ8wUP8nfEPQ==
+eslint-plugin-file-progress@3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-file-progress/-/eslint-plugin-file-progress-3.0.1.tgz#119ca48390499de9c5faf161d5ab499384493024"
+  integrity sha512-sPUOIifutW3Ehhmujt40IU5ytXL6HnuGVev2n9cp4d5fzVOoQp1K17DJ/I+cRdctmTpMcYit/fOuF9efjmD98A==
   dependencies:
     nanospinner "^1.2.0"
     picocolors "^1.1.1"
