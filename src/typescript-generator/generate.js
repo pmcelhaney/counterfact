@@ -38,7 +38,7 @@ async function buildCacheDirectory(destination) {
 
 async function getPathsFromSpecification(specification) {
   try {
-    return (await specification.requirementAt("#/paths")) ?? new Set();
+    return specification.getRequirement("#/paths") ?? new Set();
   } catch (error) {
     process.stderr.write(
       `Could not find #/paths in the specification.\n${error}\n`,
@@ -62,7 +62,7 @@ export async function generate(
 
   debug("creating specification from %s", source);
 
-  const specification = new Specification(source);
+  const specification = await Specification.fromFile(source);
 
   debug("created specification: $o", specification);
 
@@ -72,7 +72,7 @@ export async function generate(
 
   debug("got %i paths", paths.size);
 
-  const securityRequirement = await specification.requirementAt(
+  const securityRequirement = specification.getRequirement(
     "#/components/securitySchemes",
   );
 
