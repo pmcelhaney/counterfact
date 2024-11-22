@@ -21,9 +21,13 @@ export class Requirement {
     return item in this.data;
   }
 
-  get(item, escape = false) {
+  get(item) {
     if (this.isReference) {
-      return this.reference().get(item, escape);
+      return this.reference().get(item);
+    }
+
+    if (typeof item === "string" && item.includes("~")) {
+      console.log(item);
     }
 
     if (!this.has(item)) {
@@ -32,9 +36,7 @@ export class Requirement {
 
     return new Requirement(
       this.data[item],
-      escape
-        ? `${this.url}/${this.escapeJsonPointer(item)}`
-        : `${this.url}/${item}`,
+      `${this.url}/${this.escapeJsonPointer(item)}`,
       this.specification,
     );
   }
@@ -45,7 +47,7 @@ export class Requirement {
     let result = this;
 
     for (const part of parts) {
-      result = result.get(part, true);
+      result = result.get(part);
 
       if (result === undefined) {
         return undefined;
@@ -85,11 +87,13 @@ export class Requirement {
     return result;
   }
 
-  escapeJsonPointer(string) {
-    return string.replaceAll("~", "~0").replaceAll("/", "~1");
+  escapeJsonPointer(value) {
+    if (typeof value !== "string") return value;
+    return value.replaceAll("~", "~0").replaceAll("/", "~1");
   }
 
   unescapeJsonPointer(pointer) {
+    if (typeof pointer !== "string") return pointer;
     return pointer.replaceAll("~1", "/").replaceAll("~0", "~");
   }
 }
