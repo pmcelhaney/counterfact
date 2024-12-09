@@ -87,7 +87,7 @@
     "ast-types": "0.14.2",
     "chokidar": "4.0.1",
     "commander": "12.1.0",
-    "debug": "4.3.7",
+    "debug": "4.4.0",
     "fetch": "1.1.0",
     "fs-extra": "11.2.0",
     "handlebars": "4.7.8",
