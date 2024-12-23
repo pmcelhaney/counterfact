@@ -1430,6 +1430,7 @@ import type { Context } from "@@CONTEXT_FILE_TOKEN@@";
 import type { ResponseBuilderFactory } from "../../types.ts";
 import type { Recursive } from "../components/schemas/Recursive.js";
 import type { BadRequest } from "../#/components/responses/BadRequest.js";
+import type { Error } from "../components/schemas/Error.js";
 
 export type HTTP_GET = (
   $: OmitValueWhenNever<{
@@ -1462,6 +1463,8 @@ export type HTTP_GET = (
     }
   | {
       status: 400;
+      contentType?: "application/json";
+      body?: Error;
     }
   | { status: 415; contentType: "text/plain"; body: string }
   | COUNTERFACT_RESPONSE

@@ -228,11 +228,11 @@ describe("an OperationTypeCoder", () => {
   });
 
   it("generates a complex post operation (OpenAPI 2 with produces at the root)", async () => {
-    const specification = new Specification();
-
-    specification.rootRequirement = new Requirement({
-      produces: ["application/json"],
-    });
+    const specification = new Specification(
+      new Requirement({
+        produces: ["application/json"],
+      }),
+    );
 
     const requirement = new Requirement(
       {

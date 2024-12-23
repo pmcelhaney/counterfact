@@ -1,8 +1,35 @@
 import { describe, expect, it } from "@jest/globals";
 
 import { Requirement } from "../../src/typescript-generator/requirement.js";
+import { Specification } from "../../src/typescript-generator/specification.js";
 
 describe("a Requirement", () => {
+  const root = new Requirement({
+    source: {
+      $ref: "#/target",
+    },
+    target: {
+      name: "target",
+      found: "yep",
+    },
+    a: {
+      name: "a",
+      b: {
+        name: "b",
+        c: {
+          name: "c",
+        },
+        target: {
+          $ref: "#/target",
+        },
+      },
+    },
+  });
+
+  const spec = new Specification(root);
+
+  root.specification = spec;
+
   it("select(name) - returns a new requirement", () => {
     const specification = {};
     const requirement = new Requirement(
@@ -28,6 +55,14 @@ describe("a Requirement", () => {
     expect(requirement.select("foo~1bar").data).toBe("slash");
   });
 
+  it("select(path)", () => {
+    expect(root.select("a/b/c").data).toStrictEqual({ name: "c" });
+  });
+
+  it("select(path) with $ref", () => {
+    expect(root.select("a/b/target/name").data).toStrictEqual("target");
+  });
+
   it("get(name) - does not escape special characters", () => {
     const requirement = new Requirement({
       "foo/bar": "slash",
@@ -36,6 +71,11 @@ describe("a Requirement", () => {
 
     expect(requirement.get("foo~bar").data).toBe("tilde");
     expect(requirement.get("foo/bar").data).toBe("slash");
+  });
+
+  it("get(name) - follow $ref", () => {
+    const requirement = root.get("source");
+    expect(requirement.get("found").data).toEqual("yep");
   });
 
   it("knows if it is a reference ($ref)", () => {
@@ -48,6 +88,26 @@ describe("a Requirement", () => {
     });
 
     expect([yes.isReference, no.isReference]).toStrictEqual([true, false]);
+  });
+
+  it("knows it has a property", () => {
+    const requirement = new Requirement({
+      found: "yep",
+    });
+
+    expect([
+      requirement.has("found"),
+      requirement.has("notFound"),
+    ]).toStrictEqual([true, false]);
+  });
+
+  it("knows it has a when the requirement is a $ref", () => {
+    const requirement = root.get("source");
+
+    expect([
+      requirement.has("found"),
+      requirement.has("notFound"),
+    ]).toStrictEqual([true, false]);
   });
 
   it("provides a forEach() method", () => {

@@ -10,43 +10,51 @@ export class Requirement {
   }
 
   reference() {
-    return this.specification.requirementAt(this.data.$ref, this.url);
+    return this.specification.getRequirement(this.data.$ref);
   }
 
   has(item) {
+    if (this.isReference) {
+      return this.reference().has(item);
+    }
+
     return item in this.data;
   }
 
   get(item) {
+    if (this.isReference) {
+      return this.reference().get(item);
+    }
+
+    if (typeof item === "string" && item.includes("~")) {
+      console.log(item);
+    }
+
     if (!this.has(item)) {
       return undefined;
     }
 
     return new Requirement(
       this.data[item],
-      `${this.url}/${item}`,
+      `${this.url}/${this.escapeJsonPointer(item)}`,
       this.specification,
     );
   }
 
   select(path, data = this.data, basePath = "") {
-    const [head, ...tail] = path.split("/");
+    const parts = path.split("/").map(this.unescapeJsonPointer);
 
-    const branch = data[this.unescapeJsonPointer(head)];
+    let result = this;
 
-    if (!branch) {
-      return undefined;
+    for (const part of parts) {
+      result = result.get(part);
+
+      if (result === undefined) {
+        return undefined;
+      }
     }
 
-    if (tail.length === 0) {
-      return new Requirement(
-        branch,
-        `${this.url}/${basePath}${head}`,
-        this.specification,
-      );
-    }
-
-    return this.select(tail.join("/"), branch, `${basePath}${head}/`);
+    return result;
   }
 
   forEach(callback) {
@@ -79,11 +87,13 @@ export class Requirement {
     return result;
   }
 
-  escapeJsonPointer(string) {
-    return string.replaceAll("~", "~0").replaceAll("/", "~1");
+  escapeJsonPointer(value) {
+    if (typeof value !== "string") return value;
+    return value.replaceAll("~", "~0").replaceAll("/", "~1");
   }
 
   unescapeJsonPointer(pointer) {
+    if (typeof pointer !== "string") return pointer;
     return pointer.replaceAll("~1", "/").replaceAll("~0", "~");
   }
 }
