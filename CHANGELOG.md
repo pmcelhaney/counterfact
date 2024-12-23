@@ -1,5 +1,12 @@
 # counterfact
 
+## 1.1.5
+
+### Patch Changes
+
+- 0a9df8f: also cast numbers (non-integers) and booleans to the right types at runtime
+- 2d229c6: correct runtime type of parameters for Swagger v2 (fixes #1116)
+
 ## 1.1.4
 
 ### Patch Changes
