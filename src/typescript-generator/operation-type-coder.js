@@ -67,7 +67,6 @@ export class OperationTypeCoder extends TypeCoder {
   }
 
   modulePath() {
-    console.log(this.requirement.url);
     const pathString = this.requirement.url
       .split("/")
       .at(-2)

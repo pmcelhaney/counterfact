@@ -26,10 +26,6 @@ export class Requirement {
       return this.reference().get(item);
     }
 
-    if (typeof item === "string" && item.includes("~")) {
-      console.log(item);
-    }
-
     if (!this.has(item)) {
       return undefined;
     }
