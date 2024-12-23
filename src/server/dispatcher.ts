@@ -84,11 +84,11 @@ export class Dispatcher {
     }
 
     for (const parameter of parameters) {
-      if (parameter.schema !== undefined) {
+      const type = parameter.schema?.type ?? parameter?.type;
+
+      if (type !== undefined) {
         types[parameter.in][parameter.name] =
-          parameter.schema.type === "integer"
-            ? "number"
-            : parameter.schema.type;
+          type === "integer" ? "number" : type;
       }
     }
 

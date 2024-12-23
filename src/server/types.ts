@@ -226,6 +226,7 @@ interface OpenApiParameters {
   schema?: {
     type: string;
   };
+  type?: "string" | "number" | "integer" | "boolean";
 }
 
 interface OpenApiOperation {

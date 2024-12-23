@@ -22,16 +22,16 @@ interface RequestData {
     username?: string;
   };
   context: unknown;
-  headers: { [key: string]: number | string };
+  headers: { [key: string]: number | string | boolean };
   matchedPath?: string;
-  path?: { [key: string]: number | string };
+  path?: { [key: string]: number | string | boolean };
   proxy: (url: string) => Promise<{
     body: string;
     contentType: string;
     headers: { [key: string]: string };
     status: number;
   }>;
-  query: { [key: string]: number | string };
+  query: { [key: string]: number | string | boolean };
   response: ResponseBuilderFactory;
   tools: Tools;
 }
@@ -79,17 +79,34 @@ interface NormalizedCounterfactResponseObject {
   status?: number;
 }
 
-function castParameters(
-  parameters: { [key: string]: number | string },
-  parameterTypes?: { [key: string]: string },
-) {
-  const copy: { [key: string]: number | string } = { ...parameters };
+function castParameter(value: string | number | boolean, type: string) {
+  if (typeof value !== "string") {
+    return value;
+  }
 
-  Object.entries(copy).forEach(([key, value]) => {
-    copy[key] =
-      parameterTypes?.[key] === "number"
-        ? Number.parseInt(value as string, 10)
-        : value;
+  if (type === "integer") {
+    return Number.parseInt(value);
+  }
+
+  if (type === "number") {
+    return Number.parseFloat(value);
+  }
+
+  if (type === "boolean") {
+    return value === "true";
+  }
+
+  return value;
+}
+
+function castParameters(
+  parameters: { [key: string]: string | number | boolean } = {},
+  parameterTypes: { [key: string]: string } = {},
+) {
+  const copy: { [key: string]: boolean | number | string } = {};
+
+  Object.entries(parameters).forEach(([key, value]) => {
+    copy[key] = castParameter(value, parameterTypes?.[key] ?? "string");
   });
 
   return copy;
