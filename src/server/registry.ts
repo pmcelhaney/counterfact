@@ -22,16 +22,16 @@ interface RequestData {
     username?: string;
   };
   context: unknown;
-  headers: { [key: string]: number | string };
+  headers: { [key: string]: number | string | boolean };
   matchedPath?: string;
-  path?: { [key: string]: number | string };
+  path?: { [key: string]: number | string | boolean };
   proxy: (url: string) => Promise<{
     body: string;
     contentType: string;
     headers: { [key: string]: string };
     status: number;
   }>;
-  query: { [key: string]: number | string };
+  query: { [key: string]: number | string | boolean };
   response: ResponseBuilderFactory;
   tools: Tools;
 }
@@ -79,7 +79,11 @@ interface NormalizedCounterfactResponseObject {
   status?: number;
 }
 
-function castParameter(value: string, type: string) {
+function castParameter(value: string | number | boolean, type: string) {
+  if (typeof value !== "string") {
+    return value;
+  }
+
   if (type === "integer") {
     return Number.parseInt(value);
   }
@@ -96,7 +100,7 @@ function castParameter(value: string, type: string) {
 }
 
 function castParameters(
-  parameters: { [key: string]: string } = {},
+  parameters: { [key: string]: string | number | boolean } = {},
   parameterTypes: { [key: string]: string } = {},
 ) {
   const copy: { [key: string]: boolean | number | string } = {};
