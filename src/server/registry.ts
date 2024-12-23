@@ -79,17 +79,30 @@ interface NormalizedCounterfactResponseObject {
   status?: number;
 }
 
-function castParameters(
-  parameters: { [key: string]: number | string },
-  parameterTypes?: { [key: string]: string },
-) {
-  const copy: { [key: string]: number | string } = { ...parameters };
+function castParameter(value: string, type: string) {
+  if (type === "integer") {
+    return Number.parseInt(value);
+  }
 
-  Object.entries(copy).forEach(([key, value]) => {
-    copy[key] =
-      parameterTypes?.[key] === "number"
-        ? Number.parseInt(value as string, 10)
-        : value;
+  if (type === "number") {
+    return Number.parseFloat(value);
+  }
+
+  if (type === "boolean") {
+    return value === "true";
+  }
+
+  return value;
+}
+
+function castParameters(
+  parameters: { [key: string]: string } = {},
+  parameterTypes: { [key: string]: string } = {},
+) {
+  const copy: { [key: string]: boolean | number | string } = {};
+
+  Object.entries(parameters).forEach(([key, value]) => {
+    copy[key] = castParameter(value, parameterTypes?.[key] ?? "string");
   });
 
   return copy;

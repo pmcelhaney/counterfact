@@ -672,6 +672,7 @@ describe("a dispatcher", () => {
       // @ts-expect-error - not obvious how to make TS happy here, and it's just a unit test
       GET({ headers, path, query, response }) {
         return response["200"]?.text({
+          booleanInHeader: headers.booleanInHeader,
           integerInPath: path?.integerInPath,
           numberInHeader: headers.numberInHeader,
           numberInQuery: query.numberInQuery,
@@ -713,6 +714,11 @@ describe("a dispatcher", () => {
                 name: "stringInHeader",
                 type: "string",
               },
+              {
+                in: "header",
+                name: "booleanInHeader",
+                type: "boolean",
+              },
             ],
 
             responses: {
@@ -743,6 +749,7 @@ describe("a dispatcher", () => {
       headers: {
         numberInHeader: "5",
         stringInHeader: "6",
+        booleanInHeader: "true",
       },
 
       method: "GET",
@@ -758,6 +765,7 @@ describe("a dispatcher", () => {
     });
 
     expect(htmlResponse.body).toStrictEqual({
+      booleanInHeader: true,
       integerInPath: 1,
       numberInHeader: 5,
       numberInQuery: 3,
