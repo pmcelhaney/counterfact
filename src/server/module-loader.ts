@@ -13,6 +13,7 @@ import { determineModuleKind } from "./determine-module-kind.js";
 import { ModuleDependencyGraph } from "./module-dependency-graph.js";
 import type { Module, Registry } from "./registry.js";
 import { uncachedImport } from "./uncached-import.js";
+import { type OpenApiDocument } from "./dispatcher.js";
 
 const { uncachedRequire } = await import("./uncached-require.cjs");
 
@@ -44,15 +45,19 @@ export class ModuleLoader extends EventTarget {
       throw new Error(`uncachedImport not set up; importing ${moduleName}`);
     };
 
+  public openApiDocument: OpenApiDocument | undefined;
+
   public constructor(
     basePath: string,
     registry: Registry,
     contextRegistry = new ContextRegistry(),
+    openApiDocument?: OpenApiDocument,
   ) {
     super();
     this.basePath = basePath.replaceAll("\\", "/");
     this.registry = registry;
     this.contextRegistry = contextRegistry;
+    this.openApiDocument = openApiDocument;
   }
 
   public async watch(): Promise<void> {
@@ -178,15 +183,15 @@ export class ModuleLoader extends EventTarget {
       if (basename(pathName).startsWith("_.context")) {
         if (isContextModule(endpoint)) {
           const loadContext = (path: string) => this.contextRegistry.find(path);
+          const openApi = this.openApiDocument;
 
           this.contextRegistry.update(
             directory,
-
             // @ts-expect-error TS says Context has no constructable signatures but that's not true?
-
             new endpoint.Context({
               loadContext,
-            }),
+              openApi
+            })
           );
         }
       } else {
