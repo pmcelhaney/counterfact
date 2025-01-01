@@ -565,16 +565,13 @@ describe("a dispatcher", () => {
     registry.add("/a/{integerInPath}/{stringInPath}", {
       // @ts-expect-error - not obvious how to make TS happy here, and it's just a unit test
       GET({ headers, path, query, response }) {
-        if (path === undefined) {
-          throw new Error("path is undefined");
-        }
-
         return response["200"]?.text({
-          integerInPath: path.integerInPath,
+          booleanInHeader: headers.booleanInHeader,
+          integerInPath: path?.integerInPath,
           numberInHeader: headers.numberInHeader,
           numberInQuery: query.numberInQuery,
           stringInHeader: headers.stringInHeader,
-          stringInPath: path.stringInPath,
+          stringInPath: path?.stringInPath,
           stringInQuery: query.stringInQuery,
         });
       },
@@ -588,28 +585,33 @@ describe("a dispatcher", () => {
               {
                 in: "path",
                 name: "integerInPath",
-                schema: { type: "integer" },
+                type: "integer",
               },
-              { in: "path", name: "stringInPath", schema: { type: "string" } },
+              { in: "path", name: "stringInPath", type: "string" },
               {
                 in: "query",
                 name: "numberInQuery",
-                schema: { type: "number" },
+                type: "number",
               },
               {
                 in: "query",
                 name: "stringInQuery",
-                schema: { type: "string" },
+                type: "string",
               },
               {
                 in: "header",
                 name: "numberInHeader",
-                schema: { type: "number" },
+                type: "number",
               },
               {
                 in: "header",
                 name: "stringInHeader",
-                schema: { type: "string" },
+                type: "string",
+              },
+              {
+                in: "header",
+                name: "booleanInHeader",
+                type: "boolean",
               },
             ],
 
@@ -641,6 +643,7 @@ describe("a dispatcher", () => {
       headers: {
         numberInHeader: "5",
         stringInHeader: "6",
+        booleanInHeader: "true",
       },
 
       method: "GET",
@@ -656,6 +659,7 @@ describe("a dispatcher", () => {
     });
 
     expect(htmlResponse.body).toStrictEqual({
+      booleanInHeader: true,
       integerInPath: 1,
       numberInHeader: 5,
       numberInQuery: 3,

@@ -1,5 +1,11 @@
 # counterfact
 
+## 1.1.4
+
+### Patch Changes
+
+- 06bf54d: fixed an issue where $refs were not followed (#1089)
+
 ## 1.1.3
 
 ### Patch Changes
