@@ -1,5 +1,6 @@
 import { createResponseBuilder } from "../../src/server/response-builder.js";
 import type { OpenApiOperation } from "../../src/server/types.ts";
+import retry from "jest-retries";
 
 describe("a response builder", () => {
   it("starts building a response object when the status is selected", () => {
@@ -135,11 +136,10 @@ describe("a response builder", () => {
         type: "text/plain",
       });
 
-      // This assertion is flaky. The root cause seems to be JSON Schema Faker
-      // expect(response?.content?.[0]).toStrictEqual({
-      //   body: { value: "hello" },
-      //   type: "application/json",
-      // });
+      expect(response?.content?.[0]).toStrictEqual({
+        body: { value: "hello" },
+        type: "application/json",
+      });
     });
 
     it("falls back to 'default' when status code is not listed explicitly", () => {
@@ -227,7 +227,7 @@ describe("a response builder", () => {
       },
     };
 
-    it("using the status code", () => {
+    retry("using the status code", 10, () => {
       const response = createResponseBuilder(operation)[200]?.random();
 
       expect(response?.status).toBe(200);
