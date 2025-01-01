@@ -7615,6 +7615,11 @@ jest-resolve@^29.7.0:
     resolve.exports "^2.0.0"
     slash "^3.0.0"
 
+jest-retries@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/jest-retries/-/jest-retries-1.0.1.tgz#b60eac2c6f6ee7033fbc9a3cb6f3016a63b82822"
+  integrity sha512-tR9tCXs9+Vqw/2toQEOg+CpzOwUqReppcZH2550EnuEhw4F8TR+NbICPUJexegjN9xnuF4ABSGPgzCgAFZI0Ng==
+
 jest-runner@^29.7.0:
   version "29.7.0"
   resolved "https://registry.yarnpkg.com/jest-runner/-/jest-runner-29.7.0.tgz#809af072d408a53dcfd2e849a4c976d3132f718e"
