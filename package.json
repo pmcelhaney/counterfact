@@ -57,7 +57,7 @@
     "@types/koa-bodyparser": "4.3.12",
     "@types/koa-proxy": "1.0.7",
     "@types/koa-static": "4.0.4",
-    "@types/lodash": "4.17.13",
+    "@types/lodash": "4.17.14",
     "copyfiles": "2.4.1",
     "eslint": "9.17.0",
     "eslint-config-hardcore": "47.0.1",
