@@ -121,11 +121,11 @@ return $.response[200].header("x-coolness-level", 10).text("This is cool!")`.
 
 ### Request parameters
 
-Most of the time, the server's response depends on input from various parts of the request, which are accessible through `$.path`, `$.query`, `$.header`, and `$.body`. The best way to explain is with an example:
+Most of the time, the server's response depends on input from various parts of the request, which are accessible through `$.path`, `$.query`, `$.headers`, and `$.body`. The best way to explain is with an example:
 
 ```ts
 export const GET: HTTP_GET = ($) => {
-    if ($.header['x-token'] !== 'super-secret') {
+    if ($.headers['x-token'] !== 'super-secret') {
        return $.response[401].text('unauthorized');
     }
 

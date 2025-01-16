@@ -259,7 +259,7 @@ interface WideResponseBuilder {
 interface WideOperationArgument {
   body: unknown;
   context: unknown;
-  header: { [key: string]: string };
+  headers: { [key: string]: string };
   path: { [key: string]: string };
   proxy: (url: string) => { proxyUrl: string };
   query: { [key: string]: string };
