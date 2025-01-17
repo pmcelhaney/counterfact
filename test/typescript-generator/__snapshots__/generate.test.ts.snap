@@ -30,7 +30,7 @@ export type HTTP_POST = (
   $: OmitValueWhenNever<{
     query: never;
     path: never;
-    header: never;
+    headers: never;
     body: Pet;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -78,7 +78,7 @@ export type HTTP_PUT = (
   $: OmitValueWhenNever<{
     query: never;
     path: never;
-    header: never;
+    headers: never;
     body: Pet;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -165,7 +165,7 @@ export type HTTP_GET = (
   $: OmitValueWhenNever<{
     query: { status?: "available" | "pending" | "sold" };
     path: never;
-    header: never;
+    headers: never;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -236,7 +236,7 @@ export type HTTP_GET = (
   $: OmitValueWhenNever<{
     query: { tags?: Array<string> };
     path: never;
-    header: never;
+    headers: never;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -317,7 +317,7 @@ export type HTTP_GET = (
   $: OmitValueWhenNever<{
     query: never;
     path: { petId: number };
-    header: never;
+    headers: never;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -373,7 +373,7 @@ export type HTTP_POST = (
   $: OmitValueWhenNever<{
     query: { name?: number; status?: string };
     path: { petId: number };
-    header: never;
+    headers: never;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -399,7 +399,7 @@ export type HTTP_DELETE = (
   $: OmitValueWhenNever<{
     query: never;
     path: { petId: string };
-    header: { api_key?: string };
+    headers: { api_key?: string };
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -448,7 +448,7 @@ export type HTTP_POST = (
   $: OmitValueWhenNever<{
     query: { additionalMetadata?: number };
     path: { petId: number };
-    header: never;
+    headers: never;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -502,7 +502,7 @@ export type HTTP_GET = (
   $: OmitValueWhenNever<{
     query: never;
     path: never;
-    header: never;
+    headers: never;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -557,7 +557,7 @@ export type HTTP_POST = (
   $: OmitValueWhenNever<{
     query: never;
     path: never;
-    header: never;
+    headers: never;
     body: Order;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -625,7 +625,7 @@ export type HTTP_GET = (
   $: OmitValueWhenNever<{
     query: never;
     path: { orderId: number };
-    header: never;
+    headers: never;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -681,7 +681,7 @@ export type HTTP_DELETE = (
   $: OmitValueWhenNever<{
     query: never;
     path: { orderId: number };
-    header: never;
+    headers: never;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -739,7 +739,7 @@ export type HTTP_POST = (
   $: OmitValueWhenNever<{
     query: never;
     path: never;
-    header: never;
+    headers: never;
     body: User;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -803,7 +803,7 @@ export type HTTP_POST = (
   $: OmitValueWhenNever<{
     query: never;
     path: never;
-    header: never;
+    headers: never;
     body: Array<User>;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -873,7 +873,7 @@ export type HTTP_GET = (
   $: OmitValueWhenNever<{
     query: { username?: string; password?: string };
     path: never;
-    header: never;
+    headers: never;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -947,7 +947,7 @@ export type HTTP_GET = (
   $: OmitValueWhenNever<{
     query: never;
     path: never;
-    header: never;
+    headers: never;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -1007,7 +1007,7 @@ export type HTTP_GET = (
   $: OmitValueWhenNever<{
     query: never;
     path: { username: string };
-    header: never;
+    headers: never;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -1063,7 +1063,7 @@ export type HTTP_PUT = (
   $: OmitValueWhenNever<{
     query: never;
     path: { username: string };
-    header: never;
+    headers: never;
     body: User;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -1089,7 +1089,7 @@ export type HTTP_DELETE = (
   $: OmitValueWhenNever<{
     query: never;
     path: { username: string };
-    header: never;
+    headers: never;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -1212,7 +1212,7 @@ export type HTTP_GET = (
   $: OmitValueWhenNever<{
     query: never;
     path: never;
-    header: never;
+    headers: never;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -1267,7 +1267,7 @@ export type HTTP_GET = (
   $: OmitValueWhenNever<{
     query: never;
     path: never;
-    header: never;
+    headers: never;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -1322,7 +1322,7 @@ export type HTTP_GET = (
   $: OmitValueWhenNever<{
     query: never;
     path: never;
-    header: never;
+    headers: never;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -1377,7 +1377,7 @@ export type HTTP_GET = (
   $: OmitValueWhenNever<{
     query: never;
     path: { name: string };
-    header: never;
+    headers: never;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -1436,7 +1436,7 @@ export type HTTP_GET = (
   $: OmitValueWhenNever<{
     query: never;
     path: never;
-    header: never;
+    headers: never;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{

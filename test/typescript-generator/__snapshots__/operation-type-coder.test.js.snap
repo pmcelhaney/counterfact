@@ -5,7 +5,7 @@ exports[`an OperationTypeCoder falls back to root level produces (OpenAPI 2) 1`]
   $: OmitValueWhenNever<{
     query: never;
     path: never;
-    header: never;
+    headers: never;
     body: never;
     context: ExternalType;
     response: ResponseBuilderFactory<{
@@ -40,7 +40,7 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2 wit
   $: OmitValueWhenNever<{
     query: { name?: string };
     path: { id?: string };
-    header: { name?: string };
+    headers: { name?: string };
     body: Type;
     context: ExternalType;
     response: ResponseBuilderFactory<{
@@ -103,7 +103,7 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2) 1`
   $: OmitValueWhenNever<{
     query: { name?: string };
     path: { id?: string };
-    header: { name?: string };
+    headers: { name?: string };
     body: Type;
     context: ExternalType;
     response: ResponseBuilderFactory<{
@@ -166,7 +166,7 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2, co
   $: OmitValueWhenNever<{
     query: { name?: string };
     path: { id?: string };
-    header: { name?: string };
+    headers: { name?: string };
     body: Type;
     context: ExternalType;
     response: ResponseBuilderFactory<{
@@ -229,7 +229,7 @@ exports[`an OperationTypeCoder generates a complex post operation 1`] = `
   $: OmitValueWhenNever<{
     query: { name?: string };
     path: { id?: string };
-    header: { name?: string };
+    headers: { name?: string };
     body: Type;
     context: ExternalType;
     response: ResponseBuilderFactory<{
@@ -292,7 +292,7 @@ exports[`an OperationTypeCoder generates a simple get operation (OpenAPI 2) 1`] 
   $: OmitValueWhenNever<{
     query: never;
     path: never;
-    header: never;
+    headers: never;
     body: never;
     context: ExternalType;
     response: ResponseBuilderFactory<{
@@ -327,7 +327,7 @@ exports[`an OperationTypeCoder generates a simple get operation 1`] = `
   $: OmitValueWhenNever<{
     query: never;
     path: never;
-    header: never;
+    headers: never;
     body: never;
     context: ExternalType;
     response: ResponseBuilderFactory<{
@@ -362,7 +362,7 @@ exports[`an OperationTypeCoder generates an auth object for basic authentication
   $: OmitValueWhenNever<{
     query: never;
     path: never;
-    header: never;
+    headers: never;
     body: never;
     context: ExternalType;
     response: ResponseBuilderFactory<{
