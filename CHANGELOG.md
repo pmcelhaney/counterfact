@@ -1,5 +1,11 @@
 # counterfact
 
+## 1.1.6
+
+### Patch Changes
+
+- af31a7c: fix types: $.header should be $.headers (#1160)
+
 ## 1.1.5
 
 ### Patch Changes
