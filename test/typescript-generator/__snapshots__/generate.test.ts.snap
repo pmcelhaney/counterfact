@@ -371,7 +371,7 @@ export type HTTP_GET = (
 
 export type HTTP_POST = (
   $: OmitValueWhenNever<{
-    query: { name?: number; status?: string };
+    query: { name?: string; status?: string };
     path: { petId: number };
     headers: never;
     body: never;
@@ -398,7 +398,7 @@ export type HTTP_POST = (
 export type HTTP_DELETE = (
   $: OmitValueWhenNever<{
     query: never;
-    path: { petId: string };
+    path: { petId: number };
     headers: { api_key?: string };
     body: never;
     context: Context;
@@ -446,7 +446,7 @@ import type { ApiResponse } from "../../../components/schemas/ApiResponse.js";
 
 export type HTTP_POST = (
   $: OmitValueWhenNever<{
-    query: { additionalMetadata?: number };
+    query: { additionalMetadata?: string };
     path: { petId: number };
     headers: never;
     body: never;
