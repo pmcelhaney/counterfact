@@ -1,5 +1,12 @@
 # counterfact
 
+## 1.1.7
+
+### Patch Changes
+
+- 813ecec: follow $refs in parameters (fixes #1105)
+- 3b4c9ea: work-around for URL-encoding in path names (#1083)
+
 ## 1.1.6
 
 ### Patch Changes
