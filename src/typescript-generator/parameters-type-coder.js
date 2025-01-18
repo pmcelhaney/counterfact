@@ -16,17 +16,19 @@ export class ParametersTypeCoder extends TypeCoder {
 
   writeCode(script) {
     const typeDefinitions = (this.requirement?.data ?? [])
-      .filter((parameter) => parameter.in === this.placement)
-      .map((parameter, index) => {
-        const requirement = this.requirement.get(String(index));
-
-        const { name, required } = parameter;
+      .map((_, index) => {
+        return this.requirement.get(index);
+      })
+      .filter((parameter) => parameter.get("in").data === this.placement)
+      .map((parameter) => {
+        const name = parameter.get("name")?.data;
+        const required = parameter.get("required")?.data;
 
         const optionalFlag = required ? "" : "?";
 
-        const schema = requirement.has("schema")
-          ? requirement.get("schema")
-          : requirement;
+        const schema = parameter.has("schema")
+          ? parameter.get("schema")
+          : parameter;
 
         return `"${name}"${optionalFlag}: ${new SchemaTypeCoder(schema).write(
           script,
