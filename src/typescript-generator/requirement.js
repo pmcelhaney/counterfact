@@ -38,7 +38,13 @@ export class Requirement {
   }
 
   select(path, data = this.data, basePath = "") {
-    const parts = path.split("/").map(this.unescapeJsonPointer);
+    const parts = path
+      .split("/")
+      .map(this.unescapeJsonPointer)
+      // Unescape URL encoded characters (e.g. %20 -> " ")
+      // Technically we should not be unescaping, but it came up in https://github.com/pmcelhaney/counterfact/issues/1083
+      // and I can't think of a reason anyone would intentionally put a % in a key name.
+      .map(unescape);
 
     let result = this;
 
