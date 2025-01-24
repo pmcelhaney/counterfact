@@ -278,4 +278,5 @@ export type {
   ResponseBuilder,
   ResponseBuilderFactory,
   WideOperationArgument,
+  WideResponseBuilder,
 };

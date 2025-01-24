@@ -79,6 +79,12 @@ interface NormalizedCounterfactResponseObject {
   status?: number;
 }
 
+type RespondTo = (
+  $: RequestData,
+) => Promise<NormalizedCounterfactResponseObject>;
+
+type InterceptorCallback = ($: RequestData, respondTo: RespondTo) => void;
+
 function castParameter(value: string | number | boolean, type: string) {
   if (typeof value !== "string") {
     return value;
@@ -115,12 +121,18 @@ function castParameters(
 export class Registry {
   private readonly moduleTree = new ModuleTree();
 
+  private interceptor: InterceptorCallback = ($, respondTo) => respondTo($);
+
   public get routes() {
     return this.moduleTree.routes;
   }
 
   public add(url: string, module: Module) {
     this.moduleTree.add(url, module);
+  }
+
+  public addInterceptor(url: string, callback: InterceptorCallback): void {
+    this.interceptor = callback;
   }
 
   public remove(url: string) {
@@ -178,7 +190,30 @@ export class Registry {
 
       operationArgument.x = operationArgument;
 
-      return await execute(operationArgument);
+      const executeAndNormalizeResponse = async (
+        requestData: RequestDataWithBody,
+      ) => {
+        const result = await execute(requestData);
+        if (typeof result === "string") {
+          return {
+            headers: {},
+            status: 200,
+            body: result,
+            contentType: "text/plain",
+          };
+        }
+
+        if (typeof result === "undefined") {
+          return {
+            headers: {},
+            body: `The ${httpRequestMethod} function did not return anything. Did you forget a return statement?`,
+            status: 500,
+          };
+        }
+        return result;
+      };
+
+      return this.interceptor(operationArgument, executeAndNormalizeResponse);
     };
   }
 }

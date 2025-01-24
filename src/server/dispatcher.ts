@@ -172,7 +172,9 @@ export class Dispatcher {
       ...response,
 
       contentType:
-        response.headers?.["content-type"]?.toString() ?? "unknown/unknown",
+        response.headers?.["content-type"]?.toString() ??
+        response.contentType ??
+        "unknown/unknown",
     };
   }
 
