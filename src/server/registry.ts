@@ -210,4 +210,5 @@ export type {
   HttpMethods,
   Module,
   RequestDataWithBody,
+  InterceptorCallback,
 };

@@ -1,4 +1,4 @@
-import type { Module } from "./registry.js";
+import type { Module, InterceptorCallback } from "./registry.js";
 
 interface Route {
   methods: { [key: string]: string };
@@ -18,6 +18,7 @@ interface Directory {
   isWildcard: boolean;
   name: string;
   rawName: string;
+  interceptor?: InterceptorCallback;
 }
 
 interface Match {
@@ -39,6 +40,28 @@ export class ModuleTree {
     rawName: "",
   };
 
+  private putDirectory(directory: Directory, segments: string[]): Directory {
+    const [segment, ...remainingSegments] = segments;
+
+    if (segment === undefined) {
+      throw new Error("segments array is empty");
+    }
+
+    if (remainingSegments.length === 0) {
+      return directory;
+    }
+
+    const nextDirectory = (directory.directories[segment.toLowerCase()] ??= {
+      directories: {},
+      files: {},
+      isWildcard: segment.startsWith("{"),
+      name: segment.replace(/^\{(?<name>.*)\}$/u, "$<name>"),
+      rawName: segment,
+    });
+
+    return this.putDirectory(nextDirectory, remainingSegments);
+  }
+
   private addModuleToDirectory(
     directory: Directory | undefined,
     segments: string[],
@@ -48,35 +71,22 @@ export class ModuleTree {
       return;
     }
 
-    const [segment, ...remainingSegments] = segments;
+    const targetDirectory = this.putDirectory(directory, segments);
 
-    if (segment === undefined) {
-      throw new Error("segments array is empty");
+    const filename = segments.at(-1);
+
+    if (filename === undefined) {
+      throw new Error(
+        "The file name (the last segment of the URL) is undefined. This is theoretically impossible but TypeScript can't enforce it.",
+      );
     }
 
-    if (remainingSegments.length === 0) {
-      directory.files[segment.toLowerCase()] = {
-        isWildcard: segment.startsWith("{"),
-        module,
-        name: segment.replace(/^\{(?<name>.*)\}$/u, "$<name>"),
-        rawName: segment,
-      };
-
-      return;
-    }
-
-    directory.directories[segment.toLowerCase()] ??= {
-      directories: {},
-      files: {},
-      isWildcard: segment.startsWith("{"),
-      name: segment.replace(/^\{(?<name>.*)\}$/u, "$<name>"),
-      rawName: segment,
-    };
-    this.addModuleToDirectory(
-      directory.directories[segment.toLocaleLowerCase()],
-      remainingSegments,
+    targetDirectory.files[filename] = {
+      isWildcard: filename.startsWith("{"),
       module,
-    );
+      name: filename.replace(/^\{(?<name>.*)\}$/u, "$<name>"),
+      rawName: filename,
+    };
   }
 
   public add(url: string, module: Module) {
