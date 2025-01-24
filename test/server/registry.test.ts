@@ -151,7 +151,7 @@ describe("a registry", () => {
     const registry = new Registry();
 
     registry.add("/{organization}/users/{username}/friends/{page}", {
-      GET({ path }) {
+      async GET({ path }) {
         return {
           body: `page ${path?.page ?? "???"} of ${
             path?.username ?? "???"

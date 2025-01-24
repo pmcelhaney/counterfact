@@ -40,35 +40,24 @@ interface RequestDataWithBody extends RequestData {
   body?: unknown;
 }
 
+type UserDefinedResponse =
+  | Promise<CounterfactResponseObject | undefined | string>
+  | CounterfactResponseObject
+  | undefined
+  | string;
+
 interface Module {
-  DELETE?: (requestData: RequestData) => CounterfactResponse | undefined;
-  GET?: (requestData: RequestData) => CounterfactResponse | undefined;
-  HEAD?: (requestData: RequestData) => CounterfactResponse | undefined;
-  OPTIONS?: (requestData: RequestData) => CounterfactResponse | undefined;
-  PATCH?: (requestData: RequestData) => CounterfactResponse | undefined;
-  POST?: (requestData: RequestDataWithBody) => CounterfactResponse | undefined;
-  PUT?: (requestData: RequestDataWithBody) => CounterfactResponse | undefined;
-  TRACE?: (requestData: RequestData) => CounterfactResponse | undefined;
+  DELETE?: (requestData: RequestData) => UserDefinedResponse;
+  GET?: (requestData: RequestData) => UserDefinedResponse;
+  HEAD?: (requestData: RequestData) => UserDefinedResponse;
+  OPTIONS?: (requestData: RequestData) => UserDefinedResponse;
+  PATCH?: (requestData: RequestData) => UserDefinedResponse;
+  POST?: (requestData: RequestDataWithBody) => UserDefinedResponse;
+  PUT?: (requestData: RequestDataWithBody) => UserDefinedResponse;
+  TRACE?: (requestData: RequestData) => UserDefinedResponse;
 }
 
-type CounterfactResponseObject =
-  | string
-  | {
-      body?: string;
-      content?: {
-        body: unknown;
-        type: MediaType;
-      }[];
-      contentType?: string;
-      headers?: { [key: string]: number | string };
-      status?: number;
-    };
-
-type CounterfactResponse =
-  | CounterfactResponseObject
-  | Promise<CounterfactResponseObject>;
-
-interface NormalizedCounterfactResponseObject {
+type CounterfactResponseObject = {
   body?: string;
   content?: {
     body: unknown;
@@ -77,11 +66,9 @@ interface NormalizedCounterfactResponseObject {
   contentType?: string;
   headers?: { [key: string]: number | string };
   status?: number;
-}
+};
 
-type RespondTo = (
-  $: RequestData,
-) => Promise<NormalizedCounterfactResponseObject>;
+type RespondTo = ($: RequestData) => Promise<CounterfactResponseObject>;
 
 type InterceptorCallback = ($: RequestData, respondTo: RespondTo) => void;
 
@@ -222,6 +209,5 @@ export type {
   CounterfactResponseObject,
   HttpMethods,
   Module,
-  NormalizedCounterfactResponseObject,
   RequestDataWithBody,
 };
