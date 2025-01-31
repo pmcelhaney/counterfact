@@ -10,10 +10,10 @@
     "@jridgewell/gen-mapping" "^0.3.5"
     "@jridgewell/trace-mapping" "^0.3.24"
 
-"@apidevtools/json-schema-ref-parser@11.7.3":
-  version "11.7.3"
-  resolved "https://registry.yarnpkg.com/@apidevtools/json-schema-ref-parser/-/json-schema-ref-parser-11.7.3.tgz#83ce7bd236fa5ea50f01a122054592df05890998"
-  integrity sha512-WApSdLdXEBb/1FUPca2lteASewEfpjEYJ8oXZP+0gExK5qSfsEKBKcA+WjY6Q4wvXwyv0+W6Kvc372pSceib9w==
+"@apidevtools/json-schema-ref-parser@11.8.2":
+  version "11.8.2"
+  resolved "https://registry.yarnpkg.com/@apidevtools/json-schema-ref-parser/-/json-schema-ref-parser-11.8.2.tgz#9196b48469fae0877426285e2d7048a49bcea5eb"
+  integrity sha512-EP16uhmZ3HwA3I/hZosn3SUPwcKfAqG7YKs1k2c+pzCF2uVgeSHXRh7m3h7M386K1ijYXU8NyJQxjQS63Q/oGw==
   dependencies:
     "@jsdevtools/ono" "^7.1.3"
     "@types/json-schema" "^7.0.15"
