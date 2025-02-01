@@ -81,7 +81,7 @@
     "using-temporary-files": "2.2.1"
   },
   "dependencies": {
-    "@apidevtools/json-schema-ref-parser": "11.8.2",
+    "@apidevtools/json-schema-ref-parser": "11.9.0",
     "@hapi/accept": "6.0.3",
     "@types/json-schema": "7.0.15",
     "ast-types": "0.14.2",
