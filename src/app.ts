@@ -52,6 +52,7 @@ export async function counterfact(config: Config) {
     registry,
     contextRegistry,
     await loadOpenApiDocument(config.openApiPath),
+    config,
   );
 
   const transpiler = new Transpiler(

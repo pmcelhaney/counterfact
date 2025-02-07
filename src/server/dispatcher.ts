@@ -13,6 +13,7 @@ import type {
 import { createResponseBuilder } from "./response-builder.js";
 import { Tools } from "./tools.js";
 import type { OpenApiOperation, OpenApiParameters } from "./types.ts";
+import type { Config } from "./config.js";
 
 const debug = createDebugger("counterfact:server:dispatcher");
 
@@ -56,15 +57,19 @@ export class Dispatcher {
 
   public fetch: typeof fetch;
 
+  public config?: Config; // Add config property
+
   public constructor(
     registry: Registry,
     contextRegistry: ContextRegistry,
     openApiDocument?: OpenApiDocument,
+    config?: Config,
   ) {
     this.registry = registry;
     this.contextRegistry = contextRegistry;
     this.openApiDocument = openApiDocument;
     this.fetch = fetch;
+    this.config = config;
   }
 
   private parameterTypes(
@@ -295,7 +300,10 @@ export class Dispatcher {
       query,
 
       // @ts-expect-error - Might be pushing the limits of what TypeScript can do here
-      response: createResponseBuilder(operation ?? { responses: {} }),
+      response: createResponseBuilder(
+        operation ?? { responses: {} },
+        this.config,
+      ), // Pass config
 
       tools: new Tools({ headers }),
     });

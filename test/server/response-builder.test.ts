@@ -1,3 +1,4 @@
+import { Config } from "../../src/server/config.ts";
 import { createResponseBuilder } from "../../src/server/response-builder.js";
 import type { OpenApiOperation } from "../../src/server/types.ts";
 import retry from "jest-retries";
@@ -142,6 +143,53 @@ describe("a response builder", () => {
       //   body: { value: "hello" },
       //   type: "application/json",
       // });
+    });
+
+    it("correctly handles alwaysFakeOptionals option", () => {
+      const operationWithoutExamples: OpenApiOperation = {
+        responses: {
+          200: {
+            content: {
+              "application/json": {
+                schema: {
+                  additionalProperties: false,
+
+                  properties: {
+                    value: {
+                      required: true,
+                      type: "string",
+                    },
+                    label: {
+                      nullable: true,
+                      type: "string",
+                    },
+                  },
+
+                  type: "object",
+                },
+              },
+            },
+          },
+
+          default: {
+            content: {
+              "text/plain": {
+                schema: {
+                  examples: ["an error occurred"],
+                  type: "string",
+                },
+              },
+            },
+          },
+        },
+      };
+      const response = createResponseBuilder(operationWithoutExamples, {
+        alwaysFakeOptionals: true,
+      } as Config)[200]?.random();
+
+      expect(response?.status).toBe(200);
+      // @ts-expect-error
+      expect(response!.content[0].body.label).toBeDefined();
     });
 
     it("falls back to 'default' when status code is not listed explicitly", () => {
