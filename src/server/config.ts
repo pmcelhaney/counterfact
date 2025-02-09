@@ -1,4 +1,5 @@
 export interface Config {
+  alwaysFakeOptionals: boolean;
   basePath: string;
   generate: {
     routes: boolean;
