@@ -307,4 +307,33 @@ describe("a response builder", () => {
       ]);
     });
   });
+
+  it("handles binary data responses", () => {
+    const operation: OpenApiOperation = {
+      responses: {
+        200: {
+          content: {
+            "application/octet-stream": {
+              schema: {
+                type: "string",
+                format: "binary",
+              },
+            },
+          },
+        },
+      },
+    };
+
+    const response = createResponseBuilder(operation)[200]?.binary(
+      Buffer.from("binary data", "utf-8"),
+    );
+
+    expect(response?.status).toBe(200);
+    expect(response?.content).toStrictEqual([
+      {
+        body: Buffer.from("binary data", "utf-8"),
+        type: "application/octet-stream",
+      },
+    ]);
+  });
 });
