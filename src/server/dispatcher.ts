@@ -182,7 +182,7 @@ export class Dispatcher {
 
   public selectContent(
     acceptHeader: string,
-    content: { body: unknown; type: string }[]
+    content: { body: unknown; type: string }[],
   ) {
     const preferredMediaTypes = mediaTypes(acceptHeader);
 
