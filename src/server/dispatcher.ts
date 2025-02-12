@@ -173,6 +173,13 @@ export class Dispatcher {
       return normalizedResponse;
     }
 
+    if (response.contentType === "application/octet-stream") {
+      return {
+        ...response,
+        body: Buffer.from(response.body as string, "base64"),
+      };
+    }
+
     return {
       ...response,
 
