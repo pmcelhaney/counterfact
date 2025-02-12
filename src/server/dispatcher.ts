@@ -196,7 +196,7 @@ export class Dispatcher {
 
     for (const mediaType of preferredMediaTypes) {
       const contentItem = content.find((item) =>
-        this.isMediaType(item.type, mediaType)
+        this.isMediaType(item.type, mediaType),
       );
 
       if (contentItem) {
