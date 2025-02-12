@@ -173,6 +173,13 @@ export class Dispatcher {
       return normalizedResponse;
     }
 
+    if (response.contentType === "application/octet-stream") {
+      return {
+        ...response,
+        body: Buffer.from(response.body as string, "base64"),
+      };
+    }
+
     return {
       ...response,
 
@@ -183,13 +190,13 @@ export class Dispatcher {
 
   public selectContent(
     acceptHeader: string,
-    content: { body: unknown; type: string }[],
+    content: { body: unknown; type: string }[]
   ) {
     const preferredMediaTypes = mediaTypes(acceptHeader);
 
     for (const mediaType of preferredMediaTypes) {
       const contentItem = content.find((item) =>
-        this.isMediaType(item.type, mediaType),
+        this.isMediaType(item.type, mediaType)
       );
 
       if (contentItem) {
