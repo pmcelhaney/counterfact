@@ -70,7 +70,10 @@ type CounterfactResponseObject = {
 
 type RespondTo = ($: RequestData) => Promise<CounterfactResponseObject>;
 
-type InterceptorCallback = ($: RequestData, respondTo: RespondTo) => void;
+type InterceptorCallback = (
+  $: RequestData,
+  respondTo: RespondTo,
+) => Promise<CounterfactResponseObject>;
 
 function castParameter(value: string | number | boolean, type: string) {
   if (typeof value !== "string") {
@@ -204,24 +207,25 @@ export class Registry {
         return result;
       };
 
-      let next = executeAndNormalizeResponse;
-      let remainingPath = operationArgument.matchedPath ?? "/";
+      const interceptors = this.interceptors;
 
-      while (remainingPath.indexOf("/") >= 0) {
-        const interceptor = this.interceptors.get(remainingPath);
+      function recurse(path: string, respondTo: RespondTo) {
+        if (path === "") return respondTo;
+
+        const nextPath = path.slice(0, path.lastIndexOf("/"));
+
+        const interceptor = interceptors.get(path);
         if (interceptor !== undefined) {
-          next = await interceptor(operationArgument, next);
+          return recurse(nextPath, ($) => interceptor($, respondTo));
         }
 
-        remainingPath = remainingPath?.slice(0, remainingPath.lastIndexOf("/"));
+        return recurse(nextPath, respondTo);
       }
 
-      console.log(operationArgument.matchedPath);
-
-      return this.interceptors.get("/")?.(
-        operationArgument,
+      return recurse(
+        operationArgument.matchedPath ?? "/",
         executeAndNormalizeResponse,
-      );
+      )(operationArgument);
     };
   }
 }
