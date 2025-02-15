@@ -11,7 +11,7 @@ import { CHOKIDAR_OPTIONS } from "./constants.js";
 import { type Context, ContextRegistry } from "./context-registry.js";
 import { determineModuleKind } from "./determine-module-kind.js";
 import { ModuleDependencyGraph } from "./module-dependency-graph.js";
-import type { Module, Registry } from "./registry.js";
+import type { InterceptorCallback, Module, Registry } from "./registry.js";
 import { uncachedImport } from "./uncached-import.js";
 
 const { uncachedRequire } = await import("./uncached-require.cjs");
@@ -19,13 +19,20 @@ const { uncachedRequire } = await import("./uncached-require.cjs");
 const debug = createDebug("counterfact:server:module-loader");
 
 interface ContextModule {
-  Context: Context;
+  Context?: Context;
+  intercept?: InterceptorCallback;
 }
 
 function isContextModule(
   module: ContextModule | Module,
 ): module is ContextModule {
   return "Context" in module && typeof module.Context === "function";
+}
+
+function isInterceptModule(
+  module: ContextModule | Module,
+): module is ContextModule & { intercept: InterceptorCallback } {
+  return "intercept" in module && typeof module.intercept === "function";
 }
 
 export class ModuleLoader extends EventTarget {
@@ -189,6 +196,10 @@ export class ModuleLoader extends EventTarget {
             }),
           );
         }
+
+        if (isInterceptModule(endpoint)) {
+          this.registry.addInterceptor(url, endpoint.intercept);
+        }
       } else {
         if (url === "/index") this.registry.add("/", endpoint as Module);
         this.registry.add(url, endpoint as Module);
@@ -202,9 +213,9 @@ export class ModuleLoader extends EventTarget {
         return;
       }
 
-      throw error;
-
       process.stdout.write(`\nError loading ${pathName}:\n${String(error)}\n`);
+
+      throw error;
     }
   }
 }
