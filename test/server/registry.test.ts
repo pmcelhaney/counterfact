@@ -115,7 +115,7 @@ describe("a registry", () => {
   it("applies interceptors", async () => {
     const registry = new Registry();
 
-    registry.addInterceptor("/", async ($: RequestDataWithBody, respondTo) => {
+    registry.addInterceptor("", async ($: RequestDataWithBody, respondTo) => {
       const response = await respondTo($);
       response.body += " augmented";
       response.status = 201;
@@ -150,7 +150,7 @@ describe("a registry", () => {
   it("applies multiple interceptors", async () => {
     const registry = new Registry();
 
-    registry.addInterceptor("/", async ($: RequestDataWithBody, respondTo) => {
+    registry.addInterceptor("", async ($: RequestDataWithBody, respondTo) => {
       const response = await respondTo($);
       response.body += " root";
       return response;

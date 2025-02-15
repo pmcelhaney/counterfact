@@ -209,10 +209,11 @@ export class Registry {
 
       const interceptors = this.interceptors;
 
-      function recurse(path: string, respondTo: RespondTo) {
-        if (path === "") return respondTo;
+      function recurse(path: string | null, respondTo: RespondTo) {
+        if (path === null) return respondTo;
 
-        const nextPath = path.slice(0, path.lastIndexOf("/"));
+        const nextPath =
+          path === "" ? null : path.slice(0, path.lastIndexOf("/"));
 
         const interceptor = interceptors.get(path);
         if (interceptor !== undefined) {
