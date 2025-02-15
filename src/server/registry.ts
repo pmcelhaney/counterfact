@@ -108,7 +108,11 @@ function castParameters(
 export class Registry {
   private readonly moduleTree = new ModuleTree();
 
-  private interceptor: InterceptorCallback = ($, respondTo) => respondTo($);
+  private interceptors: Map<string, InterceptorCallback> = new Map();
+
+  public constructor() {
+    this.interceptors.set("/", ($, respondTo) => respondTo($));
+  }
 
   public get routes() {
     return this.moduleTree.routes;
@@ -119,7 +123,7 @@ export class Registry {
   }
 
   public addInterceptor(url: string, callback: InterceptorCallback): void {
-    this.interceptor = callback;
+    this.interceptors.set(url, callback);
   }
 
   public remove(url: string) {
@@ -200,7 +204,24 @@ export class Registry {
         return result;
       };
 
-      return this.interceptor(operationArgument, executeAndNormalizeResponse);
+      let next = executeAndNormalizeResponse;
+      let remainingPath = operationArgument.matchedPath ?? "/";
+
+      while (remainingPath.indexOf("/") >= 0) {
+        const interceptor = this.interceptors.get(remainingPath);
+        if (interceptor !== undefined) {
+          next = await interceptor(operationArgument, next);
+        }
+
+        remainingPath = remainingPath?.slice(0, remainingPath.lastIndexOf("/"));
+      }
+
+      console.log(operationArgument.matchedPath);
+
+      return this.interceptors.get("/")?.(
+        operationArgument,
+        executeAndNormalizeResponse,
+      );
     };
   }
 }

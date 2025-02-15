@@ -147,6 +147,47 @@ describe("a registry", () => {
     });
   });
 
+  it("applies multiple interceptors", async () => {
+    const registry = new Registry();
+
+    registry.addInterceptor("/", async ($: RequestDataWithBody, respondTo) => {
+      const response = await respondTo($);
+      response.body += " root";
+      return response;
+    });
+
+    registry.addInterceptor(
+      "/admin",
+      async ($: RequestDataWithBody, respondTo) => {
+        const response = await respondTo($);
+        response.body += " admin";
+
+        return response;
+      },
+    );
+
+    registry.add("/admin/users", {
+      GET({ path }) {
+        return {
+          body: "users",
+          headers: { "content-type": "text/plain" },
+          status: 200,
+        };
+      },
+    });
+
+    expect(
+      (
+        await registry.endpoint(
+          "GET",
+          "/admin/users",
+
+          // @ts-expect-error - not creating an entire request object
+        )({ headers: {}, matchedPath: "", path: {}, query: {} })
+      )?.body,
+    ).toStrictEqual("users admin root");
+  });
+
   it("matches an endpoint where the case does not match", async () => {
     const registry = new Registry();
 
