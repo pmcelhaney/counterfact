@@ -182,28 +182,33 @@ export class ModuleLoader extends EventTarget {
 
       this.dispatchEvent(new Event("add"));
 
-      if (basename(pathName).startsWith("_.context")) {
-        if (isContextModule(endpoint)) {
-          const loadContext = (path: string) => this.contextRegistry.find(path);
+      if (
+        basename(pathName).startsWith("_.context.") &&
+        isContextModule(endpoint)
+      ) {
+        const loadContext = (path: string) => this.contextRegistry.find(path);
 
-          this.contextRegistry.update(
-            directory,
+        this.contextRegistry.update(
+          directory,
 
-            // @ts-expect-error TS says Context has no constructable signatures but that's not true?
+          // @ts-expect-error TS says Context has no constructable signatures but that's not true?
 
-            new endpoint.Context({
-              loadContext,
-            }),
-          );
-        }
-
-        if (isInterceptModule(endpoint)) {
-          this.registry.addInterceptor(url, endpoint.intercept);
-        }
-      } else {
-        if (url === "/index") this.registry.add("/", endpoint as Module);
-        this.registry.add(url, endpoint as Module);
+          new endpoint.Context({
+            loadContext,
+          }),
+        );
+        return;
       }
+
+      if (
+        basename(pathName).startsWith("_.middleware.") &&
+        isInterceptModule(endpoint)
+      ) {
+        this.registry.addInterceptor(url, endpoint.intercept);
+      }
+
+      if (url === "/index") this.registry.add("/", endpoint as Module);
+      this.registry.add(url, endpoint as Module);
     } catch (error: unknown) {
       if (
         String(error) ===
