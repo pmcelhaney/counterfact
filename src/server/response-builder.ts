@@ -87,7 +87,9 @@ export function createResponseBuilder(
           ...this,
 
           content: [
-            ...(this.content ?? []),
+            ...(this.content ?? []).filter(
+              (response) => response.type !== contentType,
+            ),
             {
               body: convertToXmlIfNecessary(
                 contentType,
