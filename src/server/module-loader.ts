@@ -11,7 +11,7 @@ import { CHOKIDAR_OPTIONS } from "./constants.js";
 import { type Context, ContextRegistry } from "./context-registry.js";
 import { determineModuleKind } from "./determine-module-kind.js";
 import { ModuleDependencyGraph } from "./module-dependency-graph.js";
-import type { InterceptorCallback, Module, Registry } from "./registry.js";
+import type { MiddlewareFunction, Module, Registry } from "./registry.js";
 import { uncachedImport } from "./uncached-import.js";
 
 const { uncachedRequire } = await import("./uncached-require.cjs");
@@ -20,7 +20,7 @@ const debug = createDebug("counterfact:server:module-loader");
 
 interface ContextModule {
   Context?: Context;
-  intercept?: InterceptorCallback;
+  middleware?: MiddlewareFunction;
 }
 
 function isContextModule(
@@ -31,8 +31,8 @@ function isContextModule(
 
 function isInterceptModule(
   module: ContextModule | Module,
-): module is ContextModule & { intercept: InterceptorCallback } {
-  return "intercept" in module && typeof module.intercept === "function";
+): module is ContextModule & { middleware: MiddlewareFunction } {
+  return "middleware" in module && typeof module.middleware === "function";
 }
 
 export class ModuleLoader extends EventTarget {
@@ -204,7 +204,7 @@ export class ModuleLoader extends EventTarget {
         basename(pathName).startsWith("_.middleware.") &&
         isInterceptModule(endpoint)
       ) {
-        this.registry.addInterceptor(url, endpoint.intercept);
+        this.registry.addMiddleware(url, endpoint.middleware);
       }
 
       if (url === "/index") this.registry.add("/", endpoint as Module);

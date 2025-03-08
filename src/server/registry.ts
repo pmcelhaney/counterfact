@@ -70,7 +70,7 @@ type CounterfactResponseObject = {
 
 type RespondTo = ($: RequestData) => Promise<CounterfactResponseObject>;
 
-type InterceptorCallback = (
+type MiddlewareFunction = (
   $: RequestData,
   respondTo: RespondTo,
 ) => Promise<CounterfactResponseObject>;
@@ -111,10 +111,10 @@ function castParameters(
 export class Registry {
   private readonly moduleTree = new ModuleTree();
 
-  private interceptors: Map<string, InterceptorCallback> = new Map();
+  private middlewares: Map<string, MiddlewareFunction> = new Map();
 
   public constructor() {
-    this.interceptors.set("/", ($, respondTo) => respondTo($));
+    this.middlewares.set("/", ($, respondTo) => respondTo($));
   }
 
   public get routes() {
@@ -125,8 +125,8 @@ export class Registry {
     this.moduleTree.add(url, module);
   }
 
-  public addInterceptor(url: string, callback: InterceptorCallback): void {
-    this.interceptors.set(url, callback);
+  public addMiddleware(url: string, callback: MiddlewareFunction): void {
+    this.middlewares.set(url, callback);
   }
 
   public remove(url: string) {
@@ -207,7 +207,7 @@ export class Registry {
         return result;
       };
 
-      const interceptors = this.interceptors;
+      const middlewares = this.middlewares;
 
       function recurse(path: string | null, respondTo: RespondTo) {
         if (path === null) return respondTo;
@@ -215,9 +215,9 @@ export class Registry {
         const nextPath =
           path === "" ? null : path.slice(0, path.lastIndexOf("/"));
 
-        const interceptor = interceptors.get(path);
-        if (interceptor !== undefined) {
-          return recurse(nextPath, ($) => interceptor($, respondTo));
+        const middleware = middlewares.get(path);
+        if (middleware !== undefined) {
+          return recurse(nextPath, ($) => middleware($, respondTo));
         }
 
         return recurse(nextPath, respondTo);
@@ -236,5 +236,5 @@ export type {
   HttpMethods,
   Module,
   RequestDataWithBody,
-  InterceptorCallback,
+  MiddlewareFunction,
 };

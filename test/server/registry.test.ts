@@ -112,10 +112,10 @@ describe("a registry", () => {
     });
   });
 
-  it("applies interceptors", async () => {
+  it("applies middlewares", async () => {
     const registry = new Registry();
 
-    registry.addInterceptor("", async ($: RequestDataWithBody, respondTo) => {
+    registry.addMiddleware("", async ($: RequestDataWithBody, respondTo) => {
       const response = await respondTo($);
       response.body += " augmented";
       response.status = 201;
@@ -147,16 +147,16 @@ describe("a registry", () => {
     });
   });
 
-  it("applies multiple interceptors", async () => {
+  it("applies multiple middlewares", async () => {
     const registry = new Registry();
 
-    registry.addInterceptor("", async ($: RequestDataWithBody, respondTo) => {
+    registry.addMiddleware("", async ($: RequestDataWithBody, respondTo) => {
       const response = await respondTo($);
       response.body += " root";
       return response;
     });
 
-    registry.addInterceptor(
+    registry.addMiddleware(
       "/admin",
       async ($: RequestDataWithBody, respondTo) => {
         const response = await respondTo($);

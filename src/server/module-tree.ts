@@ -1,4 +1,4 @@
-import type { Module, InterceptorCallback } from "./registry.js";
+import type { Module, MiddlewareFunction } from "./registry.js";
 
 interface Route {
   methods: { [key: string]: string };
@@ -18,7 +18,7 @@ interface Directory {
   isWildcard: boolean;
   name: string;
   rawName: string;
-  interceptor?: InterceptorCallback;
+  middleware?: MiddlewareFunction;
 }
 
 interface Match {
