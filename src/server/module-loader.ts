@@ -13,6 +13,7 @@ import { determineModuleKind } from "./determine-module-kind.js";
 import { ModuleDependencyGraph } from "./module-dependency-graph.js";
 import type { MiddlewareFunction, Module, Registry } from "./registry.js";
 import { uncachedImport } from "./uncached-import.js";
+import path from "node:path";
 
 const { uncachedRequire } = await import("./uncached-require.cjs");
 
@@ -20,7 +21,6 @@ const debug = createDebug("counterfact:server:module-loader");
 
 interface ContextModule {
   Context?: Context;
-  middleware?: MiddlewareFunction;
 }
 
 function isContextModule(
@@ -29,10 +29,14 @@ function isContextModule(
   return "Context" in module && typeof module.Context === "function";
 }
 
-function isInterceptModule(
+function isMiddlewareModule(
   module: ContextModule | Module,
 ): module is ContextModule & { middleware: MiddlewareFunction } {
-  return "middleware" in module && typeof module.middleware === "function";
+  return (
+    "middleware" in module &&
+    typeof Object.getOwnPropertyDescriptor(module, "middleware")?.value ===
+      "function"
+  );
 }
 
 export class ModuleLoader extends EventTarget {
@@ -178,7 +182,9 @@ export class ModuleLoader extends EventTarget {
           ? uncachedRequire
           : uncachedImport;
 
-      const endpoint = (await doImport(pathName)) as ContextModule | Module;
+      const endpoint = (await doImport(pathName).catch((err) => {
+        console.log("ERROR");
+      })) as ContextModule | Module;
 
       this.dispatchEvent(new Event("add"));
 
@@ -202,9 +208,12 @@ export class ModuleLoader extends EventTarget {
 
       if (
         basename(pathName).startsWith("_.middleware.") &&
-        isInterceptModule(endpoint)
+        isMiddlewareModule(endpoint)
       ) {
-        this.registry.addMiddleware(url, endpoint.middleware);
+        this.registry.addMiddleware(
+          url.slice(0, url.lastIndexOf("/")) || "/",
+          endpoint.middleware,
+        );
       }
 
       if (url === "/index") this.registry.add("/", endpoint as Module);
