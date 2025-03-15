@@ -65,6 +65,7 @@ export async function counterfact(config: Config) {
     compiledPathsDirectory,
     registry,
     contextRegistry,
+    await loadOpenApiDocument(config.openApiPath),
   );
 
   const middleware = koaMiddleware(dispatcher, config);
