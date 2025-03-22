@@ -5232,14 +5232,14 @@ eslint-import-resolver-node@^0.3.2, eslint-import-resolver-node@^0.3.9:
     is-core-module "^2.13.0"
     resolve "^1.22.4"
 
-eslint-import-resolver-typescript@4.2.1:
-  version "4.2.1"
-  resolved "https://registry.yarnpkg.com/eslint-import-resolver-typescript/-/eslint-import-resolver-typescript-4.2.1.tgz#a48bbe43490dea494eed34c2bf5152249aba7d84"
-  integrity sha512-jAAKR08YRFtlRpxK3OnixV0JB88lH3Xo7HWn1KpKlEvtVUlLMAcRCcBvWT1KAnfT4jPAs4veyFxuUqSdg/Vd3g==
+eslint-import-resolver-typescript@4.2.2:
+  version "4.2.2"
+  resolved "https://registry.yarnpkg.com/eslint-import-resolver-typescript/-/eslint-import-resolver-typescript-4.2.2.tgz#1b5d302af7b4b8c0b3c1076f3faf8bbfa9321b0d"
+  integrity sha512-Rg1YEsb9UKLQ8BOv27cS3TZ6LhEAKQVgVOXArcE/sQrlnX8+FjmJRSC29ij1qrn+eurFuMsCFUcs7/+27T0vqQ==
   dependencies:
     debug "^4.4.0"
     get-tsconfig "^4.10.0"
-    rspack-resolver "^1.2.0"
+    rspack-resolver "^1.2.2"
     stable-hash "^0.0.5"
     tinyglobby "^0.2.12"
 
@@ -10401,7 +10401,7 @@ roarr@^7.0.4:
     safe-stable-stringify "^2.4.3"
     semver-compare "^1.0.0"
 
-rspack-resolver@^1.2.0:
+rspack-resolver@^1.2.2:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/rspack-resolver/-/rspack-resolver-1.2.2.tgz#f4f8f740246c59bc83525f830aca628b71843e8a"
   integrity sha512-Fwc19jMBA3g+fxDJH2B4WxwZjE0VaaOL7OX/A4Wn5Zv7bOD/vyPZhzXfaO73Xc2GAlfi96g5fGUa378WbIGfFw==
