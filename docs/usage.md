@@ -318,6 +318,32 @@ From there, you can switch back and forth between the proxy and mocks by typing 
 
 Even if you're not using mocks at all, the proxy feature is convenient for switching between different back end environments -- local, dev, QA, etc -- without changing configuration files or restarting.
 
+## Let's meet in the Middleware 🫸🫷
+
+Counterfact allows you to add custom middleware to your mock server. Middleware functions can be used to modify the request or response, add custom headers, or perform other tasks before the request is handled by the route handler.
+
+To add middleware, create a file named `_.middleware.ts` in the directory where you want to apply the middleware. The file should export a `middleware` function that takes two arguments: `$` (the request data) and `respondTo` (a function that calls the next middleware or route handler).
+
+Here's an example of a middleware function that adds a custom header to the response:
+
+```ts
+// _.middleware.ts
+import { MiddlewareFunction } from "counterfact";
+
+export const middleware: MiddlewareFunction = async ($, respondTo) => {
+  const response = await respondTo($);
+  response.headers = {
+    ...response.headers,
+    "X-Custom-Header": "Custom Value",
+  };
+  return response;
+};
+```
+
+In this example, the middleware function adds a custom header `X-Custom-Header` with the value `Custom Value` to the response. The `respondTo` function is called to pass the request to the next middleware or route handler.
+
+You can add multiple middleware functions in different directories to apply them to specific routes or groups of routes. Middleware functions are executed in the order they are defined, starting from the root directory and moving down the directory tree.
+
 ## No Cap Recap 🧢
 
 With convention over configuration, automatically generated types, a fluent API, and an innovative REPL, Counterfact allows front-end developers to quickly build fake REST APIs for prototype and testing purposes.
