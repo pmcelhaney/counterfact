@@ -69,7 +69,7 @@ type CounterfactResponse =
   | Promise<CounterfactResponseObject>;
 
 interface NormalizedCounterfactResponseObject {
-  body?: string;
+  body?: string | Buffer;
   content?: {
     body: unknown;
     type: MediaType;
