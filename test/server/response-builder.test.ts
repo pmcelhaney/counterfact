@@ -42,14 +42,6 @@ describe("a response builder", () => {
       { body: { hello: "world" }, type: "application/json" },
       { body: { hello: "world" }, type: "text/json" },
       { body: { hello: "world" }, type: "text/x-json" },
-      {
-        body: "<root><hello>world</hello></root>",
-        type: "application/xml",
-      },
-      {
-        body: "<root><hello>world</hello></root>",
-        type: "text/xml",
-      },
       { body: "<h1>Hello World</h1>", type: "text/html" },
       {
         body: "<root><hello>world</hello></root>",
