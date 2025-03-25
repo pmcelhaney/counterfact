@@ -1,5 +1,11 @@
 # counterfact
 
+## 1.2.0
+
+### Minor Changes
+
+- 800d03c: Add alwaysFakeOptionals option
+
 ## 1.1.7
 
 ### Patch Changes

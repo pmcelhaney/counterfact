@@ -2,6 +2,7 @@ import { JSONSchemaFaker } from "json-schema-faker";
 
 import { jsonToXml } from "./json-to-xml.js";
 import type { OpenApiOperation, ResponseBuilder } from "./types.ts";
+import type { Config } from "./config.js";
 
 JSONSchemaFaker.option("useExamplesValue", true);
 JSONSchemaFaker.option("minItems", 0);
@@ -48,6 +49,7 @@ function unknownStatusCodeResponse(statusCode: number | undefined) {
 
 export function createResponseBuilder(
   operation: OpenApiOperation,
+  config?: Config,
 ): ResponseBuilder {
   return new Proxy({} as ResponseBuilder, {
     get: (target, statusCode: string) => ({
@@ -106,6 +108,11 @@ export function createResponseBuilder(
       },
 
       random(this: ResponseBuilder) {
+        if (config?.alwaysFakeOptionals) {
+          JSONSchemaFaker.option("alwaysFakeOptionals", true);
+          JSONSchemaFaker.option("fixedProbabilities", true);
+          JSONSchemaFaker.option("optionalsProbability", 1.0);
+        }
         if (operation.produces) {
           return this.randomLegacy();
         }

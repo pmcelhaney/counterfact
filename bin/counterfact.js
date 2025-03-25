@@ -135,6 +135,7 @@ async function main(source, destination) {
   const swaggerUrl = `${url}/counterfact/swagger/`;
 
   const config = {
+    alwaysFakeOptionals: options.alwaysFakeOptionals,
     basePath,
 
     generate: {
@@ -267,6 +268,10 @@ program
     "--prefix <string>",
     "base path from which routes will be served (e.g. /api/v1)",
     "",
+  )
+  .option(
+    "--always-fake-optionals",
+    "random responses will include optional fields",
   )
   .action(main)
   .parse(process.argv);
