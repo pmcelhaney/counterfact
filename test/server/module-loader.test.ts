@@ -4,7 +4,7 @@ import { usingTemporaryFiles } from "using-temporary-files";
 
 import { ContextRegistry } from "../../src/server/context-registry.js";
 import { ModuleLoader } from "../../src/server/module-loader.js";
-import { Registry } from "../../src/server/registry.js";
+import { MiddlewareFunction, Registry } from "../../src/server/registry.js";
 
 describe("a module loader", () => {
   it("finds a file and adds it to the registry", async () => {
@@ -177,6 +177,46 @@ describe("a module loader", () => {
       expect(contextRegistry.find("/hello").name).toBe("hello");
       expect(contextRegistry.find("/hello/world").name).toBe("hello");
       expect(contextRegistry.find("/some/other/path").name).toBe("main");
+    });
+  });
+
+  it("finds a middleware and adds it to the registry", async () => {
+    const names = new Map();
+    class MiddlewareExposingRegistry extends Registry {
+      public addMiddleware(url: string, callback: MiddlewareFunction): void {
+        names.set(
+          url,
+          // @ts-expect-error not passing arguments to the callback
+          callback(),
+        );
+      }
+    }
+
+    await usingTemporaryFiles(async ($) => {
+      await $.add(
+        "_.middleware.js",
+        'export function middleware() { return "root"; }',
+      );
+      await $.add(
+        "hello/_.middleware.js",
+        'export function middleware() { return "hello"; }',
+      );
+      await $.add("package.json", '{ "type": "module" }');
+
+      const registry: Registry = new MiddlewareExposingRegistry();
+
+      const contextRegistry: ContextRegistry = new ContextRegistry();
+
+      const loader: ModuleLoader = new ModuleLoader(
+        $.path("."),
+        registry,
+        contextRegistry,
+      );
+
+      await loader.load();
+
+      expect(names.get("/")).toBe("root");
+      expect(names.get("/hello")).toBe("hello");
     });
   });
 

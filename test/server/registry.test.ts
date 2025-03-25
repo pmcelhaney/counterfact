@@ -1,4 +1,5 @@
 import {
+  CounterfactResponseObject,
   Registry,
   type RequestDataWithBody,
 } from "../../src/server/registry.js";
@@ -74,10 +75,10 @@ describe("a registry", () => {
     // @ts-expect-error - chill out, TypeScript
     const postB = await registry.endpoint("POST", "/b")(props);
 
-    expect(getA).toBe("GET a");
-    expect(getB).toBe("GET b");
-    expect(postA).toBe("POST a");
-    expect(postB).toBe("POST b");
+    expect(getA?.body).toBe("GET a");
+    expect(getB?.body).toBe("GET b");
+    expect(postA?.body).toBe("POST a");
+    expect(postB?.body).toBe("POST b");
   });
 
   it("handles a dynamic path", async () => {
@@ -111,11 +112,87 @@ describe("a registry", () => {
     });
   });
 
+  it("applies middlewares", async () => {
+    const registry = new Registry();
+
+    registry.addMiddleware("", async ($: RequestDataWithBody, respondTo) => {
+      const response = await respondTo($);
+      response.body += " augmented";
+      response.status = 201;
+      response.headers = { ...response.headers, "x-augmented": "true" };
+      return response;
+    });
+
+    registry.add("/admin/users", {
+      GET({ path }) {
+        return {
+          body: "users",
+          headers: { "content-type": "text/plain" },
+          status: 200,
+        };
+      },
+    });
+
+    expect(
+      await registry.endpoint(
+        "GET",
+        "/admin/users",
+
+        // @ts-expect-error - not creating an entire request object
+      )({ headers: {}, matchedPath: "", path: {}, query: {} }),
+    ).toStrictEqual({
+      body: "users augmented",
+      headers: { "content-type": "text/plain", "x-augmented": "true" },
+      status: 201,
+    });
+  });
+
+  it("applies multiple middlewares", async () => {
+    const registry = new Registry();
+
+    registry.addMiddleware("", async ($: RequestDataWithBody, respondTo) => {
+      const response = await respondTo($);
+      response.body += " root";
+      return response;
+    });
+
+    registry.addMiddleware(
+      "/admin",
+      async ($: RequestDataWithBody, respondTo) => {
+        const response = await respondTo($);
+        response.body += " admin";
+
+        return response;
+      },
+    );
+
+    registry.add("/admin/users", {
+      GET({ path }) {
+        return {
+          body: "users",
+          headers: { "content-type": "text/plain" },
+          status: 200,
+        };
+      },
+    });
+
+    expect(
+      (
+        await registry.endpoint(
+          "GET",
+          "/admin/users",
+
+          // @ts-expect-error - not creating an entire request object
+        )({ headers: {}, matchedPath: "", path: {}, query: {} })
+      )?.body,
+    ).toStrictEqual("users admin root");
+  });
+
   it("matches an endpoint where the case does not match", async () => {
     const registry = new Registry();
 
     registry.add("/{organization}/users/{username}/friends/{page}", {
-      GET({ path }) {
+      async GET({ path }) {
         return {
           body: `page ${path?.page ?? "???"} of ${
             path?.username ?? "???"

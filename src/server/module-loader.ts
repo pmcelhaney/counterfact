@@ -11,21 +11,32 @@ import { CHOKIDAR_OPTIONS } from "./constants.js";
 import { type Context, ContextRegistry } from "./context-registry.js";
 import { determineModuleKind } from "./determine-module-kind.js";
 import { ModuleDependencyGraph } from "./module-dependency-graph.js";
-import type { Module, Registry } from "./registry.js";
+import type { MiddlewareFunction, Module, Registry } from "./registry.js";
 import { uncachedImport } from "./uncached-import.js";
+import path from "node:path";
 
 const { uncachedRequire } = await import("./uncached-require.cjs");
 
 const debug = createDebug("counterfact:server:module-loader");
 
 interface ContextModule {
-  Context: Context;
+  Context?: Context;
 }
 
 function isContextModule(
   module: ContextModule | Module,
 ): module is ContextModule {
   return "Context" in module && typeof module.Context === "function";
+}
+
+function isMiddlewareModule(
+  module: ContextModule | Module,
+): module is ContextModule & { middleware: MiddlewareFunction } {
+  return (
+    "middleware" in module &&
+    typeof Object.getOwnPropertyDescriptor(module, "middleware")?.value ===
+      "function"
+  );
 }
 
 export class ModuleLoader extends EventTarget {
@@ -171,28 +182,42 @@ export class ModuleLoader extends EventTarget {
           ? uncachedRequire
           : uncachedImport;
 
-      const endpoint = (await doImport(pathName)) as ContextModule | Module;
+      const endpoint = (await doImport(pathName).catch((err) => {
+        console.log("ERROR");
+      })) as ContextModule | Module;
 
       this.dispatchEvent(new Event("add"));
 
-      if (basename(pathName).startsWith("_.context")) {
-        if (isContextModule(endpoint)) {
-          const loadContext = (path: string) => this.contextRegistry.find(path);
+      if (
+        basename(pathName).startsWith("_.context.") &&
+        isContextModule(endpoint)
+      ) {
+        const loadContext = (path: string) => this.contextRegistry.find(path);
 
-          this.contextRegistry.update(
-            directory,
+        this.contextRegistry.update(
+          directory,
 
-            // @ts-expect-error TS says Context has no constructable signatures but that's not true?
+          // @ts-expect-error TS says Context has no constructable signatures but that's not true?
 
-            new endpoint.Context({
-              loadContext,
-            }),
-          );
-        }
-      } else {
-        if (url === "/index") this.registry.add("/", endpoint as Module);
-        this.registry.add(url, endpoint as Module);
+          new endpoint.Context({
+            loadContext,
+          }),
+        );
+        return;
       }
+
+      if (
+        basename(pathName).startsWith("_.middleware.") &&
+        isMiddlewareModule(endpoint)
+      ) {
+        this.registry.addMiddleware(
+          url.slice(0, url.lastIndexOf("/")) || "/",
+          endpoint.middleware,
+        );
+      }
+
+      if (url === "/index") this.registry.add("/", endpoint as Module);
+      this.registry.add(url, endpoint as Module);
     } catch (error: unknown) {
       if (
         String(error) ===
@@ -202,9 +227,9 @@ export class ModuleLoader extends EventTarget {
         return;
       }
 
-      throw error;
-
       process.stdout.write(`\nError loading ${pathName}:\n${String(error)}\n`);
+
+      throw error;
     }
   }
 }

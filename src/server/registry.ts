@@ -40,35 +40,24 @@ interface RequestDataWithBody extends RequestData {
   body?: unknown;
 }
 
+type UserDefinedResponse =
+  | Promise<CounterfactResponseObject | undefined | string>
+  | CounterfactResponseObject
+  | undefined
+  | string;
+
 interface Module {
-  DELETE?: (requestData: RequestData) => CounterfactResponse | undefined;
-  GET?: (requestData: RequestData) => CounterfactResponse | undefined;
-  HEAD?: (requestData: RequestData) => CounterfactResponse | undefined;
-  OPTIONS?: (requestData: RequestData) => CounterfactResponse | undefined;
-  PATCH?: (requestData: RequestData) => CounterfactResponse | undefined;
-  POST?: (requestData: RequestDataWithBody) => CounterfactResponse | undefined;
-  PUT?: (requestData: RequestDataWithBody) => CounterfactResponse | undefined;
-  TRACE?: (requestData: RequestData) => CounterfactResponse | undefined;
+  DELETE?: (requestData: RequestData) => UserDefinedResponse;
+  GET?: (requestData: RequestData) => UserDefinedResponse;
+  HEAD?: (requestData: RequestData) => UserDefinedResponse;
+  OPTIONS?: (requestData: RequestData) => UserDefinedResponse;
+  PATCH?: (requestData: RequestData) => UserDefinedResponse;
+  POST?: (requestData: RequestDataWithBody) => UserDefinedResponse;
+  PUT?: (requestData: RequestDataWithBody) => UserDefinedResponse;
+  TRACE?: (requestData: RequestData) => UserDefinedResponse;
 }
 
-type CounterfactResponseObject =
-  | string
-  | {
-      body?: string;
-      content?: {
-        body: unknown;
-        type: MediaType;
-      }[];
-      contentType?: string;
-      headers?: { [key: string]: number | string };
-      status?: number;
-    };
-
-type CounterfactResponse =
-  | CounterfactResponseObject
-  | Promise<CounterfactResponseObject>;
-
-interface NormalizedCounterfactResponseObject {
+type CounterfactResponseObject = {
   body?: string;
   content?: {
     body: unknown;
@@ -77,7 +66,14 @@ interface NormalizedCounterfactResponseObject {
   contentType?: string;
   headers?: { [key: string]: number | string };
   status?: number;
-}
+};
+
+type RespondTo = ($: RequestData) => Promise<CounterfactResponseObject>;
+
+type MiddlewareFunction = (
+  $: RequestData,
+  respondTo: RespondTo,
+) => Promise<CounterfactResponseObject>;
 
 function castParameter(value: string | number | boolean, type: string) {
   if (typeof value !== "string") {
@@ -115,12 +111,22 @@ function castParameters(
 export class Registry {
   private readonly moduleTree = new ModuleTree();
 
+  private middlewares: Map<string, MiddlewareFunction> = new Map();
+
+  public constructor() {
+    this.middlewares.set("/", ($, respondTo) => respondTo($));
+  }
+
   public get routes() {
     return this.moduleTree.routes;
   }
 
   public add(url: string, module: Module) {
     this.moduleTree.add(url, module);
+  }
+
+  public addMiddleware(url: string, callback: MiddlewareFunction): void {
+    this.middlewares.set(url, callback);
   }
 
   public remove(url: string) {
@@ -178,7 +184,49 @@ export class Registry {
 
       operationArgument.x = operationArgument;
 
-      return await execute(operationArgument);
+      const executeAndNormalizeResponse = async (
+        requestData: RequestDataWithBody,
+      ) => {
+        const result = await execute(requestData);
+        if (typeof result === "string") {
+          return {
+            headers: {},
+            status: 200,
+            body: result,
+            contentType: "text/plain",
+          };
+        }
+
+        if (typeof result === "undefined") {
+          return {
+            headers: {},
+            body: `The ${httpRequestMethod} function did not return anything. Did you forget a return statement?`,
+            status: 500,
+          };
+        }
+        return result;
+      };
+
+      const middlewares = this.middlewares;
+
+      function recurse(path: string | null, respondTo: RespondTo) {
+        if (path === null) return respondTo;
+
+        const nextPath =
+          path === "" ? null : path.slice(0, path.lastIndexOf("/"));
+
+        const middleware = middlewares.get(path);
+        if (middleware !== undefined) {
+          return recurse(nextPath, ($) => middleware($, respondTo));
+        }
+
+        return recurse(nextPath, respondTo);
+      }
+
+      return recurse(
+        operationArgument.matchedPath ?? "/",
+        executeAndNormalizeResponse,
+      )(operationArgument);
     };
   }
 }
@@ -187,6 +235,6 @@ export type {
   CounterfactResponseObject,
   HttpMethods,
   Module,
-  NormalizedCounterfactResponseObject,
   RequestDataWithBody,
+  MiddlewareFunction,
 };

@@ -5,9 +5,8 @@ import fetch, { Headers } from "node-fetch";
 
 import type { ContextRegistry } from "./context-registry.js";
 import type {
-  CounterfactResponseObject,
   HttpMethods,
-  NormalizedCounterfactResponseObject,
+  CounterfactResponseObject,
   Registry,
 } from "./registry.js";
 import { createResponseBuilder } from "./response-builder.js";
@@ -140,16 +139,7 @@ export class Dispatcher {
   private normalizeResponse(
     response: CounterfactResponseObject,
     acceptHeader: string,
-  ): NormalizedCounterfactResponseObject {
-    if (typeof response === "string") {
-      return {
-        body: response,
-        contentType: "text/plain",
-        headers: {},
-        status: 200,
-      };
-    }
-
+  ): CounterfactResponseObject {
     if (response.content !== undefined) {
       const content = this.selectContent(acceptHeader, response.content);
 
@@ -177,7 +167,9 @@ export class Dispatcher {
       ...response,
 
       contentType:
-        response.headers?.["content-type"]?.toString() ?? "unknown/unknown",
+        response.headers?.["content-type"]?.toString() ??
+        response.contentType ??
+        "unknown/unknown",
     };
   }
 
@@ -245,7 +237,7 @@ export class Dispatcher {
     req: {
       path?: string;
     };
-  }): Promise<NormalizedCounterfactResponseObject> {
+  }): Promise<CounterfactResponseObject> {
     debug(`request: ${method} ${path}`);
 
     // If the incoming path includes the base path, remove it
