@@ -328,15 +328,10 @@ Here's an example of a middleware function that adds a custom header to the resp
 
 ```ts
 // _.middleware.ts
-import { MiddlewareFunction } from "counterfact";
 
-export const middleware: MiddlewareFunction = async ($, respondTo) => {
+export async function middleware ($, respondTo) => {
   const response = await respondTo($);
-  response.headers = {
-    ...response.headers,
-    "X-Custom-Header": "Custom Value",
-  };
-  return response;
+  return response.header("X-Custom-Header", "Custom Value");
 };
 ```
 
