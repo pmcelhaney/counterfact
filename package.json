@@ -62,7 +62,7 @@
     "eslint": "9.25.0",
     "eslint-config-hardcore": "47.0.1",
     "eslint-formatter-github-annotations": "0.1.0",
-    "eslint-import-resolver-typescript": "4.3.2",
+    "eslint-import-resolver-typescript": "4.3.3",
     "eslint-plugin-etc": "2.0.3",
     "eslint-plugin-file-progress": "3.0.2",
     "eslint-plugin-import": "2.31.0",
