@@ -1,5 +1,11 @@
 # counterfact
 
+## 1.3.0
+
+### Minor Changes
+
+- b69d508: added extensibility via middleware
+
 ## 1.2.0
 
 ### Minor Changes
