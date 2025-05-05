@@ -8875,10 +8875,10 @@ node-int64@^0.4.0:
   resolved "https://registry.yarnpkg.com/node-int64/-/node-int64-0.4.0.tgz#87a9065cdb355d3182d8f94ce11188b825c68a3b"
   integrity sha512-O5lz91xSOeoXP6DulyHfllpq+Eg00MWitZIbtPfoSEvqIHdl5gfcY6hYzDWnj0qD5tz52PI08u9qUvSVeUBeHw==
 
-node-mocks-http@1.17.0:
-  version "1.17.0"
-  resolved "https://registry.yarnpkg.com/node-mocks-http/-/node-mocks-http-1.17.0.tgz#178990cf0d3d39ad25f2f19811fca45628fbf085"
-  integrity sha512-5JqOrEtENMQkhX4Gbf1Zl7xiE1dNTn0dnsvk45BrlSt4HpCkigQkp2/UsbwJfGU+XYmkb4x7bRiekYvM71B+xw==
+node-mocks-http@1.17.1:
+  version "1.17.1"
+  resolved "https://registry.yarnpkg.com/node-mocks-http/-/node-mocks-http-1.17.1.tgz#72af88496c577a79e15f8cc10734c5c087f41bcc"
+  integrity sha512-lWJYkonI2Qi15AZoo6uA3+bhVYaYUyDyYWZH2pqpsd6UZs05QWzVsy9GOXavvAMGNePp2vpgtORTJEUQe8W6QA==
   dependencies:
     accepts "^1.3.7"
     content-disposition "^0.5.3"
