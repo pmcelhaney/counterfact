@@ -182,6 +182,10 @@ export function createResponseBuilder(
       xml(this: ResponseBuilder, body: unknown) {
         return this.match("application/xml", body).match("text/xml", body);
       },
+
+      binary(this: ResponseBuilder, body: Buffer) {
+        return this.match("application/octet-stream", body);
+      },
     }),
   });
 }

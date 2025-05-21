@@ -290,6 +290,7 @@ describe("a dispatcher", () => {
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
     const response = await dispatcher.request({
       body: "",
+
       headers: {},
 
       method: "GET",
@@ -707,6 +708,36 @@ describe("a dispatcher", () => {
 
     expect(operation).not.toBeUndefined();
     expect(operation?.produces).toStrictEqual(["text/plain"]);
+  });
+
+  it("handles binary data responses", async () => {
+    const registry = new Registry();
+
+    registry.add("/binary", {
+      GET() {
+        return {
+          body: Buffer.from("binary data", "utf-8").toString("base64"),
+          contentType: "application/octet-stream",
+          status: 200,
+        };
+      },
+    });
+
+    const dispatcher = new Dispatcher(registry, new ContextRegistry());
+    const response = await dispatcher.request({
+      body: "",
+      headers: {
+        accept: "application/octet-stream",
+      },
+      method: "GET",
+      path: "/binary",
+      query: {},
+      req: { path: "/binary" },
+    });
+
+    expect(response.status).toBe(200);
+    expect(response.body).toBeInstanceOf(Buffer);
+    expect(response.body.toString("utf-8")).toBe("binary data");
   });
 });
 
