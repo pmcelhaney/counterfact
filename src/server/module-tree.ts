@@ -136,8 +136,16 @@ export class ModuleTree {
     matchedPath: string,
     method: string,
   ) {
+    let fileMatch = "";
+    for (const file in directory.files) {
+      if (file.toLowerCase() === segment.toLowerCase()) {
+        fileMatch = file;
+        break;
+      }
+    }
+
     const match =
-      directory.files[segment.toLowerCase()] ??
+      directory.files[fileMatch] ??
       Object.values(directory.files).find(
         (file) => file.isWildcard && this.fileModuleDefined(file, method),
       );
