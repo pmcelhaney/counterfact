@@ -136,8 +136,17 @@ export class ModuleTree {
     matchedPath: string,
     method: string,
   ) {
+    function normalizedSegment(segment: string, directory: Directory) {
+      for (const file in directory.files) {
+        if (file.toLowerCase() === segment.toLowerCase()) {
+          return file;
+        }
+      }
+      return "";
+    }
+
     const match =
-      directory.files[segment.toLowerCase()] ??
+      directory.files[normalizedSegment(segment, directory)] ??
       Object.values(directory.files).find(
         (file) => file.isWildcard && this.fileModuleDefined(file, method),
       );

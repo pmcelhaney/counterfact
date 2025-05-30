@@ -33,8 +33,11 @@ it("finds a file under a subdirectory", () => {
 
   add(moduleTree, "/a", "a");
   add(moduleTree, "/a/b", "b");
+  // Should handle differences in case between the path and the module name
+  add(moduleTree, "/a/Something", "something");
   expect(match(moduleTree, "/a")).toBe("a");
   expect(match(moduleTree, "/a/b")).toBe("b");
+  expect(match(moduleTree, "/a/Something")).toBe("something");
 });
 
 it("finds a file with a trailing slash in the path", () => {
