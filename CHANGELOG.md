@@ -1,5 +1,11 @@
 # counterfact
 
+## 1.3.1
+
+### Patch Changes
+
+- 9cde046: fix to buildMatch in module-tree
+
 ## 1.3.0
 
 ### Minor Changes
