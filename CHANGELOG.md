@@ -1,5 +1,15 @@
 # counterfact
 
+## 1.4.0
+
+### Minor Changes
+
+- d2f02bb: Add Mock Service Worker handler capability
+
+### Patch Changes
+
+- 9cde046: fix to buildMatch in module-tree
+
 ## 1.3.0
 
 ### Minor Changes
