@@ -47,6 +47,25 @@ export interface OpenApiDocument {
   produces?: string[];
 }
 
+export type DispatcherRequest = {
+  auth?: {
+    password?: string;
+    username?: string;
+  };
+  body: unknown;
+  headers: {
+    [key: string]: string;
+  };
+  method: HttpMethods;
+  path: string;
+  query: {
+    [key: string]: string;
+  };
+  req: {
+    path?: string;
+  };
+};
+
 export class Dispatcher {
   public registry: Registry;
 
@@ -220,24 +239,7 @@ export class Dispatcher {
     path,
     query,
     req,
-  }: {
-    auth?: {
-      password?: string;
-      username?: string;
-    };
-    body: unknown;
-    headers: {
-      [key: string]: string;
-    };
-    method: HttpMethods;
-    path: string;
-    query: {
-      [key: string]: string;
-    };
-    req: {
-      path?: string;
-    };
-  }): Promise<CounterfactResponseObject> {
+  }: DispatcherRequest): Promise<CounterfactResponseObject> {
     debug(`request: ${method} ${path}`);
 
     // If the incoming path includes the base path, remove it
