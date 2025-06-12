@@ -58,7 +58,7 @@ interface Module {
 }
 
 type CounterfactResponseObject = {
-  body?: string;
+  body?: string | Buffer;
   content?: {
     body: unknown;
     type: MediaType;
