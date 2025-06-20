@@ -143,7 +143,7 @@ export async function counterfact(config: Config) {
   const transpiler = new Transpiler(
     nodePath.join(modulesPath, "routes").replaceAll("\\", "/"),
     compiledPathsDirectory,
-    "commonjs",
+    "module",
   );
 
   const moduleLoader = new ModuleLoader(
