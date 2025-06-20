@@ -1,6 +1,7 @@
 export interface Config {
   alwaysFakeOptionals: boolean;
   basePath: string;
+  buildCache: boolean;
   generate: {
     routes: boolean;
     types: boolean;
