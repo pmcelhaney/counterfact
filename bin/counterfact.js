@@ -111,7 +111,7 @@ async function main(source, destination) {
 
   // If no action-related option is provided, default to all options
 
-  const actions = ["repl", "serve", "watch", "generate"];
+  const actions = ["repl", "serve", "watch", "generate", "buildCache"];
   if (
     !Object.keys(options).some((argument) =>
       actions.some((action) => argument.startsWith(action)),
@@ -143,13 +143,15 @@ async function main(source, destination) {
         options.generate ||
         options.generateRoutes ||
         options.watch ||
-        options.watchRoutes,
+        options.watchRoutes ||
+        options.buildCache,
 
       types:
         options.generate ||
         options.generateTypes ||
         options.watch ||
-        options.watchTypes,
+        options.watchTypes ||
+        options.buildCache,
     },
 
     openApiPath: source,
@@ -159,6 +161,7 @@ async function main(source, destination) {
     routePrefix: options.prefix,
     startRepl: options.repl,
     startServer: options.serve,
+    buildCache: options.buildCache || false,
 
     watch: {
       routes: options.watch || options.watchRoutes,
@@ -262,6 +265,7 @@ program
   .option("--watch-types", "generate + watch types for changes")
   .option("--watch-routes", "generate + watch routes for changes")
   .option("-s, --serve", "start the server")
+  .option("-b, --build-cache", "builds the cache of compiled routes and types")
   .option("-r, --repl", "start the REPL")
   .option("--proxy-url <string>", "proxy URL")
   .option(

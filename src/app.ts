@@ -164,6 +164,7 @@ export async function counterfact(config: Config) {
       startRepl: shouldStartRepl,
       startServer,
       watch,
+      buildCache,
     } = options;
 
     if (generate.routes || generate.types) {
@@ -188,6 +189,10 @@ export async function counterfact(config: Config) {
       httpTerminator = createHttpTerminator({
         server,
       });
+    } else if (buildCache) {
+      // If we are not starting the server, we still want to transpile and load modules
+      await transpiler.watch();
+      await transpiler.stopWatching();
     }
 
     const replServer = shouldStartRepl && startRepl(contextRegistry, config);
