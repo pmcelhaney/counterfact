@@ -1,5 +1,11 @@
 # counterfact
 
+## 1.4.1
+
+### Patch Changes
+
+- 12f22fd: Add buildCache CLI option
+
 ## 1.4.0
 
 ### Minor Changes
