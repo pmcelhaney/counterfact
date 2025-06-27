@@ -148,8 +148,15 @@
     "open": "11.0.0",
     "patch-package": "8.0.1",
     "precinct": "12.2.0",
+<<<<<<< HEAD
     "prettier": "3.8.1",
     "typescript": "5.9.3"
+=======
+    "prettier": "3.5.3",
+    "recast": "0.23.11",
+    "tsx": "^4.20.3",
+    "typescript": "5.8.3"
+>>>>>>> fa7d50f (feat: Add option to run in TypeScript native using tsx)
   },
   "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e",
   "resolutions": {
