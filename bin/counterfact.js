@@ -261,6 +261,7 @@ async function main(source, destination) {
     startRepl: options.repl,
     startServer: options.serve,
     buildCache: options.buildCache || false,
+    useTsx: options.useTsx,
 
     watch: {
       routes: options.watch || options.watchRoutes,
@@ -422,6 +423,7 @@ program
   .option("--no-admin-api", "disable the admin API at /_counterfact/api/*")
   .option("-r, --repl", "start the REPL")
   .option("--proxy-url <string>", "proxy URL")
+  .option("--use-tsx", "Run the REPL using tsx (experimental)")
   .option(
     "--admin-api-token <string>",
     "bearer token required for /_counterfact/api/* endpoints (defaults to COUNTERFACT_ADMIN_API_TOKEN)",

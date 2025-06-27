@@ -118,10 +118,12 @@ export async function counterfact(config: Config) {
   const modulesPath = config.basePath;
 
   const compiledPathsDirectory = nodePath
-    .join(modulesPath, ".cache")
+    .join(modulesPath, config.useTsx ? "routes" : ".cache")
     .replaceAll("\\", "/");
 
-  await rm(compiledPathsDirectory, { force: true, recursive: true });
+  if (!config.useTsx) {
+    await rm(compiledPathsDirectory, { force: true, recursive: true });
+  }
 
   const registry = new Registry();
 
@@ -170,7 +172,9 @@ export async function counterfact(config: Config) {
     let httpTerminator: HttpTerminator | undefined;
 
     if (startServer) {
-      await transpiler.watch();
+      if (!config.useTsx) {
+        await transpiler.watch();
+      }
       await moduleLoader.load();
       await moduleLoader.watch();
 
