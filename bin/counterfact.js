@@ -9,8 +9,8 @@ import { program } from "commander";
 import createDebug from "debug";
 import open from "open";
 
-import { counterfact } from "../dist/app.js";
-import { pathsToRoutes } from "../dist/migrate/paths-to-routes.js";
+import { counterfact } from "../src/app.ts";
+import { pathsToRoutes } from "../src/migrate/paths-to-routes.js";
 
 const MIN_NODE_VERSION = 17;
 
@@ -159,6 +159,7 @@ async function main(source, destination) {
     routePrefix: options.prefix,
     startRepl: options.repl,
     startServer: options.serve,
+    useTsx: options.useTsx,
 
     watch: {
       routes: options.watch || options.watchRoutes,
@@ -264,6 +265,7 @@ program
   .option("-s, --serve", "start the server")
   .option("-r, --repl", "start the REPL")
   .option("--proxy-url <string>", "proxy URL")
+  .option("--use-tsx", "Run the REPL using tsx (experimental)")
   .option(
     "--prefix <string>",
     "base path from which routes will be served (e.g. /api/v1)",

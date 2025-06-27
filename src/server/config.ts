@@ -12,6 +12,7 @@ export interface Config {
   routePrefix: string;
   startRepl: boolean;
   startServer: boolean;
+  useTsx: boolean;
   watch: {
     routes: boolean;
     types: boolean;

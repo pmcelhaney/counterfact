@@ -14,7 +14,7 @@ export async function determineModuleKind(modulePath: string) {
     return "commonjs";
   }
 
-  if (modulePath.endsWith(".mjs")) {
+  if (modulePath.endsWith(".mjs") || modulePath.endsWith(".ts")) {
     return "module";
   }
 
