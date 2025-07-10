@@ -77,7 +77,7 @@
     "node-mocks-http": "1.17.2",
     "rimraf": "6.0.1",
     "stryker-cli": "1.0.2",
-    "supertest": "7.1.1",
+    "supertest": "7.1.2",
     "using-temporary-files": "2.2.1"
   },
   "dependencies": {
