@@ -52,12 +52,12 @@ type IfHasKey<
   Keys extends readonly string[],
   Yes,
   No,
-> = Keys extends [infer FirstKey, ...infer RestKeys]
-  ? Extract<
-      keyof SomeObject,
-      `${string}${FirstKey & string}${string}`
-    > extends never
-    ? IfHasKey<SomeObject, RestKeys & readonly string[], Yes, No>
+> = Keys extends [
+  infer FirstKey extends string,
+  ...infer RestKeys extends string[],
+]
+  ? Extract<keyof SomeObject, `${string}${FirstKey}${string}`> extends never
+    ? IfHasKey<SomeObject, RestKeys, Yes, No>
     : Yes
   : No;
 
