@@ -23,10 +23,8 @@ type COUNTERFACT_RESPONSE = typeof counterfactResponseObject;
 type MediaType = `${string}/${string}`;
 
 type OmitAll<T, K extends readonly string[]> = {
-  [P in keyof T as P extends string
-    ? P extends `${string}${K[number]}${string}`
-      ? never
-      : P
+  [P in keyof T as P extends `${string}${K[number]}${string}`
+    ? never
     : P]: T[P];
 };
 
@@ -56,9 +54,9 @@ type IfHasKey<
   infer FirstKey extends string,
   ...infer RestKeys extends string[],
 ]
-  ? Extract<keyof SomeObject, `${string}${FirstKey}${string}`> extends never
-    ? IfHasKey<SomeObject, RestKeys, Yes, No>
-    : Yes
+  ? keyof SomeObject extends `${string}${FirstKey}${string}`
+    ? Yes
+    : IfHasKey<SomeObject, RestKeys, Yes, No>
   : No;
 
 type SchemasOf<T extends { [key: string]: { schema: any } }> = {
