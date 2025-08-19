@@ -284,4 +284,6 @@ export type {
   ResponseBuilderFactory,
   WideOperationArgument,
   WideResponseBuilder,
+  OmitAll,
+  IfHasKey,
 };
