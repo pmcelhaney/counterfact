@@ -22,8 +22,10 @@ type COUNTERFACT_RESPONSE = typeof counterfactResponseObject;
 
 type MediaType = `${string}/${string}`;
 
-type OmitAll<T, K extends (keyof T)[]> = {
-  [P in keyof T as P extends K[number] ? never : P]: T[P];
+type OmitAll<T, K extends readonly string[]> = {
+  [P in keyof T as P extends `${string}${K[number]}${string}`
+    ? never
+    : P]: T[P];
 };
 
 type OmitValueWhenNever<Base> = Pick<
@@ -43,15 +45,18 @@ interface OpenApiResponses {
   [key: string]: OpenApiResponse;
 }
 
-type IfHasKey<SomeObject, Keys extends (keyof any)[], Yes, No> = Keys extends [
-  infer FirstKey,
-  ...infer RestKeys,
+type IfHasKey<
+  SomeObject,
+  Keys extends readonly string[],
+  Yes,
+  No,
+> = Keys extends [
+  infer FirstKey extends string,
+  ...infer RestKeys extends string[],
 ]
-  ? FirstKey extends keyof SomeObject
+  ? keyof SomeObject extends `${string}${FirstKey}${string}`
     ? Yes
-    : RestKeys extends (keyof any)[]
-      ? IfHasKey<SomeObject, RestKeys, Yes, No>
-      : No
+    : IfHasKey<SomeObject, RestKeys, Yes, No>
   : No;
 
 type SchemasOf<T extends { [key: string]: { schema: any } }> = {
@@ -279,4 +284,6 @@ export type {
   ResponseBuilderFactory,
   WideOperationArgument,
   WideResponseBuilder,
+  OmitAll,
+  IfHasKey,
 };
