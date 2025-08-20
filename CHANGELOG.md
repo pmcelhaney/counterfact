@@ -1,5 +1,11 @@
 # counterfact
 
+## 1.4.2
+
+### Patch Changes
+
+- df23b2e: MaybeShortcut for content type is too strict #1370 -- thanks @ihor-rud!
+
 ## 1.4.1
 
 ### Patch Changes
@@ -274,7 +280,6 @@
 
 - ef4b6b3: fix an issue in which a file which is essential for type safety was not created (types.d.ts)
 - 317fbaa: Fixed and simplified the way `\_.context.ts` files work.
-
   - it's no longer necessary to have a `_.context.ts` file in every directory, only the ones where you want to establish a new context
   - removed the need for `export type ContextType`
 
@@ -389,7 +394,6 @@
 - 836b61d: Fixed an issue where the context object wasn't working as expected.
 
   BREAKING CHANGE:
-
   - the main $.context.ts file needs an extra line: `export type ContextType = Context;`
   - $.context.ts files below the root need to change to `export type { ContextType } from "../$.context";`
   - if you modified any of the $.context.ts files below the root, treat the first bullet applies
