@@ -12725,7 +12725,7 @@ tsconfig-paths@^3.15.0:
     minimist "^1.2.6"
     strip-bom "^3.0.0"
 
-tsd@^0.33.0:
+tsd@0.33.0:
   version "0.33.0"
   resolved "https://registry.yarnpkg.com/tsd/-/tsd-0.33.0.tgz#6e2abb4a43735dcb2fe9036f2b37b9680e463099"
   integrity sha512-/PQtykJFVw90QICG7zyPDMIyueOXKL7jOJVoX5pILnb3Ux+7QqynOxfVvarE+K+yi7BZyOSY4r+OZNWSWRiEwQ==
