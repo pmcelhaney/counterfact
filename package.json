@@ -79,7 +79,7 @@
     "rimraf": "6.0.1",
     "stryker-cli": "1.0.2",
     "supertest": "7.1.4",
-    "tsd": "^0.33.0",
+    "tsd": "0.33.0",
     "using-temporary-files": "2.2.1"
   },
   "dependencies": {
