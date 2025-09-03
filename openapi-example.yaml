@@ -84,6 +84,15 @@ paths:
                 $ref: "#/components/schemas/Recursive"
         "400":
           $ref: "#/components/responses/BadRequest"
+  "/weird/path/with:colon":
+    get:
+      responses:
+        "200":
+          description: "this path has a colon in it"
+          content:
+            application/json:
+              schema:
+                type: string
 
 components:
   responses:

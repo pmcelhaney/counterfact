@@ -164,6 +164,7 @@ export class Registry {
     const execute = handler.module?.[httpRequestMethod];
 
     if (!execute) {
+      debug(`Could not find a ${httpRequestMethod} method matching ${url}\n`);
       return () => ({
         body: `Could not find a ${httpRequestMethod} method matching ${url}\n`,
         contentType: "text/plain",

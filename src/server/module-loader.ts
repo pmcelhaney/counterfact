@@ -19,6 +19,11 @@ const { uncachedRequire } = await import("./uncached-require.cjs");
 
 const debug = createDebug("counterfact:server:module-loader");
 
+import {
+  escapePathForWindows,
+  unescapePathForWindows,
+} from "../util/windows-escape.js";
+
 interface ContextModule {
   Context?: Context;
 }
@@ -95,9 +100,11 @@ export class ModuleLoader extends EventTarget {
         }
 
         const parts = nodePath.parse(pathName.replace(this.basePath, ""));
-        const url = `/${parts.dir}/${parts.name}`
-          .replaceAll("\\", "/")
-          .replaceAll(/\/+/gu, "/");
+        const url = unescapePathForWindows(
+          `/${parts.dir}/${parts.name}`
+            .replaceAll("\\", "/")
+            .replaceAll(/\/+/gu, "/"),
+        );
 
         if (eventName === "unlink") {
           this.registry.remove(url);
@@ -153,7 +160,7 @@ export class ModuleLoader extends EventTarget {
         .join(this.basePath, directory, file.name)
         .replaceAll("\\", "/");
 
-      await this.loadEndpoint(fullPath);
+      await this.loadEndpoint(escapePathForWindows(fullPath));
     });
 
     await Promise.all(imports);
@@ -167,12 +174,13 @@ export class ModuleLoader extends EventTarget {
       "/",
     );
 
-    const url = `/${nodePath.join(
-      directory,
-      nodePath.parse(basename(pathName)).name,
-    )}`
-      .replaceAll("\\", "/")
-      .replaceAll(/\/+/gu, "/");
+    const url = unescapePathForWindows(
+      `/${nodePath.join(directory, nodePath.parse(basename(pathName)).name)}`
+        .replaceAll("\\", "/")
+        .replaceAll(/\/+/gu, "/"),
+    );
+
+    debug(`loading pathName from dependencyGraph: ${pathName}`);
 
     this.dependencyGraph.load(pathName);
 
@@ -217,6 +225,8 @@ export class ModuleLoader extends EventTarget {
       }
 
       if (url === "/index") this.registry.add("/", endpoint as Module);
+
+      debug(`adding "${url}" to registry`);
       this.registry.add(url, endpoint as Module);
     } catch (error: unknown) {
       if (
