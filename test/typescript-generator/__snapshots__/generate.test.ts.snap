@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`end-to-end test generates the same code for pet store that it did on the last test run 1`] = `
 "routes/pet.ts:import type { HTTP_POST } from "../types/paths/pet.types.js";
