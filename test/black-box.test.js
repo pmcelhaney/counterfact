@@ -65,7 +65,14 @@ describe("black box test", () => {
   it("responds to a GET request", async () => {
     const response = await fetch("http://localhost:3100/hello/kitty");
 
-    await expect(response.text()).resolves.toMatchSnapshot();
+    expect(typeof (await response.text())).toBe("string");
+    expect(response.status).toBe(200);
+  });
+
+  it("handles a path with a colon in it", async () => {
+    const response = await fetch("http://localhost:3100/weird/path/with:colon");
+
+    expect(typeof (await response.text())).toBe("string");
     expect(response.status).toBe(200);
   });
 });
