@@ -241,6 +241,8 @@ export class Dispatcher {
     req,
   }: DispatcherRequest): Promise<CounterfactResponseObject> {
     debug(`request: ${method} ${path}`);
+    debug(`headers: ${JSON.stringify(headers)}`);
+    debug(`body: ${JSON.stringify(body)}`);
 
     // If the incoming path includes the base path, remove it
     if (

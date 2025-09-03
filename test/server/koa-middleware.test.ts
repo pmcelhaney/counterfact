@@ -336,6 +336,46 @@ describe("koa middleware", () => {
     expect(ctx.body).toBe("Hello, Homer!");
   });
 
+  it("does not pass a request body for a GET request", async () => {
+    const registry = new Registry();
+
+    registry.add("/hello", {
+      GET(requestData) {
+        return {
+          body: `Hello, ${requestData?.body?.name}!`,
+        };
+      },
+    });
+
+    const dispatcher = new Dispatcher(registry, new ContextRegistry());
+    const middleware = koaMiddleware(dispatcher, {
+      ...CONFIG,
+      routePrefix: "/api/v1",
+    });
+
+    const ctx = {
+      req: {
+        path: "/api/v1/hello",
+      },
+
+      request: {
+        body: { name: "Homer" },
+        headers: {},
+        method: "GET",
+        path: "/api/v1/hello",
+      },
+
+      set: jest.fn(),
+    } as unknown as ParameterizedContext;
+
+    await middleware(ctx, async () => {
+      await Promise.resolve(undefined);
+    });
+
+    expect(ctx.status).toBe(200);
+    expect(ctx.body).toBe("Hello, undefined!");
+  });
+
   it("collects basic authorization headers", async () => {
     const registry = new Registry();
 
