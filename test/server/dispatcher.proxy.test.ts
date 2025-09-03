@@ -23,10 +23,6 @@ describe("a dispatcher passes a proxy function to the operation", () => {
         status: 200,
 
         async text() {
-          if (typeof url !== "string") {
-            throw new TypeError("url is not a string");
-          }
-
           return await Promise.resolve(`body from ${url}`);
         },
       });
@@ -41,7 +37,6 @@ describe("a dispatcher passes a proxy function to the operation", () => {
       },
     });
 
-    // @ts-expect-error I don't understand why TS says contentType and headers don't exist
     const { body, contentType, headers, status } = response;
 
     expect(body).toBe("body from https://example.com/a?x=1");

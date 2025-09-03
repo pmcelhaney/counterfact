@@ -34,6 +34,7 @@ interface RequestData {
   query: { [key: string]: number | string | boolean };
   response: ResponseBuilderFactory;
   tools: Tools;
+  body?: unknown;
 }
 
 interface RequestDataWithBody extends RequestData {

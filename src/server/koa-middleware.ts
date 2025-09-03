@@ -93,7 +93,7 @@ export function koaMiddleware(
     const response = await dispatcher.request({
       auth,
 
-      body,
+      body: method === "HEAD" || method === "GET" ? undefined : body,
 
       /* @ts-expect-error the value of a header can be an array and we don't have a solution for that yet */
       headers,
