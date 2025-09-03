@@ -1,5 +1,11 @@
 # counterfact
 
+## 1.4.3
+
+### Patch Changes
+
+- e8e6e6d: fix error with $.proxy() when making a GET request
+
 ## 1.4.2
 
 ### Patch Changes
