@@ -207,8 +207,6 @@ export class ModuleLoader extends EventTarget {
           : uncachedImport;
 
       const endpoint = (await doImport(pathName).catch(async (err) => {
-        const exists = await fs.stat(pathName);
-
         console.log(
           "ERROR: ${pathName} couldn't be loaded for some reason. Here are the contents of the directory.",
         );
