@@ -1,5 +1,11 @@
 # counterfact
 
+## 1.4.5
+
+### Patch Changes
+
+- 8f0d2d2: fix for Windows when a path contains a colon (:), resolves #1381
+
 ## 1.4.4
 
 ### Patch Changes
