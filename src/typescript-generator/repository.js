@@ -11,6 +11,8 @@ import { ensureDirectoryExists } from "../util/ensure-directory-exists.js";
 import { CONTEXT_FILE_TOKEN } from "./context-file-token.js";
 import { Script } from "./script.js";
 
+import { escapePathForWindows } from "../util/windows-escape.js";
+
 const debug = createDebug("counterfact:server:repository");
 
 const __dirname = dirname(fileURLToPath(import.meta.url)).replaceAll("\\", "/");
@@ -79,7 +81,9 @@ export class Repository {
       async ([path, script]) => {
         const contents = await script.contents();
 
-        const fullPath = nodePath.join(destination, path).replaceAll("\\", "/");
+        const fullPath = escapePathForWindows(
+          nodePath.join(destination, path).replaceAll("\\", "/"),
+        );
 
         await ensureDirectoryExists(fullPath);
 
