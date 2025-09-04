@@ -27,7 +27,7 @@ jobs:
         with:
           node-version: lts/*
           cache: yarn
-          cache-dependency-path: ‘**/yarn.lock’
+          cache-dependency-path: "**/yarn.lock"
         id: setup-node
       - name: Get Node Version
         run: echo "version=$(node -v)" >> $GITHUB_OUTPUT
