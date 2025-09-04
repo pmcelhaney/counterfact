@@ -47,7 +47,7 @@ jobs:
         run: yarn tsc --noEmit
       - name: Unit Tests
         timeout-minutes: 2
-        run: yarn test --runInBand --forceExit --verbose --no-watchman
+        run: DEBUG=counterfact:* yarn test --runInBand --forceExit --verbose --no-watchman
       - name: Black Box Tests
         timeout-minutes: 2
         run: yarn test:black-box --runInBand --forceExit --verbose --no-watchman --no-coverage
