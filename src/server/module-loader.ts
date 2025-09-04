@@ -47,7 +47,11 @@ function isMiddlewareModule(
 async function printDirectoryContents(dir: string, indent = "  ") {
   const items = await fs.readdir(dir);
 
+  console.log("items", items);
+
   for (const item of items) {
+    console.log("dir", dir);
+    console.log("item", item);
     const fullPath = path.join(dir, item);
     const stats = await fs.stat(fullPath);
 
