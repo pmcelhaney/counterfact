@@ -194,6 +194,10 @@ export class ModuleLoader extends EventTarget {
         console.log("ERROR");
       })) as ContextModule | Module;
 
+      if (endpoint === undefined) {
+        throw new Error(`Failed to load endpoint: ${pathName}`);
+      }
+
       this.dispatchEvent(new Event("add"));
 
       if (
