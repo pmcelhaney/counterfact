@@ -1,6 +1,6 @@
 {
   "name": "counterfact",
-  "version": "1.4.3",
+  "version": "1.4.4",
   "description": "a library for building a fake REST API for testing",
   "type": "module",
   "main": "./dist/app.js",
@@ -73,7 +73,7 @@
     "eslint-plugin-prettier": "5.5.4",
     "eslint-plugin-unused-imports": "4.2.0",
     "husky": "9.1.7",
-    "jest": "30.1.1",
+    "jest": "30.1.2",
     "jest-retries": "1.0.1",
     "node-mocks-http": "1.17.2",
     "rimraf": "6.0.1",

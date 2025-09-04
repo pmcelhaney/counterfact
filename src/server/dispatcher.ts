@@ -275,6 +275,8 @@ export class Dispatcher {
           );
         }
 
+        delete headers.host;
+
         const fetchResponse = await this.fetch(`${url}${req.path ?? ""}`, {
           body: body === undefined ? undefined : JSON.stringify(body),
           headers: new Headers(headers),
