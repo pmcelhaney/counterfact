@@ -44,6 +44,22 @@ function isMiddlewareModule(
   );
 }
 
+async function printDirectoryContents(dir: string, indent = "  ") {
+  const items = await fs.readdir(dir);
+
+  for (const item of items) {
+    const fullPath = path.join(dir, item);
+    const stats = await fs.stat(fullPath);
+
+    if (stats.isDirectory()) {
+      console.log(`${indent}[DIR] ${item}`);
+      await printDirectoryContents(fullPath, indent + "  ");
+    } else {
+      console.log(`${indent}${item}`);
+    }
+  }
+}
+
 export class ModuleLoader extends EventTarget {
   private readonly basePath: string;
 
@@ -190,15 +206,13 @@ export class ModuleLoader extends EventTarget {
           ? uncachedRequire
           : uncachedImport;
 
-      const endpoint = (await doImport(pathName).catch((err) => {
-        const exists = await fs.exists(pathName);
-        if (exists) {
-          console.log(`ERROR: ${pathName} does not exist`);
-        } else {
-          console.log(
-            "ERROR: ${pathName} exists but couldn't be loaded for some reason",
-          );
-        }
+      const endpoint = (await doImport(pathName).catch(async (err) => {
+        const exists = await fs.stat(pathName);
+
+        console.log(
+          "ERROR: ${pathName} couldn't be loaded for some reason. Here are the contents of the directory.",
+        );
+        printDirectoryContents(path.dirname(pathName));
       })) as ContextModule | Module;
 
       if (endpoint === undefined) {
