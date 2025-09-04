@@ -191,7 +191,14 @@ export class ModuleLoader extends EventTarget {
           : uncachedImport;
 
       const endpoint = (await doImport(pathName).catch((err) => {
-        console.log("ERROR");
+        const exists = await fs.exists(pathName);
+        if (exists) {
+          console.log(`ERROR: ${pathName} does not exist`);
+        } else {
+          console.log(
+            "ERROR: ${pathName} exists but couldn't be loaded for some reason",
+          );
+        }
       })) as ContextModule | Module;
 
       if (endpoint === undefined) {
