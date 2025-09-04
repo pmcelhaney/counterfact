@@ -1,5 +1,11 @@
 # counterfact
 
+## 1.4.4
+
+### Patch Changes
+
+- f760bec: fix an issue where proxying to an HTTPS target does not work
+
 ## 1.4.3
 
 ### Patch Changes
