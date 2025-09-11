@@ -13,6 +13,24 @@ const debug = createDebug("counterfact:server:create-koa-app");
 
 const HTTP_STATUS_CODE_OK = 200;
 
+const HEADERS_TO_DROP = new Set([
+  // body may not be gzip anymore
+  "content-encoding",
+  // length can change when Koa serializes
+  "content-length",
+
+  // hop-by-hop
+  "transfer-encoding",
+  "connection",
+  "keep-alive",
+  "upgrade",
+  "proxy-authenticate",
+  "proxy-authorization",
+  "te",
+  "trailer",
+  "trailers",
+]);
+
 function addCors(ctx: Koa.ExtendableContext, headers?: IncomingHttpHeaders) {
   // Always append CORS headers, reflecting back the headers requested if any
 
@@ -109,7 +127,9 @@ export function koaMiddleware(
 
     if (response.headers) {
       for (const [key, value] of Object.entries(response.headers)) {
-        ctx.set(key, value.toString());
+        if (!HEADERS_TO_DROP.has(key.toLowerCase())) {
+          ctx.set(key, value.toString());
+        }
       }
     }
 
