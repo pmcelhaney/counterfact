@@ -1,5 +1,11 @@
 # counterfact
 
+## 1.4.6
+
+### Patch Changes
+
+- 6d25133: fix an issue with proxy where headers are mangled
+
 ## 1.4.5
 
 ### Patch Changes
