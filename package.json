@@ -88,7 +88,7 @@
     "@types/json-schema": "7.0.15",
     "ast-types": "0.14.2",
     "chokidar": "4.0.3",
-    "commander": "14.0.0",
+    "commander": "14.0.1",
     "debug": "4.4.1",
     "fetch": "1.1.0",
     "fs-extra": "11.3.1",
