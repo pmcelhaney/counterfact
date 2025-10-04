@@ -8,7 +8,7 @@
 
 <div align="center" markdown="1">
 
-<h1><img src="./counterfact.svg" alt="Counterfact"></h1>
+<h1><img src="./counterfact.svg" alt="Counterfact" border=0></h1>
 
 _A Mock Server for High-performing Front-end Teams_
 
@@ -19,6 +19,7 @@ _A Mock Server for High-performing Front-end Teams_
 ## Spin up a mock server instantly. No config, no fuss.
 
 Try it now:
+git a
 
 ```sh copy
 npx counterfact@latest https://petstore3.swagger.io/api/v3/openapi.json mock-api
