@@ -8,7 +8,7 @@
 
 <div align="center" markdown="1">
 
-<h1><img src="./counterfact.svg" alt="Counterfact" border=0></h1>
+<img src="./counterfact.svg" alt="Counterfact" border=0>
 
 _A Mock Server for High-performing Front-end Teams_
 
@@ -16,7 +16,7 @@ _A Mock Server for High-performing Front-end Teams_
 
 </div>
 
-## Spin up a mock server instantly. No config, no fuss.
+**Spin up a mock server instantly. No config, no fuss.**
 
 Try it now:
 git a
