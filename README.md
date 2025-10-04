@@ -9,7 +9,7 @@
 <div align="center" markdown="1">
 
 <img src="./counterfact.svg" alt="Counterfact" border=0>
-
+<br><br><br>
 </div>
 
 **Spin up a mock server instantly. No config, no fuss. Try it now:**
@@ -22,4 +22,8 @@ This command reads the [Swagger Petstore](https://www.google.com/search?client=s
 
 Go further with stateful mocks: POST data, then GET it back. Tweak backend data live with the REPL. Update code without restarting the server or losing state.
 
+<div align="center" markdown="1">
+
 [Documentation](./docs/usage.md) | [Changelog](./CHANGELOG.md) | [Contributing](./CONTRIBUTING.md)
+
+</div>
