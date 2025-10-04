@@ -1,11 +1,3 @@
-<div align="center"  markdown="1">
-
-![MIT License](https://img.shields.io/badge/license-MIT-blue) [![TypeScript](./typescript-badge.png)](https://github.com/ellerbrock/typescript-badges/) [![Coverage Status](https://coveralls.io/repos/github/pmcelhaney/counterfact/badge.svg)](https://coveralls.io/github/pmcelhaney/counterfact)
-
-</div>
-
-<br>
-
 <div align="center" markdown="1">
 
 <img src="./counterfact.svg" alt="Counterfact" border=0>
@@ -25,5 +17,12 @@ Go further with stateful mocks: POST data, then GET it back. Tweak backend data 
 <div align="center" markdown="1">
 
 [Documentation](./docs/usage.md) | [Changelog](./CHANGELOG.md) | [Contributing](./CONTRIBUTING.md)
+
+</div>
+
+<br>
+<div align="center"  markdown="1">
+
+![MIT License](https://img.shields.io/badge/license-MIT-blue) [![TypeScript](./typescript-badge.png)](https://github.com/ellerbrock/typescript-badges/) [![Coverage Status](https://coveralls.io/repos/github/pmcelhaney/counterfact/badge.svg)](https://coveralls.io/github/pmcelhaney/counterfact)
 
 </div>
