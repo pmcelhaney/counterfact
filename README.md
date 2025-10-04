@@ -16,10 +16,7 @@ _A Mock Server for High-performing Front-end Teams_
 
 </div>
 
-**Spin up a mock server instantly. No config, no fuss.**
-
-Try it now:
-git a
+**Spin up a mock server instantly. No config, no fuss. Try it now:**
 
 ```sh copy
 npx counterfact@latest https://petstore3.swagger.io/api/v3/openapi.json mock-api
