@@ -1,21 +1,52 @@
 {
   "name": "counterfact",
   "version": "1.4.6",
-  "description": "a library for building a fake REST API for testing",
+  "description": "Generate a TypeScript-based mock server from an OpenAPI spec in seconds — with stateful routes, hot reload, and REPL support.",
   "type": "module",
   "main": "./dist/app.js",
   "exports": "./dist/app.js",
   "types": "./dist/server/types.d.ts",
-  "author": "Patrick McElhaney <pmcelhaney@gmail.com> (https://patrickmcelhaney.com)",
+  "typesVersions": {
+    "*": {
+      "*": [
+        "dist/server/types.d.ts"
+      ]
+    }
+  },
+  "author": "Patrick McElhaney <pmcelhaney@gmail.com>",
   "license": "MIT",
-  "repository": "github:pmcelhaney/counterfact",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pmcelhaney/counterfact.git"
+  },
   "bugs": "https://github.com/pmcelhaney/counterfact/issues",
+  "homepage": "https://counterfact.dev",
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/pmcelhaney"
+  },
   "keywords": [
-    "counterfact",
-    "fake",
-    "rest",
+    "mock",
+    "mock-server",
+    "openapi",
+    "swagger",
+    "typescript",
     "api",
-    "testing"
+    "api-mocking",
+    "api-first",
+    "openapi-mock",
+    "mock-api",
+    "dev-tools",
+    "frontend",
+    "backend",
+    "prototyping",
+    "testing",
+    "stateful",
+    "repl",
+    "hot-reload",
+    "cli",
+    "openapi-tools",
+    "swagger-tools"
   ],
   "engines": {
     "node": ">=17.0.0"
@@ -27,6 +58,7 @@
     "bin",
     "dist"
   ],
+  "sideEffects": false,
   "scripts": {
     "test": "yarn node --experimental-vm-modules ./node_modules/jest-cli/bin/jest --testPathIgnorePatterns=black-box",
     "test:black-box": "rimraf dist && rimraf out && yarn build && yarn node --experimental-vm-modules ./node_modules/jest-cli/bin/jest black-box --forceExit --coverage=false",
