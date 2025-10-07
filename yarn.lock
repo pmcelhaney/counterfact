@@ -12483,10 +12483,10 @@ strip-json-comments@^3.1.1:
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-3.1.1.tgz#31f1281b3832630434831c310c01cccda8cbe006"
   integrity sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==
 
-stryker-cli@1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/stryker-cli/-/stryker-cli-1.0.2.tgz#1980ca81085ae2bc4737ca476f32eead97cdb7b1"
-  integrity sha512-HUrpmscQpATia2VQkM9rjUBqQ3tblWJ7nomI0Zs6zx5tDaHZ980ZQswGcBZ4hYTfU1Nct2RUi0wzRhe0rsc4Pg==
+stryker-cli@1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/stryker-cli/-/stryker-cli-1.1.0.tgz#2a3b5cbfc36e9033f92b83acec76627d63d66497"
+  integrity sha512-HpfbLsrQZ8YwF0Sq8sp0ms24qRhwOgXygDWTA+e24My3nxG+yjl5S9uYz75ciYTnLN6aW1cwJ6yARithzKpltA==
   dependencies:
     chalk "^2.4.2"
     inquirer "^6.2.2"
