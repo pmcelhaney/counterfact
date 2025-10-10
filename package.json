@@ -1,21 +1,52 @@
 {
   "name": "counterfact",
   "version": "1.4.6",
-  "description": "a library for building a fake REST API for testing",
+  "description": "Generate a TypeScript-based mock server from an OpenAPI spec in seconds — with stateful routes, hot reload, and REPL support.",
   "type": "module",
   "main": "./dist/app.js",
   "exports": "./dist/app.js",
   "types": "./dist/server/types.d.ts",
-  "author": "Patrick McElhaney <pmcelhaney@gmail.com> (https://patrickmcelhaney.com)",
+  "typesVersions": {
+    "*": {
+      "*": [
+        "dist/server/types.d.ts"
+      ]
+    }
+  },
+  "author": "Patrick McElhaney <pmcelhaney@gmail.com>",
   "license": "MIT",
-  "repository": "github:pmcelhaney/counterfact",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pmcelhaney/counterfact.git"
+  },
   "bugs": "https://github.com/pmcelhaney/counterfact/issues",
+  "homepage": "https://counterfact.dev",
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/pmcelhaney"
+  },
   "keywords": [
-    "counterfact",
-    "fake",
-    "rest",
+    "mock",
+    "mock-server",
+    "openapi",
+    "swagger",
+    "typescript",
     "api",
-    "testing"
+    "api-mocking",
+    "api-first",
+    "openapi-mock",
+    "mock-api",
+    "dev-tools",
+    "frontend",
+    "backend",
+    "prototyping",
+    "testing",
+    "stateful",
+    "repl",
+    "hot-reload",
+    "cli",
+    "openapi-tools",
+    "swagger-tools"
   ],
   "engines": {
     "node": ">=17.0.0"
@@ -27,6 +58,7 @@
     "bin",
     "dist"
   ],
+  "sideEffects": false,
   "scripts": {
     "test": "yarn node --experimental-vm-modules ./node_modules/jest-cli/bin/jest --testPathIgnorePatterns=black-box",
     "test:black-box": "rimraf dist && rimraf out && yarn build && yarn node --experimental-vm-modules ./node_modules/jest-cli/bin/jest black-box --forceExit --coverage=false",
@@ -46,10 +78,10 @@
   },
   "devDependencies": {
     "@changesets/cli": "2.29.7",
-    "@stryker-mutator/core": "9.1.1",
-    "@stryker-mutator/jest-runner": "9.1.1",
-    "@stryker-mutator/typescript-checker": "9.1.1",
-    "@swc/core": "1.13.19",
+    "@stryker-mutator/core": "9.2.0",
+    "@stryker-mutator/jest-runner": "9.2.0",
+    "@stryker-mutator/typescript-checker": "9.2.0",
+    "@swc/core": "1.13.20",
     "@swc/jest": "0.2.39",
     "@testing-library/dom": "10.4.1",
     "@types/jest": "30.0.0",
@@ -73,11 +105,11 @@
     "eslint-plugin-prettier": "5.5.4",
     "eslint-plugin-unused-imports": "4.2.0",
     "husky": "9.1.7",
-    "jest": "30.1.3",
+    "jest": "30.2.0",
     "jest-retries": "1.0.1",
     "node-mocks-http": "1.17.2",
     "rimraf": "6.0.1",
-    "stryker-cli": "1.0.2",
+    "stryker-cli": "1.1.0",
     "supertest": "7.1.4",
     "tsd": "0.33.0",
     "using-temporary-files": "2.2.1"
@@ -108,7 +140,7 @@
     "precinct": "12.2.0",
     "prettier": "3.6.2",
     "recast": "0.23.11",
-    "typescript": "5.9.2"
+    "typescript": "5.9.3"
   },
   "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }
