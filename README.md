@@ -12,7 +12,29 @@ npx counterfact@latest https://petstore3.swagger.io/api/v3/openapi.json mock-api
 
 This command reads an OpenAPI spec (the [Swagger Petstore](https://petstore.swagger.io)), generates TypeScript code for a mock server in `mock-api`, and starts the server.
 
+<details>
+<summary>Example of generated code</summary>
+
+```ts
+// ./mock-api/routes/store/order/{orderID}.ts
+import type { HTTP_GET } from "../../../types/paths/store/order/{orderId}.types.js";
+import type { HTTP_DELETE } from "../../../types/paths/store/order/{orderId}.types.js";
+
+export const GET: HTTP_GET = ($) => {
+  return $.response[200].random();
+};
+
+export const DELETE: HTTP_DELETE = ($) => {
+  return $.response[200];
+};
+```
+
+</details>
+
 Want control? Edit the generated route files (e.g. `./mock-api/routes/store/order/{orderID}.ts`) and define responses directly. A type-safe API from your spec speeds up prototyping.
+
+<details>
+<summary>Edit the code to define custom behavior and responses</summary>
 
 ```ts
 // ./mock-api/routes/store/order/{orderID}.ts
@@ -21,15 +43,27 @@ import type { HTTP_GET } from "../../../types/paths/store/order/{orderId}.types.
 import type { HTTP_DELETE } from "../../../types/paths/store/order/{orderId}.types.js";
 
 export const GET: HTTP_GET = ($) => {
-  // original auto-generated code
-  // return $.response[200].random()
-
-  // manually added
-  const order: Order = {
-    id: 1,
-    quantity: 1,
-    status: "placed",
+  const orders: Record<number, Order> = {
+    1: {
+      petId: 100,
+      status: "placed",
+    },
+    2: {
+      petId: 999,
+      status: "approved",
+    },
+    3: {
+      petId: 1234,
+      status: "delivered",
+    },
   };
+
+  const order = orders[$.request.orderID];
+
+  if (order === undefined) {
+    return $.response[404];
+  }
+
   return $.response[200].json(order);
 };
 
@@ -37,6 +71,8 @@ export const DELETE: HTTP_DELETE = ($) => {
   return $.response[200];
 };
 ```
+
+</details>
 
 You can also **proxy some paths to the real API** while mocking others — perfect when part of the backend isn’t finished or you need to simulate tricky scenarios. See [Proxying](./docs/usage.md#proxying-to-a-real-api) for details.
 
