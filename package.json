@@ -129,7 +129,7 @@
     "js-yaml": "4.1.0",
     "json-schema-faker": "0.5.9",
     "jsonwebtoken": "9.0.2",
-    "koa": "3.0.1",
+    "koa": "3.0.3",
     "koa-bodyparser": "4.4.1",
     "koa-proxies": "0.12.4",
     "koa2-swagger-ui": "5.12.0",
