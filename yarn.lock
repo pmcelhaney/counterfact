@@ -3496,10 +3496,10 @@
   dependencies:
     "@types/koa" "*"
 
-"@types/koa-proxy@1.0.7":
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/@types/koa-proxy/-/koa-proxy-1.0.7.tgz#35a3228ece5483eb695bb98c018d4b9e704e16b4"
-  integrity sha512-eENiJnm+01/LkEvDURfDaxd+E2BO6jXRx4nEXVcYpX3K3gAmOEbHDrm70un58LMO/I7zowCCshk5trySZwh5Yw==
+"@types/koa-proxy@1.0.8":
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/@types/koa-proxy/-/koa-proxy-1.0.8.tgz#4d6959722211628be5c7890adfbd3213c3275ece"
+  integrity sha512-p70jXeYpS6hXgO5Ql3WrDLVSazJmlmfK5MdicINt03OSb/Eu5txioiwucTlPZlrVkweusYdejwwahX//EScZOw==
   dependencies:
     "@types/koa" "*"
 
