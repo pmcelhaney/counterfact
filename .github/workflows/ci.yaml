@@ -19,7 +19,7 @@ jobs:
       - name: Debug
         run: echo "${{ matrix.os }}"
       - name: Check Out Repo
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - uses: actions/setup-node@v6
