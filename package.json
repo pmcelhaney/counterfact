@@ -119,7 +119,7 @@
     "@hapi/accept": "6.0.3",
     "@types/json-schema": "7.0.15",
     "ast-types": "0.14.2",
-    "chokidar": "4.0.3",
+    "chokidar": "5.0.0",
     "commander": "14.0.2",
     "debug": "4.4.3",
     "fetch": "1.1.0",
