@@ -77,7 +77,7 @@
     "postinstall": "patch-package"
   },
   "devDependencies": {
-    "@changesets/cli": "2.29.7",
+    "@changesets/cli": "2.29.8",
     "@stryker-mutator/core": "9.4.0",
     "@stryker-mutator/jest-runner": "9.4.0",
     "@stryker-mutator/typescript-checker": "9.4.0",
