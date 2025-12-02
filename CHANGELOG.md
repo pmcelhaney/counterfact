@@ -1,5 +1,11 @@
 # counterfact
 
+## 1.4.7
+
+### Patch Changes
+
+- 56e0c54: better description in package.json
+
 ## 1.4.6
 
 ### Patch Changes
