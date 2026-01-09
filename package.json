@@ -1,6 +1,6 @@
 {
   "name": "counterfact",
-  "version": "1.4.7",
+  "version": "1.4.8",
   "description": "Generate a TypeScript-based mock server from an OpenAPI spec in seconds — with stateful routes, hot reload, and REPL support.",
   "type": "module",
   "main": "./dist/app.js",
@@ -110,7 +110,7 @@
     "node-mocks-http": "1.17.2",
     "rimraf": "6.1.2",
     "stryker-cli": "1.1.0",
-    "supertest": "7.1.4",
+    "supertest": "7.2.2",
     "tsd": "0.33.0",
     "using-temporary-files": "2.2.1"
   },
@@ -140,5 +140,8 @@
     "prettier": "3.7.4",
     "typescript": "5.9.3"
   },
-  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e",
+  "resolutions": {
+    "js-yaml": "4.1.1"
+  }
 }
