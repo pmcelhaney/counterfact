@@ -1,5 +1,11 @@
 # counterfact
 
+## 1.4.8
+
+### Patch Changes
+
+- e06b36a: Security update for js-yaml
+
 ## 1.4.7
 
 ### Patch Changes
