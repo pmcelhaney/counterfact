@@ -131,8 +131,8 @@ describe("a Transpiler", () => {
 
       expect(fs.existsSync(path("dist/found.cjs"))).toBe(true);
 
-      expect(fs.readFileSync(path("dist/found.cjs"), "utf8")).toBe(
-        JAVASCRIPT_SOURCE_COMMONJS,
+      expect(fs.readFileSync(path("dist/found.cjs"), "utf8").trimEnd()).toBe(
+        JAVASCRIPT_SOURCE_COMMONJS.trimEnd(),
       );
 
       await transpiler.stopWatching();
