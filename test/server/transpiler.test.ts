@@ -38,8 +38,8 @@ describe("a Transpiler", () => {
 
       expect(fs.existsSync(path("dist/found.js"))).toBe(true);
 
-      expect(fs.readFileSync(path("dist/found.js"), "utf8")).toBe(
-        JAVASCRIPT_SOURCE,
+      expect(normalize(fs.readFileSync(path("dist/found.js"), "utf8"))).toBe(
+        normalize(JAVASCRIPT_SOURCE),
       );
 
       await transpiler.stopWatching();
@@ -69,8 +69,8 @@ describe("a Transpiler", () => {
 
         await Promise.race([write, error]);
 
-        expect(fs.readFileSync(path("dist/added.js"), "utf8")).toBe(
-          JAVASCRIPT_SOURCE,
+        expect(normalize(fs.readFileSync(path("dist/added.js"), "utf8"))).toBe(
+          normalize(JAVASCRIPT_SOURCE),
         );
 
         await transpiler.stopWatching();
@@ -96,9 +96,9 @@ describe("a Transpiler", () => {
       await add("src/update-me.ts", TYPESCRIPT_SOURCE);
       await overwrite;
 
-      expect(fs.readFileSync(path("dist/update-me.js"), "utf8")).toBe(
-        JAVASCRIPT_SOURCE,
-      );
+      expect(
+        normalize(fs.readFileSync(path("dist/update-me.js"), "utf8")),
+      ).toBe(normalize(JAVASCRIPT_SOURCE));
 
       await transpiler.stopWatching();
     });
