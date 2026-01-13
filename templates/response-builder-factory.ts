@@ -26,6 +26,7 @@ type MaybeShortcut<
   (body: Response["content"][ContentType]["schema"]) => ResponseBuilder<{
     content: Omit<Response["content"], ContentType>;
     headers: Response["headers"];
+    requiredHeaders: Response["requiredHeaders"];
   }>,
   never
 >;
@@ -38,6 +39,7 @@ type MatchFunction<Response extends OpenApiResponse> = <
 ) => ResponseBuilder<{
   content: Omit<Response["content"], ContentType>;
   headers: Response["headers"];
+  requiredHeaders: Response["requiredHeaders"];
 }>;
 
 type HeaderFunction<Response extends OpenApiResponse> = <
@@ -48,6 +50,7 @@ type HeaderFunction<Response extends OpenApiResponse> = <
 ) => ResponseBuilder<{
   content: Response["content"];
   headers: Omit<Response["headers"], Header>;
+  requiredHeaders: Response["requiredHeaders"];
 }>;
 
 export type ResponseBuilder<
