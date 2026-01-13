@@ -1,10 +1,6 @@
 import { expectType } from "tsd";
 
-import type {
-  OmitAll,
-  IfHasKey,
-  GenericResponseBuilderInner,
-} from "../../src/server/types";
+import type { OmitAll, IfHasKey } from "../../src/counterfact-types/index.ts";
 
 // test exact match
 expectType<

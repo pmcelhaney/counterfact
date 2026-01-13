@@ -1,7 +1,10 @@
 import { JSONSchemaFaker } from "json-schema-faker";
 
 import { jsonToXml } from "./json-to-xml.js";
-import type { OpenApiOperation, ResponseBuilder } from "./types.ts";
+import type {
+  OpenApiOperation,
+  ResponseBuilder,
+} from "../counterfact-types/index.js";
 import type { Config } from "./config.js";
 
 JSONSchemaFaker.option("useExamplesValue", true);

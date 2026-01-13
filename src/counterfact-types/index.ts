@@ -1,6 +1,4 @@
-interface OpenApiHeader {
-  schema: unknown;
-}
+import { OpenApiHeader } from "./OpenApiHeader";
 
 interface OpenApiContent {
   schema: unknown;
