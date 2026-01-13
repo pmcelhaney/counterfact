@@ -127,11 +127,11 @@ describe("a Script", () => {
     script2.importSharedType("SomeType");
 
     expect(script1.externalImportStatements()).toStrictEqual([
-      'import type { SomeType } from "../types.ts";',
+      'import type { SomeType } from "../counterfact-types/index.ts";',
     ]);
 
     expect(script2.externalImportStatements()).toStrictEqual([
-      'import type { SomeType } from "../../../types.ts";',
+      'import type { SomeType } from "../../../counterfact-types/index.ts";',
     ]);
   });
 

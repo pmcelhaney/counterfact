@@ -55,16 +55,17 @@ export class Repository {
   }
 
   async copyCoreFiles(destination) {
-    const sourcePath = nodePath.join(__dirname, "../../dist/server/types.ts");
-    const destinationPath = nodePath.join(destination, "types.ts");
+    const sourcePath = nodePath.join(
+      __dirname,
+      "../../dist/server/counterfact-types",
+    );
+    const destinationPath = nodePath.join(destination, "counterfact-types");
 
     if (!existsSync(sourcePath)) {
       return false;
     }
 
-    await ensureDirectoryExists(destination);
-
-    return fs.copyFile(sourcePath, destinationPath);
+    return fs.cp(sourcePath, destinationPath, { recursive: true });
   }
 
   async writeFiles(destination, { routes, types }) {

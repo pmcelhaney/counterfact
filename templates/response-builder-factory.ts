@@ -1,4 +1,4 @@
-import type { OpenApiResponse } from "../src/server/types.ts";
+import type { OpenApiResponse } from "../src/counterfact-types/index.ts";
 
 type OmitValueWhenNever<Base> = Pick<
   Base,

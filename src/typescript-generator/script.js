@@ -143,7 +143,9 @@ export class Script {
   importSharedType(name) {
     return this.importExternal(
       name,
-      nodePath.join(this.relativePathToBase, "types.ts").replaceAll("\\", "/"),
+      nodePath
+        .join(this.relativePathToBase, "counterfact-types/index.ts")
+        .replaceAll("\\", "/"),
       true,
     );
   }
