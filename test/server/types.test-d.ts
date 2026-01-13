@@ -1,6 +1,6 @@
 import { expectType } from "tsd";
 
-import type { OmitAll, IfHasKey } from "../../src/server/types";
+import type { OmitAll, IfHasKey } from "../../src/counterfact-types/index.ts";
 
 // test exact match
 expectType<
@@ -52,7 +52,7 @@ expectType<
     {
       yaml: string;
     },
-    ["json"]
+    ["application/json"]
   >
 >({ yaml: "" });
 
@@ -60,45 +60,9 @@ expectType<
 expectType<
   IfHasKey<
     {
-      json: string;
+      "application/json": string;
     },
-    ["json"],
-    true,
-    false
-  >
->(true);
-
-// test match with suffix
-expectType<
-  IfHasKey<
-    {
-      ["json-utf8"]: string;
-    },
-    ["json"],
-    true,
-    false
-  >
->(true);
-
-// test match with prefix
-expectType<
-  IfHasKey<
-    {
-      ["complex-json"]: string;
-    },
-    ["json"],
-    true,
-    false
-  >
->(true);
-
-// test match with prefix and suffix
-expectType<
-  IfHasKey<
-    {
-      ["complex-json-utf8"]: string;
-    },
-    ["json"],
+    ["application/json"],
     true,
     false
   >
@@ -110,7 +74,7 @@ expectType<
     {
       yaml: string;
     },
-    ["json"],
+    ["application/json"],
     true,
     false
   >
