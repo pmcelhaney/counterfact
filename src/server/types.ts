@@ -54,7 +54,7 @@ type IfHasKey<
   infer FirstKey extends string,
   ...infer RestKeys extends string[],
 ]
-  ? keyof SomeObject extends `${string}${FirstKey}${string}`
+  ? keyof SomeObject extends FirstKey
     ? Yes
     : IfHasKey<SomeObject, RestKeys, Yes, No>
   : No;
@@ -120,7 +120,7 @@ interface ResponseBuilder {
   xml: (body: unknown) => ResponseBuilder;
 }
 
-type GenericResponseBuilderInner<
+export type GenericResponseBuilderInner<
   Response extends OpenApiResponse = OpenApiResponse,
 > = OmitValueWhenNever<{
   header: [keyof Response["headers"]] extends [never]
