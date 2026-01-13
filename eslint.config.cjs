@@ -173,7 +173,7 @@ module.exports = [
     // Configuration for bin files
     files: ["bin/**.js"],
     languageOptions: {
-      ecmaVersion: "latest",
+      ecmaVersion: 2025,
       sourceType: "module",
       parser: espreeParser,
     },
