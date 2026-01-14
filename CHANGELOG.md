@@ -1,5 +1,12 @@
 # counterfact
 
+## 1.4.9
+
+### Patch Changes
+
+- df64c5a: feat: Speed up by using regex replace instead of recast (thanks [jrunning](https://github.com/jrunning)!)
+- c4e0c23: revert change in #1372 which broke type shortcuts like .json(), .html(), etc.
+
 ## 1.4.8
 
 ### Patch Changes
