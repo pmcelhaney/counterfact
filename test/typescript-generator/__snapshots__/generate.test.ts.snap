@@ -4,11 +4,11 @@ exports[`end-to-end test generates the same code for pet store that it did on th
 "routes/pet.ts:import type { HTTP_POST } from "../types/paths/pet.types.js";
 import type { HTTP_PUT } from "../types/paths/pet.types.js";
 
-export const POST: HTTP_POST = ($) => {
+export const POST: HTTP_POST = async ($) => {
   return $.response[200].random();
 };
 
-export const PUT: HTTP_PUT = ($) => {
+export const PUT: HTTP_PUT = async ($) => {
   return $.response[200].random();
 };
 "
@@ -21,6 +21,7 @@ exports[`end-to-end test generates the same code for pet store that it did on th
 
 import type { WideOperationArgument } from "../../counterfact-types/index.ts";
 import type { OmitValueWhenNever } from "../../counterfact-types/index.ts";
+import type { MaybePromise } from "../../counterfact-types/index.ts";
 import type { COUNTERFACT_RESPONSE } from "../../counterfact-types/index.ts";
 import type { Context } from "@@CONTEXT_FILE_TOKEN@@";
 import type { ResponseBuilderFactory } from "../../counterfact-types/index.ts";
@@ -56,7 +57,7 @@ export type HTTP_POST = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
   }>,
-) =>
+) => MaybePromise<
   | {
       status: 200;
       contentType?: "application/xml";
@@ -72,7 +73,8 @@ export type HTTP_POST = (
     }
   | { status: 415; contentType: "text/plain"; body: string }
   | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE };
+  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
+>;
 
 export type HTTP_PUT = (
   $: OmitValueWhenNever<{
@@ -114,7 +116,7 @@ export type HTTP_PUT = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
   }>,
-) =>
+) => MaybePromise<
   | {
       status: 200;
       contentType?: "application/xml";
@@ -136,14 +138,15 @@ export type HTTP_PUT = (
     }
   | { status: 415; contentType: "text/plain"; body: string }
   | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE };
+  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
+>;
 "
 `;
 
 exports[`end-to-end test generates the same code for pet store that it did on the last test run 3`] = `
 "routes/pet/findByStatus.ts:import type { HTTP_GET } from "../../types/paths/pet/findByStatus.types.js";
 
-export const GET: HTTP_GET = ($) => {
+export const GET: HTTP_GET = async ($) => {
   return $.response[200].random();
 };
 "
@@ -156,6 +159,7 @@ exports[`end-to-end test generates the same code for pet store that it did on th
 
 import type { WideOperationArgument } from "../../../counterfact-types/index.ts";
 import type { OmitValueWhenNever } from "../../../counterfact-types/index.ts";
+import type { MaybePromise } from "../../../counterfact-types/index.ts";
 import type { COUNTERFACT_RESPONSE } from "../../../counterfact-types/index.ts";
 import type { Context } from "@@CONTEXT_FILE_TOKEN@@";
 import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts";
@@ -191,7 +195,7 @@ export type HTTP_GET = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
   }>,
-) =>
+) => MaybePromise<
   | {
       status: 200;
       contentType?: "application/xml";
@@ -207,14 +211,15 @@ export type HTTP_GET = (
     }
   | { status: 415; contentType: "text/plain"; body: string }
   | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE };
+  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
+>;
 "
 `;
 
 exports[`end-to-end test generates the same code for pet store that it did on the last test run 5`] = `
 "routes/pet/findByTags.ts:import type { HTTP_GET } from "../../types/paths/pet/findByTags.types.js";
 
-export const GET: HTTP_GET = ($) => {
+export const GET: HTTP_GET = async ($) => {
   return $.response[200].random();
 };
 "
@@ -227,6 +232,7 @@ exports[`end-to-end test generates the same code for pet store that it did on th
 
 import type { WideOperationArgument } from "../../../counterfact-types/index.ts";
 import type { OmitValueWhenNever } from "../../../counterfact-types/index.ts";
+import type { MaybePromise } from "../../../counterfact-types/index.ts";
 import type { COUNTERFACT_RESPONSE } from "../../../counterfact-types/index.ts";
 import type { Context } from "@@CONTEXT_FILE_TOKEN@@";
 import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts";
@@ -262,7 +268,7 @@ export type HTTP_GET = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
   }>,
-) =>
+) => MaybePromise<
   | {
       status: 200;
       contentType?: "application/xml";
@@ -278,7 +284,8 @@ export type HTTP_GET = (
     }
   | { status: 415; contentType: "text/plain"; body: string }
   | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE };
+  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
+>;
 "
 `;
 
@@ -287,15 +294,15 @@ exports[`end-to-end test generates the same code for pet store that it did on th
 import type { HTTP_POST } from "../../types/paths/pet/{petId}.types.js";
 import type { HTTP_DELETE } from "../../types/paths/pet/{petId}.types.js";
 
-export const GET: HTTP_GET = ($) => {
+export const GET: HTTP_GET = async ($) => {
   return $.response[200].random();
 };
 
-export const POST: HTTP_POST = ($) => {
+export const POST: HTTP_POST = async ($) => {
   return $.response[405];
 };
 
-export const DELETE: HTTP_DELETE = ($) => {
+export const DELETE: HTTP_DELETE = async ($) => {
   return $.response[400];
 };
 "
@@ -308,6 +315,7 @@ exports[`end-to-end test generates the same code for pet store that it did on th
 
 import type { WideOperationArgument } from "../../../counterfact-types/index.ts";
 import type { OmitValueWhenNever } from "../../../counterfact-types/index.ts";
+import type { MaybePromise } from "../../../counterfact-types/index.ts";
 import type { COUNTERFACT_RESPONSE } from "../../../counterfact-types/index.ts";
 import type { Context } from "@@CONTEXT_FILE_TOKEN@@";
 import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts";
@@ -348,7 +356,7 @@ export type HTTP_GET = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
   }>,
-) =>
+) => MaybePromise<
   | {
       status: 200;
       contentType?: "application/xml";
@@ -367,7 +375,8 @@ export type HTTP_GET = (
     }
   | { status: 415; contentType: "text/plain"; body: string }
   | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE };
+  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
+>;
 
 export type HTTP_POST = (
   $: OmitValueWhenNever<{
@@ -387,13 +396,14 @@ export type HTTP_POST = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
   }>,
-) =>
+) => MaybePromise<
   | {
       status: 405;
     }
   | { status: 415; contentType: "text/plain"; body: string }
   | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE };
+  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
+>;
 
 export type HTTP_DELETE = (
   $: OmitValueWhenNever<{
@@ -413,20 +423,21 @@ export type HTTP_DELETE = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
   }>,
-) =>
+) => MaybePromise<
   | {
       status: 400;
     }
   | { status: 415; contentType: "text/plain"; body: string }
   | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE };
+  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
+>;
 "
 `;
 
 exports[`end-to-end test generates the same code for pet store that it did on the last test run 9`] = `
 "routes/pet/{petId}/uploadImage.ts:import type { HTTP_POST } from "../../../types/paths/pet/{petId}/uploadImage.types.js";
 
-export const POST: HTTP_POST = ($) => {
+export const POST: HTTP_POST = async ($) => {
   return $.response[200].random();
 };
 "
@@ -439,6 +450,7 @@ exports[`end-to-end test generates the same code for pet store that it did on th
 
 import type { WideOperationArgument } from "../../../../counterfact-types/index.ts";
 import type { OmitValueWhenNever } from "../../../../counterfact-types/index.ts";
+import type { MaybePromise } from "../../../../counterfact-types/index.ts";
 import type { COUNTERFACT_RESPONSE } from "../../../../counterfact-types/index.ts";
 import type { Context } from "@@CONTEXT_FILE_TOKEN@@";
 import type { ResponseBuilderFactory } from "../../../../counterfact-types/index.ts";
@@ -466,7 +478,7 @@ export type HTTP_POST = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
   }>,
-) =>
+) => MaybePromise<
   | {
       status: 200;
       contentType?: "application/json";
@@ -474,14 +486,15 @@ export type HTTP_POST = (
     }
   | { status: 415; contentType: "text/plain"; body: string }
   | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE };
+  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
+>;
 "
 `;
 
 exports[`end-to-end test generates the same code for pet store that it did on the last test run 11`] = `
 "routes/store/inventory.ts:import type { HTTP_GET } from "../../types/paths/store/inventory.types.js";
 
-export const GET: HTTP_GET = ($) => {
+export const GET: HTTP_GET = async ($) => {
   return $.response[200].random();
 };
 "
@@ -494,6 +507,7 @@ exports[`end-to-end test generates the same code for pet store that it did on th
 
 import type { WideOperationArgument } from "../../../counterfact-types/index.ts";
 import type { OmitValueWhenNever } from "../../../counterfact-types/index.ts";
+import type { MaybePromise } from "../../../counterfact-types/index.ts";
 import type { COUNTERFACT_RESPONSE } from "../../../counterfact-types/index.ts";
 import type { Context } from "@@CONTEXT_FILE_TOKEN@@";
 import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts";
@@ -520,7 +534,7 @@ export type HTTP_GET = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
   }>,
-) =>
+) => MaybePromise<
   | {
       status: 200;
       contentType?: "application/json";
@@ -528,14 +542,15 @@ export type HTTP_GET = (
     }
   | { status: 415; contentType: "text/plain"; body: string }
   | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE };
+  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
+>;
 "
 `;
 
 exports[`end-to-end test generates the same code for pet store that it did on the last test run 13`] = `
 "routes/store/order.ts:import type { HTTP_POST } from "../../types/paths/store/order.types.js";
 
-export const POST: HTTP_POST = ($) => {
+export const POST: HTTP_POST = async ($) => {
   return $.response[200].random();
 };
 "
@@ -548,6 +563,7 @@ exports[`end-to-end test generates the same code for pet store that it did on th
 
 import type { WideOperationArgument } from "../../../counterfact-types/index.ts";
 import type { OmitValueWhenNever } from "../../../counterfact-types/index.ts";
+import type { MaybePromise } from "../../../counterfact-types/index.ts";
 import type { COUNTERFACT_RESPONSE } from "../../../counterfact-types/index.ts";
 import type { Context } from "@@CONTEXT_FILE_TOKEN@@";
 import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts";
@@ -580,7 +596,7 @@ export type HTTP_POST = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
   }>,
-) =>
+) => MaybePromise<
   | {
       status: 200;
       contentType?: "application/json";
@@ -591,7 +607,8 @@ export type HTTP_POST = (
     }
   | { status: 415; contentType: "text/plain"; body: string }
   | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE };
+  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
+>;
 "
 `;
 
@@ -599,11 +616,11 @@ exports[`end-to-end test generates the same code for pet store that it did on th
 "routes/store/order/{orderId}.ts:import type { HTTP_GET } from "../../../types/paths/store/order/{orderId}.types.js";
 import type { HTTP_DELETE } from "../../../types/paths/store/order/{orderId}.types.js";
 
-export const GET: HTTP_GET = ($) => {
+export const GET: HTTP_GET = async ($) => {
   return $.response[200].random();
 };
 
-export const DELETE: HTTP_DELETE = ($) => {
+export const DELETE: HTTP_DELETE = async ($) => {
   return $.response[400];
 };
 "
@@ -616,6 +633,7 @@ exports[`end-to-end test generates the same code for pet store that it did on th
 
 import type { WideOperationArgument } from "../../../../counterfact-types/index.ts";
 import type { OmitValueWhenNever } from "../../../../counterfact-types/index.ts";
+import type { MaybePromise } from "../../../../counterfact-types/index.ts";
 import type { COUNTERFACT_RESPONSE } from "../../../../counterfact-types/index.ts";
 import type { Context } from "@@CONTEXT_FILE_TOKEN@@";
 import type { ResponseBuilderFactory } from "../../../../counterfact-types/index.ts";
@@ -656,7 +674,7 @@ export type HTTP_GET = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
   }>,
-) =>
+) => MaybePromise<
   | {
       status: 200;
       contentType?: "application/xml";
@@ -675,7 +693,8 @@ export type HTTP_GET = (
     }
   | { status: 415; contentType: "text/plain"; body: string }
   | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE };
+  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
+>;
 
 export type HTTP_DELETE = (
   $: OmitValueWhenNever<{
@@ -700,7 +719,7 @@ export type HTTP_DELETE = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
   }>,
-) =>
+) => MaybePromise<
   | {
       status: 400;
     }
@@ -709,14 +728,15 @@ export type HTTP_DELETE = (
     }
   | { status: 415; contentType: "text/plain"; body: string }
   | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE };
+  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
+>;
 "
 `;
 
 exports[`end-to-end test generates the same code for pet store that it did on the last test run 17`] = `
 "routes/user.ts:import type { HTTP_POST } from "../types/paths/user.types.js";
 
-export const POST: HTTP_POST = ($) => {
+export const POST: HTTP_POST = async ($) => {
   return $.response[200].random();
 };
 "
@@ -729,6 +749,7 @@ exports[`end-to-end test generates the same code for pet store that it did on th
 
 import type { WideOperationArgument } from "../../counterfact-types/index.ts";
 import type { OmitValueWhenNever } from "../../counterfact-types/index.ts";
+import type { MaybePromise } from "../../counterfact-types/index.ts";
 import type { COUNTERFACT_RESPONSE } from "../../counterfact-types/index.ts";
 import type { Context } from "@@CONTEXT_FILE_TOKEN@@";
 import type { ResponseBuilderFactory } from "../../counterfact-types/index.ts";
@@ -760,7 +781,7 @@ export type HTTP_POST = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
   }>,
-) =>
+) => MaybePromise<
   | {
       status: number | undefined;
       contentType?: "application/json";
@@ -773,14 +794,15 @@ export type HTTP_POST = (
     }
   | { status: 415; contentType: "text/plain"; body: string }
   | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE };
+  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
+>;
 "
 `;
 
 exports[`end-to-end test generates the same code for pet store that it did on the last test run 19`] = `
 "routes/user/createWithList.ts:import type { HTTP_POST } from "../../types/paths/user/createWithList.types.js";
 
-export const POST: HTTP_POST = ($) => {
+export const POST: HTTP_POST = async ($) => {
   return $.response[200].random();
 };
 "
@@ -793,6 +815,7 @@ exports[`end-to-end test generates the same code for pet store that it did on th
 
 import type { WideOperationArgument } from "../../../counterfact-types/index.ts";
 import type { OmitValueWhenNever } from "../../../counterfact-types/index.ts";
+import type { MaybePromise } from "../../../counterfact-types/index.ts";
 import type { COUNTERFACT_RESPONSE } from "../../../counterfact-types/index.ts";
 import type { Context } from "@@CONTEXT_FILE_TOKEN@@";
 import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts";
@@ -829,7 +852,7 @@ export type HTTP_POST = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
   }>,
-) =>
+) => MaybePromise<
   | {
       status: 200;
       contentType?: "application/xml";
@@ -845,14 +868,15 @@ export type HTTP_POST = (
     }
   | { status: 415; contentType: "text/plain"; body: string }
   | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE };
+  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
+>;
 "
 `;
 
 exports[`end-to-end test generates the same code for pet store that it did on the last test run 21`] = `
 "routes/user/login.ts:import type { HTTP_GET } from "../../types/paths/user/login.types.js";
 
-export const GET: HTTP_GET = ($) => {
+export const GET: HTTP_GET = async ($) => {
   return $.response[200].random();
 };
 "
@@ -865,6 +889,7 @@ exports[`end-to-end test generates the same code for pet store that it did on th
 
 import type { WideOperationArgument } from "../../../counterfact-types/index.ts";
 import type { OmitValueWhenNever } from "../../../counterfact-types/index.ts";
+import type { MaybePromise } from "../../../counterfact-types/index.ts";
 import type { COUNTERFACT_RESPONSE } from "../../../counterfact-types/index.ts";
 import type { Context } from "@@CONTEXT_FILE_TOKEN@@";
 import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts";
@@ -902,7 +927,7 @@ export type HTTP_GET = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
   }>,
-) =>
+) => MaybePromise<
   | {
       status: 200;
       contentType?: "application/xml";
@@ -918,14 +943,15 @@ export type HTTP_GET = (
     }
   | { status: 415; contentType: "text/plain"; body: string }
   | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE };
+  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
+>;
 "
 `;
 
 exports[`end-to-end test generates the same code for pet store that it did on the last test run 23`] = `
 "routes/user/logout.ts:import type { HTTP_GET } from "../../types/paths/user/logout.types.js";
 
-export const GET: HTTP_GET = ($) => {
+export const GET: HTTP_GET = async ($) => {
   return $.response[200];
 };
 "
@@ -938,6 +964,7 @@ exports[`end-to-end test generates the same code for pet store that it did on th
 
 import type { WideOperationArgument } from "../../../counterfact-types/index.ts";
 import type { OmitValueWhenNever } from "../../../counterfact-types/index.ts";
+import type { MaybePromise } from "../../../counterfact-types/index.ts";
 import type { COUNTERFACT_RESPONSE } from "../../../counterfact-types/index.ts";
 import type { Context } from "@@CONTEXT_FILE_TOKEN@@";
 import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts";
@@ -961,13 +988,14 @@ export type HTTP_GET = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
   }>,
-) =>
+) => MaybePromise<
   | {
       status: number | undefined;
     }
   | { status: 415; contentType: "text/plain"; body: string }
   | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE };
+  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
+>;
 "
 `;
 
@@ -976,15 +1004,15 @@ exports[`end-to-end test generates the same code for pet store that it did on th
 import type { HTTP_PUT } from "../../types/paths/user/{username}.types.js";
 import type { HTTP_DELETE } from "../../types/paths/user/{username}.types.js";
 
-export const GET: HTTP_GET = ($) => {
+export const GET: HTTP_GET = async ($) => {
   return $.response[200].random();
 };
 
-export const PUT: HTTP_PUT = ($) => {
+export const PUT: HTTP_PUT = async ($) => {
   return $.response[200];
 };
 
-export const DELETE: HTTP_DELETE = ($) => {
+export const DELETE: HTTP_DELETE = async ($) => {
   return $.response[400];
 };
 "
@@ -997,6 +1025,7 @@ exports[`end-to-end test generates the same code for pet store that it did on th
 
 import type { WideOperationArgument } from "../../../counterfact-types/index.ts";
 import type { OmitValueWhenNever } from "../../../counterfact-types/index.ts";
+import type { MaybePromise } from "../../../counterfact-types/index.ts";
 import type { COUNTERFACT_RESPONSE } from "../../../counterfact-types/index.ts";
 import type { Context } from "@@CONTEXT_FILE_TOKEN@@";
 import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts";
@@ -1038,7 +1067,7 @@ export type HTTP_GET = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
   }>,
-) =>
+) => MaybePromise<
   | {
       status: 200;
       contentType?: "application/xml";
@@ -1057,7 +1086,8 @@ export type HTTP_GET = (
     }
   | { status: 415; contentType: "text/plain"; body: string }
   | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE };
+  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
+>;
 
 export type HTTP_PUT = (
   $: OmitValueWhenNever<{
@@ -1077,13 +1107,14 @@ export type HTTP_PUT = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
   }>,
-) =>
+) => MaybePromise<
   | {
       status: number | undefined;
     }
   | { status: 415; contentType: "text/plain"; body: string }
   | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE };
+  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
+>;
 
 export type HTTP_DELETE = (
   $: OmitValueWhenNever<{
@@ -1108,7 +1139,7 @@ export type HTTP_DELETE = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
   }>,
-) =>
+) => MaybePromise<
   | {
       status: 400;
     }
@@ -1117,7 +1148,8 @@ export type HTTP_DELETE = (
     }
   | { status: 415; contentType: "text/plain"; body: string }
   | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE };
+  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
+>;
 "
 `;
 
@@ -1190,7 +1222,7 @@ exports[`end-to-end test generates the same code for pet store that it did on th
 exports[`end-to-end test generates the same code for the example that it did on the last test run 1`] = `
 "routes/index.ts:import type { HTTP_GET } from "../types/paths/index.types.js";
 
-export const GET: HTTP_GET = ($) => {
+export const GET: HTTP_GET = async ($) => {
   return $.response[200].random();
 };
 "
@@ -1203,6 +1235,7 @@ exports[`end-to-end test generates the same code for the example that it did on 
 
 import type { WideOperationArgument } from "../../counterfact-types/index.ts";
 import type { OmitValueWhenNever } from "../../counterfact-types/index.ts";
+import type { MaybePromise } from "../../counterfact-types/index.ts";
 import type { COUNTERFACT_RESPONSE } from "../../counterfact-types/index.ts";
 import type { Context } from "@@CONTEXT_FILE_TOKEN@@";
 import type { ResponseBuilderFactory } from "../../counterfact-types/index.ts";
@@ -1230,7 +1263,7 @@ export type HTTP_GET = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: { username?: string; password?: string };
   }>,
-) =>
+) => MaybePromise<
   | {
       status: number | undefined;
       contentType?: "text/plain";
@@ -1238,14 +1271,15 @@ export type HTTP_GET = (
     }
   | { status: 415; contentType: "text/plain"; body: string }
   | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE };
+  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
+>;
 "
 `;
 
 exports[`end-to-end test generates the same code for the example that it did on the last test run 3`] = `
 "routes/count.ts:import type { HTTP_GET } from "../types/paths/count.types.js";
 
-export const GET: HTTP_GET = ($) => {
+export const GET: HTTP_GET = async ($) => {
   return $.response[200].random();
 };
 "
@@ -1258,6 +1292,7 @@ exports[`end-to-end test generates the same code for the example that it did on 
 
 import type { WideOperationArgument } from "../../counterfact-types/index.ts";
 import type { OmitValueWhenNever } from "../../counterfact-types/index.ts";
+import type { MaybePromise } from "../../counterfact-types/index.ts";
 import type { COUNTERFACT_RESPONSE } from "../../counterfact-types/index.ts";
 import type { Context } from "@@CONTEXT_FILE_TOKEN@@";
 import type { ResponseBuilderFactory } from "../../counterfact-types/index.ts";
@@ -1285,7 +1320,7 @@ export type HTTP_GET = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: { username?: string; password?: string };
   }>,
-) =>
+) => MaybePromise<
   | {
       status: number | undefined;
       contentType?: "application/json";
@@ -1293,14 +1328,15 @@ export type HTTP_GET = (
     }
   | { status: 415; contentType: "text/plain"; body: string }
   | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE };
+  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
+>;
 "
 `;
 
 exports[`end-to-end test generates the same code for the example that it did on the last test run 5`] = `
 "routes/hello/kitty.ts:import type { HTTP_GET } from "../../types/paths/hello/kitty.types.js";
 
-export const GET: HTTP_GET = ($) => {
+export const GET: HTTP_GET = async ($) => {
   return $.response[200].random();
 };
 "
@@ -1313,6 +1349,7 @@ exports[`end-to-end test generates the same code for the example that it did on 
 
 import type { WideOperationArgument } from "../../../counterfact-types/index.ts";
 import type { OmitValueWhenNever } from "../../../counterfact-types/index.ts";
+import type { MaybePromise } from "../../../counterfact-types/index.ts";
 import type { COUNTERFACT_RESPONSE } from "../../../counterfact-types/index.ts";
 import type { Context } from "@@CONTEXT_FILE_TOKEN@@";
 import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts";
@@ -1340,7 +1377,7 @@ export type HTTP_GET = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: { username?: string; password?: string };
   }>,
-) =>
+) => MaybePromise<
   | {
       status: number | undefined;
       contentType?: "application/json";
@@ -1348,14 +1385,15 @@ export type HTTP_GET = (
     }
   | { status: 415; contentType: "text/plain"; body: string }
   | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE };
+  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
+>;
 "
 `;
 
 exports[`end-to-end test generates the same code for the example that it did on the last test run 7`] = `
 "routes/hello/{name}.ts:import type { HTTP_GET } from "../../types/paths/hello/{name}.types.js";
 
-export const GET: HTTP_GET = ($) => {
+export const GET: HTTP_GET = async ($) => {
   return $.response[200].random();
 };
 "
@@ -1368,6 +1406,7 @@ exports[`end-to-end test generates the same code for the example that it did on 
 
 import type { WideOperationArgument } from "../../../counterfact-types/index.ts";
 import type { OmitValueWhenNever } from "../../../counterfact-types/index.ts";
+import type { MaybePromise } from "../../../counterfact-types/index.ts";
 import type { COUNTERFACT_RESPONSE } from "../../../counterfact-types/index.ts";
 import type { Context } from "@@CONTEXT_FILE_TOKEN@@";
 import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts";
@@ -1397,7 +1436,7 @@ export type HTTP_GET = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: { username?: string; password?: string };
   }>,
-) =>
+) => MaybePromise<
   | {
       status: number | undefined;
       contentType?: "application/json";
@@ -1405,14 +1444,15 @@ export type HTTP_GET = (
     }
   | { status: 415; contentType: "text/plain"; body: string }
   | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE };
+  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
+>;
 "
 `;
 
 exports[`end-to-end test generates the same code for the example that it did on the last test run 9`] = `
 "routes/path-one.ts:import type { HTTP_GET } from "../types/paths/path-one.types.js";
 
-export const GET: HTTP_GET = ($) => {
+export const GET: HTTP_GET = async ($) => {
   return $.response[200].random();
 };
 "
@@ -1425,6 +1465,7 @@ exports[`end-to-end test generates the same code for the example that it did on 
 
 import type { WideOperationArgument } from "../../counterfact-types/index.ts";
 import type { OmitValueWhenNever } from "../../counterfact-types/index.ts";
+import type { MaybePromise } from "../../counterfact-types/index.ts";
 import type { COUNTERFACT_RESPONSE } from "../../counterfact-types/index.ts";
 import type { Context } from "@@CONTEXT_FILE_TOKEN@@";
 import type { ResponseBuilderFactory } from "../../counterfact-types/index.ts";
@@ -1455,7 +1496,7 @@ export type HTTP_GET = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: { username?: string; password?: string };
   }>,
-) =>
+) => MaybePromise<
   | {
       status: 200;
       contentType?: "application/json";
@@ -1468,14 +1509,15 @@ export type HTTP_GET = (
     }
   | { status: 415; contentType: "text/plain"; body: string }
   | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE };
+  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
+>;
 "
 `;
 
 exports[`end-to-end test generates the same code for the example that it did on the last test run 11`] = `
 "routes/weird/path/with:colon.ts:import type { HTTP_GET } from "../../../types/paths/weird/path/with:colon.types.js";
 
-export const GET: HTTP_GET = ($) => {
+export const GET: HTTP_GET = async ($) => {
   return $.response[200].random();
 };
 "
@@ -1488,6 +1530,7 @@ exports[`end-to-end test generates the same code for the example that it did on 
 
 import type { WideOperationArgument } from "../../../../counterfact-types/index.ts";
 import type { OmitValueWhenNever } from "../../../../counterfact-types/index.ts";
+import type { MaybePromise } from "../../../../counterfact-types/index.ts";
 import type { COUNTERFACT_RESPONSE } from "../../../../counterfact-types/index.ts";
 import type { Context } from "@@CONTEXT_FILE_TOKEN@@";
 import type { ResponseBuilderFactory } from "../../../../counterfact-types/index.ts";
@@ -1514,7 +1557,7 @@ export type HTTP_GET = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: { username?: string; password?: string };
   }>,
-) =>
+) => MaybePromise<
   | {
       status: 200;
       contentType?: "application/json";
@@ -1522,7 +1565,8 @@ export type HTTP_GET = (
     }
   | { status: 415; contentType: "text/plain"; body: string }
   | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE };
+  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
+>;
 "
 `;
 

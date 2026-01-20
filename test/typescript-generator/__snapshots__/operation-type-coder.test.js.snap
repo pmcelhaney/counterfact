@@ -23,7 +23,7 @@ exports[`an OperationTypeCoder falls back to root level produces (OpenAPI 2) 1`]
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
   }>,
-) =>
+) => MaybePromise<
   | {
       status: number | undefined;
       contentType?: "text/plain";
@@ -31,7 +31,8 @@ exports[`an OperationTypeCoder falls back to root level produces (OpenAPI 2) 1`]
     }
   | { status: 415; contentType: "text/plain"; body: string }
   | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE };
+  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
+>;
 "
 `;
 
@@ -76,7 +77,7 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2 wit
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
   }>,
-) =>
+) => MaybePromise<
   | {
       status: 200;
       contentType?: "application/json";
@@ -94,7 +95,8 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2 wit
     }
   | { status: 415; contentType: "text/plain"; body: string }
   | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE };
+  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
+>;
 "
 `;
 
@@ -139,7 +141,7 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2) 1`
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
   }>,
-) =>
+) => MaybePromise<
   | {
       status: 200;
       contentType?: "application/json";
@@ -157,7 +159,8 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2) 1`
     }
   | { status: 415; contentType: "text/plain"; body: string }
   | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE };
+  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
+>;
 "
 `;
 
@@ -202,7 +205,7 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2, co
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
   }>,
-) =>
+) => MaybePromise<
   | {
       status: 200;
       contentType?: "application/json";
@@ -220,7 +223,8 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2, co
     }
   | { status: 415; contentType: "text/plain"; body: string }
   | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE };
+  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
+>;
 "
 `;
 
@@ -265,7 +269,7 @@ exports[`an OperationTypeCoder generates a complex post operation 1`] = `
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
   }>,
-) =>
+) => MaybePromise<
   | {
       status: 200;
       contentType?: "application/json";
@@ -283,7 +287,8 @@ exports[`an OperationTypeCoder generates a complex post operation 1`] = `
     }
   | { status: 415; contentType: "text/plain"; body: string }
   | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE };
+  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
+>;
 "
 `;
 
@@ -310,7 +315,7 @@ exports[`an OperationTypeCoder generates a simple get operation (OpenAPI 2) 1`] 
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
   }>,
-) =>
+) => MaybePromise<
   | {
       status: number | undefined;
       contentType?: "application/json";
@@ -318,7 +323,8 @@ exports[`an OperationTypeCoder generates a simple get operation (OpenAPI 2) 1`] 
     }
   | { status: 415; contentType: "text/plain"; body: string }
   | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE };
+  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
+>;
 "
 `;
 
@@ -345,7 +351,7 @@ exports[`an OperationTypeCoder generates a simple get operation 1`] = `
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
   }>,
-) =>
+) => MaybePromise<
   | {
       status: number | undefined;
       contentType?: "application/json";
@@ -353,7 +359,8 @@ exports[`an OperationTypeCoder generates a simple get operation 1`] = `
     }
   | { status: 415; contentType: "text/plain"; body: string }
   | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE };
+  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
+>;
 "
 `;
 
@@ -380,7 +387,7 @@ exports[`an OperationTypeCoder generates an auth object for basic authentication
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: { username?: string; password?: string };
   }>,
-) =>
+) => MaybePromise<
   | {
       status: number | undefined;
       contentType?: "application/json";
@@ -388,6 +395,7 @@ exports[`an OperationTypeCoder generates an auth object for basic authentication
     }
   | { status: 415; contentType: "text/plain"; body: string }
   | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE };
+  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
+>;
 "
 `;
