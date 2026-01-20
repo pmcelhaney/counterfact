@@ -20,6 +20,8 @@ type COUNTERFACT_RESPONSE = typeof counterfactResponseObject;
 
 type MediaType = `${string}/${string}`;
 
+type MaybePromise<T> = T | Promise<T>;
+
 type OmitAll<T, K extends readonly string[]> = {
   [P in keyof T as P extends `${string}${K[number]}${string}`
     ? never
@@ -273,6 +275,7 @@ export type { COUNTERFACT_RESPONSE };
 
 export type {
   HttpStatusCode,
+  MaybePromise,
   MediaType,
   OmitValueWhenNever,
   OpenApiOperation,

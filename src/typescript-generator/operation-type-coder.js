@@ -95,6 +95,7 @@ export class OperationTypeCoder extends TypeCoder {
     const xType = script.importSharedType("WideOperationArgument");
 
     script.importSharedType("OmitValueWhenNever");
+    script.importSharedType("MaybePromise");
     script.importSharedType("COUNTERFACT_RESPONSE");
 
     const contextTypeImportName = script.importExternalType(
@@ -139,8 +140,8 @@ export class OperationTypeCoder extends TypeCoder {
 
     const proxyType = "(url: string) => COUNTERFACT_RESPONSE";
 
-    return `($: OmitValueWhenNever<{ query: ${queryType}, path: ${pathType}, headers: ${headersType}, body: ${bodyType}, context: ${contextTypeImportName}, response: ${responseType}, x: ${xType}, proxy: ${proxyType}, user: ${this.userType()} }>) => ${this.responseTypes(
+    return `($: OmitValueWhenNever<{ query: ${queryType}, path: ${pathType}, headers: ${headersType}, body: ${bodyType}, context: ${contextTypeImportName}, response: ${responseType}, x: ${xType}, proxy: ${proxyType}, user: ${this.userType()} }>) => MaybePromise<${this.responseTypes(
       script,
-    )} | { status: 415, contentType: "text/plain", body: string } | COUNTERFACT_RESPONSE | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }`;
+    )} | { status: 415, contentType: "text/plain", body: string } | COUNTERFACT_RESPONSE | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }>`;
   }
 }
