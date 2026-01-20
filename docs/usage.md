@@ -295,6 +295,16 @@ Using the REPL is a lot faster (and more fun) than wrangling config files and SQ
 > }
 > ```
 
+The `client` object allows you to test the server without switching to another tool like `curl`, `Postman`, or the app you're building.
+
+```sh
+> client.get("/users")
+> client.post("/users", {name: "bob" })
+> client.put("/users", {name: "bob" }, {"x-optional-header": "test"})
+```
+
+All standard HTTP verbs are supported. The first argument is the path. The second argument is the request body (where applicable). The last argument contains request headers.
+
 ## Proxy Peek-a-boo 🫣
 
 At some point you're going to want to test your code against a real server. At that point, you could throw the mock server away. However, you may wish you's kept it around testing edge cases and back-end changes that are still in development.

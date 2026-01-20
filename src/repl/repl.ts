@@ -3,6 +3,8 @@ import repl from "node:repl";
 import type { Config } from "../server/config.js";
 import type { ContextRegistry } from "../server/context-registry.js";
 
+import { RawHttpClient } from "./RawHttpClient.js";
+
 function printToStdout(line: string) {
   process.stdout.write(`${line}\n`);
 }
@@ -125,6 +127,9 @@ export function startRepl(
   replServer.context.loadContext = (path: string) => contextRegistry.find(path);
 
   replServer.context.context = replServer.context.loadContext("/");
+
+  replServer.context.client = new RawHttpClient("localhost", config.port);
+  replServer.context.RawHttpClient = RawHttpClient;
 
   return replServer;
 }
