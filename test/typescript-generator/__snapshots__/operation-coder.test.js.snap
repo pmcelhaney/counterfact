@@ -1,14 +1,14 @@
 // Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`an OperationCoder generates a complex get operation 1`] = `
-"($) => {
+"async ($) => {
   return $.response[200].random();
 };
 "
 `;
 
 exports[`an OperationCoder generates a simple post operation 1`] = `
-"($) => {
+"async ($) => {
   return $.response[200].random();
 };
 "

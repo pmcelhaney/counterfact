@@ -2,7 +2,6 @@ import nodePath from "node:path";
 
 import { Coder } from "./coder.js";
 import { OperationTypeCoder } from "./operation-type-coder.js";
-import path from "node:path";
 
 export class OperationCoder extends Coder {
   constructor(requirement, requestMethod, securitySchemes = {}) {
@@ -29,14 +28,14 @@ export class OperationCoder extends Coder {
     const [firstResponse] = responses.map((response) => response.data);
 
     if (!("content" in firstResponse || "schema" in firstResponse)) {
-      return `($) => {
+      return `async ($) => {
         return $.response[${
           firstStatusCode === "default" ? 200 : firstStatusCode
         }];
       }`;
     }
 
-    return `($) => {
+    return `async ($) => {
       return $.response[${
         firstStatusCode === "default" ? 200 : firstStatusCode
       }].random();
