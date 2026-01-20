@@ -140,7 +140,10 @@ export class OperationTypeCoder extends TypeCoder {
 
     const proxyType = "(url: string) => COUNTERFACT_RESPONSE";
 
-    return `($: OmitValueWhenNever<{ query: ${queryType}, path: ${pathType}, headers: ${headersType}, body: ${bodyType}, context: ${contextTypeImportName}, response: ${responseType}, x: ${xType}, proxy: ${proxyType}, user: ${this.userType()} }>) => MaybePromise<${this.responseTypes(
+    const delayType =
+      "(milliseconds: number, maxMilliseconds?: number) => Promise<void>";
+
+    return `($: OmitValueWhenNever<{ query: ${queryType}, path: ${pathType}, headers: ${headersType}, body: ${bodyType}, context: ${contextTypeImportName}, response: ${responseType}, x: ${xType}, proxy: ${proxyType}, user: ${this.userType()}, delay: ${delayType} }>) => MaybePromise<${this.responseTypes(
       script,
     )} | { status: 415, contentType: "text/plain", body: string } | COUNTERFACT_RESPONSE | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }>`;
   }

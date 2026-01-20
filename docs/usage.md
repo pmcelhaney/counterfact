@@ -203,6 +203,19 @@ If a username and password are sent via basic authentication, they can be found 
 
 Support for other security schemes ("apiKey", "mutualTLS", "oauth2", "openIdConnect") are coming. You can speed things along by [opening an issue](https://github.com/pmcelhaney/counterfact/issues).
 
+### Slow down with `$.delay()`
+
+Counterfact is much faster than a typical production server. Usually that's a good thing.
+However, sometimes we need the server to slow down so we can test things like loading spinners. For that, there's a utility called `$.delay()`.
+
+```ts
+// wait one second
+await $.delay(1000);
+
+// wait some random period between 1 and 5 seconds
+await $.delay(1000, 5000);
+```
+
 ### x-scape Hatch
 
 Counterfact does a good job translating an OpenAPI description into TypeScript types. But if your documentation is incorrect or incomplete, or you want to try something that's not documented yet, the type safety can get in your way.
@@ -375,3 +388,7 @@ More features are coming soon:
 Please send feedback / questions to pmcelhaney@gmail.com or [create a new issue](https://github.com/pmcelhaney/counterfact/issues/new).
 
 And yes, [contributions](../CONTRIBUTING.md) are welcome!
+
+```
+
+```

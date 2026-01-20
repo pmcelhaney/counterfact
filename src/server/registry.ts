@@ -38,6 +38,7 @@ interface RequestData {
   response: ResponseBuilderFactory;
   tools: Tools;
   body?: unknown;
+  delay: (milliseconds: number, maxMilliseconds: number) => Promise<void>;
 }
 
 interface RequestDataWithBody extends RequestData {
