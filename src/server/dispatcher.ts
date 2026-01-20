@@ -258,6 +258,10 @@ export class Dispatcher {
     const { matchedPath } = this.registry.handler(path, method);
     const operation = this.operationForPathAndMethod(matchedPath, method);
 
+    const continuousDistribution = (min: number, max: number) => {
+      return min + Math.random() * (max - min);
+    };
+
     const response = await this.registry.endpoint(
       method,
       path,
@@ -266,6 +270,15 @@ export class Dispatcher {
       auth,
       body,
       context: this.contextRegistry.find(matchedPath),
+
+      async delay(milliseconds = 0, maxMilliseconds = 0) {
+        const delayInMs =
+          maxMilliseconds - milliseconds <= 0
+            ? milliseconds
+            : continuousDistribution(milliseconds, maxMilliseconds);
+
+        return new Promise((resolve) => setTimeout(resolve, delayInMs));
+      },
 
       headers,
 
