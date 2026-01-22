@@ -1,6 +1,6 @@
 {
   "name": "counterfact",
-  "version": "1.4.9",
+  "version": "1.5.0",
   "description": "Generate a TypeScript-based mock server from an OpenAPI spec in seconds — with stateful routes, hot reload, and REPL support.",
   "type": "module",
   "main": "./dist/app.js",
