@@ -1,5 +1,13 @@
 # counterfact
 
+## 1.5.0
+
+### Minor Changes
+
+- 5b52a18: make operation methods like GET() and POST() async
+- da0c55e: Add a $.delay() utility for simulating slow responses (#720)
+- 8349ae6: add a client object to the REPL for quickly sending HTTP requests
+
 ## 1.4.9
 
 ### Patch Changes
