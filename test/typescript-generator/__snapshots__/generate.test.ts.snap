@@ -1,14 +1,14 @@
 // Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`end-to-end test generates the same code for pet store that it did on the last test run 1`] = `
-"routes/pet.ts:import type { HTTP_POST } from "../types/paths/pet.types.js";
-import type { HTTP_PUT } from "../types/paths/pet.types.js";
+"routes/pet.ts:import type { addPet } from "../types/paths/pet.types.js";
+import type { updatePet } from "../types/paths/pet.types.js";
 
-export const POST: HTTP_POST = async ($) => {
+export const POST: addPet = async ($) => {
   return $.response[200].random();
 };
 
-export const PUT: HTTP_PUT = async ($) => {
+export const PUT: updatePet = async ($) => {
   return $.response[200].random();
 };
 "
@@ -27,7 +27,7 @@ import type { Context } from "@@CONTEXT_FILE_TOKEN@@";
 import type { ResponseBuilderFactory } from "../../counterfact-types/index.ts";
 import type { Pet } from "../components/schemas/Pet.js";
 
-export type HTTP_POST = (
+export type addPet = (
   $: OmitValueWhenNever<{
     query: never;
     path: never;
@@ -77,7 +77,7 @@ export type HTTP_POST = (
   | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
 >;
 
-export type HTTP_PUT = (
+export type updatePet = (
   $: OmitValueWhenNever<{
     query: never;
     path: never;
@@ -146,9 +146,9 @@ export type HTTP_PUT = (
 `;
 
 exports[`end-to-end test generates the same code for pet store that it did on the last test run 3`] = `
-"routes/pet/findByStatus.ts:import type { HTTP_GET } from "../../types/paths/pet/findByStatus.types.js";
+"routes/pet/findByStatus.ts:import type { findPetsByStatus } from "../../types/paths/pet/findByStatus.types.js";
 
-export const GET: HTTP_GET = async ($) => {
+export const GET: findPetsByStatus = async ($) => {
   return $.response[200].random();
 };
 "
@@ -167,9 +167,9 @@ import type { Context } from "@@CONTEXT_FILE_TOKEN@@";
 import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts";
 import type { Pet } from "../../components/schemas/Pet.js";
 
-export type HTTP_GET = (
+export type findPetsByStatus = (
   $: OmitValueWhenNever<{
-    query: { status?: "available" | "pending" | "sold" };
+    query: findPetsByStatus_Query;
     path: never;
     headers: never;
     body: never;
@@ -216,13 +216,17 @@ export type HTTP_GET = (
   | COUNTERFACT_RESPONSE
   | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
 >;
+
+export type findPetsByStatus_Query = {
+  status?: "available" | "pending" | "sold";
+};
 "
 `;
 
 exports[`end-to-end test generates the same code for pet store that it did on the last test run 5`] = `
-"routes/pet/findByTags.ts:import type { HTTP_GET } from "../../types/paths/pet/findByTags.types.js";
+"routes/pet/findByTags.ts:import type { findPetsByTags } from "../../types/paths/pet/findByTags.types.js";
 
-export const GET: HTTP_GET = async ($) => {
+export const GET: findPetsByTags = async ($) => {
   return $.response[200].random();
 };
 "
@@ -241,9 +245,9 @@ import type { Context } from "@@CONTEXT_FILE_TOKEN@@";
 import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts";
 import type { Pet } from "../../components/schemas/Pet.js";
 
-export type HTTP_GET = (
+export type findPetsByTags = (
   $: OmitValueWhenNever<{
-    query: { tags?: Array<string> };
+    query: findPetsByTags_Query;
     path: never;
     headers: never;
     body: never;
@@ -290,23 +294,25 @@ export type HTTP_GET = (
   | COUNTERFACT_RESPONSE
   | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
 >;
+
+export type findPetsByTags_Query = { tags?: Array<string> };
 "
 `;
 
 exports[`end-to-end test generates the same code for pet store that it did on the last test run 7`] = `
-"routes/pet/{petId}.ts:import type { HTTP_GET } from "../../types/paths/pet/{petId}.types.js";
-import type { HTTP_POST } from "../../types/paths/pet/{petId}.types.js";
-import type { HTTP_DELETE } from "../../types/paths/pet/{petId}.types.js";
+"routes/pet/{petId}.ts:import type { getPetById } from "../../types/paths/pet/{petId}.types.js";
+import type { updatePetWithForm } from "../../types/paths/pet/{petId}.types.js";
+import type { deletePet } from "../../types/paths/pet/{petId}.types.js";
 
-export const GET: HTTP_GET = async ($) => {
+export const GET: getPetById = async ($) => {
   return $.response[200].random();
 };
 
-export const POST: HTTP_POST = async ($) => {
+export const POST: updatePetWithForm = async ($) => {
   return $.response[405];
 };
 
-export const DELETE: HTTP_DELETE = async ($) => {
+export const DELETE: deletePet = async ($) => {
   return $.response[400];
 };
 "
@@ -325,10 +331,10 @@ import type { Context } from "@@CONTEXT_FILE_TOKEN@@";
 import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts";
 import type { Pet } from "../../components/schemas/Pet.js";
 
-export type HTTP_GET = (
+export type getPetById = (
   $: OmitValueWhenNever<{
     query: never;
-    path: { petId: number };
+    path: getPetById_Path;
     headers: never;
     body: never;
     context: Context;
@@ -383,10 +389,10 @@ export type HTTP_GET = (
   | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
 >;
 
-export type HTTP_POST = (
+export type updatePetWithForm = (
   $: OmitValueWhenNever<{
-    query: { name?: string; status?: string };
-    path: { petId: number };
+    query: updatePetWithForm_Query;
+    path: updatePetWithForm_Path;
     headers: never;
     body: never;
     context: Context;
@@ -411,11 +417,11 @@ export type HTTP_POST = (
   | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
 >;
 
-export type HTTP_DELETE = (
+export type deletePet = (
   $: OmitValueWhenNever<{
     query: never;
-    path: { petId: number };
-    headers: { api_key?: string };
+    path: deletePet_Path;
+    headers: deletePet_Headers;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -438,13 +444,23 @@ export type HTTP_DELETE = (
   | COUNTERFACT_RESPONSE
   | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
 >;
+
+export type getPetById_Path = { petId: number };
+
+export type updatePetWithForm_Query = { name?: string; status?: string };
+
+export type updatePetWithForm_Path = { petId: number };
+
+export type deletePet_Path = { petId: number };
+
+export type deletePet_Headers = { api_key?: string };
 "
 `;
 
 exports[`end-to-end test generates the same code for pet store that it did on the last test run 9`] = `
-"routes/pet/{petId}/uploadImage.ts:import type { HTTP_POST } from "../../../types/paths/pet/{petId}/uploadImage.types.js";
+"routes/pet/{petId}/uploadImage.ts:import type { uploadFile } from "../../../types/paths/pet/{petId}/uploadImage.types.js";
 
-export const POST: HTTP_POST = async ($) => {
+export const POST: uploadFile = async ($) => {
   return $.response[200].random();
 };
 "
@@ -463,10 +479,10 @@ import type { Context } from "@@CONTEXT_FILE_TOKEN@@";
 import type { ResponseBuilderFactory } from "../../../../counterfact-types/index.ts";
 import type { ApiResponse } from "../../../components/schemas/ApiResponse.js";
 
-export type HTTP_POST = (
+export type uploadFile = (
   $: OmitValueWhenNever<{
-    query: { additionalMetadata?: string };
-    path: { petId: number };
+    query: uploadFile_Query;
+    path: uploadFile_Path;
     headers: never;
     body: never;
     context: Context;
@@ -496,13 +512,17 @@ export type HTTP_POST = (
   | COUNTERFACT_RESPONSE
   | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
 >;
+
+export type uploadFile_Query = { additionalMetadata?: string };
+
+export type uploadFile_Path = { petId: number };
 "
 `;
 
 exports[`end-to-end test generates the same code for pet store that it did on the last test run 11`] = `
-"routes/store/inventory.ts:import type { HTTP_GET } from "../../types/paths/store/inventory.types.js";
+"routes/store/inventory.ts:import type { getInventory } from "../../types/paths/store/inventory.types.js";
 
-export const GET: HTTP_GET = async ($) => {
+export const GET: getInventory = async ($) => {
   return $.response[200].random();
 };
 "
@@ -520,7 +540,7 @@ import type { COUNTERFACT_RESPONSE } from "../../../counterfact-types/index.ts";
 import type { Context } from "@@CONTEXT_FILE_TOKEN@@";
 import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts";
 
-export type HTTP_GET = (
+export type getInventory = (
   $: OmitValueWhenNever<{
     query: never;
     path: never;
@@ -557,9 +577,9 @@ export type HTTP_GET = (
 `;
 
 exports[`end-to-end test generates the same code for pet store that it did on the last test run 13`] = `
-"routes/store/order.ts:import type { HTTP_POST } from "../../types/paths/store/order.types.js";
+"routes/store/order.ts:import type { placeOrder } from "../../types/paths/store/order.types.js";
 
-export const POST: HTTP_POST = async ($) => {
+export const POST: placeOrder = async ($) => {
   return $.response[200].random();
 };
 "
@@ -578,7 +598,7 @@ import type { Context } from "@@CONTEXT_FILE_TOKEN@@";
 import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts";
 import type { Order } from "../../components/schemas/Order.js";
 
-export type HTTP_POST = (
+export type placeOrder = (
   $: OmitValueWhenNever<{
     query: never;
     path: never;
@@ -623,14 +643,14 @@ export type HTTP_POST = (
 `;
 
 exports[`end-to-end test generates the same code for pet store that it did on the last test run 15`] = `
-"routes/store/order/{orderId}.ts:import type { HTTP_GET } from "../../../types/paths/store/order/{orderId}.types.js";
-import type { HTTP_DELETE } from "../../../types/paths/store/order/{orderId}.types.js";
+"routes/store/order/{orderId}.ts:import type { getOrderById } from "../../../types/paths/store/order/{orderId}.types.js";
+import type { deleteOrder } from "../../../types/paths/store/order/{orderId}.types.js";
 
-export const GET: HTTP_GET = async ($) => {
+export const GET: getOrderById = async ($) => {
   return $.response[200].random();
 };
 
-export const DELETE: HTTP_DELETE = async ($) => {
+export const DELETE: deleteOrder = async ($) => {
   return $.response[400];
 };
 "
@@ -649,10 +669,10 @@ import type { Context } from "@@CONTEXT_FILE_TOKEN@@";
 import type { ResponseBuilderFactory } from "../../../../counterfact-types/index.ts";
 import type { Order } from "../../../components/schemas/Order.js";
 
-export type HTTP_GET = (
+export type getOrderById = (
   $: OmitValueWhenNever<{
     query: never;
-    path: { orderId: number };
+    path: getOrderById_Path;
     headers: never;
     body: never;
     context: Context;
@@ -707,10 +727,10 @@ export type HTTP_GET = (
   | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
 >;
 
-export type HTTP_DELETE = (
+export type deleteOrder = (
   $: OmitValueWhenNever<{
     query: never;
-    path: { orderId: number };
+    path: deleteOrder_Path;
     headers: never;
     body: never;
     context: Context;
@@ -742,13 +762,17 @@ export type HTTP_DELETE = (
   | COUNTERFACT_RESPONSE
   | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
 >;
+
+export type getOrderById_Path = { orderId: number };
+
+export type deleteOrder_Path = { orderId: number };
 "
 `;
 
 exports[`end-to-end test generates the same code for pet store that it did on the last test run 17`] = `
-"routes/user.ts:import type { HTTP_POST } from "../types/paths/user.types.js";
+"routes/user.ts:import type { createUser } from "../types/paths/user.types.js";
 
-export const POST: HTTP_POST = async ($) => {
+export const POST: createUser = async ($) => {
   return $.response[200].random();
 };
 "
@@ -768,7 +792,7 @@ import type { ResponseBuilderFactory } from "../../counterfact-types/index.ts";
 import type { HttpStatusCode } from "../../counterfact-types/index.ts";
 import type { User } from "../components/schemas/User.js";
 
-export type HTTP_POST = (
+export type createUser = (
   $: OmitValueWhenNever<{
     query: never;
     path: never;
@@ -813,9 +837,9 @@ export type HTTP_POST = (
 `;
 
 exports[`end-to-end test generates the same code for pet store that it did on the last test run 19`] = `
-"routes/user/createWithList.ts:import type { HTTP_POST } from "../../types/paths/user/createWithList.types.js";
+"routes/user/createWithList.ts:import type { createUsersWithListInput } from "../../types/paths/user/createWithList.types.js";
 
-export const POST: HTTP_POST = async ($) => {
+export const POST: createUsersWithListInput = async ($) => {
   return $.response[200].random();
 };
 "
@@ -835,7 +859,7 @@ import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts
 import type { HttpStatusCode } from "../../../counterfact-types/index.ts";
 import type { User } from "../../components/schemas/User.js";
 
-export type HTTP_POST = (
+export type createUsersWithListInput = (
   $: OmitValueWhenNever<{
     query: never;
     path: never;
@@ -888,9 +912,9 @@ export type HTTP_POST = (
 `;
 
 exports[`end-to-end test generates the same code for pet store that it did on the last test run 21`] = `
-"routes/user/login.ts:import type { HTTP_GET } from "../../types/paths/user/login.types.js";
+"routes/user/login.ts:import type { loginUser } from "../../types/paths/user/login.types.js";
 
-export const GET: HTTP_GET = async ($) => {
+export const GET: loginUser = async ($) => {
   return $.response[200].random();
 };
 "
@@ -908,9 +932,9 @@ import type { COUNTERFACT_RESPONSE } from "../../../counterfact-types/index.ts";
 import type { Context } from "@@CONTEXT_FILE_TOKEN@@";
 import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts";
 
-export type HTTP_GET = (
+export type loginUser = (
   $: OmitValueWhenNever<{
-    query: { username?: string; password?: string };
+    query: loginUser_Query;
     path: never;
     headers: never;
     body: never;
@@ -960,13 +984,15 @@ export type HTTP_GET = (
   | COUNTERFACT_RESPONSE
   | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
 >;
+
+export type loginUser_Query = { username?: string; password?: string };
 "
 `;
 
 exports[`end-to-end test generates the same code for pet store that it did on the last test run 23`] = `
-"routes/user/logout.ts:import type { HTTP_GET } from "../../types/paths/user/logout.types.js";
+"routes/user/logout.ts:import type { logoutUser } from "../../types/paths/user/logout.types.js";
 
-export const GET: HTTP_GET = async ($) => {
+export const GET: logoutUser = async ($) => {
   return $.response[200];
 };
 "
@@ -985,7 +1011,7 @@ import type { Context } from "@@CONTEXT_FILE_TOKEN@@";
 import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts";
 import type { HttpStatusCode } from "../../../counterfact-types/index.ts";
 
-export type HTTP_GET = (
+export type logoutUser = (
   $: OmitValueWhenNever<{
     query: never;
     path: never;
@@ -1016,19 +1042,19 @@ export type HTTP_GET = (
 `;
 
 exports[`end-to-end test generates the same code for pet store that it did on the last test run 25`] = `
-"routes/user/{username}.ts:import type { HTTP_GET } from "../../types/paths/user/{username}.types.js";
-import type { HTTP_PUT } from "../../types/paths/user/{username}.types.js";
-import type { HTTP_DELETE } from "../../types/paths/user/{username}.types.js";
+"routes/user/{username}.ts:import type { getUserByName } from "../../types/paths/user/{username}.types.js";
+import type { updateUser } from "../../types/paths/user/{username}.types.js";
+import type { deleteUser } from "../../types/paths/user/{username}.types.js";
 
-export const GET: HTTP_GET = async ($) => {
+export const GET: getUserByName = async ($) => {
   return $.response[200].random();
 };
 
-export const PUT: HTTP_PUT = async ($) => {
+export const PUT: updateUser = async ($) => {
   return $.response[200];
 };
 
-export const DELETE: HTTP_DELETE = async ($) => {
+export const DELETE: deleteUser = async ($) => {
   return $.response[400];
 };
 "
@@ -1048,10 +1074,10 @@ import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts
 import type { HttpStatusCode } from "../../../counterfact-types/index.ts";
 import type { User } from "../../components/schemas/User.js";
 
-export type HTTP_GET = (
+export type getUserByName = (
   $: OmitValueWhenNever<{
     query: never;
-    path: { username: string };
+    path: getUserByName_Path;
     headers: never;
     body: never;
     context: Context;
@@ -1106,10 +1132,10 @@ export type HTTP_GET = (
   | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
 >;
 
-export type HTTP_PUT = (
+export type updateUser = (
   $: OmitValueWhenNever<{
     query: never;
-    path: { username: string };
+    path: updateUser_Path;
     headers: never;
     body: User;
     context: Context;
@@ -1134,10 +1160,10 @@ export type HTTP_PUT = (
   | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
 >;
 
-export type HTTP_DELETE = (
+export type deleteUser = (
   $: OmitValueWhenNever<{
     query: never;
-    path: { username: string };
+    path: deleteUser_Path;
     headers: never;
     body: never;
     context: Context;
@@ -1169,6 +1195,12 @@ export type HTTP_DELETE = (
   | COUNTERFACT_RESPONSE
   | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
 >;
+
+export type getUserByName_Path = { username: string };
+
+export type updateUser_Path = { username: string };
+
+export type deleteUser_Path = { username: string };
 "
 `;
 
@@ -1437,7 +1469,7 @@ import type { HttpStatusCode } from "../../../counterfact-types/index.ts";
 export type HTTP_GET = (
   $: OmitValueWhenNever<{
     query: never;
-    path: { name: string };
+    path: HTTP_GET_Path;
     headers: never;
     body: never;
     context: Context;
@@ -1469,6 +1501,8 @@ export type HTTP_GET = (
   | COUNTERFACT_RESPONSE
   | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
 >;
+
+export type HTTP_GET_Path = { name: string };
 "
 `;
 

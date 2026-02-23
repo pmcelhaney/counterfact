@@ -7,6 +7,34 @@ import { ResponsesTypeCoder } from "./responses-type-coder.js";
 import { SchemaTypeCoder } from "./schema-type-coder.js";
 import { TypeCoder } from "./type-coder.js";
 
+// Helper class for exporting parameter types
+class ParameterExportTypeCoder extends TypeCoder {
+  constructor(requirement, typeName, typeCode, parameterKind) {
+    super(requirement);
+    this._typeName = typeName;
+    this._typeCode = typeCode;
+    this._parameterKind = parameterKind;
+  }
+
+  get id() {
+    // Make the id unique by including the parameter kind
+    return `${super.id}:${this._parameterKind}`;
+  }
+
+  *names() {
+    yield this._typeName;
+  }
+
+  writeCode() {
+    return this._typeCode;
+  }
+
+  modulePath() {
+    // Use the same module path as the parent operation
+    return this._modulePath;
+  }
+}
+
 export class OperationTypeCoder extends TypeCoder {
   constructor(requirement, requestMethod, securitySchemes = []) {
     super(requirement);
@@ -20,7 +48,32 @@ export class OperationTypeCoder extends TypeCoder {
   }
 
   names() {
+    const operationId = this.requirement.get("operationId")?.data;
+
+    if (operationId) {
+      return super.names(operationId);
+    }
+
     return super.names(`HTTP_${this.requestMethod.toUpperCase()}`);
+  }
+
+  exportParameterType(script, parameterKind, inlineType, baseName, modulePath) {
+    if (inlineType === "never") {
+      return "never";
+    }
+
+    const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
+    const typeName = `${baseName}_${capitalize(parameterKind)}`;
+
+    const coder = new ParameterExportTypeCoder(
+      this.requirement,
+      typeName,
+      inlineType,
+      parameterKind,
+    );
+    coder._modulePath = modulePath;
+
+    return script.export(coder, true);
   }
 
   responseTypes(script) {
@@ -143,7 +196,32 @@ export class OperationTypeCoder extends TypeCoder {
     const delayType =
       "(milliseconds: number, maxMilliseconds?: number) => Promise<void>";
 
-    return `($: OmitValueWhenNever<{ query: ${queryType}, path: ${pathType}, headers: ${headersType}, body: ${bodyType}, context: ${contextTypeImportName}, response: ${responseType}, x: ${xType}, proxy: ${proxyType}, user: ${this.userType()}, delay: ${delayType} }>) => MaybePromise<${this.responseTypes(
+    // Get the base name for this operation and export parameter types
+    const baseName = this.names().next().value;
+    const modulePath = this.modulePath();
+    const queryTypeName = this.exportParameterType(
+      script,
+      "query",
+      queryType,
+      baseName,
+      modulePath,
+    );
+    const pathTypeName = this.exportParameterType(
+      script,
+      "path",
+      pathType,
+      baseName,
+      modulePath,
+    );
+    const headersTypeName = this.exportParameterType(
+      script,
+      "headers",
+      headersType,
+      baseName,
+      modulePath,
+    );
+
+    return `($: OmitValueWhenNever<{ query: ${queryTypeName}, path: ${pathTypeName}, headers: ${headersTypeName}, body: ${bodyType}, context: ${contextTypeImportName}, response: ${responseType}, x: ${xType}, proxy: ${proxyType}, user: ${this.userType()}, delay: ${delayType} }>) => MaybePromise<${this.responseTypes(
       script,
     )} | { status: 415, contentType: "text/plain", body: string } | COUNTERFACT_RESPONSE | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }>`;
   }

@@ -10,6 +10,20 @@ function format(code) {
 }
 
 const dummyScript = {
+  export(coder, isType) {
+    // Safely return the first name from the coder's names generator, if available
+    const getNames =
+      coder && typeof coder.names === "function" ? coder.names() : undefined;
+    if (!getNames || typeof getNames.next !== "function") {
+      return undefined;
+    }
+    const result = getNames.next();
+    if (!result || result.done) {
+      return undefined;
+    }
+    return result.value;
+  },
+
   import() {
     return "schema";
   },
@@ -367,5 +381,122 @@ describe("an OperationTypeCoder", () => {
     await expect(
       format(`type TestType =${coder.write(dummyScript)}`),
     ).resolves.toMatchSnapshot();
+  });
+
+  it("uses operationId for type names when available", () => {
+    const coder = new OperationTypeCoder(
+      new Requirement({ operationId: "addPet" }, "#/paths/pet/post"),
+      "post",
+    );
+
+    const [one, two, three] = coder.names();
+
+    expect([one, two, three]).toStrictEqual(["addPet", "addPet2", "addPet3"]);
+  });
+
+  it("falls back to HTTP_METHOD when operationId is not available", () => {
+    const coder = new OperationTypeCoder(
+      new Requirement({}, "#/paths/pet/post"),
+      "post",
+    );
+
+    const [one, two, three] = coder.names();
+
+    expect([one, two, three]).toStrictEqual([
+      "HTTP_POST",
+      "HTTP_POST2",
+      "HTTP_POST3",
+    ]);
+  });
+
+  it("exports parameter types separately and references them", async () => {
+    const requirement = new Requirement(
+      {
+        operationId: "searchPets",
+        parameters: [
+          { in: "query", name: "name", schema: { type: "string" } },
+          { in: "path", name: "id", schema: { type: "string" } },
+          { in: "header", name: "x-api-key", schema: { type: "string" } },
+        ],
+        responses: {
+          200: {
+            content: {
+              "application/json": {
+                schema: { $ref: "#/components/schemas/Example" },
+              },
+            },
+          },
+        },
+      },
+      "#/paths/pet~1search~1{id}/get",
+    );
+
+    const scriptWithExportTracking = {
+      ...dummyScript,
+      exports: {},
+      export(coder, isType) {
+        const name = coder.names().next().value;
+        this.exports[name] = coder;
+        return name;
+      },
+    };
+
+    const coder = new OperationTypeCoder(requirement, "get");
+    const result = coder.write(scriptWithExportTracking);
+
+    // Verify that parameter types are exported
+    expect(scriptWithExportTracking.exports).toHaveProperty("searchPets_Query");
+    expect(scriptWithExportTracking.exports).toHaveProperty("searchPets_Path");
+    expect(scriptWithExportTracking.exports).toHaveProperty(
+      "searchPets_Headers",
+    );
+
+    // Verify that the main type references the exported parameter types
+    expect(result).toContain("query: searchPets_Query");
+    expect(result).toContain("path: searchPets_Path");
+    expect(result).toContain("headers: searchPets_Headers");
+  });
+
+  it("does not export parameter types when they are 'never'", async () => {
+    const requirement = new Requirement(
+      {
+        operationId: "getPet",
+        responses: {
+          200: {
+            content: {
+              "application/json": {
+                schema: { $ref: "#/components/schemas/Example" },
+              },
+            },
+          },
+        },
+      },
+      "#/paths/pet/get",
+    );
+
+    const scriptWithExportTracking = {
+      ...dummyScript,
+      exports: {},
+      export(coder, isType) {
+        const name = coder.names().next().value;
+        this.exports[name] = coder;
+        return name;
+      },
+    };
+
+    const coder = new OperationTypeCoder(requirement, "get");
+    const result = coder.write(scriptWithExportTracking);
+
+    // Verify that parameter types are NOT exported when they are 'never'
+    expect(scriptWithExportTracking.exports).not.toHaveProperty("getPet_Query");
+    expect(scriptWithExportTracking.exports).not.toHaveProperty("getPet_Path");
+    expect(scriptWithExportTracking.exports).not.toHaveProperty(
+      "getPet_Headers",
+    );
+
+    // Verify that the main type uses 'never' directly
+    expect(result).toContain("query: never");
+    expect(result).toContain("path: never");
+    expect(result).toContain("headers: never");
   });
 });
