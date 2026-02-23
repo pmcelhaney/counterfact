@@ -6,6 +6,7 @@ export default {
     "src/**/*.{js,jsx,ts,tsx}",
     "!**/node_modules/**",
     "!**/*.d.ts",
+    "!src/migrate/**",
   ],
 
   coverageProvider: "v8",
