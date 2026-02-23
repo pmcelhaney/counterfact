@@ -27,7 +27,7 @@ export class OperationTypeCoder extends TypeCoder {
   }
 
   names() {
-    return super.names(`HTTP_${this.requestMethod.toUpperCase()}`);
+    return super.names(this.getOperationBaseName());
   }
 
   exportParameterType(script, parameterKind, inlineType, baseName, modulePath) {
