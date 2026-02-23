@@ -383,17 +383,6 @@ describe("an OperationTypeCoder", () => {
     ).resolves.toMatchSnapshot();
   });
 
-  it.skip("uses operationId for type names when available (PR #2)", () => {
-    const coder = new OperationTypeCoder(
-      new Requirement({ operationId: "addPet" }, "#/paths/pet/post"),
-      "post",
-    );
-
-    const [one, two, three] = coder.names();
-
-    expect([one, two, three]).toStrictEqual(["addPet", "addPet2", "addPet3"]);
-  });
-
   it("uses HTTP_METHOD for operation type names", () => {
     const coder = new OperationTypeCoder(
       new Requirement({}, "#/paths/pet/post"),
