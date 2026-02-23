@@ -40,9 +40,9 @@ exports[`an OperationTypeCoder falls back to root level produces (OpenAPI 2) 1`]
 exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2 with produces at the root) 1`] = `
 "type TestType = (
   $: OmitValueWhenNever<{
-    query: { name?: string };
-    path: { id?: string };
-    headers: { name?: string };
+    query: HTTP_GET_Query;
+    path: HTTP_GET_Path;
+    headers: HTTP_GET_Headers;
     body: Type;
     context: ExternalType;
     response: ResponseBuilderFactory<{
@@ -105,9 +105,9 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2 wit
 exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2) 1`] = `
 "type TestType = (
   $: OmitValueWhenNever<{
-    query: { name?: string };
-    path: { id?: string };
-    headers: { name?: string };
+    query: HTTP_GET_Query;
+    path: HTTP_GET_Path;
+    headers: HTTP_GET_Headers;
     body: Type;
     context: ExternalType;
     response: ResponseBuilderFactory<{
@@ -170,9 +170,9 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2) 1`
 exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2, consumes in root) 1`] = `
 "type TestType = (
   $: OmitValueWhenNever<{
-    query: { name?: string };
-    path: { id?: string };
-    headers: { name?: string };
+    query: HTTP_GET_Query;
+    path: HTTP_GET_Path;
+    headers: HTTP_GET_Headers;
     body: Type;
     context: ExternalType;
     response: ResponseBuilderFactory<{
@@ -235,9 +235,9 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2, co
 exports[`an OperationTypeCoder generates a complex post operation 1`] = `
 "type TestType = (
   $: OmitValueWhenNever<{
-    query: { name?: string };
-    path: { id?: string };
-    headers: { name?: string };
+    query: HTTP_GET_Query;
+    path: HTTP_GET_Path;
+    headers: HTTP_GET_Headers;
     body: Type;
     context: ExternalType;
     response: ResponseBuilderFactory<{
