@@ -1387,9 +1387,9 @@ export type HTTP_GET = (
 `;
 
 exports[`end-to-end test generates the same code for the example that it did on the last test run 5`] = `
-"routes/hello/kitty.ts:import type { HTTP_GET } from "../../types/paths/hello/kitty.types.js";
+"routes/hello/kitty.ts:import type { helloKitty } from "../../types/paths/hello/kitty.types.js";
 
-export const GET: HTTP_GET = async ($) => {
+export const GET: helloKitty = async ($) => {
   return $.response[200].random();
 };
 "
@@ -1408,7 +1408,7 @@ import type { Context } from "@@CONTEXT_FILE_TOKEN@@";
 import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts";
 import type { HttpStatusCode } from "../../../counterfact-types/index.ts";
 
-export type HTTP_GET = (
+export type helloKitty = (
   $: OmitValueWhenNever<{
     query: never;
     path: never;

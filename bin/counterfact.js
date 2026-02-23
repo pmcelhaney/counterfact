@@ -11,6 +11,7 @@ import open from "open";
 
 import { counterfact } from "../dist/app.js";
 import { pathsToRoutes } from "../dist/migrate/paths-to-routes.js";
+import { updateRouteTypes } from "../dist/migrate/update-route-types.js";
 
 const MIN_NODE_VERSION = 17;
 
@@ -172,6 +173,7 @@ async function main(source, destination) {
   debug("loading counterfact (%o)", config);
 
   let didMigrate = false;
+  let didMigrateRouteTypes = false;
 
   // eslint-disable-next-line n/no-sync
   if (fs.existsSync(nodePath.join(config.basePath, "paths"))) {
@@ -192,6 +194,11 @@ async function main(source, destination) {
   const { start } = await counterfact(config);
 
   debug("loaded counterfact", config);
+
+  // Migrate route type imports if needed
+  debug("checking if route type migration is needed");
+  didMigrateTypes = await updateRouteTypes(config.basePath, config.openApiPath);
+  debug("route type migration check complete: %s", didMigrateTypes);
 
   const watchMessage = createWatchMessage(config);
 
@@ -241,6 +248,25 @@ async function main(source, destination) {
     process.stdout.write(
       "Please report any issues to https://github.com/pmcelhaney/counterfact/issues\n",
     );
+    process.stdout.write("*******************************\n\n\n");
+  }
+
+  if (didMigrateTypes) {
+    process.stdout.write("\n\n\n*******************************\n");
+    process.stdout.write("MIGRATING ROUTE TYPE IMPORTS\n\n");
+    process.stdout.write(
+      "Operation types now use operationId from your OpenAPI spec when available.\n",
+    );
+    process.stdout.write(
+      "Your route files have been automatically updated to use the new type names.\n",
+    );
+    process.stdout.write(
+      "Example: 'HTTP_GET' may now be 'getPetById' if operationId is defined.\n",
+    );
+    process.stdout.write(
+      "Please review the changes and report any issues to:\n",
+    );
+    process.stdout.write("https://github.com/pmcelhaney/counterfact/issues\n");
     process.stdout.write("*******************************\n\n\n");
   }
 }
