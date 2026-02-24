@@ -6,6 +6,7 @@ import { READ_ONLY_COMMENTS } from "./read-only-comments.js";
 import { ResponsesTypeCoder } from "./responses-type-coder.js";
 import { SchemaTypeCoder } from "./schema-type-coder.js";
 import { TypeCoder } from "./type-coder.js";
+import { ParameterExportTypeCoder } from "./parameter-export-type-coder.js";
 
 export class OperationTypeCoder extends TypeCoder {
   constructor(requirement, requestMethod, securitySchemes = []) {
@@ -19,8 +20,33 @@ export class OperationTypeCoder extends TypeCoder {
     this.securitySchemes = securitySchemes;
   }
 
+  getOperationBaseName() {
+    const operationId = this.requirement.get("operationId")?.data;
+
+    return operationId || `HTTP_${this.requestMethod.toUpperCase()}`;
+  }
+
   names() {
     return super.names(`HTTP_${this.requestMethod.toUpperCase()}`);
+  }
+
+  exportParameterType(script, parameterKind, inlineType, baseName, modulePath) {
+    if (inlineType === "never") {
+      return "never";
+    }
+
+    const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
+    const typeName = `${baseName}_${capitalize(parameterKind)}`;
+
+    const coder = new ParameterExportTypeCoder(
+      this.requirement,
+      typeName,
+      inlineType,
+      parameterKind,
+    );
+    coder._modulePath = modulePath;
+
+    return script.export(coder, true);
   }
 
   responseTypes(script) {
@@ -143,7 +169,32 @@ export class OperationTypeCoder extends TypeCoder {
     const delayType =
       "(milliseconds: number, maxMilliseconds?: number) => Promise<void>";
 
-    return `($: OmitValueWhenNever<{ query: ${queryType}, path: ${pathType}, headers: ${headersType}, body: ${bodyType}, context: ${contextTypeImportName}, response: ${responseType}, x: ${xType}, proxy: ${proxyType}, user: ${this.userType()}, delay: ${delayType} }>) => MaybePromise<${this.responseTypes(
+    // Get the base name for this operation and export parameter types
+    const baseName = this.getOperationBaseName();
+    const modulePath = this.modulePath();
+    const queryTypeName = this.exportParameterType(
+      script,
+      "query",
+      queryType,
+      baseName,
+      modulePath,
+    );
+    const pathTypeName = this.exportParameterType(
+      script,
+      "path",
+      pathType,
+      baseName,
+      modulePath,
+    );
+    const headersTypeName = this.exportParameterType(
+      script,
+      "headers",
+      headersType,
+      baseName,
+      modulePath,
+    );
+
+    return `($: OmitValueWhenNever<{ query: ${queryTypeName}, path: ${pathTypeName}, headers: ${headersTypeName}, body: ${bodyType}, context: ${contextTypeImportName}, response: ${responseType}, x: ${xType}, proxy: ${proxyType}, user: ${this.userType()}, delay: ${delayType} }>) => MaybePromise<${this.responseTypes(
       script,
     )} | { status: 415, contentType: "text/plain", body: string } | COUNTERFACT_RESPONSE | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }>`;
   }

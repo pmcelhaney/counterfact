@@ -169,7 +169,7 @@ import type { Pet } from "../../components/schemas/Pet.js";
 
 export type HTTP_GET = (
   $: OmitValueWhenNever<{
-    query: { status?: "available" | "pending" | "sold" };
+    query: findPetsByStatus_Query;
     path: never;
     headers: never;
     body: never;
@@ -216,6 +216,10 @@ export type HTTP_GET = (
   | COUNTERFACT_RESPONSE
   | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
 >;
+
+export type findPetsByStatus_Query = {
+  status?: "available" | "pending" | "sold";
+};
 "
 `;
 
@@ -243,7 +247,7 @@ import type { Pet } from "../../components/schemas/Pet.js";
 
 export type HTTP_GET = (
   $: OmitValueWhenNever<{
-    query: { tags?: Array<string> };
+    query: findPetsByTags_Query;
     path: never;
     headers: never;
     body: never;
@@ -290,6 +294,8 @@ export type HTTP_GET = (
   | COUNTERFACT_RESPONSE
   | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
 >;
+
+export type findPetsByTags_Query = { tags?: Array<string> };
 "
 `;
 
@@ -328,7 +334,7 @@ import type { Pet } from "../../components/schemas/Pet.js";
 export type HTTP_GET = (
   $: OmitValueWhenNever<{
     query: never;
-    path: { petId: number };
+    path: getPetById_Path;
     headers: never;
     body: never;
     context: Context;
@@ -385,8 +391,8 @@ export type HTTP_GET = (
 
 export type HTTP_POST = (
   $: OmitValueWhenNever<{
-    query: { name?: string; status?: string };
-    path: { petId: number };
+    query: updatePetWithForm_Query;
+    path: updatePetWithForm_Path;
     headers: never;
     body: never;
     context: Context;
@@ -414,8 +420,8 @@ export type HTTP_POST = (
 export type HTTP_DELETE = (
   $: OmitValueWhenNever<{
     query: never;
-    path: { petId: number };
-    headers: { api_key?: string };
+    path: deletePet_Path;
+    headers: deletePet_Headers;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -438,6 +444,16 @@ export type HTTP_DELETE = (
   | COUNTERFACT_RESPONSE
   | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
 >;
+
+export type getPetById_Path = { petId: number };
+
+export type updatePetWithForm_Query = { name?: string; status?: string };
+
+export type updatePetWithForm_Path = { petId: number };
+
+export type deletePet_Path = { petId: number };
+
+export type deletePet_Headers = { api_key?: string };
 "
 `;
 
@@ -465,8 +481,8 @@ import type { ApiResponse } from "../../../components/schemas/ApiResponse.js";
 
 export type HTTP_POST = (
   $: OmitValueWhenNever<{
-    query: { additionalMetadata?: string };
-    path: { petId: number };
+    query: uploadFile_Query;
+    path: uploadFile_Path;
     headers: never;
     body: never;
     context: Context;
@@ -496,6 +512,10 @@ export type HTTP_POST = (
   | COUNTERFACT_RESPONSE
   | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
 >;
+
+export type uploadFile_Query = { additionalMetadata?: string };
+
+export type uploadFile_Path = { petId: number };
 "
 `;
 
@@ -652,7 +672,7 @@ import type { Order } from "../../../components/schemas/Order.js";
 export type HTTP_GET = (
   $: OmitValueWhenNever<{
     query: never;
-    path: { orderId: number };
+    path: getOrderById_Path;
     headers: never;
     body: never;
     context: Context;
@@ -710,7 +730,7 @@ export type HTTP_GET = (
 export type HTTP_DELETE = (
   $: OmitValueWhenNever<{
     query: never;
-    path: { orderId: number };
+    path: deleteOrder_Path;
     headers: never;
     body: never;
     context: Context;
@@ -742,6 +762,10 @@ export type HTTP_DELETE = (
   | COUNTERFACT_RESPONSE
   | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
 >;
+
+export type getOrderById_Path = { orderId: number };
+
+export type deleteOrder_Path = { orderId: number };
 "
 `;
 
@@ -910,7 +934,7 @@ import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts
 
 export type HTTP_GET = (
   $: OmitValueWhenNever<{
-    query: { username?: string; password?: string };
+    query: loginUser_Query;
     path: never;
     headers: never;
     body: never;
@@ -960,6 +984,8 @@ export type HTTP_GET = (
   | COUNTERFACT_RESPONSE
   | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
 >;
+
+export type loginUser_Query = { username?: string; password?: string };
 "
 `;
 
@@ -1051,7 +1077,7 @@ import type { User } from "../../components/schemas/User.js";
 export type HTTP_GET = (
   $: OmitValueWhenNever<{
     query: never;
-    path: { username: string };
+    path: getUserByName_Path;
     headers: never;
     body: never;
     context: Context;
@@ -1109,7 +1135,7 @@ export type HTTP_GET = (
 export type HTTP_PUT = (
   $: OmitValueWhenNever<{
     query: never;
-    path: { username: string };
+    path: updateUser_Path;
     headers: never;
     body: User;
     context: Context;
@@ -1137,7 +1163,7 @@ export type HTTP_PUT = (
 export type HTTP_DELETE = (
   $: OmitValueWhenNever<{
     query: never;
-    path: { username: string };
+    path: deleteUser_Path;
     headers: never;
     body: never;
     context: Context;
@@ -1169,6 +1195,12 @@ export type HTTP_DELETE = (
   | COUNTERFACT_RESPONSE
   | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
 >;
+
+export type getUserByName_Path = { username: string };
+
+export type updateUser_Path = { username: string };
+
+export type deleteUser_Path = { username: string };
 "
 `;
 
@@ -1437,7 +1469,7 @@ import type { HttpStatusCode } from "../../../counterfact-types/index.ts";
 export type HTTP_GET = (
   $: OmitValueWhenNever<{
     query: never;
-    path: { name: string };
+    path: HTTP_GET_Path;
     headers: never;
     body: never;
     context: Context;
@@ -1469,6 +1501,8 @@ export type HTTP_GET = (
   | COUNTERFACT_RESPONSE
   | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
 >;
+
+export type HTTP_GET_Path = { name: string };
 "
 `;
 
