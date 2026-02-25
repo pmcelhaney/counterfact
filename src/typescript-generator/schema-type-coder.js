@@ -32,7 +32,7 @@ export class SchemaTypeCoder extends TypeCoder {
       const property = this.requirement.get("properties").get(name);
 
       const isRequired =
-        data.required?.includes(name) || property.data.required;
+        data.required?.includes(name) || property.data.required === true;
       const optionalFlag = isRequired ? "" : "?";
 
       return `"${name}"${optionalFlag}: ${new SchemaTypeCoder(property).write(
