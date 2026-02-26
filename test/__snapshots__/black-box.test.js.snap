@@ -21,9 +21,9 @@ exports.GET = GET;
 `;
 
 exports[`black box test creates a file for the /hello/kitty path 1`] = `
-"import type { HTTP_GET } from "../../types/paths/hello/kitty.types.js";
+"import type { helloKitty } from "../../types/paths/hello/kitty.types.js";
 
-export const GET: HTTP_GET = async ($) => {
+export const GET: helloKitty = async ($) => {
   return $.response[200].random();
 };
 "
