@@ -383,7 +383,18 @@ describe("an OperationTypeCoder", () => {
     ).resolves.toMatchSnapshot();
   });
 
-  it("uses HTTP_METHOD for operation type names", () => {
+  it("uses operationId for type names when available", () => {
+    const coder = new OperationTypeCoder(
+      new Requirement({ operationId: "addPet" }, "#/paths/pet/post"),
+      "post",
+    );
+
+    const [one, two, three] = coder.names();
+
+    expect([one, two, three]).toStrictEqual(["addPet", "addPet2", "addPet3"]);
+  });
+
+  it("falls back to HTTP_METHOD when operationId is not available", () => {
     const coder = new OperationTypeCoder(
       new Requirement({}, "#/paths/pet/post"),
       "post",
@@ -431,14 +442,9 @@ describe("an OperationTypeCoder", () => {
     };
 
     const coder = new OperationTypeCoder(requirement, "get");
-
-    // Verify that the main operation type name is HTTP_GET
-    const [mainTypeName] = coder.names();
-    expect(mainTypeName).toBe("HTTP_GET");
-
     const result = coder.write(scriptWithExportTracking);
 
-    // Verify that parameter types are exported using operationId
+    // Verify that parameter types are exported
     expect(scriptWithExportTracking.exports).toHaveProperty("searchPets_Query");
     expect(scriptWithExportTracking.exports).toHaveProperty("searchPets_Path");
     expect(scriptWithExportTracking.exports).toHaveProperty(
@@ -479,11 +485,6 @@ describe("an OperationTypeCoder", () => {
     };
 
     const coder = new OperationTypeCoder(requirement, "get");
-
-    // Verify that the main operation type name is HTTP_GET
-    const [mainTypeName] = coder.names();
-    expect(mainTypeName).toBe("HTTP_GET");
-
     const result = coder.write(scriptWithExportTracking);
 
     // Verify that parameter types are NOT exported when they are 'never'
