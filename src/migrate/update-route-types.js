@@ -230,7 +230,9 @@ async function processRouteDirectory(routesDir, currentPath, mapping) {
         );
       } else if (entry.name.endsWith(".ts") && entry.name !== "_.context.ts") {
         // Process TypeScript route files (skip context files)
-        const routePath = relativePath.replace(/\.ts$/, "");
+        const routePath = relativePath
+          .replace(/\.ts$/, "")
+          .replaceAll("\\", "/");
         const methodMap = mapping.get(routePath);
 
         if (methodMap) {
@@ -270,31 +272,11 @@ async function checkIfMigrationNeeded(routesDir) {
           return true;
         }
       } else if (entry.isDirectory() && entry.name !== "node_modules") {
-        // Check one level deep for a quick sample
-        try {
-          const subEntries = await fs.readdir(
-            path.join(routesDir, entry.name),
-            { withFileTypes: true },
-          );
-
-          for (const subEntry of subEntries) {
-            if (
-              subEntry.name.endsWith(".ts") &&
-              subEntry.name !== "_.context.ts"
-            ) {
-              const content = await fs.readFile(
-                path.join(routesDir, entry.name, subEntry.name),
-                "utf8",
-              );
-
-              if (needsMigration(content)) {
-                return true;
-              }
-              break; // Just check one file per directory for speed
-            }
-          }
-        } catch {
-          // Ignore errors in subdirectories
+        // Recursively check subdirectories
+        const subDirPath = path.join(routesDir, entry.name);
+        const found = await checkIfMigrationNeeded(subDirPath);
+        if (found) {
+          return true;
         }
       }
     }
