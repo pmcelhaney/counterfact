@@ -370,7 +370,9 @@ describe("a SchemaTypeCoder", () => {
       }),
     );
 
-    const expected = await format("type x = { address?: { street: string, city: string } };");
+    const expected = await format(
+      "type x = { address?: { street: string, city: string } };",
+    );
 
     await expect(format(`type x = ${coder.write({})}`)).resolves.toStrictEqual(
       expected,
@@ -388,7 +390,9 @@ describe("a SchemaTypeCoder", () => {
       }),
     );
 
-    const expected = await format("type x = { name: string, nickname?: string };");
+    const expected = await format(
+      "type x = { name: string, nickname?: string };",
+    );
 
     await expect(format(`type x = ${coder.write({})}`)).resolves.toStrictEqual(
       expected,
