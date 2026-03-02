@@ -63,6 +63,74 @@ describe("an OperationTypeCoder", () => {
     ]);
   });
 
+  describe("getOperationBaseName", () => {
+    it("falls back to HTTP method when operationId is absent", () => {
+      const coder = new OperationTypeCoder(
+        new Requirement({}, "#/paths/hello/get"),
+        "get",
+      );
+
+      expect(coder.getOperationBaseName()).toBe("HTTP_GET");
+    });
+
+    it("returns a plain operationId unchanged", () => {
+      const coder = new OperationTypeCoder(
+        new Requirement({ operationId: "getUser" }, "#/paths/hello/get"),
+        "get",
+      );
+
+      expect(coder.getOperationBaseName()).toBe("getUser");
+    });
+
+    it("converts hyphenated operationId to camelCase", () => {
+      const coder = new OperationTypeCoder(
+        new Requirement(
+          { operationId: "get-user-profile" },
+          "#/paths/hello/get",
+        ),
+        "get",
+      );
+
+      expect(coder.getOperationBaseName()).toBe("getUserProfile");
+    });
+
+    it("converts dot-separated operationId to camelCase", () => {
+      const coder = new OperationTypeCoder(
+        new Requirement({ operationId: "user.get" }, "#/paths/hello/get"),
+        "get",
+      );
+
+      expect(coder.getOperationBaseName()).toBe("userGet");
+    });
+
+    it("converts space-separated operationId to camelCase", () => {
+      const coder = new OperationTypeCoder(
+        new Requirement({ operationId: "get user" }, "#/paths/hello/get"),
+        "get",
+      );
+
+      expect(coder.getOperationBaseName()).toBe("getUser");
+    });
+
+    it("camelCases across non-identifier characters", () => {
+      const coder = new OperationTypeCoder(
+        new Requirement({ operationId: "get@user!" }, "#/paths/hello/get"),
+        "get",
+      );
+
+      expect(coder.getOperationBaseName()).toBe("getUser");
+    });
+
+    it("prefixes with underscore when operationId starts with a digit", () => {
+      const coder = new OperationTypeCoder(
+        new Requirement({ operationId: "123getUser" }, "#/paths/hello/get"),
+        "get",
+      );
+
+      expect(coder.getOperationBaseName()).toBe("_123getUser");
+    });
+  });
+
   it("creates a type declaration", () => {
     const coder = new OperationTypeCoder(
       new Requirement({}, "#/paths/hello/get"),
