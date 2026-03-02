@@ -352,4 +352,50 @@ describe("a SchemaTypeCoder", () => {
 
     expect(coder.modulePath()).toBe("types/components/Example.ts");
   });
+
+  it("does not mark a property as required when it has a nested required array for its own sub-properties", async () => {
+    const coder = new SchemaTypeCoder(
+      new Requirement({
+        properties: {
+          address: {
+            properties: {
+              street: { type: "string" },
+              city: { type: "string" },
+            },
+            required: ["street", "city"],
+            type: "object",
+          },
+        },
+        type: "object",
+      }),
+    );
+
+    const expected = await format(
+      "type x = { address?: { street: string, city: string } };",
+    );
+
+    await expect(format(`type x = ${coder.write({})}`)).resolves.toStrictEqual(
+      expected,
+    );
+  });
+
+  it("marks a property as required when its required flag is explicitly set to true", async () => {
+    const coder = new SchemaTypeCoder(
+      new Requirement({
+        properties: {
+          name: { required: true, type: "string" },
+          nickname: { type: "string" },
+        },
+        type: "object",
+      }),
+    );
+
+    const expected = await format(
+      "type x = { name: string, nickname?: string };",
+    );
+
+    await expect(format(`type x = ${coder.write({})}`)).resolves.toStrictEqual(
+      expected,
+    );
+  });
 });
