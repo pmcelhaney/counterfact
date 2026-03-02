@@ -8,6 +8,23 @@ import { SchemaTypeCoder } from "./schema-type-coder.js";
 import { TypeCoder } from "./type-coder.js";
 import { ParameterExportTypeCoder } from "./parameter-export-type-coder.js";
 
+function sanitizeIdentifier(value) {
+  // Treat any run of non-identifier characters as a camelCase separator
+  let result = value.replaceAll(/[^\w$]+(?<next>.)/gu, (_, char) =>
+    char.toUpperCase(),
+  );
+
+  // Strip any trailing non-identifier characters (no following char to capitalize)
+  result = result.replaceAll(/[^\w$]/gu, "");
+
+  // If the identifier starts with a digit, prefix with an underscore
+  if (/^\d/u.test(result)) {
+    result = `_${result}`;
+  }
+
+  return result || "_";
+}
+
 export class OperationTypeCoder extends TypeCoder {
   constructor(requirement, requestMethod, securitySchemes = []) {
     super(requirement);
@@ -23,7 +40,9 @@ export class OperationTypeCoder extends TypeCoder {
   getOperationBaseName() {
     const operationId = this.requirement.get("operationId")?.data;
 
-    return operationId || `HTTP_${this.requestMethod.toUpperCase()}`;
+    return operationId
+      ? sanitizeIdentifier(operationId)
+      : `HTTP_${this.requestMethod.toUpperCase()}`;
   }
 
   names() {
