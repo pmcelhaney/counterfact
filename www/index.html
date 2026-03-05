@@ -234,6 +234,7 @@
         border-color: color-mix(in oklab, var(--border) 60%, var(--accent));
       }
 
+      /* Existing styles for your terminal */
       .terminal {
         margin-top: 10px;
         border-radius: 14px;
@@ -243,9 +244,8 @@
 
       .terminal .bar {
         display: flex;
-        align-items: center;
-        justify-content: space-between;
         gap: 8px;
+        align-items: center;
         padding: 10px 12px;
         background: color-mix(in oklab, var(--panel) 92%, transparent);
         border-bottom: 1px solid var(--border);
@@ -338,32 +338,6 @@
         background: color-mix(in oklab, var(--panel) 92%, transparent);
         color: var(--muted);
       }
-
-      .copy-btn {
-        font-size: 11px;
-        padding: 5px 9px;
-        border-radius: 8px;
-        border: 1px solid var(--border);
-        background: transparent;
-        color: var(--muted);
-        cursor: pointer;
-        user-select: none;
-      }
-
-      .copy-btn:hover {
-        color: var(--text);
-        border-color: color-mix(in oklab, var(--border) 40%, var(--text));
-      }
-
-      .copy-btn:focus-visible {
-        outline: 2px solid color-mix(in oklab, var(--link) 70%, transparent);
-        outline-offset: 2px;
-      }
-
-      .copy-btn.copied {
-        color: var(--accent);
-        border-color: var(--accent);
-      }
     </style>
   </head>
 
@@ -382,13 +356,9 @@
           <a href="#repl">REPL</a>
           <a href="#example">Example</a>
           <a href="#get-started">Get started</a>
+          <a href="#" aria-label="Read the docs">Docs</a>
           <a
-            href="https://github.com/pmcelhaney/counterfact/blob/main/docs/usage.md"
-            aria-label="Read the docs"
-            >Docs</a
-          >
-          <a
-            href="https://github.com/pmcelhaney/counterfact"
+            href="https://github.com/pmcelhaney/counterfact/"
             aria-label="View the project on GitHub"
             >GitHub</a
           >
@@ -415,42 +385,25 @@
           <div class="card">
             <h2 style="margin: 0 0 8px">Start a mock server in one command.</h2>
 
-            <div
-              class="terminal"
-              role="group"
+            <!-- Use the component: just provide title + language + content -->
+            <code-terminal
               aria-label="Command to start Counterfact"
-            >
-              <div class="bar">
-                <div style="display: flex; align-items: center; gap: 8px">
-                  <span class="dot"></span>
-                  <span class="dot"></span>
-                  <span class="dot"></span>
-                  <span class="muted" style="margin-left: 6px">terminal</span>
-                </div>
-
-                <button class="copy-btn" type="button">Copy</button>
-              </div>
-              <pre><code>$ npx counterfact openapi.yaml</code></pre>
-            </div>
+              label="terminal"
+              lang="bash"
+              code="$ npx counterfact openapi.yaml"
+            ></code-terminal>
 
             <p class="muted" style="margin-top: 10px">
               Starts a mock API server and opens an interactive REPL.
             </p>
 
-            <div class="terminal" role="group" aria-label="REPL examples">
-              <div class="bar">
-                <div style="display: flex; align-items: center; gap: 8px">
-                  <span class="dot"></span>
-                  <span class="dot"></span>
-                  <span class="dot"></span>
-                  <span class="muted" style="margin-left: 6px">repl</span>
-                </div>
-
-                <button class="copy-btn" type="button">Copy</button>
-              </div>
-              <pre><code>context.petService.addPet({ name: "Fido" })
-context.petService.isBroken = true</code></pre>
-            </div>
+            <code-terminal
+              aria-label="REPL examples"
+              label="repl"
+              lang="js"
+              code='context.petService.addPet({ name: "Fido" })
+context.petService.isBroken = true'
+            ></code-terminal>
 
             <div class="spacer"></div>
 
@@ -535,22 +488,11 @@ context.petService.isBroken = true</code></pre>
 
         <div class="grid-2">
           <div class="card">
-            <div
-              class="terminal"
-              role="group"
+            <code-terminal
               aria-label="Architecture diagram"
-            >
-              <div class="bar">
-                <div style="display: flex; align-items: center; gap: 8px">
-                  <span class="dot"></span>
-                  <span class="dot"></span>
-                  <span class="dot"></span>
-                  <span class="muted" style="margin-left: 6px">model</span>
-                </div>
-
-                <button class="copy-btn" type="button">Copy</button>
-              </div>
-              <pre><code>           OpenAPI Specification
+              label="model"
+              lang="text"
+              code="           OpenAPI Specification
                    │
                    ▼
              Counterfact
@@ -564,8 +506,8 @@ context.petService.isBroken = true</code></pre>
          │                   │
          ▼                   ▼
   Frontend / Client     context object
-      applications      (server state)</code></pre>
-            </div>
+      applications      (server state)"
+            ></code-terminal>
           </div>
 
           <div class="card">
@@ -605,20 +547,13 @@ context.petService.isBroken = true</code></pre>
         <div class="grid-2">
           <div class="card">
             <p class="muted" style="margin-bottom: 8px">Change data directly</p>
-            <div class="terminal" role="group" aria-label="Modify data example">
-              <div class="bar">
-                <div style="display: flex; align-items: center; gap: 8px">
-                  <span class="dot"></span>
-                  <span class="dot"></span>
-                  <span class="dot"></span>
-                  <span class="muted" style="margin-left: 6px">repl</span>
-                </div>
-
-                <button class="copy-btn" type="button">Copy</button>
-              </div>
-              <pre><code>context.petService.addPet({ name: "Fido", species: "dog" })
-context.petService.renamePet(3, "Rex")</code></pre>
-            </div>
+            <code-terminal
+              aria-label="Modify data example"
+              label="repl"
+              lang="js"
+              code='context.petService.addPet({ name: "Fido", species: "dog" })
+context.petService.renamePet(3, "Rex")'
+            ></code-terminal>
 
             <p class="muted" style="margin-top: 10px">
               The server updates immediately. No restart required.
@@ -629,23 +564,12 @@ context.petService.renamePet(3, "Rex")</code></pre>
             <p class="muted" style="margin-bottom: 8px">
               Simulate system conditions
             </p>
-            <div
-              class="terminal"
-              role="group"
+            <code-terminal
               aria-label="Simulate failure example"
-            >
-              <div class="bar">
-                <div style="display: flex; align-items: center; gap: 8px">
-                  <span class="dot"></span>
-                  <span class="dot"></span>
-                  <span class="dot"></span>
-                  <span class="muted" style="margin-left: 6px">repl</span>
-                </div>
-
-                <button class="copy-btn" type="button">Copy</button>
-              </div>
-              <pre><code>context.petService.isBroken = true</code></pre>
-            </div>
+              label="repl"
+              lang="js"
+              code="context.petService.isBroken = true"
+            ></code-terminal>
 
             <p class="muted" style="margin-top: 10px">
               Now requests to that endpoint return a 500 error. You decide how
@@ -683,18 +607,11 @@ context.petService.renamePet(3, "Rex")</code></pre>
 
         <p class="muted">A simple OpenAPI specification for a pet store.</p>
 
-        <div class="terminal" role="group" aria-label="OpenAPI example">
-          <div class="bar">
-            <div style="display: flex; align-items: center; gap: 8px">
-              <span class="dot"></span>
-              <span class="dot"></span>
-              <span class="dot"></span>
-              <span class="muted" style="margin-left: 6px">petstore.yaml</span>
-            </div>
-
-            <button class="copy-btn" type="button">Copy</button>
-          </div>
-          <pre><code>openapi: 3.0.0
+        <code-terminal
+          aria-label="OpenAPI example"
+          label="petstore.yaml"
+          lang="yaml"
+          code='openapi: 3.0.0
 info:
   title: Pet API
   version: 1.0.0
@@ -715,101 +632,61 @@ paths:
                     id:
                       type: integer
                     name:
-                      type: string</code></pre>
-        </div>
+                      type: string'
+        ></code-terminal>
 
         <div class="grid-2" style="margin-top: 16px">
           <div class="card">
             <p class="muted" style="margin-bottom: 8px">Start Counterfact</p>
-            <div
-              class="terminal"
-              role="group"
+            <code-terminal
               aria-label="Start command example"
-            >
-              <div class="bar">
-                <div style="display: flex; align-items: center; gap: 8px">
-                  <span class="dot"></span>
-                  <span class="dot"></span>
-                  <span class="dot"></span>
-                  <span class="muted" style="margin-left: 6px">terminal</span>
-                </div>
-
-                <button class="copy-btn" type="button">Copy</button>
-              </div>
-              <pre><code>$ npx counterfact petstore.yaml</code></pre>
-            </div>
+              label="terminal"
+              lang="bash"
+              code="$ npx counterfact petstore.yaml"
+            ></code-terminal>
 
             <div class="spacer"></div>
 
             <p class="muted" style="margin-bottom: 8px">Call the API</p>
-            <div
-              class="terminal"
-              role="group"
+            <code-terminal
               aria-label="API response example"
-            >
-              <div class="bar">
-                <div style="display: flex; align-items: center; gap: 8px">
-                  <span class="dot"></span>
-                  <span class="dot"></span>
-                  <span class="dot"></span>
-                  <span class="muted" style="margin-left: 6px">http</span>
-                </div>
-
-                <button class="copy-btn" type="button">Copy</button>
-              </div>
-              <pre><code>GET /pets
+              label="http"
+              lang="text"
+              code='GET /pets
 
 [
   { "id": 1, "name": "Fido" },
   { "id": 2, "name": "Whiskers" }
-]</code></pre>
-            </div>
+]'
+            ></code-terminal>
           </div>
 
           <div class="card">
             <p class="muted" style="margin-bottom: 8px">
               Modify the system in the REPL
             </p>
-            <div class="terminal" role="group" aria-label="REPL change example">
-              <div class="bar">
-                <div style="display: flex; align-items: center; gap: 8px">
-                  <span class="dot"></span>
-                  <span class="dot"></span>
-                  <span class="dot"></span>
-                  <span class="muted" style="margin-left: 6px">repl</span>
-                </div>
-
-                <button class="copy-btn" type="button">Copy</button>
-              </div>
-              <pre><code>context.petService.addPet({ name: "Rex" })</code></pre>
-            </div>
+            <code-terminal
+              aria-label="REPL change example"
+              label="repl"
+              lang="js"
+              code='context.petService.addPet({ name: "Rex" })'
+            ></code-terminal>
 
             <div class="spacer"></div>
 
             <p class="muted" style="margin-bottom: 8px">
               Response updates instantly
             </p>
-            <div
-              class="terminal"
-              role="group"
+            <code-terminal
               aria-label="Updated API response example"
-            >
-              <div class="bar">
-                <div style="display: flex; align-items: center; gap: 8px">
-                  <span class="dot"></span>
-                  <span class="dot"></span>
-                  <span class="dot"></span>
-                  <span class="muted" style="margin-left: 6px">http</span>
-                </div>
-
-                <button class="copy-btn" type="button">Copy</button>
-              </div>
-              <pre><code>[
+              label="http"
+              lang="json"
+              code='[
   { "id": 1, "name": "Fido" },
   { "id": 2, "name": "Whiskers" },
   { "id": 3, "name": "Rex" }
-]</code></pre>
-            </div>
+]'
+            ></code-terminal>
 
             <p style="margin-top: 10px">
               Your OpenAPI contract defines the structure.<br />
@@ -856,26 +733,22 @@ paths:
 
         <p class="muted">Start a mock server in one command.</p>
 
-        <div class="terminal" role="group" aria-label="Get started command">
-          <div class="bar">
-            <div style="display: flex; align-items: center; gap: 8px">
-              <span class="dot"></span>
-              <span class="dot"></span>
-              <span class="dot"></span>
-              <span class="muted" style="margin-left: 6px">terminal</span>
-            </div>
-
-            <button class="copy-btn" type="button">Copy</button>
-          </div>
-          <pre><code>$ npx counterfact openapi.yaml</code></pre>
-        </div>
+        <code-terminal
+          aria-label="Get started command"
+          label="terminal"
+          lang="bash"
+          code="$ npx counterfact openapi.yaml"
+        ></code-terminal>
 
         <p class="muted" style="margin-top: 10px">
           Explore the REPL. Modify the system state. Prototype APIs faster.
         </p>
 
         <div class="cta-row">
-          <a class="btn primary" href="#" aria-label="Read the docs"
+          <a
+            class="btn primary"
+            href="https://github.com/pmcelhaney/counterfact/blob/main/docs/usage.md"
+            aria-label="Read the docs"
             >Read the docs</a
           >
           <a class="btn" href="#" aria-label="View the project on GitHub"
@@ -907,45 +780,184 @@ paths:
             >Executable API contracts for faster development.</span
           >
         </p>
+        <p class="muted">
+          Replace the Docs and GitHub links in the header and CTA buttons with
+          your real URLs.
+        </p>
       </div>
     </footer>
 
-    <script>
-      const setBtnState = (button, state) => {
-        if (!button) return;
-
-        if (state === "copied") {
-          button.textContent = "Copied";
-          button.classList.add("copied");
-          setTimeout(() => {
-            button.textContent = "Copy";
-            button.classList.remove("copied");
-          }, 1500);
-          return;
-        }
-
-        if (state === "error") {
-          button.textContent = "Error";
-          setTimeout(() => (button.textContent = "Copy"), 1500);
-        }
-      };
-
-      document.querySelectorAll(".terminal").forEach((terminal) => {
-        const button = terminal.querySelector(".copy-btn");
-        const codeEl = terminal.querySelector("code");
-
-        if (!button || !codeEl) return;
-
-        button.addEventListener("click", async () => {
-          const code = codeEl.innerText;
-          try {
-            await navigator.clipboard.writeText(code);
-            setBtnState(button, "copied");
-          } catch {
-            setBtnState(button, "error");
+    <script type="module">
+      const template = document.createElement("template");
+      template.innerHTML = `
+        <style>
+          :host { display: block; }
+          .terminal {
+            margin-top: 10px;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            overflow: hidden;
           }
-        });
-      });
+
+          .bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            padding: 10px 12px;
+            background: color-mix(in oklab, var(--panel) 92%, transparent);
+            border-bottom: 1px solid var(--border);
+          }
+
+          .left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 0;
+          }
+
+          .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.25);
+          }
+
+          .label {
+            margin-left: 6px;
+            color: var(--muted);
+            font-size: 12px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+
+          pre {
+            margin: 0;
+            padding: 14px 14px;
+            overflow: auto;
+            font-family: var(--code);
+            font-size: 13px;
+            line-height: 1.45;
+            background: rgba(0, 0, 0, 0.25);
+          }
+
+          @media (prefers-color-scheme: light) {
+            pre { background: rgba(10, 20, 40, 0.06); }
+          }
+
+          code { font-family: var(--code); }
+
+          button {
+            font-size: 11px;
+            padding: 5px 9px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--muted);
+            cursor: pointer;
+            user-select: none;
+          }
+
+          button:hover {
+            color: var(--text);
+            border-color: color-mix(in oklab, var(--border) 40%, var(--text));
+          }
+
+          button:focus-visible {
+            outline: 2px solid color-mix(in oklab, var(--link) 70%, transparent);
+            outline-offset: 2px;
+          }
+
+          button.copied {
+            color: var(--accent);
+            border-color: var(--accent);
+          }
+        </style>
+
+        <div class="terminal" role="group">
+          <div class="bar">
+            <div class="left">
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="label"></span>
+            </div>
+            <button type="button">Copy</button>
+          </div>
+          <pre><code></code></pre>
+        </div>
+      `;
+
+      class CodeTerminal extends HTMLElement {
+        static get observedAttributes() {
+          return ["label", "lang", "code", "aria-label"];
+        }
+
+        constructor() {
+          super();
+          this.attachShadow({ mode: "open" }).appendChild(
+            template.content.cloneNode(true)
+          );
+
+          this._button = this.shadowRoot.querySelector("button");
+          this._labelEl = this.shadowRoot.querySelector(".label");
+          this._codeEl = this.shadowRoot.querySelector("code");
+          this._terminal = this.shadowRoot.querySelector(".terminal");
+
+          this._button.addEventListener("click", () => this.copy());
+        }
+
+        connectedCallback() {
+          this.sync();
+        }
+
+        attributeChangedCallback() {
+          this.sync();
+        }
+
+        sync() {
+          const label = this.getAttribute("label") ?? "terminal";
+          const lang = this.getAttribute("lang") ?? "";
+          const code = this.getAttribute("code") ?? "";
+          const aria = this.getAttribute("aria-label") ?? label;
+
+          this._labelEl.textContent = label;
+          this._codeEl.textContent = code;
+          if (lang) this._codeEl.className = `language-${lang}`;
+
+          this._terminal.setAttribute("aria-label", aria);
+        }
+
+        async copy() {
+          const text = this._codeEl.innerText;
+
+          try {
+            await navigator.clipboard.writeText(text);
+
+            this._button.textContent = "Copied";
+            this._button.classList.add("copied");
+
+            clearTimeout(this._t);
+            this._t = setTimeout(() => {
+              this._button.textContent = "Copy";
+              this._button.classList.remove("copied");
+            }, 1500);
+          } catch {
+            this._button.textContent = "Error";
+            clearTimeout(this._t);
+            this._t = setTimeout(
+              () => (this._button.textContent = "Copy"),
+              1500
+            );
+          }
+        }
+      }
+
+      customElements.define("code-terminal", CodeTerminal);
+
+      const yearEl = document.getElementById("year");
+      if (yearEl) yearEl.textContent = new Date().getFullYear();
     </script>
   </body>
 </html>
