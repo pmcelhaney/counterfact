@@ -243,8 +243,9 @@
 
       .terminal .bar {
         display: flex;
-        gap: 8px;
         align-items: center;
+        justify-content: space-between;
+        gap: 8px;
         padding: 10px 12px;
         background: color-mix(in oklab, var(--panel) 92%, transparent);
         border-bottom: 1px solid var(--border);
@@ -337,6 +338,32 @@
         background: color-mix(in oklab, var(--panel) 92%, transparent);
         color: var(--muted);
       }
+
+      .copy-btn {
+        font-size: 11px;
+        padding: 5px 9px;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        background: transparent;
+        color: var(--muted);
+        cursor: pointer;
+        user-select: none;
+      }
+
+      .copy-btn:hover {
+        color: var(--text);
+        border-color: color-mix(in oklab, var(--border) 40%, var(--text));
+      }
+
+      .copy-btn:focus-visible {
+        outline: 2px solid color-mix(in oklab, var(--link) 70%, transparent);
+        outline-offset: 2px;
+      }
+
+      .copy-btn.copied {
+        color: var(--accent);
+        border-color: var(--accent);
+      }
     </style>
   </head>
 
@@ -391,7 +418,7 @@
                   <span class="muted" style="margin-left: 6px">terminal</span>
                 </div>
 
-                <button class="copy-btn">Copy</button>
+                <button class="copy-btn" type="button">Copy</button>
               </div>
               <pre><code>$ npx counterfact openapi.yaml</code></pre>
             </div>
@@ -406,10 +433,10 @@
                   <span class="dot"></span>
                   <span class="dot"></span>
                   <span class="dot"></span>
-                  <span class="muted" style="margin-left: 6px">terminal</span>
+                  <span class="muted" style="margin-left: 6px">repl</span>
                 </div>
 
-                <button class="copy-btn">Copy</button>
+                <button class="copy-btn" type="button">Copy</button>
               </div>
               <pre><code>context.petService.addPet({ name: "Fido" })
 context.petService.isBroken = true</code></pre>
@@ -497,10 +524,15 @@ context.petService.isBroken = true</code></pre>
               role="group"
               aria-label="Architecture diagram"
             >
-              <div class="bar" aria-hidden="true">
-                <span class="dot"></span><span class="dot"></span
-                ><span class="dot"></span>
-                <span class="muted" style="margin-left: 10px">model</span>
+              <div class="bar">
+                <div style="display: flex; align-items: center; gap: 8px">
+                  <span class="dot"></span>
+                  <span class="dot"></span>
+                  <span class="dot"></span>
+                  <span class="muted" style="margin-left: 6px">model</span>
+                </div>
+
+                <button class="copy-btn" type="button">Copy</button>
               </div>
               <pre><code>           OpenAPI Specification
                    │
@@ -558,10 +590,15 @@ context.petService.isBroken = true</code></pre>
           <div class="card">
             <p class="muted" style="margin-bottom: 8px">Change data directly</p>
             <div class="terminal" role="group" aria-label="Modify data example">
-              <div class="bar" aria-hidden="true">
-                <span class="dot"></span><span class="dot"></span
-                ><span class="dot"></span>
-                <span class="muted" style="margin-left: 10px">repl</span>
+              <div class="bar">
+                <div style="display: flex; align-items: center; gap: 8px">
+                  <span class="dot"></span>
+                  <span class="dot"></span>
+                  <span class="dot"></span>
+                  <span class="muted" style="margin-left: 6px">repl</span>
+                </div>
+
+                <button class="copy-btn" type="button">Copy</button>
               </div>
               <pre><code>context.petService.addPet({ name: "Fido", species: "dog" })
 context.petService.renamePet(3, "Rex")</code></pre>
@@ -581,10 +618,15 @@ context.petService.renamePet(3, "Rex")</code></pre>
               role="group"
               aria-label="Simulate failure example"
             >
-              <div class="bar" aria-hidden="true">
-                <span class="dot"></span><span class="dot"></span
-                ><span class="dot"></span>
-                <span class="muted" style="margin-left: 10px">repl</span>
+              <div class="bar">
+                <div style="display: flex; align-items: center; gap: 8px">
+                  <span class="dot"></span>
+                  <span class="dot"></span>
+                  <span class="dot"></span>
+                  <span class="muted" style="margin-left: 6px">repl</span>
+                </div>
+
+                <button class="copy-btn" type="button">Copy</button>
               </div>
               <pre><code>context.petService.isBroken = true</code></pre>
             </div>
@@ -626,10 +668,15 @@ context.petService.renamePet(3, "Rex")</code></pre>
         <p class="muted">A simple OpenAPI specification for a pet store.</p>
 
         <div class="terminal" role="group" aria-label="OpenAPI example">
-          <div class="bar" aria-hidden="true">
-            <span class="dot"></span><span class="dot"></span
-            ><span class="dot"></span>
-            <span class="muted" style="margin-left: 10px">petstore.yaml</span>
+          <div class="bar">
+            <div style="display: flex; align-items: center; gap: 8px">
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="muted" style="margin-left: 6px">petstore.yaml</span>
+            </div>
+
+            <button class="copy-btn" type="button">Copy</button>
           </div>
           <pre><code>openapi: 3.0.0
 info:
@@ -663,10 +710,15 @@ paths:
               role="group"
               aria-label="Start command example"
             >
-              <div class="bar" aria-hidden="true">
-                <span class="dot"></span><span class="dot"></span
-                ><span class="dot"></span>
-                <span class="muted" style="margin-left: 10px">terminal</span>
+              <div class="bar">
+                <div style="display: flex; align-items: center; gap: 8px">
+                  <span class="dot"></span>
+                  <span class="dot"></span>
+                  <span class="dot"></span>
+                  <span class="muted" style="margin-left: 6px">terminal</span>
+                </div>
+
+                <button class="copy-btn" type="button">Copy</button>
               </div>
               <pre><code>$ npx counterfact petstore.yaml</code></pre>
             </div>
@@ -679,10 +731,15 @@ paths:
               role="group"
               aria-label="API response example"
             >
-              <div class="bar" aria-hidden="true">
-                <span class="dot"></span><span class="dot"></span
-                ><span class="dot"></span>
-                <span class="muted" style="margin-left: 10px">http</span>
+              <div class="bar">
+                <div style="display: flex; align-items: center; gap: 8px">
+                  <span class="dot"></span>
+                  <span class="dot"></span>
+                  <span class="dot"></span>
+                  <span class="muted" style="margin-left: 6px">http</span>
+                </div>
+
+                <button class="copy-btn" type="button">Copy</button>
               </div>
               <pre><code>GET /pets
 
@@ -698,10 +755,15 @@ paths:
               Modify the system in the REPL
             </p>
             <div class="terminal" role="group" aria-label="REPL change example">
-              <div class="bar" aria-hidden="true">
-                <span class="dot"></span><span class="dot"></span
-                ><span class="dot"></span>
-                <span class="muted" style="margin-left: 10px">repl</span>
+              <div class="bar">
+                <div style="display: flex; align-items: center; gap: 8px">
+                  <span class="dot"></span>
+                  <span class="dot"></span>
+                  <span class="dot"></span>
+                  <span class="muted" style="margin-left: 6px">repl</span>
+                </div>
+
+                <button class="copy-btn" type="button">Copy</button>
               </div>
               <pre><code>context.petService.addPet({ name: "Rex" })</code></pre>
             </div>
@@ -716,10 +778,15 @@ paths:
               role="group"
               aria-label="Updated API response example"
             >
-              <div class="bar" aria-hidden="true">
-                <span class="dot"></span><span class="dot"></span
-                ><span class="dot"></span>
-                <span class="muted" style="margin-left: 10px">http</span>
+              <div class="bar">
+                <div style="display: flex; align-items: center; gap: 8px">
+                  <span class="dot"></span>
+                  <span class="dot"></span>
+                  <span class="dot"></span>
+                  <span class="muted" style="margin-left: 6px">http</span>
+                </div>
+
+                <button class="copy-btn" type="button">Copy</button>
               </div>
               <pre><code>[
   { "id": 1, "name": "Fido" },
@@ -774,10 +841,15 @@ paths:
         <p class="muted">Start a mock server in one command.</p>
 
         <div class="terminal" role="group" aria-label="Get started command">
-          <div class="bar" aria-hidden="true">
-            <span class="dot"></span><span class="dot"></span
-            ><span class="dot"></span>
-            <span class="muted" style="margin-left: 10px">terminal</span>
+          <div class="bar">
+            <div style="display: flex; align-items: center; gap: 8px">
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="muted" style="margin-left: 6px">terminal</span>
+            </div>
+
+            <button class="copy-btn" type="button">Copy</button>
           </div>
           <pre><code>$ npx counterfact openapi.yaml</code></pre>
         </div>
@@ -827,23 +899,38 @@ paths:
     </footer>
 
     <script>
-      document.querySelectorAll(".copy-btn").forEach((button) => {
-        button.addEventListener("click", async () => {
-          const terminal = button.closest(".terminal");
-          const code = terminal.querySelector("code").innerText;
+      const setBtnState = (button, state) => {
+        if (!button) return;
 
+        if (state === "copied") {
+          button.textContent = "Copied";
+          button.classList.add("copied");
+          setTimeout(() => {
+            button.textContent = "Copy";
+            button.classList.remove("copied");
+          }, 1500);
+          return;
+        }
+
+        if (state === "error") {
+          button.textContent = "Error";
+          setTimeout(() => (button.textContent = "Copy"), 1500);
+        }
+      };
+
+      document.querySelectorAll(".terminal").forEach((terminal) => {
+        const button = terminal.querySelector(".copy-btn");
+        const codeEl = terminal.querySelector("code");
+
+        if (!button || !codeEl) return;
+
+        button.addEventListener("click", async () => {
+          const code = codeEl.innerText;
           try {
             await navigator.clipboard.writeText(code);
-
-            button.textContent = "Copied";
-            button.classList.add("copied");
-
-            setTimeout(() => {
-              button.textContent = "Copy";
-              button.classList.remove("copied");
-            }, 1500);
+            setBtnState(button, "copied");
           } catch {
-            button.textContent = "Error";
+            setBtnState(button, "error");
           }
         });
       });
