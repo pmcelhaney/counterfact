@@ -1,0 +1,996 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Counterfact — executable API contracts. OpenAPI mock server with a JavaScript REPL for programmable API simulations."
+    />
+    <title>Counterfact — Executable API Contracts</title>
+
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: #0b0c10;
+        --panel: #11131a;
+        --text: #e9eef6;
+        --muted: #a7b0c0;
+        --border: rgba(255, 255, 255, 0.12);
+        --link: #8ab4ff;
+        --accent: #b7ffd9;
+        --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+        --radius: 16px;
+        --maxw: 980px;
+        --code:
+          ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+          "Liberation Mono", "Courier New", monospace;
+        --sans:
+          ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica,
+          Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      }
+
+      @media (prefers-color-scheme: light) {
+        :root {
+          --bg: #fbfbfe;
+          --panel: #ffffff;
+          --text: #0b1020;
+          --muted: #55607a;
+          --border: rgba(10, 20, 40, 0.12);
+          --link: #2357ff;
+          --accent: #0f9d58;
+          --shadow: 0 12px 28px rgba(10, 20, 40, 0.1);
+        }
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: var(--sans);
+        background:
+          radial-gradient(
+            1200px 600px at 20% -10%,
+            rgba(138, 180, 255, 0.25),
+            transparent 60%
+          ),
+          radial-gradient(
+            900px 500px at 90% 10%,
+            rgba(183, 255, 217, 0.18),
+            transparent 55%
+          ),
+          var(--bg);
+        color: var(--text);
+        line-height: 1.5;
+      }
+
+      a {
+        color: var(--link);
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+
+      header {
+        position: sticky;
+        top: 0;
+        backdrop-filter: blur(10px);
+        background: color-mix(in oklab, var(--bg) 80%, transparent);
+        border-bottom: 1px solid var(--border);
+        z-index: 10;
+      }
+
+      .nav {
+        max-width: var(--maxw);
+        margin: 0 auto;
+        padding: 14px 18px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 220px;
+      }
+
+      .logo {
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+        background: linear-gradient(
+          135deg,
+          rgba(138, 180, 255, 0.9),
+          rgba(183, 255, 217, 0.9)
+        );
+        box-shadow: var(--shadow);
+      }
+
+      .brand span {
+        font-weight: 700;
+        letter-spacing: 0.2px;
+      }
+
+      .links {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+
+      .links a {
+        color: var(--muted);
+        font-weight: 600;
+      }
+      .links a:hover {
+        color: var(--text);
+      }
+
+      main {
+        max-width: var(--maxw);
+        margin: 0 auto;
+        padding: 28px 18px 64px;
+      }
+
+      .hero {
+        padding: 28px 0 18px;
+        display: grid;
+        gap: 18px;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(34px, 5vw, 54px);
+        letter-spacing: -0.6px;
+        line-height: 1.05;
+      }
+
+      .kicker {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--muted);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-size: 12px;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: color-mix(in oklab, var(--panel) 88%, transparent);
+        box-shadow: var(--shadow);
+      }
+
+      .subhead {
+        font-size: clamp(16px, 2.2vw, 20px);
+        color: var(--muted);
+        max-width: 70ch;
+      }
+
+      .hero-grid {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 18px;
+        align-items: start;
+      }
+
+      @media (max-width: 900px) {
+        .hero-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .card {
+        border: 1px solid var(--border);
+        background: color-mix(in oklab, var(--panel) 92%, transparent);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        padding: 16px;
+      }
+
+      .cta-row {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 10px;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        border-radius: 12px;
+        padding: 10px 12px;
+        border: 1px solid var(--border);
+        background: color-mix(in oklab, var(--panel) 92%, transparent);
+        color: var(--text);
+        font-weight: 700;
+      }
+      .btn:hover {
+        text-decoration: none;
+        filter: brightness(1.05);
+      }
+
+      .btn.primary {
+        background: linear-gradient(
+          135deg,
+          rgba(138, 180, 255, 0.35),
+          rgba(183, 255, 217, 0.25)
+        );
+        border-color: color-mix(in oklab, var(--border) 60%, var(--accent));
+      }
+
+      /* Existing styles for your terminal */
+      .terminal {
+        margin-top: 10px;
+        border-radius: 14px;
+        border: 1px solid var(--border);
+        overflow: hidden;
+      }
+
+      .terminal .bar {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        padding: 10px 12px;
+        background: color-mix(in oklab, var(--panel) 92%, transparent);
+        border-bottom: 1px solid var(--border);
+      }
+
+      .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.25);
+      }
+
+      pre {
+        margin: 0;
+        padding: 14px 14px;
+        overflow: auto;
+        font-family: var(--code);
+        font-size: 13px;
+        line-height: 1.45;
+        background: rgba(0, 0, 0, 0.25);
+      }
+
+      @media (prefers-color-scheme: light) {
+        pre {
+          background: rgba(10, 20, 40, 0.06);
+        }
+      }
+
+      code {
+        font-family: var(--code);
+      }
+
+      section {
+        padding: 28px 0 4px;
+      }
+
+      h2 {
+        margin: 0 0 10px;
+        font-size: 22px;
+        letter-spacing: -0.2px;
+      }
+
+      p {
+        margin: 0 0 12px;
+        max-width: 78ch;
+      }
+
+      .muted {
+        color: var(--muted);
+      }
+
+      .bullets {
+        margin: 10px 0 0;
+        padding-left: 18px;
+        color: var(--muted);
+        max-width: 78ch;
+      }
+
+      .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+
+      @media (max-width: 900px) {
+        .grid-2 {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      footer {
+        max-width: var(--maxw);
+        margin: 0 auto;
+        padding: 28px 18px 48px;
+        color: var(--muted);
+      }
+
+      .fine {
+        font-size: 13px;
+      }
+
+      .spacer {
+        height: 10px;
+      }
+
+      .callout {
+        border-left: 3px solid color-mix(in oklab, var(--link) 75%, transparent);
+        padding: 10px 12px;
+        border-radius: 12px;
+        background: color-mix(in oklab, var(--panel) 92%, transparent);
+        color: var(--muted);
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <div class="nav">
+        <div class="brand" aria-label="Counterfact">
+          <img
+            src="https://github.com/pmcelhaney/counterfact/raw/main/counterfact.svg"
+            style="width: 200px"
+          />
+        </div>
+        <nav class="links" aria-label="Primary navigation">
+          <a href="#apis-are-contracts">Why</a>
+          <a href="#how-it-works">How it works</a>
+          <a href="#repl">REPL</a>
+          <a href="#example">Example</a>
+          <a href="#get-started">Get started</a>
+          <a href="#" aria-label="Read the docs">Docs</a>
+          <a
+            href="https://github.com/pmcelhaney/counterfact/"
+            aria-label="View the project on GitHub"
+            >GitHub</a
+          >
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" aria-label="Hero">
+        <div class="kicker">
+          <span class="pill">Executable API contracts.</span>
+          <span class="pill">OpenAPI mock server.</span>
+          <span class="pill">High fidelity. Low friction.</span>
+        </div>
+
+        <h1>Deterministic vibe coding for APIs.</h1>
+
+        <p class="subhead">
+          Turn your OpenAPI specification into a running system you can control
+          with JavaScript.
+        </p>
+
+        <div class="hero-grid">
+          <div class="card">
+            <h2 style="margin: 0 0 8px">Start a mock server in one command.</h2>
+
+            <!-- Use the component: just provide title + language + content -->
+            <code-terminal
+              aria-label="Command to start Counterfact"
+              label="terminal"
+              lang="bash"
+              code="$ npx counterfact openapi.yaml"
+            ></code-terminal>
+
+            <p class="muted" style="margin-top: 10px">
+              Starts a mock API server and opens an interactive REPL.
+            </p>
+
+            <code-terminal
+              aria-label="REPL examples"
+              label="repl"
+              lang="js"
+              code='context.petService.addPet({ name: "Fido" })
+context.petService.isBroken = true'
+            ></code-terminal>
+
+            <div class="spacer"></div>
+
+            <p>
+              Your API contract defines the structure.<br />
+              Your code defines the behavior.
+            </p>
+
+            <div class="cta-row">
+              <a
+                class="btn primary"
+                href="https://github.com/pmcelhaney/counterfact/blob/main/docs/usage.md"
+                aria-label="Read the docs"
+                >Read the docs</a
+              >
+              <a
+                class="btn"
+                href="https://github.com/pmcelhaney/counterfact/"
+                aria-label="View the project on GitHub"
+                >View on GitHub</a
+              >
+            </div>
+          </div>
+
+          <div class="card">
+            <h2 style="margin: 0 0 8px">What you get</h2>
+            <ul class="bullets">
+              <li>Contract-driven mock server generated from OpenAPI.</li>
+              <li>
+                JavaScript REPL for interrogating and changing server state.
+              </li>
+              <li>Programmable simulations, not static canned responses.</li>
+              <li>
+                Deterministic resets on restart, with optional persistence.
+              </li>
+              <li>Fast feedback loops for frontend and integration work.</li>
+            </ul>
+
+            <div class="spacer"></div>
+
+            <div class="callout">
+              Instead of checking behind the computer, the computer checks
+              behind you.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="apis-are-contracts" aria-label="APIs are contracts">
+        <h2>APIs are contracts</h2>
+
+        <p>Your OpenAPI specification already describes the system.</p>
+
+        <p class="muted">
+          Endpoints. Requests. Responses. Schemas. Error conditions.
+        </p>
+
+        <p>But most tools treat the spec as documentation.</p>
+
+        <p>Counterfact treats it as the source of truth.</p>
+
+        <p class="muted">
+          From that contract, Counterfact generates a working mock server and
+          strongly typed interfaces that enforce the API structure
+          automatically. Change the spec and the system updates immediately. You
+          don't even have to restart the server.
+        </p>
+
+        <p class="muted">
+          No handwritten types. No drift between the contract and the
+          implementation. No surprises during integration.
+        </p>
+
+        <p>
+          Your API specification stops being documentation. It becomes
+          executable.
+        </p>
+      </section>
+
+      <section id="how-it-works" aria-label="How Counterfact works">
+        <h2>Contract-driven mock servers</h2>
+
+        <div class="grid-2">
+          <div class="card">
+            <code-terminal
+              aria-label="Architecture diagram"
+              label="model"
+              lang="text"
+              code="           OpenAPI Specification
+                   │
+                   ▼
+             Counterfact
+        (contract-driven engine)
+                   │
+         ┌─────────┴─────────┐
+         │                   │
+         ▼                   ▼
+     Mock API Server     JavaScript REPL
+       (HTTP API)        (control plane)
+         │                   │
+         ▼                   ▼
+  Frontend / Client     context object
+      applications      (server state)"
+            ></code-terminal>
+          </div>
+
+          <div class="card">
+            <p>
+              Counterfact generates a mock API server directly from your OpenAPI
+              specification.
+            </p>
+
+            <p class="muted">
+              At the same time, it exposes a JavaScript REPL that lets you
+              inspect and manipulate the system through a programmable context
+              object.
+            </p>
+
+            <p>
+              Your API contract defines the structure.<br />
+              Your code defines the behavior.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="repl" aria-label="REPL section">
+        <h2>Program the behavior, not the responses</h2>
+
+        <p class="muted">
+          Most mock servers return static responses. Counterfact lets you
+          program how the system behaves.
+        </p>
+
+        <p>
+          The built-in REPL exposes a <code>context</code> object representing
+          the state of the mock server. You can interrogate it, modify it, and
+          change how the system responds with ordinary JavaScript.
+        </p>
+
+        <div class="grid-2">
+          <div class="card">
+            <p class="muted" style="margin-bottom: 8px">Change data directly</p>
+            <code-terminal
+              aria-label="Modify data example"
+              label="repl"
+              lang="js"
+              code='context.petService.addPet({ name: "Fido", species: "dog" })
+context.petService.renamePet(3, "Rex")'
+            ></code-terminal>
+
+            <p class="muted" style="margin-top: 10px">
+              The server updates immediately. No restart required.
+            </p>
+          </div>
+
+          <div class="card">
+            <p class="muted" style="margin-bottom: 8px">
+              Simulate system conditions
+            </p>
+            <code-terminal
+              aria-label="Simulate failure example"
+              label="repl"
+              lang="js"
+              code="context.petService.isBroken = true"
+            ></code-terminal>
+
+            <p class="muted" style="margin-top: 10px">
+              Now requests to that endpoint return a 500 error. You decide how
+              the system behaves.
+            </p>
+          </div>
+        </div>
+
+        <p class="muted" style="margin-top: 14px">
+          Because the REPL exposes a programmable context object, you can
+          simulate almost anything.
+        </p>
+
+        <ul class="bullets">
+          <li>modify data</li>
+          <li>trigger edge cases</li>
+          <li>simulate outages</li>
+          <li>test failure modes</li>
+          <li>prototype new API behavior</li>
+        </ul>
+
+        <p class="muted">
+          Restart Counterfact and the system returns to a known state. If you
+          want persistence, you can implement it using TypeScript.
+        </p>
+
+        <p>
+          Deterministic when you need repeatability.<br />
+          Programmable when you need realism.
+        </p>
+      </section>
+
+      <section id="example" aria-label="Example section">
+        <h2>Example</h2>
+
+        <p class="muted">A simple OpenAPI specification for a pet store.</p>
+
+        <code-terminal
+          aria-label="OpenAPI example"
+          label="petstore.yaml"
+          lang="yaml"
+          code='openapi: 3.0.0
+info:
+  title: Pet API
+  version: 1.0.0
+
+paths:
+  /pets:
+    get:
+      responses:
+        "200":
+          description: List pets
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string'
+        ></code-terminal>
+
+        <div class="grid-2" style="margin-top: 16px">
+          <div class="card">
+            <p class="muted" style="margin-bottom: 8px">Start Counterfact</p>
+            <code-terminal
+              aria-label="Start command example"
+              label="terminal"
+              lang="bash"
+              code="$ npx counterfact petstore.yaml"
+            ></code-terminal>
+
+            <div class="spacer"></div>
+
+            <p class="muted" style="margin-bottom: 8px">Call the API</p>
+            <code-terminal
+              aria-label="API response example"
+              label="http"
+              lang="text"
+              code='GET /pets
+
+[
+  { "id": 1, "name": "Fido" },
+  { "id": 2, "name": "Whiskers" }
+]'
+            ></code-terminal>
+          </div>
+
+          <div class="card">
+            <p class="muted" style="margin-bottom: 8px">
+              Modify the system in the REPL
+            </p>
+            <code-terminal
+              aria-label="REPL change example"
+              label="repl"
+              lang="js"
+              code='context.petService.addPet({ name: "Rex" })'
+            ></code-terminal>
+
+            <div class="spacer"></div>
+
+            <p class="muted" style="margin-bottom: 8px">
+              Response updates instantly
+            </p>
+            <code-terminal
+              aria-label="Updated API response example"
+              label="http"
+              lang="json"
+              code='[
+  { "id": 1, "name": "Fido" },
+  { "id": 2, "name": "Whiskers" },
+  { "id": 3, "name": "Rex" }
+]'
+            ></code-terminal>
+
+            <p style="margin-top: 10px">
+              Your OpenAPI contract defines the structure.<br />
+              The REPL lets you control the behavior.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="designed" aria-label="Designed for predictable systems">
+        <h2>Designed for predictable systems</h2>
+
+        <p class="muted">
+          Modern development moves quickly. Teams prototype APIs, generate code
+          with AI, and integrate services earlier than ever before. But speed
+          only works if systems remain predictable.
+        </p>
+
+        <p>Counterfact is built around a simple idea:</p>
+
+        <p>
+          The API contract defines the structure.<br />
+          Developers control the behavior.
+        </p>
+
+        <p class="muted">
+          The OpenAPI specification describes the system. The REPL exposes a
+          programmable context object that lets you simulate whatever behavior
+          you need using ordinary JavaScript or TypeScript. This keeps the
+          system deterministic, flexible, and easy to reason about.
+        </p>
+
+        <p class="muted">
+          Restart the server and the system returns to a known state. When you
+          need persistence, you can implement it. When you need realism, you can
+          program it.
+        </p>
+
+        <p>Deterministic resets. Programmable behavior.</p>
+      </section>
+
+      <section id="get-started" aria-label="Get started">
+        <h2>Get started</h2>
+
+        <p class="muted">Start a mock server in one command.</p>
+
+        <code-terminal
+          aria-label="Get started command"
+          label="terminal"
+          lang="bash"
+          code="$ npx counterfact openapi.yaml"
+        ></code-terminal>
+
+        <p class="muted" style="margin-top: 10px">
+          Explore the REPL. Modify the system state. Prototype APIs faster.
+        </p>
+
+        <div class="cta-row">
+          <a
+            class="btn primary"
+            href="https://github.com/pmcelhaney/counterfact/blob/main/docs/usage.md"
+            aria-label="Read the docs"
+            >Read the docs</a
+          >
+          <a class="btn" href="#" aria-label="View the project on GitHub"
+            >View the project on GitHub</a
+          >
+        </div>
+      </section>
+
+      <section id="built-by" aria-label="Built by">
+        <h2>Built by Patrick McElhaney</h2>
+
+        <p class="muted">
+          Software engineer and architect focused on developer tooling and
+          system design.
+        </p>
+
+        <p class="muted">
+          I enjoy building tools that make complex systems easier to understand,
+          explore, and build. Counterfact is one of those tools.
+        </p>
+      </section>
+      <section class="card" style="margin-top: 40px">
+        <h2 style="margin-top: 0">Open to work</h2>
+
+        <p class="muted">
+          I'm currently open to new opportunities building developer tools,
+          platform infrastructure, and high-leverage engineering systems.
+        </p>
+
+        <p class="muted">
+          If you're hiring or would like to connect, you can find me here:
+        </p>
+
+        <div class="cta-row">
+          <a
+            class="btn"
+            href="https://www.linkedin.com/in/patrickmcelhaney"
+            target="_blank"
+            >LinkedIn</a
+          >
+          <a class="btn" href="https://github.com/pmcelhaney" target="_blank"
+            >GitHub</a
+          >
+          <a class="btn" href="https://patrickmcelhaney.org/" target="_blank"
+            >Home Page</a
+          >
+          <a
+            class="btn primary"
+            href="https://patrickmcelhaney.org/ai-resume"
+            target="_blank"
+            >Interactive Resume</a
+          >
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="fine">
+        <p>
+          © <span id="year">2026</span> Patrick McElhaney.
+          <span class="muted"
+            >Executable API contracts for faster development.</span
+          >
+        </p>
+        <p class="muted">
+          Replace the Docs and GitHub links in the header and CTA buttons with
+          your real URLs.
+        </p>
+      </div>
+    </footer>
+
+    <script type="module">
+      const template = document.createElement("template");
+      template.innerHTML = `
+        <style>
+          :host { display: block; }
+          .terminal {
+            margin-top: 10px;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+          }
+
+          .bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            padding: 10px 12px;
+            background: color-mix(in oklab, var(--panel) 92%, transparent);
+            border-bottom: 1px solid var(--border);
+          }
+
+          .left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 0;
+          }
+
+          .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.25);
+          }
+
+          .label {
+            margin-left: 6px;
+            color: var(--muted);
+            font-size: 12px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+
+          pre {
+            margin: 0;
+            padding: 14px 14px;
+            overflow: auto;
+            font-family: var(--code);
+            font-size: 13px;
+            line-height: 1.45;
+            background: rgba(0, 0, 0, 0.25);
+          }
+
+          @media (prefers-color-scheme: light) {
+            pre { background: rgba(10, 20, 40, 0.06); }
+          }
+
+          code { font-family: var(--code); }
+
+          button {
+            font-size: 11px;
+            padding: 5px 9px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--muted);
+            cursor: pointer;
+            user-select: none;
+          }
+
+          button:hover {
+            color: var(--text);
+            border-color: color-mix(in oklab, var(--border) 40%, var(--text));
+          }
+
+          button:focus-visible {
+            outline: 2px solid color-mix(in oklab, var(--link) 70%, transparent);
+            outline-offset: 2px;
+          }
+
+          button.copied {
+            color: var(--accent);
+            border-color: var(--accent);
+          }
+        </style>
+
+        <div class="terminal" role="group">
+          <div class="bar">
+            <div class="left">
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="label"></span>
+            </div>
+            <button type="button">Copy</button>
+          </div>
+          <pre><code></code></pre>
+        </div>
+      `;
+
+      class CodeTerminal extends HTMLElement {
+        static get observedAttributes() {
+          return ["label", "lang", "code", "aria-label"];
+        }
+
+        constructor() {
+          super();
+          this.attachShadow({ mode: "open" }).appendChild(
+            template.content.cloneNode(true)
+          );
+
+          this._button = this.shadowRoot.querySelector("button");
+          this._labelEl = this.shadowRoot.querySelector(".label");
+          this._codeEl = this.shadowRoot.querySelector("code");
+          this._terminal = this.shadowRoot.querySelector(".terminal");
+
+          this._button.addEventListener("click", () => this.copy());
+        }
+
+        connectedCallback() {
+          this.sync();
+        }
+
+        attributeChangedCallback() {
+          this.sync();
+        }
+
+        sync() {
+          const label = this.getAttribute("label") ?? "terminal";
+          const lang = this.getAttribute("lang") ?? "";
+          const code = this.getAttribute("code") ?? "";
+          const aria = this.getAttribute("aria-label") ?? label;
+
+          this._labelEl.textContent = label;
+          this._codeEl.textContent = code;
+          if (lang) this._codeEl.className = `language-${lang}`;
+
+          this._terminal.setAttribute("aria-label", aria);
+        }
+
+        async copy() {
+          const text = this._codeEl.innerText;
+
+          try {
+            await navigator.clipboard.writeText(text);
+
+            this._button.textContent = "Copied";
+            this._button.classList.add("copied");
+
+            clearTimeout(this._t);
+            this._t = setTimeout(() => {
+              this._button.textContent = "Copy";
+              this._button.classList.remove("copied");
+            }, 1500);
+          } catch {
+            this._button.textContent = "Error";
+            clearTimeout(this._t);
+            this._t = setTimeout(
+              () => (this._button.textContent = "Copy"),
+              1500
+            );
+          }
+        }
+      }
+
+      customElements.define("code-terminal", CodeTerminal);
+
+      const yearEl = document.getElementById("year");
+      if (yearEl) yearEl.textContent = new Date().getFullYear();
+    </script>
+  </body>
+</html>
