@@ -10,13 +10,12 @@
     "@jridgewell/gen-mapping" "^0.3.5"
     "@jridgewell/trace-mapping" "^0.3.24"
 
-"@apidevtools/json-schema-ref-parser@13.0.5":
-  version "13.0.5"
-  resolved "https://registry.yarnpkg.com/@apidevtools/json-schema-ref-parser/-/json-schema-ref-parser-13.0.5.tgz#e7a5cfc7df315ebcbafeb98199b72ebed9743b68"
-  integrity sha512-xfh4xVJD62gG6spIc7lwxoWT+l16nZu1ELyU8FkjaP/oD2yP09EvLAU6KhtudN9aML2Khhs9pY6Slr7KGTES3w==
+"@apidevtools/json-schema-ref-parser@15.3.1":
+  version "15.3.1"
+  resolved "https://registry.yarnpkg.com/@apidevtools/json-schema-ref-parser/-/json-schema-ref-parser-15.3.1.tgz#93f70004a085f62319705e32f25af748752ea5a4"
+  integrity sha512-FIweGOR9zrNuskfDXn8dfsA4eJEe8LmmGsGSDikEZvgYm36SO36yMhasXSOX7/OTGZ3b7I9iPhOxB24D8xL5uQ==
   dependencies:
-    "@types/json-schema" "^7.0.15"
-    js-yaml "^4.1.0"
+    js-yaml "^4.1.1"
 
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.10.4", "@babel/code-frame@^7.24.7":
   version "7.24.7"
