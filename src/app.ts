@@ -156,7 +156,7 @@ export async function counterfact(config: Config) {
 
   const middleware = koaMiddleware(dispatcher, config);
 
-  const koaApp = createKoaApp(registry, middleware, config);
+  const koaApp = createKoaApp(registry, middleware, config, contextRegistry);
 
   async function start(options: Config) {
     const {

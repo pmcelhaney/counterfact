@@ -1,0 +1,238 @@
+import type Koa from "koa";
+import createDebug from "debug";
+
+import type { Config } from "./config.js";
+import type { ContextRegistry } from "./context-registry.js";
+import type { Registry } from "./registry.js";
+
+const debug = createDebug("counterfact:server:admin-api-middleware");
+
+interface AdminApiResponse {
+  success?: boolean;
+  data?: unknown;
+  error?: string;
+  message?: string;
+}
+
+/**
+ * Admin API middleware for programmatic access to Counterfact internals.
+ * Exposes context management, proxy configuration, and route discovery
+ * through HTTP endpoints at /_counterfact/api/*
+ *
+ * This enables AI agents and external tools to interact with the mock server
+ * in the same way the REPL does, but via HTTP requests.
+ */
+export function adminApiMiddleware(
+  registry: Registry,
+  contextRegistry: ContextRegistry,
+  config: Config,
+): Koa.Middleware {
+  return async (ctx: Koa.ExtendableContext, next: Koa.Next) => {
+    const { pathname } = ctx.URL;
+
+    // Only handle admin API routes
+    if (!pathname.startsWith("/_counterfact/api/")) {
+      return await next();
+    }
+
+    debug("Admin API request: %s %s", ctx.method, pathname);
+
+    // Extract route components: ["_counterfact", "api", "resource", ...rest]
+    const parts = pathname.split("/").filter(Boolean);
+    const [, , resource, ...rest] = parts;
+
+    try {
+      // ===== Health Check =====
+      if (resource === "health" && ctx.method === "GET") {
+        ctx.body = {
+          status: "ok",
+          port: config.port,
+          uptime: process.uptime(),
+          basePath: config.basePath,
+          routePrefix: config.routePrefix,
+        };
+        return;
+      }
+
+      // ===== List All Contexts =====
+      if (
+        resource === "contexts" &&
+        rest.length === 0 &&
+        ctx.method === "GET"
+      ) {
+        const paths = contextRegistry.getAllPaths();
+        const contexts = contextRegistry.getAllContexts();
+
+        ctx.body = {
+          success: true,
+          data: {
+            paths,
+            contexts,
+          },
+        };
+        return;
+      }
+
+      // ===== Get Specific Context =====
+      if (resource === "contexts" && rest.length > 0 && ctx.method === "GET") {
+        const path = "/" + rest.join("/");
+        const context = contextRegistry.find(path);
+
+        ctx.body = {
+          success: true,
+          data: {
+            path,
+            context,
+          },
+        };
+        return;
+      }
+
+      // ===== Update Context =====
+      if (resource === "contexts" && rest.length > 0 && ctx.method === "POST") {
+        const path = "/" + rest.join("/");
+        const newContext = ctx.request.body;
+
+        if (!newContext || typeof newContext !== "object") {
+          ctx.status = 400;
+          ctx.body = {
+            success: false,
+            error: "Request body must be a valid JSON object",
+          };
+          return;
+        }
+
+        // Update the context using the registry's smart diffing
+        contextRegistry.update(path, newContext);
+
+        ctx.body = {
+          success: true,
+          message: `Context updated for path: ${path}`,
+          data: {
+            path,
+            context: contextRegistry.find(path),
+          },
+        };
+        return;
+      }
+
+      // ===== Get Full Config =====
+      if (resource === "config" && rest.length === 0 && ctx.method === "GET") {
+        ctx.body = {
+          success: true,
+          data: {
+            alwaysFakeOptionals: config.alwaysFakeOptionals,
+            basePath: config.basePath,
+            buildCache: config.buildCache,
+            generate: config.generate,
+            openApiPath: config.openApiPath,
+            port: config.port,
+            proxyUrl: config.proxyUrl,
+            routePrefix: config.routePrefix,
+            startRepl: config.startRepl,
+            startServer: config.startServer,
+            watch: config.watch,
+            // Don't expose proxyPaths Map directly, convert to array
+            proxyPaths: Array.from(config.proxyPaths.entries()),
+          },
+        };
+        return;
+      }
+
+      // ===== Get Proxy Configuration =====
+      if (
+        resource === "config" &&
+        rest[0] === "proxy" &&
+        ctx.method === "GET"
+      ) {
+        ctx.body = {
+          success: true,
+          data: {
+            proxyUrl: config.proxyUrl,
+            proxyPaths: Array.from(config.proxyPaths.entries()),
+          },
+        };
+        return;
+      }
+
+      // ===== Update Proxy Configuration =====
+      if (
+        resource === "config" &&
+        rest[0] === "proxy" &&
+        ctx.method === "PATCH"
+      ) {
+        const body = ctx.request.body as {
+          proxyUrl?: string;
+          proxyPaths?: Array<[string, boolean]>;
+        };
+
+        if (!body || typeof body !== "object") {
+          ctx.status = 400;
+          ctx.body = {
+            success: false,
+            error: "Request body must be a valid JSON object",
+          };
+          return;
+        }
+
+        // Update proxy URL if provided
+        if (body.proxyUrl !== undefined) {
+          config.proxyUrl = body.proxyUrl;
+          debug("Updated proxy URL to: %s", config.proxyUrl);
+        }
+
+        // Update proxy paths if provided
+        if (Array.isArray(body.proxyPaths)) {
+          for (const [path, enabled] of body.proxyPaths) {
+            if (typeof path === "string" && typeof enabled === "boolean") {
+              config.proxyPaths.set(path, enabled);
+              debug("Set proxy for %s to %s", path, enabled);
+            }
+          }
+        }
+
+        ctx.body = {
+          success: true,
+          message: "Proxy configuration updated",
+          data: {
+            proxyUrl: config.proxyUrl,
+            proxyPaths: Array.from(config.proxyPaths.entries()),
+          },
+        };
+        return;
+      }
+
+      // ===== List All Routes =====
+      if (resource === "routes" && ctx.method === "GET") {
+        ctx.body = {
+          success: true,
+          data: {
+            routes: registry.routes,
+          },
+        };
+        return;
+      }
+
+      // ===== 404 for Unknown Endpoints =====
+      ctx.status = 404;
+      ctx.body = {
+        success: false,
+        error: "Not found",
+        path: pathname,
+        message: `Unknown admin API endpoint: ${pathname}`,
+      };
+    } catch (error) {
+      // ===== 500 for Server Errors =====
+      debug("Admin API error: %O", error);
+      ctx.status = 500;
+      ctx.body = {
+        success: false,
+        error: error instanceof Error ? error.message : "Unknown error",
+        stack:
+          error instanceof Error && process.env.NODE_ENV !== "production"
+            ? error.stack
+            : undefined,
+      };
+    }
+  };
+}

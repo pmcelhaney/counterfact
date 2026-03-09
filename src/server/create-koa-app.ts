@@ -5,7 +5,9 @@ import Koa from "koa";
 import bodyParser from "koa-bodyparser";
 import { koaSwagger } from "koa2-swagger-ui";
 
+import { adminApiMiddleware } from "./admin-api-middleware.js";
 import type { Config } from "./config.js";
+import type { ContextRegistry } from "./context-registry.js";
 import { openapiMiddleware } from "./openapi-middleware.js";
 import { pageMiddleware } from "./page-middleware.js";
 import type { Registry } from "./registry.js";
@@ -16,6 +18,7 @@ export function createKoaApp(
   registry: Registry,
   koaMiddleware: Koa.Middleware,
   config: Config,
+  contextRegistry: ContextRegistry,
 ) {
   const app = new Koa();
 
@@ -35,6 +38,8 @@ export function createKoaApp(
       },
     }),
   );
+
+  app.use(adminApiMiddleware(registry, contextRegistry, config));
 
   debug("basePath: %s", config.basePath);
   debug("routes", registry.routes);
