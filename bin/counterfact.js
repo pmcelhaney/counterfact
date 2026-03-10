@@ -51,17 +51,17 @@ function createWatchMessage(config) {
 
   switch (true) {
     case config.watch.routes && config.watch.types: {
-      watchMessage = "Watching for changes";
+      watchMessage = "   Watching for changes";
 
       break;
     }
     case config.watch.routes: {
-      watchMessage = "Watching routes for changes";
+      watchMessage = "   Watching routes for changes";
 
       break;
     }
     case config.watch.types: {
-      watchMessage = "Watching types for changes";
+      watchMessage = "   Watching types for changes";
 
       break;
     }
@@ -206,19 +206,26 @@ async function main(source, destination) {
   const watchMessage = createWatchMessage(config);
 
   const introduction = [
-    "____ ____ _  _ _ _ ___ ____ ____ ____ ____ ____ ___",
-    String.raw`|___ [__] |__| |\|  |  |=== |--< |--- |--| |___  | `,
-    padTagLine(taglines[Math.floor(Math.random() * taglines.length)]),
+    "   ____ ____ _  _ _ _ ___ ____ ____ ____ ____ ____ ___",
+    String.raw`   |___ [__] |__| |\|  |  |=== |--< |--- |--| |___  | `,
+    "   " + padTagLine(taglines[Math.floor(Math.random() * taglines.length)]),
     "",
-    `| API Base URL  ==> ${url}`,
-    source === "_" ? undefined : `| Swagger UI    ==> ${swaggerUrl}`,
+    `   API Base URL  ${url}`,
+    source === "_" ? undefined : `   Swagger UI    ${swaggerUrl}`,
     "",
-    "| Instructions  ==> https://counterfact.dev/docs/usage.html",
-    "| Help/feedback ==> https://github.com/pmcelhaney/counterfact/issues",
+    "   Instructions  https://counterfact.dev/docs/usage.html",
+    "   Help/feedback https://github.com/pmcelhaney/counterfact/issues",
+    "",
+    "",
+    "🔔 PLEASE READ: Feedback, Telemetry, and Privacy Discussion (10 March 2026)",
+    "   https://github.com/pmcelhaney/counterfact/discussions/1527",
+    "",
     "",
     watchMessage,
-    config.startServer ? "Starting server" : undefined,
-    config.startRepl ? "Starting REPL, type .help for more info" : undefined,
+    config.startServer ? "   Starting server" : undefined,
+    config.startRepl
+      ? "   Starting REPL (type .help for more info)"
+      : undefined,
   ];
 
   process.stdout.write(
