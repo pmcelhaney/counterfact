@@ -1,88 +1,91 @@
 # Usage
 
-Counterfact is three complimentary tools in one:
+Counterfact is three tools in one:
 
-- a code generator that converts [OpenAPI](https://support.smartbear.com/swaggerhub/docs/tutorials/openapi-3-tutorial.html) to [TypeScript](https://www.typescriptlang.org/)
-- a fast and flexible mock server that's optimized around front end dev workflows
-- a JavaScript REPL for accessing the server's internal state at runtime
+- a **code generator** that converts an [OpenAPI](https://support.smartbear.com/swaggerhub/docs/tutorials/openapi-3-tutorial.html) document to [TypeScript](https://www.typescriptlang.org/) route files
+- a **mock server** optimized for front-end development workflows
+- a **live REPL** for inspecting and manipulating server state at runtime
 
-## Hello <del>World</del> Pet Store 👋
+---
 
-The easiest way to start is to copy and paste this command into your terminal.
+## Quick Start
 
-```sh copy
+```sh
 npx counterfact@latest https://petstore3.swagger.io/api/v3/openapi.json api
 ```
 
-This command will generate TypeScript code for the Swagger Pet Store and start the server. We're using the pet store example because it's well known and convenient. If you have your own OpenAPI document handy, you can point to that instead. You can also change `api` to wherever you'd like to output the code.
+This generates TypeScript route files under `api/` for the Swagger Petstore and starts the server. Swap in your own OpenAPI document URL (or local path) and change `api` to whatever directory you prefer.
 
-> [!NOTE]
->
-> <details>
->
-> <summary>Here are the full details on CLI usage</summary>
->
-> ```txt
-> Usage: counterfact [options] [openapi.yaml] [destination]
->
-> Counterfact is a tool for mocking REST APIs in development. See https://counterfact.dev for more info.
->
-> Arguments:
->   openapi.yaml          path or URL to OpenAPI document or "_" to run without OpenAPI (default: "_")
->   destination           path to generated code (default: ".")
->
-> Options:
->   --port <number>       server port number (default: 3100)
->   -o, --open            open a browser
->   -g, --generate        generate all code for both routes and types
->   --generate-types      generate types
->   --generate-routes     generate routes
->   -w, --watch           generate + watch all code for changes
->   --watch-types         generate + watch types for changes
->   --watch-routes        generate + watch routes for changes
->   -s, --serve           start the mock server
->   -r, --repl            start the REPL
->   --proxy-url <string>  proxy URL
->   --prefix <string>     base path from which routes will be served (e.g. /api/v1)
->   -h, --help            display help for command
-> ```
->
-> </details>
+> **Requires Node ≥ 17.0.0**
 
-> [!TIP]
->
-> <details>
-> <summary>Using with npm or yarn</summary>
->
-> If you prefer not to use `npx` against the `@latest` version, you can install Counterfact as a dependency with a specific version in npm or yarn. The following example adds a start script to your `package.json` file and adds Counterfact as a dev dependency.
->
-> ```json
-> "scripts": {
->   "start": "npx counterfact https://petstore3.swagger.io/api/v3/openapi.json api"
-> },
-> "devDependencies": {
->   "counterfact": "^0.38.3",
-> }
-> ```
->
-> This will let your team use the same version of > Counterfact across all environments. You can also use `npm run start` or `yarn start` to start the server.
->
-> </details>
+<details>
+<summary>Full CLI reference</summary>
 
-## Generated Code 🏖
+```
+Usage: counterfact [options] [openapi.yaml] [destination]
 
-Code is automatically generated and kept in sync with your OpenAPI (aka Swagger) document, assuming you have one. Otherwise, see how to [use Counterfact without generating code](./usage-without-openapi.md).
+Arguments:
+  openapi.yaml               path or URL to OpenAPI document, or "_" to skip (default: "_")
+  destination                path where code is generated (default: ".")
 
-The code goes into two directories:
+Options:
+  --port <number>            server port (default: 3100)
+  -o, --open                 open a browser after starting
+  -g, --generate             generate route and type files
+  --generate-types           generate types only
+  --generate-routes          generate routes only
+  -w, --watch                generate + watch for spec changes
+  --watch-types              watch types only
+  --watch-routes             watch routes only
+  -s, --serve                start the mock server
+  -r, --repl                 start the REPL
+  --proxy-url <string>       forward all unhandled requests to this URL
+  --prefix <string>          base path prefix (e.g. /api/v1)
+  --always-fake-optionals    include optional fields in random responses
+  -b, --build-cache          pre-compile routes and types without starting the server
+  -h, --help                 display help
+```
 
-- 📂 **types** contains the type information that is automatically regenerated when the OpenAPI document changes.
-- 📂 **routes** contains the implementation of each path. Out of the box it creates minimal scaffolding which returns a random response for each request. A type-safe fluent API makes customizing the responses easier than editing a configuration file. However, you're not limited to random / canned data or rigid switch / case statements -- the full power of TypeScript / JavaScript is at your disposal.
+</details>
 
-See [Generated Code FAQ](./faq-generated-code.md) for details.
+<details>
+<summary>Using with npm or yarn instead of npx</summary>
 
-## Routing is where it's at 🔀
+Pin a specific version by adding Counterfact as a dev dependency:
 
-In the `routes` directory, you should find a TypeScript file corresponding to each of the paths in your OpenAPI file. For example "/users/{userid}" will create `./routes/users/{userid}.ts`. (If you have a path for the root, "/", it will map to `./routes/index.ts`.) The contents of each file will look something like this:
+```json
+"scripts": {
+  "mock": "counterfact https://petstore3.swagger.io/api/v3/openapi.json api"
+},
+"devDependencies": {
+  "counterfact": "^2.0.0"
+}
+```
+
+Then run `npm run mock` or `yarn mock`. This ensures every developer on the team uses the same version.
+
+</details>
+
+---
+
+## Generated Code
+
+Counterfact generates two directories from your OpenAPI document:
+
+- 📂 **`types/`** — fully typed request/response interfaces, auto-regenerated whenever the OpenAPI document changes. Don't edit these by hand.
+- 📂 **`routes/`** — one TypeScript file per API path. These are yours to edit. Out of the box each file returns a random, schema-valid response. You can leave them as-is or customize as much as you like.
+
+See [Generated Code FAQ](./faq-generated-code.md) for questions about source control, editing, and regeneration.
+
+No OpenAPI document? See [using Counterfact without OpenAPI](./usage-without-openapi.md).
+
+---
+
+## Routes
+
+Each file in `routes/` corresponds to an API path. For example, `/users/{userId}` maps to `routes/users/{userId}.ts`. The root path `/` maps to `routes/index.ts`.
+
+A freshly generated route file looks like this:
 
 ```ts
 export const GET: HTTP_GET = ($) => {
@@ -94,87 +97,127 @@ export const POST: HTTP_POST = ($) => {
 };
 ```
 
-Each of the exported functions implements an HTTP request method (GET, POST, PUT, etc.). Each of these functions takes one argument -- `$` -- which is used to access request information, build a response, and interact with the server's state.
+Each exported function handles one HTTP method. The single argument `$` gives you everything you need: request data, response builders, server state, and utilities.
 
 > [!TIP]
-> If you're familiar with Express, `$` is sort of a combination of `req` and `res` with type safety and extra super powers.
+> If you know Express, think of `$` as a type-safe combination of `req` and `res`.
 
-### The `$.response` object
+### Building responses with `$.response`
 
-The `$.response` object is used to build a valid response for the URL and request method. **This object is designed to work with your IDE's autocomplete feature and help you build a valid response without consulting the docs.** Try typing `$.response.` in your IDE. You should see a list of numbers corresponding to HTTP response codes (200, 404, etc). Select one and then type another `.`. At this point the IDE should present you with one or more of the following methods.
+`$.response` is a fluent builder for HTTP responses. Start by picking a status code, then chain one or more methods:
 
-- `.random()` returns random data, using `examples` and other metadata from the OpenAPI document.
-- `.header(name, value)` adds a response header. It will only show up when a response header is expected and you haven't already provided it.
-- `.match(contentType, content)` is used to return content which matches the content type. If the API is intended to serve one of multiple content types, depending on the client's `Accepts:` header, you can chain multiple `match()` calls.
-- `.json(content)`, `.text(content)`, `.html(content)`, and `.xml(content)` are shorthands for the `match()` function, e.g. `.text(content)` is shorthand for `.match("text/plain", content)`.
-  - if the content type is XML, you can pass a JSON object, and Counterfact will automatically convert it to XML for you
-  - The `.json()` shortcut handles both JSON and XML.
-
-To build a response, chain one or more of these functions, e.g.
+| Method | Description |
+|--------|-------------|
+| `.random()` | Returns random data generated from the OpenAPI schema (uses `examples` where available) |
+| `.json(content)` | Returns a JSON body (also converts to XML automatically when the client requests it) |
+| `.text(content)` | Returns a plain-text body |
+| `.html(content)` | Returns an HTML body |
+| `.xml(content)` | Returns an XML body |
+| `.match(contentType, content)` | Returns a body with an explicit content type; chain multiple for content negotiation |
+| `.header(name, value)` | Adds a response header |
 
 ```ts
-return $.response[200].header("x-coolness-level", 10).text("This is cool!")`.
+return $.response[200].header("x-request-id", "abc123").json({ ok: true });
 ```
 
 > [!TIP]
-> Your IDE can help you build a valid response via autocomplete. It can also help ensure the response matches the requirements in the OpenAPI document. For example, if you leave out a required header, the function won't type check. (That's particularly useful when there are API changes. When you update the OpenAPI document, the types are automatically regenerated, and TypeScript tells you if the implementation needs to be updated.)
+> Your IDE's autocomplete knows which status codes, headers, and response shapes are valid for each endpoint — based directly on your OpenAPI spec. If you omit a required header, TypeScript will tell you. When the spec changes and types are regenerated, TypeScript will surface any mismatches.
 
-### Request parameters
+### Reading request data
 
-Most of the time, the server's response depends on input from various parts of the request, which are accessible through `$.path`, `$.query`, `$.headers`, and `$.body`. The best way to explain is with an example:
+The request is exposed through four typed properties:
+
+| Property | Contents |
+|----------|----------|
+| `$.path` | Path parameters (e.g. `$.path.userId` for `/users/{userId}`) |
+| `$.query` | Query string parameters |
+| `$.headers` | Request headers |
+| `$.body` | Request body |
 
 ```ts
 export const GET: HTTP_GET = ($) => {
-    if ($.headers['x-token'] !== 'super-secret') {
-       return $.response[401].text('unauthorized');
-    }
+  if ($.headers["x-token"] !== "super-secret") {
+    return $.response[401].text("Unauthorized");
+  }
 
-    const content = `TODO: output the results for "${$.query.keyword}"`
-      + `in ${$.path.groupName}`
-      + `that have the following tags: ${$.body.tags.join(',')}.`.
+  const content = `Results for "${$.query.keyword}" in ${$.path.groupName}`
+    + ` with tags: ${$.body.tags.join(", ")}`;
 
-    return $.response[200].text(content);
+  return $.response[200].text(content);
 };
-
 ```
 
-Each of these objects is typed so you can use autocomplete to identify parameters names and types. For example, if you type `$.query.` you'll be presented with a list of expected query string parameters.
+All four objects are typed from your OpenAPI spec, so autocomplete works for parameter names and values.
 
-> [!NOTE]
-> The `$.path` parameters are identified by dynamic sections of the file path, i.e. `/groups/{groupName}/user/{userId}.ts`.
+### Basic auth: `$.auth`
+
+When a request includes HTTP Basic credentials, they're available at `$.auth.username` and `$.auth.password`.
+
+Support for other security schemes (API key, OAuth 2, OpenID Connect, mutual TLS) is planned. [Open an issue](https://github.com/pmcelhaney/counterfact/issues) to help prioritize.
+
+### Simulating latency: `$.delay()`
+
+Counterfact responds much faster than a real server. To test loading states and timeouts, use `$.delay()`:
+
+```ts
+// pause for exactly one second
+await $.delay(1000);
+
+// pause for a random duration between 1 and 5 seconds
+await $.delay(1000, 5000);
+```
+
+### Escaping the type system: `$.x`
+
+Counterfact translates your OpenAPI spec into strict TypeScript types. If your spec is incomplete, or you need to return something outside the spec (like a `500` error that isn't documented), the strict types can get in the way.
+
+`$.x` is an alias for `$` with all types widened to `any`, giving you an escape hatch:
+
+```ts
+export const GET: HTTP_GET = ($) => {
+  // header not defined in OpenAPI spec
+  $.headers["my-undocumented-header"];   // TypeScript error
+  $.x.headers["my-undocumented-header"]; // ok
+
+  // status code not defined in OpenAPI spec
+  return $.response[500].text("Error!"); // TypeScript error
+  return $.x.response[500].text("Error!"); // ok
+};
+```
+
+---
+
+## State: Context Objects
 
 <a id="context-object"></a>
 
-### Working with state: the `$.context` object and `_.context.ts`
+The `$.context` object is how routes share in-memory state. It's an instance of the `Context` class exported from `_.context.ts` in the same directory (or the nearest parent directory that has one).
 
-The `$.context` object contains in-memory state and business logic, allowing you to imitate to whatever degree is necessary the behavior of a real API. It looks something like this:
-
-```ts copy
-// pet.ts
+```ts
+// routes/pet.ts
 export const POST: HTTP_POST = ($) => {
   return $.response[200].json($.context.addPet($.body));
 };
+
+// routes/pet/{petId}.ts
+export const GET: HTTP_GET = ($) => {
+  const pet = $.context.getPetById($.path.petId);
+  if (pet === undefined) return $.response[404].text(`Pet ${$.path.petId} not found.`);
+  return $.response[200].json(pet);
+};
 ```
 
-```ts copy
-// pet/{id}.ts
- export const GET: HTTP_GET ($) => {
-    const pet = $.context.getPetById($.path.id);
-    if (pet === undefined) return $.response[404].text(`Pet ${$.path.id} not found.`);
-    return $.response[200].json(pet);
- };
-```
-
-The `context` object is an instance of a class exported from `./routes/_.context.ts`. Customize the class to suit your needs. For example, if we're implementing the Swagger Petstore, our `_.context.ts` file might look like this.
+Customize `_.context.ts` to hold whatever state and business logic your mock needs:
 
 ```ts
+// routes/_.context.ts
 export class Context {
   pets: Pet[] = [];
 
   addPet(pet: Pet) {
     const id = this.pets.length;
     this.pets.push({ ...pet, id });
-    return this.getPetById(id);
+    return this.pets[id];
   }
 
   getPetById(id: number) {
@@ -184,211 +227,128 @@ export class Context {
 ```
 
 > [!IMPORTANT]
-> You can make the context objects do whatever you want, including things like writing to databases. But remember that Counterfact is meant for testing; it's better to "forget" and return to a known state every time you start the server. Keeping everything in memory also makes the server lightning fast.
+> Keep context in memory. Counterfact is a development tool — starting fresh each time is a feature, not a bug. In-memory state also makes the server very fast.
 
-> [!TIP]
-> An object with loadContext() function is passed to the constructor of a context class. You can use it load the context from another directory at runtime. This is an advanced use case.
->
-> ```ts
-> class Context {
->   constructor({ loadContext }) {
->     this.rootContext = loadContext("/");
->   }
-> }
-> ```
-
-### Security: the `$.auth` object
-
-If a username and password are sent via basic authentication, they can be found via `$.auth.username` and `$.auth.password` respectively.
-
-Support for other security schemes ("apiKey", "mutualTLS", "oauth2", "openIdConnect") are coming. You can speed things along by [opening an issue](https://github.com/pmcelhaney/counterfact/issues).
-
-### Slow down with `$.delay()`
-
-Counterfact is much faster than a typical production server. Usually that's a good thing.
-However, sometimes we need the server to slow down so we can test things like loading spinners. For that, there's a utility called `$.delay()`.
+For large APIs you can nest context objects. Any subdirectory can have its own `_.context.ts`. One context can access another via the `loadContext` function passed to its constructor:
 
 ```ts
-// wait one second
-await $.delay(1000);
-
-// wait some random period between 1 and 5 seconds
-await $.delay(1000, 5000);
-```
-
-### x-scape Hatch
-
-Counterfact does a good job translating an OpenAPI description into TypeScript types. But if your documentation is incorrect or incomplete, or you want to try something that's not documented yet, the type safety can get in your way.
-
-To work around that problem, Counterfact provides a "loose" types mode in the form of the `$.x` object. The `$.x` object is an alias of `$` in which all of the types are wider.
-
-The best way to explain is with a couple of examples.
-
-```ts
-export function GET($): HTTP_GET {
-  // There are no headers specified in OpenAPI
-  $.headers["my-undocumented-header"]; // TypeScript error
-  $.x.headers["my-undocumented-header"]; // ok
-
-  // There is no 500 response type specified in OpenAPI
-  return $.response[500].text("Error!"); // TypeScript error
-  return $.x.response[500].text("Error!"); // ok
+// routes/users/_.context.ts
+export class Context {
+  constructor({ loadContext }) {
+    this.rootContext = loadContext("/");
+    this.petsContext = loadContext("/pets");
+  }
 }
 ```
 
-## Reloading is So Hot Right Now 🔥
+---
 
-When you save any file changes will be picked up by the running server immediately. _There's no need to restart!_
+## Hot Reload 🔥
 
-Hot reloading supports one of Counterfact's key design goals. While developing and testing, we want to explore _counterfactuals_, such as
+Save a file — any route or context file — and the running server picks it up immediately. No restart needed, and in-memory state is preserved across reloads.
 
-- What if I'm 8 clicks deep in my UI and _then_ the server responds with a 500 error?
-- What if there are no upcoming appointments?
-- What if there are 100 upcoming appointments and they're all on a holiday?
-- What if run this report on a weekend?
+This makes it fast to set up edge cases like:
 
-In such cases, we want to be sure the front end code responds appropriately. Getting a real server to do what we need to test front end code is usually difficult if not impossible. Counterfact is optimized to make bending the server's behavior to suit a test case as painless as possible, in both manual and automated tests.
+- What does the UI do 8 clicks deep when the server returns a 500?
+- What if there are zero results? What if there are 10,000?
+- What if the server is slow?
 
-## REPL without a Pause ⏯
+Reproduce the scenario, open the file, change one line, and see the result.
 
-Another way to explore counterfactuals in real time is to interact with the running server via the read-eval-print loop (REPL), in the same way that you interact with running UI code in your browser's developer tools console. If you look in the terminal after starting Counterfact you should see a prompt like this:
+---
 
-```txt
+## REPL ⬣
+
+The REPL is a JavaScript prompt connected directly to the running server — like the browser DevTools console, but for your mock API. After starting Counterfact you'll see:
+
+```
 ____ ____ _  _ _ _ ___ ____ ____ ____ ____ ____ ___
 |___ [__] |__| |\|  |  |=== |--< |--- |--| |___  |
        High code, low effort mock REST APIs
 
 | API Base URL  ==> http://localhost:3100
 | Admin Console ==> http://localhost:3100/counterfact/
-| Instructions  ==> https://counterfact.dev/docs/usage.html
-
-Starting REPL, type .help for more info
 
 ⬣>
 ```
 
-At the `⬣>` prompt, you can enter JavaScript code to interact with the live [context object](#context-object). For example, here's a quick way to add a pet to the store.
+At the prompt you can interact with the live context:
 
 ```js
+// add a single pet
 context.addPet({ name: "Fluffy", photoUrls: [] });
+
+// add 100 pets
+for (let i = 0; i < 100; i++) context.addPet({ name: `Pet ${i}`, photoUrls: [] });
+
+// query state
+context.pets.filter((pet) => pet.name.startsWith("F"));
 ```
 
-Or add 100 pets:
+To access context from a subdirectory:
 
 ```js
-for (i = 0; i < 100; i++) context.addPet({ name: `Pet ${i}`, photoUrls: [] });
+const petsContext = loadContext("/pets");
 ```
 
-Or get a list of pets whose names start with "F"
+The built-in `client` object lets you make HTTP requests from the prompt without leaving the terminal:
 
 ```js
-context.pets.find((pet) => pet.name.startsWith("F"));
+client.get("/users");
+client.post("/users", { name: "bob" });
+client.put("/users/1", { name: "robert" }, { "x-api-version": "2" });
 ```
 
-Using the REPL is a lot faster (and more fun) than wrangling config files and SQL and whatever else it takes to get a real back end into the states you need to test your UI flows.
+All standard HTTP methods are supported. Arguments are: path, body (where applicable), headers.
 
-> [!TIP]
->
-> For large / complex APIs, a single context object may not be sufficient.
-> Any subdirectory can provide its own context object by including a `_.context.ts` file that exports a class called `Context`.
-> In the REPL, to access context object outside of the root, use `loadContext("/path/to/subdirectory")`.
->
-> ```
-> ⬣> const petsContext = loadContext("/pets");
-> ```
->
-> The `loadContext()` function is also passed to the constructor of `Context` so that one context object can access another.
->
-> ```ts
-> // ./routes/users/_.context.ts
-> export class Context() {
->  constructor({ loadContext }) {
->    this.rootContext = loadContext("/");
->    this.petsContext = loadContext("/pets");
-> }
-> ```
+---
 
-The `client` object allows you to test the server without switching to another tool like `curl`, `Postman`, or the app you're building.
+## Proxy 🔀
 
-```sh
-> client.get("/users")
-> client.post("/users", {name: "bob" })
-> client.put("/users", {name: "bob" }, {"x-optional-header": "test"})
-```
+You can mix real backend calls with mocks — useful when some endpoints are finished and others aren't.
 
-All standard HTTP verbs are supported. The first argument is the path. The second argument is the request body (where applicable). The last argument contains request headers.
-
-## Proxy Peek-a-boo 🫣
-
-At some point you're going to want to test your code against a real server. At that point, you could throw the mock server away. However, you may wish you's kept it around testing edge cases and back-end changes that are still in development.
-
-_Why not both?_ 🤷‍♀️
-
-Counterfact has a couple of facilities _proxy_ to the real server for the most part, but continue using mocks on a case-by-case basis.
-
-To proxy an individual endpoint, you can use the `$.proxy()` function.
-
-```ts copy
-// pet/{id}.ts
- export const GET: HTTP_GET ($) => {
-    return $.proxy("http://uat.petstore.example.com/pet")
- };
-```
-
-To set up a proxy for the entire API, add `--proxy <url>` in the CLI and / or type `.proxy url <url>` in the CLI.
-
-From there, you can switch back and forth between the proxy and mocks by typing `.proxy [on|off] <path-prefix>`. Type `.proxy help` for detailed information on using the `.proxy` command.
-
-Even if you're not using mocks at all, the proxy feature is convenient for switching between different back end environments -- local, dev, QA, etc -- without changing configuration files or restarting.
-
-## Let's meet in the Middleware 🫸🫷
-
-Counterfact allows you to add custom middleware to your mock server. Middleware functions can be used to modify the request or response, add custom headers, or perform other tasks before the request is handled by the route handler.
-
-To add middleware, create a file named `_.middleware.ts` in the directory where you want to apply the middleware. The file should export a `middleware` function that takes two arguments: `$` (the request data) and `respondTo` (a function that calls the next middleware or route handler).
-
-Here's an example of a middleware function that adds a custom header to the response:
+To proxy a single endpoint from within a route file:
 
 ```ts
-// _.middleware.ts
-
-export async function middleware ($, respondTo) => {
-  const response = await respondTo($);
-  return response.header("X-Custom-Header", "Custom Value");
+// routes/pet/{petId}.ts
+export const GET: HTTP_GET = ($) => {
+  return $.proxy("https://uat.petstore.example.com/pet");
 };
 ```
 
-In this example, the middleware function adds a custom header `X-Custom-Header` with the value `Custom Value` to the response. The `respondTo` function is called to pass the request to the next middleware or route handler.
+To proxy the entire API by default (and override specific routes with mocks), pass `--proxy-url` on the CLI:
 
-You can add multiple middleware functions in different directories to apply them to specific routes or groups of routes. Middleware functions are executed in the order they are defined, starting from the root directory and moving down the directory tree.
-
-## No Cap Recap 🧢
-
-With convention over configuration, automatically generated types, a fluent API, and an innovative REPL, Counterfact allows front-end developers to quickly build fake REST APIs for prototype and testing purposes.
-
-- Given an OpenAPI document, you can generate working TypeScript code and start up a server in seconds. (Or you can skip that step and write terse JavaScript code by hand.)
-- By default, the generated code returns random responses based on metadata in the OpenAPI document (e.g. it uses examples where provided).
-- Each endpoint is represented by a TypeScript / JavaScript file where the path to the file corresponds to the path of the endpoint.
-- You can change the implementation at any time by changing these files.
-- You can and should commit the generated code to source control. Files you change will not be overwritten when you start the server again. (The _types_ will be updated if the OpenAPI document changes, but you shouldn't need to edit the type definitions by hand.)
-- Put behavior in `_.context.ts` files. These are created for you, but you should modify them to suit your needs.
-- Use the REPL to manipulate the server's state at runtime.
-
-## We're Just Getting Started 🐣
-
-More features are coming soon:
-
-- Integrate Counterfact into your workflow (Express, Koa, Webpack Dev Server, etc.).
-- Use Counterfact in your automated tests.
-- Record API calls while testing the front end manually and reuse those calls in automated tests (à la [Playwright](https://playwright.dev/))
-- Use [HAR](https://toolbox.googleapps.com/apps/har_analyzer/) files to recreate scenarios / bugs encountered by real users.
-- Migration scripts to seed the server with test data or get it into a particular state, à la [Playwright](https://playwright.dev/).
-- A management console that doubles as a modern alternative to Swagger UI.
-
-Please send feedback / questions to pmcelhaney@gmail.com or [create a new issue](https://github.com/pmcelhaney/counterfact/issues/new).
-
-And yes, [contributions](../CONTRIBUTING.md) are welcome!
-
+```sh
+npx counterfact@latest openapi.yaml api --proxy-url https://uat.petstore.example.com
 ```
 
+From the REPL, you can toggle proxying at runtime:
+
 ```
+⬣> .proxy on /payments     # forward /payments to the real API
+⬣> .proxy off              # stop proxying everything
+```
+
+Type `.proxy help` in the REPL for the full list of proxy commands.
+
+---
+
+## Middleware
+
+Place a `_.middleware.ts` file in any `routes/` subdirectory to intercept requests and responses for that subtree. Middleware applies from the root down — a `_.middleware.ts` at the root runs for every request.
+
+```ts
+// routes/_.middleware.ts
+export async function middleware($, respondTo) {
+  const response = await respondTo($);
+  return response.header("X-Custom-Header", "Custom Value");
+}
+```
+
+`respondTo($)` passes the request to the next middleware layer or the route handler, and returns the response. You can modify `$` before calling `respondTo`, modify the response after, or both.
+
+---
+
+## What's Next
+
+Please send feedback to pmcelhaney@gmail.com or [open an issue](https://github.com/pmcelhaney/counterfact/issues/new). [Contributions](../CONTRIBUTING.md) are always welcome.
