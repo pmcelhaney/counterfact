@@ -253,7 +253,9 @@ This makes it fast to set up edge cases like:
 - What if there are zero results? What if there are 10,000?
 - What if the server is slow?
 
-Reproduce the scenario, open the file, change one line, and see the result.
+Find the file corresponding to the route, change behavior by editing the TypeScript code, and continue testing. 
+
+Depending on the scenario, you may want to commmit your changes to source control or throw them away. 
 
 ---
 
@@ -264,7 +266,7 @@ The REPL is a JavaScript prompt connected directly to the running server — lik
 ```
 ____ ____ _  _ _ _ ___ ____ ____ ____ ____ ____ ___
 |___ [__] |__| |\|  |  |=== |--< |--- |--| |___  |
-       High code, low effort mock REST APIs
+            Storybook for the back-end
 
 | API Base URL  ==> http://localhost:3100
 | Admin Console ==> http://localhost:3100/counterfact/
@@ -305,7 +307,7 @@ All standard HTTP methods are supported. Arguments are: path, body (where applic
 
 ## Proxy 🔀
 
-You can mix real backend calls with mocks — useful when some endpoints are finished and others aren't.
+You can mix real backend calls with mocks — useful when some endpoints are not finished or you need to test edge cases like 500 errors. 
 
 To proxy a single endpoint from within a route file:
 
@@ -316,16 +318,17 @@ export const GET: HTTP_GET = ($) => {
 };
 ```
 
-To proxy the entire API by default (and override specific routes with mocks), pass `--proxy-url` on the CLI:
+To set a proxy for then entire API at runtime pass `--proxy-url` on the CLI:
 
 ```sh
 npx counterfact@latest openapi.yaml api --proxy-url https://uat.petstore.example.com
 ```
 
-From the REPL, you can toggle proxying at runtime:
+From the REPL, you can toggle proxying for the whole API or specific routes:
 
 ```
 ⬣> .proxy on /payments     # forward /payments to the real API
+⬣> .proxy off /payments    # let Counterfact handle /payments
 ⬣> .proxy off              # stop proxying everything
 ```
 
