@@ -115,7 +115,7 @@ describe("a registry", () => {
   it("applies middlewares", async () => {
     const registry = new Registry();
 
-    registry.addMiddleware("", async ($: RequestDataWithBody, respondTo) => {
+    registry.addMiddleware("/", async ($: RequestDataWithBody, respondTo) => {
       const response = await respondTo($);
       response.body += " augmented";
       response.status = 201;
@@ -150,7 +150,7 @@ describe("a registry", () => {
   it("applies multiple middlewares", async () => {
     const registry = new Registry();
 
-    registry.addMiddleware("", async ($: RequestDataWithBody, respondTo) => {
+    registry.addMiddleware("/", async ($: RequestDataWithBody, respondTo) => {
       const response = await respondTo($);
       response.body += " root";
       return response;
@@ -186,6 +186,37 @@ describe("a registry", () => {
         )({ headers: {}, matchedPath: "", path: {}, query: {} })
       )?.body,
     ).toStrictEqual("users admin root");
+  });
+
+  it("applies root middleware to all routes", async () => {
+    const registry = new Registry();
+
+    registry.addMiddleware("/", async ($: RequestDataWithBody, respondTo) => {
+      const response = await respondTo($);
+      response.body += " from root";
+      return response;
+    });
+
+    registry.add("/devices", {
+      GET() {
+        return {
+          body: "devices",
+          headers: { "content-type": "text/plain" },
+          status: 200,
+        };
+      },
+    });
+
+    expect(
+      (
+        await registry.endpoint(
+          "GET",
+          "/devices",
+
+          // @ts-expect-error - not creating an entire request object
+        )({ headers: {}, matchedPath: "", path: {}, query: {} })
+      )?.body,
+    ).toStrictEqual("devices from root");
   });
 
   it("matches an endpoint where the case does not match", async () => {
