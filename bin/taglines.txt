@@ -45,3 +45,5 @@ the cloud natives are restless
 your front-end dev flight simulator
 your front-end’s sparring partner
 your back-end's stunt double
+deterministic vibe coding
+404 tagline not found

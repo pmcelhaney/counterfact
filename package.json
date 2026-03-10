@@ -1,6 +1,6 @@
 {
   "name": "counterfact",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "Generate a TypeScript-based mock server from an OpenAPI spec in seconds — with stateful routes, hot reload, and REPL support.",
   "type": "module",
   "main": "./dist/app.js",
@@ -95,7 +95,7 @@
     "@typescript-eslint/eslint-plugin": "^8.53.0",
     "@typescript-eslint/parser": "^8.53.0",
     "copyfiles": "2.4.1",
-    "eslint": "9.39.3",
+    "eslint": "9.39.4",
     "eslint-formatter-github-annotations": "0.1.0",
     "eslint-import-resolver-typescript": "4.4.4",
     "eslint-plugin-etc": "2.0.3",
