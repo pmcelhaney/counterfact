@@ -78,6 +78,20 @@ export function createKoaApp(
 
   app.use(bodyParser());
 
+  app.use(async (ctx, next) => {
+    await next();
+
+    if (
+      ctx.body !== null &&
+      ctx.body !== undefined &&
+      typeof ctx.body === "object" &&
+      !Buffer.isBuffer(ctx.body)
+    ) {
+      ctx.body = JSON.stringify(ctx.body, null, 2);
+      ctx.type = "application/json";
+    }
+  });
+
   app.use(koaMiddleware);
 
   return app;
