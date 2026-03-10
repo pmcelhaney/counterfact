@@ -218,7 +218,7 @@ async function main(source, destination) {
     "",
     "",
     "🔔 PLEASE READ: Feedback, Telemetry, and Privacy Discussion (10 March 2026)",
-    "   https://counterfact.dev/telemetry-discussion.html",
+    "   https://counterfact.dev/telemetry-discussion",
     "",
     "",
     watchMessage,
