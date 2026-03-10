@@ -1,5 +1,11 @@
 # counterfact
 
+## 2.1.0
+
+### Minor Changes
+
+- ca69418: adds a notice linking to important discussion: https://github.com/pmcelhaney/counterfact/discussions/1527
+
 ## 2.0.1
 
 ### Patch Changes
