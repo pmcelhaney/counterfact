@@ -219,7 +219,9 @@ export class Registry {
         if (path === null) return respondTo;
 
         const nextPath =
-          path === "" ? null : path.slice(0, path.lastIndexOf("/"));
+          path === "/" || path === ""
+            ? null
+            : path.slice(0, path.lastIndexOf("/")) || "/";
 
         const middleware = middlewares.get(path);
         if (middleware !== undefined) {
