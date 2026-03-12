@@ -17,6 +17,8 @@ GET http://localhost:3100/_counterfact/api/health
 {
   "status": "ok",
   "port": 3100,
+  "basePath": "/",
+  "routePrefix": "/_counterfact/api",
   "uptime": 456.78
 }
 ```

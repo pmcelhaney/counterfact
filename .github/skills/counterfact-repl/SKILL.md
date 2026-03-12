@@ -578,12 +578,18 @@ After setting proxy:
 **Recommendations:**
 
 - Only run Counterfact in development/testing environments
-- Do not expose Admin API to untrusted networks
-- Consider adding bearer token authentication if needed
+- Do not expose the Admin API to untrusted networks
+- Configure a bearer token when exposing the Admin API beyond local development
 - Be cautious with context updates from untrusted sources
 
-**Future enhancement:** Optional authentication via environment variable.
+**Current access controls:**
 
+- By default, the Admin API only listens on the loopback interface (localhost)
+- You can require a bearer token for all Admin API requests:
+  - CLI flag: `--admin-api-token <TOKEN_VALUE>`
+  - Environment variable: `COUNTERFACT_ADMIN_API_TOKEN=<TOKEN_VALUE>`
+- When a token is configured, clients must send:
+  - HTTP header: `Authorization: Bearer <TOKEN_VALUE>`
 ---
 
 ## Integration with OpenAPI

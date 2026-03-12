@@ -14,6 +14,28 @@ interface AdminApiResponse {
   message?: string;
 }
 
+function extractBearerToken(authorization?: string): string | undefined {
+  if (!authorization) return undefined;
+  const [scheme, token] = authorization.trim().split(/\s+/, 2);
+  if (!scheme || !token || scheme.toLowerCase() !== "bearer") return undefined;
+  return token;
+}
+
+function normalizeIp(ip?: string): string {
+  if (!ip) return "";
+  if (ip.startsWith("::ffff:")) return ip.slice("::ffff:".length);
+  return ip;
+}
+
+function isLoopbackIp(ip?: string): boolean {
+  const normalized = normalizeIp(ip);
+  return (
+    normalized === "127.0.0.1" ||
+    normalized === "::1" ||
+    normalized === "0:0:0:0:0:0:0:1"
+  );
+}
+
 /**
  * Admin API middleware for programmatic access to Counterfact internals.
  * Exposes context management, proxy configuration, and route discovery
@@ -35,6 +57,52 @@ export function adminApiMiddleware(
       return await next();
     }
 
+    // ===== Admin API Access Guard =====
+    // If an admin API token is configured, require Authorization: Bearer <token>.
+    // If not set, only allow loopback access.
+    const configuredToken = (
+      config.adminApiToken ??
+      process.env.COUNTERFACT_ADMIN_API_TOKEN ??
+      ""
+    ).trim();
+    const authHeader =
+      typeof ctx.get === "function"
+        ? ctx.get("authorization")
+        : (ctx.request.headers.authorization as string | undefined);
+    const providedToken = extractBearerToken(authHeader);
+
+    if (configuredToken) {
+      if (!providedToken || providedToken !== configuredToken) {
+        debug("Admin API unauthorized request: missing/invalid bearer token");
+        ctx.status = 401;
+        ctx.body = {
+          success: false,
+          error: "Unauthorized",
+          message: "Admin API requires a valid bearer token.",
+        } as AdminApiResponse;
+        return;
+      }
+    } else {
+      const requestIp = normalizeIp(
+        ctx.ip || ctx.request.ip || ctx.req.socket.remoteAddress,
+      );
+
+      if (!isLoopbackIp(requestIp)) {
+        debug(
+          "Admin API forbidden request from non-loopback IP: %s",
+          requestIp,
+        );
+        ctx.status = 403;
+        ctx.body = {
+          success: false,
+          error: "Forbidden",
+          message:
+            "Admin API is restricted to localhost unless an admin token is configured.",
+        } as AdminApiResponse;
+        return;
+      }
+    }
+
     debug("Admin API request: %s %s", ctx.method, pathname);
 
     // Extract route components: ["_counterfact", "api", "resource", ...rest]
@@ -50,7 +118,7 @@ export function adminApiMiddleware(
           uptime: process.uptime(),
           basePath: config.basePath,
           routePrefix: config.routePrefix,
-        };
+        } as AdminApiResponse;
         return;
       }
 
@@ -69,7 +137,7 @@ export function adminApiMiddleware(
             paths,
             contexts,
           },
-        };
+        } as AdminApiResponse;
         return;
       }
 
@@ -84,7 +152,7 @@ export function adminApiMiddleware(
             path,
             context,
           },
-        };
+        } as AdminApiResponse;
         return;
       }
 
@@ -93,12 +161,16 @@ export function adminApiMiddleware(
         const path = "/" + rest.join("/");
         const newContext = ctx.request.body;
 
-        if (!newContext || typeof newContext !== "object") {
+        if (
+          !newContext ||
+          typeof newContext !== "object" ||
+          Array.isArray(newContext)
+        ) {
           ctx.status = 400;
           ctx.body = {
             success: false,
-            error: "Request body must be a valid JSON object",
-          };
+            error: "Request body must be a valid, non-array JSON object",
+          } as AdminApiResponse;
           return;
         }
 
@@ -112,7 +184,7 @@ export function adminApiMiddleware(
             path,
             context: contextRegistry.find(path),
           },
-        };
+        } as AdminApiResponse;
         return;
       }
 
@@ -122,6 +194,7 @@ export function adminApiMiddleware(
           success: true,
           data: {
             alwaysFakeOptionals: config.alwaysFakeOptionals,
+            adminApiTokenConfigured: Boolean(configuredToken),
             basePath: config.basePath,
             buildCache: config.buildCache,
             generate: config.generate,
@@ -129,13 +202,14 @@ export function adminApiMiddleware(
             port: config.port,
             proxyUrl: config.proxyUrl,
             routePrefix: config.routePrefix,
+            startAdminApi: config.startAdminApi,
             startRepl: config.startRepl,
             startServer: config.startServer,
             watch: config.watch,
             // Don't expose proxyPaths Map directly, convert to array
             proxyPaths: Array.from(config.proxyPaths.entries()),
           },
-        };
+        } as AdminApiResponse;
         return;
       }
 
@@ -151,7 +225,7 @@ export function adminApiMiddleware(
             proxyUrl: config.proxyUrl,
             proxyPaths: Array.from(config.proxyPaths.entries()),
           },
-        };
+        } as AdminApiResponse;
         return;
       }
 
@@ -171,13 +245,22 @@ export function adminApiMiddleware(
           ctx.body = {
             success: false,
             error: "Request body must be a valid JSON object",
-          };
+          } as AdminApiResponse;
           return;
         }
 
         // Update proxy URL if provided
         if (body.proxyUrl !== undefined) {
-          config.proxyUrl = body.proxyUrl;
+          if (typeof body.proxyUrl !== "string") {
+            ctx.status = 400;
+            ctx.body = {
+              success: false,
+              error: "proxyUrl must be a string",
+            } as AdminApiResponse;
+            return;
+          }
+          const proxyUrl = body.proxyUrl.trim();
+          config.proxyUrl = proxyUrl;
           debug("Updated proxy URL to: %s", config.proxyUrl);
         }
 
@@ -198,7 +281,7 @@ export function adminApiMiddleware(
             proxyUrl: config.proxyUrl,
             proxyPaths: Array.from(config.proxyPaths.entries()),
           },
-        };
+        } as AdminApiResponse;
         return;
       }
 
@@ -209,7 +292,7 @@ export function adminApiMiddleware(
           data: {
             routes: registry.routes,
           },
-        };
+        } as AdminApiResponse;
         return;
       }
 
@@ -220,7 +303,7 @@ export function adminApiMiddleware(
         error: "Not found",
         path: pathname,
         message: `Unknown admin API endpoint: ${pathname}`,
-      };
+      } as AdminApiResponse;
     } catch (error) {
       // ===== 500 for Server Errors =====
       debug("Admin API error: %O", error);
@@ -232,7 +315,7 @@ export function adminApiMiddleware(
           error instanceof Error && process.env.NODE_ENV !== "production"
             ? error.stack
             : undefined,
-      };
+      } as AdminApiResponse;
     }
   };
 }

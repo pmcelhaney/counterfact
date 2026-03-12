@@ -136,6 +136,8 @@ async function main(source, destination) {
   const swaggerUrl = `${url}/counterfact/swagger/`;
 
   const config = {
+    adminApiToken:
+      options.adminApiToken ?? process.env.COUNTERFACT_ADMIN_API_TOKEN ?? "",
     alwaysFakeOptionals: options.alwaysFakeOptionals,
     basePath,
 
@@ -160,6 +162,7 @@ async function main(source, destination) {
     proxyPaths: new Map([["", Boolean(options.proxyUrl)]]),
     proxyUrl: options.proxyUrl ?? "",
     routePrefix: options.prefix,
+    startAdminApi: options.adminApi,
     startRepl: options.repl,
     startServer: options.serve,
     buildCache: options.buildCache || false,
@@ -302,8 +305,13 @@ program
   .option("--watch-routes", "generate + watch routes for changes")
   .option("-s, --serve", "start the server")
   .option("-b, --build-cache", "builds the cache of compiled routes and types")
+  .option("--no-admin-api", "disable the admin API at /_counterfact/api/*")
   .option("-r, --repl", "start the REPL")
   .option("--proxy-url <string>", "proxy URL")
+  .option(
+    "--admin-api-token <string>",
+    "bearer token required for /_counterfact/api/* endpoints (defaults to COUNTERFACT_ADMIN_API_TOKEN)",
+  )
   .option(
     "--prefix <string>",
     "base path from which routes will be served (e.g. /api/v1)",

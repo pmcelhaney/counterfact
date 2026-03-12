@@ -4,6 +4,7 @@ import { ContextRegistry } from "../../src/server/context-registry.js";
 import { Registry } from "../../src/server/registry.js";
 
 const createConfig = (): Config => ({
+  adminApiToken: "",
   alwaysFakeOptionals: false,
   basePath: "/test/path",
   buildCache: false,
@@ -18,6 +19,7 @@ const createConfig = (): Config => ({
   proxyPaths: new Map(),
   proxyUrl: "",
   routePrefix: "",
+  startAdminApi: true,
   startRepl: true,
   startServer: true,
 
@@ -29,9 +31,20 @@ const createConfig = (): Config => ({
 
 interface MockContext {
   body?: unknown;
+  get?: (name: string) => string;
+  ip?: string;
   method: string;
+  req: {
+    socket: {
+      remoteAddress?: string;
+    };
+  };
   request: {
     body?: unknown;
+    headers?: {
+      authorization?: string;
+    };
+    ip?: string;
   };
   status?: number;
   URL: {
@@ -43,12 +56,30 @@ const createMockContext = (
   method: string,
   pathname: string,
   body?: unknown,
+  options?: {
+    authorization?: string;
+    ip?: string;
+  },
 ): MockContext => ({
   body: undefined,
+  get: (name: string) =>
+    name.toLowerCase() === "authorization"
+      ? (options?.authorization ?? "")
+      : "",
+  ip: options?.ip ?? "127.0.0.1",
   method,
+  req: {
+    socket: {
+      remoteAddress: options?.ip ?? "127.0.0.1",
+    },
+  },
 
   request: {
     body,
+    headers: {
+      authorization: options?.authorization,
+    },
+    ip: options?.ip ?? "127.0.0.1",
   },
 
   status: undefined,
@@ -67,6 +98,84 @@ describe("adminApiMiddleware", () => {
     registry = new Registry();
     contextRegistry = new ContextRegistry();
     config = createConfig();
+  });
+
+  describe("Admin API Access Guard", () => {
+    it("returns 403 for non-loopback requests when no token is configured", async () => {
+      const middleware = adminApiMiddleware(registry, contextRegistry, config);
+      const ctx = createMockContext(
+        "GET",
+        "/_counterfact/api/health",
+        undefined,
+        {
+          ip: "203.0.113.10",
+        },
+      );
+
+      await middleware(ctx as any, async () => {
+        await Promise.resolve(undefined);
+      });
+
+      expect(ctx.status).toBe(403);
+      expect(ctx.body).toEqual({
+        error: "Forbidden",
+        message:
+          "Admin API is restricted to localhost unless an admin token is configured.",
+        success: false,
+      });
+    });
+
+    it("returns 401 when token is configured but missing or invalid", async () => {
+      config.adminApiToken = "secret-token";
+      const middleware = adminApiMiddleware(registry, contextRegistry, config);
+      const ctx = createMockContext(
+        "GET",
+        "/_counterfact/api/health",
+        undefined,
+        {
+          authorization: "Bearer wrong-token",
+          ip: "203.0.113.10",
+        },
+      );
+
+      await middleware(ctx as any, async () => {
+        await Promise.resolve(undefined);
+      });
+
+      expect(ctx.status).toBe(401);
+      expect(ctx.body).toEqual({
+        error: "Unauthorized",
+        message: "Admin API requires a valid bearer token.",
+        success: false,
+      });
+    });
+
+    it("allows requests with a valid bearer token", async () => {
+      config.adminApiToken = "secret-token";
+      const middleware = adminApiMiddleware(registry, contextRegistry, config);
+      const ctx = createMockContext(
+        "GET",
+        "/_counterfact/api/health",
+        undefined,
+        {
+          authorization: "Bearer secret-token",
+          ip: "203.0.113.10",
+        },
+      );
+
+      await middleware(ctx as any, async () => {
+        await Promise.resolve(undefined);
+      });
+
+      expect(ctx.status).toBeUndefined();
+      expect(ctx.body).toEqual({
+        basePath: "/test/path",
+        port: 3100,
+        routePrefix: "",
+        status: "ok",
+        uptime: expect.any(Number),
+      });
+    });
   });
 
   describe("Health Check", () => {
@@ -223,7 +332,7 @@ describe("adminApiMiddleware", () => {
 
       expect(ctx.status).toBe(400);
       expect(ctx.body).toEqual({
-        error: "Request body must be a valid JSON object",
+        error: "Request body must be a valid, non-array JSON object",
         success: false,
       });
     });
@@ -267,6 +376,7 @@ describe("adminApiMiddleware", () => {
 
       expect(ctx.body).toEqual({
         data: {
+          adminApiTokenConfigured: false,
           alwaysFakeOptionals: false,
           basePath: "/test/path",
           buildCache: false,
@@ -281,6 +391,7 @@ describe("adminApiMiddleware", () => {
           proxyPaths: [["/api", true]],
           proxyUrl: "https://example.com",
           routePrefix: "",
+          startAdminApi: true,
           startRepl: true,
           startServer: true,
 

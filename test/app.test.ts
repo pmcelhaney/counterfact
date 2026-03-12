@@ -13,6 +13,7 @@ const mockConfig = {
   generate: { routes: false, types: false },
   proxyPaths: new Map(),
   proxyUrl: "",
+  startAdminApi: false,
   startRepl: false,
   startServer: false,
   watch: { routes: false, types: false },
