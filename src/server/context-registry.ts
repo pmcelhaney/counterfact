@@ -70,4 +70,18 @@ export class ContextRegistry {
 
     this.cache.set(path, cloneDeep(updatedContext));
   }
+
+  public getAllPaths(): string[] {
+    return Array.from(this.entries.keys());
+  }
+
+  public getAllContexts(): Record<string, Context> {
+    const result: Record<string, Context> = {};
+
+    for (const [path, context] of this.entries.entries()) {
+      result[path] = context;
+    }
+
+    return result;
+  }
 }

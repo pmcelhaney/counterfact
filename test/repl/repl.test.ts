@@ -17,6 +17,7 @@ const CONFIG: Config = {
   proxyPaths: new Map([]),
   proxyUrl: "https://example.com/test",
   routePrefix: "",
+  startAdminApi: false,
   startRepl: false,
   startServer: true,
 
