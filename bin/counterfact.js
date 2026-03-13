@@ -173,7 +173,12 @@ async function main(source, destination) {
     },
   };
 
-  debug("loading counterfact (%o)", config);
+  const configForLogging = {
+    ...config,
+    adminApiToken: config.adminApiToken ? "[REDACTED]" : "",
+  };
+
+  debug("loading counterfact (%o)", configForLogging);
 
   let didMigrate = false;
   let didMigrateRouteTypes = false;
@@ -196,7 +201,7 @@ async function main(source, destination) {
 
   const { start } = await counterfact(config);
 
-  debug("loaded counterfact", config);
+  debug("loaded counterfact", configForLogging);
 
   // Migrate route type imports if needed
   debug("checking if route type migration is needed");
