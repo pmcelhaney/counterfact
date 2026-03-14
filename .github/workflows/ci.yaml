@@ -4,15 +4,39 @@ on:
   pull_request:
     branches:
       - main
-    paths-ignore:
-      - "**/*.md"
   workflow_dispatch:
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
+  filter:
+    name: Check Changed Files
+    runs-on: ubuntu-latest
+    outputs:
+      non-docs: ${{ steps.check.outputs.non-docs }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Detect non-docs changes
+        id: check
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "non-docs=true" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
+          NON_DOCS=$(echo "$CHANGED_FILES" | grep -vE '\.md$' | grep -v '^$')
+          if [ -n "$NON_DOCS" ]; then
+            echo "non-docs=true" >> $GITHUB_OUTPUT
+          else
+            echo "non-docs=false" >> $GITHUB_OUTPUT
+          fi
+
   ci-checks:
     name: CI Checks
+    needs: filter
+    if: needs.filter.outputs.non-docs == 'true'
     strategy:
       matrix:
         os: [windows-latest, ubuntu-latest]
