@@ -1,5 +1,12 @@
 # counterfact
 
+## 2.2.0
+
+### Minor Changes
+
+- 008f133: Admin API and Agent Skill
+- 23b219b: format JSON in HTTP responses for readability
+
 ## 2.1.0
 
 ### Minor Changes
