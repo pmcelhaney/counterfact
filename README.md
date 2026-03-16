@@ -2,7 +2,7 @@
 
 <img src="./counterfact.svg" alt="Counterfact" border=0>
 
-### Generate a TypeScript mock server from an OpenAPI spec in seconds —<br>with stateful routes, hot reload, and a live REPL.
+### Generate a TypeScript API simulator from an OpenAPI spec in seconds —<br>with stateful routes, hot reload, and a live REPL.
 
 <br>
 
