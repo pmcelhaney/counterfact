@@ -163,7 +163,7 @@ export class Registry {
     };
   }
 
-  private pathExistsWithAnyMethod(
+  public pathExistsWithAnyMethod(
     url: string,
     excludeMethod: HttpMethods,
   ): boolean {
@@ -172,7 +172,7 @@ export class Registry {
     );
   }
 
-  private allowedMethods(url: string): string {
+  public allowedMethods(url: string): string {
     return ALL_HTTP_METHODS.filter((method) =>
       Boolean(this.moduleTree.match(url, method)?.module?.[method]),
     ).join(", ");
@@ -194,25 +194,6 @@ export class Registry {
     const execute = handler.module?.[httpRequestMethod];
 
     if (!execute) {
-      const pathExists =
-        handler.module !== undefined ||
-        this.pathExistsWithAnyMethod(url, httpRequestMethod);
-
-      if (pathExists) {
-        const allowed = this.allowedMethods(url);
-
-        debug(
-          `Path ${url} exists but method ${httpRequestMethod} is not allowed\n`,
-        );
-
-        return () => ({
-          body: `The ${httpRequestMethod} method is not allowed for ${url}\n`,
-          contentType: "text/plain",
-          headers: { allow: allowed },
-          status: 405,
-        });
-      }
-
       debug(`Could not find a ${httpRequestMethod} method matching ${url}\n`);
       return () => ({
         body: `Could not find a ${httpRequestMethod} method matching ${url}\n`,
