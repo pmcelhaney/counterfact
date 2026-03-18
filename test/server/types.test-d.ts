@@ -103,7 +103,10 @@ expectNotAssignable<MaybePromise<string>>(Promise.resolve(42));
 
 // OmitValueWhenNever: keys whose value is `never` are removed from the type
 expectType<OmitValueWhenNever<{ a: string; b: never }>>({ a: "hello" });
-expectError<OmitValueWhenNever<{ a: string; b: never }>>({ a: "hello", b: "world" });
+expectError<OmitValueWhenNever<{ a: string; b: never }>>({
+  a: "hello",
+  b: "world",
+});
 
 // OmitValueWhenNever: keeps all keys when none are never
 expectType<OmitValueWhenNever<{ a: string; b: number }>>({ a: "hello", b: 42 });
