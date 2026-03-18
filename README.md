@@ -61,10 +61,10 @@ Most approaches fall into two categories:
 
 ## Quick Start
 
-Get a live API from an OpenAPI spec in seconds.
+Get a live API from an OpenAPI spec in seconds. Requires Node.js >= 17.0.0.
 
 ```bash
-npx counterfact openapi.yaml
+npx counterfact openapi.yaml --destination api/
 ```
 
 Your API is now running locally.
