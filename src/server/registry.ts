@@ -19,6 +19,17 @@ type HttpMethods =
   | "PUT"
   | "TRACE";
 
+const ALL_HTTP_METHODS: HttpMethods[] = [
+  "DELETE",
+  "GET",
+  "HEAD",
+  "OPTIONS",
+  "PATCH",
+  "POST",
+  "PUT",
+  "TRACE",
+];
+
 interface RequestData {
   auth?: {
     password?: string;
@@ -150,6 +161,21 @@ export class Registry {
       module: match?.module,
       path: match?.pathVariables ?? {},
     };
+  }
+
+  public pathExistsWithAnyMethod(
+    url: string,
+    excludeMethod: HttpMethods,
+  ): boolean {
+    return ALL_HTTP_METHODS.filter((method) => method !== excludeMethod).some(
+      (method) => this.moduleTree.match(url, method) !== undefined,
+    );
+  }
+
+  public allowedMethods(url: string): string {
+    return ALL_HTTP_METHODS.filter((method) =>
+      Boolean(this.moduleTree.match(url, method)?.module?.[method]),
+    ).join(", ");
   }
 
   public endpoint(

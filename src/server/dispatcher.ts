@@ -256,6 +256,19 @@ export class Dispatcher {
     }
 
     const { matchedPath } = this.registry.handler(path, method);
+
+    if (
+      !this.registry.exists(method, path) &&
+      this.registry.pathExistsWithAnyMethod(path, method)
+    ) {
+      return {
+        body: `The ${method} method is not allowed for ${path}\n`,
+        contentType: "text/plain",
+        headers: { allow: this.registry.allowedMethods(path) },
+        status: 405,
+      };
+    }
+
     const operation = this.operationForPathAndMethod(matchedPath, method);
 
     const continuousDistribution = (min: number, max: number) => {
