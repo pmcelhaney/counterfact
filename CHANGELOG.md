@@ -6,6 +6,10 @@
 
 - ca69418: adds a notice linking to important discussion: https://github.com/pmcelhaney/counterfact/discussions/1527
 
+### Patch Changes
+
+- 116ad26: Return HTTP 405 (Method Not Allowed) with an `Allow` header when the requested path is registered but the HTTP method has no handler. Previously these requests returned 404, making it impossible to distinguish "path not found" from "method not allowed".
+
 ## 2.0.1
 
 ### Patch Changes
