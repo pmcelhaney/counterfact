@@ -109,4 +109,4 @@ I build tools and systems to remove that friction—improving developer experien
 I’m currently exploring new opportunities in platform engineering and developer experience.
 
 → https://patrickmcelhaney.org
-</div>
+
