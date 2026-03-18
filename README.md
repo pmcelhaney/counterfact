@@ -77,8 +77,6 @@ That’s it—you can start building against it immediately, without waiting on 
 
 ---
 
-Built by Patrick McElhaney · Open to work → https://patrickmcelhaney.org
-
 ## How it works
 
 Counterfact reads your OpenAPI specification and generates a live API server.
