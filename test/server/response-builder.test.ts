@@ -280,7 +280,8 @@ describe("a response builder", () => {
     };
 
     it("returns the named example value for each content type", () => {
-      const response = createResponseBuilder(operation)[200]?.example("success");
+      const response =
+        createResponseBuilder(operation)[200]?.example("success");
 
       expect(response?.status).toBe(200);
       expect(response?.content).toStrictEqual([
