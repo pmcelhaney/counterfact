@@ -1,0 +1,91 @@
+name: Renovate Changesets
+
+on:
+  pull_request_target:
+    branches:
+      - main
+
+jobs:
+  generate-changeset:
+    runs-on: ubuntu-latest
+    if: |
+      github.actor == 'renovate[bot]' &&
+      github.event.pull_request.head.repo.full_name == github.repository
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
+          ref: ${{ github.event.pull_request.head.ref }}
+          token: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
+
+      - name: Configure Git
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+
+      - name: Generate changeset
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { promises: fs } = require("fs");
+
+            const branch = (await exec.getExecOutput("git branch --show-current")).stdout.trim();
+            if (!branch.startsWith("renovate/")) {
+              console.log("Not a renovate branch, skipping");
+              return;
+            }
+
+            const diffOutput = await exec.getExecOutput("git diff --name-only HEAD~1");
+            const diffFiles = diffOutput.stdout.trim().split("\n").filter(Boolean);
+
+            if (diffFiles.some((f) => f.startsWith(".changeset"))) {
+              console.log("Changeset already exists, skipping");
+              return;
+            }
+
+            const packageJsonFiles = diffFiles.filter((f) => f.endsWith("package.json"));
+            if (!packageJsonFiles.length) {
+              console.log("No package.json changes, skipping");
+              return;
+            }
+
+            const bumps = new Map();
+            for (const file of packageJsonFiles) {
+              const { stdout: changes } = await exec.getExecOutput("git", ["diff", "HEAD~1", "--", file]);
+              for (const change of changes.split("\n")) {
+                if (!change.startsWith("+") || change.startsWith("+++")) {
+                  continue;
+                }
+                const match = change.match(/"((?:@[^/]+\/)?[a-zA-Z0-9][a-zA-Z0-9._-]*)": ?"([^"]+)"/);
+                if (match) {
+                  const [, name, version] = match;
+                  if (/^[\^~>]?\d/.test(version)) {
+                    bumps.set(name, version);
+                  }
+                }
+              }
+            }
+
+            let message;
+            if (bumps.size) {
+              message = [...bumps.entries()]
+                .map(([pkg, version]) => `Updated dependency \`${pkg}\` to \`${version}\`.`)
+                .join("\n");
+            } else {
+              message = context.payload.pull_request.title;
+            }
+
+            const { stdout: shortHash } = await exec.getExecOutput("git rev-parse --short HEAD");
+            const fileName = `.changeset/renovate-${shortHash.trim()}.md`;
+
+            const body = `---\n'counterfact': patch\n---\n\n${message.trim()}\n`;
+            await fs.writeFile(fileName, body);
+
+            await exec.exec("git", ["add", fileName]);
+            await exec.exec("git", ["commit", "-m", "chore: add changeset for renovate dependency update"]);
+            await exec.exec("git", ["push"]);
