@@ -113,7 +113,7 @@ describe("a ResponsesTypeCoder", () => {
 
       const code = coder.writeCode(null);
 
-      expect(code).toContain('examples:');
+      expect(code).toContain("examples:");
       expect(code).toContain('"myExample": unknown');
     });
 
