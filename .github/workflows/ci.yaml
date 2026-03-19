@@ -51,3 +51,6 @@ jobs:
       - name: Black Box Tests
         timeout-minutes: 2
         run: yarn test:black-box --runInBand --forceExit --verbose --no-watchman --no-coverage
+      - name: Type Tests
+        timeout-minutes: 2
+        run: yarn build && yarn test:tsd
