@@ -110,6 +110,36 @@ export function createResponseBuilder(
         };
       },
 
+      example(this: ResponseBuilder, name: string) {
+        if (operation.produces) {
+          return unknownStatusCodeResponse(this.status);
+        }
+
+        const response =
+          operation.responses[this.status ?? "default"] ??
+          operation.responses.default;
+
+        if (response?.content === undefined) {
+          return unknownStatusCodeResponse(this.status);
+        }
+
+        const { content } = response;
+
+        return {
+          ...this,
+
+          content: Object.keys(content).map((type) => ({
+            body: convertToXmlIfNecessary(
+              type,
+              content[type]?.examples?.[name]?.value,
+              content[type]?.schema,
+            ),
+
+            type,
+          })),
+        };
+      },
+
       random(this: ResponseBuilder) {
         if (config?.alwaysFakeOptionals) {
           JSONSchemaFaker.option("alwaysFakeOptionals", true);

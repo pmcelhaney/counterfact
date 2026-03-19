@@ -205,6 +205,24 @@ declare const factory: ResponseBuilderFactory<Responses>;
 expectAssignable<(body: string) => unknown>(factory[200].json);
 expectAssignable<(body: string) => unknown>(factory[404].text);
 
+// GenericResponseBuilderInner: response with examples exposes `example` with typed names
+type ResponseWithExamples = {
+  content: { "application/json": { schema: string } };
+  examples: { namedExample1: unknown; namedExample2: unknown };
+  headers: {};
+  requiredHeaders: never;
+};
+
+declare const exampleBuilder: GenericResponseBuilderInner<ResponseWithExamples>;
+expectAssignable<(name: "namedExample1" | "namedExample2") => unknown>(
+  exampleBuilder.example,
+);
+expectError(exampleBuilder.example("unknownExample"));
+
+// GenericResponseBuilderInner: response without examples does not expose `example` method
+declare const noExampleBuilder: GenericResponseBuilderInner<JsonOnlyResponse>;
+expectError(noExampleBuilder.example);
+
 // OpenApiResponse: well-formed response satisfies the OpenApiResponse interface
 expectAssignable<OpenApiResponse>({
   content: {
