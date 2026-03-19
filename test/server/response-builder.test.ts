@@ -160,8 +160,9 @@ describe("a response builder", () => {
         },
       };
 
-      const response =
-        createResponseBuilder(operationWithRequiredHeaders)[200]?.random();
+      const response = createResponseBuilder(
+        operationWithRequiredHeaders,
+      )[200]?.random();
 
       expect(response?.status).toBe(200);
       expect(response?.headers?.["x-required-header"]).toBeDefined();
