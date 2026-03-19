@@ -135,7 +135,7 @@ export function createResponseBuilder(
         for (const [name, header] of Object.entries(response.headers ?? {})) {
           if (header.required && !(name in (this.headers ?? {}))) {
             generatedHeaders[name] = JSONSchemaFaker.generate(
-              header.schema ?? { type: "string" },
+              (header.schema ?? { type: "string" }) as object,
             ) as string;
           }
         }
