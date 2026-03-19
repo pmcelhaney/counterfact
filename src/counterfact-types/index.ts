@@ -246,6 +246,12 @@ interface OpenApiOperation {
         };
       };
       examples?: { [key: string]: unknown };
+      headers?: {
+        [name: string]: {
+          required?: boolean;
+          schema?: { [key: string]: unknown };
+        };
+      };
       schema?: { [key: string]: unknown };
     };
   };

@@ -130,6 +130,16 @@ export function createResponseBuilder(
 
         const { content } = response;
 
+        const generatedHeaders: { [name: string]: string } = {};
+
+        for (const [name, header] of Object.entries(response.headers ?? {})) {
+          if (header.required && !(name in (this.headers ?? {}))) {
+            generatedHeaders[name] = JSONSchemaFaker.generate(
+              header.schema ?? { type: "string" },
+            ) as string;
+          }
+        }
+
         return {
           ...this,
 
@@ -150,6 +160,11 @@ export function createResponseBuilder(
 
             type,
           })),
+
+          headers: {
+            ...generatedHeaders,
+            ...this.headers,
+          },
         };
       },
 

@@ -137,6 +137,63 @@ describe("a response builder", () => {
       // });
     });
 
+    it("fills in required headers when calling random()", () => {
+      const operationWithRequiredHeaders: OpenApiOperation = {
+        responses: {
+          200: {
+            content: {
+              "application/json": {
+                schema: { type: "object" },
+              },
+            },
+            headers: {
+              "x-required-header": {
+                required: true,
+                schema: { type: "string", examples: ["header-value"] },
+              },
+              "x-optional-header": {
+                required: false,
+                schema: { type: "string" },
+              },
+            },
+          },
+        },
+      };
+
+      const response =
+        createResponseBuilder(operationWithRequiredHeaders)[200]?.random();
+
+      expect(response?.status).toBe(200);
+      expect(response?.headers?.["x-required-header"]).toBeDefined();
+      expect(response?.headers?.["x-optional-header"]).toBeUndefined();
+    });
+
+    it("does not overwrite an already-set required header when calling random()", () => {
+      const operationWithRequiredHeaders: OpenApiOperation = {
+        responses: {
+          200: {
+            content: {
+              "application/json": {
+                schema: { type: "object" },
+              },
+            },
+            headers: {
+              "x-required-header": {
+                required: true,
+                schema: { type: "string" },
+              },
+            },
+          },
+        },
+      };
+
+      const response = createResponseBuilder(operationWithRequiredHeaders)[200]
+        ?.header("x-required-header", "already-set")
+        .random();
+
+      expect(response?.headers?.["x-required-header"]).toBe("already-set");
+    });
+
     it("correctly handles alwaysFakeOptionals option", () => {
       const operationWithoutExamples: OpenApiOperation = {
         responses: {
