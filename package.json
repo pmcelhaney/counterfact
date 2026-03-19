@@ -1,6 +1,6 @@
 {
   "name": "counterfact",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Generate a TypeScript-based mock server from an OpenAPI spec in seconds — with stateful routes, hot reload, and REPL support.",
   "type": "module",
   "main": "./dist/app.js",
@@ -111,7 +111,7 @@
     "eslint-plugin-security": "^4.0.0",
     "eslint-plugin-unused-imports": "4.4.1",
     "husky": "9.1.7",
-    "jest": "30.2.0",
+    "jest": "30.3.0",
     "jest-retries": "1.0.1",
     "node-mocks-http": "1.17.2",
     "rimraf": "6.1.3",

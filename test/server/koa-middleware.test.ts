@@ -21,6 +21,7 @@ const CONFIG: Config = {
   proxyPaths: new Map([]),
   proxyUrl: "",
   routePrefix: "",
+  startAdminApi: false,
   startRepl: false,
   startServer: true,
 
@@ -28,6 +29,8 @@ const CONFIG: Config = {
     routes: true,
     types: true,
   },
+  alwaysFakeOptionals: false,
+  buildCache: false,
 };
 
 const mockKoaProxy = (path: string, { target }: IBaseKoaProxiesOptions) =>

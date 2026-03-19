@@ -1,4 +1,5 @@
 export interface Config {
+  adminApiToken?: string;
   alwaysFakeOptionals: boolean;
   basePath: string;
   buildCache: boolean;
@@ -11,6 +12,7 @@ export interface Config {
   proxyPaths: Map<string, boolean>;
   proxyUrl: string;
   routePrefix: string;
+  startAdminApi: boolean;
   startRepl: boolean;
   startServer: boolean;
   watch: {

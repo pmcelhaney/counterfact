@@ -1,6 +1,21 @@
-import { expectType } from "tsd";
+import {
+  expectAssignable,
+  expectError,
+  expectNotAssignable,
+  expectType,
+} from "tsd";
 
-import type { OmitAll, IfHasKey } from "../../src/counterfact-types/index.ts";
+import type {
+  GenericResponseBuilderInner,
+  HttpStatusCode,
+  IfHasKey,
+  MaybePromise,
+  MediaType,
+  OmitAll,
+  OmitValueWhenNever,
+  OpenApiResponse,
+  ResponseBuilderFactory,
+} from "../../src/counterfact-types/index.ts";
 
 // test exact match
 expectType<
@@ -79,3 +94,122 @@ expectType<
     false
   >
 >(false);
+
+// MaybePromise: accepts direct value or Promise of that value
+expectAssignable<MaybePromise<string>>("hello");
+expectAssignable<MaybePromise<string>>(Promise.resolve("hello"));
+expectNotAssignable<MaybePromise<string>>(42);
+expectNotAssignable<MaybePromise<string>>(Promise.resolve(42));
+
+// OmitValueWhenNever: keys whose value is `never` are removed from the type
+expectType<OmitValueWhenNever<{ a: string; b: never }>>({ a: "hello" });
+expectError<OmitValueWhenNever<{ a: string; b: never }>>({
+  a: "hello",
+  b: "world",
+});
+
+// OmitValueWhenNever: keeps all keys when none are never
+expectType<OmitValueWhenNever<{ a: string; b: number }>>({ a: "hello", b: 42 });
+
+// HttpStatusCode: valid 2xx codes
+expectAssignable<HttpStatusCode>(200);
+expectAssignable<HttpStatusCode>(201);
+expectAssignable<HttpStatusCode>(204);
+
+// HttpStatusCode: valid 4xx codes
+expectAssignable<HttpStatusCode>(400);
+expectAssignable<HttpStatusCode>(401);
+expectAssignable<HttpStatusCode>(404);
+
+// HttpStatusCode: valid 5xx codes
+expectAssignable<HttpStatusCode>(500);
+expectAssignable<HttpStatusCode>(503);
+
+// HttpStatusCode: non-standard codes are not valid
+expectNotAssignable<HttpStatusCode>(999);
+expectNotAssignable<HttpStatusCode>(0);
+
+// MediaType: valid media types contain a slash
+expectAssignable<MediaType>("application/json");
+expectAssignable<MediaType>("text/html");
+expectAssignable<MediaType>("text/plain");
+expectAssignable<MediaType>("application/xml");
+
+// MediaType: strings without a slash are not valid media types
+expectNotAssignable<MediaType>("notamediatype");
+expectNotAssignable<MediaType>("");
+
+// GenericResponseBuilderInner: response with only JSON content exposes `json` but not `html` or `text`
+type JsonOnlyResponse = {
+  content: { "application/json": { schema: string } };
+  headers: {};
+  requiredHeaders: never;
+};
+
+declare const jsonBuilder: GenericResponseBuilderInner<JsonOnlyResponse>;
+expectAssignable<(body: string) => unknown>(jsonBuilder.json);
+expectError(jsonBuilder.html);
+expectError(jsonBuilder.text);
+
+// GenericResponseBuilderInner: response with only HTML content exposes `html` but not `json`
+type HtmlOnlyResponse = {
+  content: { "text/html": { schema: string } };
+  headers: {};
+  requiredHeaders: never;
+};
+
+declare const htmlBuilder: GenericResponseBuilderInner<HtmlOnlyResponse>;
+expectAssignable<(body: string) => unknown>(htmlBuilder.html);
+expectError(htmlBuilder.json);
+expectError(htmlBuilder.text);
+
+// GenericResponseBuilderInner: response with only plain-text content exposes `text` but not `json` or `html`
+type TextOnlyResponse = {
+  content: { "text/plain": { schema: string } };
+  headers: {};
+  requiredHeaders: never;
+};
+
+declare const textBuilder: GenericResponseBuilderInner<TextOnlyResponse>;
+expectAssignable<(body: string) => unknown>(textBuilder.text);
+expectError(textBuilder.json);
+expectError(textBuilder.html);
+
+// GenericResponseBuilderInner: response with headers exposes `header` method
+type ResponseWithHeaders = {
+  content: { "application/json": { schema: string } };
+  headers: { "x-custom": { schema: string } };
+  requiredHeaders: "x-custom";
+};
+
+declare const headerBuilder: GenericResponseBuilderInner<ResponseWithHeaders>;
+expectAssignable<(header: "x-custom", value: string) => unknown>(
+  headerBuilder.header,
+);
+
+// GenericResponseBuilderInner: response with no headers does not expose `header` method
+declare const noHeaderBuilder: GenericResponseBuilderInner<JsonOnlyResponse>;
+expectError(noHeaderBuilder.header);
+
+// ResponseBuilderFactory: status codes map to response builders
+type Responses = {
+  200: JsonOnlyResponse;
+  404: {
+    content: { "text/plain": { schema: string } };
+    headers: {};
+    requiredHeaders: never;
+  };
+};
+
+declare const factory: ResponseBuilderFactory<Responses>;
+expectAssignable<(body: string) => unknown>(factory[200].json);
+expectAssignable<(body: string) => unknown>(factory[404].text);
+
+// OpenApiResponse: well-formed response satisfies the OpenApiResponse interface
+expectAssignable<OpenApiResponse>({
+  content: {
+    "application/json": { schema: { type: "string" } },
+  },
+  headers: {},
+  requiredHeaders: "",
+});

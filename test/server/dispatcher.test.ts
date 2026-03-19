@@ -741,6 +741,62 @@ describe("given an invalid path", () => {
     );
   });
 
+  it("returns a 405 when the path exists but the method is not registered", async () => {
+    const registry = new Registry();
+
+    registry.add("/hello", {
+      GET() {
+        return {
+          body: "hello",
+          status: 200,
+        };
+      },
+    });
+
+    const dispatcher = new Dispatcher(registry, new ContextRegistry());
+
+    const response = await dispatcher.request({
+      body: "",
+      headers: {},
+      method: "POST",
+      path: "/hello",
+      query: {},
+      req: { path: "/hello" },
+    });
+
+    expect(response.status).toBe(405);
+    expect(response.body).toBe("The POST method is not allowed for /hello\n");
+    expect(response.headers?.allow).toBe("GET");
+  });
+
+  it("returns a 405 when a wildcard path exists but the method is not registered", async () => {
+    const registry = new Registry();
+
+    registry.add("/{id}", {
+      GET() {
+        return {
+          body: "hello",
+          status: 200,
+        };
+      },
+    });
+
+    const dispatcher = new Dispatcher(registry, new ContextRegistry());
+
+    const response = await dispatcher.request({
+      body: "",
+      headers: {},
+      method: "DELETE",
+      path: "/123",
+      query: {},
+      req: { path: "/123" },
+    });
+
+    expect(response.status).toBe(405);
+    expect(response.body).toBe("The DELETE method is not allowed for /123\n");
+    expect(response.headers?.allow).toBe("GET");
+  });
+
   it("responds with a 500 error if the handler function does not return", async () => {
     const registry = new Registry();
 
