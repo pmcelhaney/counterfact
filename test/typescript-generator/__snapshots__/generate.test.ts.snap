@@ -46,11 +46,13 @@ export type addPet = (
             schema: Pet;
           };
         };
+        examples: {};
       };
       405: {
         headers: never;
         requiredHeaders: never;
         content: never;
+        examples: {};
       };
     }>;
     x: WideOperationArgument;
@@ -96,21 +98,25 @@ export type updatePet = (
             schema: Pet;
           };
         };
+        examples: {};
       };
       400: {
         headers: never;
         requiredHeaders: never;
         content: never;
+        examples: {};
       };
       404: {
         headers: never;
         requiredHeaders: never;
         content: never;
+        examples: {};
       };
       405: {
         headers: never;
         requiredHeaders: never;
         content: never;
+        examples: {};
       };
     }>;
     x: WideOperationArgument;
@@ -186,11 +192,13 @@ export type findPetsByStatus = (
             schema: Array<Pet>;
           };
         };
+        examples: {};
       };
       400: {
         headers: never;
         requiredHeaders: never;
         content: never;
+        examples: {};
       };
     }>;
     x: WideOperationArgument;
@@ -264,11 +272,13 @@ export type findPetsByTags = (
             schema: Array<Pet>;
           };
         };
+        examples: {};
       };
       400: {
         headers: never;
         requiredHeaders: never;
         content: never;
+        examples: {};
       };
     }>;
     x: WideOperationArgument;
@@ -350,16 +360,19 @@ export type getPetById = (
             schema: Pet;
           };
         };
+        examples: {};
       };
       400: {
         headers: never;
         requiredHeaders: never;
         content: never;
+        examples: {};
       };
       404: {
         headers: never;
         requiredHeaders: never;
         content: never;
+        examples: {};
       };
     }>;
     x: WideOperationArgument;
@@ -401,6 +414,7 @@ export type updatePetWithForm = (
         headers: never;
         requiredHeaders: never;
         content: never;
+        examples: {};
       };
     }>;
     x: WideOperationArgument;
@@ -429,6 +443,7 @@ export type deletePet = (
         headers: never;
         requiredHeaders: never;
         content: never;
+        examples: {};
       };
     }>;
     x: WideOperationArgument;
@@ -495,6 +510,7 @@ export type uploadFile = (
             schema: ApiResponse;
           };
         };
+        examples: {};
       };
     }>;
     x: WideOperationArgument;
@@ -556,6 +572,7 @@ export type getInventory = (
             schema: { [key: string]: number };
           };
         };
+        examples: {};
       };
     }>;
     x: WideOperationArgument;
@@ -614,11 +631,13 @@ export type placeOrder = (
             schema: Order;
           };
         };
+        examples: {};
       };
       405: {
         headers: never;
         requiredHeaders: never;
         content: never;
+        examples: {};
       };
     }>;
     x: WideOperationArgument;
@@ -688,16 +707,19 @@ export type getOrderById = (
             schema: Order;
           };
         };
+        examples: {};
       };
       400: {
         headers: never;
         requiredHeaders: never;
         content: never;
+        examples: {};
       };
       404: {
         headers: never;
         requiredHeaders: never;
         content: never;
+        examples: {};
       };
     }>;
     x: WideOperationArgument;
@@ -739,11 +761,13 @@ export type deleteOrder = (
         headers: never;
         requiredHeaders: never;
         content: never;
+        examples: {};
       };
       404: {
         headers: never;
         requiredHeaders: never;
         content: never;
+        examples: {};
       };
     }>;
     x: WideOperationArgument;
@@ -811,6 +835,7 @@ export type createUser = (
             schema: User;
           };
         };
+        examples: {};
       };
     }>;
     x: WideOperationArgument;
@@ -878,11 +903,13 @@ export type createUsersWithListInput = (
             schema: User;
           };
         };
+        examples: {};
       };
       [statusCode in Exclude<HttpStatusCode, 200>]: {
         headers: never;
         requiredHeaders: never;
         content: never;
+        examples: {};
       };
     }>;
     x: WideOperationArgument;
@@ -954,11 +981,13 @@ export type loginUser = (
             schema: string;
           };
         };
+        examples: {};
       };
       400: {
         headers: never;
         requiredHeaders: never;
         content: never;
+        examples: {};
       };
     }>;
     x: WideOperationArgument;
@@ -1023,6 +1052,7 @@ export type logoutUser = (
         headers: never;
         requiredHeaders: never;
         content: never;
+        examples: {};
       };
     }>;
     x: WideOperationArgument;
@@ -1093,16 +1123,19 @@ export type getUserByName = (
             schema: User;
           };
         };
+        examples: {};
       };
       400: {
         headers: never;
         requiredHeaders: never;
         content: never;
+        examples: {};
       };
       404: {
         headers: never;
         requiredHeaders: never;
         content: never;
+        examples: {};
       };
     }>;
     x: WideOperationArgument;
@@ -1144,6 +1177,7 @@ export type updateUser = (
         headers: never;
         requiredHeaders: never;
         content: never;
+        examples: {};
       };
     }>;
     x: WideOperationArgument;
@@ -1172,11 +1206,13 @@ export type deleteUser = (
         headers: never;
         requiredHeaders: never;
         content: never;
+        examples: {};
       };
       404: {
         headers: never;
         requiredHeaders: never;
         content: never;
+        examples: {};
       };
     }>;
     x: WideOperationArgument;
@@ -1308,6 +1344,9 @@ export type HTTP_GET = (
             schema: string;
           };
         };
+        examples: {
+          root: unknown;
+        };
       };
     }>;
     x: WideOperationArgument;
@@ -1366,6 +1405,9 @@ export type HTTP_GET = (
             schema: string;
           };
         };
+        examples: {
+          "no visits": unknown;
+        };
       };
     }>;
     x: WideOperationArgument;
@@ -1423,6 +1465,9 @@ export type helloKitty = (
           "application/json": {
             schema: string;
           };
+        };
+        examples: {
+          "hello kitty": unknown;
         };
       };
     }>;
@@ -1483,6 +1528,10 @@ export type HTTP_GET = (
           "application/json": {
             schema: string;
           };
+        };
+        examples: {
+          "hello-example1": unknown;
+          "hello-example2": unknown;
         };
       };
     }>;
@@ -1546,6 +1595,7 @@ export type HTTP_GET = (
             schema: Recursive;
           };
         };
+        examples: {};
       };
       400: BadRequest;
     }>;
@@ -1609,6 +1659,7 @@ export type HTTP_GET = (
             schema: string;
           };
         };
+        examples: {};
       };
     }>;
     x: WideOperationArgument;
@@ -1647,6 +1698,7 @@ export type BadRequest = {
       schema: Error;
     };
   };
+  examples: {};
 };
 "
 `;

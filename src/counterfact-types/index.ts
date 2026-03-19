@@ -37,6 +37,7 @@ type OmitValueWhenNever<Base> = Pick<
 
 interface OpenApiResponse {
   content: { [key: MediaType]: OpenApiContent };
+  examples?: { [key: string]: unknown };
   headers: { [key: string]: OpenApiHeader };
   requiredHeaders: string;
 }
@@ -105,9 +106,16 @@ type RandomFunction<Response extends OpenApiResponse> = <
   Header extends string & keyof Response["headers"],
 >() => COUNTERFACT_RESPONSE;
 
+type ExampleNames<Response extends OpenApiResponse> = Response extends {
+  examples: infer E;
+}
+  ? keyof E & string
+  : never;
+
 interface ResponseBuilder {
   [status: number | `${number} ${string}`]: ResponseBuilder;
   content?: { body: unknown; type: string }[];
+  example: (name: string) => ResponseBuilder;
   header: (name: string, value: string) => ResponseBuilder;
   headers: { [name: string]: string };
   html: (body: unknown) => ResponseBuilder;
@@ -143,6 +151,9 @@ export type GenericResponseBuilderInner<
   random: [keyof Response["content"]] extends [never]
     ? never
     : RandomFunction<Response>;
+  example: [ExampleNames<Response>] extends [never]
+    ? never
+    : (name: ExampleNames<Response>) => COUNTERFACT_RESPONSE;
   text: MaybeShortcut<["text/plain"], Response>;
   xml: MaybeShortcut<["application/xml", "text/xml"], Response>;
 }>;
@@ -252,6 +263,7 @@ interface OpenApiOperation {
 }
 
 interface WideResponseBuilder {
+  example: (name: string) => WideResponseBuilder;
   header: (body: unknown) => WideResponseBuilder;
   html: (body: unknown) => WideResponseBuilder;
   json: (body: unknown) => WideResponseBuilder;
@@ -274,6 +286,7 @@ interface WideOperationArgument {
 export type { COUNTERFACT_RESPONSE };
 
 export type {
+  ExampleNames,
   HttpStatusCode,
   MaybePromise,
   MediaType,
