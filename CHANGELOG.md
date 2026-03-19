@@ -1,5 +1,17 @@
 # counterfact
 
+## 2.2.0
+
+### Minor Changes
+
+- 008f133: Admin API and Agent Skill
+- 23b219b: format JSON in HTTP responses for readability
+
+### Patch Changes
+
+- c92f975: Fixed Midleware matching all routes is not executed #1515
+- 86f1de2: Return HTTP 405 (Method Not Allowed) with an `Allow` header when the requested path is registered but the HTTP method has no handler. Previously these requests returned 404, making it impossible to distinguish "path not found" from "method not allowed".
+
 ## 2.1.0
 
 ### Minor Changes
