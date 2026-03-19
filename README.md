@@ -86,6 +86,16 @@ export const DELETE: HTTP_DELETE = ($) => {
 };
 ```
 
+### Returning named examples
+
+If your OpenAPI spec defines named examples, use `.example(name)` to return a specific one. The name is autocompleted and type-checked from your spec:
+
+```ts
+export const GET: HTTP_GET = ($) => {
+  return $.response[200].example("successResponse");
+};
+```
+
 ### Stateful mocks with context
 
 Use a `_.context.ts` file to share in-memory state across routes. POST data and GET it back, just like a real API.
