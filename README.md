@@ -2,8 +2,6 @@
 
 <img src="./counterfact.svg" alt="Counterfact" border=0>
 
-### Generate a TypeScript API simulator from an OpenAPI spec in seconds —<br>with stateful routes, hot reload, and a live REPL.
-
 <br>
 
 ![MIT License](https://img.shields.io/badge/license-MIT-blue) [![TypeScript](./typescript-badge.png)](https://github.com/ellerbrock/typescript-badges/) [![Coverage Status](https://coveralls.io/repos/github/pmcelhaney/counterfact/badge.svg)](https://coveralls.io/github/pmcelhaney/counterfact)
@@ -12,13 +10,25 @@
 
 ---
 
+**Counterfact instantly turns an [OpenAPI/Swagge](https://www.openapis.org) spec into a live, working API you can run locally.**
+
+Instead of waiting for a backend—or wiring up brittle mocks—it generates a server where every endpoint is backed by TypeScript code. Responses are valid by default, but fully customizable, and the system is stateful, interactive, and hot-reloading.
+
+It’s not just a mock server.
+
+It’s a controllable API environment you can shape in real time.
+
+> Built by Patrick McElhaney · Currently available for the right opportunity → https://patrickmcelhaney.org
+
+---
+
 ## Quick Start
 
 ```sh
-npx counterfact@latest https://petstore3.swagger.io/api/v3/openapi.json mock-api
+npx counterfact@latest https://petstore3.swagger.io/api/v3/openapi.json api
 ```
 
-That's it. Counterfact reads your OpenAPI spec, generates TypeScript route files in `mock-api/`, and starts a mock server — all in one command. Point it at your own spec instead of the Petstore whenever you're ready.
+That's it. Counterfact reads your OpenAPI spec, generates TypeScript route files in `api/`, and starts a mock server — all in one command. Point it at your own spec instead of the Petstore whenever you're ready.
 
 > **Requires Node ≥ 17.0.0**
 
@@ -26,10 +36,10 @@ That's it. Counterfact reads your OpenAPI spec, generates TypeScript route files
 
 ## Features
 
-- ⚡ **Zero config** — one command to generate and start a mock server
+- ⚡ **Zero config** — one command to generate and start a simulated api
 - 🔒 **Type-safe by default** — route handlers are typed directly from your OpenAPI spec
 - 🔄 **Hot reload** — edit route files while the server is running; state is preserved
-- 🧠 **Stateful mocks** — POST data and GET it back; share state across routes with context objects
+- 🧠 **State management** — POST data and GET it back; share state across routes with context objects
 - 🖥 **Live REPL** — inspect and modify server state from your terminal without touching files
 - 🔀 **Hybrid proxy** — route some paths to the real API while mocking others
 - 🎲 **Smart random data** — uses OpenAPI examples and schema metadata to generate realistic responses
@@ -86,7 +96,7 @@ export const DELETE: HTTP_DELETE = ($) => {
 };
 ```
 
-### Stateful mocks with context
+### State management with plain old objects
 
 Use a `_.context.ts` file to share in-memory state across routes. POST data and GET it back, just like a real API.
 
@@ -120,6 +130,8 @@ export const GET: HTTP_GET = ($) => {
   return $.response[200].json(pet);
 };
 ```
+
+You can also interact with the context object using a REPL. It's like DevTools on the server side. (See "Live REPL" below.)
 
 ---
 
@@ -155,7 +167,6 @@ npx counterfact@latest openapi.yaml mock-api --proxy-url https://api.example.com
 Every route handler is typed to match your OpenAPI spec. When the spec changes, regenerating the types surfaces any mismatches at compile time — before they become bugs.
 
 ```ts
-// $.response, $.path, $.query, $.body, $.headers are all fully typed
 export const GET: HTTP_GET = ($) => {
   return $.response[200]
     .header("x-request-id", $.headers["x-request-id"])
@@ -188,13 +199,17 @@ Run `npx counterfact --help` for the full list of options.
 
 ---
 
-## Why Counterfact?
+## About the Author
 
-API-first development lets frontend and backend teams work in parallel against the same spec. In practice, there's always a corner of the backend that isn't finished — or a scenario that's a pain to reproduce in a shared environment. Counterfact fills that gap.
+Counterfact came out of a pattern I kept seeing: teams are slowed down more by coordination than by code.
 
-Built by an engineer who spent decades writing frontend code and got tired of being blocked by unfinished APIs. It's the fastest way to get unstuck, prototype ideas, and remember what it feels like to ship.
+I’ve spent 25+ years building software and improving how engineering organizations operate across large enterprises, regulated industries, and complex systems. Most of that time, the real constraint wasn’t technology—it was dependency and coordination.
 
----
+Counterfact is one way of removing that friction.
+
+I’m currently available — not for long.
+
+→ https://patrickmcelhaney.org
 
 <div align="center" markdown="1">
 
