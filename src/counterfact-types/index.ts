@@ -286,6 +286,7 @@ interface WideOperationArgument {
 export type { COUNTERFACT_RESPONSE };
 
 export type {
+  ExampleNames,
   HttpStatusCode,
   MaybePromise,
   MediaType,

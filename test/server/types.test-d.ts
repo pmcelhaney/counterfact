@@ -6,6 +6,7 @@ import {
 } from "tsd";
 
 import type {
+  ExampleNames,
   GenericResponseBuilderInner,
   HttpStatusCode,
   IfHasKey,
@@ -212,6 +213,14 @@ type ResponseWithExamples = {
   headers: {};
   requiredHeaders: never;
 };
+
+// ExampleNames: extracts example names as a union of string literals
+expectAssignable<ExampleNames<ResponseWithExamples>>("namedExample1");
+expectAssignable<ExampleNames<ResponseWithExamples>>("namedExample2");
+expectNotAssignable<ExampleNames<ResponseWithExamples>>("unknownExample");
+
+// ExampleNames: returns `never` when no examples are defined
+expectNotAssignable<ExampleNames<JsonOnlyResponse>>("anything");
 
 declare const exampleBuilder: GenericResponseBuilderInner<ResponseWithExamples>;
 expectAssignable<(name: "namedExample1" | "namedExample2") => unknown>(
