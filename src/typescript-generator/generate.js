@@ -7,6 +7,7 @@ import createDebug from "debug";
 
 import { ensureDirectoryExists } from "../util/ensure-directory-exists.js";
 import { OperationCoder } from "./operation-coder.js";
+import { pruneRoutes } from "./prune.js";
 import { Repository } from "./repository.js";
 import { Specification } from "./specification.js";
 
@@ -71,6 +72,12 @@ export async function generate(
   const paths = await getPathsFromSpecification(specification);
 
   debug("got %i paths", paths.size);
+
+  if (generateOptions.prune && generateOptions.routes) {
+    debug("pruning defunct route files");
+    await pruneRoutes(destination, paths.keys());
+    debug("done pruning");
+  }
 
   const securityRequirement = specification.getRequirement(
     "#/components/securitySchemes",
