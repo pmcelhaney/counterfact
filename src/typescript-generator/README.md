@@ -1,8 +1,8 @@
-# TypeScript Generator
+# `src/typescript-generator/` — TypeScript Generator
 
-The files in this directory implement a command-line interface that take an Open API spec as input and translates it into TypeScript code. That TypeScript code includes types corresponding to each of the models ("components" or "schemas" in Open API parlance). It also scaffolds out an implementation of the spec in the form of TypeScript files that are read by Counterfact.
+The files in this directory implement a code generator that takes an OpenAPI spec as input and translates it into TypeScript code. That TypeScript code includes types corresponding to each of the models ("components" or "schemas" in OpenAPI parlance). It also scaffolds out an implementation of the spec in the form of TypeScript files that are read by Counterfact.
 
-A spec doesn't have enough information to build a _real_ implementation -- it only describes the interfaces -- but we use whatever information is available to get as close as we can to build a full implementation. When the specification has example responses, it will randomly select an example and return it. Otherwise it will generate a structurally valid albeit nonsensical response.
+A spec doesn't have enough information to build a _real_ implementation — it only describes the interfaces — but we use whatever information is available to get as close as we can to a full implementation. When the specification has example responses, it will randomly select an example and return it. Otherwise it will generate a structurally valid albeit nonsensical response.
 
 The idea is to generate as much code as we possibly can and then edit the code to fill in the details.
 
@@ -10,9 +10,68 @@ Fortunately, we _do_ have pretty much all the information we need to generate _t
 
 We can also use those types on the _client_ side, assuming the client is written in TypeScript.
 
+## Files
+
+| File | Description |
+|---|---|
+| `code-generator.ts` | Top-level `CodeGenerator` class; orchestrates the generate pipeline and file watching via `EventTarget` |
+| `generate.js` | Main async pipeline: reads the OpenAPI spec, iterates over paths/operations, and drives the `Repository` to write output files |
+| `specification.js` | `Specification` class: loads and parses an OpenAPI document and provides cached `Requirement` lookup via JSON Pointer |
+| `requirement.js` | `Requirement` class: wraps a single OpenAPI schema object with its URL and resolves `$ref` pointers |
+| `repository.js` | `Repository` class: manages all output `Script` instances, deduplicates them, and coordinates async export resolution |
+| `script.js` | `Script` class: manages code generation for a single output file — imports, exports, deduplication, and Prettier formatting |
+| `coder.js` | Abstract `Coder` base class: defines the Template Method pattern used by all code-generating components |
+| `type-coder.js` | Abstract `TypeCoder` base class (extends `Coder`): specialises `Coder` for type-generating components |
+| `operation-coder.js` | `OperationCoder`: generates the route handler function for an OpenAPI operation |
+| `operation-type-coder.js` | `OperationTypeCoder`: generates the TypeScript type for a route handler, including parameters and response builder |
+| `parameters-type-coder.js` | `ParametersTypeCoder`: generates the typed object for path/query/header parameters of an operation |
+| `parameter-export-type-coder.js` | `ParameterExportTypeCoder`: generates and exports the type for a single request parameter |
+| `responses-type-coder.js` | `ResponsesTypeCoder`: generates the response builder factory type covering all HTTP status codes for an operation |
+| `response-type-coder.js` | `ResponseTypeCoder`: generates the type for a single HTTP response, including headers, content, and named examples |
+| `schema-type-coder.js` | `SchemaTypeCoder`: converts an OpenAPI schema definition to a TypeScript type (objects, arrays, unions, enums) |
+| `schema-coder.js` | `SchemaCoder`: generates a JSON Schema representation of an OpenAPI schema for use in runtime validation |
+| `context-file-token.js` | Exports a placeholder token used to reference context file paths during code generation |
+| `printers.js` | Utility functions for formatting TypeScript object literals in generated code |
+| `read-only-comments.js` | Standard warning comments inserted into generated type files to discourage manual edits |
+
 ## Architecture
 
-A **Specifications** a list of **Requirements** encoded in an Open API file.
+```
+openapi.yaml
+     │
+     ▼
+┌─────────────────┐
+│  Specification  │  Loads & parses the OpenAPI document
+│  + Requirement  │  Provides JSON-Pointer-based object lookup
+└────────┬────────┘
+         │ Requirements
+         ▼
+┌──────────────────────────────────────────────────────┐
+│                      Coders                          │
+│                                                      │
+│  OperationCoder ──▶ OperationTypeCoder               │
+│       │                    │                         │
+│       │             ParametersTypeCoder              │
+│       │             ResponsesTypeCoder               │
+│       │                    │                         │
+│       │             SchemaTypeCoder / SchemaCoder    │
+│       │                                              │
+│       └──▶ Script (one per output file)              │
+└──────────────────┬───────────────────────────────────┘
+                   │ Scripts
+                   ▼
+          ┌────────────────┐
+          │   Repository   │  Deduplicates and writes output files
+          └────────────────┘
+                   │
+          ┌────────▼────────────────────────┐
+          │  routes/hello-world.ts          │  (route handler scaffold)
+          │  types/paths/hello-world.ts     │  (typed interfaces)
+          │  components/schemas/Message.ts  │  (schema types)
+          └─────────────────────────────────┘
+```
+
+A **Specification** is a list of **Requirements** encoded in an OpenAPI file.
 
 A **Repository** is a set of **Scripts** that will be output.
 
