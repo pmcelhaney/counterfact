@@ -15,6 +15,10 @@ Handlebars.registerHelper("escape_route", (route: string) =>
   route.replaceAll(/[^\w/]/gu, "-"),
 );
 
+Handlebars.registerHelper("json", (context: unknown) =>
+  JSON.stringify(context),
+);
+
 export function pageMiddleware(
   pathname: string,
   templateName: string,

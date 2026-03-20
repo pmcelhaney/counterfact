@@ -83,6 +83,21 @@ export function createKoaApp(
     }),
   );
 
+  app.use(
+    pageMiddleware("/counterfact/test-api", "api-tester", {
+      basePath: config.basePath,
+      routePrefix: config.routePrefix,
+      proxyUrl: config.proxyUrl,
+
+      get routes() {
+        return registry.routes.map((route) => ({
+          path: route.path,
+          methods: Object.keys(route.methods).filter((m) => route.methods[m]),
+        }));
+      },
+    }),
+  );
+
   app.use(bodyParser());
 
   app.use(async (ctx, next) => {

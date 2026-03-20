@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Counterfact API Tester</title>
+    <meta charset="utf-8">
+    <meta name="description" content="Counterfact API Testing Interface" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Vue.js 3 from CDN -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <style type="text/css">
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        background-color: #f5f5f5;
+        color: #333;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      #app {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+      }
+
+      /* Header */
+      .header {
+        background: linear-gradient(135deg, #0071b5 0%, #005a8c 100%);
+        color: white;
+        padding: 1rem 1.5rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .header h1 {
+        font-size: 1.5rem;
+        font-weight: 600;
+      }
+
+      .header-nav {
+        display: flex;
+        gap: 1rem;
+      }
+
+      .header-nav a {
+        color: white;
+        text-decoration: none;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        transition: background-color 0.2s;
+      }
+
+      .header-nav a:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+      }
+
+      /* Main Layout */
+      .main-container {
+        display: flex;
+        flex: 1;
+        overflow: hidden;
+      }
+
+      /* Sidebar */
+      .sidebar {
+        width: 300px;
+        background: white;
+        border-right: 1px solid #e0e0e0;
+        overflow-y: auto;
+        padding: 1rem;
+      }
+
+      .sidebar h2 {
+        font-size: 1rem;
+        margin-bottom: 1rem;
+        color: #666;
+        text-transform: uppercase;
+        font-weight: 600;
+      }
+
+      .route-list {
+        list-style: none;
+      }
+
+      .route-item {
+        padding: 0.75rem;
+        margin-bottom: 0.5rem;
+        border-radius: 4px;
+        cursor: pointer;
+        border: 1px solid #e0e0e0;
+        transition: all 0.2s;
+      }
+
+      .route-item:hover {
+        background-color: #f9f9f9;
+        border-color: #0071b5;
+      }
+
+      .route-item.active {
+        background-color: #e3f2fd;
+        border-color: #0071b5;
+      }
+
+      .route-path {
+        font-family: 'Courier New', monospace;
+        font-size: 0.9rem;
+        margin-bottom: 0.25rem;
+        font-weight: 600;
+      }
+
+      .route-methods {
+        display: flex;
+        gap: 0.25rem;
+        flex-wrap: wrap;
+      }
+
+      .method-badge {
+        padding: 0.125rem 0.5rem;
+        border-radius: 3px;
+        font-size: 0.7rem;
+        font-weight: 600;
+        color: white;
+      }
+
+      .method-GET { background-color: #61affe; }
+      .method-POST { background-color: #49cc90; }
+      .method-PUT { background-color: #fca130; }
+      .method-DELETE { background-color: #f93e3e; }
+      .method-PATCH { background-color: #50e3c2; }
+
+      /* Content Area */
+      .content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      /* Request Builder */
+      .request-builder {
+        background: white;
+        padding: 1.5rem;
+        border-bottom: 1px solid #e0e0e0;
+      }
+
+      .request-row {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1rem;
+        align-items: center;
+      }
+
+      .method-select {
+        padding: 0.5rem 1rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-weight: 600;
+        font-size: 1rem;
+        background: white;
+        cursor: pointer;
+        min-width: 120px;
+      }
+
+      .url-input {
+        flex: 1;
+        padding: 0.5rem 1rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-family: 'Courier New', monospace;
+        font-size: 1rem;
+      }
+
+      .send-button {
+        padding: 0.5rem 2rem;
+        background: #0071b5;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.2s;
+      }
+
+      .send-button:hover {
+        background: #005a8c;
+      }
+
+      .send-button:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+      }
+
+      .tabs {
+        display: flex;
+        gap: 0.5rem;
+        border-bottom: 2px solid #e0e0e0;
+      }
+
+      .tab {
+        padding: 0.75rem 1.5rem;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        font-weight: 500;
+        color: #666;
+        border-bottom: 3px solid transparent;
+        transition: all 0.2s;
+      }
+
+      .tab:hover {
+        color: #0071b5;
+      }
+
+      .tab.active {
+        color: #0071b5;
+        border-bottom-color: #0071b5;
+      }
+
+      .tab-content {
+        padding: 1rem 0;
+      }
+
+      .textarea-input {
+        width: 100%;
+        min-height: 150px;
+        padding: 0.75rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-family: 'Courier New', monospace;
+        font-size: 0.9rem;
+        resize: vertical;
+      }
+
+      .header-input-group {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .header-input-group input {
+        flex: 1;
+        padding: 0.5rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-family: 'Courier New', monospace;
+      }
+
+      .add-button, .remove-button {
+        padding: 0.5rem 1rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        background: white;
+        cursor: pointer;
+        font-size: 0.9rem;
+      }
+
+      .add-button:hover {
+        background: #f0f0f0;
+      }
+
+      .remove-button {
+        background: #fee;
+        border-color: #f93e3e;
+        color: #f93e3e;
+      }
+
+      .remove-button:hover {
+        background: #fdd;
+      }
+
+      /* Response Viewer */
+      .response-viewer {
+        flex: 1;
+        background: white;
+        padding: 1.5rem;
+        overflow-y: auto;
+      }
+
+      .response-info {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+        padding: 1rem;
+        background: #f9f9f9;
+        border-radius: 4px;
+      }
+
+      .status-badge {
+        padding: 0.25rem 0.75rem;
+        border-radius: 4px;
+        font-weight: 600;
+        font-size: 0.9rem;
+      }
+
+      .status-success {
+        background: #d4edda;
+        color: #155724;
+      }
+
+      .status-error {
+        background: #f8d7da;
+        color: #721c24;
+      }
+
+      .response-content {
+        background: #f5f5f5;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+        padding: 1rem;
+        overflow-x: auto;
+      }
+
+      .response-content pre {
+        margin: 0;
+        font-family: 'Courier New', monospace;
+        font-size: 0.9rem;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+      }
+
+      /* Proxy Control */
+      .proxy-control {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 0.75rem 1rem;
+        background: #fff3cd;
+        border: 1px solid #ffc107;
+        border-radius: 4px;
+        margin-bottom: 1rem;
+      }
+
+      .proxy-label {
+        font-weight: 600;
+        color: #856404;
+      }
+
+      .toggle-switch {
+        position: relative;
+        width: 50px;
+        height: 24px;
+        background: #ccc;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: background 0.3s;
+      }
+
+      .toggle-switch.active {
+        background: #0071b5;
+      }
+
+      .toggle-switch::after {
+        content: '';
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 20px;
+        height: 20px;
+        background: white;
+        border-radius: 50%;
+        transition: transform 0.3s;
+      }
+
+      .toggle-switch.active::after {
+        transform: translateX(26px);
+      }
+
+      .proxy-url-input {
+        flex: 1;
+        padding: 0.5rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-family: 'Courier New', monospace;
+      }
+
+      /* Context Viewer */
+      .context-viewer {
+        margin-top: 1rem;
+        padding: 1rem;
+        background: #f9f9f9;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+      }
+
+      .context-viewer h3 {
+        margin-bottom: 0.5rem;
+        font-size: 1rem;
+        color: #666;
+      }
+
+      .empty-state {
+        text-align: center;
+        padding: 3rem;
+        color: #999;
+      }
+
+      .empty-state svg {
+        width: 64px;
+        height: 64px;
+        margin-bottom: 1rem;
+        opacity: 0.3;
+      }
+
+      /* Scrollbar styling */
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 4px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: #555;
+      }
+
+      .info-banner {
+        background: #e3f2fd;
+        border: 1px solid #90caf9;
+        border-radius: 4px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        font-size: 0.9rem;
+        color: #1565c0;
+      }
+
+      .code-link {
+        display: inline-block;
+        margin-top: 0.5rem;
+        padding: 0.5rem 1rem;
+        background: #0071b5;
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+        font-size: 0.9rem;
+      }
+
+      .code-link:hover {
+        background: #005a8c;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <!-- Header -->
+      <div class="header">
+        <h1>🧪 Counterfact API Tester</h1>
+        <div class="header-nav">
+          <a href="/counterfact">Dashboard</a>
+          <a href="/counterfact/swagger" target="_blank">Swagger UI</a>
+          <a href="/counterfact/openapi" target="_blank">OpenAPI Spec</a>
+        </div>
+      </div>
+
+      <!-- Main Container -->
+      <div class="main-container">
+        <!-- Sidebar: Route List -->
+        <div class="sidebar">
+          <h2>API Routes</h2>
+          <ul class="route-list">
+            <li
+              v-for="route in routes"
+              :key="route.path"
+              :class="['route-item', { active: selectedRoute?.path === route.path }]"
+              @click="selectRoute(route)"
+            >
+              <div class="route-path">\{{ route.path }}</div>
+              <div class="route-methods">
+                <span
+                  v-for="method in route.methods"
+                  :key="method"
+                  :class="['method-badge', `method-${method}`]"
+                >\{{ method }}</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Content Area -->
+        <div class="content">
+          <!-- Empty State -->
+          <div v-if="!selectedRoute" class="empty-state">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M11,16.5L6.5,12L7.91,10.59L11,13.67L16.59,8.09L18,9.5L11,16.5Z"/>
+            </svg>
+            <h2>Select a route to get started</h2>
+            <p>Choose an API endpoint from the sidebar to test it</p>
+          </div>
+
+          <!-- Request Builder -->
+          <div v-if="selectedRoute" class="request-builder">
+            <div class="info-banner">
+              <strong>📝 Route Handler:</strong> This endpoint is backed by TypeScript code.
+              <a :href="`vscode://file/{{basePath}}/routes${selectedRoute.path}.ts`" class="code-link">
+                Edit in VSCode
+              </a>
+            </div>
+
+            <!-- Proxy Control -->
+            <div class="proxy-control">
+              <span class="proxy-label">Proxy:</span>
+              <div
+                :class="['toggle-switch', { active: proxyEnabled }]"
+                @click="toggleProxy"
+              ></div>
+              <input
+                v-if="proxyEnabled"
+                type="text"
+                class="proxy-url-input"
+                v-model="proxyUrl"
+                placeholder="https://api.example.com"
+              />
+              <span v-if="proxyEnabled" style="color: #856404;">
+                ⚠️ Requests will be forwarded to proxy
+              </span>
+              <span v-else style="color: #28a745;">
+                ✓ Using mock implementation
+              </span>
+            </div>
+
+            <!-- Request Row -->
+            <div class="request-row">
+              <select class="method-select" v-model="requestMethod">
+                <option v-for="method in selectedRoute.methods" :key="method" :value="method">
+                  \{{ method }}
+                </option>
+              </select>
+              <input
+                type="text"
+                class="url-input"
+                v-model="requestPath"
+                placeholder="/api/path"
+              />
+              <button class="send-button" @click="sendRequest" :disabled="loading">
+                \{{ loading ? 'Sending...' : 'Send' }}
+              </button>
+            </div>
+
+            <!-- Tabs for Request Details -->
+            <div class="tabs">
+              <button
+                :class="['tab', { active: activeTab === 'headers' }]"
+                @click="activeTab = 'headers'"
+              >
+                Headers
+              </button>
+              <button
+                :class="['tab', { active: activeTab === 'body' }]"
+                @click="activeTab = 'body'"
+              >
+                Body
+              </button>
+              <button
+                :class="['tab', { active: activeTab === 'context' }]"
+                @click="activeTab = 'context'"
+              >
+                Context
+              </button>
+            </div>
+
+            <!-- Tab Content -->
+            <div class="tab-content">
+              <!-- Headers Tab -->
+              <div v-if="activeTab === 'headers'">
+                <div
+                  v-for="(header, index) in requestHeaders"
+                  :key="index"
+                  class="header-input-group"
+                >
+                  <input
+                    type="text"
+                    v-model="header.key"
+                    placeholder="Header name"
+                  />
+                  <input
+                    type="text"
+                    v-model="header.value"
+                    placeholder="Header value"
+                  />
+                  <button class="remove-button" @click="removeHeader(index)">×</button>
+                </div>
+                <button class="add-button" @click="addHeader">+ Add Header</button>
+              </div>
+
+              <!-- Body Tab -->
+              <div v-if="activeTab === 'body'">
+                <textarea
+                  class="textarea-input"
+                  v-model="requestBody"
+                  placeholder='{ "key": "value" }'
+                ></textarea>
+              </div>
+
+              <!-- Context Tab -->
+              <div v-if="activeTab === 'context'">
+                <p style="margin-bottom: 0.5rem; color: #666;">
+                  View and edit the context object for this route. Changes will affect all subsequent requests.
+                </p>
+                <textarea
+                  class="textarea-input"
+                  v-model="contextData"
+                  placeholder='{ "state": "data" }'
+                  style="min-height: 200px;"
+                ></textarea>
+                <button class="send-button" @click="updateContext" style="margin-top: 0.5rem;">
+                  Update Context
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Response Viewer -->
+          <div v-if="response" class="response-viewer">
+            <h2 style="margin-bottom: 1rem;">Response</h2>
+
+            <div class="response-info">
+              <div>
+                <span
+                  :class="['status-badge', response.status >= 200 && response.status < 300 ? 'status-success' : 'status-error']"
+                >
+                  \{{ response.status }} \{{ response.statusText }}
+                </span>
+              </div>
+              <div style="color: #666;">
+                Time: \{{ response.time }}ms
+              </div>
+            </div>
+
+            <!-- Response Headers -->
+            <div style="margin-bottom: 1rem;">
+              <h3 style="margin-bottom: 0.5rem; color: #666;">Headers</h3>
+              <div class="response-content">
+                <pre>\{{ formatHeaders(response.headers) }}</pre>
+              </div>
+            </div>
+
+            <!-- Response Body -->
+            <div>
+              <h3 style="margin-bottom: 0.5rem; color: #666;">Body</h3>
+              <div class="response-content">
+                <pre>\{{ formatBody(response.body) }}</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const { createApp } = Vue;
+
+      createApp({
+        data() {
+          return {
+            routes: {{{json routes}}},
+            basePath: '{{basePath}}',
+            baseUrl: window.location.origin + '{{routePrefix}}',
+            selectedRoute: null,
+            requestMethod: 'GET',
+            requestPath: '',
+            requestHeaders: [
+              { key: 'Content-Type', value: 'application/json' }
+            ],
+            requestBody: '',
+            response: null,
+            loading: false,
+            activeTab: 'headers',
+            proxyEnabled: false,
+            proxyUrl: '{{proxyUrl}}',
+            contextData: ''
+          };
+        },
+        methods: {
+          selectRoute(route) {
+            this.selectedRoute = route;
+            this.requestMethod = route.methods[0];
+            this.requestPath = this.baseUrl + route.path;
+            this.response = null;
+            this.loadContext();
+          },
+
+          async sendRequest() {
+            this.loading = true;
+            const startTime = performance.now();
+
+            try {
+              // Build headers object
+              const headers = {};
+              this.requestHeaders.forEach(h => {
+                if (h.key && h.value) {
+                  headers[h.key] = h.value;
+                }
+              });
+
+              const options = {
+                method: this.requestMethod,
+                headers
+              };
+
+              // Add body for POST, PUT, PATCH
+              if (['POST', 'PUT', 'PATCH'].includes(this.requestMethod) && this.requestBody) {
+                options.body = this.requestBody;
+              }
+
+              const response = await fetch(this.requestPath, options);
+              const endTime = performance.now();
+
+              const contentType = response.headers.get('content-type');
+              let body;
+
+              if (contentType && contentType.includes('application/json')) {
+                body = await response.json();
+              } else {
+                body = await response.text();
+              }
+
+              this.response = {
+                status: response.status,
+                statusText: response.statusText,
+                headers: Object.fromEntries(response.headers.entries()),
+                body,
+                time: Math.round(endTime - startTime)
+              };
+            } catch (error) {
+              this.response = {
+                status: 0,
+                statusText: 'Error',
+                headers: {},
+                body: error.message,
+                time: Math.round(performance.now() - startTime)
+              };
+            } finally {
+              this.loading = false;
+            }
+          },
+
+          async loadContext() {
+            if (!this.selectedRoute) return;
+
+            try {
+              const response = await fetch(`/_counterfact/api/contexts${this.selectedRoute.path}`);
+              const data = await response.json();
+
+              if (data.success && data.data.context) {
+                this.contextData = JSON.stringify(data.data.context, null, 2);
+              } else {
+                this.contextData = '{}';
+              }
+            } catch (error) {
+              console.error('Failed to load context:', error);
+              this.contextData = '{}';
+            }
+          },
+
+          async updateContext() {
+            if (!this.selectedRoute) return;
+
+            try {
+              const context = JSON.parse(this.contextData);
+              const response = await fetch(`/_counterfact/api/contexts${this.selectedRoute.path}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(context)
+              });
+
+              const data = await response.json();
+
+              if (data.success) {
+                alert('Context updated successfully!');
+              } else {
+                alert('Failed to update context: ' + (data.error || 'Unknown error'));
+              }
+            } catch (error) {
+              alert('Failed to update context: ' + error.message);
+            }
+          },
+
+          async toggleProxy() {
+            this.proxyEnabled = !this.proxyEnabled;
+
+            try {
+              await fetch('/_counterfact/api/config/proxy', {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  proxyPaths: [[this.selectedRoute.path, this.proxyEnabled]]
+                })
+              });
+            } catch (error) {
+              console.error('Failed to toggle proxy:', error);
+            }
+          },
+
+          addHeader() {
+            this.requestHeaders.push({ key: '', value: '' });
+          },
+
+          removeHeader(index) {
+            this.requestHeaders.splice(index, 1);
+          },
+
+          formatHeaders(headers) {
+            return Object.entries(headers)
+              .map(([key, value]) => `${key}: ${value}`)
+              .join('\n');
+          },
+
+          formatBody(body) {
+            if (typeof body === 'object') {
+              return JSON.stringify(body, null, 2);
+            }
+            return body;
+          }
+        }
+      }).mount('#app');
+    </script>
+  </body>
+</html>
