@@ -15,9 +15,7 @@ describe("openapiMiddleware", () => {
       async (_, { path }) => {
         const app = new Koa();
 
-        app.use(
-          openapiMiddleware(path("openapi.yaml"), "//localhost:3100"),
-        );
+        app.use(openapiMiddleware(path("openapi.yaml"), "//localhost:3100"));
 
         const response = await request(app.callback()).get(
           "/counterfact/openapi",
@@ -40,9 +38,7 @@ describe("openapiMiddleware", () => {
       async (_, { path }) => {
         const app = new Koa();
 
-        app.use(
-          openapiMiddleware(path("openapi.yaml"), "//localhost:3100"),
-        );
+        app.use(openapiMiddleware(path("openapi.yaml"), "//localhost:3100"));
 
         const response = await request(app.callback()).get(
           "/counterfact/openapi",
@@ -94,9 +90,7 @@ describe("openapiMiddleware", () => {
       async (_, { path }) => {
         const app = new Koa();
 
-        app.use(
-          openapiMiddleware(path("openapi.yaml"), "//localhost:3100"),
-        );
+        app.use(openapiMiddleware(path("openapi.yaml"), "//localhost:3100"));
 
         const response = await request(app.callback()).get(
           "/counterfact/openapi",
@@ -124,9 +118,8 @@ describe("openapiMiddleware", () => {
 
         // The external $ref should be resolved - schema should have type: object
         expect(
-          doc.paths["/metrics"].get.responses["200"].content[
-            "application/json"
-          ].schema.type,
+          doc.paths["/metrics"].get.responses["200"].content["application/json"]
+            .schema.type,
         ).toBe("object");
       },
     );
@@ -141,9 +134,7 @@ describe("openapiMiddleware", () => {
       async (_, { path }) => {
         const app = new Koa();
 
-        app.use(
-          openapiMiddleware(path("openapi.yaml"), "//localhost:3100"),
-        );
+        app.use(openapiMiddleware(path("openapi.yaml"), "//localhost:3100"));
 
         app.use((ctx) => {
           ctx.body = "fallthrough";
