@@ -28,10 +28,7 @@ async function collectRouteFiles(routesDir, currentPath = "") {
 
       if (entry.isDirectory()) {
         files.push(...(await collectRouteFiles(routesDir, relativePath)));
-      } else if (
-        entry.name.endsWith(".ts") &&
-        entry.name !== "_.context.ts"
-      ) {
+      } else if (entry.name.endsWith(".ts") && entry.name !== "_.context.ts") {
         files.push(relativePath);
       }
     }

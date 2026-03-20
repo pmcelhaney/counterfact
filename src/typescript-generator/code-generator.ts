@@ -9,7 +9,11 @@ export class CodeGenerator extends EventTarget {
 
   private readonly destination: string;
 
-  private readonly generateOptions: { prune?: boolean; routes: boolean; types: boolean };
+  private readonly generateOptions: {
+    prune?: boolean;
+    routes: boolean;
+    types: boolean;
+  };
 
   private watcher: FSWatcher | undefined;
 

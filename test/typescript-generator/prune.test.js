@@ -58,9 +58,7 @@ describe("pruneRoutes", () => {
         const expectedPaths = [];
         await pruneRoutes(basePath, expectedPaths);
 
-        await expect(
-          fs.access(getPath("routes/old")),
-        ).rejects.toThrow();
+        await expect(fs.access(getPath("routes/old"))).rejects.toThrow();
       },
     );
   });
@@ -75,9 +73,7 @@ describe("pruneRoutes", () => {
         const expectedPaths = [];
         await pruneRoutes(basePath, expectedPaths);
 
-        await expect(
-          fs.access(getPath("routes/old")),
-        ).resolves.toBeUndefined();
+        await expect(fs.access(getPath("routes/old"))).resolves.toBeUndefined();
         await expect(
           fs.access(getPath("routes/old/_.context.ts")),
         ).resolves.toBeUndefined();
