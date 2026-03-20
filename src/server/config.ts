@@ -4,6 +4,7 @@ export interface Config {
   basePath: string;
   buildCache: boolean;
   generate: {
+    prune?: boolean;
     routes: boolean;
     types: boolean;
   };
