@@ -17,6 +17,7 @@ exports[`an OperationTypeCoder falls back to root level produces (OpenAPI 2) 1`]
             schema: Type;
           };
         };
+        examples: {};
       };
     }>;
     x: SharedType;
@@ -54,6 +55,7 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2 wit
             schema: Type;
           };
         };
+        examples: {};
       };
       400: {
         headers: never;
@@ -63,6 +65,7 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2 wit
             schema: Type;
           };
         };
+        examples: {};
       };
       [statusCode in Exclude<HttpStatusCode, 200 | 400>]: {
         headers: never;
@@ -72,6 +75,7 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2 wit
             schema: Type;
           };
         };
+        examples: {};
       };
     }>;
     x: SharedType;
@@ -119,6 +123,7 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2) 1`
             schema: Type;
           };
         };
+        examples: {};
       };
       400: {
         headers: never;
@@ -128,6 +133,7 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2) 1`
             schema: Type;
           };
         };
+        examples: {};
       };
       [statusCode in Exclude<HttpStatusCode, 200 | 400>]: {
         headers: never;
@@ -137,6 +143,7 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2) 1`
             schema: Type;
           };
         };
+        examples: {};
       };
     }>;
     x: SharedType;
@@ -184,6 +191,7 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2, co
             schema: Type;
           };
         };
+        examples: {};
       };
       400: {
         headers: never;
@@ -193,6 +201,7 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2, co
             schema: Type;
           };
         };
+        examples: {};
       };
       [statusCode in Exclude<HttpStatusCode, 200 | 400>]: {
         headers: never;
@@ -202,6 +211,7 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2, co
             schema: Type;
           };
         };
+        examples: {};
       };
     }>;
     x: SharedType;
@@ -249,6 +259,10 @@ exports[`an OperationTypeCoder generates a complex post operation 1`] = `
             schema: Type;
           };
         };
+        examples: {
+          "first-example": unknown;
+          "second-example": unknown;
+        };
       };
       400: {
         headers: never;
@@ -258,6 +272,7 @@ exports[`an OperationTypeCoder generates a complex post operation 1`] = `
             schema: Type;
           };
         };
+        examples: {};
       };
       [statusCode in Exclude<HttpStatusCode, 200 | 400>]: {
         headers: never;
@@ -267,6 +282,7 @@ exports[`an OperationTypeCoder generates a complex post operation 1`] = `
             schema: Type;
           };
         };
+        examples: {};
       };
     }>;
     x: SharedType;
@@ -314,6 +330,7 @@ exports[`an OperationTypeCoder generates a simple get operation (OpenAPI 2) 1`] 
             schema: Type;
           };
         };
+        examples: {};
       };
     }>;
     x: SharedType;
@@ -351,6 +368,7 @@ exports[`an OperationTypeCoder generates a simple get operation 1`] = `
             schema: Type;
           };
         };
+        examples: {};
       };
     }>;
     x: SharedType;
@@ -388,6 +406,7 @@ exports[`an OperationTypeCoder generates an auth object for basic authentication
             schema: Type;
           };
         };
+        examples: {};
       };
     }>;
     x: SharedType;

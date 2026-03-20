@@ -67,6 +67,30 @@ export class ResponseTypeCoder extends TypeCoder {
     return requiredHeaders.length === 0 ? "never" : requiredHeaders.join(" | ");
   }
 
+  buildExamplesObjectType(response) {
+    if (!response.has("content")) {
+      return "{}";
+    }
+
+    const exampleNames = [];
+
+    response.get("content").forEach((content) => {
+      if (content.has("examples")) {
+        content.get("examples").forEach((_, name) => {
+          if (!exampleNames.includes(name)) {
+            exampleNames.push(name);
+          }
+        });
+      }
+    });
+
+    if (exampleNames.length === 0) {
+      return "{}";
+    }
+
+    return printObject(exampleNames.map((name) => [name, "unknown"]));
+  }
+
   modulePath() {
     return `types/${this.requirement.data.$ref}.ts`;
   }
@@ -76,6 +100,7 @@ export class ResponseTypeCoder extends TypeCoder {
           headers: ${this.printHeaders(script, this.requirement)};
           requiredHeaders: ${this.printRequiredHeaders(this.requirement)};
           content: ${this.printContentObjectType(script, this.requirement)};
+          examples: ${this.buildExamplesObjectType(this.requirement)};
         }`;
   }
 }
