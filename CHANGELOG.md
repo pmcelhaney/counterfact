@@ -1,10 +1,38 @@
 # counterfact
 
-## 2.1.1
+## 2.2.1
 
 ### Patch Changes
 
-- c0f2dc7: Fill in required response headers in `random()`. When an OpenAPI response definition marks a header as `required: true`, the `random()` function now automatically generates a value for that header using the header's schema (string, integer, boolean, etc. as specified in the spec). Headers that are already set are not overwritten.
+- 304cbfe: Add `example(name)` method to response builder for selecting named OpenAPI examples
+
+  Developers can now select a specific named example from the OpenAPI specification using the strongly-typed `example()` method on a response builder:
+
+  ```ts
+  return $.response[200].example("namedExample1");
+  ```
+
+  The method is fully type-safe: TypeScript will autocomplete the example names defined in the OpenAPI document and report a type error if an unknown name is used.
+
+  Example names are collected from the `examples` field of each media type in the response content (OpenAPI 3.x). The method can be chained with other response builder methods:
+
+  ```ts
+  return $.response[200]
+    .example("namedExample1")
+    .header("some-header", "some-value");
+  ```
+
+## 2.2.0
+
+### Minor Changes
+
+- 008f133: Admin API and Agent Skill
+- 23b219b: format JSON in HTTP responses for readability
+
+### Patch Changes
+
+- c92f975: Fixed Midleware matching all routes is not executed #1515
+- 86f1de2: Return HTTP 405 (Method Not Allowed) with an `Allow` header when the requested path is registered but the HTTP method has no handler. Previously these requests returned 404, making it impossible to distinguish "path not found" from "method not allowed".
 
 ## 2.1.0
 

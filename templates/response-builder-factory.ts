@@ -53,6 +53,12 @@ type HeaderFunction<Response extends OpenApiResponse> = <
   requiredHeaders: Response["requiredHeaders"];
 }>;
 
+type ExampleNames<Response extends OpenApiResponse> = Response extends {
+  examples: infer E;
+}
+  ? keyof E & string
+  : never;
+
 export type ResponseBuilder<
   Response extends OpenApiResponse = OpenApiResponse,
 > = [keyof Response["content"]] extends [never]
@@ -67,6 +73,9 @@ export type ResponseBuilder<
         ? never
         : MatchFunction<Response>;
       random: [keyof Response["content"]] extends [never] ? never : () => void;
+      example: [ExampleNames<Response>] extends [never]
+        ? never
+        : (name: ExampleNames<Response>) => void;
       text: MaybeShortcut<"text/plain", Response>;
       xml: MaybeShortcut<"text/xml", Response>;
     }>;

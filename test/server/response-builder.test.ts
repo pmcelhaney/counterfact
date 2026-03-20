@@ -295,6 +295,87 @@ describe("a response builder", () => {
     });
   });
 
+  describe("selects a named example from an Open API operation object", () => {
+    const operation: OpenApiOperation = {
+      responses: {
+        200: {
+          content: {
+            "application/json": {
+              examples: {
+                success: {
+                  description: "a success response",
+                  summary: "success",
+                  value: { id: 1, name: "test" },
+                },
+                empty: {
+                  description: "an empty response",
+                  summary: "empty",
+                  value: [],
+                },
+              },
+
+              schema: {
+                type: "object",
+              },
+            },
+
+            "text/plain": {
+              examples: {
+                success: {
+                  description: "a plain text success",
+                  summary: "success",
+                  value: "ok",
+                },
+              },
+
+              schema: {
+                type: "string",
+              },
+            },
+          },
+        },
+      },
+    };
+
+    it("returns the named example value for each content type", () => {
+      const response =
+        createResponseBuilder(operation)[200]?.example("success");
+
+      expect(response?.status).toBe(200);
+      expect(response?.content).toStrictEqual([
+        { body: { id: 1, name: "test" }, type: "application/json" },
+        { body: "ok", type: "text/plain" },
+      ]);
+    });
+
+    it("returns an example not present in all content types as undefined body", () => {
+      const response = createResponseBuilder(operation)[200]?.example("empty");
+
+      expect(response?.status).toBe(200);
+      expect(response?.content).toStrictEqual([
+        { body: [], type: "application/json" },
+        { body: undefined, type: "text/plain" },
+      ]);
+    });
+
+    it("returns 500 for OpenAPI 2 (produces) operations since named examples are not supported", () => {
+      const legacyOperation: OpenApiOperation = {
+        produces: ["application/json"],
+        responses: {
+          200: {
+            examples: { "application/json": "value" },
+            schema: { type: "object" },
+          },
+        },
+      };
+
+      const response =
+        createResponseBuilder(legacyOperation)[200]?.example("success");
+
+      expect(response?.status).toBe(500);
+    });
+  });
+
   describe("builds a random response based on an Open API operation object (OpenAPI 2)", () => {
     const operation: OpenApiOperation = {
       produces: ["application/json", "text/plain"],

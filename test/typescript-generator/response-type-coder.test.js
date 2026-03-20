@@ -28,4 +28,108 @@ describe("a ResponsesTypeCoder", () => {
 
     expect(coder.printRequiredHeaders(headers)).toBe('"always" | "mandatory"');
   });
+
+  describe("buildExamplesObjectType", () => {
+    it("returns '{}' when response has no content field", () => {
+      const coder = new ResponseTypeCoder({ data: {} });
+      const response = new Requirement({
+        schema: { type: "object" },
+      });
+
+      expect(coder.buildExamplesObjectType(response)).toBe("{}");
+    });
+
+    it("returns '{}' when content types have no examples", () => {
+      const coder = new ResponseTypeCoder({ data: {} });
+      const response = new Requirement({
+        content: {
+          "application/json": {
+            schema: { type: "object" },
+          },
+        },
+      });
+
+      expect(coder.buildExamplesObjectType(response)).toBe("{}");
+    });
+
+    it("returns an object type with example names from a single content type", () => {
+      const coder = new ResponseTypeCoder({ data: {} });
+      const response = new Requirement({
+        content: {
+          "application/json": {
+            examples: {
+              success: { value: { id: 1 } },
+              empty: { value: [] },
+            },
+            schema: { type: "object" },
+          },
+        },
+      });
+
+      expect(coder.buildExamplesObjectType(response)).toBe(
+        '{\n"success": unknown,\n"empty": unknown\n}',
+      );
+    });
+
+    it("merges example names from multiple content types without duplicates", () => {
+      const coder = new ResponseTypeCoder({ data: {} });
+      const response = new Requirement({
+        content: {
+          "application/json": {
+            examples: {
+              success: { value: { id: 1 } },
+            },
+            schema: { type: "object" },
+          },
+          "text/plain": {
+            examples: {
+              success: { value: "ok" },
+              error: { value: "not found" },
+            },
+            schema: { type: "string" },
+          },
+        },
+      });
+
+      expect(coder.buildExamplesObjectType(response)).toBe(
+        '{\n"success": unknown,\n"error": unknown\n}',
+      );
+    });
+  });
+
+  describe("writeCode", () => {
+    it("includes an 'examples' field in the output", () => {
+      const response = new Requirement({
+        content: {
+          "application/json": {
+            examples: {
+              myExample: { value: { id: 1 } },
+            },
+            schema: { type: "object" },
+          },
+        },
+      });
+      const coder = new ResponseTypeCoder(response);
+
+      const code = coder.writeCode(null);
+
+      expect(code).toContain("examples:");
+      expect(code).toContain('"myExample": unknown');
+    });
+
+    it("includes 'examples: {}' when no examples are defined", () => {
+      const response = new Requirement({
+        content: {
+          "application/json": {
+            schema: { type: "string" },
+          },
+        },
+      });
+      const coder = new ResponseTypeCoder(response);
+
+      const code = coder.writeCode(null);
+
+      expect(code).toContain("examples: {}");
+    });
+  });
 });
