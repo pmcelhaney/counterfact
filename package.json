@@ -92,6 +92,7 @@
     "@types/koa-proxy": "1.0.8",
     "@types/koa-static": "4.0.4",
     "@types/lodash": "4.17.24",
+    "@types/node": "22.19.15",
     "@typescript-eslint/eslint-plugin": "^8.53.0",
     "@typescript-eslint/parser": "^8.53.0",
     "copyfiles": "2.4.1",
