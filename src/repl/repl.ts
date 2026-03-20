@@ -103,7 +103,7 @@ export function startRepl(
   });
 
   replServer.defineCommand("proxy", {
-    action(text) {
+    action(text: string) {
       if (text === "help" || text === "") {
         print(".proxy [on|off] - turn the proxy on/off at the root level");
         print(".proxy [on|off] <path-prefix> - turn the proxy on for a path");
