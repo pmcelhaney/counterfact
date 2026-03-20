@@ -9,14 +9,14 @@ export class CodeGenerator extends EventTarget {
 
   private readonly destination: string;
 
-  private readonly generateOptions: { routes: boolean; types: boolean };
+  private readonly generateOptions: { prune?: boolean; routes: boolean; types: boolean };
 
   private watcher: FSWatcher | undefined;
 
   public constructor(
     openApiPath: string,
     destination: string,
-    generateOptions: { routes: boolean; types: boolean },
+    generateOptions: { prune?: boolean; routes: boolean; types: boolean },
   ) {
     super();
     this.openapiPath = openApiPath;
