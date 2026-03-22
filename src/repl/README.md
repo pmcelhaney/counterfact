@@ -1,0 +1,39 @@
+# `src/repl/` — Interactive REPL
+
+This directory contains the interactive Read-Eval-Print Loop (REPL) that lets developers inspect and manipulate a running Counterfact server from the terminal — without touching any files.
+
+## Files
+
+| File | Description |
+|---|---|
+| `repl.ts` | Starts a Node.js REPL session pre-loaded with the context registry and custom dot-commands (`.proxy`, `.help`, etc.) |
+| `RawHttpClient.ts` | Thin HTTP client available inside the REPL as `client`; formats JSON responses with syntax highlighting |
+
+## How It Works
+
+```
+Terminal input
+      │
+      ▼
+┌─────────────────────────────────────┐
+│            REPL (repl.ts)           │
+│                                     │
+│  Built-in variables:                │
+│    context  → ContextRegistry       │
+│    client   → RawHttpClient         │
+│                                     │
+│  Dot-commands:                      │
+│    .proxy on <path>   enable proxy  │
+│    .proxy off         disable proxy │
+│    .help              show commands │
+└─────────────────────────────────────┘
+```
+
+The REPL exposes the live `ContextRegistry` so any JavaScript expression that reads or mutates context objects takes effect immediately, just like editing the context file would — but without a file save or hot-reload cycle.
+
+`RawHttpClient` lets you send HTTP requests directly from the REPL prompt:
+
+```
+⬣> client.get("/pet/1")
+⬣> client.post("/pet", { name: "Rex", photoUrls: [] })
+```

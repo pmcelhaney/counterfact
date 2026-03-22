@@ -1,6 +1,6 @@
 {
   "name": "counterfact",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "Generate a TypeScript-based mock server from an OpenAPI spec in seconds — with stateful routes, hot reload, and REPL support.",
   "type": "module",
   "main": "./dist/app.js",
@@ -87,7 +87,7 @@
     "@types/debug": "^4.1.12",
     "@types/jest": "30.0.0",
     "@types/js-yaml": "4.0.9",
-    "@types/koa": "3.0.1",
+    "@types/koa": "3.0.2",
     "@types/koa-bodyparser": "4.3.13",
     "@types/koa-proxy": "1.0.8",
     "@types/koa-static": "4.0.4",

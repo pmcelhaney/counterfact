@@ -109,6 +109,7 @@ Each exported function handles one HTTP method. The single argument `$` gives yo
 | Method | Description |
 |--------|-------------|
 | `.random()` | Returns random data generated from the OpenAPI schema (uses `examples` where available) |
+| `.example(name)` | Returns a specific named example from the OpenAPI spec |
 | `.json(content)` | Returns a JSON body (also converts to XML automatically when the client requests it) |
 | `.text(content)` | Returns a plain-text body |
 | `.html(content)` | Returns an HTML body |
@@ -118,6 +119,18 @@ Each exported function handles one HTTP method. The single argument `$` gives yo
 
 ```ts
 return $.response[200].header("x-request-id", "abc123").json({ ok: true });
+```
+
+#### Using named examples
+
+If your OpenAPI spec defines named examples for a response, you can return a specific one by name using `.example()`. The name is autocompleted and type-checked — passing an unknown name is a compile error.
+
+```ts
+// Return a specific named example
+return $.response[200].example("successResponse");
+
+// Chain additional decorations after selecting an example
+return $.response[200].example("successResponse").header("x-request-id", "abc123");
 ```
 
 > [!TIP]
