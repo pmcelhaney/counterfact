@@ -5,6 +5,7 @@ coverage
 .stryker-tmp
 reports
 out
+types
 
 # In testing we may generate these files. We don't want to check them in.
 templates/typescript/counterfact/components
