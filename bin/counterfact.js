@@ -102,6 +102,11 @@ async function main(source, destination) {
 
   const options = program.opts();
 
+  // --spec takes precedence over the positional [openapi.yaml] argument
+  if (options.spec) {
+    source = options.spec;
+  }
+
   const args = process.argv;
 
   const destinationPath = nodePath
@@ -331,6 +336,10 @@ program
   .option(
     "--prune",
     "remove route files that no longer exist in the OpenAPI spec",
+  )
+  .option(
+    "--spec <string>",
+    'path or URL to OpenAPI document (alternative to the positional [openapi.yaml] argument)',
   )
   .action(main)
   .parse(process.argv);

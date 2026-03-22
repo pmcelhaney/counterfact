@@ -37,6 +37,7 @@ npx counterfact openapi.yaml ./api [options]
 | `-w, --watch` | Re-generate whenever the spec changes |
 | `-s, --serve` | Start the HTTP server |
 | `-r, --repl` | Start the interactive REPL |
+| `--spec <path>` | Path or URL to the OpenAPI document (alternative to positional argument) |
 | `--proxy-url <url>` | Forward all unmatched requests to this upstream URL |
 | `--prefix <path>` | Base path prefix for all routes (e.g. `/api/v1`) |
 

@@ -39,6 +39,7 @@ Options:
   --watch-routes             watch routes only
   -s, --serve                start the mock server
   -r, --repl                 start the REPL
+  --spec <string>            path or URL to OpenAPI document (alternative to positional argument)
   --proxy-url <string>       forward all unhandled requests to this URL
   --prefix <string>          base path prefix (e.g. /api/v1)
   --always-fake-optionals    include optional fields in random responses
