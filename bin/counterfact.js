@@ -155,6 +155,8 @@ async function main(source, destination) {
         options.watch ||
         options.watchTypes ||
         options.buildCache,
+
+      prune: Boolean(options.prune),
     },
 
     openApiPath: source,
@@ -325,6 +327,10 @@ program
   .option(
     "--always-fake-optionals",
     "random responses will include optional fields",
+  )
+  .option(
+    "--prune",
+    "remove route files that no longer exist in the OpenAPI spec",
   )
   .action(main)
   .parse(process.argv);
