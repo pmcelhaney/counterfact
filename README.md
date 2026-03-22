@@ -202,6 +202,7 @@ npx counterfact@latest [openapi.yaml] [destination] [options]
 | `-w, --watch`       | Generate and watch for spec changes         |
 | `-s, --serve`       | Start the mock server                       |
 | `-r, --repl`        | Start the interactive REPL                  |
+| `--spec <path>`     | Path or URL to the OpenAPI document         |
 | `--proxy-url <url>` | Forward all requests to this URL by default |
 | `--prefix <path>`   | Base path prefix (e.g. `/api/v1`)           |
 
