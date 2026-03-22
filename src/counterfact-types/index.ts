@@ -38,7 +38,7 @@ type OmitValueWhenNever<Base> = Pick<
 interface OpenApiResponse {
   content: { [key: MediaType]: OpenApiContent };
   examples?: { [key: string]: unknown };
-  headers: { [key: string]: OpenApiHeader };
+  headers: { [key: string]: { schema: unknown } };
   requiredHeaders: string;
 }
 
