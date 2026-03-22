@@ -102,8 +102,14 @@ async function main(source, destination) {
 
   const options = program.opts();
 
-  // --spec takes precedence over the positional [openapi.yaml] argument
+  // --spec takes precedence over the positional [openapi.yaml] argument.
+  // When --spec is provided, the [openapi.yaml] positional slot shifts to
+  // become the [destination] argument (so `counterfact --spec api.yaml ./api`
+  // works the same as `counterfact api.yaml ./api`).
   if (options.spec) {
+    if (source !== "_") {
+      destination = source;
+    }
     source = options.spec;
   }
 

@@ -76,3 +76,25 @@ describe("black box test", () => {
     expect(response.status).toBe(200);
   });
 });
+
+describe("--spec flag", () => {
+  it("generates route files when the spec is specified via --spec", async () => {
+    await new Promise((resolve, reject) => {
+      const specProcess = exec(
+        "node ./bin/counterfact.js --spec ./openapi-example.yaml out-spec-test --generate",
+      );
+
+      specProcess.on("exit", (code) => {
+        if (code === 0 || code === null) {
+          resolve();
+        } else {
+          reject(new Error(`Process exited with code ${code}`));
+        }
+      });
+
+      specProcess.on("error", reject);
+    });
+
+    expect(fs.existsSync("./out-spec-test/routes/hello/kitty.ts")).toBe(true);
+  }, 30_000);
+});
