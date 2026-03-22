@@ -339,7 +339,7 @@ program
   )
   .option(
     "--spec <string>",
-    'path or URL to OpenAPI document (alternative to the positional [openapi.yaml] argument)',
+    "path or URL to OpenAPI document (alternative to the positional [openapi.yaml] argument)",
   )
   .action(main)
   .parse(process.argv);
