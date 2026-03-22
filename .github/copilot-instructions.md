@@ -22,7 +22,8 @@ src/
   util/                       # Shared utility functions
 bin/
   counterfact.js              # CLI entry point (commander-based)
-test/                         # Jest unit tests and black-box integration tests
+test/                         # Jest unit tests
+test-black-box/               # Python black-box integration tests (pytest)
 templates/                    # Scaffold templates used during code generation
 ```
 
@@ -31,7 +32,7 @@ templates/                    # Scaffold templates used during code generation
 - **Language:** TypeScript 5 + JavaScript ES modules (Node.js ≥ 17)
 - **Server:** Koa 3 with koa-bodyparser and koa-proxies
 - **Code generation:** Handlebars templates; `@apidevtools/json-schema-ref-parser` for spec parsing
-- **Testing:** Jest 30 with `@swc/jest` transform; `supertest` for HTTP assertions
+- **Testing:** Jest 30 with `@swc/jest` transform; `supertest` for HTTP assertions; `pytest` + `requests` for black-box tests
 - **Linting / formatting:** ESLint 9 (flat config in `eslint.config.cjs`) + Prettier 3
 - **Build:** `tsc` + `copyfiles`; SWC transpiles route files at runtime
 - **Package manager:** Yarn 1 (`yarn.lock` must be committed)
@@ -49,7 +50,7 @@ templates/                    # Scaffold templates used during code generation
 | Lint | `yarn lint` |
 | Run against Petstore | `yarn go:petstore` |
 
-Always run `yarn test` after making code changes. Run `yarn lint` before opening a PR. Black-box tests require a fresh build (`rimraf dist && yarn build`) and are slower; run them when touching server startup or CLI behaviour.
+Always run `yarn test` after making code changes. Run `yarn lint` before opening a PR. Black-box tests require a build (`yarn build`) and Python 3 with pytest and requests installed (`pip install -r test-black-box/requirements.txt`); run them when touching server startup or CLI behaviour.
 
 ## Coding Conventions
 
@@ -95,9 +96,10 @@ State shared across routes is stored in per-path context objects managed by `Con
 
 ## Testing Conventions
 
-- Test files live in `test/` and are named `*.test.ts` or `*.test.js`.
+- Unit test files live in `test/` and are named `*.test.ts` or `*.test.js`.
 - Type-definition tests live in `test/` and are named `*.test-d.ts` (checked by `tsd`).
-- Use `supertest` for HTTP-level assertions against the Koa app.
+- Black-box integration tests live in `test-black-box/` and are written in Python using `pytest`. They start counterfact as an external process and test it over HTTP, with no knowledge of internals.
+- Use `supertest` for HTTP-level assertions against the Koa app in unit tests.
 - Mock file-system operations with `using-temporary-files` (available as a dev dependency).
 - Jest is configured with a 10-second timeout; increase per-test via `jest.setTimeout()` only when genuinely needed.
 - Coverage thresholds: 77% lines/statements, 80% functions/branches. Do not lower these.
