@@ -3,7 +3,7 @@ import request from "supertest";
 import yaml from "js-yaml";
 
 import { openapiMiddleware } from "../../src/server/openapi-middleware.js";
-import { withTemporaryFiles } from "../lib/with-temporary-files.ts";
+import { withTemporaryFiles } from "../lib/with-temporary-files.js";
 
 describe("openapiMiddleware", () => {
   it("serves the OpenAPI document at /counterfact/openapi", async () => {
@@ -106,7 +106,11 @@ describe("openapiMiddleware", () => {
                   "200": {
                     content: {
                       "application/json": {
-                        schema: { type: string; properties: object };
+                        schema: {
+                          $ref?: string;
+                          type?: string;
+                          properties?: object;
+                        };
                       };
                     };
                   };
@@ -116,11 +120,14 @@ describe("openapiMiddleware", () => {
           };
         };
 
-        // The external $ref should be resolved - schema should have type: object
-        expect(
+        const schema =
           doc.paths["/metrics"].get.responses["200"].content["application/json"]
-            .schema.type,
-        ).toBe("object");
+            .schema;
+
+        // bundle() inlines external $refs - no external file reference should remain
+        expect(schema.$ref).toBeUndefined();
+        // The schema should be fully resolved with its type
+        expect(schema.type).toBe("object");
       },
     );
   });
