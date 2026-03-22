@@ -1,5 +1,7 @@
 import os
+import shutil
 import subprocess
+import tempfile
 import time
 
 import pytest
@@ -26,14 +28,15 @@ def wait_for_server(timeout=SERVER_STARTUP_TIMEOUT):
 
 
 @pytest.fixture(scope="session")
-def server(tmp_path_factory):
+def server():
     """Start the counterfact server and tear it down after all tests.
 
-    The server is started with CWD set to a temporary directory so that
-    generated files land in a clean, isolated location.  The OpenAPI spec
+    The server is started with CWD set to a temporary directory under the OS's
+    temp directory so that generated files land in a clean, isolated location
+    and the repository working directory is never dirtied.  The OpenAPI spec
     is passed as an absolute path so it can be found regardless of CWD.
     """
-    temp_work_dir = tmp_path_factory.mktemp("counterfact-work")
+    temp_work_dir = tempfile.mkdtemp(prefix="counterfact-work-")
     openapi_spec = os.path.join(REPO_ROOT, "openapi-example.yaml")
     counterfact_bin = os.path.join(REPO_ROOT, "bin", "counterfact.js")
 
@@ -49,7 +52,7 @@ def server(tmp_path_factory):
             "--generate",
             "--build-cache",
         ],
-        cwd=str(temp_work_dir),
+        cwd=temp_work_dir,
         env={**os.environ, "DEBUG": "counterfact:*"},
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
@@ -59,12 +62,15 @@ def server(tmp_path_factory):
         wait_for_server()
     except TimeoutError:
         process.kill()
+        shutil.rmtree(temp_work_dir, ignore_errors=True)
         raise
 
-    yield {"out_dir": temp_work_dir / "out", "process": process}
+    yield {"out_dir": os.path.join(temp_work_dir, "out"), "process": process}
 
     process.terminate()
     try:
         process.wait(timeout=5)
     except subprocess.TimeoutExpired:
         process.kill()
+
+    shutil.rmtree(temp_work_dir, ignore_errors=True)
