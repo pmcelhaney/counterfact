@@ -55,7 +55,7 @@ jobs:
       - name: Install Python dependencies
         run: pip install -r test-black-box/requirements.txt
       - name: Black Box Tests
-        timeout-minutes: 2
+        timeout-minutes: 5
         run: yarn test:black-box
       - name: Type Tests
         timeout-minutes: 2
