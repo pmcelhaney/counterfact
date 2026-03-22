@@ -5,6 +5,7 @@ import fs from "node:fs";
 
 import { afterAll, beforeAll, describe, expect, it } from "@jest/globals";
 import fetch from "node-fetch";
+import { usingTemporaryFiles } from "using-temporary-files";
 
 const SERVER_START_WAIT_SECONDS = 10;
 
@@ -79,22 +80,26 @@ describe("black box test", () => {
 
 describe("--spec flag", () => {
   it("generates route files when the spec is specified via --spec", async () => {
-    await new Promise((resolve, reject) => {
-      const specProcess = exec(
-        "node ./bin/counterfact.js --spec ./openapi-example.yaml out-spec-test --generate",
-      );
+    await usingTemporaryFiles(async ($) => {
+      const destDir = $.path(".");
 
-      specProcess.on("exit", (code) => {
-        if (code === 0 || code === null) {
-          resolve();
-        } else {
-          reject(new Error(`Process exited with code ${code}`));
-        }
+      await new Promise((resolve, reject) => {
+        const specProcess = exec(
+          `node ./bin/counterfact.js --spec ./openapi-example.yaml ${destDir} --generate`,
+        );
+
+        specProcess.on("exit", (code) => {
+          if (code === 0 || code === null) {
+            resolve();
+          } else {
+            reject(new Error(`Process exited with code ${code}`));
+          }
+        });
+
+        specProcess.on("error", reject);
       });
 
-      specProcess.on("error", reject);
+      expect(fs.existsSync($.path("routes/hello/kitty.ts"))).toBe(true);
     });
-
-    expect(fs.existsSync("./out-spec-test/routes/hello/kitty.ts")).toBe(true);
   }, 30_000);
 });

@@ -115,9 +115,7 @@ async function main(source, destination) {
 
   const args = process.argv;
 
-  const destinationPath = nodePath
-    .join(process.cwd(), destination)
-    .replaceAll("\\", "/");
+  const destinationPath = nodePath.resolve(destination).replaceAll("\\", "/");
 
   const basePath = nodePath.resolve(destinationPath).replaceAll("\\", "/");
 

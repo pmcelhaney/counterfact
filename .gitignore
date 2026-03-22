@@ -6,6 +6,7 @@ coverage
 reports
 out
 out-spec-test
+tmp
 
 # In testing we may generate these files. We don't want to check them in.
 templates/typescript/counterfact/components
