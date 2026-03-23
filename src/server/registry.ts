@@ -130,7 +130,7 @@ export class Registry {
   private middlewares: Map<string, MiddlewareFunction> = new Map();
 
   public constructor() {
-    this.middlewares.set("/", ($, respondTo) => respondTo($));
+    this.middlewares.set("", ($, respondTo) => respondTo($));
   }
 
   public get routes() {
@@ -142,7 +142,7 @@ export class Registry {
   }
 
   public addMiddleware(url: string, callback: MiddlewareFunction): void {
-    this.middlewares.set(url, callback);
+    this.middlewares.set(url === "/" ? "" : url, callback);
   }
 
   public remove(url: string) {
