@@ -283,6 +283,60 @@ describe("a module loader", () => {
     });
   });
 
+  it("provides readJson for reading JSON files relative to the context file", async () => {
+    await usingTemporaryFiles(async ($) => {
+      await $.add("data.json", '{"name": "test", "value": 42}');
+      await $.add(
+        "_.context.js",
+        "export class Context { constructor({ readJson }) { this.readJson = readJson; } }",
+      );
+      await $.add("package.json", '{ "type": "module" }');
+
+      const registry: Registry = new Registry();
+      const contextRegistry: ContextRegistry = new ContextRegistry();
+
+      const loader: ModuleLoader = new ModuleLoader(
+        $.path("."),
+        registry,
+        contextRegistry,
+      );
+
+      await loader.load();
+
+      const rootContext = contextRegistry.find("/") as any;
+      const data = await rootContext.readJson("./data.json");
+
+      expect(data).toEqual({ name: "test", value: 42 });
+    });
+  });
+
+  it("resolves readJson paths relative to the context file's directory", async () => {
+    await usingTemporaryFiles(async ($) => {
+      await $.add("shared/data.json", '{"shared": true}');
+      await $.add(
+        "sub/_.context.js",
+        "export class Context { constructor({ readJson }) { this.readJson = readJson; } }",
+      );
+      await $.add("package.json", '{ "type": "module" }');
+
+      const registry: Registry = new Registry();
+      const contextRegistry: ContextRegistry = new ContextRegistry();
+
+      const loader: ModuleLoader = new ModuleLoader(
+        $.path("."),
+        registry,
+        contextRegistry,
+      );
+
+      await loader.load();
+
+      const subContext = contextRegistry.find("/sub") as any;
+      const data = await subContext.readJson("../shared/data.json");
+
+      expect(data).toEqual({ shared: true });
+    });
+  });
+
   // can't test because I can't get Jest to refresh modules
   it.skip("updates the registry when a dependency is updated", async () => {
     await usingTemporaryFiles(async ($) => {

@@ -202,6 +202,26 @@ export class ModuleLoader extends EventTarget {
       ) {
         const loadContext = (path: string) => this.contextRegistry.find(path);
 
+        const contextDir = nodePath.dirname(unescapePathForWindows(pathName));
+        const readJson = async (relativePath: string): Promise<unknown> => {
+          const absolutePath = nodePath.resolve(contextDir, relativePath);
+          let content: string;
+          try {
+            content = await fs.readFile(absolutePath, "utf8");
+          } catch {
+            throw new Error(
+              `readJson: could not read file at "${absolutePath}" (resolved from "${relativePath}" relative to "${contextDir}")`,
+            );
+          }
+          try {
+            return JSON.parse(content) as unknown;
+          } catch {
+            throw new Error(
+              `readJson: file at "${absolutePath}" does not contain valid JSON`,
+            );
+          }
+        };
+
         this.contextRegistry.update(
           directory,
 
@@ -209,6 +229,7 @@ export class ModuleLoader extends EventTarget {
 
           new endpoint.Context({
             loadContext,
+            readJson,
           }),
         );
         return;
