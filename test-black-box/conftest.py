@@ -18,10 +18,13 @@ def wait_for_server(timeout=SERVER_STARTUP_TIMEOUT):
     deadline = time.monotonic() + timeout
     while time.monotonic() < deadline:
         try:
-            requests.get(f"{BASE_URL}/counterfact/", timeout=2)
-            return
-        except requests.exceptions.ConnectionError:
-            time.sleep(0.5)
+            response = requests.get(f"{BASE_URL}/counterfact/", timeout=2)
+            if response.status_code == 200:
+                return
+        except requests.exceptions.RequestException:
+            # Includes ConnectionError, ReadTimeout, and other transient errors
+            pass
+        time.sleep(0.5)
     raise TimeoutError(
         f"Counterfact server at {BASE_URL} did not start within {timeout} seconds"
     )
