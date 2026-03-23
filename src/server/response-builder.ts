@@ -71,6 +71,13 @@ export function createResponseBuilder(
         };
       },
 
+      binary(this: ResponseBuilder, body: Buffer | string) {
+        const buffer =
+          typeof body === "string" ? Buffer.from(body, "base64") : body;
+
+        return this.match("application/octet-stream", buffer);
+      },
+
       html(this: ResponseBuilder, body: unknown) {
         return this.match("text/html", body);
       },

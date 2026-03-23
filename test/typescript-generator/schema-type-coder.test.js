@@ -56,6 +56,20 @@ describe("a SchemaTypeCoder", () => {
     expect(result).toBe(output);
   });
 
+  it("generates Buffer | string for type: string, format: binary (OpenAPI v3 binary)", () => {
+    const coder = new SchemaTypeCoder(
+      new Requirement({ type: "string", format: "binary" }),
+    );
+
+    expect(coder.write({})).toBe("Buffer | string");
+  });
+
+  it("generates Buffer | string for type: file (OpenAPI v2 binary)", () => {
+    const coder = new SchemaTypeCoder(new Requirement({ type: "file" }));
+
+    expect(coder.write({})).toBe("Buffer | string");
+  });
+
   it("generates a type declaration for an object", async () => {
     const coder = new SchemaTypeCoder(
       new Requirement({

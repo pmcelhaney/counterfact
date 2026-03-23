@@ -176,7 +176,7 @@ export class Dispatcher {
       const normalizedResponse = {
         ...response,
 
-        body: content.body as string | undefined,
+        body: content.body as Buffer | string | undefined,
         contentType: content.type,
       };
 
