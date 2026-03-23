@@ -130,7 +130,7 @@ export class Registry {
   private middlewares: Map<string, MiddlewareFunction> = new Map();
 
   public constructor() {
-    this.middlewares.set("/", ($, respondTo) => respondTo($));
+    this.middlewares.set("", ($, respondTo) => respondTo($));
   }
 
   public get routes() {
@@ -142,7 +142,7 @@ export class Registry {
   }
 
   public addMiddleware(url: string, callback: MiddlewareFunction): void {
-    this.middlewares.set(url, callback);
+    this.middlewares.set(url === "/" ? "" : url, callback);
   }
 
   public remove(url: string) {
@@ -242,12 +242,12 @@ export class Registry {
       const middlewares = this.middlewares;
 
       function recurse(path: string | null, respondTo: RespondTo) {
+        debug("recursing path", path);
+
         if (path === null) return respondTo;
 
         const nextPath =
-          path === "/" || path === ""
-            ? null
-            : path.slice(0, path.lastIndexOf("/")) || "/";
+          path === "" ? null : path.slice(0, path.lastIndexOf("/"));
 
         const middleware = middlewares.get(path);
         if (middleware !== undefined) {
