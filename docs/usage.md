@@ -255,6 +255,25 @@ export class Context {
 }
 ```
 
+### Loading JSON data with `readJson`
+
+Use the `readJson` function (also passed to the constructor) to load static JSON data into your context. The path is resolved relative to the `_.context.ts` file.
+
+```ts
+// routes/_.context.ts
+export class Context {
+  private readonly readJson: (path: string) => Promise<unknown>;
+
+  constructor({ readJson }: { readJson: (path: string) => Promise<unknown> }) {
+    this.readJson = readJson;
+  }
+
+  async getSeeds() {
+    return this.readJson("../mocks/seeds.json");
+  }
+}
+```
+
 ---
 
 ## Hot Reload 🔥
