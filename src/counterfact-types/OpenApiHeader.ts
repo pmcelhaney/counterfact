@@ -1,3 +1,4 @@
 export interface OpenApiHeader {
-  schema: unknown;
+  required?: boolean;
+  schema: { [key: string]: unknown };
 }

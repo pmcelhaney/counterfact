@@ -102,11 +102,20 @@ async function main(source, destination) {
 
   const options = program.opts();
 
+  // --spec takes precedence over the positional [openapi.yaml] argument.
+  // When --spec is provided, the [openapi.yaml] positional slot shifts to
+  // become the [destination] argument (so `counterfact --spec api.yaml ./api`
+  // works the same as `counterfact api.yaml ./api`).
+  if (options.spec) {
+    if (source !== "_") {
+      destination = source;
+    }
+    source = options.spec;
+  }
+
   const args = process.argv;
 
-  const destinationPath = nodePath
-    .join(process.cwd(), destination)
-    .replaceAll("\\", "/");
+  const destinationPath = nodePath.resolve(destination).replaceAll("\\", "/");
 
   const basePath = nodePath.resolve(destinationPath).replaceAll("\\", "/");
 
@@ -331,6 +340,10 @@ program
   .option(
     "--prune",
     "remove route files that no longer exist in the OpenAPI spec",
+  )
+  .option(
+    "--spec <string>",
+    "path or URL to OpenAPI document (alternative to the positional [openapi.yaml] argument)",
   )
   .action(main)
   .parse(process.argv);
