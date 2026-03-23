@@ -12,8 +12,9 @@ import tempfile
 import requests
 
 BASE_URL = "http://localhost:3100"
-REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+TEST_BLACK_BOX_DIR = os.path.dirname(os.path.abspath(__file__))
+REPO_ROOT = os.path.dirname(TEST_BLACK_BOX_DIR)
+OPENAPI_SPEC = os.path.join(TEST_BLACK_BOX_DIR, "openapi.yaml")
 
 REQUEST_TIMEOUT = 10
 
@@ -24,12 +25,12 @@ def test_home_page(server):
     assert response.status_code == 200
 
 
-def test_creates_route_file_for_hello_kitty(server):
+def test_creates_route_file_for_ping(server):
     """A TypeScript route file is generated for every path in the spec."""
     out_dir = server["out_dir"]
-    kitty_file = os.path.join(out_dir, "routes", "hello", "kitty.ts")
-    assert os.path.exists(kitty_file), f"Expected generated file at {kitty_file}"
-    with open(kitty_file) as f:
+    ping_file = os.path.join(out_dir, "routes", "ping.ts")
+    assert os.path.exists(ping_file), f"Expected generated file at {ping_file}"
+    with open(ping_file) as f:
         content = f.read()
     assert "export const GET" in content
 
@@ -37,22 +38,29 @@ def test_creates_route_file_for_hello_kitty(server):
 def test_compiles_route_file(server):
     """Generated TypeScript route files are compiled to .cjs for hot-reload."""
     out_dir = server["out_dir"]
-    kitty_cjs = os.path.join(out_dir, ".cache", "hello", "kitty.cjs")
-    assert os.path.exists(kitty_cjs), f"Expected compiled cache file at {kitty_cjs}"
+    ping_cjs = os.path.join(out_dir, ".cache", "ping.cjs")
+    assert os.path.exists(ping_cjs), f"Expected compiled cache file at {ping_cjs}"
 
 
-def test_responds_to_get_request(server):
-    """A GET request to a generated route returns a successful response."""
-    response = requests.get(f"{BASE_URL}/hello/kitty", timeout=REQUEST_TIMEOUT)
+def test_ping_returns_pong(server):
+    """GET /ping returns the expected 'pong' response."""
+    response = requests.get(f"{BASE_URL}/ping", timeout=REQUEST_TIMEOUT)
     assert response.status_code == 200
-    assert isinstance(response.text, str)
+    assert response.text == "pong"
+
+
+def test_items_returns_list(server):
+    """GET /items returns the expected JSON array."""
+    response = requests.get(f"{BASE_URL}/items", timeout=REQUEST_TIMEOUT)
+    assert response.status_code == 200
+    assert response.json() == ["apple", "banana", "cherry"]
 
 
 def test_handles_path_with_colon(server):
     """Paths containing a colon are handled correctly."""
-    response = requests.get(f"{BASE_URL}/weird/path/with:colon", timeout=REQUEST_TIMEOUT)
+    response = requests.get(f"{BASE_URL}/path/with:colon", timeout=REQUEST_TIMEOUT)
     assert response.status_code == 200
-    assert isinstance(response.text, str)
+    assert response.text == "colon handled"
 
 
 def test_spec_flag_generates_route_files():
@@ -60,13 +68,12 @@ def test_spec_flag_generates_route_files():
     temp_dir = tempfile.mkdtemp(prefix="counterfact-spec-test-")
     try:
         counterfact_bin = os.path.join(REPO_ROOT, "bin", "counterfact.js")
-        openapi_spec = os.path.join(REPO_ROOT, "openapi-example.yaml")
         result = subprocess.run(
             [
                 "node",
                 counterfact_bin,
                 "--spec",
-                openapi_spec,
+                OPENAPI_SPEC,
                 temp_dir,
                 "--generate",
             ],
@@ -76,7 +83,7 @@ def test_spec_flag_generates_route_files():
         assert result.returncode in (0, None), (
             f"Process exited with unexpected code {result.returncode}"
         )
-        kitty_file = os.path.join(temp_dir, "routes", "hello", "kitty.ts")
-        assert os.path.exists(kitty_file), f"Expected generated file at {kitty_file}"
+        ping_file = os.path.join(temp_dir, "routes", "ping.ts")
+        assert os.path.exists(ping_file), f"Expected generated file at {ping_file}"
     finally:
         shutil.rmtree(temp_dir, ignore_errors=True)

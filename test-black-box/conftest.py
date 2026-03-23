@@ -7,7 +7,8 @@ import time
 import pytest
 import requests
 
-REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+TEST_BLACK_BOX_DIR = os.path.dirname(os.path.abspath(__file__))
+REPO_ROOT = os.path.dirname(TEST_BLACK_BOX_DIR)
 SERVER_PORT = 3100
 BASE_URL = f"http://localhost:{SERVER_PORT}"
 SERVER_STARTUP_TIMEOUT = 60
@@ -45,7 +46,7 @@ def server():
     server finishes starting, causing the subprocess to block on write()).
     """
     temp_work_dir = tempfile.mkdtemp(prefix="counterfact-work-")
-    openapi_spec = os.path.join(REPO_ROOT, "openapi-example.yaml")
+    openapi_spec = os.path.join(TEST_BLACK_BOX_DIR, "openapi.yaml")
     counterfact_bin = os.path.join(REPO_ROOT, "bin", "counterfact.js")
     log_path = os.path.join(temp_work_dir, "server.log")
 
