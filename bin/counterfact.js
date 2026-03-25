@@ -7,9 +7,10 @@ import { fileURLToPath } from "node:url";
 
 import { program } from "commander";
 import createDebug from "debug";
+import yaml from "js-yaml";
 import open from "open";
 
-import { counterfact } from "../dist/app.js";
+import { counterfact, counterfactMultiple } from "../dist/app.js";
 import { pathsToRoutes } from "../dist/migrate/paths-to-routes.js";
 import { updateRouteTypes } from "../dist/migrate/update-route-types.js";
 
@@ -97,20 +98,182 @@ function createWatchMessage(config) {
 
   return watchMessage;
 }
+
+async function getSpecBasePath(specPath) {
+  try {
+    const text = await readFile(specPath, "utf8");
+    const doc = yaml.load(text);
+
+    // OpenAPI 3.x: use servers[0].url
+    if (doc?.servers?.length > 0) {
+      const serverUrl = doc.servers[0].url;
+
+      try {
+        return new URL(serverUrl).pathname;
+      } catch {
+        // relative URL like "/v1"
+        return serverUrl.startsWith("/") ? serverUrl : `/${serverUrl}`;
+      }
+    }
+
+    // OpenAPI 2.x: use basePath
+    if (doc?.basePath) {
+      return doc.basePath;
+    }
+  } catch {
+    // ignore; caller handles missing paths
+  }
+
+  return "/";
+}
+
+async function mainMultiple(specPaths, destination, options) {
+  debug("multiple specs: %o", specPaths);
+
+  const destinationPath = nodePath.resolve(destination).replaceAll("\\", "/");
+
+  // Extract base paths from each spec and check for duplicates
+  const basePaths = await Promise.all(specPaths.map(getSpecBasePath));
+
+  const seen = new Set();
+
+  for (const bp of basePaths) {
+    if (seen.has(bp)) {
+      process.stderr.write(
+        `Error: Two or more specs share the same base path "${bp}". Each spec must have a unique base path.\n`,
+      );
+      process.exit(1);
+    }
+
+    seen.add(bp);
+  }
+
+  // If no action-related option is provided, default to all options
+  const actions = ["repl", "serve", "watch", "generate", "buildCache"];
+
+  if (
+    !Object.keys(options).some((argument) =>
+      actions.some((action) => argument.startsWith(action)),
+    )
+  ) {
+    for (const action of actions) {
+      options[action] = true;
+    }
+  }
+
+  const configs = specPaths.map((specPath, index) => {
+    const specBasePath = basePaths[index];
+
+    // Derive a slug from the base path for use as a subdirectory name
+    const slug = specBasePath.replace(/^\//, "") || "root";
+
+    const codeBasePath = nodePath
+      .join(destinationPath, slug)
+      .replaceAll("\\", "/");
+
+    return {
+      adminApiToken:
+        options.adminApiToken ?? process.env.COUNTERFACT_ADMIN_API_TOKEN ?? "",
+      alwaysFakeOptionals: options.alwaysFakeOptionals,
+      basePath: codeBasePath,
+
+      generate: {
+        routes:
+          options.generate ||
+          options.generateRoutes ||
+          options.watch ||
+          options.watchRoutes ||
+          options.buildCache,
+
+        types:
+          options.generate ||
+          options.generateTypes ||
+          options.watch ||
+          options.watchTypes ||
+          options.buildCache,
+
+        prune: Boolean(options.prune),
+      },
+
+      openApiPath: specPath,
+      port: options.port,
+      proxyPaths: new Map([["", Boolean(options.proxyUrl)]]),
+      proxyUrl: options.proxyUrl ?? "",
+      routePrefix: specBasePath,
+      startAdminApi: options.adminApi,
+      startRepl: options.repl,
+      startServer: options.serve,
+      buildCache: options.buildCache || false,
+
+      watch: {
+        routes: options.watch || options.watchRoutes,
+        types: options.watch || options.watchTypes,
+      },
+    };
+  });
+
+  debug("loading counterfact with multiple specs");
+
+  const { start } = await counterfactMultiple(configs);
+
+  const url = `http://localhost:${options.port}`;
+
+  const swaggerLinks = basePaths
+    .map((bp) => {
+      const slug = bp.replace(/^\//, "") || "root";
+
+      return `   Swagger UI (${bp})  ${url}/counterfact/swagger/${slug}/`;
+    })
+    .join("\n");
+
+  const introduction = [
+    "   ____ ____ _  _ _ _ ___ ____ ____ ____ ____ ____ ___",
+    String.raw`   |___ [__] |__| |\|  |  |=== |--< |--- |--| |___  | `,
+    "",
+    `   API Base URL  ${url}`,
+    swaggerLinks,
+    "",
+    "   Instructions  https://counterfact.dev/docs/usage.html",
+    "   Help/feedback https://github.com/pmcelhaney/counterfact/issues",
+    "",
+  ];
+
+  process.stdout.write(
+    introduction.filter((line) => line !== undefined).join("\n"),
+  );
+
+  process.stdout.write("\n\n");
+
+  await start(configs[0]);
+}
+
 async function main(source, destination) {
   debug("executing the main function");
 
   const options = program.opts();
 
+  // When --spec is used multiple times, options.spec is an array.
+  // If only one --spec is given, Commander still stores it as a string
+  // (because the option is not variadic), so normalize to an array.
+  const specList = Array.isArray(options.spec)
+    ? options.spec
+    : options.spec
+      ? [options.spec]
+      : [];
+
   // --spec takes precedence over the positional [openapi.yaml] argument.
   // When --spec is provided, the [openapi.yaml] positional slot shifts to
   // become the [destination] argument (so `counterfact --spec api.yaml ./api`
   // works the same as `counterfact api.yaml ./api`).
-  if (options.spec) {
+  if (specList.length > 0) {
     if (source !== "_") {
       destination = source;
     }
-    source = options.spec;
+    source = specList[0];
+  }
+
+  if (specList.length > 1) {
+    return mainMultiple(specList, destination, options);
   }
 
   const args = process.argv;
@@ -343,7 +506,11 @@ program
   )
   .option(
     "--spec <string>",
-    "path or URL to OpenAPI document (alternative to the positional [openapi.yaml] argument)",
+    "path or URL to OpenAPI document (alternative to the positional [openapi.yaml] argument); can be specified multiple times to load multiple specs",
+    (value, previous) =>
+      Array.isArray(previous)
+        ? [...previous, value]
+        : [previous ?? null, value].filter(Boolean),
   )
   .action(main)
   .parse(process.argv);

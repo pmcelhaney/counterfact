@@ -8,7 +8,11 @@ import yaml from "js-yaml";
 import { startRepl } from "./repl/repl.js";
 import type { Config } from "./server/config.js";
 import { ContextRegistry } from "./server/context-registry.js";
-import { createKoaApp } from "./server/create-koa-app.js";
+import {
+  createKoaApp,
+  createKoaAppMultiple,
+  type SpecEntry,
+} from "./server/create-koa-app.js";
 import {
   Dispatcher,
   DispatcherRequest,
@@ -214,6 +218,139 @@ export async function counterfact(config: Config) {
     koaApp,
     koaMiddleware: middleware,
     registry,
+    start,
+  };
+}
+
+interface SpecSetupResult {
+  codeGenerator: CodeGenerator;
+  contextRegistry: ContextRegistry;
+  entry: SpecEntry;
+  moduleLoader: ModuleLoader;
+  transpiler: Transpiler;
+}
+
+async function setupSpec(config: Config): Promise<SpecSetupResult> {
+  const modulesPath = config.basePath;
+
+  const compiledPathsDirectory = nodePath
+    .join(modulesPath, ".cache")
+    .replaceAll("\\", "/");
+
+  await rm(compiledPathsDirectory, { force: true, recursive: true });
+
+  const registry = new Registry();
+  const contextRegistry = new ContextRegistry();
+
+  const codeGenerator = new CodeGenerator(
+    config.openApiPath,
+    config.basePath,
+    config.generate,
+  );
+
+  const dispatcher = new Dispatcher(
+    registry,
+    contextRegistry,
+    await loadOpenApiDocument(config.openApiPath),
+    config,
+  );
+
+  const transpiler = new Transpiler(
+    nodePath.join(modulesPath, "routes").replaceAll("\\", "/"),
+    compiledPathsDirectory,
+    "commonjs",
+  );
+
+  const moduleLoader = new ModuleLoader(
+    compiledPathsDirectory,
+    registry,
+    contextRegistry,
+  );
+
+  const middleware = koaMiddleware(dispatcher, config);
+
+  const entry: SpecEntry = {
+    config,
+    contextRegistry,
+    koaMiddleware: middleware,
+    registry,
+  };
+
+  return { codeGenerator, contextRegistry, entry, moduleLoader, transpiler };
+}
+
+export async function counterfactMultiple(configs: Config[]) {
+  if (configs.length === 0) {
+    throw new Error("At least one config is required");
+  }
+
+  const specs = await Promise.all(configs.map(setupSpec));
+
+  const entries = specs.map((s) => s.entry);
+  const koaApp = createKoaAppMultiple(entries);
+
+  const primaryConfig = configs[0]!;
+  const primarySpec = specs[0]!;
+
+  async function start(options: Config) {
+    const {
+      generate,
+      startRepl: shouldStartRepl,
+      startServer,
+      watch,
+      buildCache,
+    } = options;
+
+    for (const spec of specs) {
+      if (generate.routes || generate.types) {
+        await spec.codeGenerator.generate();
+      }
+
+      if (watch.routes || watch.types) {
+        await spec.codeGenerator.watch();
+      }
+    }
+
+    let httpTerminator: HttpTerminator | undefined;
+
+    if (startServer) {
+      for (const spec of specs) {
+        await spec.transpiler.watch();
+        await spec.moduleLoader.load();
+        await spec.moduleLoader.watch();
+      }
+
+      const server = koaApp.listen({ port: primaryConfig.port });
+
+      httpTerminator = createHttpTerminator({ server });
+    } else if (buildCache) {
+      for (const spec of specs) {
+        await spec.transpiler.watch();
+        await spec.transpiler.stopWatching();
+      }
+    }
+
+    const replServer =
+      shouldStartRepl && startRepl(primarySpec.contextRegistry, primaryConfig);
+
+    return {
+      replServer,
+
+      async stop() {
+        for (const spec of specs) {
+          await spec.codeGenerator.stopWatching();
+          await spec.transpiler.stopWatching();
+          await spec.moduleLoader.stopWatching();
+        }
+        await httpTerminator?.terminate();
+      },
+    };
+  }
+
+  return {
+    contextRegistry: primarySpec.contextRegistry,
+    koaApp,
+    registry: entries[0]!.registry,
     start,
   };
 }
