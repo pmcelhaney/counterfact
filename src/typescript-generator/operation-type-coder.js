@@ -122,7 +122,7 @@ export class OperationTypeCoder extends TypeCoder {
       .replaceAll("\\", "/")}.types.ts`;
   }
 
-  userType() {
+  authType() {
     const typeParts = [];
 
     if (
@@ -282,7 +282,7 @@ export class OperationTypeCoder extends TypeCoder {
       modulePath,
     );
 
-    return `($: OmitValueWhenNever<{ query: ${queryTypeName}, path: ${pathTypeName}, headers: ${headersTypeName}, cookie: ${cookieTypeName}, body: ${bodyType}, context: ${contextTypeImportName}, response: ${responseType}, x: ${xType}, proxy: ${proxyType}, user: ${this.userType()}, delay: ${delayType} }>) => MaybePromise<${this.responseTypes(
+    return `($: OmitValueWhenNever<{ query: ${queryTypeName}, path: ${pathTypeName}, headers: ${headersTypeName}, cookie: ${cookieTypeName}, body: ${bodyType}, context: ${contextTypeImportName}, response: ${responseType}, x: ${xType}, proxy: ${proxyType}, auth: ${this.authType()}, delay: ${delayType} }>) => MaybePromise<${this.responseTypes(
       script,
     )} | { status: 415, contentType: "text/plain", body: string } | COUNTERFACT_RESPONSE | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }>`;
   }

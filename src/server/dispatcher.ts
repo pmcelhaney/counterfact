@@ -246,6 +246,70 @@ export class Dispatcher {
     return false;
   }
 
+  private extractApiKeyFromRequest(
+    scheme: { in?: string; name?: string; type: string },
+    {
+      cookie,
+      headers,
+      query,
+    }: {
+      cookie: { [key: string]: string };
+      headers: { [key: string]: string };
+      query: { [key: string]: string };
+    },
+  ): string | undefined {
+    if (scheme.type !== "apiKey" || scheme.name === undefined) {
+      return undefined;
+    }
+
+    if (scheme.in === "header") {
+      return headers[scheme.name.toLowerCase()];
+    }
+
+    if (scheme.in === "query") {
+      return query[scheme.name];
+    }
+
+    if (scheme.in === "cookie") {
+      return cookie[scheme.name];
+    }
+
+    return undefined;
+  }
+
+  private buildAuth(
+    basicAuth: { password?: string; username?: string } | undefined,
+    request: {
+      cookie: { [key: string]: string };
+      headers: { [key: string]: string };
+      query: { [key: string]: string };
+    },
+  ): { [key: string]: string | undefined } {
+    const auth: { [key: string]: string | undefined } = {};
+
+    if (basicAuth?.username !== undefined) {
+      auth.username = basicAuth.username;
+    }
+
+    if (basicAuth?.password !== undefined) {
+      auth.password = basicAuth.password;
+    }
+
+    for (const scheme of Object.values(
+      this.openApiDocument?.components?.securitySchemes ?? {},
+    )) {
+      if (scheme.name !== undefined) {
+        const value = this.extractApiKeyFromRequest(scheme, request);
+
+        if (value !== undefined) {
+          auth[scheme.name] = value;
+        }
+      }
+    }
+
+    return auth;
+  }
+
   public async request({
     auth,
     body,
@@ -284,31 +348,7 @@ export class Dispatcher {
 
     const operation = this.operationForPathAndMethod(matchedPath, method);
 
-    const securitySchemes = Object.values(
-      this.openApiDocument?.components?.securitySchemes ?? {},
-    );
-
-    const user: { [key: string]: string | undefined } = {};
-
-    if (auth?.username !== undefined) {
-      user.username = auth.username;
-    }
-
-    if (auth?.password !== undefined) {
-      user.password = auth.password;
-    }
-
-    for (const scheme of securitySchemes) {
-      if (scheme.type === "apiKey" && scheme.name !== undefined) {
-        if (scheme.in === "header") {
-          user[scheme.name] = headers[scheme.name.toLowerCase()];
-        } else if (scheme.in === "query") {
-          user[scheme.name] = query[scheme.name];
-        } else if (scheme.in === "cookie") {
-          user[scheme.name] = cookie[scheme.name];
-        }
-      }
-    }
+    const authWithApiKeys = this.buildAuth(auth, { cookie, headers, query });
 
     const continuousDistribution = (min: number, max: number) => {
       return min + Math.random() * (max - min);
@@ -319,7 +359,7 @@ export class Dispatcher {
       path,
       this.parameterTypes(operation?.parameters),
     )({
-      auth,
+      auth: authWithApiKeys,
       body,
       context: this.contextRegistry.find(matchedPath),
 
@@ -335,8 +375,6 @@ export class Dispatcher {
       headers,
 
       cookie,
-
-      user,
 
       proxy: async (url: string) => {
         if (body !== undefined && headers.contentType !== "application/json") {

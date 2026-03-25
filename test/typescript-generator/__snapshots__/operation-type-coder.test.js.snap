@@ -23,7 +23,7 @@ exports[`an OperationTypeCoder adds API key cookie when security scheme type is 
     }>;
     x: SharedType;
     proxy: (url: string) => COUNTERFACT_RESPONSE;
-    user: { session_id: string };
+    auth: { session_id: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
 ) => MaybePromise<
@@ -62,7 +62,7 @@ exports[`an OperationTypeCoder adds API key header when security scheme type is 
     }>;
     x: SharedType;
     proxy: (url: string) => COUNTERFACT_RESPONSE;
-    user: { api_key: string };
+    auth: { api_key: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
 ) => MaybePromise<
@@ -101,7 +101,7 @@ exports[`an OperationTypeCoder adds API key query param when security scheme typ
     }>;
     x: SharedType;
     proxy: (url: string) => COUNTERFACT_RESPONSE;
-    user: { api_key: string };
+    auth: { api_key: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
 ) => MaybePromise<
@@ -140,7 +140,7 @@ exports[`an OperationTypeCoder falls back to root level produces (OpenAPI 2) 1`]
     }>;
     x: SharedType;
     proxy: (url: string) => COUNTERFACT_RESPONSE;
-    user: never;
+    auth: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
 ) => MaybePromise<
@@ -199,7 +199,7 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2 wit
     }>;
     x: SharedType;
     proxy: (url: string) => COUNTERFACT_RESPONSE;
-    user: never;
+    auth: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
 ) => MaybePromise<
@@ -268,7 +268,7 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2) 1`
     }>;
     x: SharedType;
     proxy: (url: string) => COUNTERFACT_RESPONSE;
-    user: never;
+    auth: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
 ) => MaybePromise<
@@ -337,7 +337,7 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2, co
     }>;
     x: SharedType;
     proxy: (url: string) => COUNTERFACT_RESPONSE;
-    user: never;
+    auth: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
 ) => MaybePromise<
@@ -409,7 +409,7 @@ exports[`an OperationTypeCoder generates a complex post operation 1`] = `
     }>;
     x: SharedType;
     proxy: (url: string) => COUNTERFACT_RESPONSE;
-    user: never;
+    auth: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
 ) => MaybePromise<
@@ -458,7 +458,7 @@ exports[`an OperationTypeCoder generates a simple get operation (OpenAPI 2) 1`] 
     }>;
     x: SharedType;
     proxy: (url: string) => COUNTERFACT_RESPONSE;
-    user: never;
+    auth: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
 ) => MaybePromise<
@@ -497,7 +497,7 @@ exports[`an OperationTypeCoder generates a simple get operation 1`] = `
     }>;
     x: SharedType;
     proxy: (url: string) => COUNTERFACT_RESPONSE;
-    user: never;
+    auth: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
 ) => MaybePromise<
@@ -536,7 +536,7 @@ exports[`an OperationTypeCoder generates an auth object for basic authentication
     }>;
     x: SharedType;
     proxy: (url: string) => COUNTERFACT_RESPONSE;
-    user: { username?: string; password?: string };
+    auth: { username?: string; password?: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
 ) => MaybePromise<

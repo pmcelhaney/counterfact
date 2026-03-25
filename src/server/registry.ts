@@ -31,11 +31,7 @@ const ALL_HTTP_METHODS: HttpMethods[] = [
 ];
 
 interface RequestData {
-  auth?: {
-    password?: string;
-    username?: string;
-  };
-  user?: { [key: string]: string | undefined };
+  auth?: { [key: string]: string | undefined };
   context: unknown;
   headers: { [key: string]: number | string | boolean };
   matchedPath?: string;

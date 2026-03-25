@@ -950,13 +950,13 @@ describe("given an OpenAPI document with apiKey security schemes", () => {
     },
   };
 
-  it("exposes a header apiKey via $.user", async () => {
+  it("exposes a header apiKey via $.auth", async () => {
     const registry = new Registry();
-    let capturedUser: { [key: string]: string | undefined } = {};
+    let capturedAuth: { [key: string]: string | undefined } = {};
 
     registry.add("/secure", {
-      GET({ user }: { user: { [key: string]: string | undefined } }) {
-        capturedUser = user;
+      GET({ auth }: { auth: { [key: string]: string | undefined } }) {
+        capturedAuth = auth;
         return { body: "ok" };
       },
     });
@@ -976,16 +976,16 @@ describe("given an OpenAPI document with apiKey security schemes", () => {
       req: { path: "/secure" },
     });
 
-    expect(capturedUser["x-api-key"]).toBe("secret123");
+    expect(capturedAuth["x-api-key"]).toBe("secret123");
   });
 
-  it("exposes a query apiKey via $.user", async () => {
+  it("exposes a query apiKey via $.auth", async () => {
     const registry = new Registry();
-    let capturedUser: { [key: string]: string | undefined } = {};
+    let capturedAuth: { [key: string]: string | undefined } = {};
 
     registry.add("/secure", {
-      GET({ user }: { user: { [key: string]: string | undefined } }) {
-        capturedUser = user;
+      GET({ auth }: { auth: { [key: string]: string | undefined } }) {
+        capturedAuth = auth;
         return { body: "ok" };
       },
     });
@@ -1005,16 +1005,16 @@ describe("given an OpenAPI document with apiKey security schemes", () => {
       req: { path: "/secure" },
     });
 
-    expect(capturedUser["token"]).toBe("mytoken");
+    expect(capturedAuth["token"]).toBe("mytoken");
   });
 
-  it("exposes a cookie apiKey via $.user", async () => {
+  it("exposes a cookie apiKey via $.auth", async () => {
     const registry = new Registry();
-    let capturedUser: { [key: string]: string | undefined } = {};
+    let capturedAuth: { [key: string]: string | undefined } = {};
 
     registry.add("/secure", {
-      GET({ user }: { user: { [key: string]: string | undefined } }) {
-        capturedUser = user;
+      GET({ auth }: { auth: { [key: string]: string | undefined } }) {
+        capturedAuth = auth;
         return { body: "ok" };
       },
     });
@@ -1035,18 +1035,18 @@ describe("given an OpenAPI document with apiKey security schemes", () => {
       req: { path: "/secure" },
     });
 
-    expect(capturedUser["session_id"]).toBe("abc123");
+    expect(capturedAuth["session_id"]).toBe("abc123");
   });
 });
 
 describe("given an OpenAPI document with a cookie apiKey scheme and no cookie in the request", () => {
   it("does not throw when cookie is omitted from the request", async () => {
     const registry = new Registry();
-    let capturedUser: { [key: string]: string | undefined } = {};
+    let capturedAuth: { [key: string]: string | undefined } = {};
 
     registry.add("/secure", {
-      GET({ user }: { user: { [key: string]: string | undefined } }) {
-        capturedUser = user;
+      GET({ auth }: { auth: { [key: string]: string | undefined } }) {
+        capturedAuth = auth;
         return { body: "ok" };
       },
     });
@@ -1071,6 +1071,6 @@ describe("given an OpenAPI document with a cookie apiKey scheme and no cookie in
       req: { path: "/secure" },
     });
 
-    expect(capturedUser["session_id"]).toBeUndefined();
+    expect(capturedAuth["session_id"]).toBeUndefined();
   });
 });

@@ -285,7 +285,7 @@ interface WideOperationArgument {
   proxy: (url: string) => { proxyUrl: string };
   query: { [key: string]: string };
   response: { [key: number]: WideResponseBuilder };
-  user: { [key: string]: string | undefined };
+  auth: { [key: string]: string | undefined };
 }
 
 export type { COUNTERFACT_RESPONSE };
