@@ -484,7 +484,12 @@ describe("an OperationTypeCoder", () => {
     const requirement = new Requirement(
       {
         parameters: [
-          { in: "header", name: "x-custom-header", required: true, schema: { type: "string" } },
+          {
+            in: "header",
+            name: "x-custom-header",
+            required: true,
+            schema: { type: "string" },
+          },
         ],
         responses: {
           default: {
