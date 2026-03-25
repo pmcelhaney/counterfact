@@ -31,7 +31,7 @@ export type addPet = (
   $: OmitValueWhenNever<{
     query: never;
     path: never;
-    headers: never;
+    headers: addPet_Headers;
     body: Pet;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -83,7 +83,7 @@ export type updatePet = (
   $: OmitValueWhenNever<{
     query: never;
     path: never;
-    headers: never;
+    headers: updatePet_Headers;
     body: Pet;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -148,6 +148,10 @@ export type updatePet = (
   | COUNTERFACT_RESPONSE
   | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
 >;
+
+export type addPet_Headers = { api_key: string };
+
+export type updatePet_Headers = { api_key: string };
 "
 `;
 
@@ -177,7 +181,7 @@ export type findPetsByStatus = (
   $: OmitValueWhenNever<{
     query: findPetsByStatus_Query;
     path: never;
-    headers: never;
+    headers: findPetsByStatus_Headers;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -228,6 +232,8 @@ export type findPetsByStatus = (
 export type findPetsByStatus_Query = {
   status?: "available" | "pending" | "sold";
 };
+
+export type findPetsByStatus_Headers = { api_key: string };
 "
 `;
 
@@ -257,7 +263,7 @@ export type findPetsByTags = (
   $: OmitValueWhenNever<{
     query: findPetsByTags_Query;
     path: never;
-    headers: never;
+    headers: findPetsByTags_Headers;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -306,6 +312,8 @@ export type findPetsByTags = (
 >;
 
 export type findPetsByTags_Query = { tags?: Array<string> };
+
+export type findPetsByTags_Headers = { api_key: string };
 "
 `;
 
@@ -345,7 +353,7 @@ export type getPetById = (
   $: OmitValueWhenNever<{
     query: never;
     path: getPetById_Path;
-    headers: never;
+    headers: getPetById_Headers;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -406,7 +414,7 @@ export type updatePetWithForm = (
   $: OmitValueWhenNever<{
     query: updatePetWithForm_Query;
     path: updatePetWithForm_Path;
-    headers: never;
+    headers: updatePetWithForm_Headers;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -462,9 +470,13 @@ export type deletePet = (
 
 export type getPetById_Path = { petId: number };
 
+export type getPetById_Headers = { api_key: string };
+
 export type updatePetWithForm_Query = { name?: string; status?: string };
 
 export type updatePetWithForm_Path = { petId: number };
+
+export type updatePetWithForm_Headers = { api_key: string };
 
 export type deletePet_Path = { petId: number };
 
@@ -498,7 +510,7 @@ export type uploadFile = (
   $: OmitValueWhenNever<{
     query: uploadFile_Query;
     path: uploadFile_Path;
-    headers: never;
+    headers: uploadFile_Headers;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -532,6 +544,8 @@ export type uploadFile = (
 export type uploadFile_Query = { additionalMetadata?: string };
 
 export type uploadFile_Path = { petId: number };
+
+export type uploadFile_Headers = { api_key: string };
 "
 `;
 
@@ -560,7 +574,7 @@ export type getInventory = (
   $: OmitValueWhenNever<{
     query: never;
     path: never;
-    headers: never;
+    headers: getInventory_Headers;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -590,6 +604,8 @@ export type getInventory = (
   | COUNTERFACT_RESPONSE
   | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
 >;
+
+export type getInventory_Headers = { api_key: string };
 "
 `;
 
@@ -619,7 +635,7 @@ export type placeOrder = (
   $: OmitValueWhenNever<{
     query: never;
     path: never;
-    headers: never;
+    headers: placeOrder_Headers;
     body: Order;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -658,6 +674,8 @@ export type placeOrder = (
   | COUNTERFACT_RESPONSE
   | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
 >;
+
+export type placeOrder_Headers = { api_key: string };
 "
 `;
 
@@ -692,7 +710,7 @@ export type getOrderById = (
   $: OmitValueWhenNever<{
     query: never;
     path: getOrderById_Path;
-    headers: never;
+    headers: getOrderById_Headers;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -753,7 +771,7 @@ export type deleteOrder = (
   $: OmitValueWhenNever<{
     query: never;
     path: deleteOrder_Path;
-    headers: never;
+    headers: deleteOrder_Headers;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -789,7 +807,11 @@ export type deleteOrder = (
 
 export type getOrderById_Path = { orderId: number };
 
+export type getOrderById_Headers = { api_key: string };
+
 export type deleteOrder_Path = { orderId: number };
+
+export type deleteOrder_Headers = { api_key: string };
 "
 `;
 
@@ -820,7 +842,7 @@ export type createUser = (
   $: OmitValueWhenNever<{
     query: never;
     path: never;
-    headers: never;
+    headers: createUser_Headers;
     body: User;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -858,6 +880,8 @@ export type createUser = (
   | COUNTERFACT_RESPONSE
   | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
 >;
+
+export type createUser_Headers = { api_key: string };
 "
 `;
 
@@ -888,7 +912,7 @@ export type createUsersWithListInput = (
   $: OmitValueWhenNever<{
     query: never;
     path: never;
-    headers: never;
+    headers: createUsersWithListInput_Headers;
     body: Array<User>;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -935,6 +959,8 @@ export type createUsersWithListInput = (
   | COUNTERFACT_RESPONSE
   | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
 >;
+
+export type createUsersWithListInput_Headers = { api_key: string };
 "
 `;
 
@@ -963,7 +989,7 @@ export type loginUser = (
   $: OmitValueWhenNever<{
     query: loginUser_Query;
     path: never;
-    headers: never;
+    headers: loginUser_Headers;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -1015,6 +1041,8 @@ export type loginUser = (
 >;
 
 export type loginUser_Query = { username?: string; password?: string };
+
+export type loginUser_Headers = { api_key: string };
 "
 `;
 
@@ -1044,7 +1072,7 @@ export type logoutUser = (
   $: OmitValueWhenNever<{
     query: never;
     path: never;
-    headers: never;
+    headers: logoutUser_Headers;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -1068,6 +1096,8 @@ export type logoutUser = (
   | COUNTERFACT_RESPONSE
   | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
 >;
+
+export type logoutUser_Headers = { api_key: string };
 "
 `;
 
@@ -1108,7 +1138,7 @@ export type getUserByName = (
   $: OmitValueWhenNever<{
     query: never;
     path: getUserByName_Path;
-    headers: never;
+    headers: getUserByName_Headers;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -1169,7 +1199,7 @@ export type updateUser = (
   $: OmitValueWhenNever<{
     query: never;
     path: updateUser_Path;
-    headers: never;
+    headers: updateUser_Headers;
     body: User;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -1198,7 +1228,7 @@ export type deleteUser = (
   $: OmitValueWhenNever<{
     query: never;
     path: deleteUser_Path;
-    headers: never;
+    headers: deleteUser_Headers;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -1234,9 +1264,15 @@ export type deleteUser = (
 
 export type getUserByName_Path = { username: string };
 
+export type getUserByName_Headers = { api_key: string };
+
 export type updateUser_Path = { username: string };
 
+export type updateUser_Headers = { api_key: string };
+
 export type deleteUser_Path = { username: string };
+
+export type deleteUser_Headers = { api_key: string };
 "
 `;
 

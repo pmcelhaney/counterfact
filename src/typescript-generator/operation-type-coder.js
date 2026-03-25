@@ -156,9 +156,32 @@ export class OperationTypeCoder extends TypeCoder {
 
     const pathType = new ParametersTypeCoder(parameters, "path").write(script);
 
-    const headersType = new ParametersTypeCoder(parameters, "header").write(
-      script,
+    const parametersHeadersType = new ParametersTypeCoder(
+      parameters,
+      "header",
+    ).write(script);
+
+    const existingHeaderNames = new Set(
+      (parameters?.data ?? [])
+        .filter((p) => p.in === "header")
+        .map((p) => p.name),
     );
+
+    const apiKeyHeaders = this.securitySchemes
+      .filter(
+        ({ type, in: location, name }) =>
+          type === "apiKey" &&
+          location === "header" &&
+          !existingHeaderNames.has(name),
+      )
+      .map(({ name }) => `"${name}": string`);
+
+    const headersType =
+      apiKeyHeaders.length === 0
+        ? parametersHeadersType
+        : parametersHeadersType === "never"
+          ? `{${apiKeyHeaders.join(", ")}}`
+          : `${parametersHeadersType} & {${apiKeyHeaders.join(", ")}}`;
 
     const bodyRequirement =
       this.requirement.get("consumes") ||

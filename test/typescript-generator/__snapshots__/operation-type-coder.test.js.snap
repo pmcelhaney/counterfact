@@ -1,5 +1,43 @@
 // Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
+exports[`an OperationTypeCoder adds API key header when security scheme type is apiKey and in is header 1`] = `
+"type TestType = (
+  $: OmitValueWhenNever<{
+    query: never;
+    path: never;
+    headers: HTTP_GET_Headers;
+    body: never;
+    context: ExternalType;
+    response: ResponseBuilderFactory<{
+      [statusCode in HttpStatusCode]: {
+        headers: never;
+        requiredHeaders: never;
+        content: {
+          "application/json": {
+            schema: Type;
+          };
+        };
+        examples: {};
+      };
+    }>;
+    x: SharedType;
+    proxy: (url: string) => COUNTERFACT_RESPONSE;
+    user: never;
+    delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+  }>,
+) => MaybePromise<
+  | {
+      status: number | undefined;
+      contentType?: "application/json";
+      body?: Type;
+    }
+  | { status: 415; contentType: "text/plain"; body: string }
+  | COUNTERFACT_RESPONSE
+  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
+>;
+"
+`;
+
 exports[`an OperationTypeCoder falls back to root level produces (OpenAPI 2) 1`] = `
 "type TestType = (
   $: OmitValueWhenNever<{

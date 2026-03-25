@@ -451,6 +451,113 @@ describe("an OperationTypeCoder", () => {
     ).resolves.toMatchSnapshot();
   });
 
+  it("adds API key header when security scheme type is apiKey and in is header", async () => {
+    const requirement = new Requirement(
+      {
+        responses: {
+          default: {
+            content: {
+              "application/json": {
+                schema: { $ref: "#/components/schemas/Example" },
+              },
+            },
+          },
+        },
+      },
+      "#/paths/hello/get",
+    );
+
+    const coder = new OperationTypeCoder(requirement, "get", [
+      {
+        type: "apiKey",
+        name: "api_key",
+        in: "header",
+      },
+    ]);
+
+    await expect(
+      format(`type TestType =${coder.write(dummyScript)}`),
+    ).resolves.toMatchSnapshot();
+  });
+
+  it("merges API key header with existing parameter headers", async () => {
+    const requirement = new Requirement(
+      {
+        parameters: [
+          { in: "header", name: "x-custom-header", required: true, schema: { type: "string" } },
+        ],
+        responses: {
+          default: {
+            content: {
+              "application/json": {
+                schema: { $ref: "#/components/schemas/Example" },
+              },
+            },
+          },
+        },
+      },
+      "#/paths/hello/get",
+    );
+
+    const coder = new OperationTypeCoder(requirement, "get", [
+      {
+        type: "apiKey",
+        name: "api_key",
+        in: "header",
+      },
+    ]);
+
+    const exportedTypes = {};
+    const trackingScript = {
+      ...dummyScript,
+      export(innerCoder) {
+        const name = innerCoder.names().next().value;
+        exportedTypes[name] = innerCoder.writeCode();
+        return name;
+      },
+    };
+
+    coder.write(trackingScript);
+
+    const headersTypeKey = Object.keys(exportedTypes).find((k) =>
+      k.endsWith("_Headers"),
+    );
+
+    expect(headersTypeKey).toBeDefined();
+    expect(exportedTypes[headersTypeKey]).toMatch(
+      /\{"x-custom-header": string\} & \{"api_key": string\}/u,
+    );
+  });
+
+  it("ignores apiKey security schemes not in header", async () => {
+    const requirement = new Requirement(
+      {
+        responses: {
+          default: {
+            content: {
+              "application/json": {
+                schema: { $ref: "#/components/schemas/Example" },
+              },
+            },
+          },
+        },
+      },
+      "#/paths/hello/get",
+    );
+
+    const coder = new OperationTypeCoder(requirement, "get", [
+      {
+        type: "apiKey",
+        name: "api_key",
+        in: "query",
+      },
+    ]);
+
+    const result = coder.write(dummyScript);
+
+    expect(result).toContain("headers: never");
+  });
+
   it("uses operationId for type names when available", () => {
     const coder = new OperationTypeCoder(
       new Requirement({ operationId: "addPet" }, "#/paths/pet/post"),
