@@ -22,6 +22,7 @@ interface Directory {
 }
 
 interface Match {
+  ambiguous?: boolean;
   matchedPath: string;
   module: Module;
   pathVariables: { [key: string]: string };
@@ -51,6 +52,9 @@ export class ModuleTree {
       return directory;
     }
 
+    const isNewDirectory =
+      directory.directories[segment.toLowerCase()] === undefined;
+
     const nextDirectory = (directory.directories[segment.toLowerCase()] ??= {
       directories: {},
       files: {},
@@ -58,6 +62,18 @@ export class ModuleTree {
       name: segment.replace(/^\{(?<name>.*)\}$/u, "$<name>"),
       rawName: segment,
     });
+
+    if (isNewDirectory && segment.startsWith("{")) {
+      const ambiguousWildcardDirectories = Object.values(
+        directory.directories,
+      ).filter((subdirectory) => subdirectory.isWildcard);
+
+      if (ambiguousWildcardDirectories.length > 1) {
+        process.stderr.write(
+          `[counterfact] ERROR: Ambiguous wildcard paths detected. Multiple wildcard directories exist at the same level: ${ambiguousWildcardDirectories.map((d) => d.rawName).join(", ")}. Requests may be routed unpredictably.\n`,
+        );
+      }
+    }
 
     return this.putDirectory(nextDirectory, remainingSegments);
   }
@@ -87,6 +103,18 @@ export class ModuleTree {
       name: filename.replace(/^\{(?<name>.*)\}$/u, "$<name>"),
       rawName: filename,
     };
+
+    if (filename.startsWith("{")) {
+      const ambiguousWildcardFiles = Object.values(
+        targetDirectory.files,
+      ).filter((file) => file.isWildcard);
+
+      if (ambiguousWildcardFiles.length > 1) {
+        process.stderr.write(
+          `[counterfact] ERROR: Ambiguous wildcard paths detected. Multiple wildcard files exist at the same path level: ${ambiguousWildcardFiles.map((f) => f.rawName).join(", ")}. Requests may be routed unpredictably.\n`,
+        );
+      }
+    }
   }
 
   public add(url: string, module: Module) {
@@ -145,11 +173,39 @@ export class ModuleTree {
       return "";
     }
 
-    const match =
-      directory.files[normalizedSegment(segment, directory)] ??
-      Object.values(directory.files).find(
-        (file) => file.isWildcard && this.fileModuleDefined(file, method),
-      );
+    const exactMatchFile =
+      directory.files[normalizedSegment(segment, directory)];
+
+    // If the URL segment literally matches a file key (e.g., requesting "/{x}"
+    // as a literal URL value), exactMatchFile may be a wildcard file. In that
+    // case, fall through to wildcard matching below.
+    if (exactMatchFile !== undefined && !exactMatchFile.isWildcard) {
+      return {
+        ...exactMatchFile,
+        matchedPath: `${matchedPath}/${exactMatchFile.rawName}`,
+        pathVariables,
+      };
+    }
+
+    const wildcardFiles = Object.values(directory.files).filter(
+      (file) => file.isWildcard && this.fileModuleDefined(file, method),
+    );
+
+    if (wildcardFiles.length > 1) {
+      const [firstWildcard] = wildcardFiles;
+
+      return {
+        ...firstWildcard,
+        ambiguous: true,
+        matchedPath: `${matchedPath}/${firstWildcard!.rawName}`,
+        pathVariables: {
+          ...pathVariables,
+          [firstWildcard!.name]: segment,
+        },
+      };
+    }
+
+    const match = exactMatchFile ?? wildcardFiles[0];
 
     if (match === undefined) {
       return undefined;
@@ -225,8 +281,10 @@ export class ModuleTree {
       (subdirectory) => subdirectory.isWildcard,
     );
 
+    const wildcardMatches: Match[] = [];
+
     for (const wildcardDirectory of wildcardDirectories) {
-      const match = this.matchWithinDirectory(
+      const wildcardMatch = this.matchWithinDirectory(
         wildcardDirectory,
         remainingSegments,
         {
@@ -237,12 +295,18 @@ export class ModuleTree {
         method,
       );
 
-      if (match !== undefined) {
-        return match;
+      if (wildcardMatch !== undefined) {
+        wildcardMatches.push(wildcardMatch);
       }
     }
 
-    return undefined;
+    if (wildcardMatches.length > 1) {
+      const [firstMatch] = wildcardMatches;
+
+      return { ...firstMatch, ambiguous: true };
+    }
+
+    return wildcardMatches[0];
   }
 
   public match(url: string, method: string) {
