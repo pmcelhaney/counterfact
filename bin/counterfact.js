@@ -10,7 +10,7 @@ import createDebug from "debug";
 import yaml from "js-yaml";
 import open from "open";
 
-import { counterfact, counterfactMultiple } from "../dist/app.js";
+import { counterfact } from "../dist/app.js";
 import { pathsToRoutes } from "../dist/migrate/paths-to-routes.js";
 import { updateRouteTypes } from "../dist/migrate/update-route-types.js";
 
@@ -127,26 +127,33 @@ async function getSpecBasePath(specPath) {
   return "/";
 }
 
-async function mainMultiple(specPaths, destination, options) {
-  debug("multiple specs: %o", specPaths);
+async function main(source, destination) {
+  debug("executing the main function");
 
-  const destinationPath = nodePath.resolve(destination).replaceAll("\\", "/");
+  const options = program.opts();
 
-  // Extract base paths from each spec and check for duplicates
-  const basePaths = await Promise.all(specPaths.map(getSpecBasePath));
+  // Normalize --spec into an array. When --spec is provided once it's already
+  // an array due to the collector function. When the positional argument is used
+  // it is a string.
+  const specList = Array.isArray(options.spec)
+    ? options.spec
+    : options.spec
+      ? [options.spec]
+      : [];
 
-  const seen = new Set();
-
-  for (const bp of basePaths) {
-    if (seen.has(bp)) {
-      process.stderr.write(
-        `Error: Two or more specs share the same base path "${bp}". Each spec must have a unique base path.\n`,
-      );
-      process.exit(1);
+  // --spec takes precedence over the positional [openapi.yaml] argument.
+  // When --spec is provided, the [openapi.yaml] positional slot shifts to
+  // become the [destination] argument (so `counterfact --spec api.yaml ./api`
+  // works the same as `counterfact api.yaml ./api`).
+  if (specList.length > 0) {
+    if (source !== "_") {
+      destination = source;
     }
 
-    seen.add(bp);
+    source = specList[0];
   }
+
+  const destinationPath = nodePath.resolve(destination).replaceAll("\\", "/");
 
   // If no action-related option is provided, default to all options
   const actions = ["repl", "serve", "watch", "generate", "buildCache"];
@@ -161,15 +168,44 @@ async function mainMultiple(specPaths, destination, options) {
     }
   }
 
+  // Build the list of specs to load. For a single (positional or --spec) source,
+  // this is an array of one. For multiple --spec flags, it is the full list.
+  const specPaths = specList.length > 1 ? specList : [source];
+
+  // For multiple specs, derive a unique base path from each spec document.
+  // For a single spec, use the --prefix option (defaults to "").
+  const isMultiple = specPaths.length > 1;
+
+  const routePrefixes = isMultiple
+    ? await Promise.all(specPaths.map(getSpecBasePath))
+    : [options.prefix];
+
+  // Validate uniqueness of base paths when using multiple specs
+  if (isMultiple) {
+    const seen = new Set();
+
+    for (const bp of routePrefixes) {
+      if (seen.has(bp)) {
+        process.stderr.write(
+          `Error: Two or more specs share the same base path "${bp}". Each spec must have a unique base path.\n`,
+        );
+        process.exit(1);
+      }
+
+      seen.add(bp);
+    }
+  }
+
   const configs = specPaths.map((specPath, index) => {
-    const specBasePath = basePaths[index];
+    const routePrefix = routePrefixes[index];
 
-    // Derive a slug from the base path for use as a subdirectory name
-    const slug = specBasePath.replace(/^\//, "") || "root";
-
-    const codeBasePath = nodePath
-      .join(destinationPath, slug)
-      .replaceAll("\\", "/");
+    // For multiple specs, code goes into per-spec subdirectory.
+    // For single spec, code goes into the destination directly.
+    const codeBasePath = isMultiple
+      ? nodePath
+          .join(destinationPath, routePrefix.replace(/^\//, "") || "root")
+          .replaceAll("\\", "/")
+      : nodePath.resolve(destinationPath).replaceAll("\\", "/");
 
     return {
       adminApiToken:
@@ -199,7 +235,7 @@ async function mainMultiple(specPaths, destination, options) {
       port: options.port,
       proxyPaths: new Map([["", Boolean(options.proxyUrl)]]),
       proxyUrl: options.proxyUrl ?? "",
-      routePrefix: specBasePath,
+      routePrefix,
       startAdminApi: options.adminApi,
       startRepl: options.repl,
       startServer: options.serve,
@@ -212,92 +248,8 @@ async function mainMultiple(specPaths, destination, options) {
     };
   });
 
-  debug("loading counterfact with multiple specs");
-
-  const { start } = await counterfactMultiple(configs);
-
-  const url = `http://localhost:${options.port}`;
-
-  const swaggerLinks = basePaths
-    .map((bp) => {
-      const slug = bp.replace(/^\//, "") || "root";
-
-      return `   Swagger UI (${bp})  ${url}/counterfact/swagger/${slug}/`;
-    })
-    .join("\n");
-
-  const introduction = [
-    "   ____ ____ _  _ _ _ ___ ____ ____ ____ ____ ____ ___",
-    String.raw`   |___ [__] |__| |\|  |  |=== |--< |--- |--| |___  | `,
-    "",
-    `   API Base URL  ${url}`,
-    swaggerLinks,
-    "",
-    "   Instructions  https://counterfact.dev/docs/usage.html",
-    "   Help/feedback https://github.com/pmcelhaney/counterfact/issues",
-    "",
-  ];
-
-  process.stdout.write(
-    introduction.filter((line) => line !== undefined).join("\n"),
-  );
-
-  process.stdout.write("\n\n");
-
-  await start(configs[0]);
-}
-
-async function main(source, destination) {
-  debug("executing the main function");
-
-  const options = program.opts();
-
-  // When --spec is used multiple times, options.spec is an array.
-  // If only one --spec is given, Commander still stores it as a string
-  // (because the option is not variadic), so normalize to an array.
-  const specList = Array.isArray(options.spec)
-    ? options.spec
-    : options.spec
-      ? [options.spec]
-      : [];
-
-  // --spec takes precedence over the positional [openapi.yaml] argument.
-  // When --spec is provided, the [openapi.yaml] positional slot shifts to
-  // become the [destination] argument (so `counterfact --spec api.yaml ./api`
-  // works the same as `counterfact api.yaml ./api`).
-  if (specList.length > 0) {
-    if (source !== "_") {
-      destination = source;
-    }
-    source = specList[0];
-  }
-
-  if (specList.length > 1) {
-    return mainMultiple(specList, destination, options);
-  }
-
-  const args = process.argv;
-
-  const destinationPath = nodePath.resolve(destination).replaceAll("\\", "/");
-
-  const basePath = nodePath.resolve(destinationPath).replaceAll("\\", "/");
-
-  // If no action-related option is provided, default to all options
-
-  const actions = ["repl", "serve", "watch", "generate", "buildCache"];
-  if (
-    !Object.keys(options).some((argument) =>
-      actions.some((action) => argument.startsWith(action)),
-    )
-  ) {
-    for (const action of actions) {
-      options[action] = true;
-    }
-  }
-
   debug("options: %o", options);
-  debug("source: %s", source);
-  debug("destination: %s", destination);
+  debug("specs: %o", specPaths);
 
   const openBrowser = options.open;
 
@@ -305,107 +257,81 @@ async function main(source, destination) {
 
   const guiUrl = `${url}/counterfact/`;
 
-  const swaggerUrl = `${url}/counterfact/swagger/`;
+  // Build swagger URL lines for the startup message
+  const swaggerLines = configs.map((cfg) => {
+    const prefix = cfg.routePrefix;
+    const swaggerUrl = prefix
+      ? `${url}/counterfact/swagger${prefix}`
+      : `${url}/counterfact/swagger/`;
 
-  const config = {
-    adminApiToken:
-      options.adminApiToken ?? process.env.COUNTERFACT_ADMIN_API_TOKEN ?? "",
-    alwaysFakeOptionals: options.alwaysFakeOptionals,
-    basePath,
+    return prefix
+      ? `   Swagger UI (${prefix})  ${swaggerUrl}`
+      : `   Swagger UI    ${swaggerUrl}`;
+  });
 
-    generate: {
-      routes:
-        options.generate ||
-        options.generateRoutes ||
-        options.watch ||
-        options.watchRoutes ||
-        options.buildCache,
-
-      types:
-        options.generate ||
-        options.generateTypes ||
-        options.watch ||
-        options.watchTypes ||
-        options.buildCache,
-
-      prune: Boolean(options.prune),
-    },
-
-    openApiPath: source,
-    port: options.port,
-    proxyPaths: new Map([["", Boolean(options.proxyUrl)]]),
-    proxyUrl: options.proxyUrl ?? "",
-    routePrefix: options.prefix,
-    startAdminApi: options.adminApi,
-    startRepl: options.repl,
-    startServer: options.serve,
-    buildCache: options.buildCache || false,
-
-    watch: {
-      routes: options.watch || options.watchRoutes,
-      types: options.watch || options.watchTypes,
-    },
-  };
-
-  const configForLogging = {
-    ...config,
-    adminApiToken: config.adminApiToken ? "[REDACTED]" : "",
-  };
-
-  debug("loading counterfact (%o)", configForLogging);
+  // Run migration for the primary (first) spec's basePath
+  const primaryConfig = configs[0];
 
   let didMigrate = false;
   let didMigrateRouteTypes = false;
 
   // eslint-disable-next-line n/no-sync
-  if (fs.existsSync(nodePath.join(config.basePath, "paths"))) {
-    await pathsToRoutes(config.basePath);
-    await fs.promises.rmdir(nodePath.join(config.basePath, "paths"), {
+  if (fs.existsSync(nodePath.join(primaryConfig.basePath, "paths"))) {
+    await pathsToRoutes(primaryConfig.basePath);
+    await fs.promises.rmdir(nodePath.join(primaryConfig.basePath, "paths"), {
       recursive: true,
     });
-    await fs.promises.rmdir(nodePath.join(config.basePath, "path-types"), {
-      recursive: true,
-    });
-    await fs.promises.rmdir(nodePath.join(config.basePath, "components"), {
-      recursive: true,
-    });
+    await fs.promises.rmdir(
+      nodePath.join(primaryConfig.basePath, "path-types"),
+      {
+        recursive: true,
+      },
+    );
+    await fs.promises.rmdir(
+      nodePath.join(primaryConfig.basePath, "components"),
+      {
+        recursive: true,
+      },
+    );
 
     didMigrate = true;
   }
 
-  const { start } = await counterfact(config);
+  const { start } = await counterfact(configs);
 
-  debug("loaded counterfact", configForLogging);
+  debug("loaded counterfact");
 
-  // Migrate route type imports if needed
-  debug("checking if route type migration is needed");
   didMigrateRouteTypes = await updateRouteTypes(
-    config.basePath,
-    config.openApiPath,
+    primaryConfig.basePath,
+    primaryConfig.openApiPath,
   );
-  debug("route type migration check complete: %s", didMigrateRouteTypes);
 
-  const watchMessage = createWatchMessage(config);
+  const watchMessage = createWatchMessage(primaryConfig);
 
   const introduction = [
     "   ____ ____ _  _ _ _ ___ ____ ____ ____ ____ ____ ___",
     String.raw`   |___ [__] |__| |\|  |  |=== |--< |--- |--| |___  | `,
-    "   " + padTagLine(taglines[Math.floor(Math.random() * taglines.length)]),
+    isMultiple
+      ? ""
+      : "   " +
+        padTagLine(taglines[Math.floor(Math.random() * taglines.length)]),
     "",
     `   API Base URL  ${url}`,
-    source === "_" ? undefined : `   Swagger UI    ${swaggerUrl}`,
+    source === "_" ? undefined : swaggerLines.join("\n"),
     "",
     "   Instructions  https://counterfact.dev/docs/usage.html",
     "   Help/feedback https://github.com/pmcelhaney/counterfact/issues",
     "",
     "",
-    "🔔 PLEASE READ: Feedback, Telemetry, and Privacy Discussion (10 March 2026)",
-    "   https://counterfact.dev/telemetry-discussion",
-    "",
-    "",
+    isMultiple
+      ? undefined
+      : "🔔 PLEASE READ: Feedback, Telemetry, and Privacy Discussion (10 March 2026)",
+    isMultiple ? undefined : "   https://counterfact.dev/telemetry-discussion",
+    isMultiple ? undefined : "",
+    isMultiple ? undefined : "",
     watchMessage,
-    config.startServer ? "   Starting server" : undefined,
-    config.startRepl
+    primaryConfig.startServer ? "   Starting server" : undefined,
+    primaryConfig.startRepl
       ? "   Starting REPL (type .help for more info)"
       : undefined,
   ];
@@ -417,7 +343,7 @@ async function main(source, destination) {
   process.stdout.write("\n\n");
 
   debug("starting server");
-  await start(config);
+  await start(primaryConfig);
   debug("started server");
 
   if (openBrowser) {

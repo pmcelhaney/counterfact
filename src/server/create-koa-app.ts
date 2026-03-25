@@ -21,33 +21,64 @@ export interface SpecEntry {
   registry: Registry;
 }
 
-function addSharedMiddleware(
-  app: Koa,
-  primaryEntry: SpecEntry,
-  allEntries: SpecEntry[],
-) {
-  const { config, contextRegistry, registry } = primaryEntry;
-
-  if (config.startAdminApi) {
-    app.use(adminApiMiddleware(registry, contextRegistry, config));
+export function createKoaApp(entries: SpecEntry[]) {
+  if (entries.length === 0) {
+    throw new Error("At least one spec entry is required");
   }
 
-  debug("basePath: %s", config.basePath);
+  const app = new Koa();
+
+  const primaryEntry = entries[0]!;
+  const { config: primaryConfig, contextRegistry, registry } = primaryEntry;
+
+  for (const entry of entries) {
+    const { routePrefix } = entry.config;
+    const openapiServePath = routePrefix
+      ? `/counterfact/openapi${routePrefix}`
+      : "/counterfact/openapi";
+    const swaggerPrefix = routePrefix
+      ? `/counterfact/swagger${routePrefix}`
+      : "/counterfact/swagger";
+
+    app.use(
+      openapiMiddleware(
+        entry.config.openApiPath,
+        `//localhost:${entry.config.port}${routePrefix}`,
+        openapiServePath,
+      ),
+    );
+
+    app.use(
+      koaSwagger({
+        routePrefix: swaggerPrefix,
+
+        swaggerOptions: {
+          url: openapiServePath,
+        },
+      }),
+    );
+  }
+
+  if (primaryConfig.startAdminApi) {
+    app.use(adminApiMiddleware(registry, contextRegistry, primaryConfig));
+  }
+
+  debug("basePath: %s", primaryConfig.basePath);
   debug("routes", registry.routes);
 
   app.use(
     pageMiddleware("/counterfact/", "index", {
-      basePath: config.basePath,
+      basePath: primaryConfig.basePath,
       methods: ["get", "post", "put", "delete", "patch"],
 
-      openApiHref: config.openApiPath.includes("://")
-        ? config.openApiPath
-        : pathToFileURL(config.openApiPath).href,
+      openApiHref: primaryConfig.openApiPath.includes("://")
+        ? primaryConfig.openApiPath
+        : pathToFileURL(primaryConfig.openApiPath).href,
 
-      openApiPath: config.openApiPath,
+      openApiPath: primaryConfig.openApiPath,
 
       get routes() {
-        return allEntries.flatMap((entry) => entry.registry.routes);
+        return entries.flatMap((entry) => entry.registry.routes);
       },
     }),
   );
@@ -64,10 +95,10 @@ function addSharedMiddleware(
 
   app.use(
     pageMiddleware("/counterfact/rapidoc", "rapi-doc", {
-      basePath: config.basePath,
+      basePath: primaryConfig.basePath,
 
       get routes() {
-        return allEntries.flatMap((entry) => entry.registry.routes);
+        return entries.flatMap((entry) => entry.registry.routes);
       },
     }),
   );
@@ -87,76 +118,6 @@ function addSharedMiddleware(
       ctx.type = "application/json";
     }
   });
-}
-
-export function createKoaApp(
-  registry: Registry,
-  koaMiddleware: Koa.Middleware,
-  config: Config,
-  contextRegistry: ContextRegistry,
-) {
-  const app = new Koa();
-
-  app.use(
-    openapiMiddleware(
-      config.openApiPath,
-      `//localhost:${config.port}${config.routePrefix}`,
-    ),
-  );
-
-  app.use(
-    koaSwagger({
-      routePrefix: "/counterfact/swagger",
-
-      swaggerOptions: {
-        url: "/counterfact/openapi",
-      },
-    }),
-  );
-
-  const entry: SpecEntry = { config, contextRegistry, koaMiddleware, registry };
-
-  addSharedMiddleware(app, entry, [entry]);
-
-  app.use(koaMiddleware);
-
-  return app;
-}
-
-export function createKoaAppMultiple(entries: SpecEntry[]) {
-  if (entries.length === 0) {
-    throw new Error("At least one spec entry is required");
-  }
-
-  const app = new Koa();
-
-  const primaryEntry = entries[0]!;
-
-  for (const entry of entries) {
-    const slug = entry.config.routePrefix.replace(/^\//, "");
-    const openapiServePath = `/counterfact/openapi/${slug}`;
-    const swaggerPrefix = `/counterfact/swagger/${slug}`;
-
-    app.use(
-      openapiMiddleware(
-        entry.config.openApiPath,
-        `//localhost:${entry.config.port}${entry.config.routePrefix}`,
-        openapiServePath,
-      ),
-    );
-
-    app.use(
-      koaSwagger({
-        routePrefix: swaggerPrefix,
-
-        swaggerOptions: {
-          url: openapiServePath,
-        },
-      }),
-    );
-  }
-
-  addSharedMiddleware(app, primaryEntry, entries);
 
   for (const entry of entries) {
     app.use(entry.koaMiddleware);

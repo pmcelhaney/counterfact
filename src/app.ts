@@ -8,11 +8,7 @@ import yaml from "js-yaml";
 import { startRepl } from "./repl/repl.js";
 import type { Config } from "./server/config.js";
 import { ContextRegistry } from "./server/context-registry.js";
-import {
-  createKoaApp,
-  createKoaAppMultiple,
-  type SpecEntry,
-} from "./server/create-koa-app.js";
+import { createKoaApp, type SpecEntry } from "./server/create-koa-app.js";
 import {
   Dispatcher,
   DispatcherRequest,
@@ -120,108 +116,6 @@ export async function createMswHandlers(
   return handlers;
 }
 
-export async function counterfact(config: Config) {
-  const modulesPath = config.basePath;
-
-  const compiledPathsDirectory = nodePath
-    .join(modulesPath, ".cache")
-    .replaceAll("\\", "/");
-
-  await rm(compiledPathsDirectory, { force: true, recursive: true });
-
-  const registry = new Registry();
-
-  const contextRegistry = new ContextRegistry();
-
-  const codeGenerator = new CodeGenerator(
-    config.openApiPath,
-    config.basePath,
-    config.generate,
-  );
-
-  const dispatcher = new Dispatcher(
-    registry,
-    contextRegistry,
-    await loadOpenApiDocument(config.openApiPath),
-    config,
-  );
-
-  const transpiler = new Transpiler(
-    nodePath.join(modulesPath, "routes").replaceAll("\\", "/"),
-    compiledPathsDirectory,
-    "commonjs",
-  );
-
-  const moduleLoader = new ModuleLoader(
-    compiledPathsDirectory,
-    registry,
-    contextRegistry,
-  );
-
-  const middleware = koaMiddleware(dispatcher, config);
-
-  const koaApp = createKoaApp(registry, middleware, config, contextRegistry);
-
-  async function start(options: Config) {
-    const {
-      generate,
-      startRepl: shouldStartRepl,
-      startServer,
-      watch,
-      buildCache,
-    } = options;
-
-    if (generate.routes || generate.types) {
-      await codeGenerator.generate();
-    }
-
-    if (watch.routes || watch.types) {
-      await codeGenerator.watch();
-    }
-
-    let httpTerminator: HttpTerminator | undefined;
-
-    if (startServer) {
-      await transpiler.watch();
-      await moduleLoader.load();
-      await moduleLoader.watch();
-
-      const server = koaApp.listen({
-        port: config.port,
-      });
-
-      httpTerminator = createHttpTerminator({
-        server,
-      });
-    } else if (buildCache) {
-      // If we are not starting the server, we still want to transpile and load modules
-      await transpiler.watch();
-      await transpiler.stopWatching();
-    }
-
-    const replServer = shouldStartRepl && startRepl(contextRegistry, config);
-
-    return {
-      replServer,
-
-      async stop() {
-        await codeGenerator.stopWatching();
-        await transpiler.stopWatching();
-        await moduleLoader.stopWatching();
-        await httpTerminator?.terminate();
-      },
-    };
-  }
-
-  return {
-    contextRegistry,
-    koaApp,
-    koaMiddleware: middleware,
-    registry,
-    start,
-  };
-}
-
 interface SpecSetupResult {
   codeGenerator: CodeGenerator;
   contextRegistry: ContextRegistry;
@@ -279,7 +173,7 @@ async function setupSpec(config: Config): Promise<SpecSetupResult> {
   return { codeGenerator, contextRegistry, entry, moduleLoader, transpiler };
 }
 
-export async function counterfactMultiple(configs: Config[]) {
+export async function counterfact(configs: Config[]) {
   if (configs.length === 0) {
     throw new Error("At least one config is required");
   }
@@ -287,7 +181,7 @@ export async function counterfactMultiple(configs: Config[]) {
   const specs = await Promise.all(configs.map(setupSpec));
 
   const entries = specs.map((s) => s.entry);
-  const koaApp = createKoaAppMultiple(entries);
+  const koaApp = createKoaApp(entries);
 
   const primaryConfig = configs[0]!;
   const primarySpec = specs[0]!;
@@ -350,6 +244,7 @@ export async function counterfactMultiple(configs: Config[]) {
   return {
     contextRegistry: primarySpec.contextRegistry,
     koaApp,
+    koaMiddleware: entries[0]!.koaMiddleware,
     registry: entries[0]!.registry,
     start,
   };
