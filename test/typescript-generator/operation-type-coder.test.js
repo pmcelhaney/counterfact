@@ -534,7 +534,65 @@ describe("an OperationTypeCoder", () => {
     );
   });
 
-  it("ignores apiKey security schemes not in header", async () => {
+  it("adds API key query param when security scheme type is apiKey and in is query", async () => {
+    const requirement = new Requirement(
+      {
+        responses: {
+          default: {
+            content: {
+              "application/json": {
+                schema: { $ref: "#/components/schemas/Example" },
+              },
+            },
+          },
+        },
+      },
+      "#/paths/hello/get",
+    );
+
+    const coder = new OperationTypeCoder(requirement, "get", [
+      {
+        type: "apiKey",
+        name: "api_key",
+        in: "query",
+      },
+    ]);
+
+    await expect(
+      format(`type TestType =${coder.write(dummyScript)}`),
+    ).resolves.toMatchSnapshot();
+  });
+
+  it("adds API key cookie when security scheme type is apiKey and in is cookie", async () => {
+    const requirement = new Requirement(
+      {
+        responses: {
+          default: {
+            content: {
+              "application/json": {
+                schema: { $ref: "#/components/schemas/Example" },
+              },
+            },
+          },
+        },
+      },
+      "#/paths/hello/get",
+    );
+
+    const coder = new OperationTypeCoder(requirement, "get", [
+      {
+        type: "apiKey",
+        name: "session_id",
+        in: "cookie",
+      },
+    ]);
+
+    await expect(
+      format(`type TestType =${coder.write(dummyScript)}`),
+    ).resolves.toMatchSnapshot();
+  });
+
+  it("does not add apiKey to headers or cookie when in is query", async () => {
     const requirement = new Requirement(
       {
         responses: {
@@ -561,6 +619,7 @@ describe("an OperationTypeCoder", () => {
     const result = coder.write(dummyScript);
 
     expect(result).toContain("headers: never");
+    expect(result).toContain("cookie: never");
   });
 
   it("uses operationId for type names when available", () => {

@@ -150,9 +150,10 @@ export class OperationTypeCoder extends TypeCoder {
 
     const parameters = this.requirement.get("parameters");
 
-    const queryType = new ParametersTypeCoder(parameters, "query").write(
-      script,
-    );
+    const parametersQueryType = new ParametersTypeCoder(
+      parameters,
+      "query",
+    ).write(script);
 
     const pathType = new ParametersTypeCoder(parameters, "path").write(script);
 
@@ -161,27 +162,51 @@ export class OperationTypeCoder extends TypeCoder {
       "header",
     ).write(script);
 
-    const existingHeaderNames = new Set(
-      (parameters?.data ?? [])
-        .filter((p) => p.in === "header")
-        .map((p) => p.name),
+    const parametersCookieType = new ParametersTypeCoder(
+      parameters,
+      "cookie",
+    ).write(script);
+
+    const mergeApiKeyFields = (baseType, securityLocation, parametersList) => {
+      const existingNames = new Set(
+        (parametersList?.data ?? [])
+          .filter((p) => p.in === securityLocation)
+          .map((p) => p.name),
+      );
+
+      const apiKeyFields = this.securitySchemes
+        .filter(
+          ({ type, in: location, name }) =>
+            type === "apiKey" &&
+            location === securityLocation &&
+            !existingNames.has(name),
+        )
+        .map(({ name }) => `"${name}": string`);
+
+      if (apiKeyFields.length === 0) {
+        return baseType;
+      }
+
+      return baseType === "never"
+        ? `{${apiKeyFields.join(", ")}}`
+        : `${baseType} & {${apiKeyFields.join(", ")}}`;
+    };
+
+    const queryType = mergeApiKeyFields(
+      parametersQueryType,
+      "query",
+      parameters,
     );
-
-    const apiKeyHeaders = this.securitySchemes
-      .filter(
-        ({ type, in: location, name }) =>
-          type === "apiKey" &&
-          location === "header" &&
-          !existingHeaderNames.has(name),
-      )
-      .map(({ name }) => `"${name}": string`);
-
-    const headersType =
-      apiKeyHeaders.length === 0
-        ? parametersHeadersType
-        : parametersHeadersType === "never"
-          ? `{${apiKeyHeaders.join(", ")}}`
-          : `${parametersHeadersType} & {${apiKeyHeaders.join(", ")}}`;
+    const headersType = mergeApiKeyFields(
+      parametersHeadersType,
+      "header",
+      parameters,
+    );
+    const cookieType = mergeApiKeyFields(
+      parametersCookieType,
+      "cookie",
+      parameters,
+    );
 
     const bodyRequirement =
       this.requirement.get("consumes") ||
@@ -235,8 +260,15 @@ export class OperationTypeCoder extends TypeCoder {
       baseName,
       modulePath,
     );
+    const cookieTypeName = this.exportParameterType(
+      script,
+      "cookie",
+      cookieType,
+      baseName,
+      modulePath,
+    );
 
-    return `($: OmitValueWhenNever<{ query: ${queryTypeName}, path: ${pathTypeName}, headers: ${headersTypeName}, body: ${bodyType}, context: ${contextTypeImportName}, response: ${responseType}, x: ${xType}, proxy: ${proxyType}, user: ${this.userType()}, delay: ${delayType} }>) => MaybePromise<${this.responseTypes(
+    return `($: OmitValueWhenNever<{ query: ${queryTypeName}, path: ${pathTypeName}, headers: ${headersTypeName}, cookie: ${cookieTypeName}, body: ${bodyType}, context: ${contextTypeImportName}, response: ${responseType}, x: ${xType}, proxy: ${proxyType}, user: ${this.userType()}, delay: ${delayType} }>) => MaybePromise<${this.responseTypes(
       script,
     )} | { status: 415, contentType: "text/plain", body: string } | COUNTERFACT_RESPONSE | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }>`;
   }

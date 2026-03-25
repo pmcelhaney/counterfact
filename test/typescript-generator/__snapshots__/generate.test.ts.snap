@@ -32,6 +32,7 @@ export type addPet = (
     query: never;
     path: never;
     headers: addPet_Headers;
+    cookie: never;
     body: Pet;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -84,6 +85,7 @@ export type updatePet = (
     query: never;
     path: never;
     headers: updatePet_Headers;
+    cookie: never;
     body: Pet;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -182,6 +184,7 @@ export type findPetsByStatus = (
     query: findPetsByStatus_Query;
     path: never;
     headers: findPetsByStatus_Headers;
+    cookie: never;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -264,6 +267,7 @@ export type findPetsByTags = (
     query: findPetsByTags_Query;
     path: never;
     headers: findPetsByTags_Headers;
+    cookie: never;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -354,6 +358,7 @@ export type getPetById = (
     query: never;
     path: getPetById_Path;
     headers: getPetById_Headers;
+    cookie: never;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -415,6 +420,7 @@ export type updatePetWithForm = (
     query: updatePetWithForm_Query;
     path: updatePetWithForm_Path;
     headers: updatePetWithForm_Headers;
+    cookie: never;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -444,6 +450,7 @@ export type deletePet = (
     query: never;
     path: deletePet_Path;
     headers: deletePet_Headers;
+    cookie: never;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -511,6 +518,7 @@ export type uploadFile = (
     query: uploadFile_Query;
     path: uploadFile_Path;
     headers: uploadFile_Headers;
+    cookie: never;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -575,6 +583,7 @@ export type getInventory = (
     query: never;
     path: never;
     headers: getInventory_Headers;
+    cookie: never;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -636,6 +645,7 @@ export type placeOrder = (
     query: never;
     path: never;
     headers: placeOrder_Headers;
+    cookie: never;
     body: Order;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -711,6 +721,7 @@ export type getOrderById = (
     query: never;
     path: getOrderById_Path;
     headers: getOrderById_Headers;
+    cookie: never;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -772,6 +783,7 @@ export type deleteOrder = (
     query: never;
     path: deleteOrder_Path;
     headers: deleteOrder_Headers;
+    cookie: never;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -843,6 +855,7 @@ export type createUser = (
     query: never;
     path: never;
     headers: createUser_Headers;
+    cookie: never;
     body: User;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -913,6 +926,7 @@ export type createUsersWithListInput = (
     query: never;
     path: never;
     headers: createUsersWithListInput_Headers;
+    cookie: never;
     body: Array<User>;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -990,6 +1004,7 @@ export type loginUser = (
     query: loginUser_Query;
     path: never;
     headers: loginUser_Headers;
+    cookie: never;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -1073,6 +1088,7 @@ export type logoutUser = (
     query: never;
     path: never;
     headers: logoutUser_Headers;
+    cookie: never;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -1139,6 +1155,7 @@ export type getUserByName = (
     query: never;
     path: getUserByName_Path;
     headers: getUserByName_Headers;
+    cookie: never;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -1200,6 +1217,7 @@ export type updateUser = (
     query: never;
     path: updateUser_Path;
     headers: updateUser_Headers;
+    cookie: never;
     body: User;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -1229,6 +1247,7 @@ export type deleteUser = (
     query: never;
     path: deleteUser_Path;
     headers: deleteUser_Headers;
+    cookie: never;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -1369,6 +1388,7 @@ export type HTTP_GET = (
     query: never;
     path: never;
     headers: never;
+    cookie: never;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -1430,6 +1450,7 @@ export type HTTP_GET = (
     query: never;
     path: never;
     headers: never;
+    cookie: never;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -1491,6 +1512,7 @@ export type helloKitty = (
     query: never;
     path: never;
     headers: never;
+    cookie: never;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -1552,6 +1574,7 @@ export type HTTP_GET = (
     query: never;
     path: HTTP_GET_Path;
     headers: never;
+    cookie: never;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -1620,6 +1643,7 @@ export type HTTP_GET = (
     query: never;
     path: never;
     headers: never;
+    cookie: never;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -1684,6 +1708,7 @@ export type HTTP_GET = (
     query: never;
     path: never;
     headers: never;
+    cookie: never;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{

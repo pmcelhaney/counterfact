@@ -56,6 +56,9 @@ export type DispatcherRequest = {
     username?: string;
   };
   body: unknown;
+  cookie?: {
+    [key: string]: string;
+  };
   headers: {
     [key: string]: string;
   };
@@ -237,6 +240,7 @@ export class Dispatcher {
   public async request({
     auth,
     body,
+    cookie = {},
     headers = {},
     method,
     path,
@@ -294,6 +298,8 @@ export class Dispatcher {
       },
 
       headers,
+
+      cookie,
 
       proxy: async (url: string) => {
         if (body !== undefined && headers.contentType !== "application/json") {

@@ -1,11 +1,90 @@
 // Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
+exports[`an OperationTypeCoder adds API key cookie when security scheme type is apiKey and in is cookie 1`] = `
+"type TestType = (
+  $: OmitValueWhenNever<{
+    query: never;
+    path: never;
+    headers: never;
+    cookie: HTTP_GET_Cookie;
+    body: never;
+    context: ExternalType;
+    response: ResponseBuilderFactory<{
+      [statusCode in HttpStatusCode]: {
+        headers: never;
+        requiredHeaders: never;
+        content: {
+          "application/json": {
+            schema: Type;
+          };
+        };
+        examples: {};
+      };
+    }>;
+    x: SharedType;
+    proxy: (url: string) => COUNTERFACT_RESPONSE;
+    user: never;
+    delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+  }>,
+) => MaybePromise<
+  | {
+      status: number | undefined;
+      contentType?: "application/json";
+      body?: Type;
+    }
+  | { status: 415; contentType: "text/plain"; body: string }
+  | COUNTERFACT_RESPONSE
+  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
+>;
+"
+`;
+
 exports[`an OperationTypeCoder adds API key header when security scheme type is apiKey and in is header 1`] = `
 "type TestType = (
   $: OmitValueWhenNever<{
     query: never;
     path: never;
     headers: HTTP_GET_Headers;
+    cookie: never;
+    body: never;
+    context: ExternalType;
+    response: ResponseBuilderFactory<{
+      [statusCode in HttpStatusCode]: {
+        headers: never;
+        requiredHeaders: never;
+        content: {
+          "application/json": {
+            schema: Type;
+          };
+        };
+        examples: {};
+      };
+    }>;
+    x: SharedType;
+    proxy: (url: string) => COUNTERFACT_RESPONSE;
+    user: never;
+    delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+  }>,
+) => MaybePromise<
+  | {
+      status: number | undefined;
+      contentType?: "application/json";
+      body?: Type;
+    }
+  | { status: 415; contentType: "text/plain"; body: string }
+  | COUNTERFACT_RESPONSE
+  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
+>;
+"
+`;
+
+exports[`an OperationTypeCoder adds API key query param when security scheme type is apiKey and in is query 1`] = `
+"type TestType = (
+  $: OmitValueWhenNever<{
+    query: HTTP_GET_Query;
+    path: never;
+    headers: never;
+    cookie: never;
     body: never;
     context: ExternalType;
     response: ResponseBuilderFactory<{
@@ -44,6 +123,7 @@ exports[`an OperationTypeCoder falls back to root level produces (OpenAPI 2) 1`]
     query: never;
     path: never;
     headers: never;
+    cookie: never;
     body: never;
     context: ExternalType;
     response: ResponseBuilderFactory<{
@@ -82,6 +162,7 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2 wit
     query: HTTP_GET_Query;
     path: HTTP_GET_Path;
     headers: HTTP_GET_Headers;
+    cookie: never;
     body: Type;
     context: ExternalType;
     response: ResponseBuilderFactory<{
@@ -150,6 +231,7 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2) 1`
     query: HTTP_GET_Query;
     path: HTTP_GET_Path;
     headers: HTTP_GET_Headers;
+    cookie: never;
     body: Type;
     context: ExternalType;
     response: ResponseBuilderFactory<{
@@ -218,6 +300,7 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2, co
     query: HTTP_GET_Query;
     path: HTTP_GET_Path;
     headers: HTTP_GET_Headers;
+    cookie: never;
     body: Type;
     context: ExternalType;
     response: ResponseBuilderFactory<{
@@ -286,6 +369,7 @@ exports[`an OperationTypeCoder generates a complex post operation 1`] = `
     query: HTTP_GET_Query;
     path: HTTP_GET_Path;
     headers: HTTP_GET_Headers;
+    cookie: never;
     body: Type;
     context: ExternalType;
     response: ResponseBuilderFactory<{
@@ -357,6 +441,7 @@ exports[`an OperationTypeCoder generates a simple get operation (OpenAPI 2) 1`] 
     query: never;
     path: never;
     headers: never;
+    cookie: never;
     body: never;
     context: ExternalType;
     response: ResponseBuilderFactory<{
@@ -395,6 +480,7 @@ exports[`an OperationTypeCoder generates a simple get operation 1`] = `
     query: never;
     path: never;
     headers: never;
+    cookie: never;
     body: never;
     context: ExternalType;
     response: ResponseBuilderFactory<{
@@ -433,6 +519,7 @@ exports[`an OperationTypeCoder generates an auth object for basic authentication
     query: never;
     path: never;
     headers: never;
+    cookie: never;
     body: never;
     context: ExternalType;
     response: ResponseBuilderFactory<{

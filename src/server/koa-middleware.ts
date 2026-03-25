@@ -82,6 +82,24 @@ function getAuthObject(
   return { password, username };
 }
 
+function parseCookies(cookieHeader: string | undefined): {
+  [key: string]: string;
+} {
+  if (!cookieHeader) {
+    return {};
+  }
+
+  return Object.fromEntries(
+    cookieHeader.split(";").map((pair) => {
+      const index = pair.indexOf("=");
+
+      return index === -1
+        ? [pair.trim(), ""]
+        : [pair.slice(0, index).trim(), pair.slice(index + 1).trim()];
+    }),
+  );
+}
+
 export function koaMiddleware(
   dispatcher: Dispatcher,
   config: Config,
@@ -100,6 +118,7 @@ export function koaMiddleware(
     const auth = getAuthObject(ctx);
 
     const { body, headers, query } = ctx.request;
+    const cookie = parseCookies(headers.cookie);
 
     const path = ctx.request.path.slice(routePrefix.length);
 
@@ -121,6 +140,8 @@ export function koaMiddleware(
       auth,
 
       body: method === "HEAD" || method === "GET" ? undefined : body,
+
+      cookie,
 
       /* @ts-expect-error the value of a header can be an array and we don't have a solution for that yet */
       headers,
