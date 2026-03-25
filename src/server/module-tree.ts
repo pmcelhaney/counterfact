@@ -163,7 +163,7 @@ export class ModuleTree {
     pathVariables: { [key: string]: string },
     matchedPath: string,
     method: string,
-  ) {
+  ): Match | undefined {
     function normalizedSegment(segment: string, directory: Directory) {
       for (const file in directory.files) {
         if (file.toLowerCase() === segment.toLowerCase()) {
@@ -192,15 +192,15 @@ export class ModuleTree {
     );
 
     if (wildcardFiles.length > 1) {
-      const [firstWildcard] = wildcardFiles;
+      const firstWildcard = wildcardFiles[0] as File;
 
       return {
         ...firstWildcard,
         ambiguous: true,
-        matchedPath: `${matchedPath}/${firstWildcard!.rawName}`,
+        matchedPath: `${matchedPath}/${firstWildcard.rawName}`,
         pathVariables: {
           ...pathVariables,
-          [firstWildcard!.name]: segment,
+          [firstWildcard.name]: segment,
         },
       };
     }
@@ -301,7 +301,7 @@ export class ModuleTree {
     }
 
     if (wildcardMatches.length > 1) {
-      const [firstMatch] = wildcardMatches;
+      const firstMatch = wildcardMatches[0] as Match;
 
       return { ...firstMatch, ambiguous: true };
     }
