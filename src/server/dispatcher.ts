@@ -42,6 +42,15 @@ interface ParameterTypes {
 
 export interface OpenApiDocument {
   basePath?: string;
+  components?: {
+    securitySchemes?: {
+      [key: string]: {
+        in?: string;
+        name?: string;
+        type: string;
+      };
+    };
+  };
   paths: {
     [key: string]: {
       [key in Lowercase<HttpMethods>]?: OpenApiOperation;
@@ -275,6 +284,32 @@ export class Dispatcher {
 
     const operation = this.operationForPathAndMethod(matchedPath, method);
 
+    const securitySchemes = Object.values(
+      this.openApiDocument?.components?.securitySchemes ?? {},
+    );
+
+    const user: { [key: string]: string | undefined } = {};
+
+    if (auth?.username !== undefined) {
+      user.username = auth.username;
+    }
+
+    if (auth?.password !== undefined) {
+      user.password = auth.password;
+    }
+
+    for (const scheme of securitySchemes) {
+      if (scheme.type === "apiKey" && scheme.name !== undefined) {
+        if (scheme.in === "header") {
+          user[scheme.name] = headers[scheme.name.toLowerCase()];
+        } else if (scheme.in === "query") {
+          user[scheme.name] = query[scheme.name];
+        } else if (scheme.in === "cookie") {
+          user[scheme.name] = cookie[scheme.name];
+        }
+      }
+    }
+
     const continuousDistribution = (min: number, max: number) => {
       return min + Math.random() * (max - min);
     };
@@ -300,6 +335,8 @@ export class Dispatcher {
       headers,
 
       cookie,
+
+      user,
 
       proxy: async (url: string) => {
         if (body !== undefined && headers.contentType !== "application/json") {

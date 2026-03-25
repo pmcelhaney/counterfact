@@ -35,6 +35,7 @@ interface RequestData {
     password?: string;
     username?: string;
   };
+  user?: { [key: string]: string | undefined };
   context: unknown;
   headers: { [key: string]: number | string | boolean };
   matchedPath?: string;

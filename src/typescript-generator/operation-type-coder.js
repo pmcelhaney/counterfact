@@ -123,15 +123,29 @@ export class OperationTypeCoder extends TypeCoder {
   }
 
   userType() {
+    const typeParts = [];
+
     if (
       this.securitySchemes.some(
         ({ scheme, type }) => type === "http" && scheme === "basic",
       )
     ) {
-      return "{username?: string, password?: string}";
+      typeParts.push("{username?: string, password?: string}");
     }
 
-    return "never";
+    const apiKeyFields = this.securitySchemes
+      .filter(({ type }) => type === "apiKey")
+      .map(({ name }) => `"${name}": string`);
+
+    if (apiKeyFields.length > 0) {
+      typeParts.push(`{${apiKeyFields.join(", ")}}`);
+    }
+
+    if (typeParts.length === 0) {
+      return "never";
+    }
+
+    return typeParts.join(" & ");
   }
 
   writeCode(script) {

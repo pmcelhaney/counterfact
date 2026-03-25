@@ -58,7 +58,7 @@ export type addPet = (
     }>;
     x: WideOperationArgument;
     proxy: (url: string) => COUNTERFACT_RESPONSE;
-    user: never;
+    user: { api_key: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
 ) => MaybePromise<
@@ -123,7 +123,7 @@ export type updatePet = (
     }>;
     x: WideOperationArgument;
     proxy: (url: string) => COUNTERFACT_RESPONSE;
-    user: never;
+    user: { api_key: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
 ) => MaybePromise<
@@ -210,7 +210,7 @@ export type findPetsByStatus = (
     }>;
     x: WideOperationArgument;
     proxy: (url: string) => COUNTERFACT_RESPONSE;
-    user: never;
+    user: { api_key: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
 ) => MaybePromise<
@@ -293,7 +293,7 @@ export type findPetsByTags = (
     }>;
     x: WideOperationArgument;
     proxy: (url: string) => COUNTERFACT_RESPONSE;
-    user: never;
+    user: { api_key: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
 ) => MaybePromise<
@@ -390,7 +390,7 @@ export type getPetById = (
     }>;
     x: WideOperationArgument;
     proxy: (url: string) => COUNTERFACT_RESPONSE;
-    user: never;
+    user: { api_key: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
 ) => MaybePromise<
@@ -433,7 +433,7 @@ export type updatePetWithForm = (
     }>;
     x: WideOperationArgument;
     proxy: (url: string) => COUNTERFACT_RESPONSE;
-    user: never;
+    user: { api_key: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
 ) => MaybePromise<
@@ -463,7 +463,7 @@ export type deletePet = (
     }>;
     x: WideOperationArgument;
     proxy: (url: string) => COUNTERFACT_RESPONSE;
-    user: never;
+    user: { api_key: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
 ) => MaybePromise<
@@ -535,7 +535,7 @@ export type uploadFile = (
     }>;
     x: WideOperationArgument;
     proxy: (url: string) => COUNTERFACT_RESPONSE;
-    user: never;
+    user: { api_key: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
 ) => MaybePromise<
@@ -600,7 +600,7 @@ export type getInventory = (
     }>;
     x: WideOperationArgument;
     proxy: (url: string) => COUNTERFACT_RESPONSE;
-    user: never;
+    user: { api_key: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
 ) => MaybePromise<
@@ -668,7 +668,7 @@ export type placeOrder = (
     }>;
     x: WideOperationArgument;
     proxy: (url: string) => COUNTERFACT_RESPONSE;
-    user: never;
+    user: { api_key: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
 ) => MaybePromise<
@@ -753,7 +753,7 @@ export type getOrderById = (
     }>;
     x: WideOperationArgument;
     proxy: (url: string) => COUNTERFACT_RESPONSE;
-    user: never;
+    user: { api_key: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
 ) => MaybePromise<
@@ -802,7 +802,7 @@ export type deleteOrder = (
     }>;
     x: WideOperationArgument;
     proxy: (url: string) => COUNTERFACT_RESPONSE;
-    user: never;
+    user: { api_key: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
 ) => MaybePromise<
@@ -875,7 +875,7 @@ export type createUser = (
     }>;
     x: WideOperationArgument;
     proxy: (url: string) => COUNTERFACT_RESPONSE;
-    user: never;
+    user: { api_key: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
 ) => MaybePromise<
@@ -952,7 +952,7 @@ export type createUsersWithListInput = (
     }>;
     x: WideOperationArgument;
     proxy: (url: string) => COUNTERFACT_RESPONSE;
-    user: never;
+    user: { api_key: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
 ) => MaybePromise<
@@ -1033,7 +1033,7 @@ export type loginUser = (
     }>;
     x: WideOperationArgument;
     proxy: (url: string) => COUNTERFACT_RESPONSE;
-    user: never;
+    user: { api_key: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
 ) => MaybePromise<
@@ -1101,7 +1101,7 @@ export type logoutUser = (
     }>;
     x: WideOperationArgument;
     proxy: (url: string) => COUNTERFACT_RESPONSE;
-    user: never;
+    user: { api_key: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
 ) => MaybePromise<
@@ -1187,7 +1187,7 @@ export type getUserByName = (
     }>;
     x: WideOperationArgument;
     proxy: (url: string) => COUNTERFACT_RESPONSE;
-    user: never;
+    user: { api_key: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
 ) => MaybePromise<
@@ -1230,7 +1230,7 @@ export type updateUser = (
     }>;
     x: WideOperationArgument;
     proxy: (url: string) => COUNTERFACT_RESPONSE;
-    user: never;
+    user: { api_key: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
 ) => MaybePromise<
@@ -1266,7 +1266,7 @@ export type deleteUser = (
     }>;
     x: WideOperationArgument;
     proxy: (url: string) => COUNTERFACT_RESPONSE;
-    user: never;
+    user: { api_key: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
 ) => MaybePromise<

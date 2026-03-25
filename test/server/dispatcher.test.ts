@@ -933,3 +933,136 @@ describe("given a request that contains the differently cased path", () => {
     expect(response.body).toBe("ok");
   });
 });
+
+describe("given an OpenAPI document with apiKey security schemes", () => {
+  const openApiDocument: OpenApiDocument = {
+    components: {
+      securitySchemes: {
+        headerKey: { type: "apiKey", name: "x-api-key", in: "header" },
+        queryKey: { type: "apiKey", name: "token", in: "query" },
+        cookieKey: { type: "apiKey", name: "session_id", in: "cookie" },
+      },
+    },
+    paths: {
+      "/secure": {
+        get: { responses: { 200: {} } },
+      },
+    },
+  };
+
+  it("exposes a header apiKey via $.user", async () => {
+    const registry = new Registry();
+
+    registry.add("/secure", {
+      GET({ user }: { user?: { [key: string]: string | undefined } }) {
+        return { body: user?.["x-api-key"] ?? "missing" };
+      },
+    });
+
+    const dispatcher = new Dispatcher(
+      registry,
+      new ContextRegistry(),
+      openApiDocument,
+    );
+
+    const response = await dispatcher.request({
+      body: "",
+      headers: { "x-api-key": "secret123" },
+      method: "GET",
+      path: "/secure",
+      query: {},
+      req: { path: "/secure" },
+    });
+
+    expect(response.body).toBe("secret123");
+  });
+
+  it("exposes a query apiKey via $.user", async () => {
+    const registry = new Registry();
+
+    registry.add("/secure", {
+      GET({ user }: { user?: { [key: string]: string | undefined } }) {
+        return { body: user?.["token"] ?? "missing" };
+      },
+    });
+
+    const dispatcher = new Dispatcher(
+      registry,
+      new ContextRegistry(),
+      openApiDocument,
+    );
+
+    const response = await dispatcher.request({
+      body: "",
+      headers: {},
+      method: "GET",
+      path: "/secure",
+      query: { token: "mytoken" },
+      req: { path: "/secure" },
+    });
+
+    expect(response.body).toBe("mytoken");
+  });
+
+  it("exposes a cookie apiKey via $.user", async () => {
+    const registry = new Registry();
+
+    registry.add("/secure", {
+      GET({ user }: { user?: { [key: string]: string | undefined } }) {
+        return { body: user?.["session_id"] ?? "missing" };
+      },
+    });
+
+    const dispatcher = new Dispatcher(
+      registry,
+      new ContextRegistry(),
+      openApiDocument,
+    );
+
+    const response = await dispatcher.request({
+      body: "",
+      cookie: { session_id: "abc123" },
+      headers: {},
+      method: "GET",
+      path: "/secure",
+      query: {},
+      req: { path: "/secure" },
+    });
+
+    expect(response.body).toBe("abc123");
+  });
+});
+
+describe("given an OpenAPI document with a cookie apiKey scheme and no cookie in the request", () => {
+  it("does not throw when cookie is omitted from the request", async () => {
+    const registry = new Registry();
+
+    registry.add("/secure", {
+      GET({ user }: { user?: { [key: string]: string | undefined } }) {
+        return { body: user?.["session_id"] ?? "missing" };
+      },
+    });
+
+    const dispatcher = new Dispatcher(registry, new ContextRegistry(), {
+      components: {
+        securitySchemes: {
+          cookieKey: { type: "apiKey", name: "session_id", in: "cookie" },
+        },
+      },
+      paths: {
+        "/secure": { get: { responses: { 200: {} } } },
+      },
+    });
+
+    const response = await dispatcher.request({
+      body: "",
+      headers: {},
+      method: "GET",
+      path: "/secure",
+      query: {},
+      req: { path: "/secure" },
+    });
+
+    expect(response.body).toBe("missing");
+  });
+});

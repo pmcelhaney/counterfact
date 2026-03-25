@@ -23,7 +23,7 @@ exports[`an OperationTypeCoder adds API key cookie when security scheme type is 
     }>;
     x: SharedType;
     proxy: (url: string) => COUNTERFACT_RESPONSE;
-    user: never;
+    user: { session_id: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
 ) => MaybePromise<
@@ -62,7 +62,7 @@ exports[`an OperationTypeCoder adds API key header when security scheme type is 
     }>;
     x: SharedType;
     proxy: (url: string) => COUNTERFACT_RESPONSE;
-    user: never;
+    user: { api_key: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
 ) => MaybePromise<
@@ -101,7 +101,7 @@ exports[`an OperationTypeCoder adds API key query param when security scheme typ
     }>;
     x: SharedType;
     proxy: (url: string) => COUNTERFACT_RESPONSE;
-    user: never;
+    user: { api_key: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
 ) => MaybePromise<
