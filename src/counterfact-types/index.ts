@@ -55,9 +55,9 @@ type IfHasKey<
   infer FirstKey extends string,
   ...infer RestKeys extends string[],
 ]
-  ? keyof SomeObject extends FirstKey
-    ? Yes
-    : IfHasKey<SomeObject, RestKeys, Yes, No>
+  ? Extract<keyof SomeObject, `${string}${FirstKey}${string}`> extends never
+    ? IfHasKey<SomeObject, RestKeys, Yes, No>
+    : Yes
   : No;
 
 type SchemasOf<T extends { [key: string]: { schema: any } }> = {
