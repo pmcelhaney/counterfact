@@ -5,7 +5,7 @@ import { dereference } from "@apidevtools/json-schema-ref-parser";
 import { createHttpTerminator, type HttpTerminator } from "http-terminator";
 import yaml from "js-yaml";
 
-import { startRepl } from "./repl/repl.js";
+import { startRepl as startReplServer } from "./repl/repl.js";
 import type { Config } from "./server/config.js";
 import { ContextRegistry } from "./server/context-registry.js";
 import { createKoaApp } from "./server/create-koa-app.js";
@@ -159,13 +159,7 @@ export async function counterfact(config: Config) {
   const koaApp = createKoaApp(registry, middleware, config, contextRegistry);
 
   async function start(options: Config) {
-    const {
-      generate,
-      startRepl: shouldStartRepl,
-      startServer,
-      watch,
-      buildCache,
-    } = options;
+    const { generate, startServer, watch, buildCache } = options;
 
     if (generate.routes || generate.types) {
       await codeGenerator.generate();
@@ -195,11 +189,7 @@ export async function counterfact(config: Config) {
       await transpiler.stopWatching();
     }
 
-    const replServer = shouldStartRepl && startRepl(contextRegistry, config);
-
     return {
-      replServer,
-
       async stop() {
         await codeGenerator.stopWatching();
         await transpiler.stopWatching();
@@ -215,5 +205,6 @@ export async function counterfact(config: Config) {
     koaMiddleware: middleware,
     registry,
     start,
+    startRepl: () => startReplServer(contextRegistry, config),
   };
 }
