@@ -69,6 +69,38 @@ describe("handleMswRequest", () => {
   });
 });
 
+describe("counterfact", () => {
+  it("returns a startRepl function", async () => {
+    const result = await app.counterfact(mockConfig);
+    expect(typeof result.startRepl).toBe("function");
+  });
+
+  it("returns contextRegistry, registry, koaApp, koaMiddleware, and start", async () => {
+    const result = await app.counterfact(mockConfig);
+    expect(result.contextRegistry).toBeDefined();
+    expect(result.registry).toBeDefined();
+    expect(result.koaApp).toBeDefined();
+    expect(result.koaMiddleware).toBeDefined();
+    expect(typeof result.start).toBe("function");
+  });
+
+  it("does not start the REPL automatically", async () => {
+    // If start() still auto-started the REPL, it would call repl.start() which binds
+    // to stdin; testing the `startRepl` property being a separate callable is the
+    // architectural contract. We also verify start() returns a stop() function (not
+    // a replServer), confirming the REPL is no longer embedded in the return value.
+    const { start, startRepl } = await app.counterfact({
+      ...mockConfig,
+      startRepl: true,
+    });
+    const result = await start({ ...mockConfig, startRepl: true });
+    expect(typeof startRepl).toBe("function");
+    expect(typeof result.stop).toBe("function");
+    expect((result as any).replServer).toBeUndefined();
+    await result.stop();
+  });
+});
+
 describe("createMswHandlers", () => {
   it("throws if openApiDocument is undefined", async () => {
     await expect(

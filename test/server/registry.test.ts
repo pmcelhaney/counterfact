@@ -1,3 +1,5 @@
+import { jest } from "@jest/globals";
+
 import {
   CounterfactResponseObject,
   Registry,
@@ -240,6 +242,39 @@ describe("a registry", () => {
     ).toStrictEqual({
       body: "page 2 of alice's friends in Acme",
     });
+  });
+
+  it("returns a 500 response when wildcard paths are ambiguous", async () => {
+    const registry = new Registry();
+    const stderrSpy = jest.spyOn(process.stderr, "write").mockImplementation();
+
+    registry.add("/a/{x}", {
+      GET() {
+        return { body: "x", status: 200 };
+      },
+    });
+
+    registry.add("/a/{y}", {
+      GET() {
+        return { body: "y", status: 200 };
+      },
+    });
+
+    const props = {
+      context: {},
+      headers: {},
+      matchedPath: "",
+      path: {},
+      query: {},
+    };
+
+    // @ts-expect-error - chill out, TypeScript
+    const response = await registry.endpoint("GET", "/a/something")(props);
+
+    expect(response?.status).toBe(500);
+    expect(response?.body).toContain("Ambiguous wildcard paths");
+
+    stderrSpy.mockRestore();
   });
 
   it("lists all of the routes", () => {
