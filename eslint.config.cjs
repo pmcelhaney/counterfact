@@ -165,6 +165,12 @@ module.exports = [
     },
   },
   {
+    files: ["**/*.test-d.ts"],
+    rules: {
+      "@typescript-eslint/no-empty-object-type": "off",
+    },
+  },
+  {
     files: ["eslint.config.cjs"],
     languageOptions: {
       sourceType: "commonjs",

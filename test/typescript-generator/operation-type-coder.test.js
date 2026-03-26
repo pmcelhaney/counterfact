@@ -1,12 +1,12 @@
 import { describe, expect, it } from "@jest/globals";
-import prettier from "prettier";
+import { format as formatCode } from "prettier";
 
 import { OperationTypeCoder } from "../../src/typescript-generator/operation-type-coder.js";
 import { Requirement } from "../../src/typescript-generator/requirement.js";
 import { Specification } from "../../src/typescript-generator/specification.js";
 
 function format(code) {
-  return prettier.format(code, { parser: "typescript" });
+  return formatCode(code, { parser: "typescript" });
 }
 
 const dummyScript = {
