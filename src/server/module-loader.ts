@@ -1,4 +1,3 @@
-/* eslint-disable n/no-sync */
 import { once } from "node:events";
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
