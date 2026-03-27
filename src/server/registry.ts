@@ -130,7 +130,7 @@ export class Registry {
   private middlewares: Map<string, MiddlewareFunction> = new Map();
 
   public constructor() {
-    this.middlewares.set("/", ($, respondTo) => respondTo($));
+    this.middlewares.set("", ($, respondTo) => respondTo($));
   }
 
   public get routes() {
@@ -142,7 +142,7 @@ export class Registry {
   }
 
   public addMiddleware(url: string, callback: MiddlewareFunction): void {
-    this.middlewares.set(url, callback);
+    this.middlewares.set(url === "/" ? "" : url, callback);
   }
 
   public remove(url: string) {
@@ -157,6 +157,7 @@ export class Registry {
     const match = this.moduleTree.match(url, method);
 
     return {
+      ambiguous: match?.ambiguous ?? false,
       matchedPath: match?.matchedPath ?? "",
       module: match?.module,
       path: match?.pathVariables ?? {},
@@ -190,6 +191,15 @@ export class Registry {
     const handler = this.handler(url, httpRequestMethod);
 
     debug("handler for %s: %o", url, handler);
+
+    if (handler.ambiguous) {
+      return () => ({
+        body: `Ambiguous wildcard paths: the request to ${url} matches multiple routes. Please resolve the ambiguity in your API spec or route handlers.`,
+        contentType: "text/plain",
+        headers: {},
+        status: 500,
+      });
+    }
 
     const execute = handler.module?.[httpRequestMethod];
 
@@ -242,12 +252,12 @@ export class Registry {
       const middlewares = this.middlewares;
 
       function recurse(path: string | null, respondTo: RespondTo) {
+        debug("recursing path", path);
+
         if (path === null) return respondTo;
 
         const nextPath =
-          path === "/" || path === ""
-            ? null
-            : path.slice(0, path.lastIndexOf("/")) || "/";
+          path === "" ? null : path.slice(0, path.lastIndexOf("/"));
 
         const middleware = middlewares.get(path);
         if (middleware !== undefined) {

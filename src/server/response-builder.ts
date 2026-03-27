@@ -125,6 +125,22 @@ export function createResponseBuilder(
 
         const { content } = response;
 
+        const exampleExists = Object.values(content).some(
+          (contentType) => contentType?.examples?.[name] !== undefined,
+        );
+
+        if (!exampleExists) {
+          return {
+            content: [
+              {
+                body: `The OpenAPI document does not define an example named "${name}" for status code ${this.status ?? "unknown"}`,
+                type: "text/plain",
+              },
+            ],
+            status: 500,
+          };
+        }
+
         return {
           ...this,
 
@@ -160,6 +176,16 @@ export function createResponseBuilder(
 
         const { content } = response;
 
+        const generatedHeaders: { [name: string]: string } = {};
+
+        for (const [name, header] of Object.entries(response.headers ?? {})) {
+          if (header.required && !(name in (this.headers ?? {}))) {
+            generatedHeaders[name] = JSONSchemaFaker.generate(
+              header.schema ?? { type: "string" },
+            ) as string;
+          }
+        }
+
         return {
           ...this,
 
@@ -180,6 +206,11 @@ export function createResponseBuilder(
 
             type,
           })),
+
+          headers: {
+            ...generatedHeaders,
+            ...this.headers,
+          },
         };
       },
 

@@ -1,5 +1,27 @@
 # counterfact
 
+## 2.3.0
+
+### Minor Changes
+
+- 2fc3033: Added `--prune` option to remove route files that no longer exist in the OpenAPI spec.
+
+  When an OpenAPI spec renames a path parameter (e.g. `/pet/{id}/update/{Name}` → `/pet/{id}/update/{nickname}`), running without `--prune` leaves the old file in place alongside the newly generated one, causing wildcard ambiguity in route matching. The new flag cleans up defunct route files before generation runs.
+
+  ```sh
+  npx counterfact openapi.yaml ./out --generate --prune
+  ```
+
+  Context files (`_.context.ts`) and empty directories are handled correctly — context files are never pruned, and any directories left empty after pruning are removed automatically.
+
+### Patch Changes
+
+- eb72148: Add --spec flag as alternative to positional OpenAPI argument
+- 79b4936: fixed a regression causing all 200 responses to be just "ok"
+- 9a8dc4a: Add utility function for loading JSON files
+- 86c4460: Updated dependency `@types/koa` to `3.0.2`.
+- 1d08f75: Fill in required response headers in `random()`. When an OpenAPI response definition marks a header as `required: true`, the `random()` function now automatically generates a value for that header using the header's schema. Headers that are already set are not overwritten.
+
 ## 2.2.1
 
 ### Patch Changes
