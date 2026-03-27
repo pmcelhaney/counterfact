@@ -16,7 +16,6 @@ export interface Config {
   startAdminApi: boolean;
   startRepl: boolean;
   startServer: boolean;
-  useTsx: boolean;
   watch: {
     routes: boolean;
     types: boolean;
