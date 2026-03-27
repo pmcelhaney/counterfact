@@ -255,6 +255,25 @@ export class Context {
 }
 ```
 
+### Loading JSON data with `readJson`
+
+Use the `readJson` function (also passed to the constructor) to load static JSON data into your context. The path is resolved relative to the `_.context.ts` file.
+
+```ts
+// routes/_.context.ts
+export class Context {
+  private readonly readJson: (path: string) => Promise<unknown>;
+
+  constructor({ readJson }: { readJson: (path: string) => Promise<unknown> }) {
+    this.readJson = readJson;
+  }
+
+  async getSeeds() {
+    return this.readJson("../mocks/seeds.json");
+  }
+}
+```
+
 ---
 
 ## Hot Reload 🔥
@@ -363,6 +382,111 @@ export async function middleware($, respondTo) {
 ```
 
 `respondTo($)` passes the request to the next middleware layer or the route handler, and returns the response. You can modify `$` before calling `respondTo`, modify the response after, or both.
+
+---
+
+## Programmatic API
+
+Counterfact can be used as a library — for example, from [Playwright](https://playwright.dev/) or [Cypress](https://www.cypress.io/) tests. This lets you manipulate context state directly in test code without relying on special magic values in mock logic.
+
+```ts
+import { counterfact } from "counterfact";
+
+const config = {
+  basePath: "./api",        // directory containing your routes/
+  openApiPath: "./api.yaml", // optional; pass "_" to run without a spec
+  port: 8100,
+  alwaysFakeOptionals: false,
+  generate: { routes: false, types: false },
+  proxyPaths: new Map(),
+  proxyUrl: "",
+  routePrefix: "",
+  startAdminApi: false,
+  startRepl: false,         // do not auto-start the REPL
+  startServer: true,
+  watch: { routes: false, types: false },
+};
+
+const { contextRegistry, start } = await counterfact(config);
+const { stop } = await start(config);
+
+// Get the root context — the object your routes see as $.context
+const rootContext = contextRegistry.find("/");
+```
+
+Once you have `rootContext` you can read and write any state that your route handlers expose.
+
+### Example: parameterised auth scenario with Playwright
+
+Given this route handler:
+
+```ts
+// routes/auth/login.ts
+export const POST: HTTP_POST = ($) => {
+  if ($.context.passwordResponse === "ok") return $.response[200];
+  if ($.context.passwordResponse === "expired")
+    return $.response[403].header("reason", "expired-password");
+  return $.response[401];
+};
+```
+
+A Playwright test can flip between scenarios without hard-coded usernames:
+
+```ts
+import { counterfact } from "counterfact";
+import { chromium } from "playwright";
+
+let page;
+let rootContext;
+
+let page;
+let rootContext;
+let stop;
+let browser;
+
+beforeAll(async () => {
+  browser = await chromium.launch({ headless: true });
+  page = await (await browser.newContext()).newPage();
+
+  const { contextRegistry, start } = await counterfact(config);
+  ({ stop } = await start(config));
+  rootContext = contextRegistry.find("/");
+});
+
+afterAll(async () => {
+  await stop();
+  await browser.close();
+});
+
+it("rejects an incorrect password", async () => {
+  rootContext.passwordResponse = "incorrect";
+  await attemptToLogIn();
+  expect(await page.isVisible("#authentication-error")).toBe(true);
+});
+
+it("loads the dashboard on success", async () => {
+  rootContext.passwordResponse = "ok";
+  await attemptToLogIn();
+  expect(await page.isVisible("#dashboard")).toBe(true);
+});
+
+it("prompts for a password change when the password has expired", async () => {
+  rootContext.passwordResponse = "expired";
+  await attemptToLogIn();
+  expect(await page.isVisible("#password-change-form")).toBe(true);
+});
+```
+
+### Return value of `counterfact()`
+
+| Property | Type | Description |
+|---|---|---|
+| `contextRegistry` | `ContextRegistry` | Registry of all context objects keyed by path. Call `.find(path)` to get the context for a given route prefix. |
+| `registry` | `Registry` | Registry of all loaded route modules. |
+| `koaApp` | `Koa` | The underlying Koa application. |
+| `koaMiddleware` | `Koa.Middleware` | The Counterfact request-dispatch middleware. |
+| `start(config)` | `async (config) => { stop() }` | Starts the server (and optionally the file watcher and code generator). Returns a `stop()` function to gracefully shut down. |
+| `startRepl()` | `() => REPLServer` | Starts the interactive REPL. Returns the REPL server instance. |
 
 ---
 

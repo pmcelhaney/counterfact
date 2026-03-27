@@ -1,4 +1,3 @@
-/* eslint-disable n/no-sync */
 import fs from "node:fs";
 import nodePath from "node:path";
 
