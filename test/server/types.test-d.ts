@@ -84,6 +84,18 @@ expectType<
   >
 >(true);
 
+// test match with suffix (e.g. application/json; charset=utf-8)
+expectType<
+  IfHasKey<
+    {
+      "application/json; charset=utf-8": string;
+    },
+    ["application/json"],
+    true,
+    false
+  >
+>(true);
+
 // test mismatch
 expectType<
   IfHasKey<
