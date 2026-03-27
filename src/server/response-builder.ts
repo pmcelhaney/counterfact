@@ -71,7 +71,7 @@ export function createResponseBuilder(
         };
       },
 
-      binary(this: ResponseBuilder, body: Buffer | string) {
+      binary(this: ResponseBuilder, body: Uint8Array | string) {
         const buffer =
           typeof body === "string" ? Buffer.from(body, "base64") : body;
 

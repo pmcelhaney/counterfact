@@ -243,13 +243,13 @@ expectAssignable<OpenApiResponse>({
 
 // GenericResponseBuilderInner: response with application/octet-stream content exposes `binary`
 type OctetStreamResponse = {
-  content: { "application/octet-stream": { schema: Buffer | string } };
+  content: { "application/octet-stream": { schema: Uint8Array | string } };
   headers: {};
   requiredHeaders: never;
 };
 
 declare const binaryBuilder: GenericResponseBuilderInner<OctetStreamResponse>;
-expectAssignable<(body: Buffer | string) => unknown>(binaryBuilder.binary);
+expectAssignable<(body: Uint8Array | string) => unknown>(binaryBuilder.binary);
 expectError(binaryBuilder.json);
 expectError(binaryBuilder.html);
 expectError(binaryBuilder.text);

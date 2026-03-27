@@ -262,7 +262,7 @@ interface OpenApiOperation {
 }
 
 interface WideResponseBuilder {
-  binary: (body: Buffer | string) => WideResponseBuilder;
+  binary: (body: Uint8Array | string) => WideResponseBuilder;
   example: (name: string) => WideResponseBuilder;
   header: (body: unknown) => WideResponseBuilder;
   html: (body: unknown) => WideResponseBuilder;
