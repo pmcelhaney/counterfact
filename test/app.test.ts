@@ -33,7 +33,7 @@ const mockRequest = {
 
 class MockModuleLoader {
   private registry: any;
-  constructor(basePath: string, registry: any, contextRegistry: any) {
+  constructor(basePath: string, registry: any) {
     this.registry = registry;
   }
   async load() {

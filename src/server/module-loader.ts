@@ -12,7 +12,6 @@ import { determineModuleKind } from "./determine-module-kind.js";
 import { ModuleDependencyGraph } from "./module-dependency-graph.js";
 import type { MiddlewareFunction, Module, Registry } from "./registry.js";
 import { uncachedImport } from "./uncached-import.js";
-import path from "node:path";
 
 const { uncachedRequire } = await import("./uncached-require.cjs");
 
@@ -189,7 +188,7 @@ export class ModuleLoader extends EventTarget {
           ? uncachedRequire
           : uncachedImport;
 
-      const endpoint = (await doImport(pathName).catch((err) => {
+      const endpoint = (await doImport(pathName).catch(() => {
         console.log("ERROR");
       })) as ContextModule | Module;
 

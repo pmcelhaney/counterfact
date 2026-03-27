@@ -10,7 +10,7 @@ function format(code) {
 }
 
 const dummyScript = {
-  export(coder, isType) {
+  export(coder) {
     // Safely return the first name from the coder's names generator, if available
     const getNames =
       coder && typeof coder.names === "function" ? coder.names() : undefined;
@@ -502,7 +502,7 @@ describe("an OperationTypeCoder", () => {
     const scriptWithExportTracking = {
       ...dummyScript,
       exports: {},
-      export(coder, isType) {
+      export(coder) {
         const name = coder.names().next().value;
         this.exports[name] = coder;
         return name;
@@ -545,7 +545,7 @@ describe("an OperationTypeCoder", () => {
     const scriptWithExportTracking = {
       ...dummyScript,
       exports: {},
-      export(coder, isType) {
+      export(coder) {
         const name = coder.names().next().value;
         this.exports[name] = coder;
         return name;
