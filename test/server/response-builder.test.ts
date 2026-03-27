@@ -376,8 +376,9 @@ describe("a response builder", () => {
     });
 
     it("returns 500 when the example name does not exist in any content type", () => {
-      const response =
-        createResponseBuilder(operation)[200]?.example("nonexistent-example");
+      const response = createResponseBuilder(operation)[200]?.example(
+        "nonexistent-example",
+      );
 
       expect(response?.status).toBe(500);
       expect(response?.content).toStrictEqual([
