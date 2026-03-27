@@ -154,6 +154,7 @@ export class Registry {
     const match = this.moduleTree.match(url, method);
 
     return {
+      ambiguous: match?.ambiguous ?? false,
       matchedPath: match?.matchedPath ?? "",
       module: match?.module,
       path: match?.pathVariables ?? {},
@@ -187,6 +188,15 @@ export class Registry {
     const handler = this.handler(url, httpRequestMethod);
 
     debug("handler for %s: %o", url, handler);
+
+    if (handler.ambiguous) {
+      return () => ({
+        body: `Ambiguous wildcard paths: the request to ${url} matches multiple routes. Please resolve the ambiguity in your API spec or route handlers.`,
+        contentType: "text/plain",
+        headers: {},
+        status: 500,
+      });
+    }
 
     const execute = handler.module?.[httpRequestMethod];
 

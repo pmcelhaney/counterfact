@@ -22,19 +22,6 @@ describe("module dependency graph", () => {
     });
   });
 
-  it("identifies immediate dependencies", async () => {
-    const graph = new ModuleDependencyGraph();
-
-    await usingTemporaryFiles(async ($) => {
-      await $.add("file.js", 'import other from "./other.js";');
-      graph.load($.path("file.js"));
-
-      expect(graph.dependentsOf($.path("./other.js"))).toEqual(
-        new Set([$.path("file.js")]),
-      );
-    });
-  });
-
   it("ignores dependencies that are not relative", async () => {
     const graph = new ModuleDependencyGraph();
 

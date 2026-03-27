@@ -1,4 +1,3 @@
-/* eslint-disable n/no-sync */
 import { once } from "node:events";
 import fs, { constants as fsConstants } from "node:fs";
 

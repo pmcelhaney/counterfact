@@ -1,16 +1,16 @@
 import { describe, expect, it } from "@jest/globals";
-import prettier from "prettier";
+import { format as formatCode } from "prettier";
 
 import { OperationTypeCoder } from "../../src/typescript-generator/operation-type-coder.js";
 import { Requirement } from "../../src/typescript-generator/requirement.js";
 import { Specification } from "../../src/typescript-generator/specification.js";
 
 function format(code) {
-  return prettier.format(code, { parser: "typescript" });
+  return formatCode(code, { parser: "typescript" });
 }
 
 const dummyScript = {
-  export(coder, isType) {
+  export(coder) {
     // Safely return the first name from the coder's names generator, if available
     const getNames =
       coder && typeof coder.names === "function" ? coder.names() : undefined;
@@ -149,7 +149,7 @@ describe("an OperationTypeCoder", () => {
     expect(coder.modulePath()).toBe("types/paths/hello/world.types.ts");
   });
 
-  it("returns the module path for / ", () => {
+  it("returns the module path for /", () => {
     const coder = new OperationTypeCoder(
       new Requirement({}, "#/paths/~1/get"),
       "get",
@@ -673,7 +673,7 @@ describe("an OperationTypeCoder", () => {
     const scriptWithExportTracking = {
       ...dummyScript,
       exports: {},
-      export(coder, isType) {
+      export(coder) {
         const name = coder.names().next().value;
         this.exports[name] = coder;
         return name;
@@ -716,7 +716,7 @@ describe("an OperationTypeCoder", () => {
     const scriptWithExportTracking = {
       ...dummyScript,
       exports: {},
-      export(coder, isType) {
+      export(coder) {
         const name = coder.names().next().value;
         this.exports[name] = coder;
         return name;

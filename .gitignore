@@ -6,6 +6,11 @@ coverage
 reports
 out
 
+# Python test artifacts
+__pycache__
+.pytest_cache
+*.pyc
+
 # In testing we may generate these files. We don't want to check them in.
 templates/typescript/counterfact/components
 templates/typescript/counterfact/internal
