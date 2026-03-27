@@ -22,7 +22,7 @@ import { CodeGenerator } from "./typescript-generator/code-generator.js";
 import { readFile } from "./util/read-file.js";
 
 type MswHandlerMap = {
-  [key: string]: (request: any) => Promise<any>;
+  [key: string]: (request: MockRequest) => Promise<unknown>;
 };
 const allowedMethods = [
   "all",
@@ -67,7 +67,7 @@ export async function createMswHandlers(
 ) {
   // TODO: For some reason the Vitest Custom Commands needed by Vitest Browser mode fail on fs.readFile when they are called from the nested loadOpenApiDocument function.
   // If we "pre-read" the file here it works. This is a workaround to avoid the issue.
-  const _ = await fs.readFile(config.openApiPath);
+  await fs.readFile(config.openApiPath);
   const openApiDocument = await loadOpenApiDocument(config.openApiPath);
   if (openApiDocument === undefined) {
     throw new Error(
