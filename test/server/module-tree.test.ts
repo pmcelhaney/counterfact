@@ -217,5 +217,3 @@ it("returns an ambiguous match when multiple wildcard directories lead to a matc
 
   stderrSpy.mockRestore();
 });
-
-export default ModuleTree;
