@@ -2,6 +2,7 @@ import repl from "node:repl";
 
 import type { Config } from "../server/config.js";
 import type { ContextRegistry } from "../server/context-registry.js";
+import type { Registry } from "../server/registry.js";
 
 import { RawHttpClient } from "./RawHttpClient.js";
 
@@ -9,8 +10,27 @@ function printToStdout(line: string) {
   process.stdout.write(`${line}\n`);
 }
 
+export function createCompleter(registry: Registry) {
+  return (line: string): [string[], string] => {
+    const match = line.match(
+      /client\.(?:get|post|put|patch|delete)\("(?<partial>[^"]*)$/u,
+    );
+
+    if (!match) {
+      return [[], line];
+    }
+
+    const partial = match.groups?.["partial"] ?? "";
+    const routes = registry.routes.map((route) => route.path);
+    const matches = routes.filter((route) => route.startsWith(partial));
+
+    return [matches, partial];
+  };
+}
+
 export function startRepl(
   contextRegistry: ContextRegistry,
+  registry: Registry,
   config: Config,
   print = printToStdout,
 ) {
@@ -74,7 +94,10 @@ export function startRepl(
     }
   }
 
-  const replServer = repl.start({ prompt: "⬣> " });
+  const replServer = repl.start({
+    completer: createCompleter(registry),
+    prompt: "⬣> ",
+  });
 
   replServer.defineCommand("counterfact", {
     action() {
