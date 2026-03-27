@@ -301,11 +301,9 @@ describe("REPL", () => {
 
       registry.add("/pets", { GET() {} });
 
-      const fallback = jest.fn(
-        (_line: string, callback: CompleterCallback) => {
-          callback(null, [["context", "client"], "c"]);
-        },
-      );
+      const fallback = jest.fn((_line: string, callback: CompleterCallback) => {
+        callback(null, [["context", "client"], "c"]);
+      });
 
       const completer = createCompleter(registry, fallback);
       const [completions, prefix] = await callCompleter(completer, "c");
