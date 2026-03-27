@@ -136,7 +136,7 @@ async function updateRouteFile(filePath, methodToTypeName) {
 
   // Find all import statements with HTTP_ patterns
   const importRegex =
-    /import\s+type\s+\{(?<types>[^}]+)\}\s+from\s+["'](?<source>[^"']+)["'];?/gu;
+    /import\s+type\s+\{(?<types>[^}]+)\}\s+from\s+["'][^"']+["'];?/gu;
   let importMatch;
 
   while ((importMatch = importRegex.exec(content)) !== null) {

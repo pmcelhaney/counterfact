@@ -37,7 +37,7 @@ export class Requirement {
     );
   }
 
-  select(path, data = this.data, basePath = "") {
+  select(path) {
     const parts = path
       .split("/")
       .map(this.unescapeJsonPointer)

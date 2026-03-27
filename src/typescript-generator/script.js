@@ -1,7 +1,7 @@
 import nodePath from "node:path";
 
 import createDebugger from "debug";
-import prettier from "prettier";
+import { format } from "prettier";
 
 const debug = createDebugger("counterfact:typescript-generator:script");
 
@@ -213,7 +213,7 @@ export class Script {
   }
 
   contents() {
-    return prettier.format(
+    return format(
       [
         this.comments.map((comment) => `// ${comment}`).join("\n"),
         this.comments.length > 0 ? "\n\n" : "",

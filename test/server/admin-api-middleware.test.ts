@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { adminApiMiddleware } from "../../src/server/admin-api-middleware.js";
 import type { Config } from "../../src/server/config.js";
 import { ContextRegistry } from "../../src/server/context-registry.js";
@@ -587,7 +589,7 @@ describe("adminApiMiddleware", () => {
         await Promise.resolve(undefined);
       };
 
-      await middleware(ctx as any, next);
+      await middleware(ctx as unknown, next);
 
       expect(ctx.status).toBe(404);
       expect(ctx.body).toEqual({

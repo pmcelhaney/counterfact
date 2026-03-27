@@ -50,7 +50,7 @@ function highlightJson(text: string) {
   );
 }
 
-function stringifyBody(body: any) {
+function stringifyBody(body: string | object) {
   if (typeof body === "string") {
     return body;
   }
@@ -111,7 +111,7 @@ export class RawHttpClient {
   #send(
     method: string,
     path: string,
-    bodyAsStringOrObject: any,
+    bodyAsStringOrObject: string | object,
     headers: Record<string, string>,
   ) {
     const requestNumber = ++this.requestNumber;

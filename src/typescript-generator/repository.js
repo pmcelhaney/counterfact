@@ -1,5 +1,3 @@
-/* eslint-disable n/no-sync */
-
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
 import nodePath, { dirname } from "node:path";
@@ -65,6 +63,7 @@ export class Repository {
       return false;
     }
 
+    // eslint-disable-next-line n/no-unsupported-features/node-builtins
     return fs.cp(sourcePath, destinationPath, { recursive: true });
   }
 
