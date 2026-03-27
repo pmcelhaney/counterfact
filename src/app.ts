@@ -20,6 +20,7 @@ import { Registry } from "./server/registry.js";
 import { Transpiler } from "./server/transpiler.js";
 import { CodeGenerator } from "./typescript-generator/code-generator.js";
 import { readFile } from "./util/read-file.js";
+import { runtimeCanExecuteErasableTs } from "./util/runtime-can-execute-erasable-ts.js";
 
 type MswHandlerMap = {
   [key: string]: (request: MockRequest) => Promise<unknown>;
@@ -119,11 +120,13 @@ export async function createMswHandlers(
 export async function counterfact(config: Config) {
   const modulesPath = config.basePath;
 
+  const nativeTs = await runtimeCanExecuteErasableTs();
+
   const compiledPathsDirectory = nodePath
-    .join(modulesPath, config.useTsx ? "routes" : ".cache")
+    .join(modulesPath, nativeTs ? "routes" : ".cache")
     .replaceAll("\\", "/");
 
-  if (!config.useTsx) {
+  if (!nativeTs) {
     await rm(compiledPathsDirectory, { force: true, recursive: true });
   }
 
@@ -147,7 +150,7 @@ export async function counterfact(config: Config) {
   const transpiler = new Transpiler(
     nodePath.join(modulesPath, "routes").replaceAll("\\", "/"),
     compiledPathsDirectory,
-    "module",
+    "commonjs",
   );
 
   const moduleLoader = new ModuleLoader(
@@ -174,7 +177,7 @@ export async function counterfact(config: Config) {
     let httpTerminator: HttpTerminator | undefined;
 
     if (startServer) {
-      if (!config.useTsx) {
+      if (!nativeTs) {
         await transpiler.watch();
       }
       await moduleLoader.load();
