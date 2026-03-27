@@ -424,9 +424,11 @@ describe("koa middleware", () => {
     const binaryData = Buffer.from("binary content");
 
     registry.add("/file", {
-      // @ts-expect-error - not obvious how to make TS happy here, and it's just a unit test
-      GET({ response }) {
-        return response["200"]?.binary(binaryData);
+      GET() {
+        return {
+          body: binaryData,
+          contentType: "application/octet-stream",
+        };
       },
     });
 
@@ -434,6 +436,7 @@ describe("koa middleware", () => {
     const middleware = koaMiddleware(dispatcher, CONFIG);
 
     const ctx = {
+      body: undefined,
       req: { path: "/file" },
 
       request: {
