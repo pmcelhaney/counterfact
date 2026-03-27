@@ -1,5 +1,44 @@
 # counterfact
 
+## 2.4.0
+
+### Minor Changes
+
+- cb931d6: When multiple wildcard route handlers exist at the same path level (e.g. `/{x}` and `/{y}` as siblings), Counterfact now:
+  1. Logs an error to stderr at load time listing the conflicting wildcard names.
+  2. Returns an HTTP 500 response when a request could be routed to two or more handlers due to the ambiguity.
+
+- d53f4c3: Break REPL out of `counterfact()` and expose it as a callable `startRepl()` on the returned object. This enables programmatic usage (e.g. from Playwright tests) without automatically starting an interactive terminal session.
+
+  ```ts
+  import { counterfact } from "counterfact";
+
+  const { contextRegistry, start, startRepl } = await counterfact(config);
+  await start(config);
+
+  // Manipulate server state directly from test code:
+  const rootContext = contextRegistry.find("/");
+  rootContext.passwordResponse = "expired";
+  ```
+
+  The CLI (`bin/counterfact.js`) now explicitly calls `startRepl()` when `--repl` is passed, preserving existing behaviour.
+
+- 861c4db: Add route autocomplete to REPL for `client.<method>("...")` patterns.
+
+  When typing `client.get("/p` in the REPL and pressing Tab, the REPL now suggests available routes (e.g. `/pets`, `/pets/{petId}`) derived from the route registry.
+
+  This works for all HTTP methods: `get`, `post`, `put`, `patch`, and `delete`.
+
+### Patch Changes
+
+- 578faab: Fix REPL tab completion for built-in Node.js completions (e.g. `context.<Tab>`).
+
+  The custom route completer previously replaced Node's built-in REPL completer entirely, breaking property completion for objects like `context` and `client`. The completer now delegates to the built-in completer when the input doesn't match the `client.<method>("...")` pattern.
+
+- 635071c: Updated dependency `eslint-plugin-jest` to `29.15.1`.
+- ff36c53: Updated dependency `handlebars` to `4.7.9`.
+- 7f9ce73: Updated dependency `@swc/core` to `1.15.21`.
+
 ## 2.3.0
 
 ### Minor Changes
