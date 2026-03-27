@@ -12,16 +12,15 @@ jobs:
     steps:
       - name: Decide whether to enforce
         id: decide
+        env:
+          PR_BRANCH: ${{ github.event.pull_request.head.ref }}
+          PR_BODY: ${{ github.event.pull_request.body }}
         run: |
-          branch="${{ github.event.pull_request.head.ref }}"
-          body="${{ github.event.pull_request.body }}"
-
-          if [[ "$branch" == copilot* ]] || echo "$body" | grep -iq "## manual acceptance tests"; then
-            echo "enforce=true" >> $GITHUB_OUTPUT
+          if [[ "$PR_BRANCH" == copilot* ]] || grep -iq "## manual acceptance tests" <<<"$PR_BODY"; then
+            echo "enforce=true" >> "$GITHUB_OUTPUT"
           else
-            echo "enforce=false" >> $GITHUB_OUTPUT
+            echo "enforce=false" >> "$GITHUB_OUTPUT"
           fi
-
       - name: Skip (no enforcement needed)
         if: steps.decide.outputs.enforce == 'false'
         run: echo "Skipping manual acceptance test validation (not a Copilot PR and no section present)"
