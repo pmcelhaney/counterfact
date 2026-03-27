@@ -255,7 +255,7 @@ describe("a module loader", () => {
     });
   });
 
-  it("provides the parent context if the local _.context.ts doesn't export a default", async () => {
+  it("provides the loadContext helper for accessing nested contexts", async () => {
     await usingTemporaryFiles(async ($) => {
       await $.add(
         "_.context.js",

@@ -238,8 +238,9 @@ describe("a response builder", () => {
       } as Config)[200]?.random();
 
       expect(response?.status).toBe(200);
-      // @ts-expect-error
-      expect(response!.content[0].body.label).toBeDefined();
+      expect(
+        (response.content?.[0]?.body as { label?: string })?.label,
+      ).toBeDefined();
     });
 
     it("falls back to 'default' when status code is not listed explicitly", () => {

@@ -1,7 +1,6 @@
 import { jest } from "@jest/globals";
 
 import {
-  CounterfactResponseObject,
   Registry,
   type RequestDataWithBody,
 } from "../../src/server/registry.js";
@@ -169,7 +168,7 @@ describe("a registry", () => {
     );
 
     registry.add("/admin/users", {
-      GET({ path }) {
+      GET() {
         return {
           body: "users",
           headers: { "content-type": "text/plain" },
@@ -246,7 +245,9 @@ describe("a registry", () => {
 
   it("returns a 500 response when wildcard paths are ambiguous", async () => {
     const registry = new Registry();
-    const stderrSpy = jest.spyOn(process.stderr, "write").mockImplementation();
+    const stderrSpy = jest
+      .spyOn(process.stderr, "write")
+      .mockImplementation(() => true);
 
     registry.add("/a/{x}", {
       GET() {
