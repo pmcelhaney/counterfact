@@ -11,10 +11,7 @@ import type { HttpMethods } from "./registry.js";
 
 declare module "koa" {
   interface Request {
-    body?: {
-      name: string;
-      email: string;
-    };
+    body?: unknown;
   }
 }
 
