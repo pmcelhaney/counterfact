@@ -110,6 +110,7 @@ type ExampleNames<Response extends OpenApiResponse> = Response extends {
 
 interface ResponseBuilder {
   [status: number | `${number} ${string}`]: ResponseBuilder;
+  binary: (body: Uint8Array | string) => ResponseBuilder;
   content?: { body: unknown; type: string }[];
   example: (name: string) => ResponseBuilder;
   header: (name: string, value: string) => ResponseBuilder;
@@ -127,6 +128,7 @@ interface ResponseBuilder {
 export type GenericResponseBuilderInner<
   Response extends OpenApiResponse = OpenApiResponse,
 > = OmitValueWhenNever<{
+  binary: MaybeShortcut<["application/octet-stream"], Response>;
   header: [keyof Response["headers"]] extends [never]
     ? never
     : HeaderFunction<Response>;
@@ -260,6 +262,7 @@ interface OpenApiOperation {
 }
 
 interface WideResponseBuilder {
+  binary: (body: Uint8Array | string) => WideResponseBuilder;
   example: (name: string) => WideResponseBuilder;
   header: (body: unknown) => WideResponseBuilder;
   html: (body: unknown) => WideResponseBuilder;

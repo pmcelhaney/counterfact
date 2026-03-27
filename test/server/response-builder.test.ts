@@ -27,6 +27,31 @@ describe("a response builder", () => {
     ]);
   });
 
+  it("has a binary() shortcut that stores a Buffer for application/octet-stream", () => {
+    const buffer = Buffer.from("hello binary");
+    const response = createResponseBuilder({
+      responses: { 200: { content: {}, schema: {} } },
+    })[200]?.binary(buffer);
+
+    expect(response?.status).toBe(200);
+    expect(response?.content).toStrictEqual([
+      { body: buffer, type: "application/octet-stream" },
+    ]);
+  });
+
+  it("has a binary() shortcut that decodes a base64 string to a Buffer", () => {
+    const base64 = Buffer.from("hello binary").toString("base64");
+    const response = createResponseBuilder({
+      responses: { 200: { content: {}, schema: {} } },
+    })[200]?.binary(base64);
+
+    expect(response?.status).toBe(200);
+    expect(Buffer.isBuffer(response?.content?.[0]?.body)).toBe(true);
+    expect(response?.content?.[0]?.body).toStrictEqual(
+      Buffer.from("hello binary"),
+    );
+  });
+
   it("has shortcuts for json, text, and html", () => {
     const response = createResponseBuilder({
       responses: { 200: { content: {}, schema: {} } },

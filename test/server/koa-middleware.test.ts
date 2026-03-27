@@ -418,4 +418,43 @@ describe("koa middleware", () => {
 
     expect(ctx.body).toEqual("user / secret");
   });
+
+  it("sets ctx.type from response contentType for binary responses", async () => {
+    const registry = new Registry();
+    const binaryData = Buffer.from("binary content");
+
+    registry.add("/file", {
+      GET() {
+        return {
+          body: binaryData,
+          contentType: "application/octet-stream",
+        };
+      },
+    });
+
+    const dispatcher = new Dispatcher(registry, new ContextRegistry());
+    const middleware = koaMiddleware(dispatcher, CONFIG);
+
+    const ctx = {
+      body: undefined,
+      req: { path: "/file" },
+
+      request: {
+        headers: { accept: "application/octet-stream" },
+        method: "GET",
+        path: "/file",
+      },
+
+      set: jest.fn(),
+      type: undefined as string | undefined,
+    };
+
+    // @ts-expect-error - not obvious how to make TS happy here, and it's just a unit test
+    await middleware(ctx, async () => {
+      await Promise.resolve(undefined);
+    });
+
+    expect(ctx.body).toStrictEqual(binaryData);
+    expect(ctx.type).toBe("application/octet-stream");
+  });
 });
