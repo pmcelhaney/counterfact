@@ -22,7 +22,7 @@ import { CodeGenerator } from "./typescript-generator/code-generator.js";
 import { readFile } from "./util/read-file.js";
 
 type MswHandlerMap = {
-  [key: string]: (request: any) => Promise<any>;
+  [key: string]: (request: unknown) => Promise<unknown>;
 };
 const allowedMethods = [
   "all",

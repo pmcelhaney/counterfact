@@ -58,7 +58,7 @@ type IfHasKey<
     : IfHasKey<SomeObject, RestKeys, Yes, No>
   : No;
 
-type SchemasOf<T extends { [key: string]: { schema: any } }> = {
+type SchemasOf<T extends { [key: string]: { schema: unknown } }> = {
   [K in keyof T]: T[K]["schema"];
 }[keyof T];
 
@@ -76,7 +76,7 @@ type MaybeShortcut<
   never
 >;
 
-type NeverIfEmpty<Record> = {} extends Record ? never : Record;
+type NeverIfEmpty<Record> = object extends Record ? never : Record;
 
 type MatchFunction<Response extends OpenApiResponse> = <
   ContentType extends MediaType & keyof Response["content"],

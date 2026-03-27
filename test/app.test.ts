@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // import { describe, it, expect } from "@jest/globals";
 import * as app from "../src/app";
+import { Registry } from "../src/server/registry";
 
 // Use the same HttpMethods type as in app.ts
-const httpMethod: any = "get";
+const httpMethod = "get";
 
 // Minimal valid mock Config
 const mockConfig = {
@@ -33,7 +35,7 @@ const mockRequest = {
 
 class MockModuleLoader {
   private registry: any;
-  constructor(basePath: string, registry: any) {
+  constructor(basePath: string, registry: Registry) {
     this.registry = registry;
   }
   async load() {
@@ -71,12 +73,12 @@ describe("handleMswRequest", () => {
 
 describe("counterfact", () => {
   it("returns a startRepl function", async () => {
-    const result = await app.counterfact(mockConfig);
+    const result = await (app as any).counterfact(mockConfig);
     expect(typeof result.startRepl).toBe("function");
   });
 
   it("returns contextRegistry, registry, koaApp, koaMiddleware, and start", async () => {
-    const result = await app.counterfact(mockConfig);
+    const result = await (app as any).counterfact(mockConfig);
     expect(result.contextRegistry).toBeDefined();
     expect(result.registry).toBeDefined();
     expect(result.koaApp).toBeDefined();
@@ -89,7 +91,7 @@ describe("counterfact", () => {
     // to stdin; testing the `startRepl` property being a separate callable is the
     // architectural contract. We also verify start() returns a stop() function (not
     // a replServer), confirming the REPL is no longer embedded in the return value.
-    const { start, startRepl } = await app.counterfact({
+    const { start, startRepl } = await (app as any).counterfact({
       ...mockConfig,
       startRepl: true,
     });

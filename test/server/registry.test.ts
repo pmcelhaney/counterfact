@@ -125,7 +125,7 @@ describe("a registry", () => {
     });
 
     registry.add("/admin/users", {
-      GET({ path }) {
+      GET() {
         return {
           body: "users",
           headers: { "content-type": "text/plain" },
