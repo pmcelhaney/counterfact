@@ -10,21 +10,35 @@ function printToStdout(line: string) {
   process.stdout.write(`${line}\n`);
 }
 
-export function createCompleter(registry: Registry) {
-  return (line: string): [string[], string] => {
+export type CompleterCallback = (
+  err: Error | null,
+  result: [string[], string],
+) => void;
+
+export function createCompleter(
+  registry: Registry,
+  fallback?: (line: string, callback: CompleterCallback) => void,
+) {
+  return (line: string, callback: CompleterCallback): void => {
     const match = line.match(
       /client\.(?:get|post|put|patch|delete)\("(?<partial>[^"]*)$/u,
     );
 
     if (!match) {
-      return [[], line];
+      if (fallback) {
+        fallback(line, callback);
+      } else {
+        callback(null, [[], line]);
+      }
+
+      return;
     }
 
     const partial = match.groups?.["partial"] ?? "";
     const routes = registry.routes.map((route) => route.path);
     const matches = routes.filter((route) => route.startsWith(partial));
 
-    return [matches, partial];
+    callback(null, [matches, partial]);
   };
 }
 
@@ -95,9 +109,17 @@ export function startRepl(
   }
 
   const replServer = repl.start({
-    completer: createCompleter(registry),
     prompt: "⬣> ",
   });
+
+  const builtinCompleter = replServer.completer as (
+    line: string,
+    callback: CompleterCallback,
+  ) => void;
+
+  // completer is typed as readonly in @types/node but is writable at runtime
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (replServer as any).completer = createCompleter(registry, builtinCompleter);
 
   replServer.defineCommand("counterfact", {
     action() {
