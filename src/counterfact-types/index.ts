@@ -110,7 +110,7 @@ type ExampleNames<Response extends OpenApiResponse> = Response extends {
 
 interface ResponseBuilder {
   [status: number | `${number} ${string}`]: ResponseBuilder;
-  binary: (body: Buffer | string) => ResponseBuilder;
+  binary: (body: Uint8Array | string) => ResponseBuilder;
   content?: { body: unknown; type: string }[];
   example: (name: string) => ResponseBuilder;
   header: (name: string, value: string) => ResponseBuilder;

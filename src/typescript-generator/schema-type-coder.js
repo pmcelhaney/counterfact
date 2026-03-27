@@ -137,7 +137,7 @@ export class SchemaTypeCoder extends TypeCoder {
     }
 
     if ((type === "string" && format === "binary") || type === "file") {
-      return "Buffer | string";
+      return "Uint8Array | string";
     }
 
     return this.writeType(script, type);
