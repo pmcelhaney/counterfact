@@ -118,8 +118,8 @@ export function startRepl(
   ) => void;
 
   // completer is typed as readonly in @types/node but is writable at runtime
-  (replServer as unknown as { completer: typeof builtinCompleter }).completer =
-    createCompleter(registry, builtinCompleter);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (replServer as any).completer = createCompleter(registry, builtinCompleter);
 
   replServer.defineCommand("counterfact", {
     action() {
