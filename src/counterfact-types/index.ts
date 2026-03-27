@@ -12,11 +12,9 @@ interface Example {
 
 const counterfactResponse = Symbol("Counterfact Response");
 
-const counterfactResponseObject = {
-  [counterfactResponse]: counterfactResponse,
+type COUNTERFACT_RESPONSE = {
+  [counterfactResponse]: typeof counterfactResponse;
 };
-
-type COUNTERFACT_RESPONSE = typeof counterfactResponseObject;
 
 type MediaType = `${string}/${string}`;
 
@@ -60,7 +58,7 @@ type IfHasKey<
     : Yes
   : No;
 
-type SchemasOf<T extends { [key: string]: { schema: any } }> = {
+type SchemasOf<T extends { [key: string]: { schema: unknown } }> = {
   [K in keyof T]: T[K]["schema"];
 }[keyof T];
 
@@ -78,7 +76,7 @@ type MaybeShortcut<
   never
 >;
 
-type NeverIfEmpty<Record> = {} extends Record ? never : Record;
+type NeverIfEmpty<Record> = object extends Record ? never : Record;
 
 type MatchFunction<Response extends OpenApiResponse> = <
   ContentType extends MediaType & keyof Response["content"],
@@ -102,9 +100,7 @@ type HeaderFunction<Response extends OpenApiResponse> = <
   requiredHeaders: Exclude<Response["requiredHeaders"], Header>;
 }>;
 
-type RandomFunction<Response extends OpenApiResponse> = <
-  Header extends string & keyof Response["headers"],
->() => COUNTERFACT_RESPONSE;
+type RandomFunction = () => COUNTERFACT_RESPONSE;
 
 type ExampleNames<Response extends OpenApiResponse> = Response extends {
   examples: infer E;
@@ -148,9 +144,7 @@ export type GenericResponseBuilderInner<
   match: [keyof Response["content"]] extends [never]
     ? never
     : MatchFunction<Response>;
-  random: [keyof Response["content"]] extends [never]
-    ? never
-    : RandomFunction<Response>;
+  random: [keyof Response["content"]] extends [never] ? never : RandomFunction;
   example: [ExampleNames<Response>] extends [never]
     ? never
     : (name: ExampleNames<Response>) => COUNTERFACT_RESPONSE;

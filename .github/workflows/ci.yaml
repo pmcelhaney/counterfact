@@ -48,9 +48,15 @@ jobs:
       - name: Unit Tests
         timeout-minutes: 2
         run: yarn test --runInBand --forceExit --verbose --no-watchman
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.x"
+      - name: Install Python dependencies
+        run: pip install -r test-black-box/requirements.txt
       - name: Black Box Tests
-        timeout-minutes: 2
-        run: yarn test:black-box --runInBand --forceExit --verbose --no-watchman --no-coverage
+        timeout-minutes: 5
+        run: yarn test:black-box
       - name: Type Tests
         timeout-minutes: 2
         run: yarn build && yarn test:tsd
