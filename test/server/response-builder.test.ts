@@ -374,6 +374,19 @@ describe("a response builder", () => {
 
       expect(response?.status).toBe(500);
     });
+
+    it("returns 500 when the example name does not exist in any content type", () => {
+      const response =
+        createResponseBuilder(operation)[200]?.example("nonexistent-example");
+
+      expect(response?.status).toBe(500);
+      expect(response?.content).toStrictEqual([
+        {
+          body: 'The OpenAPI document does not define an example named "nonexistent-example" for status code 200',
+          type: "text/plain",
+        },
+      ]);
+    });
   });
 
   describe("builds a random response based on an Open API operation object (OpenAPI 2)", () => {
