@@ -298,7 +298,7 @@ describe("koa middleware", () => {
     expect(ctx.set).toHaveBeenCalledWith("X-Custom-Header", "custom value");
   });
 
-  it("passes the request to the dispatcher and returns the response", async () => {
+  it("strips routePrefix from the request path before dispatching", async () => {
     const registry = new Registry();
 
     registry.add("/hello", {

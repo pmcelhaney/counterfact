@@ -1,11 +1,11 @@
 import { describe, expect, it } from "@jest/globals";
-import prettier from "prettier";
+import { format as formatCode } from "prettier";
 
 import { ParametersTypeCoder } from "../../src/typescript-generator/parameters-type-coder.js";
 import { Requirement } from "../../src/typescript-generator/requirement.js";
 
 function format(code) {
-  return prettier.format(code, { parser: "typescript" });
+  return formatCode(code, { parser: "typescript" });
 }
 
 describe("a ParametersTypeCoder", () => {

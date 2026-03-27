@@ -113,8 +113,6 @@ async function main(source, destination) {
     source = options.spec;
   }
 
-  const args = process.argv;
-
   const destinationPath = nodePath.resolve(destination).replaceAll("\\", "/");
 
   const basePath = nodePath.resolve(destinationPath).replaceAll("\\", "/");
@@ -194,7 +192,6 @@ async function main(source, destination) {
   let didMigrate = false;
   let didMigrateRouteTypes = false;
 
-  // eslint-disable-next-line n/no-sync
   if (fs.existsSync(nodePath.join(config.basePath, "paths"))) {
     await pathsToRoutes(config.basePath);
     await fs.promises.rmdir(nodePath.join(config.basePath, "paths"), {
@@ -210,7 +207,7 @@ async function main(source, destination) {
     didMigrate = true;
   }
 
-  const { start } = await counterfact(config);
+  const { start, startRepl } = await counterfact(config);
 
   debug("loaded counterfact", configForLogging);
 
@@ -256,6 +253,10 @@ async function main(source, destination) {
   debug("starting server");
   await start(config);
   debug("started server");
+
+  if (config.startRepl) {
+    startRepl();
+  }
 
   if (openBrowser) {
     debug("opening browser");

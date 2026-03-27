@@ -1,3 +1,5 @@
+import { jest } from "@jest/globals";
+
 import { ModuleTree } from "../../src/server/module-tree.js";
 
 function add(
@@ -143,4 +145,75 @@ it("has all of the routes", () => {
   ]);
 });
 
-export default ModuleTree;
+it("logs an error when multiple wildcard files exist at the same level", () => {
+  const moduleTree = new ModuleTree();
+  const stderrSpy = jest.spyOn(process.stderr, "write").mockImplementation();
+
+  add(moduleTree, "/a/{x}", "x");
+  add(moduleTree, "/a/{y}", "y");
+
+  expect(stderrSpy).toHaveBeenCalledWith(
+    expect.stringContaining("Ambiguous wildcard paths detected"),
+  );
+  expect(stderrSpy).toHaveBeenCalledWith(expect.stringContaining("{x}"));
+  expect(stderrSpy).toHaveBeenCalledWith(expect.stringContaining("{y}"));
+
+  stderrSpy.mockRestore();
+});
+
+it("logs an error when multiple wildcard directories exist at the same level", () => {
+  const moduleTree = new ModuleTree();
+  const stderrSpy = jest.spyOn(process.stderr, "write").mockImplementation();
+
+  add(moduleTree, "/{x}/a", "x");
+  add(moduleTree, "/{y}/a", "y");
+
+  expect(stderrSpy).toHaveBeenCalledWith(
+    expect.stringContaining("Ambiguous wildcard paths detected"),
+  );
+  expect(stderrSpy).toHaveBeenCalledWith(expect.stringContaining("{x}"));
+  expect(stderrSpy).toHaveBeenCalledWith(expect.stringContaining("{y}"));
+
+  stderrSpy.mockRestore();
+});
+
+it("returns an ambiguous match when multiple wildcard files handle the same method", () => {
+  const moduleTree = new ModuleTree();
+  const stderrSpy = jest.spyOn(process.stderr, "write").mockImplementation();
+
+  add(moduleTree, "/a/{x}", "x");
+  add(moduleTree, "/a/{y}", "y");
+
+  const result = moduleTree.match("/a/something", "GET");
+
+  expect(result?.ambiguous).toBe(true);
+
+  stderrSpy.mockRestore();
+});
+
+it("does not return an ambiguous match when wildcards handle different methods", () => {
+  const moduleTree = new ModuleTree();
+  const stderrSpy = jest.spyOn(process.stderr, "write").mockImplementation();
+
+  add(moduleTree, "/a/{x}", "x", "PUT");
+  add(moduleTree, "/a/{y}", "y", "GET");
+
+  expect(moduleTree.match("/a/something", "PUT")?.ambiguous).toBeUndefined();
+  expect(moduleTree.match("/a/something", "GET")?.ambiguous).toBeUndefined();
+
+  stderrSpy.mockRestore();
+});
+
+it("returns an ambiguous match when multiple wildcard directories lead to a match", () => {
+  const moduleTree = new ModuleTree();
+  const stderrSpy = jest.spyOn(process.stderr, "write").mockImplementation();
+
+  add(moduleTree, "/{x}/a", "x");
+  add(moduleTree, "/{y}/a", "y");
+
+  const result = moduleTree.match("/something/a", "GET");
+
+  expect(result?.ambiguous).toBe(true);
+
+  stderrSpy.mockRestore();
+});

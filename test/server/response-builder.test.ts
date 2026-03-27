@@ -263,8 +263,9 @@ describe("a response builder", () => {
       } as Config)[200]?.random();
 
       expect(response?.status).toBe(200);
-      // @ts-expect-error
-      expect(response!.content[0].body.label).toBeDefined();
+      expect(
+        (response.content?.[0]?.body as { label?: string })?.label,
+      ).toBeDefined();
     });
 
     it("falls back to 'default' when status code is not listed explicitly", () => {
@@ -294,10 +295,9 @@ describe("a response builder", () => {
       ]);
     });
 
-    it("returns 500 if it doesn't know what to do with the status code", () => {
+    it("returns undefined body for invalid schema types", () => {
       const operationWithInvalidSchema = structuredClone(operation);
 
-      // @ts-expect-error TypeScript can't track the type with structuredClone()
       operationWithInvalidSchema.responses[200].content[
         "application/json"
       ].schema.type = "file";
@@ -399,6 +399,20 @@ describe("a response builder", () => {
 
       expect(response?.status).toBe(500);
     });
+
+    it("returns 500 when the example name does not exist in any content type", () => {
+      const response = createResponseBuilder(operation)[200]?.example(
+        "nonexistent-example",
+      );
+
+      expect(response?.status).toBe(500);
+      expect(response?.content).toStrictEqual([
+        {
+          body: 'The OpenAPI document does not define an example named "nonexistent-example" for status code 200',
+          type: "text/plain",
+        },
+      ]);
+    });
   });
 
   describe("builds a random response based on an Open API operation object (OpenAPI 2)", () => {
@@ -436,7 +450,9 @@ describe("a response builder", () => {
     retry("using the status code", 10, () => {
       const response = createResponseBuilder(operation)[200]?.random();
 
+      // eslint-disable-next-line jest/no-standalone-expect
       expect(response?.status).toBe(200);
+      // eslint-disable-next-line jest/no-standalone-expect
       expect(response?.content).toStrictEqual([
         { body: "example response", type: "application/json" },
         { body: "example response", type: "text/plain" },

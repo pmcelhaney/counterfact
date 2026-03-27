@@ -1,6 +1,5 @@
 import { describe, expect, it } from "@jest/globals";
 import { promises as fs } from "node:fs";
-import path from "node:path";
 
 import { pruneRoutes } from "../../src/typescript-generator/prune.js";
 import { withTemporaryFiles } from "../lib/with-temporary-files.ts";

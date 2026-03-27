@@ -1,5 +1,3 @@
-import nodePath from "node:path";
-
 import createDebug from "debug";
 import { Requirement } from "./requirement.js";
 import { bundle } from "@apidevtools/json-schema-ref-parser";

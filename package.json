@@ -4,7 +4,11 @@
   "description": "Generate a TypeScript-based mock server from an OpenAPI spec in seconds — with stateful routes, hot reload, and REPL support.",
   "type": "module",
   "main": "./dist/app.js",
-  "exports": "./dist/app.js",
+  "exports": {
+    ".": {
+      "import": "./dist/app.js"
+    }
+  },
   "types": "./dist/server/types.d.ts",
   "typesVersions": {
     "*": {
@@ -61,7 +65,7 @@
   "sideEffects": false,
   "scripts": {
     "test": "yarn node --experimental-vm-modules ./node_modules/jest-cli/bin/jest --testPathIgnorePatterns=black-box",
-    "test:black-box": "rimraf dist && rimraf out && yarn build && yarn node --experimental-vm-modules ./node_modules/jest-cli/bin/jest black-box --forceExit --coverage=false",
+    "test:black-box": "rimraf dist && yarn build && python3 -m pytest test-black-box/ -v",
     "test:mutants": "stryker run stryker.config.json",
     "test:tsd": "tsd --typings ./dist/server/counterfact-types/index.ts --files ./test/**/*.test-d.ts",
     "build": "rm -rf dist && tsc && copyfiles -f \"src/client/**\" dist/client && copyfiles -f \"src/counterfact-types/*.ts\" dist/server/counterfact-types && copyfiles -f \"src/server/*.cjs\" dist/server",
@@ -78,10 +82,11 @@
   },
   "devDependencies": {
     "@changesets/cli": "2.30.0",
+    "@jest/globals": "^30.3.0",
     "@stryker-mutator/core": "9.6.0",
     "@stryker-mutator/jest-runner": "9.6.0",
     "@stryker-mutator/typescript-checker": "9.6.0",
-    "@swc/core": "1.15.18",
+    "@swc/core": "1.15.21",
     "@swc/jest": "0.2.39",
     "@testing-library/dom": "10.4.1",
     "@types/debug": "^4.1.12",
@@ -129,7 +134,7 @@
     "debug": "4.4.3",
     "fetch": "1.1.0",
     "fs-extra": "11.3.4",
-    "handlebars": "4.7.8",
+    "handlebars": "4.7.9",
     "http-terminator": "3.2.0",
     "js-yaml": "4.1.1",
     "json-schema-faker": "0.5.9",

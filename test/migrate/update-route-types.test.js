@@ -1,9 +1,5 @@
 import { describe, expect, it } from "@jest/globals";
 import { promises as fs } from "node:fs";
-import path from "node:path";
-
-import { Requirement } from "../../src/typescript-generator/requirement.js";
-import { Specification } from "../../src/typescript-generator/specification.js";
 import { withTemporaryFiles } from "../lib/with-temporary-files.ts";
 
 // Import the main function - other functions are not exported so we test through integration

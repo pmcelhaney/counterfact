@@ -132,6 +132,22 @@ export function createResponseBuilder(
 
         const { content } = response;
 
+        const exampleExists = Object.values(content).some(
+          (contentType) => contentType?.examples?.[name] !== undefined,
+        );
+
+        if (!exampleExists) {
+          return {
+            content: [
+              {
+                body: `The OpenAPI document does not define an example named "${name}" for status code ${this.status ?? "unknown"}`,
+                type: "text/plain",
+              },
+            ],
+            status: 500,
+          };
+        }
+
         return {
           ...this,
 
