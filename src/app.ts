@@ -11,7 +11,7 @@ import { ContextRegistry } from "./server/context-registry.js";
 import { createKoaApp } from "./server/create-koa-app.js";
 import {
   Dispatcher,
-  DispatcherRequest,
+  type DispatcherRequest,
   type OpenApiDocument,
 } from "./server/dispatcher.js";
 import { koaMiddleware } from "./server/koa-middleware.js";
