@@ -117,7 +117,9 @@ export function startRepl(
     callback: CompleterCallback,
   ) => void;
 
-  replServer.completer = createCompleter(registry, builtinCompleter);
+  // completer is typed as readonly in @types/node but is writable at runtime
+  (replServer as unknown as { completer: typeof builtinCompleter }).completer =
+    createCompleter(registry, builtinCompleter);
 
   replServer.defineCommand("counterfact", {
     action() {
