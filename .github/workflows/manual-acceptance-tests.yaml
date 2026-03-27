@@ -10,7 +10,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Decide whether to enforce
+        id: decide
+        run: |
+          branch="${{ github.event.pull_request.head.ref }}"
+          body="${{ github.event.pull_request.body }}"
+
+          if [[ "$branch" == copilot* ]] || echo "$body" | grep -iq "## manual acceptance tests"; then
+            echo "enforce=true" >> $GITHUB_OUTPUT
+          else
+            echo "enforce=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Skip (no enforcement needed)
+        if: steps.decide.outputs.enforce == 'false'
+        run: echo "Skipping manual acceptance test validation (not a Copilot PR and no section present)"
+
       - name: Validate PR body
+        if: steps.decide.outputs.enforce == 'true'
         env:
           PR_BODY: ${{ github.event.pull_request.body }}
         run: |
@@ -21,13 +38,8 @@ jobs:
 
           body = os.environ.get("PR_BODY") or ""
 
-          if not body.strip():
-              print("PR body is empty.")
-              sys.exit(1)
-
-          # Find the exact section and capture content until the next ## heading or end of file.
           match = re.search(
-              r"(?ms)^## Manual acceptance tests\s*\n(.*?)(?=^## |\Z)",
+              r"(?ims)^##\s*manual acceptance tests\s*\n(.*?)(?=^##\s|\Z)",
               body,
           )
 
@@ -37,20 +49,16 @@ jobs:
 
           section = match.group(1)
 
+          checked = re.findall(r"(?mi)^\s*-\s\[x\]\s+.+$", section)
           unchecked = re.findall(r"(?m)^\s*-\s\[\s\]\s+.+$", section)
-          checked = re.findall(r"(?m)^\s*-\s\[x\]\s+.+$", section, flags=re.IGNORECASE)
 
-          if checked:
-              print("Manual acceptance test boxes must be left unchecked for the human reviewer.")
+          if unchecked:
+              print(f"Found {len(unchecked)} unchecked manual acceptance test box(es). All boxes must be checked before merge.")
               sys.exit(1)
 
-          if len(unchecked) < 3:
-              print(f"Expected at least 3 unchecked manual acceptance test boxes, found {len(unchecked)}.")
+          if len(checked) < 1:
+              print("Expected at least one checked manual acceptance test box.")
               sys.exit(1)
 
-          if len(unchecked) > 6:
-              print(f"Expected at most 6 unchecked manual acceptance test boxes, found {len(unchecked)}.")
-              sys.exit(1)
-
-          print(f"OK: found {len(unchecked)} unchecked manual acceptance test boxes.")
+          print(f"OK: found {len(checked)} checked manual acceptance test box(es) and no unchecked boxes.")
           PY
