@@ -29,4 +29,3 @@ export async function runtimeCanExecuteErasableTs(): Promise<boolean> {
     rmSync(dir, { recursive: true, force: true });
   }
 }
-
