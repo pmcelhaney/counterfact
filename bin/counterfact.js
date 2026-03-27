@@ -94,21 +94,21 @@ const nativeTs = await runtimeCanExecuteErasableTs();
 const resolve = (rel) => pathToFileURL(nodePath.join(__binDir, rel)).href;
 
 const { counterfact } = await import(
-  resolve(nativeTs ? "../src/app.ts" : "../dist/app.js"),
+  resolve(nativeTs ? "../src/app.ts" : "../dist/app.js")
 );
 const { pathsToRoutes } = await import(
   resolve(
     nativeTs
       ? "../src/migrate/paths-to-routes.js"
       : "../dist/migrate/paths-to-routes.js",
-  ),
+  )
 );
 const { updateRouteTypes } = await import(
   resolve(
     nativeTs
       ? "../src/migrate/update-route-types.js"
       : "../dist/migrate/update-route-types.js",
-  ),
+  )
 );
 
 const DEFAULT_PORT = 3100;

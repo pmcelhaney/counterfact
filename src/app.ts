@@ -19,7 +19,6 @@ import { ModuleLoader } from "./server/module-loader.js";
 import { Registry } from "./server/registry.js";
 import { Transpiler } from "./server/transpiler.js";
 import { CodeGenerator } from "./typescript-generator/code-generator.js";
-import { readFile } from "./util/read-file.js";
 import { runtimeCanExecuteErasableTs } from "./util/runtime-can-execute-erasable-ts.js";
 
 const debug = createDebug("counterfact:app");
