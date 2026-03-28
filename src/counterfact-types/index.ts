@@ -10,6 +10,16 @@ interface Example {
   value: unknown;
 }
 
+interface CookieOptions {
+  domain?: string;
+  expires?: Date;
+  httpOnly?: boolean;
+  maxAge?: number;
+  path?: string;
+  sameSite?: "lax" | "none" | "strict";
+  secure?: boolean;
+}
+
 const counterfactResponse = Symbol("Counterfact Response");
 
 type COUNTERFACT_RESPONSE = {
@@ -111,9 +121,14 @@ type ExampleNames<Response extends OpenApiResponse> = Response extends {
 interface ResponseBuilder {
   [status: number | `${number} ${string}`]: ResponseBuilder;
   content?: { body: unknown; type: string }[];
+  cookie: (
+    name: string,
+    value: string,
+    options?: CookieOptions,
+  ) => ResponseBuilder;
   example: (name: string) => ResponseBuilder;
   header: (name: string, value: string) => ResponseBuilder;
-  headers: { [name: string]: string };
+  headers: { [name: string]: string | string[] };
   html: (body: unknown) => ResponseBuilder;
   json: (body: unknown) => ResponseBuilder;
   match: (contentType: string, body: unknown) => ResponseBuilder;
@@ -261,6 +276,11 @@ interface OpenApiOperation {
 
 interface WideResponseBuilder {
   example: (name: string) => WideResponseBuilder;
+  cookie: (
+    name: string,
+    value: string,
+    options?: CookieOptions,
+  ) => WideResponseBuilder;
   header: (body: unknown) => WideResponseBuilder;
   html: (body: unknown) => WideResponseBuilder;
   json: (body: unknown) => WideResponseBuilder;
@@ -283,6 +303,7 @@ interface WideOperationArgument {
 export type { COUNTERFACT_RESPONSE };
 
 export type {
+  CookieOptions,
   ExampleNames,
   HttpStatusCode,
   MaybePromise,
