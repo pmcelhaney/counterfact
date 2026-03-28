@@ -708,6 +708,198 @@ describe("a dispatcher", () => {
     expect(operation).not.toBeUndefined();
     expect(operation?.produces).toStrictEqual(["text/plain"]);
   });
+
+  it("provides a cookie() method that reads a single cookie", async () => {
+    const registry = new Registry();
+
+    registry.add("/a", {
+      GET({ cookie }) {
+        return {
+          body: cookie("session") ?? "missing",
+        };
+      },
+    });
+
+    const dispatcher = new Dispatcher(registry, new ContextRegistry());
+    const response = await dispatcher.request({
+      body: "",
+      headers: { cookie: "session=abc123" },
+      method: "GET",
+      path: "/a",
+      query: {},
+      req: { path: "/a" },
+    });
+
+    expect(response.body).toBe("abc123");
+  });
+
+  it("provides a cookie() method that reads one of multiple cookies", async () => {
+    const registry = new Registry();
+
+    registry.add("/a", {
+      GET({ cookie }) {
+        return {
+          body: cookie("theme") ?? "missing",
+        };
+      },
+    });
+
+    const dispatcher = new Dispatcher(registry, new ContextRegistry());
+    const response = await dispatcher.request({
+      body: "",
+      headers: { cookie: "session=abc123; theme=dark; lang=en" },
+      method: "GET",
+      path: "/a",
+      query: {},
+      req: { path: "/a" },
+    });
+
+    expect(response.body).toBe("dark");
+  });
+
+  it("provides a cookie() method that returns undefined for a missing cookie", async () => {
+    const registry = new Registry();
+
+    registry.add("/a", {
+      GET({ cookie }) {
+        return {
+          body: cookie("missing") ?? "not-found",
+        };
+      },
+    });
+
+    const dispatcher = new Dispatcher(registry, new ContextRegistry());
+    const response = await dispatcher.request({
+      body: "",
+      headers: { cookie: "session=abc123" },
+      method: "GET",
+      path: "/a",
+      query: {},
+      req: { path: "/a" },
+    });
+
+    expect(response.body).toBe("not-found");
+  });
+
+  it("provides a cookie() method that returns undefined when no Cookie header is present", async () => {
+    const registry = new Registry();
+
+    registry.add("/a", {
+      GET({ cookie }) {
+        return {
+          body: cookie("session") ?? "no-cookie",
+        };
+      },
+    });
+
+    const dispatcher = new Dispatcher(registry, new ContextRegistry());
+    const response = await dispatcher.request({
+      body: "",
+      headers: {},
+      method: "GET",
+      path: "/a",
+      query: {},
+      req: { path: "/a" },
+    });
+
+    expect(response.body).toBe("no-cookie");
+  });
+
+  it("provides a cookie() method that handles whitespace around cookie names and values", async () => {
+    const registry = new Registry();
+
+    registry.add("/a", {
+      GET({ cookie }) {
+        return {
+          body: cookie("key") ?? "missing",
+        };
+      },
+    });
+
+    const dispatcher = new Dispatcher(registry, new ContextRegistry());
+    const response = await dispatcher.request({
+      body: "",
+      headers: { cookie: "  key  =  value  " },
+      method: "GET",
+      path: "/a",
+      query: {},
+      req: { path: "/a" },
+    });
+
+    expect(response.body).toBe("value");
+  });
+
+  it("provides a cookie() method that URL-decodes cookie values", async () => {
+    const registry = new Registry();
+
+    registry.add("/a", {
+      GET({ cookie }) {
+        return {
+          body: cookie("data") ?? "missing",
+        };
+      },
+    });
+
+    const dispatcher = new Dispatcher(registry, new ContextRegistry());
+    const response = await dispatcher.request({
+      body: "",
+      headers: { cookie: "data=hello%20world" },
+      method: "GET",
+      path: "/a",
+      query: {},
+      req: { path: "/a" },
+    });
+
+    expect(response.body).toBe("hello world");
+  });
+
+  it("provides a cookie() method that does not throw on malformed cookie headers", async () => {
+    const registry = new Registry();
+
+    registry.add("/a", {
+      GET({ cookie }) {
+        return {
+          body: cookie("ok") ?? "safe",
+        };
+      },
+    });
+
+    const dispatcher = new Dispatcher(registry, new ContextRegistry());
+    const response = await dispatcher.request({
+      body: "",
+      headers: { cookie: "noequals; ok=yes; =emptykey; garbled%%%" },
+      method: "GET",
+      path: "/a",
+      query: {},
+      req: { path: "/a" },
+    });
+
+    expect(response.body).toBe("yes");
+  });
+
+  it("provides a cookie() method that returns the first occurrence when duplicate cookie names exist", async () => {
+    const registry = new Registry();
+
+    registry.add("/a", {
+      GET({ cookie }) {
+        return {
+          body: cookie("id") ?? "missing",
+        };
+      },
+    });
+
+    const dispatcher = new Dispatcher(registry, new ContextRegistry());
+    const response = await dispatcher.request({
+      body: "",
+      headers: { cookie: "id=first; id=second" },
+      method: "GET",
+      path: "/a",
+      query: {},
+      req: { path: "/a" },
+    });
+
+    expect(response.body).toBe("first");
+  });
 });
 
 describe("given an invalid path", () => {

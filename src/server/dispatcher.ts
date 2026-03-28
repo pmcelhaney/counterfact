@@ -19,6 +19,31 @@ import type { Config } from "./config.js";
 
 const debug = createDebugger("counterfact:server:dispatcher");
 
+function parseCookies(cookieHeader: string): Record<string, string> {
+  const cookies: Record<string, string> = {};
+
+  for (const part of cookieHeader.split(";")) {
+    const eqIndex = part.indexOf("=");
+
+    if (eqIndex === -1) {
+      continue;
+    }
+
+    const key = part.slice(0, eqIndex).trim();
+    const value = part.slice(eqIndex + 1).trim();
+
+    if (key && !(key in cookies)) {
+      try {
+        cookies[key] = decodeURIComponent(value);
+      } catch {
+        cookies[key] = value;
+      }
+    }
+  }
+
+  return cookies;
+}
+
 interface ParameterTypes {
   body: {
     [key: string]: string;
@@ -275,6 +300,8 @@ export class Dispatcher {
       return min + Math.random() * (max - min);
     };
 
+    let parsedCookies: Record<string, string> | null = null;
+
     const response = await this.registry.endpoint(
       method,
       path,
@@ -291,6 +318,20 @@ export class Dispatcher {
             : continuousDistribution(milliseconds, maxMilliseconds);
 
         return new Promise((resolve) => setTimeout(resolve, delayInMs));
+      },
+
+      cookie(name: string): string | undefined {
+        const cookieHeader = headers.cookie ?? headers.Cookie;
+
+        if (!cookieHeader) {
+          return undefined;
+        }
+
+        if (!parsedCookies) {
+          parsedCookies = parseCookies(cookieHeader);
+        }
+
+        return parsedCookies[name];
       },
 
       headers,
