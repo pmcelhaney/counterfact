@@ -318,15 +318,17 @@ export class Dispatcher {
         return new Promise((resolve) => setTimeout(resolve, delayInMs));
       },
 
-      cookie(name: string): string | undefined {
-        const cookieHeader = headers.cookie ?? headers.Cookie;
+      cookie: new Proxy({} as Record<string, string | undefined>, {
+        get(_, name: string): string | undefined {
+          const cookieHeader = headers.cookie ?? headers.Cookie;
 
-        if (!cookieHeader) {
-          return undefined;
-        }
+          if (!cookieHeader) {
+            return undefined;
+          }
 
-        return parseCookies(cookieHeader)[name];
-      },
+          return parseCookies(cookieHeader)[name];
+        },
+      }),
 
       headers,
 

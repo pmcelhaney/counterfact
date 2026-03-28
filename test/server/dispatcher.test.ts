@@ -709,13 +709,13 @@ describe("a dispatcher", () => {
     expect(operation?.produces).toStrictEqual(["text/plain"]);
   });
 
-  it("provides a cookie() method that reads a single cookie", async () => {
+  it("provides a cookie proxy that reads a single cookie", async () => {
     const registry = new Registry();
 
     registry.add("/a", {
-      GET({ cookie }) {
+      GET($) {
         return {
-          body: cookie("session") ?? "missing",
+          body: $.cookie.session ?? "missing",
         };
       },
     });
@@ -733,13 +733,13 @@ describe("a dispatcher", () => {
     expect(response.body).toBe("abc123");
   });
 
-  it("provides a cookie() method that reads one of multiple cookies", async () => {
+  it("provides a cookie proxy that reads one of multiple cookies", async () => {
     const registry = new Registry();
 
     registry.add("/a", {
-      GET({ cookie }) {
+      GET($) {
         return {
-          body: cookie("theme") ?? "missing",
+          body: $.cookie.theme ?? "missing",
         };
       },
     });
@@ -757,13 +757,13 @@ describe("a dispatcher", () => {
     expect(response.body).toBe("dark");
   });
 
-  it("provides a cookie() method that returns undefined for a missing cookie", async () => {
+  it("provides a cookie proxy that returns undefined for a missing cookie", async () => {
     const registry = new Registry();
 
     registry.add("/a", {
-      GET({ cookie }) {
+      GET($) {
         return {
-          body: cookie("missing") ?? "not-found",
+          body: $.cookie.missing ?? "not-found",
         };
       },
     });
@@ -781,13 +781,13 @@ describe("a dispatcher", () => {
     expect(response.body).toBe("not-found");
   });
 
-  it("provides a cookie() method that returns undefined when no Cookie header is present", async () => {
+  it("provides a cookie proxy that returns undefined when no Cookie header is present", async () => {
     const registry = new Registry();
 
     registry.add("/a", {
-      GET({ cookie }) {
+      GET($) {
         return {
-          body: cookie("session") ?? "no-cookie",
+          body: $.cookie.session ?? "no-cookie",
         };
       },
     });
@@ -805,13 +805,13 @@ describe("a dispatcher", () => {
     expect(response.body).toBe("no-cookie");
   });
 
-  it("provides a cookie() method that handles whitespace around cookie names and values", async () => {
+  it("provides a cookie proxy that handles whitespace around cookie names and values", async () => {
     const registry = new Registry();
 
     registry.add("/a", {
-      GET({ cookie }) {
+      GET($) {
         return {
-          body: cookie("key") ?? "missing",
+          body: $.cookie.key ?? "missing",
         };
       },
     });
@@ -829,13 +829,13 @@ describe("a dispatcher", () => {
     expect(response.body).toBe("value");
   });
 
-  it("provides a cookie() method that URL-decodes cookie values", async () => {
+  it("provides a cookie proxy that URL-decodes cookie values", async () => {
     const registry = new Registry();
 
     registry.add("/a", {
-      GET({ cookie }) {
+      GET($) {
         return {
-          body: cookie("data") ?? "missing",
+          body: $.cookie.data ?? "missing",
         };
       },
     });
@@ -853,13 +853,13 @@ describe("a dispatcher", () => {
     expect(response.body).toBe("hello world");
   });
 
-  it("provides a cookie() method that does not throw on malformed cookie headers", async () => {
+  it("provides a cookie proxy that does not throw on malformed cookie headers", async () => {
     const registry = new Registry();
 
     registry.add("/a", {
-      GET({ cookie }) {
+      GET($) {
         return {
-          body: cookie("ok") ?? "safe",
+          body: $.cookie.ok ?? "safe",
         };
       },
     });
@@ -877,13 +877,13 @@ describe("a dispatcher", () => {
     expect(response.body).toBe("yes");
   });
 
-  it("provides a cookie() method that returns the first occurrence when duplicate cookie names exist", async () => {
+  it("provides a cookie proxy that returns the first occurrence when duplicate cookie names exist", async () => {
     const registry = new Registry();
 
     registry.add("/a", {
-      GET({ cookie }) {
+      GET($) {
         return {
-          body: cookie("id") ?? "missing",
+          body: $.cookie.id ?? "missing",
         };
       },
     });
