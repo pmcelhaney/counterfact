@@ -117,10 +117,48 @@ Each exported function handles one HTTP method. The single argument `$` gives yo
 | `.xml(content)` | Returns an XML body |
 | `.match(contentType, content)` | Returns a body with an explicit content type; chain multiple for content negotiation |
 | `.header(name, value)` | Adds a response header |
+| `.cookie(name, value, options?)` | Adds a `Set-Cookie` response header; can be called multiple times |
 
 ```ts
 return $.response[200].header("x-request-id", "abc123").json({ ok: true });
 ```
+
+#### Setting cookies
+
+Use `.cookie(name, value, options?)` to set one or more cookies. Each call appends a new `Set-Cookie` header and returns the builder for chaining.
+
+```ts
+return $.response[200]
+  .cookie("sessionId", "abc123", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "lax",
+    path: "/",
+    maxAge: 3600,
+  })
+  .json({ ok: true });
+```
+
+Multiple cookies:
+
+```ts
+return $.response[200]
+  .cookie("sessionId", "abc123")
+  .cookie("theme", "dark")
+  .json({ ok: true });
+```
+
+Supported options:
+
+| Option | Description |
+|--------|-------------|
+| `path` | Cookie path (e.g. `"/"`) |
+| `domain` | Cookie domain |
+| `maxAge` | Max age in seconds (`Max-Age`) |
+| `expires` | Expiry `Date` object (`Expires`) |
+| `httpOnly` | Sets the `HttpOnly` flag when `true` |
+| `secure` | Sets the `Secure` flag when `true` |
+| `sameSite` | `"lax"`, `"strict"`, or `"none"` (`SameSite`) |
 
 #### Using named examples
 

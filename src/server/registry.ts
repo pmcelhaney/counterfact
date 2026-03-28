@@ -80,7 +80,7 @@ type CounterfactResponseObject = {
     type: MediaType;
   }[];
   contentType?: string;
-  headers?: { [key: string]: number | string };
+  headers?: { [key: string]: number | string | string[] };
   status?: number;
 };
 
