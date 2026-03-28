@@ -300,8 +300,6 @@ export class Dispatcher {
       return min + Math.random() * (max - min);
     };
 
-    let parsedCookies: Record<string, string> | null = null;
-
     const response = await this.registry.endpoint(
       method,
       path,
@@ -327,11 +325,7 @@ export class Dispatcher {
           return undefined;
         }
 
-        if (!parsedCookies) {
-          parsedCookies = parseCookies(cookieHeader);
-        }
-
-        return parsedCookies[name];
+        return parseCookies(cookieHeader)[name];
       },
 
       headers,
