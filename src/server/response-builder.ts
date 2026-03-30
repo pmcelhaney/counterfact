@@ -2,6 +2,7 @@ import { JSONSchemaFaker } from "json-schema-faker";
 
 import { jsonToXml } from "./json-to-xml.js";
 import type {
+  CookieOptions,
   OpenApiOperation,
   ResponseBuilder,
 } from "../counterfact-types/index.js";
@@ -32,6 +33,46 @@ function oneOf(items: unknown[] | { [key: string]: unknown }): unknown {
   }
 
   return oneOf(Object.values(items));
+}
+
+function serializeCookie(
+  name: string,
+  value: string,
+  options: CookieOptions = {},
+): string {
+  const parts = [`${name}=${value}`];
+
+  if (options.path !== undefined) {
+    parts.push(`Path=${options.path}`);
+  }
+
+  if (options.domain !== undefined) {
+    parts.push(`Domain=${options.domain}`);
+  }
+
+  if (options.maxAge !== undefined) {
+    parts.push(`Max-Age=${options.maxAge}`);
+  }
+
+  if (options.expires !== undefined) {
+    parts.push(`Expires=${options.expires.toUTCString()}`);
+  }
+
+  if (options.httpOnly) {
+    parts.push("HttpOnly");
+  }
+
+  if (options.secure) {
+    parts.push("Secure");
+  }
+
+  if (options.sameSite !== undefined) {
+    const sameSiteMap = { lax: "Lax", none: "None", strict: "Strict" };
+
+    parts.push(`SameSite=${sameSiteMap[options.sameSite]}`);
+  }
+
+  return parts.join("; ");
 }
 
 function unknownStatusCodeResponse(statusCode: number | undefined) {
@@ -76,6 +117,30 @@ export function createResponseBuilder(
           typeof body === "string" ? Buffer.from(body, "base64") : body;
 
         return this.match("application/octet-stream", buffer);
+      },
+
+      cookie(
+        this: ResponseBuilder,
+        name: string,
+        value: string,
+        options: CookieOptions = {},
+      ): ResponseBuilder {
+        const cookieString = serializeCookie(name, value, options);
+        const existing = this.headers?.["set-cookie"];
+        const existingArray: string[] = Array.isArray(existing)
+          ? existing
+          : existing !== undefined
+            ? [existing]
+            : [];
+
+        return {
+          ...this,
+
+          headers: {
+            ...this.headers,
+            "set-cookie": [...existingArray, cookieString],
+          },
+        };
       },
 
       html(this: ResponseBuilder, body: unknown) {

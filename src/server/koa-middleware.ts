@@ -144,7 +144,11 @@ export function koaMiddleware(
     if (response.headers) {
       for (const [key, value] of Object.entries(response.headers)) {
         if (!HEADERS_TO_DROP.has(key.toLowerCase())) {
-          ctx.set(key, value.toString());
+          if (Array.isArray(value)) {
+            ctx.set(key, value);
+          } else {
+            ctx.set(key, value.toString());
+          }
         }
       }
     }

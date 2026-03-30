@@ -10,6 +10,16 @@ interface Example {
   value: unknown;
 }
 
+interface CookieOptions {
+  domain?: string;
+  expires?: Date;
+  httpOnly?: boolean;
+  maxAge?: number;
+  path?: string;
+  sameSite?: "lax" | "none" | "strict";
+  secure?: boolean;
+}
+
 const counterfactResponse = Symbol("Counterfact Response");
 
 type COUNTERFACT_RESPONSE = {
@@ -112,9 +122,14 @@ interface ResponseBuilder {
   [status: number | `${number} ${string}`]: ResponseBuilder;
   binary: (body: Uint8Array | string) => ResponseBuilder;
   content?: { body: unknown; type: string }[];
+  cookie: (
+    name: string,
+    value: string,
+    options?: CookieOptions,
+  ) => ResponseBuilder;
   example: (name: string) => ResponseBuilder;
   header: (name: string, value: string) => ResponseBuilder;
-  headers: { [name: string]: string };
+  headers: { [name: string]: string | string[] };
   html: (body: unknown) => ResponseBuilder;
   json: (body: unknown) => ResponseBuilder;
   match: (contentType: string, body: unknown) => ResponseBuilder;
@@ -129,6 +144,11 @@ export type GenericResponseBuilderInner<
   Response extends OpenApiResponse = OpenApiResponse,
 > = OmitValueWhenNever<{
   binary: MaybeShortcut<["application/octet-stream"], Response>;
+  cookie: (
+    name: string,
+    value: string,
+    options?: CookieOptions,
+  ) => GenericResponseBuilder<Response>;
   header: [keyof Response["headers"]] extends [never]
     ? never
     : HeaderFunction<Response>;
@@ -264,6 +284,11 @@ interface OpenApiOperation {
 interface WideResponseBuilder {
   binary: (body: Uint8Array | string) => WideResponseBuilder;
   example: (name: string) => WideResponseBuilder;
+  cookie: (
+    name: string,
+    value: string,
+    options?: CookieOptions,
+  ) => WideResponseBuilder;
   header: (body: unknown) => WideResponseBuilder;
   html: (body: unknown) => WideResponseBuilder;
   json: (body: unknown) => WideResponseBuilder;
@@ -286,6 +311,7 @@ interface WideOperationArgument {
 export type { COUNTERFACT_RESPONSE };
 
 export type {
+  CookieOptions,
   ExampleNames,
   HttpStatusCode,
   MaybePromise,

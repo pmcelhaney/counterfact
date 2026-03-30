@@ -93,6 +93,103 @@ describe("a response builder", () => {
     });
   });
 
+  it("adds a single cookie", () => {
+    const response = createResponseBuilder({
+      responses: { 200: { content: {}, schema: {} } },
+    })[200]?.cookie("sessionId", "abc123");
+
+    expect(response?.status).toBe(200);
+    expect(response?.headers?.["set-cookie"]).toStrictEqual([
+      "sessionId=abc123",
+    ]);
+  });
+
+  it("adds multiple cookies via chaining", () => {
+    const response = createResponseBuilder({
+      responses: { 200: { content: {}, schema: {} } },
+    })[200]
+      ?.cookie("sessionId", "abc123")
+      .cookie("theme", "dark");
+
+    expect(response?.status).toBe(200);
+    expect(response?.headers?.["set-cookie"]).toStrictEqual([
+      "sessionId=abc123",
+      "theme=dark",
+    ]);
+  });
+
+  it("serializes all supported cookie options", () => {
+    const expires = new Date("2025-12-31T00:00:00.000Z");
+
+    const response = createResponseBuilder({
+      responses: { 200: { content: {}, schema: {} } },
+    })[200]?.cookie("a", "1", {
+      domain: "example.com",
+      expires,
+      httpOnly: true,
+      maxAge: 3600,
+      path: "/",
+      sameSite: "lax",
+      secure: true,
+    });
+
+    expect(response?.headers?.["set-cookie"]).toStrictEqual([
+      `a=1; Path=/; Domain=example.com; Max-Age=3600; Expires=${expires.toUTCString()}; HttpOnly; Secure; SameSite=Lax`,
+    ]);
+  });
+
+  it("serializes sameSite=strict correctly", () => {
+    const response = createResponseBuilder({
+      responses: { 200: { content: {}, schema: {} } },
+    })[200]?.cookie("a", "1", { sameSite: "strict" });
+
+    expect(response?.headers?.["set-cookie"]).toStrictEqual([
+      "a=1; SameSite=Strict",
+    ]);
+  });
+
+  it("serializes sameSite=none correctly", () => {
+    const response = createResponseBuilder({
+      responses: { 200: { content: {}, schema: {} } },
+    })[200]?.cookie("a", "1", { sameSite: "none" });
+
+    expect(response?.headers?.["set-cookie"]).toStrictEqual([
+      "a=1; SameSite=None",
+    ]);
+  });
+
+  it("chains cookie() before json()", () => {
+    const response = createResponseBuilder({
+      responses: { 200: { content: {}, schema: {} } },
+    })[200]
+      ?.cookie("sessionId", "abc123")
+      .json({ ok: true });
+
+    expect(response?.headers?.["set-cookie"]).toStrictEqual([
+      "sessionId=abc123",
+    ]);
+    expect(response?.content).toContainEqual({
+      body: { ok: true },
+      type: "application/json",
+    });
+  });
+
+  it("chains json() before cookie()", () => {
+    const response = createResponseBuilder({
+      responses: { 200: { content: {}, schema: {} } },
+    })[200]
+      ?.json({ ok: true })
+      .cookie("sessionId", "abc123");
+
+    expect(response?.headers?.["set-cookie"]).toStrictEqual([
+      "sessionId=abc123",
+    ]);
+    expect(response?.content).toContainEqual({
+      body: { ok: true },
+      type: "application/json",
+    });
+  });
+
   describe("builds a random response based on an Open API operation object", () => {
     const operation: OpenApiOperation = {
       responses: {
