@@ -1,3 +1,5 @@
+import { pathToFileURL } from "node:url";
+
 import createDebug from "debug";
 import { Requirement } from "./requirement.js";
 import { bundle } from "@apidevtools/json-schema-ref-parser";
@@ -24,8 +26,12 @@ export class Specification {
   }
 
   async load(urlOrPath) {
+    const resolvedPath = /^https?:\/\/|^file:\/\//.test(urlOrPath)
+      ? urlOrPath
+      : pathToFileURL(urlOrPath).href;
+
     this.rootRequirement = new Requirement(
-      await bundle(urlOrPath, {
+      await bundle(resolvedPath, {
         resolve: { http: { safeUrlResolver: false } },
       }),
       urlOrPath,
