@@ -142,6 +142,11 @@ interface ResponseBuilder {
 export type GenericResponseBuilderInner<
   Response extends OpenApiResponse = OpenApiResponse,
 > = OmitValueWhenNever<{
+  cookie: (
+    name: string,
+    value: string,
+    options?: CookieOptions,
+  ) => GenericResponseBuilder<Response>;
   header: [keyof Response["headers"]] extends [never]
     ? never
     : HeaderFunction<Response>;
