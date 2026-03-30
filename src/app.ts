@@ -11,7 +11,7 @@ import { ContextRegistry } from "./server/context-registry.js";
 import { createKoaApp } from "./server/create-koa-app.js";
 import {
   Dispatcher,
-  DispatcherRequest,
+  type DispatcherRequest,
   type OpenApiDocument,
 } from "./server/dispatcher.js";
 import { koaMiddleware } from "./server/koa-middleware.js";
@@ -20,6 +20,7 @@ import { Registry } from "./server/registry.js";
 import { Transpiler } from "./server/transpiler.js";
 import { CodeGenerator } from "./typescript-generator/code-generator.js";
 import { readFile } from "./util/read-file.js";
+import { runtimeCanExecuteErasableTs } from "./util/runtime-can-execute-erasable-ts.js";
 
 type MswHandlerMap = {
   [key: string]: (request: MockRequest) => Promise<unknown>;
@@ -119,11 +120,15 @@ export async function createMswHandlers(
 export async function counterfact(config: Config) {
   const modulesPath = config.basePath;
 
+  const nativeTs = await runtimeCanExecuteErasableTs();
+
   const compiledPathsDirectory = nodePath
-    .join(modulesPath, ".cache")
+    .join(modulesPath, nativeTs ? "routes" : ".cache")
     .replaceAll("\\", "/");
 
-  await rm(compiledPathsDirectory, { force: true, recursive: true });
+  if (!nativeTs) {
+    await rm(compiledPathsDirectory, { force: true, recursive: true });
+  }
 
   const registry = new Registry();
 
@@ -172,7 +177,9 @@ export async function counterfact(config: Config) {
     let httpTerminator: HttpTerminator | undefined;
 
     if (startServer) {
-      await transpiler.watch();
+      if (!nativeTs) {
+        await transpiler.watch();
+      }
       await moduleLoader.load();
       await moduleLoader.watch();
 
