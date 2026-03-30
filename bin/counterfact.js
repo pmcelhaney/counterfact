@@ -48,7 +48,7 @@ function padTagLine(tagLine) {
 }
 
 function createWatchMessage(config) {
-  let watchMessage = "";
+  let watchMessage;
 
   switch (true) {
     case config.watch.routes && config.watch.types: {
@@ -191,7 +191,7 @@ async function main(source, destination) {
   debug("loading counterfact (%o)", configForLogging);
 
   let didMigrate = false;
-  let didMigrateRouteTypes = false;
+  let didMigrateRouteTypes;
 
   if (fs.existsSync(nodePath.join(config.basePath, "paths"))) {
     await pathsToRoutes(config.basePath);
