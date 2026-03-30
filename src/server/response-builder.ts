@@ -114,7 +114,9 @@ export function createResponseBuilder(
 
       binary(this: ResponseBuilder, body: Uint8Array | string) {
         const buffer =
-          typeof body === "string" ? Buffer.from(body, "base64") : body;
+          typeof body === "string"
+            ? Buffer.from(body, "base64")
+            : Buffer.from(body);
 
         return this.match("application/octet-stream", buffer);
       },
