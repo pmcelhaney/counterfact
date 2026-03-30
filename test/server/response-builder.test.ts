@@ -68,6 +68,103 @@ describe("a response builder", () => {
     });
   });
 
+  it("adds a single cookie", () => {
+    const response = createResponseBuilder({
+      responses: { 200: { content: {}, schema: {} } },
+    })[200]?.cookie("sessionId", "abc123");
+
+    expect(response?.status).toBe(200);
+    expect(response?.headers?.["set-cookie"]).toStrictEqual([
+      "sessionId=abc123",
+    ]);
+  });
+
+  it("adds multiple cookies via chaining", () => {
+    const response = createResponseBuilder({
+      responses: { 200: { content: {}, schema: {} } },
+    })[200]
+      ?.cookie("sessionId", "abc123")
+      .cookie("theme", "dark");
+
+    expect(response?.status).toBe(200);
+    expect(response?.headers?.["set-cookie"]).toStrictEqual([
+      "sessionId=abc123",
+      "theme=dark",
+    ]);
+  });
+
+  it("serializes all supported cookie options", () => {
+    const expires = new Date("2025-12-31T00:00:00.000Z");
+
+    const response = createResponseBuilder({
+      responses: { 200: { content: {}, schema: {} } },
+    })[200]?.cookie("a", "1", {
+      domain: "example.com",
+      expires,
+      httpOnly: true,
+      maxAge: 3600,
+      path: "/",
+      sameSite: "lax",
+      secure: true,
+    });
+
+    expect(response?.headers?.["set-cookie"]).toStrictEqual([
+      `a=1; Path=/; Domain=example.com; Max-Age=3600; Expires=${expires.toUTCString()}; HttpOnly; Secure; SameSite=Lax`,
+    ]);
+  });
+
+  it("serializes sameSite=strict correctly", () => {
+    const response = createResponseBuilder({
+      responses: { 200: { content: {}, schema: {} } },
+    })[200]?.cookie("a", "1", { sameSite: "strict" });
+
+    expect(response?.headers?.["set-cookie"]).toStrictEqual([
+      "a=1; SameSite=Strict",
+    ]);
+  });
+
+  it("serializes sameSite=none correctly", () => {
+    const response = createResponseBuilder({
+      responses: { 200: { content: {}, schema: {} } },
+    })[200]?.cookie("a", "1", { sameSite: "none" });
+
+    expect(response?.headers?.["set-cookie"]).toStrictEqual([
+      "a=1; SameSite=None",
+    ]);
+  });
+
+  it("chains cookie() before json()", () => {
+    const response = createResponseBuilder({
+      responses: { 200: { content: {}, schema: {} } },
+    })[200]
+      ?.cookie("sessionId", "abc123")
+      .json({ ok: true });
+
+    expect(response?.headers?.["set-cookie"]).toStrictEqual([
+      "sessionId=abc123",
+    ]);
+    expect(response?.content).toContainEqual({
+      body: { ok: true },
+      type: "application/json",
+    });
+  });
+
+  it("chains json() before cookie()", () => {
+    const response = createResponseBuilder({
+      responses: { 200: { content: {}, schema: {} } },
+    })[200]
+      ?.json({ ok: true })
+      .cookie("sessionId", "abc123");
+
+    expect(response?.headers?.["set-cookie"]).toStrictEqual([
+      "sessionId=abc123",
+    ]);
+    expect(response?.content).toContainEqual({
+      body: { ok: true },
+      type: "application/json",
+    });
+  });
+
   describe("builds a random response based on an Open API operation object", () => {
     const operation: OpenApiOperation = {
       responses: {
@@ -137,6 +234,64 @@ describe("a response builder", () => {
       // });
     });
 
+    it("fills in required headers when calling random()", () => {
+      const operationWithRequiredHeaders: OpenApiOperation = {
+        responses: {
+          200: {
+            content: {
+              "application/json": {
+                schema: { type: "object" },
+              },
+            },
+            headers: {
+              "x-required-header": {
+                required: true,
+                schema: { type: "string", examples: ["header-value"] },
+              },
+              "x-optional-header": {
+                required: false,
+                schema: { type: "string" },
+              },
+            },
+          },
+        },
+      };
+
+      const response = createResponseBuilder(
+        operationWithRequiredHeaders,
+      )[200]?.random();
+
+      expect(response?.status).toBe(200);
+      expect(response?.headers?.["x-required-header"]).toBeDefined();
+      expect(response?.headers?.["x-optional-header"]).toBeUndefined();
+    });
+
+    it("does not overwrite an already-set required header when calling random()", () => {
+      const operationWithRequiredHeaders: OpenApiOperation = {
+        responses: {
+          200: {
+            content: {
+              "application/json": {
+                schema: { type: "object" },
+              },
+            },
+            headers: {
+              "x-required-header": {
+                required: true,
+                schema: { type: "string" },
+              },
+            },
+          },
+        },
+      };
+
+      const response = createResponseBuilder(operationWithRequiredHeaders)[200]
+        ?.header("x-required-header", "already-set")
+        .random();
+
+      expect(response?.headers?.["x-required-header"]).toBe("already-set");
+    });
+
     it("correctly handles alwaysFakeOptionals option", () => {
       const operationWithoutExamples: OpenApiOperation = {
         responses: {
@@ -180,8 +335,9 @@ describe("a response builder", () => {
       } as Config)[200]?.random();
 
       expect(response?.status).toBe(200);
-      // @ts-expect-error
-      expect(response!.content[0].body.label).toBeDefined();
+      expect(
+        (response.content?.[0]?.body as { label?: string })?.label,
+      ).toBeDefined();
     });
 
     it("falls back to 'default' when status code is not listed explicitly", () => {
@@ -211,10 +367,9 @@ describe("a response builder", () => {
       ]);
     });
 
-    it("returns 500 if it doesn't know what to do with the status code", () => {
+    it("returns undefined body for invalid schema types", () => {
       const operationWithInvalidSchema = structuredClone(operation);
 
-      // @ts-expect-error TypeScript can't track the type with structuredClone()
       operationWithInvalidSchema.responses[200].content[
         "application/json"
       ].schema.type = "file";
@@ -316,6 +471,20 @@ describe("a response builder", () => {
 
       expect(response?.status).toBe(500);
     });
+
+    it("returns 500 when the example name does not exist in any content type", () => {
+      const response = createResponseBuilder(operation)[200]?.example(
+        "nonexistent-example",
+      );
+
+      expect(response?.status).toBe(500);
+      expect(response?.content).toStrictEqual([
+        {
+          body: 'The OpenAPI document does not define an example named "nonexistent-example" for status code 200',
+          type: "text/plain",
+        },
+      ]);
+    });
   });
 
   describe("builds a random response based on an Open API operation object (OpenAPI 2)", () => {
@@ -353,7 +522,9 @@ describe("a response builder", () => {
     retry("using the status code", 10, () => {
       const response = createResponseBuilder(operation)[200]?.random();
 
+      // eslint-disable-next-line jest/no-standalone-expect
       expect(response?.status).toBe(200);
+      // eslint-disable-next-line jest/no-standalone-expect
       expect(response?.content).toStrictEqual([
         { body: "example response", type: "application/json" },
         { body: "example response", type: "text/plain" },

@@ -1,8 +1,12 @@
 import type { REPLServer } from "node:repl";
 
-import { startRepl } from "../../src/repl/repl.js";
+import { jest } from "@jest/globals";
+
+import { createCompleter, startRepl } from "../../src/repl/repl.js";
+import type { CompleterCallback } from "../../src/repl/repl.js";
 import type { Config } from "../../src/server/config.js";
 import { ContextRegistry } from "../../src/server/context-registry.js";
+import { Registry } from "../../src/server/registry.js";
 
 const CONFIG: Config = {
   basePath: "",
@@ -50,8 +54,12 @@ class ReplHarness {
 
   public output: string[] = [];
 
-  public constructor(contextRegistry: ContextRegistry, config: Config) {
-    this.server = startRepl(contextRegistry, config, (line) =>
+  public constructor(
+    contextRegistry: ContextRegistry,
+    registry: Registry,
+    config: Config,
+  ) {
+    this.server = startRepl(contextRegistry, registry, config, (line) =>
       this.output.push(line),
     );
   }
@@ -70,13 +78,14 @@ class ReplHarness {
 
 function createHarness() {
   const contextRegistry = new ContextRegistry();
+  const registry = new Registry();
   const config = { ...CONFIG };
 
   config.proxyPaths = new Map();
 
-  const harness = new ReplHarness(contextRegistry, config);
+  const harness = new ReplHarness(contextRegistry, registry, config);
 
-  return { config, contextRegistry, harness };
+  return { config, contextRegistry, harness, registry };
 }
 
 describe("REPL", () => {
@@ -224,5 +233,107 @@ describe("REPL", () => {
 
     expect(harness.output).toEqual(["usage: .proxy url <url>"]);
     expect(harness.isReset()).toBe(true);
+  });
+
+  describe("route autocomplete", () => {
+    function callCompleter(
+      completer: ReturnType<typeof createCompleter>,
+      line: string,
+    ): Promise<[string[], string]> {
+      return new Promise((resolve, reject) => {
+        completer(line, (err, result) => {
+          if (err) reject(err);
+          else resolve(result);
+        });
+      });
+    }
+
+    it('returns matching routes when typing client.get("', async () => {
+      const registry = new Registry();
+
+      registry.add("/pets", { GET() {} });
+      registry.add("/pets/{petId}", { GET() {} });
+      registry.add("/users", { GET() {} });
+
+      const completer = createCompleter(registry);
+      const [completions, prefix] = await callCompleter(
+        completer,
+        'client.get("/p',
+      );
+
+      expect(prefix).toBe("/p");
+      expect(completions).toEqual(["/pets", "/pets/{petId}"]);
+    });
+
+    it("returns all routes when no partial is provided", async () => {
+      const registry = new Registry();
+
+      registry.add("/pets", { GET() {} });
+      registry.add("/users", { GET() {} });
+
+      const completer = createCompleter(registry);
+      const [completions, prefix] = await callCompleter(
+        completer,
+        'client.post("',
+      );
+
+      expect(prefix).toBe("");
+      expect(completions).toEqual(["/pets", "/users"]);
+    });
+
+    it("returns empty completions for non-matching input when no fallback is set", async () => {
+      const registry = new Registry();
+
+      registry.add("/pets", { GET() {} });
+
+      const completer = createCompleter(registry);
+      const [completions, prefix] = await callCompleter(
+        completer,
+        "someOtherExpression",
+      );
+
+      expect(completions).toEqual([]);
+      expect(prefix).toBe("someOtherExpression");
+    });
+
+    it("calls fallback completer for non-matching input", async () => {
+      const registry = new Registry();
+
+      registry.add("/pets", { GET() {} });
+
+      const fallback = jest.fn((_line: string, callback: CompleterCallback) => {
+        callback(null, [["context", "client"], "c"]);
+      });
+
+      const completer = createCompleter(registry, fallback);
+      const [completions, prefix] = await callCompleter(completer, "c");
+
+      expect(fallback).toHaveBeenCalledWith("c", expect.any(Function));
+      expect(completions).toEqual(["context", "client"]);
+      expect(prefix).toBe("c");
+    });
+
+    it.each(["get", "post", "put", "patch", "delete"])(
+      "works for client.%s(...)",
+      async (method) => {
+        const registry = new Registry();
+
+        registry.add("/pets", {
+          GET() {},
+          POST() {},
+          PUT() {},
+          PATCH() {},
+          DELETE() {},
+        });
+
+        const completer = createCompleter(registry);
+        const [completions] = await callCompleter(
+          completer,
+          `client.${method}("/pets`,
+        );
+
+        expect(completions).toEqual(["/pets"]);
+      },
+    );
   });
 });
