@@ -1,4 +1,7 @@
-import type { OpenApiResponse } from "../src/counterfact-types/index.ts";
+import type {
+  CookieOptions,
+  OpenApiResponse,
+} from "../src/counterfact-types/index.ts";
 
 type OmitValueWhenNever<Base> = Pick<
   Base,
@@ -64,6 +67,11 @@ export type ResponseBuilder<
 > = [keyof Response["content"]] extends [never]
   ? void
   : OmitValueWhenNever<{
+      cookie: (
+        name: string,
+        value: string,
+        options?: CookieOptions,
+      ) => ResponseBuilder<Response>;
       header: [keyof Response["headers"]] extends [never]
         ? never
         : HeaderFunction<Response>;
