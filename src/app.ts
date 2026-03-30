@@ -199,6 +199,6 @@ export async function counterfact(config: Config) {
     koaMiddleware: middleware,
     registry,
     start,
-    startRepl: () => startReplServer(contextRegistry, config),
+    startRepl: () => startReplServer(contextRegistry, registry, config),
   };
 }
