@@ -9,6 +9,7 @@ import createDebug from "debug";
 import ts from "typescript";
 
 import { ensureDirectoryExists } from "../util/ensure-directory-exists.js";
+import { normalizePath } from "../util/normalize-path.js";
 import { CHOKIDAR_OPTIONS } from "./constants.js";
 import { convertFileExtensionsToCjs } from "./convert-js-extensions-to-cjs.js";
 
@@ -63,12 +64,13 @@ export class Transpiler extends EventTarget {
         )
           return;
 
-        const sourcePath = sourcePathOriginal.replaceAll("\\", "/");
+        const sourcePath = normalizePath(sourcePathOriginal);
 
-        const destinationPath = sourcePath
-          .replace(this.sourcePath, this.destinationPath)
-          .replaceAll("\\", "/")
-          .replace(".ts", this.extension);
+        const destinationPath = normalizePath(
+          sourcePath
+            .replace(this.sourcePath, this.destinationPath)
+            .replace(".ts", this.extension),
+        );
 
         if (["add", "change"].includes(eventName)) {
           transpiles.push(
@@ -122,13 +124,13 @@ export class Transpiler extends EventTarget {
       },
     }).outputText;
 
-    const fullDestination = nodePath
-      .join(
+    const fullDestination = normalizePath(
+      nodePath.join(
         sourcePath
           .replace(this.sourcePath, this.destinationPath)
           .replace(".ts", this.extension),
-      )
-      .replaceAll("\\", "/");
+      ),
+    );
 
     const resultWithTransformedFileExtensions =
       convertFileExtensionsToCjs(result);

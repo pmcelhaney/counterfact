@@ -6,6 +6,7 @@ import { createHttpTerminator, type HttpTerminator } from "http-terminator";
 
 import { startRepl as startReplServer } from "./repl/repl.js";
 import type { Config } from "./server/config.js";
+import { normalizePath } from "./util/normalize-path.js";
 import { ContextRegistry } from "./server/context-registry.js";
 import { createKoaApp } from "./server/create-koa-app.js";
 import {
@@ -69,9 +70,9 @@ export async function createMswHandlers(
     );
   }
   const modulesPath = config.basePath;
-  const compiledPathsDirectory = nodePath
-    .join(modulesPath, ".cache")
-    .replaceAll("\\", "/");
+  const compiledPathsDirectory = normalizePath(
+    nodePath.join(modulesPath, ".cache"),
+  );
 
   const registry = new Registry();
   const contextRegistry = new ContextRegistry();
@@ -113,9 +114,9 @@ export async function createMswHandlers(
 export async function counterfact(config: Config) {
   const modulesPath = config.basePath;
 
-  const compiledPathsDirectory = nodePath
-    .join(modulesPath, ".cache")
-    .replaceAll("\\", "/");
+  const compiledPathsDirectory = normalizePath(
+    nodePath.join(modulesPath, ".cache"),
+  );
 
   await rm(compiledPathsDirectory, { force: true, recursive: true });
 
@@ -137,7 +138,7 @@ export async function counterfact(config: Config) {
   );
 
   const transpiler = new Transpiler(
-    nodePath.join(modulesPath, "routes").replaceAll("\\", "/"),
+    normalizePath(nodePath.join(modulesPath, "routes")),
     compiledPathsDirectory,
     "commonjs",
   );

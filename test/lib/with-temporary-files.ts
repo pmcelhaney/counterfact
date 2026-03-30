@@ -3,6 +3,8 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import nodePath from "node:path";
 
+import { normalizePath } from "../../src/util/normalize-path.js";
+
 const DEBUG = false;
 
 interface Operations {
@@ -24,7 +26,7 @@ async function ensureDirectoryExists(filePath: string) {
 
 function createAddFunction(basePath: string) {
   return async function add(filePath: string, content: string) {
-    const fullPath = nodePath.join(basePath, filePath).replaceAll("\\", "/");
+    const fullPath = normalizePath(nodePath.join(basePath, filePath));
 
     await ensureDirectoryExists(fullPath);
 
@@ -34,7 +36,7 @@ function createAddFunction(basePath: string) {
 
 function createAddDirectoryFunction(basePath: string) {
   return async function addDirectory(filePath: string) {
-    const fullPath = nodePath.join(basePath, filePath).replaceAll("\\", "/");
+    const fullPath = normalizePath(nodePath.join(basePath, filePath));
 
     await fs.mkdir(fullPath, { recursive: true });
   };
@@ -42,7 +44,7 @@ function createAddDirectoryFunction(basePath: string) {
 
 function createRemoveFunction(basePath: string) {
   return async function remove(filePath: string) {
-    const fullPath = nodePath.join(basePath, filePath).replaceAll("\\", "/");
+    const fullPath = normalizePath(nodePath.join(basePath, filePath));
 
     await ensureDirectoryExists(fullPath);
     await fs.rm(fullPath);
@@ -57,16 +59,14 @@ export async function withTemporaryFiles(
     ? nodePath.resolve(process.cwd(), "./")
     : os.tmpdir();
 
-  const temporaryDirectory = `${await fs.mkdtemp(
-    nodePath.join(baseDirectory, "wtf-"),
-  )}/`.replaceAll("\\", "/");
+  const temporaryDirectory = normalizePath(
+    `${await fs.mkdtemp(nodePath.join(baseDirectory, "wtf-"))}/`,
+  );
 
   try {
     const writes = Object.entries(files).map(async (entry) => {
       const [filename, contents] = entry;
-      const filePath = nodePath
-        .join(temporaryDirectory, filename)
-        .replaceAll("\\", "/");
+      const filePath = normalizePath(nodePath.join(temporaryDirectory, filename));
 
       await ensureDirectoryExists(filePath);
 
@@ -81,9 +81,7 @@ export async function withTemporaryFiles(
         addDirectory: createAddDirectoryFunction(temporaryDirectory),
 
         path(relativePath) {
-          return nodePath
-            .join(temporaryDirectory, relativePath)
-            .replaceAll("\\", "/");
+          return normalizePath(nodePath.join(temporaryDirectory, relativePath));
         },
 
         remove: createRemoveFunction(temporaryDirectory),

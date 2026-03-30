@@ -21,6 +21,7 @@ import {
   escapePathForWindows,
   unescapePathForWindows,
 } from "../util/windows-escape.js";
+import { type NormalizedPath, normalizePath } from "../util/normalize-path.js";
 
 interface ContextModule {
   Context?: Context;
@@ -43,7 +44,7 @@ function isMiddlewareModule(
 }
 
 export class ModuleLoader extends EventTarget {
-  private readonly basePath: string;
+  private readonly basePath: NormalizedPath;
 
   public readonly registry: Registry;
 
@@ -64,7 +65,7 @@ export class ModuleLoader extends EventTarget {
     contextRegistry = new ContextRegistry(),
   ) {
     super();
-    this.basePath = basePath.replaceAll("\\", "/");
+    this.basePath = normalizePath(basePath);
     this.registry = registry;
     this.contextRegistry = contextRegistry;
   }
@@ -83,7 +84,7 @@ export class ModuleLoader extends EventTarget {
         )
           return;
 
-        const pathName = pathNameOriginal.replaceAll("\\", "/");
+        const pathName = normalizePath(pathNameOriginal);
 
         if (pathName.includes("$.context") && eventName === "add") {
           process.stdout.write(
@@ -99,9 +100,7 @@ export class ModuleLoader extends EventTarget {
 
         const parts = nodePath.parse(pathName.replace(this.basePath, ""));
         const url = unescapePathForWindows(
-          `/${parts.dir}/${parts.name}`
-            .replaceAll("\\", "/")
-            .replaceAll(/\/+/gu, "/"),
+          normalizePath(`/${parts.dir}/${parts.name}`).replaceAll(/\/+/gu, "/"),
         );
 
         if (eventName === "unlink") {
@@ -127,13 +126,13 @@ export class ModuleLoader extends EventTarget {
 
   public async load(directory = ""): Promise<void> {
     if (
-      !existsSync(nodePath.join(this.basePath, directory).replaceAll("\\", "/"))
+      !existsSync(normalizePath(nodePath.join(this.basePath, directory)))
     ) {
       throw new Error(`Directory does not exist ${this.basePath}`);
     }
 
     const files = await fs.readdir(
-      nodePath.join(this.basePath, directory).replaceAll("\\", "/"),
+      normalizePath(nodePath.join(this.basePath, directory)),
       {
         withFileTypes: true,
       },
@@ -144,7 +143,7 @@ export class ModuleLoader extends EventTarget {
 
       if (file.isDirectory()) {
         await this.load(
-          nodePath.join(directory, file.name).replaceAll("\\", "/"),
+          normalizePath(nodePath.join(directory, file.name)),
         );
 
         return;
@@ -154,9 +153,9 @@ export class ModuleLoader extends EventTarget {
         return;
       }
 
-      const fullPath = nodePath
-        .join(this.basePath, directory, file.name)
-        .replaceAll("\\", "/");
+      const fullPath = normalizePath(
+        nodePath.join(this.basePath, directory, file.name),
+      );
 
       await this.loadEndpoint(escapePathForWindows(fullPath));
     });
@@ -167,15 +166,14 @@ export class ModuleLoader extends EventTarget {
   private async loadEndpoint(pathName: string) {
     debug("importing module: %s", pathName);
 
-    const directory = dirname(pathName.slice(this.basePath.length)).replaceAll(
-      "\\",
-      "/",
+    const directory = normalizePath(
+      dirname(pathName.slice(this.basePath.length)),
     );
 
     const url = unescapePathForWindows(
-      `/${nodePath.join(directory, nodePath.parse(basename(pathName)).name)}`
-        .replaceAll("\\", "/")
-        .replaceAll(/\/+/gu, "/"),
+      normalizePath(
+        `/${nodePath.join(directory, nodePath.parse(basename(pathName)).name)}`,
+      ).replaceAll(/\/+/gu, "/"),
     );
 
     debug(`loading pathName from dependencyGraph: ${pathName}`);

@@ -2,6 +2,7 @@ import nodePath from "node:path";
 
 import { Coder } from "./coder.js";
 import { OperationTypeCoder } from "./operation-type-coder.js";
+import { normalizePath } from "../util/normalize-path.js";
 
 export class OperationCoder extends Coder {
   constructor(requirement, requestMethod, securitySchemes = {}) {
@@ -58,8 +59,6 @@ export class OperationCoder extends Coder {
       .at(-2)
       .replaceAll("~1", "/");
 
-    return `${nodePath
-      .join("routes", pathString)
-      .replaceAll("\\", "/")}.types.ts`;
+    return `${normalizePath(nodePath.join("routes", pathString))}.types.ts`;
   }
 }

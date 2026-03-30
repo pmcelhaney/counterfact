@@ -6,6 +6,7 @@ import Handlebars from "handlebars";
 import type Koa from "koa";
 
 import { readFile } from "../util/read-file.js";
+import { normalizePath } from "../util/normalize-path.js";
 
 const __dirname = nodePath.dirname(fileURLToPath(import.meta.url));
 
@@ -21,9 +22,9 @@ export function pageMiddleware(
   locals: { [key: string]: unknown },
 ) {
   return async (ctx: Koa.ExtendableContext, next: Koa.Next) => {
-    const pathToHandlebarsTemplate = nodePath
-      .join(__dirname, `../client/${templateName}.html.hbs`)
-      .replaceAll("\\", "/");
+    const pathToHandlebarsTemplate = normalizePath(
+      nodePath.join(__dirname, `../client/${templateName}.html.hbs`),
+    );
 
     const render = Handlebars.compile(await readFile(pathToHandlebarsTemplate));
 

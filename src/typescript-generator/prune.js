@@ -3,6 +3,8 @@ import nodePath from "node:path";
 
 import createDebug from "debug";
 
+import { normalizePath } from "../util/normalize-path.js";
+
 const debug = createDebug("counterfact:typescript-generator:prune");
 
 /**
@@ -108,7 +110,7 @@ export async function pruneRoutes(destination, openApiPaths) {
   let prunedCount = 0;
 
   for (const file of actualFiles) {
-    const normalizedFile = file.replaceAll("\\", "/");
+    const normalizedFile = normalizePath(file);
 
     if (!expectedFiles.has(normalizedFile)) {
       const fullPath = nodePath.join(routesDir, file);

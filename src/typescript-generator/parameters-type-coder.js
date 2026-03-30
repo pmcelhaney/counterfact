@@ -2,6 +2,7 @@ import nodePath from "node:path";
 
 import { SchemaTypeCoder } from "./schema-type-coder.js";
 import { TypeCoder } from "./type-coder.js";
+import { normalizePath } from "../util/normalize-path.js";
 
 export class ParametersTypeCoder extends TypeCoder {
   constructor(requirement, placement) {
@@ -48,8 +49,6 @@ export class ParametersTypeCoder extends TypeCoder {
       .at(-2)
       .replaceAll("~1", "/");
 
-    return `${nodePath
-      .join("parameters", pathString)
-      .replaceAll("\\", "/")}.types.ts`;
+    return `${normalizePath(nodePath.join("parameters", pathString))}.types.ts`;
   }
 }

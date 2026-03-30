@@ -7,6 +7,7 @@ import { ResponsesTypeCoder } from "./responses-type-coder.js";
 import { SchemaTypeCoder } from "./schema-type-coder.js";
 import { TypeCoder } from "./type-coder.js";
 import { ParameterExportTypeCoder } from "./parameter-export-type-coder.js";
+import { normalizePath } from "../util/normalize-path.js";
 
 function sanitizeIdentifier(value) {
   // Treat any run of non-identifier characters as a camelCase separator
@@ -117,9 +118,9 @@ export class OperationTypeCoder extends TypeCoder {
       .at(-2)
       .replaceAll("~1", "/");
 
-    return `${nodePath
-      .join("types/paths", pathString === "/" ? "/index" : pathString)
-      .replaceAll("\\", "/")}.types.ts`;
+    return `${normalizePath(
+      nodePath.join("types/paths", pathString === "/" ? "/index" : pathString),
+    )}.types.ts`;
   }
 
   userType() {

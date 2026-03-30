@@ -5,6 +5,7 @@ import createDebug from "debug";
 
 import { OperationTypeCoder } from "../typescript-generator/operation-type-coder.js";
 import { Specification } from "../typescript-generator/specification.js";
+import { normalizePath } from "../util/normalize-path.js";
 
 const debug = createDebug("counterfact:migrate:update-route-types");
 
@@ -230,9 +231,7 @@ async function processRouteDirectory(routesDir, currentPath, mapping) {
         );
       } else if (entry.name.endsWith(".ts") && entry.name !== "_.context.ts") {
         // Process TypeScript route files (skip context files)
-        const routePath = relativePath
-          .replace(/\.ts$/, "")
-          .replaceAll("\\", "/");
+        const routePath = normalizePath(relativePath.replace(/\.ts$/, ""));
         const methodMap = mapping.get(routePath);
 
         if (methodMap) {

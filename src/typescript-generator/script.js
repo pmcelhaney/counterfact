@@ -3,6 +3,8 @@ import nodePath from "node:path";
 import createDebugger from "debug";
 import { format } from "prettier";
 
+import { normalizePath } from "../util/normalize-path.js";
+
 const debug = createDebugger("counterfact:typescript-generator:script");
 
 export class Script {
@@ -143,9 +145,9 @@ export class Script {
   importSharedType(name) {
     return this.importExternal(
       name,
-      nodePath
-        .join(this.relativePathToBase, "counterfact-types/index.ts")
-        .replaceAll("\\", "/"),
+      normalizePath(
+        nodePath.join(this.relativePathToBase, "counterfact-types/index.ts"),
+      ),
       true,
     );
   }
@@ -178,12 +180,12 @@ export class Script {
 
   importStatements() {
     return Array.from(this.imports, ([name, { isDefault, isType, script }]) => {
-      const resolvedPath = nodePath
-        .relative(
-          nodePath.dirname(this.path).replaceAll("\\", "/"),
+      const resolvedPath = normalizePath(
+        nodePath.relative(
+          normalizePath(nodePath.dirname(this.path)),
           script.path.replace(/\.ts$/u, ".js"),
-        )
-        .replaceAll("\\", "/");
+        ),
+      );
 
       return `import${isType ? " type" : ""} ${
         isDefault ? name : `{ ${name} }`

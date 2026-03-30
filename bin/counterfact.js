@@ -12,6 +12,7 @@ import open from "open";
 import { counterfact } from "../dist/app.js";
 import { pathsToRoutes } from "../dist/migrate/paths-to-routes.js";
 import { updateRouteTypes } from "../dist/migrate/update-route-types.js";
+import { normalizePath } from "../dist/util/normalize-path.js";
 
 const MIN_NODE_VERSION = 17;
 
@@ -113,9 +114,9 @@ async function main(source, destination) {
     source = options.spec;
   }
 
-  const destinationPath = nodePath.resolve(destination).replaceAll("\\", "/");
+  const destinationPath = normalizePath(nodePath.resolve(destination));
 
-  const basePath = nodePath.resolve(destinationPath).replaceAll("\\", "/");
+  const basePath = normalizePath(nodePath.resolve(destinationPath));
 
   // If no action-related option is provided, default to all options
 

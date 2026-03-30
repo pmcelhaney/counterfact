@@ -10,10 +10,11 @@ import { CONTEXT_FILE_TOKEN } from "./context-file-token.js";
 import { Script } from "./script.js";
 
 import { escapePathForWindows } from "../util/windows-escape.js";
+import { normalizePath } from "../util/normalize-path.js";
 
 const debug = createDebug("counterfact:server:repository");
 
-const __dirname = dirname(fileURLToPath(import.meta.url)).replaceAll("\\", "/");
+const __dirname = normalizePath(dirname(fileURLToPath(import.meta.url)));
 
 debug("dirname is %s", __dirname);
 
@@ -82,7 +83,7 @@ export class Repository {
         const contents = await script.contents();
 
         const fullPath = escapePathForWindows(
-          nodePath.join(destination, path).replaceAll("\\", "/"),
+          normalizePath(nodePath.join(destination, path)),
         );
 
         await ensureDirectoryExists(fullPath);
@@ -158,19 +159,19 @@ export class Context {
   }
 
   findContextPath(destination, path) {
-    return nodePath
-      .relative(
+    return normalizePath(
+      nodePath.relative(
         nodePath.join(destination, nodePath.dirname(path)),
         this.nearestContextFile(destination, path),
-      )
-      .replaceAll("\\", "/");
+      ),
+    );
   }
 
   nearestContextFile(destination, path) {
-    const directory = nodePath
-      .dirname(path)
-      .replaceAll("\\", "/")
-      .replace("types/paths", "routes");
+    const directory = normalizePath(nodePath.dirname(path)).replace(
+      "types/paths",
+      "routes",
+    );
 
     const candidate = nodePath.join(destination, directory, "_.context.ts");
 
