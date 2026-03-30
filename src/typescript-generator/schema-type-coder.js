@@ -126,7 +126,7 @@ export class SchemaTypeCoder extends TypeCoder {
   writeCode(script) {
     // script.comments = READ_ONLY_COMMENTS;
 
-    const { allOf, anyOf, oneOf, type } = this.requirement.data;
+    const { allOf, anyOf, oneOf, type, format } = this.requirement.data;
 
     if (allOf ?? anyOf ?? oneOf) {
       return this.writeGroup(script, { allOf, anyOf, oneOf });
@@ -134,6 +134,10 @@ export class SchemaTypeCoder extends TypeCoder {
 
     if (this.requirement.has("enum")) {
       return this.writeEnum(script, this.requirement.get("enum"));
+    }
+
+    if ((type === "string" && format === "binary") || type === "file") {
+      return "Uint8Array | string";
     }
 
     return this.writeType(script, type);

@@ -379,6 +379,68 @@ describe("a dispatcher", () => {
     expect(htmlResponse.body).toBe("<h1>hello</h1>");
   });
 
+  it("passes a binary Buffer body through the response", async () => {
+    const registry = new Registry();
+    const binaryData = Buffer.from("binary content");
+
+    registry.add("/a", {
+      // @ts-expect-error - not obvious how to make TS happy here, and it's just a unit test
+      GET({ response }) {
+        return response["200"]?.binary(binaryData);
+      },
+    });
+
+    const dispatcher = new Dispatcher(registry, new ContextRegistry());
+    const binaryResponse = await dispatcher.request({
+      body: "",
+
+      headers: {
+        accept: "application/octet-stream",
+      },
+
+      method: "GET",
+
+      path: "/a",
+      query: {},
+      req: { path: "/a" },
+    });
+
+    expect(binaryResponse.body).toStrictEqual(binaryData);
+    expect(binaryResponse.contentType).toBe("application/octet-stream");
+  });
+
+  it("decodes a base64 string to a Buffer when binary() is called with a string", async () => {
+    const registry = new Registry();
+    const originalData = Buffer.from("binary content");
+    const base64Data = originalData.toString("base64");
+
+    registry.add("/a", {
+      // @ts-expect-error - not obvious how to make TS happy here, and it's just a unit test
+      GET({ response }) {
+        return response["200"]?.binary(base64Data);
+      },
+    });
+
+    const dispatcher = new Dispatcher(registry, new ContextRegistry());
+    const binaryResponse = await dispatcher.request({
+      body: "",
+
+      headers: {
+        accept: "application/octet-stream",
+      },
+
+      method: "GET",
+
+      path: "/a",
+      query: {},
+      req: { path: "/a" },
+    });
+
+    expect(Buffer.isBuffer(binaryResponse.body)).toBe(true);
+    expect(binaryResponse.body).toStrictEqual(originalData);
+    expect(binaryResponse.contentType).toBe("application/octet-stream");
+  });
+
   it("gives the response builder the OpenAPI object it needs to generate a random response", async () => {
     const registry = new Registry();
 

@@ -131,6 +131,13 @@ export function koaMiddleware(
 
     ctx.body = response.body;
 
+    if (
+      response.contentType !== undefined &&
+      response.contentType !== "unknown/unknown"
+    ) {
+      ctx.type = response.contentType;
+    }
+
     if (response.headers) {
       for (const [key, value] of Object.entries(response.headers)) {
         if (!HEADERS_TO_DROP.has(key.toLowerCase())) {
