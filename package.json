@@ -53,7 +53,7 @@
     "swagger-tools"
   ],
   "engines": {
-    "node": ">=17.0.0"
+    "node": ">=22"
   },
   "bin": {
     "counterfact": "./bin/counterfact.js"
@@ -98,8 +98,9 @@
     "@types/koa-proxy": "1.0.8",
     "@types/koa-static": "4.0.4",
     "@types/lodash": "4.17.24",
-    "@typescript-eslint/eslint-plugin": "^8.58.0",
-    "@typescript-eslint/parser": "^8.58.0",
+    "@types/node": "22",
+    "@typescript-eslint/eslint-plugin": "^8.53.0",
+    "@typescript-eslint/parser": "^8.53.0",
     "copyfiles": "2.4.1",
     "eslint": "10.0.3",
     "eslint-formatter-github-annotations": "0.1.0",
@@ -138,7 +139,7 @@
     "handlebars": "4.7.9",
     "http-terminator": "3.2.0",
     "js-yaml": "4.1.1",
-    "json-schema-faker": "0.5.9",
+    "json-schema-faker": "0.6.0",
     "jsonwebtoken": "9.0.3",
     "koa": "3.1.2",
     "koa-bodyparser": "4.4.1",
@@ -150,7 +151,7 @@
     "patch-package": "8.0.1",
     "precinct": "12.2.0",
     "prettier": "3.8.1",
-    "typescript": "5.9.3"
+    "typescript": "6.0.2"
   },
   "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e",
   "resolutions": {

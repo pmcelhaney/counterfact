@@ -379,6 +379,68 @@ describe("a dispatcher", () => {
     expect(htmlResponse.body).toBe("<h1>hello</h1>");
   });
 
+  it("passes a binary Buffer body through the response", async () => {
+    const registry = new Registry();
+    const binaryData = Buffer.from("binary content");
+
+    registry.add("/a", {
+      // @ts-expect-error - not obvious how to make TS happy here, and it's just a unit test
+      GET({ response }) {
+        return response["200"]?.binary(binaryData);
+      },
+    });
+
+    const dispatcher = new Dispatcher(registry, new ContextRegistry());
+    const binaryResponse = await dispatcher.request({
+      body: "",
+
+      headers: {
+        accept: "application/octet-stream",
+      },
+
+      method: "GET",
+
+      path: "/a",
+      query: {},
+      req: { path: "/a" },
+    });
+
+    expect(binaryResponse.body).toStrictEqual(binaryData);
+    expect(binaryResponse.contentType).toBe("application/octet-stream");
+  });
+
+  it("decodes a base64 string to a Buffer when binary() is called with a string", async () => {
+    const registry = new Registry();
+    const originalData = Buffer.from("binary content");
+    const base64Data = originalData.toString("base64");
+
+    registry.add("/a", {
+      // @ts-expect-error - not obvious how to make TS happy here, and it's just a unit test
+      GET({ response }) {
+        return response["200"]?.binary(base64Data);
+      },
+    });
+
+    const dispatcher = new Dispatcher(registry, new ContextRegistry());
+    const binaryResponse = await dispatcher.request({
+      body: "",
+
+      headers: {
+        accept: "application/octet-stream",
+      },
+
+      method: "GET",
+
+      path: "/a",
+      query: {},
+      req: { path: "/a" },
+    });
+
+    expect(Buffer.isBuffer(binaryResponse.body)).toBe(true);
+    expect(binaryResponse.body).toStrictEqual(originalData);
+    expect(binaryResponse.contentType).toBe("application/octet-stream");
+  });
+
   it("gives the response builder the OpenAPI object it needs to generate a random response", async () => {
     const registry = new Registry();
 
@@ -707,6 +769,198 @@ describe("a dispatcher", () => {
 
     expect(operation).not.toBeUndefined();
     expect(operation?.produces).toStrictEqual(["text/plain"]);
+  });
+
+  it("provides a cookie proxy that reads a single cookie", async () => {
+    const registry = new Registry();
+
+    registry.add("/a", {
+      GET($) {
+        return {
+          body: $.cookie.session ?? "missing",
+        };
+      },
+    });
+
+    const dispatcher = new Dispatcher(registry, new ContextRegistry());
+    const response = await dispatcher.request({
+      body: "",
+      headers: { cookie: "session=abc123" },
+      method: "GET",
+      path: "/a",
+      query: {},
+      req: { path: "/a" },
+    });
+
+    expect(response.body).toBe("abc123");
+  });
+
+  it("provides a cookie proxy that reads one of multiple cookies", async () => {
+    const registry = new Registry();
+
+    registry.add("/a", {
+      GET($) {
+        return {
+          body: $.cookie.theme ?? "missing",
+        };
+      },
+    });
+
+    const dispatcher = new Dispatcher(registry, new ContextRegistry());
+    const response = await dispatcher.request({
+      body: "",
+      headers: { cookie: "session=abc123; theme=dark; lang=en" },
+      method: "GET",
+      path: "/a",
+      query: {},
+      req: { path: "/a" },
+    });
+
+    expect(response.body).toBe("dark");
+  });
+
+  it("provides a cookie proxy that returns undefined for a missing cookie", async () => {
+    const registry = new Registry();
+
+    registry.add("/a", {
+      GET($) {
+        return {
+          body: $.cookie.missing ?? "not-found",
+        };
+      },
+    });
+
+    const dispatcher = new Dispatcher(registry, new ContextRegistry());
+    const response = await dispatcher.request({
+      body: "",
+      headers: { cookie: "session=abc123" },
+      method: "GET",
+      path: "/a",
+      query: {},
+      req: { path: "/a" },
+    });
+
+    expect(response.body).toBe("not-found");
+  });
+
+  it("provides a cookie proxy that returns undefined when no Cookie header is present", async () => {
+    const registry = new Registry();
+
+    registry.add("/a", {
+      GET($) {
+        return {
+          body: $.cookie.session ?? "no-cookie",
+        };
+      },
+    });
+
+    const dispatcher = new Dispatcher(registry, new ContextRegistry());
+    const response = await dispatcher.request({
+      body: "",
+      headers: {},
+      method: "GET",
+      path: "/a",
+      query: {},
+      req: { path: "/a" },
+    });
+
+    expect(response.body).toBe("no-cookie");
+  });
+
+  it("provides a cookie proxy that handles whitespace around cookie names and values", async () => {
+    const registry = new Registry();
+
+    registry.add("/a", {
+      GET($) {
+        return {
+          body: $.cookie.key ?? "missing",
+        };
+      },
+    });
+
+    const dispatcher = new Dispatcher(registry, new ContextRegistry());
+    const response = await dispatcher.request({
+      body: "",
+      headers: { cookie: "  key  =  value  " },
+      method: "GET",
+      path: "/a",
+      query: {},
+      req: { path: "/a" },
+    });
+
+    expect(response.body).toBe("value");
+  });
+
+  it("provides a cookie proxy that URL-decodes cookie values", async () => {
+    const registry = new Registry();
+
+    registry.add("/a", {
+      GET($) {
+        return {
+          body: $.cookie.data ?? "missing",
+        };
+      },
+    });
+
+    const dispatcher = new Dispatcher(registry, new ContextRegistry());
+    const response = await dispatcher.request({
+      body: "",
+      headers: { cookie: "data=hello%20world" },
+      method: "GET",
+      path: "/a",
+      query: {},
+      req: { path: "/a" },
+    });
+
+    expect(response.body).toBe("hello world");
+  });
+
+  it("provides a cookie proxy that does not throw on malformed cookie headers", async () => {
+    const registry = new Registry();
+
+    registry.add("/a", {
+      GET($) {
+        return {
+          body: $.cookie.ok ?? "safe",
+        };
+      },
+    });
+
+    const dispatcher = new Dispatcher(registry, new ContextRegistry());
+    const response = await dispatcher.request({
+      body: "",
+      headers: { cookie: "noequals; ok=yes; =emptykey; garbled%%%" },
+      method: "GET",
+      path: "/a",
+      query: {},
+      req: { path: "/a" },
+    });
+
+    expect(response.body).toBe("yes");
+  });
+
+  it("provides a cookie proxy that returns the first occurrence when duplicate cookie names exist", async () => {
+    const registry = new Registry();
+
+    registry.add("/a", {
+      GET($) {
+        return {
+          body: $.cookie.id ?? "missing",
+        };
+      },
+    });
+
+    const dispatcher = new Dispatcher(registry, new ContextRegistry());
+    const response = await dispatcher.request({
+      body: "",
+      headers: { cookie: "id=first; id=second" },
+      method: "GET",
+      path: "/a",
+      query: {},
+      req: { path: "/a" },
+    });
+
+    expect(response.body).toBe("first");
   });
 });
 

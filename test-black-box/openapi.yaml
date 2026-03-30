@@ -56,3 +56,16 @@ paths:
               examples:
                 colon:
                   value: colon handled
+
+  /binary-file:
+    get:
+      summary: Returns binary data
+      operationId: binaryFile
+      responses:
+        "200":
+          description: Binary file response
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary

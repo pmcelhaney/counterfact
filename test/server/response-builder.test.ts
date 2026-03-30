@@ -27,6 +27,42 @@ describe("a response builder", () => {
     ]);
   });
 
+  it("has a binary() shortcut that stores a Buffer for application/octet-stream", () => {
+    const buffer = Buffer.from("hello binary");
+    const response = createResponseBuilder({
+      responses: { 200: { content: {}, schema: {} } },
+    })[200]?.binary(buffer);
+
+    expect(response?.status).toBe(200);
+    expect(response?.content).toStrictEqual([
+      { body: buffer, type: "application/octet-stream" },
+    ]);
+  });
+
+  it("has a binary() shortcut that decodes a base64 string to a Buffer", () => {
+    const base64 = Buffer.from("hello binary").toString("base64");
+    const response = createResponseBuilder({
+      responses: { 200: { content: {}, schema: {} } },
+    })[200]?.binary(base64);
+
+    expect(response?.status).toBe(200);
+    expect(Buffer.isBuffer(response?.content?.[0]?.body)).toBe(true);
+    expect(response?.content?.[0]?.body).toStrictEqual(
+      Buffer.from("hello binary"),
+    );
+  });
+
+  it("has a binary() shortcut that converts a plain Uint8Array to a Buffer", () => {
+    const uint8Array = new Uint8Array([1, 2, 3]);
+    const response = createResponseBuilder({
+      responses: { 200: { content: {}, schema: {} } },
+    })[200]?.binary(uint8Array);
+
+    expect(response?.status).toBe(200);
+    expect(Buffer.isBuffer(response?.content?.[0]?.body)).toBe(true);
+    expect(response?.content?.[0]?.body).toStrictEqual(Buffer.from([1, 2, 3]));
+  });
+
   it("has shortcuts for json, text, and html", () => {
     const response = createResponseBuilder({
       responses: { 200: { content: {}, schema: {} } },
@@ -65,6 +101,103 @@ describe("a response builder", () => {
     expect(response?.headers).toStrictEqual({
       "x-one": "one",
       "x-two": "2",
+    });
+  });
+
+  it("adds a single cookie", () => {
+    const response = createResponseBuilder({
+      responses: { 200: { content: {}, schema: {} } },
+    })[200]?.cookie("sessionId", "abc123");
+
+    expect(response?.status).toBe(200);
+    expect(response?.headers?.["set-cookie"]).toStrictEqual([
+      "sessionId=abc123",
+    ]);
+  });
+
+  it("adds multiple cookies via chaining", () => {
+    const response = createResponseBuilder({
+      responses: { 200: { content: {}, schema: {} } },
+    })[200]
+      ?.cookie("sessionId", "abc123")
+      .cookie("theme", "dark");
+
+    expect(response?.status).toBe(200);
+    expect(response?.headers?.["set-cookie"]).toStrictEqual([
+      "sessionId=abc123",
+      "theme=dark",
+    ]);
+  });
+
+  it("serializes all supported cookie options", () => {
+    const expires = new Date("2025-12-31T00:00:00.000Z");
+
+    const response = createResponseBuilder({
+      responses: { 200: { content: {}, schema: {} } },
+    })[200]?.cookie("a", "1", {
+      domain: "example.com",
+      expires,
+      httpOnly: true,
+      maxAge: 3600,
+      path: "/",
+      sameSite: "lax",
+      secure: true,
+    });
+
+    expect(response?.headers?.["set-cookie"]).toStrictEqual([
+      `a=1; Path=/; Domain=example.com; Max-Age=3600; Expires=${expires.toUTCString()}; HttpOnly; Secure; SameSite=Lax`,
+    ]);
+  });
+
+  it("serializes sameSite=strict correctly", () => {
+    const response = createResponseBuilder({
+      responses: { 200: { content: {}, schema: {} } },
+    })[200]?.cookie("a", "1", { sameSite: "strict" });
+
+    expect(response?.headers?.["set-cookie"]).toStrictEqual([
+      "a=1; SameSite=Strict",
+    ]);
+  });
+
+  it("serializes sameSite=none correctly", () => {
+    const response = createResponseBuilder({
+      responses: { 200: { content: {}, schema: {} } },
+    })[200]?.cookie("a", "1", { sameSite: "none" });
+
+    expect(response?.headers?.["set-cookie"]).toStrictEqual([
+      "a=1; SameSite=None",
+    ]);
+  });
+
+  it("chains cookie() before json()", () => {
+    const response = createResponseBuilder({
+      responses: { 200: { content: {}, schema: {} } },
+    })[200]
+      ?.cookie("sessionId", "abc123")
+      .json({ ok: true });
+
+    expect(response?.headers?.["set-cookie"]).toStrictEqual([
+      "sessionId=abc123",
+    ]);
+    expect(response?.content).toContainEqual({
+      body: { ok: true },
+      type: "application/json",
+    });
+  });
+
+  it("chains json() before cookie()", () => {
+    const response = createResponseBuilder({
+      responses: { 200: { content: {}, schema: {} } },
+    })[200]
+      ?.json({ ok: true })
+      .cookie("sessionId", "abc123");
+
+    expect(response?.headers?.["set-cookie"]).toStrictEqual([
+      "sessionId=abc123",
+    ]);
+    expect(response?.content).toContainEqual({
+      body: { ok: true },
+      type: "application/json",
     });
   });
 
@@ -119,8 +252,8 @@ describe("a response builder", () => {
       },
     };
 
-    it("using the status code", () => {
-      const response = createResponseBuilder(operation)[200]?.random();
+    it("using the status code", async () => {
+      const response = await createResponseBuilder(operation)[200]?.random();
 
       expect(response?.status).toBe(200);
 
@@ -137,7 +270,7 @@ describe("a response builder", () => {
       // });
     });
 
-    it("fills in required headers when calling random()", () => {
+    it("fills in required headers when calling random()", async () => {
       const operationWithRequiredHeaders: OpenApiOperation = {
         responses: {
           200: {
@@ -160,7 +293,7 @@ describe("a response builder", () => {
         },
       };
 
-      const response = createResponseBuilder(
+      const response = await createResponseBuilder(
         operationWithRequiredHeaders,
       )[200]?.random();
 
@@ -169,7 +302,7 @@ describe("a response builder", () => {
       expect(response?.headers?.["x-optional-header"]).toBeUndefined();
     });
 
-    it("does not overwrite an already-set required header when calling random()", () => {
+    it("does not overwrite an already-set required header when calling random()", async () => {
       const operationWithRequiredHeaders: OpenApiOperation = {
         responses: {
           200: {
@@ -188,14 +321,16 @@ describe("a response builder", () => {
         },
       };
 
-      const response = createResponseBuilder(operationWithRequiredHeaders)[200]
+      const response = await createResponseBuilder(
+        operationWithRequiredHeaders,
+      )[200]
         ?.header("x-required-header", "already-set")
         .random();
 
       expect(response?.headers?.["x-required-header"]).toBe("already-set");
     });
 
-    it("correctly handles alwaysFakeOptionals option", () => {
+    it("correctly handles alwaysFakeOptionals option", async () => {
       const operationWithoutExamples: OpenApiOperation = {
         responses: {
           200: {
@@ -233,7 +368,7 @@ describe("a response builder", () => {
           },
         },
       };
-      const response = createResponseBuilder(operationWithoutExamples, {
+      const response = await createResponseBuilder(operationWithoutExamples, {
         alwaysFakeOptionals: true,
       } as Config)[200]?.random();
 
@@ -243,8 +378,8 @@ describe("a response builder", () => {
       ).toBeDefined();
     });
 
-    it("falls back to 'default' when status code is not listed explicitly", () => {
-      const response = createResponseBuilder(operation)[403]?.random();
+    it("falls back to 'default' when status code is not listed explicitly", async () => {
+      const response = await createResponseBuilder(operation)[403]?.random();
 
       expect(response?.status).toBe(403);
       expect(response?.content).toStrictEqual([
@@ -252,12 +387,12 @@ describe("a response builder", () => {
       ]);
     });
 
-    it("returns 500 if it doesn't know what to do with the status code", () => {
+    it("returns 500 if it doesn't know what to do with the status code", async () => {
       const operationWithoutDefault = { ...operation };
 
       delete operationWithoutDefault.responses.default;
 
-      const response = createResponseBuilder(
+      const response = await createResponseBuilder(
         operationWithoutDefault,
       )[403]?.random();
 
@@ -270,28 +405,25 @@ describe("a response builder", () => {
       ]);
     });
 
-    it("returns undefined body for invalid schema types", () => {
+    it("returns a null or undefined body for invalid schema types", async () => {
       const operationWithInvalidSchema = structuredClone(operation);
 
       operationWithInvalidSchema.responses[200].content[
         "application/json"
       ].schema.type = "file";
 
-      const response = createResponseBuilder(
+      const response = await createResponseBuilder(
         operationWithInvalidSchema,
       )[200]?.random();
 
       expect(response?.status).toBe(200);
-      expect(response?.content).toStrictEqual([
-        {
-          body: undefined,
-          type: "application/json",
-        },
-        {
-          body: "example text response",
-          type: "text/plain",
-        },
-      ]);
+      expect(response?.content?.[0]?.type).toBe("application/json");
+      // json-schema-faker returns null or undefined for invalid schema types
+      expect(response?.content?.[0]?.body ?? null).toBeNull();
+      expect(response?.content?.[1]).toStrictEqual({
+        body: "example text response",
+        type: "text/plain",
+      });
     });
   });
 
@@ -422,8 +554,8 @@ describe("a response builder", () => {
       },
     };
 
-    retry("using the status code", 10, () => {
-      const response = createResponseBuilder(operation)[200]?.random();
+    retry("using the status code", 10, async () => {
+      const response = await createResponseBuilder(operation)[200]?.random();
 
       // eslint-disable-next-line jest/no-standalone-expect
       expect(response?.status).toBe(200);
@@ -434,8 +566,8 @@ describe("a response builder", () => {
       ]);
     });
 
-    it("falls back to 'default' when status code is not listed explicitly", () => {
-      const response = createResponseBuilder(operation)[403]?.random();
+    it("falls back to 'default' when status code is not listed explicitly", async () => {
+      const response = await createResponseBuilder(operation)[403]?.random();
 
       expect(response?.status).toBe(403);
       expect(response?.content).toStrictEqual([
@@ -444,12 +576,12 @@ describe("a response builder", () => {
       ]);
     });
 
-    it("returns 500 if it doesn't know what to do with the status code", () => {
+    it("returns 500 if it doesn't know what to do with the status code", async () => {
       const operationWithoutDefault = { ...operation };
 
       delete operationWithoutDefault.responses.default;
 
-      const response = createResponseBuilder(
+      const response = await createResponseBuilder(
         operationWithoutDefault,
       )[403]?.random();
 

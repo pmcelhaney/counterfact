@@ -11,10 +11,7 @@ import type { HttpMethods } from "./registry.js";
 
 declare module "koa" {
   interface Request {
-    body?: {
-      name: string;
-      email: string;
-    };
+    body?: unknown;
   }
 }
 
@@ -134,10 +131,21 @@ export function koaMiddleware(
 
     ctx.body = response.body;
 
+    if (
+      response.contentType !== undefined &&
+      response.contentType !== "unknown/unknown"
+    ) {
+      ctx.type = response.contentType;
+    }
+
     if (response.headers) {
       for (const [key, value] of Object.entries(response.headers)) {
         if (!HEADERS_TO_DROP.has(key.toLowerCase())) {
-          ctx.set(key, value.toString());
+          if (Array.isArray(value)) {
+            ctx.set(key, value);
+          } else {
+            ctx.set(key, value.toString());
+          }
         }
       }
     }

@@ -2,7 +2,7 @@ import type Koa from "koa";
 import createDebug from "debug";
 
 import type { Config } from "./config.js";
-import type { ContextRegistry } from "./context-registry.js";
+import type { Context, ContextRegistry } from "./context-registry.js";
 import type { Registry } from "./registry.js";
 
 const debug = createDebug("counterfact:server:admin-api-middleware");
@@ -159,12 +159,12 @@ export function adminApiMiddleware(
       // ===== Update Context =====
       if (resource === "contexts" && rest.length > 0 && ctx.method === "POST") {
         const path = "/" + rest.join("/");
-        const newContext = ctx.request.body;
+        const newContextCandidate = ctx.request.body;
 
         if (
-          !newContext ||
-          typeof newContext !== "object" ||
-          Array.isArray(newContext)
+          !newContextCandidate ||
+          typeof newContextCandidate !== "object" ||
+          Array.isArray(newContextCandidate)
         ) {
           ctx.status = 400;
           ctx.body = {
@@ -175,6 +175,7 @@ export function adminApiMiddleware(
         }
 
         // Update the context using the registry's smart diffing
+        const newContext = newContextCandidate as Context;
         contextRegistry.update(path, newContext);
 
         ctx.body = {

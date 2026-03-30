@@ -56,6 +56,20 @@ describe("a SchemaTypeCoder", () => {
     expect(result).toBe(output);
   });
 
+  it("generates Uint8Array | string for type: string, format: binary (OpenAPI v3 binary)", () => {
+    const coder = new SchemaTypeCoder(
+      new Requirement({ type: "string", format: "binary" }),
+    );
+
+    expect(coder.write({})).toBe("Uint8Array | string");
+  });
+
+  it("generates Uint8Array | string for type: file (OpenAPI v2 binary)", () => {
+    const coder = new SchemaTypeCoder(new Requirement({ type: "file" }));
+
+    expect(coder.write({})).toBe("Uint8Array | string");
+  });
+
   it("generates a type declaration for an object", async () => {
     const coder = new SchemaTypeCoder(
       new Requirement({

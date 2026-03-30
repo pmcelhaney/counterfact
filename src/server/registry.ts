@@ -36,6 +36,7 @@ interface RequestData {
     username?: string;
   };
   context: unknown;
+  cookie: { [name: string]: string | undefined };
   headers: { [key: string]: number | string | boolean };
   matchedPath?: string;
   path?: { [key: string]: number | string | boolean };
@@ -74,13 +75,13 @@ interface Module {
 }
 
 type CounterfactResponseObject = {
-  body?: string;
+  body?: Uint8Array | string;
   content?: {
     body: unknown;
     type: MediaType;
   }[];
   contentType?: string;
-  headers?: { [key: string]: number | string };
+  headers?: { [key: string]: number | string | string[] };
   status?: number;
 };
 

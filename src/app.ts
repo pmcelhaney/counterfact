@@ -3,7 +3,6 @@ import nodePath from "node:path";
 
 import { dereference } from "@apidevtools/json-schema-ref-parser";
 import { createHttpTerminator, type HttpTerminator } from "http-terminator";
-import yaml from "js-yaml";
 
 import { startRepl as startReplServer } from "./repl/repl.js";
 import type { Config } from "./server/config.js";
@@ -19,7 +18,6 @@ import { ModuleLoader } from "./server/module-loader.js";
 import { Registry } from "./server/registry.js";
 import { Transpiler } from "./server/transpiler.js";
 import { CodeGenerator } from "./typescript-generator/code-generator.js";
-import { readFile } from "./util/read-file.js";
 
 type MswHandlerMap = {
   [key: string]: (request: MockRequest) => Promise<unknown>;
@@ -39,11 +37,7 @@ export type MockRequest = DispatcherRequest & { rawPath: string };
 
 export async function loadOpenApiDocument(source: string) {
   try {
-    const text = await readFile(source);
-
-    const openApiDocument = await yaml.load(text);
-
-    return (await dereference(openApiDocument)) as OpenApiDocument;
+    return (await dereference(source)) as OpenApiDocument;
   } catch {
     return undefined;
   }
@@ -205,6 +199,6 @@ export async function counterfact(config: Config) {
     koaMiddleware: middleware,
     registry,
     start,
-    startRepl: () => startReplServer(contextRegistry, config),
+    startRepl: () => startReplServer(contextRegistry, registry, config),
   };
 }
