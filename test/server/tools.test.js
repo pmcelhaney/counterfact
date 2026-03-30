@@ -39,15 +39,19 @@ describe("tools", () => {
     },
   );
 
-  it("randomFromSchema() returns a value (the implementation is in a third party library)", () => {
+  it("randomFromSchema() returns a value (the implementation is in a third party library)", async () => {
     const tools = new Tools();
 
-    expect(typeof tools.randomFromSchema({ type: "integer" })).toBe("number");
+    expect(typeof (await tools.randomFromSchema({ type: "integer" }))).toBe(
+      "number",
+    );
   });
 
-  it("randomFromSchema() uses examples", () => {
+  it("randomFromSchema() uses examples", async () => {
     const tools = new Tools();
 
-    expect(tools.randomFromSchema({ examples: [5], type: "integer" })).toBe(5);
+    expect(
+      await tools.randomFromSchema({ examples: [5], type: "integer" }),
+    ).toBe(5);
   });
 });

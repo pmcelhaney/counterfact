@@ -1,7 +1,4 @@
-import { JSONSchemaFaker, type Schema } from "json-schema-faker";
-
-JSONSchemaFaker.option("useExamplesValue", true);
-JSONSchemaFaker.option("fillProperties", false);
+import { generate, type JsonSchema } from "json-schema-faker";
 
 export class Tools {
   private readonly headers: { [key: string]: string[] | string | undefined };
@@ -35,7 +32,7 @@ export class Tools {
     });
   }
 
-  public randomFromSchema(schema: Schema): unknown {
-    return JSONSchemaFaker.generate(schema);
+  public randomFromSchema(schema: JsonSchema): Promise<unknown> {
+    return generate(schema, { useExamplesValue: true, fillProperties: false });
   }
 }
