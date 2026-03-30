@@ -110,7 +110,7 @@ type HeaderFunction<Response extends OpenApiResponse> = <
   requiredHeaders: Exclude<Response["requiredHeaders"], Header>;
 }>;
 
-type RandomFunction = () => COUNTERFACT_RESPONSE;
+type RandomFunction = () => MaybePromise<COUNTERFACT_RESPONSE>;
 
 type ExampleNames<Response extends OpenApiResponse> = Response extends {
   examples: infer E;
@@ -132,8 +132,8 @@ interface ResponseBuilder {
   html: (body: unknown) => ResponseBuilder;
   json: (body: unknown) => ResponseBuilder;
   match: (contentType: string, body: unknown) => ResponseBuilder;
-  random: () => ResponseBuilder;
-  randomLegacy: () => ResponseBuilder;
+  random: () => MaybePromise<ResponseBuilder>;
+  randomLegacy: () => MaybePromise<ResponseBuilder>;
   status?: number;
   text: (body: unknown) => ResponseBuilder;
   xml: (body: unknown) => ResponseBuilder;
@@ -290,7 +290,7 @@ interface WideResponseBuilder {
   html: (body: unknown) => WideResponseBuilder;
   json: (body: unknown) => WideResponseBuilder;
   match: (contentType: string, body: unknown) => WideResponseBuilder;
-  random: () => WideResponseBuilder;
+  random: () => MaybePromise<WideResponseBuilder>;
   text: (body: unknown) => WideResponseBuilder;
   xml: (body: unknown) => WideResponseBuilder;
 }

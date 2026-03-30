@@ -216,8 +216,8 @@ describe("a response builder", () => {
       },
     };
 
-    it("using the status code", () => {
-      const response = createResponseBuilder(operation)[200]?.random();
+    it("using the status code", async () => {
+      const response = await createResponseBuilder(operation)[200]?.random();
 
       expect(response?.status).toBe(200);
 
@@ -234,7 +234,7 @@ describe("a response builder", () => {
       // });
     });
 
-    it("fills in required headers when calling random()", () => {
+    it("fills in required headers when calling random()", async () => {
       const operationWithRequiredHeaders: OpenApiOperation = {
         responses: {
           200: {
@@ -257,7 +257,7 @@ describe("a response builder", () => {
         },
       };
 
-      const response = createResponseBuilder(
+      const response = await createResponseBuilder(
         operationWithRequiredHeaders,
       )[200]?.random();
 
@@ -266,7 +266,7 @@ describe("a response builder", () => {
       expect(response?.headers?.["x-optional-header"]).toBeUndefined();
     });
 
-    it("does not overwrite an already-set required header when calling random()", () => {
+    it("does not overwrite an already-set required header when calling random()", async () => {
       const operationWithRequiredHeaders: OpenApiOperation = {
         responses: {
           200: {
@@ -285,14 +285,16 @@ describe("a response builder", () => {
         },
       };
 
-      const response = createResponseBuilder(operationWithRequiredHeaders)[200]
+      const response = await createResponseBuilder(
+        operationWithRequiredHeaders,
+      )[200]
         ?.header("x-required-header", "already-set")
         .random();
 
       expect(response?.headers?.["x-required-header"]).toBe("already-set");
     });
 
-    it("correctly handles alwaysFakeOptionals option", () => {
+    it("correctly handles alwaysFakeOptionals option", async () => {
       const operationWithoutExamples: OpenApiOperation = {
         responses: {
           200: {
@@ -330,7 +332,7 @@ describe("a response builder", () => {
           },
         },
       };
-      const response = createResponseBuilder(operationWithoutExamples, {
+      const response = await createResponseBuilder(operationWithoutExamples, {
         alwaysFakeOptionals: true,
       } as Config)[200]?.random();
 
@@ -340,8 +342,8 @@ describe("a response builder", () => {
       ).toBeDefined();
     });
 
-    it("falls back to 'default' when status code is not listed explicitly", () => {
-      const response = createResponseBuilder(operation)[403]?.random();
+    it("falls back to 'default' when status code is not listed explicitly", async () => {
+      const response = await createResponseBuilder(operation)[403]?.random();
 
       expect(response?.status).toBe(403);
       expect(response?.content).toStrictEqual([
@@ -349,12 +351,12 @@ describe("a response builder", () => {
       ]);
     });
 
-    it("returns 500 if it doesn't know what to do with the status code", () => {
+    it("returns 500 if it doesn't know what to do with the status code", async () => {
       const operationWithoutDefault = { ...operation };
 
       delete operationWithoutDefault.responses.default;
 
-      const response = createResponseBuilder(
+      const response = await createResponseBuilder(
         operationWithoutDefault,
       )[403]?.random();
 
@@ -367,28 +369,25 @@ describe("a response builder", () => {
       ]);
     });
 
-    it("returns undefined body for invalid schema types", () => {
+    it("returns a null or undefined body for invalid schema types", async () => {
       const operationWithInvalidSchema = structuredClone(operation);
 
       operationWithInvalidSchema.responses[200].content[
         "application/json"
       ].schema.type = "file";
 
-      const response = createResponseBuilder(
+      const response = await createResponseBuilder(
         operationWithInvalidSchema,
       )[200]?.random();
 
       expect(response?.status).toBe(200);
-      expect(response?.content).toStrictEqual([
-        {
-          body: undefined,
-          type: "application/json",
-        },
-        {
-          body: "example text response",
-          type: "text/plain",
-        },
-      ]);
+      expect(response?.content?.[0]?.type).toBe("application/json");
+      // json-schema-faker returns null or undefined for invalid schema types
+      expect(response?.content?.[0]?.body ?? null).toBeNull();
+      expect(response?.content?.[1]).toStrictEqual({
+        body: "example text response",
+        type: "text/plain",
+      });
     });
   });
 
@@ -519,8 +518,8 @@ describe("a response builder", () => {
       },
     };
 
-    retry("using the status code", 10, () => {
-      const response = createResponseBuilder(operation)[200]?.random();
+    retry("using the status code", 10, async () => {
+      const response = await createResponseBuilder(operation)[200]?.random();
 
       // eslint-disable-next-line jest/no-standalone-expect
       expect(response?.status).toBe(200);
@@ -531,8 +530,8 @@ describe("a response builder", () => {
       ]);
     });
 
-    it("falls back to 'default' when status code is not listed explicitly", () => {
-      const response = createResponseBuilder(operation)[403]?.random();
+    it("falls back to 'default' when status code is not listed explicitly", async () => {
+      const response = await createResponseBuilder(operation)[403]?.random();
 
       expect(response?.status).toBe(403);
       expect(response?.content).toStrictEqual([
@@ -541,12 +540,12 @@ describe("a response builder", () => {
       ]);
     });
 
-    it("returns 500 if it doesn't know what to do with the status code", () => {
+    it("returns 500 if it doesn't know what to do with the status code", async () => {
       const operationWithoutDefault = { ...operation };
 
       delete operationWithoutDefault.responses.default;
 
-      const response = createResponseBuilder(
+      const response = await createResponseBuilder(
         operationWithoutDefault,
       )[403]?.random();
 

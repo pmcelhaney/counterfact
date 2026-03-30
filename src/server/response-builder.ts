@@ -1,4 +1,4 @@
-import { JSONSchemaFaker } from "json-schema-faker";
+import { generate, type JsonSchema } from "json-schema-faker";
 
 import { jsonToXml } from "./json-to-xml.js";
 import type {
@@ -8,12 +8,13 @@ import type {
 } from "../counterfact-types/index.js";
 import type { Config } from "./config.js";
 
-JSONSchemaFaker.option("useExamplesValue", true);
-JSONSchemaFaker.option("minItems", 0);
-JSONSchemaFaker.option("maxItems", 20);
-JSONSchemaFaker.option("failOnInvalidTypes", false);
-JSONSchemaFaker.option("failOnInvalidFormat", false);
-JSONSchemaFaker.option("fillProperties", false);
+const DEFAULT_GENERATE_OPTIONS = {
+  useExamplesValue: true,
+  minItems: 0,
+  maxItems: 20,
+  failOnInvalidTypes: false,
+  fillProperties: false,
+} as const;
 
 function convertToXmlIfNecessary(
   type: string,
@@ -221,12 +222,16 @@ export function createResponseBuilder(
         };
       },
 
-      random(this: ResponseBuilder) {
-        if (config?.alwaysFakeOptionals) {
-          JSONSchemaFaker.option("alwaysFakeOptionals", true);
-          JSONSchemaFaker.option("fixedProbabilities", true);
-          JSONSchemaFaker.option("optionalsProbability", 1.0);
-        }
+      async random(this: ResponseBuilder) {
+        const generateOptions = config?.alwaysFakeOptionals
+          ? {
+              ...DEFAULT_GENERATE_OPTIONS,
+              alwaysFakeOptionals: true,
+              fixedProbabilities: true,
+              optionalsProbability: 1.0,
+            }
+          : DEFAULT_GENERATE_OPTIONS;
+
         if (operation.produces) {
           return this.randomLegacy();
         }
@@ -245,32 +250,38 @@ export function createResponseBuilder(
 
         for (const [name, header] of Object.entries(response.headers ?? {})) {
           if (header.required && !(name in (this.headers ?? {}))) {
-            generatedHeaders[name] = JSONSchemaFaker.generate(
-              header.schema ?? { type: "string" },
-            ) as string;
+            generatedHeaders[name] = (await generate(
+              (header.schema ?? { type: "string" }) as JsonSchema,
+              generateOptions,
+            )) as string;
           }
         }
 
         return {
           ...this,
 
-          content: Object.keys(content).map((type) => ({
-            body: convertToXmlIfNecessary(
-              type,
-              content[type]?.examples
-                ? oneOf(
-                    Object.values(content[type]?.examples ?? []).map(
-                      (example) => example.value,
+          content: await Promise.all(
+            Object.keys(content).map(async (type) => ({
+              body: convertToXmlIfNecessary(
+                type,
+                content[type]?.examples
+                  ? oneOf(
+                      Object.values(content[type]?.examples ?? []).map(
+                        (example) => example.value,
+                      ),
+                    )
+                  : await generate(
+                      (content[type]?.schema ?? {
+                        type: "object",
+                      }) as JsonSchema,
+                      generateOptions,
                     ),
-                  )
-                : JSONSchemaFaker.generate(
-                    content[type]?.schema ?? { type: "object" },
-                  ),
-              content[type]?.schema,
-            ),
+                content[type]?.schema,
+              ),
 
-            type,
-          })),
+              type,
+            })),
+          ),
 
           headers: {
             ...generatedHeaders,
@@ -279,7 +290,7 @@ export function createResponseBuilder(
         };
       },
 
-      randomLegacy(this: ResponseBuilder) {
+      async randomLegacy(this: ResponseBuilder) {
         const response =
           operation.responses[this.status ?? "default"] ??
           operation.responses.default;
@@ -290,7 +301,10 @@ export function createResponseBuilder(
 
         const body = response.examples
           ? oneOf(response.examples)
-          : JSONSchemaFaker.generate(response.schema ?? { type: "object" });
+          : await generate(
+              (response.schema ?? { type: "object" }) as JsonSchema,
+              DEFAULT_GENERATE_OPTIONS,
+            );
 
         return {
           ...this,
