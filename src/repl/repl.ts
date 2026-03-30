@@ -2,9 +2,11 @@ import repl from "node:repl";
 
 import type { Config } from "../server/config.js";
 import type { ContextRegistry } from "../server/context-registry.js";
+import type { OpenApiDocument } from "../server/dispatcher.js";
 import type { Registry } from "../server/registry.js";
 
 import { RawHttpClient } from "./RawHttpClient.js";
+import { createRouteFunction } from "./RouteBuilder.js";
 
 function printToStdout(line: string) {
   process.stdout.write(`${line}\n`);
@@ -21,7 +23,7 @@ export function createCompleter(
 ) {
   return (line: string, callback: CompleterCallback): void => {
     const match = line.match(
-      /client\.(?:get|post|put|patch|delete)\("(?<partial>[^"]*)$/u,
+      /(?:client\.(?:get|post|put|patch|delete)|route)\("(?<partial>[^"]*)$/u,
     );
 
     if (!match) {
@@ -47,6 +49,7 @@ export function startRepl(
   registry: Registry,
   config: Config,
   print = printToStdout,
+  openApiDocument?: OpenApiDocument,
 ) {
   function printProxyStatus() {
     if (config.proxyUrl === "") {
@@ -134,6 +137,9 @@ export function startRepl(
         "- loadContext('/some/path'): to access the context object for a given path",
       );
       print("- context: the root context ( same as loadContext('/') )");
+      print(
+        "- route('/some/path'): create a request builder for the given path",
+      );
       print("");
       print(
         "For more information, see https://counterfact.dev/docs/usage.html",
@@ -175,6 +181,12 @@ export function startRepl(
 
   replServer.context.client = new RawHttpClient("localhost", config.port);
   replServer.context.RawHttpClient = RawHttpClient;
+
+  replServer.context.route = createRouteFunction(
+    config.port,
+    "localhost",
+    openApiDocument,
+  );
 
   return replServer;
 }

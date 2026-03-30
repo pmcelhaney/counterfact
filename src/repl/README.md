@@ -8,6 +8,7 @@ This directory contains the interactive Read-Eval-Print Loop (REPL) that lets de
 |---|---|
 | `repl.ts` | Starts a Node.js REPL session pre-loaded with the context registry and custom dot-commands (`.proxy`, `.help`, etc.) |
 | `RawHttpClient.ts` | Thin HTTP client available inside the REPL as `client`; formats JSON responses with syntax highlighting |
+| `RouteBuilder.ts` | Fluent, immutable request builder exposed as `route()` in the REPL; supports OpenAPI introspection and autocomplete |
 
 ## How It Works
 
@@ -21,6 +22,7 @@ Terminal input
 │  Built-in variables:                │
 │    context  → ContextRegistry       │
 │    client   → RawHttpClient         │
+│    route    → RouteBuilder factory  │
 │                                     │
 │  Dot-commands:                      │
 │    .proxy on <path>   enable proxy  │
@@ -37,3 +39,15 @@ The REPL exposes the live `ContextRegistry` so any JavaScript expression that re
 ⬣> client.get("/pet/1")
 ⬣> client.post("/pet", { name: "Rex", photoUrls: [] })
 ```
+
+`RouteBuilder` (exposed as `route()`) is a composable, OpenAPI-backed request builder:
+
+```
+⬣> const pet = route("/pet/{petId}").method("get").path({ petId: 1 })
+⬣> pet                     // shows parameter status and readiness
+⬣> pet.help()              // shows OpenAPI docs for the operation
+⬣> pet.ready()             // true / false
+⬣> pet.missing()           // lists missing required parameters
+⬣> await pet.send()        // executes the request
+```
+

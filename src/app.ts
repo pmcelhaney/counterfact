@@ -129,10 +129,12 @@ export async function counterfact(config: Config) {
     config.generate,
   );
 
+  const openApiDocument = await loadOpenApiDocument(config.openApiPath);
+
   const dispatcher = new Dispatcher(
     registry,
     contextRegistry,
-    await loadOpenApiDocument(config.openApiPath),
+    openApiDocument,
     config,
   );
 
@@ -199,6 +201,13 @@ export async function counterfact(config: Config) {
     koaMiddleware: middleware,
     registry,
     start,
-    startRepl: () => startReplServer(contextRegistry, registry, config),
+    startRepl: () =>
+      startReplServer(
+        contextRegistry,
+        registry,
+        config,
+        undefined, // use the default print function (stdout)
+        openApiDocument,
+      ),
   };
 }
