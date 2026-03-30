@@ -25,7 +25,9 @@ export class Specification {
 
   async load(urlOrPath) {
     this.rootRequirement = new Requirement(
-      await bundle(urlOrPath, { resolve: { http: { safeUrlResolver: false } } }),
+      await bundle(urlOrPath, {
+        resolve: { http: { safeUrlResolver: false } },
+      }),
       urlOrPath,
       this,
     );
