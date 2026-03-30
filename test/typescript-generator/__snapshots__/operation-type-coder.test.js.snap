@@ -6,6 +6,7 @@ exports[`an OperationTypeCoder falls back to root level produces (OpenAPI 2) 1`]
     query: never;
     path: never;
     headers: never;
+    cookie: never;
     body: never;
     context: ExternalType;
     response: ResponseBuilderFactory<{
@@ -44,6 +45,7 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2 wit
     query: HTTP_GET_Query;
     path: HTTP_GET_Path;
     headers: HTTP_GET_Headers;
+    cookie: never;
     body: Type;
     context: ExternalType;
     response: ResponseBuilderFactory<{
@@ -112,6 +114,7 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2) 1`
     query: HTTP_GET_Query;
     path: HTTP_GET_Path;
     headers: HTTP_GET_Headers;
+    cookie: never;
     body: Type;
     context: ExternalType;
     response: ResponseBuilderFactory<{
@@ -180,6 +183,7 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2, co
     query: HTTP_GET_Query;
     path: HTTP_GET_Path;
     headers: HTTP_GET_Headers;
+    cookie: never;
     body: Type;
     context: ExternalType;
     response: ResponseBuilderFactory<{
@@ -248,6 +252,7 @@ exports[`an OperationTypeCoder generates a complex post operation 1`] = `
     query: HTTP_GET_Query;
     path: HTTP_GET_Path;
     headers: HTTP_GET_Headers;
+    cookie: never;
     body: Type;
     context: ExternalType;
     response: ResponseBuilderFactory<{
@@ -319,6 +324,7 @@ exports[`an OperationTypeCoder generates a simple get operation (OpenAPI 2) 1`] 
     query: never;
     path: never;
     headers: never;
+    cookie: never;
     body: never;
     context: ExternalType;
     response: ResponseBuilderFactory<{
@@ -357,6 +363,7 @@ exports[`an OperationTypeCoder generates a simple get operation 1`] = `
     query: never;
     path: never;
     headers: never;
+    cookie: never;
     body: never;
     context: ExternalType;
     response: ResponseBuilderFactory<{
@@ -395,6 +402,7 @@ exports[`an OperationTypeCoder generates an auth object for basic authentication
     query: never;
     path: never;
     headers: never;
+    cookie: never;
     body: never;
     context: ExternalType;
     response: ResponseBuilderFactory<{
