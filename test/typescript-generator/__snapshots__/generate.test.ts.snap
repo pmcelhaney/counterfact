@@ -32,6 +32,7 @@ export type addPet = (
     query: never;
     path: never;
     headers: never;
+    cookie: never;
     body: Pet;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -46,11 +47,13 @@ export type addPet = (
             schema: Pet;
           };
         };
+        examples: {};
       };
       405: {
         headers: never;
         requiredHeaders: never;
         content: never;
+        examples: {};
       };
     }>;
     x: WideOperationArgument;
@@ -82,6 +85,7 @@ export type updatePet = (
     query: never;
     path: never;
     headers: never;
+    cookie: never;
     body: Pet;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -96,21 +100,25 @@ export type updatePet = (
             schema: Pet;
           };
         };
+        examples: {};
       };
       400: {
         headers: never;
         requiredHeaders: never;
         content: never;
+        examples: {};
       };
       404: {
         headers: never;
         requiredHeaders: never;
         content: never;
+        examples: {};
       };
       405: {
         headers: never;
         requiredHeaders: never;
         content: never;
+        examples: {};
       };
     }>;
     x: WideOperationArgument;
@@ -172,6 +180,7 @@ export type findPetsByStatus = (
     query: findPetsByStatus_Query;
     path: never;
     headers: never;
+    cookie: never;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -186,11 +195,13 @@ export type findPetsByStatus = (
             schema: Array<Pet>;
           };
         };
+        examples: {};
       };
       400: {
         headers: never;
         requiredHeaders: never;
         content: never;
+        examples: {};
       };
     }>;
     x: WideOperationArgument;
@@ -250,6 +261,7 @@ export type findPetsByTags = (
     query: findPetsByTags_Query;
     path: never;
     headers: never;
+    cookie: never;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -264,11 +276,13 @@ export type findPetsByTags = (
             schema: Array<Pet>;
           };
         };
+        examples: {};
       };
       400: {
         headers: never;
         requiredHeaders: never;
         content: never;
+        examples: {};
       };
     }>;
     x: WideOperationArgument;
@@ -336,6 +350,7 @@ export type getPetById = (
     query: never;
     path: getPetById_Path;
     headers: never;
+    cookie: never;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -350,16 +365,19 @@ export type getPetById = (
             schema: Pet;
           };
         };
+        examples: {};
       };
       400: {
         headers: never;
         requiredHeaders: never;
         content: never;
+        examples: {};
       };
       404: {
         headers: never;
         requiredHeaders: never;
         content: never;
+        examples: {};
       };
     }>;
     x: WideOperationArgument;
@@ -394,6 +412,7 @@ export type updatePetWithForm = (
     query: updatePetWithForm_Query;
     path: updatePetWithForm_Path;
     headers: never;
+    cookie: never;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -401,6 +420,7 @@ export type updatePetWithForm = (
         headers: never;
         requiredHeaders: never;
         content: never;
+        examples: {};
       };
     }>;
     x: WideOperationArgument;
@@ -422,6 +442,7 @@ export type deletePet = (
     query: never;
     path: deletePet_Path;
     headers: deletePet_Headers;
+    cookie: never;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -429,6 +450,7 @@ export type deletePet = (
         headers: never;
         requiredHeaders: never;
         content: never;
+        examples: {};
       };
     }>;
     x: WideOperationArgument;
@@ -484,6 +506,7 @@ export type uploadFile = (
     query: uploadFile_Query;
     path: uploadFile_Path;
     headers: never;
+    cookie: never;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -495,6 +518,7 @@ export type uploadFile = (
             schema: ApiResponse;
           };
         };
+        examples: {};
       };
     }>;
     x: WideOperationArgument;
@@ -545,6 +569,7 @@ export type getInventory = (
     query: never;
     path: never;
     headers: never;
+    cookie: never;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -556,6 +581,7 @@ export type getInventory = (
             schema: { [key: string]: number };
           };
         };
+        examples: {};
       };
     }>;
     x: WideOperationArgument;
@@ -603,6 +629,7 @@ export type placeOrder = (
     query: never;
     path: never;
     headers: never;
+    cookie: never;
     body: Order;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -614,11 +641,13 @@ export type placeOrder = (
             schema: Order;
           };
         };
+        examples: {};
       };
       405: {
         headers: never;
         requiredHeaders: never;
         content: never;
+        examples: {};
       };
     }>;
     x: WideOperationArgument;
@@ -674,6 +703,7 @@ export type getOrderById = (
     query: never;
     path: getOrderById_Path;
     headers: never;
+    cookie: never;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -688,16 +718,19 @@ export type getOrderById = (
             schema: Order;
           };
         };
+        examples: {};
       };
       400: {
         headers: never;
         requiredHeaders: never;
         content: never;
+        examples: {};
       };
       404: {
         headers: never;
         requiredHeaders: never;
         content: never;
+        examples: {};
       };
     }>;
     x: WideOperationArgument;
@@ -732,6 +765,7 @@ export type deleteOrder = (
     query: never;
     path: deleteOrder_Path;
     headers: never;
+    cookie: never;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -739,11 +773,13 @@ export type deleteOrder = (
         headers: never;
         requiredHeaders: never;
         content: never;
+        examples: {};
       };
       404: {
         headers: never;
         requiredHeaders: never;
         content: never;
+        examples: {};
       };
     }>;
     x: WideOperationArgument;
@@ -797,6 +833,7 @@ export type createUser = (
     query: never;
     path: never;
     headers: never;
+    cookie: never;
     body: User;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -811,6 +848,7 @@ export type createUser = (
             schema: User;
           };
         };
+        examples: {};
       };
     }>;
     x: WideOperationArgument;
@@ -864,6 +902,7 @@ export type createUsersWithListInput = (
     query: never;
     path: never;
     headers: never;
+    cookie: never;
     body: Array<User>;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -878,11 +917,13 @@ export type createUsersWithListInput = (
             schema: User;
           };
         };
+        examples: {};
       };
       [statusCode in Exclude<HttpStatusCode, 200>]: {
         headers: never;
         requiredHeaders: never;
         content: never;
+        examples: {};
       };
     }>;
     x: WideOperationArgument;
@@ -937,6 +978,7 @@ export type loginUser = (
     query: loginUser_Query;
     path: never;
     headers: never;
+    cookie: never;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -954,11 +996,13 @@ export type loginUser = (
             schema: string;
           };
         };
+        examples: {};
       };
       400: {
         headers: never;
         requiredHeaders: never;
         content: never;
+        examples: {};
       };
     }>;
     x: WideOperationArgument;
@@ -1016,6 +1060,7 @@ export type logoutUser = (
     query: never;
     path: never;
     headers: never;
+    cookie: never;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -1023,6 +1068,7 @@ export type logoutUser = (
         headers: never;
         requiredHeaders: never;
         content: never;
+        examples: {};
       };
     }>;
     x: WideOperationArgument;
@@ -1079,6 +1125,7 @@ export type getUserByName = (
     query: never;
     path: getUserByName_Path;
     headers: never;
+    cookie: never;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -1093,16 +1140,19 @@ export type getUserByName = (
             schema: User;
           };
         };
+        examples: {};
       };
       400: {
         headers: never;
         requiredHeaders: never;
         content: never;
+        examples: {};
       };
       404: {
         headers: never;
         requiredHeaders: never;
         content: never;
+        examples: {};
       };
     }>;
     x: WideOperationArgument;
@@ -1137,6 +1187,7 @@ export type updateUser = (
     query: never;
     path: updateUser_Path;
     headers: never;
+    cookie: never;
     body: User;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -1144,6 +1195,7 @@ export type updateUser = (
         headers: never;
         requiredHeaders: never;
         content: never;
+        examples: {};
       };
     }>;
     x: WideOperationArgument;
@@ -1165,6 +1217,7 @@ export type deleteUser = (
     query: never;
     path: deleteUser_Path;
     headers: never;
+    cookie: never;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -1172,11 +1225,13 @@ export type deleteUser = (
         headers: never;
         requiredHeaders: never;
         content: never;
+        examples: {};
       };
       404: {
         headers: never;
         requiredHeaders: never;
         content: never;
+        examples: {};
       };
     }>;
     x: WideOperationArgument;
@@ -1297,6 +1352,7 @@ export type HTTP_GET = (
     query: never;
     path: never;
     headers: never;
+    cookie: never;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -1307,6 +1363,9 @@ export type HTTP_GET = (
           "text/plain": {
             schema: string;
           };
+        };
+        examples: {
+          root: unknown;
         };
       };
     }>;
@@ -1355,6 +1414,7 @@ export type HTTP_GET = (
     query: never;
     path: never;
     headers: never;
+    cookie: never;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -1365,6 +1425,9 @@ export type HTTP_GET = (
           "application/json": {
             schema: string;
           };
+        };
+        examples: {
+          "no visits": unknown;
         };
       };
     }>;
@@ -1413,6 +1476,7 @@ export type helloKitty = (
     query: never;
     path: never;
     headers: never;
+    cookie: never;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -1423,6 +1487,9 @@ export type helloKitty = (
           "application/json": {
             schema: string;
           };
+        };
+        examples: {
+          "hello kitty": unknown;
         };
       };
     }>;
@@ -1471,6 +1538,7 @@ export type HTTP_GET = (
     query: never;
     path: HTTP_GET_Path;
     headers: never;
+    cookie: never;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -1483,6 +1551,10 @@ export type HTTP_GET = (
           "application/json": {
             schema: string;
           };
+        };
+        examples: {
+          "hello-example1": unknown;
+          "hello-example2": unknown;
         };
       };
     }>;
@@ -1535,6 +1607,7 @@ export type HTTP_GET = (
     query: never;
     path: never;
     headers: never;
+    cookie: never;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -1546,6 +1619,7 @@ export type HTTP_GET = (
             schema: Recursive;
           };
         };
+        examples: {};
       };
       400: BadRequest;
     }>;
@@ -1598,6 +1672,7 @@ export type HTTP_GET = (
     query: never;
     path: never;
     headers: never;
+    cookie: never;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
@@ -1609,6 +1684,7 @@ export type HTTP_GET = (
             schema: string;
           };
         };
+        examples: {};
       };
     }>;
     x: WideOperationArgument;
@@ -1647,6 +1723,7 @@ export type BadRequest = {
       schema: Error;
     };
   };
+  examples: {};
 };
 "
 `;

@@ -1,5 +1,49 @@
 # counterfact
 
+## 2.3.0
+
+### Minor Changes
+
+- 2fc3033: Added `--prune` option to remove route files that no longer exist in the OpenAPI spec.
+
+  When an OpenAPI spec renames a path parameter (e.g. `/pet/{id}/update/{Name}` → `/pet/{id}/update/{nickname}`), running without `--prune` leaves the old file in place alongside the newly generated one, causing wildcard ambiguity in route matching. The new flag cleans up defunct route files before generation runs.
+
+  ```sh
+  npx counterfact openapi.yaml ./out --generate --prune
+  ```
+
+  Context files (`_.context.ts`) and empty directories are handled correctly — context files are never pruned, and any directories left empty after pruning are removed automatically.
+
+### Patch Changes
+
+- eb72148: Add --spec flag as alternative to positional OpenAPI argument
+- 79b4936: fixed a regression causing all 200 responses to be just "ok"
+- 9a8dc4a: Add utility function for loading JSON files
+- 86c4460: Updated dependency `@types/koa` to `3.0.2`.
+- 1d08f75: Fill in required response headers in `random()`. When an OpenAPI response definition marks a header as `required: true`, the `random()` function now automatically generates a value for that header using the header's schema. Headers that are already set are not overwritten.
+
+## 2.2.1
+
+### Patch Changes
+
+- 304cbfe: Add `example(name)` method to response builder for selecting named OpenAPI examples
+
+  Developers can now select a specific named example from the OpenAPI specification using the strongly-typed `example()` method on a response builder:
+
+  ```ts
+  return $.response[200].example("namedExample1");
+  ```
+
+  The method is fully type-safe: TypeScript will autocomplete the example names defined in the OpenAPI document and report a type error if an unknown name is used.
+
+  Example names are collected from the `examples` field of each media type in the response content (OpenAPI 3.x). The method can be chained with other response builder methods:
+
+  ```ts
+  return $.response[200]
+    .example("namedExample1")
+    .header("some-header", "some-value");
+  ```
+
 ## 2.2.0
 
 ### Minor Changes

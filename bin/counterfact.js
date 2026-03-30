@@ -102,11 +102,18 @@ async function main(source, destination) {
 
   const options = program.opts();
 
-  const args = process.argv;
+  // --spec takes precedence over the positional [openapi.yaml] argument.
+  // When --spec is provided, the [openapi.yaml] positional slot shifts to
+  // become the [destination] argument (so `counterfact --spec api.yaml ./api`
+  // works the same as `counterfact api.yaml ./api`).
+  if (options.spec) {
+    if (source !== "_") {
+      destination = source;
+    }
+    source = options.spec;
+  }
 
-  const destinationPath = nodePath
-    .join(process.cwd(), destination)
-    .replaceAll("\\", "/");
+  const destinationPath = nodePath.resolve(destination).replaceAll("\\", "/");
 
   const basePath = nodePath.resolve(destinationPath).replaceAll("\\", "/");
 
@@ -155,6 +162,8 @@ async function main(source, destination) {
         options.watch ||
         options.watchTypes ||
         options.buildCache,
+
+      prune: Boolean(options.prune),
     },
 
     openApiPath: source,
@@ -183,7 +192,6 @@ async function main(source, destination) {
   let didMigrate = false;
   let didMigrateRouteTypes = false;
 
-  // eslint-disable-next-line n/no-sync
   if (fs.existsSync(nodePath.join(config.basePath, "paths"))) {
     await pathsToRoutes(config.basePath);
     await fs.promises.rmdir(nodePath.join(config.basePath, "paths"), {
@@ -199,7 +207,7 @@ async function main(source, destination) {
     didMigrate = true;
   }
 
-  const { start } = await counterfact(config);
+  const { start, startRepl } = await counterfact(config);
 
   debug("loaded counterfact", configForLogging);
 
@@ -245,6 +253,10 @@ async function main(source, destination) {
   debug("starting server");
   await start(config);
   debug("started server");
+
+  if (config.startRepl) {
+    startRepl();
+  }
 
   if (openBrowser) {
     debug("opening browser");
@@ -325,6 +337,14 @@ program
   .option(
     "--always-fake-optionals",
     "random responses will include optional fields",
+  )
+  .option(
+    "--prune",
+    "remove route files that no longer exist in the OpenAPI spec",
+  )
+  .option(
+    "--spec <string>",
+    "path or URL to OpenAPI document (alternative to the positional [openapi.yaml] argument)",
   )
   .action(main)
   .parse(process.argv);

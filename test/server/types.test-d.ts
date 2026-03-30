@@ -6,6 +6,7 @@ import {
 } from "tsd";
 
 import type {
+  ExampleNames,
   GenericResponseBuilderInner,
   HttpStatusCode,
   IfHasKey,
@@ -76,6 +77,18 @@ expectType<
   IfHasKey<
     {
       "application/json": string;
+    },
+    ["application/json"],
+    true,
+    false
+  >
+>(true);
+
+// test match with suffix (e.g. application/json; charset=utf-8)
+expectType<
+  IfHasKey<
+    {
+      "application/json; charset=utf-8": string;
     },
     ["application/json"],
     true,
@@ -204,6 +217,32 @@ type Responses = {
 declare const factory: ResponseBuilderFactory<Responses>;
 expectAssignable<(body: string) => unknown>(factory[200].json);
 expectAssignable<(body: string) => unknown>(factory[404].text);
+
+// GenericResponseBuilderInner: response with examples exposes `example` with typed names
+type ResponseWithExamples = {
+  content: { "application/json": { schema: string } };
+  examples: { namedExample1: unknown; namedExample2: unknown };
+  headers: {};
+  requiredHeaders: never;
+};
+
+// ExampleNames: extracts example names as a union of string literals
+expectAssignable<ExampleNames<ResponseWithExamples>>("namedExample1");
+expectAssignable<ExampleNames<ResponseWithExamples>>("namedExample2");
+expectNotAssignable<ExampleNames<ResponseWithExamples>>("unknownExample");
+
+// ExampleNames: returns `never` when no examples are defined
+expectNotAssignable<ExampleNames<JsonOnlyResponse>>("anything");
+
+declare const exampleBuilder: GenericResponseBuilderInner<ResponseWithExamples>;
+expectAssignable<(name: "namedExample1" | "namedExample2") => unknown>(
+  exampleBuilder.example,
+);
+expectError(exampleBuilder.example("unknownExample"));
+
+// GenericResponseBuilderInner: response without examples does not expose `example` method
+declare const noExampleBuilder: GenericResponseBuilderInner<JsonOnlyResponse>;
+expectError(noExampleBuilder.example);
 
 // OpenApiResponse: well-formed response satisfies the OpenApiResponse interface
 expectAssignable<OpenApiResponse>({

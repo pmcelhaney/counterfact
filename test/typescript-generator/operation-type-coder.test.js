@@ -1,16 +1,16 @@
 import { describe, expect, it } from "@jest/globals";
-import prettier from "prettier";
+import { format as formatCode } from "prettier";
 
 import { OperationTypeCoder } from "../../src/typescript-generator/operation-type-coder.js";
 import { Requirement } from "../../src/typescript-generator/requirement.js";
 import { Specification } from "../../src/typescript-generator/specification.js";
 
 function format(code) {
-  return prettier.format(code, { parser: "typescript" });
+  return formatCode(code, { parser: "typescript" });
 }
 
 const dummyScript = {
-  export(coder, isType) {
+  export(coder) {
     // Safely return the first name from the coder's names generator, if available
     const getNames =
       coder && typeof coder.names === "function" ? coder.names() : undefined;
@@ -149,7 +149,7 @@ describe("an OperationTypeCoder", () => {
     expect(coder.modulePath()).toBe("types/paths/hello/world.types.ts");
   });
 
-  it("returns the module path for / ", () => {
+  it("returns the module path for /", () => {
     const coder = new OperationTypeCoder(
       new Requirement({}, "#/paths/~1/get"),
       "get",
@@ -485,6 +485,7 @@ describe("an OperationTypeCoder", () => {
           { in: "query", name: "name", schema: { type: "string" } },
           { in: "path", name: "id", schema: { type: "string" } },
           { in: "header", name: "x-api-key", schema: { type: "string" } },
+          { in: "cookie", name: "sessionId", schema: { type: "string" } },
         ],
         responses: {
           200: {
@@ -502,7 +503,7 @@ describe("an OperationTypeCoder", () => {
     const scriptWithExportTracking = {
       ...dummyScript,
       exports: {},
-      export(coder, isType) {
+      export(coder) {
         const name = coder.names().next().value;
         this.exports[name] = coder;
         return name;
@@ -518,11 +519,15 @@ describe("an OperationTypeCoder", () => {
     expect(scriptWithExportTracking.exports).toHaveProperty(
       "searchPets_Headers",
     );
+    expect(scriptWithExportTracking.exports).toHaveProperty(
+      "searchPets_Cookie",
+    );
 
     // Verify that the main type references the exported parameter types
     expect(result).toContain("query: searchPets_Query");
     expect(result).toContain("path: searchPets_Path");
     expect(result).toContain("headers: searchPets_Headers");
+    expect(result).toContain("cookie: searchPets_Cookie");
   });
 
   it("does not export parameter types when they are 'never'", async () => {
@@ -545,7 +550,7 @@ describe("an OperationTypeCoder", () => {
     const scriptWithExportTracking = {
       ...dummyScript,
       exports: {},
-      export(coder, isType) {
+      export(coder) {
         const name = coder.names().next().value;
         this.exports[name] = coder;
         return name;
@@ -561,10 +566,55 @@ describe("an OperationTypeCoder", () => {
     expect(scriptWithExportTracking.exports).not.toHaveProperty(
       "getPet_Headers",
     );
+    expect(scriptWithExportTracking.exports).not.toHaveProperty(
+      "getPet_Cookie",
+    );
 
     // Verify that the main type uses 'never' directly
     expect(result).toContain("query: never");
     expect(result).toContain("path: never");
     expect(result).toContain("headers: never");
+    expect(result).toContain("cookie: never");
+  });
+
+  it("generates a strongly-typed cookie object from cookie parameters", async () => {
+    const requirement = new Requirement(
+      {
+        operationId: "getSession",
+        parameters: [
+          { in: "cookie", name: "sessionId", schema: { type: "string" } },
+          { in: "cookie", name: "theme", schema: { type: "string" } },
+        ],
+        responses: {
+          200: {
+            content: {
+              "application/json": {
+                schema: { type: "object" },
+              },
+            },
+          },
+        },
+      },
+      "#/paths/session/get",
+    );
+
+    const scriptWithExportTracking = {
+      ...dummyScript,
+      exports: {},
+      export(coder) {
+        const name = coder.names().next().value;
+        this.exports[name] = coder;
+        return name;
+      },
+    };
+
+    const coder = new OperationTypeCoder(requirement, "get");
+    const result = coder.write(scriptWithExportTracking);
+
+    expect(scriptWithExportTracking.exports).toHaveProperty(
+      "getSession_Cookie",
+    );
+    expect(result).toContain("cookie: getSession_Cookie");
+    expect(result).not.toContain("cookie: never");
   });
 });

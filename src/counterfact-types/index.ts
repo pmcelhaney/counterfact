@@ -10,13 +10,21 @@ interface Example {
   value: unknown;
 }
 
+interface CookieOptions {
+  domain?: string;
+  expires?: Date;
+  httpOnly?: boolean;
+  maxAge?: number;
+  path?: string;
+  sameSite?: "lax" | "none" | "strict";
+  secure?: boolean;
+}
+
 const counterfactResponse = Symbol("Counterfact Response");
 
-const counterfactResponseObject = {
-  [counterfactResponse]: counterfactResponse,
+type COUNTERFACT_RESPONSE = {
+  [counterfactResponse]: typeof counterfactResponse;
 };
-
-type COUNTERFACT_RESPONSE = typeof counterfactResponseObject;
 
 type MediaType = `${string}/${string}`;
 
@@ -37,7 +45,8 @@ type OmitValueWhenNever<Base> = Pick<
 
 interface OpenApiResponse {
   content: { [key: MediaType]: OpenApiContent };
-  headers: { [key: string]: OpenApiHeader };
+  examples?: { [key: string]: unknown };
+  headers: { [key: string]: { schema: unknown } };
   requiredHeaders: string;
 }
 
@@ -54,12 +63,12 @@ type IfHasKey<
   infer FirstKey extends string,
   ...infer RestKeys extends string[],
 ]
-  ? keyof SomeObject extends FirstKey
-    ? Yes
-    : IfHasKey<SomeObject, RestKeys, Yes, No>
+  ? Extract<keyof SomeObject, `${string}${FirstKey}${string}`> extends never
+    ? IfHasKey<SomeObject, RestKeys, Yes, No>
+    : Yes
   : No;
 
-type SchemasOf<T extends { [key: string]: { schema: any } }> = {
+type SchemasOf<T extends { [key: string]: { schema: unknown } }> = {
   [K in keyof T]: T[K]["schema"];
 }[keyof T];
 
@@ -77,7 +86,7 @@ type MaybeShortcut<
   never
 >;
 
-type NeverIfEmpty<Record> = {} extends Record ? never : Record;
+type NeverIfEmpty<Record> = object extends Record ? never : Record;
 
 type MatchFunction<Response extends OpenApiResponse> = <
   ContentType extends MediaType & keyof Response["content"],
@@ -101,15 +110,25 @@ type HeaderFunction<Response extends OpenApiResponse> = <
   requiredHeaders: Exclude<Response["requiredHeaders"], Header>;
 }>;
 
-type RandomFunction<Response extends OpenApiResponse> = <
-  Header extends string & keyof Response["headers"],
->() => COUNTERFACT_RESPONSE;
+type RandomFunction = () => COUNTERFACT_RESPONSE;
+
+type ExampleNames<Response extends OpenApiResponse> = Response extends {
+  examples: infer E;
+}
+  ? keyof E & string
+  : never;
 
 interface ResponseBuilder {
   [status: number | `${number} ${string}`]: ResponseBuilder;
   content?: { body: unknown; type: string }[];
+  cookie: (
+    name: string,
+    value: string,
+    options?: CookieOptions,
+  ) => ResponseBuilder;
+  example: (name: string) => ResponseBuilder;
   header: (name: string, value: string) => ResponseBuilder;
-  headers: { [name: string]: string };
+  headers: { [name: string]: string | string[] };
   html: (body: unknown) => ResponseBuilder;
   json: (body: unknown) => ResponseBuilder;
   match: (contentType: string, body: unknown) => ResponseBuilder;
@@ -123,6 +142,11 @@ interface ResponseBuilder {
 export type GenericResponseBuilderInner<
   Response extends OpenApiResponse = OpenApiResponse,
 > = OmitValueWhenNever<{
+  cookie: (
+    name: string,
+    value: string,
+    options?: CookieOptions,
+  ) => GenericResponseBuilder<Response>;
   header: [keyof Response["headers"]] extends [never]
     ? never
     : HeaderFunction<Response>;
@@ -140,9 +164,10 @@ export type GenericResponseBuilderInner<
   match: [keyof Response["content"]] extends [never]
     ? never
     : MatchFunction<Response>;
-  random: [keyof Response["content"]] extends [never]
+  random: [keyof Response["content"]] extends [never] ? never : RandomFunction;
+  example: [ExampleNames<Response>] extends [never]
     ? never
-    : RandomFunction<Response>;
+    : (name: ExampleNames<Response>) => COUNTERFACT_RESPONSE;
   text: MaybeShortcut<["text/plain"], Response>;
   xml: MaybeShortcut<["application/xml", "text/xml"], Response>;
 }>;
@@ -246,12 +271,21 @@ interface OpenApiOperation {
         };
       };
       examples?: { [key: string]: unknown };
+      headers?: {
+        [name: string]: OpenApiHeader;
+      };
       schema?: { [key: string]: unknown };
     };
   };
 }
 
 interface WideResponseBuilder {
+  example: (name: string) => WideResponseBuilder;
+  cookie: (
+    name: string,
+    value: string,
+    options?: CookieOptions,
+  ) => WideResponseBuilder;
   header: (body: unknown) => WideResponseBuilder;
   html: (body: unknown) => WideResponseBuilder;
   json: (body: unknown) => WideResponseBuilder;
@@ -274,6 +308,8 @@ interface WideOperationArgument {
 export type { COUNTERFACT_RESPONSE };
 
 export type {
+  CookieOptions,
+  ExampleNames,
   HttpStatusCode,
   MaybePromise,
   MediaType,

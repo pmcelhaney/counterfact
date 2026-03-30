@@ -2,6 +2,7 @@ import { JSONSchemaFaker } from "json-schema-faker";
 
 import { jsonToXml } from "./json-to-xml.js";
 import type {
+  CookieOptions,
   OpenApiOperation,
   ResponseBuilder,
 } from "../counterfact-types/index.js";
@@ -32,6 +33,46 @@ function oneOf(items: unknown[] | { [key: string]: unknown }): unknown {
   }
 
   return oneOf(Object.values(items));
+}
+
+function serializeCookie(
+  name: string,
+  value: string,
+  options: CookieOptions = {},
+): string {
+  const parts = [`${name}=${value}`];
+
+  if (options.path !== undefined) {
+    parts.push(`Path=${options.path}`);
+  }
+
+  if (options.domain !== undefined) {
+    parts.push(`Domain=${options.domain}`);
+  }
+
+  if (options.maxAge !== undefined) {
+    parts.push(`Max-Age=${options.maxAge}`);
+  }
+
+  if (options.expires !== undefined) {
+    parts.push(`Expires=${options.expires.toUTCString()}`);
+  }
+
+  if (options.httpOnly) {
+    parts.push("HttpOnly");
+  }
+
+  if (options.secure) {
+    parts.push("Secure");
+  }
+
+  if (options.sameSite !== undefined) {
+    const sameSiteMap = { lax: "Lax", none: "None", strict: "Strict" };
+
+    parts.push(`SameSite=${sameSiteMap[options.sameSite]}`);
+  }
+
+  return parts.join("; ");
 }
 
 function unknownStatusCodeResponse(statusCode: number | undefined) {
@@ -67,6 +108,30 @@ export function createResponseBuilder(
           headers: {
             ...this.headers,
             [name]: value,
+          },
+        };
+      },
+
+      cookie(
+        this: ResponseBuilder,
+        name: string,
+        value: string,
+        options: CookieOptions = {},
+      ): ResponseBuilder {
+        const cookieString = serializeCookie(name, value, options);
+        const existing = this.headers?.["set-cookie"];
+        const existingArray: string[] = Array.isArray(existing)
+          ? existing
+          : existing !== undefined
+            ? [existing]
+            : [];
+
+        return {
+          ...this,
+
+          headers: {
+            ...this.headers,
+            "set-cookie": [...existingArray, cookieString],
           },
         };
       },
@@ -110,6 +175,52 @@ export function createResponseBuilder(
         };
       },
 
+      example(this: ResponseBuilder, name: string) {
+        if (operation.produces) {
+          return unknownStatusCodeResponse(this.status);
+        }
+
+        const response =
+          operation.responses[this.status ?? "default"] ??
+          operation.responses.default;
+
+        if (response?.content === undefined) {
+          return unknownStatusCodeResponse(this.status);
+        }
+
+        const { content } = response;
+
+        const exampleExists = Object.values(content).some(
+          (contentType) => contentType?.examples?.[name] !== undefined,
+        );
+
+        if (!exampleExists) {
+          return {
+            content: [
+              {
+                body: `The OpenAPI document does not define an example named "${name}" for status code ${this.status ?? "unknown"}`,
+                type: "text/plain",
+              },
+            ],
+            status: 500,
+          };
+        }
+
+        return {
+          ...this,
+
+          content: Object.keys(content).map((type) => ({
+            body: convertToXmlIfNecessary(
+              type,
+              content[type]?.examples?.[name]?.value,
+              content[type]?.schema,
+            ),
+
+            type,
+          })),
+        };
+      },
+
       random(this: ResponseBuilder) {
         if (config?.alwaysFakeOptionals) {
           JSONSchemaFaker.option("alwaysFakeOptionals", true);
@@ -129,6 +240,16 @@ export function createResponseBuilder(
         }
 
         const { content } = response;
+
+        const generatedHeaders: { [name: string]: string } = {};
+
+        for (const [name, header] of Object.entries(response.headers ?? {})) {
+          if (header.required && !(name in (this.headers ?? {}))) {
+            generatedHeaders[name] = JSONSchemaFaker.generate(
+              header.schema ?? { type: "string" },
+            ) as string;
+          }
+        }
 
         return {
           ...this,
@@ -150,6 +271,11 @@ export function createResponseBuilder(
 
             type,
           })),
+
+          headers: {
+            ...generatedHeaders,
+            ...this.headers,
+          },
         };
       },
 
