@@ -4,10 +4,12 @@ These tests run counterfact as an external process and verify its behaviour
 from the outside — no knowledge of internals required.
 """
 
+import base64
 import os
 import shutil
 import subprocess
 import tempfile
+import time
 
 import requests
 
@@ -87,3 +89,45 @@ def test_spec_flag_generates_route_files():
         assert os.path.exists(ping_file), f"Expected generated file at {ping_file}"
     finally:
         shutil.rmtree(temp_dir, ignore_errors=True)
+
+
+def test_binary_response(server):
+    """GET /binary-file returns binary data with application/octet-stream content type.
+
+    The generated handler is replaced with one that calls $.response[200].binary()
+    with a base64-encoded payload.  After hot-reload picks up the change, the
+    server should serve the decoded bytes with the correct Content-Type header.
+    """
+    out_dir = server["out_dir"]
+    route_file = os.path.join(out_dir, "routes", "binary-file.ts")
+
+    binary_data = b"hello binary"
+    base64_data = base64.b64encode(binary_data).decode("ascii")
+
+    with open(route_file, "w") as f:
+        f.write(
+            'import type { HTTP_GET } from "counterfact";\n\n'
+            "export const GET: HTTP_GET = ($) => {\n"
+            f'  return $.response[200].binary("{base64_data}");\n'
+            "};\n"
+        )
+
+    # Poll until the hot-reloaded handler serves the expected binary body.
+    deadline = time.monotonic() + 30
+    response = None
+    while time.monotonic() < deadline:
+        try:
+            response = requests.get(f"{BASE_URL}/binary-file", timeout=REQUEST_TIMEOUT)
+            if (
+                response.status_code == 200
+                and response.content == binary_data
+            ):
+                break
+        except requests.exceptions.RequestException:
+            pass
+        time.sleep(0.5)
+
+    assert response is not None, "No response received from /binary-file"
+    assert response.status_code == 200
+    assert "application/octet-stream" in response.headers.get("content-type", "")
+    assert response.content == binary_data
