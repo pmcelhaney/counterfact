@@ -21,6 +21,11 @@
       "automerge": true,
       "stabilityDays": 3,
       "prCreation": "not-pending"
+    },
+    {
+      "matchPackageNames": ["@types/node"],
+      "description": "Do not automatically update @types/node; its major version should match the engines field in package.json",
+      "enabled": false
     }
   ]
 }
