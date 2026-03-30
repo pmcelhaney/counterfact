@@ -60,9 +60,7 @@ describe("a response builder", () => {
 
     expect(response?.status).toBe(200);
     expect(Buffer.isBuffer(response?.content?.[0]?.body)).toBe(true);
-    expect(response?.content?.[0]?.body).toStrictEqual(
-      Buffer.from([1, 2, 3]),
-    );
+    expect(response?.content?.[0]?.body).toStrictEqual(Buffer.from([1, 2, 3]));
   });
 
   it("has shortcuts for json, text, and html", () => {
