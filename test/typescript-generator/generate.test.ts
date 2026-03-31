@@ -1,13 +1,15 @@
 import fs from "node:fs/promises";
 import nodePath from "node:path";
 
+import { usingTemporaryFiles } from "using-temporary-files";
+
 import { generate } from "../../src/typescript-generator/generate.js";
 import { Repository } from "../../src/typescript-generator/repository.js";
-import { withTemporaryFiles } from "../lib/with-temporary-files.js";
 
 describe("end-to-end test", () => {
   it("generates the same code for pet store that it did on the last test run", async () => {
-    await withTemporaryFiles({}, async (basePath) => {
+    await usingTemporaryFiles(async ($) => {
+      const basePath = $.path("");
       const repository = new Repository();
 
       repository.writeFiles = async () => {
@@ -40,7 +42,8 @@ describe("end-to-end test", () => {
   });
 
   it("generates the same code for the example that it did on the last test run", async () => {
-    await withTemporaryFiles({}, async (basePath) => {
+    await usingTemporaryFiles(async ($) => {
+      const basePath = $.path("");
       const repository = new Repository();
 
       repository.writeFiles = async () => {

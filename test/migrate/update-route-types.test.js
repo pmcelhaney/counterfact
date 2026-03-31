@@ -1,6 +1,6 @@
 import { describe, expect, it } from "@jest/globals";
 import { promises as fs } from "node:fs";
-import { withTemporaryFiles } from "../lib/with-temporary-files.ts";
+import { usingTemporaryFiles } from "using-temporary-files";
 
 // Import the main function - other functions are not exported so we test through integration
 import { updateRouteTypes } from "../../src/migrate/update-route-types.js";
@@ -38,29 +38,25 @@ export const GET: HTTP_GET = ($) => {
 };
 `;
 
-      await withTemporaryFiles(
-        {
-          "openapi.json": JSON.stringify(openApiSpec),
-          "routes/pet/{id}.ts": routeFile,
-        },
-        async (tempDir, { path: getPath }) => {
-          const migrated = await updateRouteTypes(
-            tempDir,
-            getPath("openapi.json"),
-          );
+      await usingTemporaryFiles(async ($) => {
+        await $.add("openapi.json", JSON.stringify(openApiSpec));
+        await $.add("routes/pet/{id}.ts", routeFile);
+        const migrated = await updateRouteTypes(
+          $.path(""),
+          $.path("openapi.json"),
+        );
 
-          expect(migrated).toBe(true);
+        expect(migrated).toBe(true);
 
-          const updatedContent = await fs.readFile(
-            getPath("routes/pet/{id}.ts"),
-            "utf8",
-          );
+        const updatedContent = await fs.readFile(
+          $.path("routes/pet/{id}.ts"),
+          "utf8",
+        );
 
-          expect(updatedContent).toContain("import type { getPetById }");
-          expect(updatedContent).toContain("export const GET: getPetById");
-          expect(updatedContent).not.toContain("HTTP_GET");
-        },
-      );
+        expect(updatedContent).toContain("import type { getPetById }");
+        expect(updatedContent).toContain("export const GET: getPetById");
+        expect(updatedContent).not.toContain("HTTP_GET");
+      });
     });
 
     it("migrates HTTP_POST to operationId-based type name", async () => {
@@ -94,29 +90,25 @@ export const POST: HTTP_POST = ($) => {
 };
 `;
 
-      await withTemporaryFiles(
-        {
-          "openapi.json": JSON.stringify(openApiSpec),
-          "routes/pet.ts": routeFile,
-        },
-        async (tempDir, { path: getPath }) => {
-          const migrated = await updateRouteTypes(
-            tempDir,
-            getPath("openapi.json"),
-          );
+      await usingTemporaryFiles(async ($) => {
+        await $.add("openapi.json", JSON.stringify(openApiSpec));
+        await $.add("routes/pet.ts", routeFile);
+        const migrated = await updateRouteTypes(
+          $.path(""),
+          $.path("openapi.json"),
+        );
 
-          expect(migrated).toBe(true);
+        expect(migrated).toBe(true);
 
-          const updatedContent = await fs.readFile(
-            getPath("routes/pet.ts"),
-            "utf8",
-          );
+        const updatedContent = await fs.readFile(
+          $.path("routes/pet.ts"),
+          "utf8",
+        );
 
-          expect(updatedContent).toContain("import type { addPet }");
-          expect(updatedContent).toContain("export const POST: addPet");
-          expect(updatedContent).not.toContain("HTTP_POST");
-        },
-      );
+        expect(updatedContent).toContain("import type { addPet }");
+        expect(updatedContent).toContain("export const POST: addPet");
+        expect(updatedContent).not.toContain("HTTP_POST");
+      });
     });
 
     it("migrates multiple HTTP methods in the same file", async () => {
@@ -155,35 +147,31 @@ export const DELETE: HTTP_DELETE = ($) => {
 };
 `;
 
-      await withTemporaryFiles(
-        {
-          "openapi.json": JSON.stringify(openApiSpec),
-          "routes/pet/{id}.ts": routeFile,
-        },
-        async (tempDir, { path: getPath }) => {
-          const migrated = await updateRouteTypes(
-            tempDir,
-            getPath("openapi.json"),
-          );
+      await usingTemporaryFiles(async ($) => {
+        await $.add("openapi.json", JSON.stringify(openApiSpec));
+        await $.add("routes/pet/{id}.ts", routeFile);
+        const migrated = await updateRouteTypes(
+          $.path(""),
+          $.path("openapi.json"),
+        );
 
-          expect(migrated).toBe(true);
+        expect(migrated).toBe(true);
 
-          const updatedContent = await fs.readFile(
-            getPath("routes/pet/{id}.ts"),
-            "utf8",
-          );
+        const updatedContent = await fs.readFile(
+          $.path("routes/pet/{id}.ts"),
+          "utf8",
+        );
 
-          expect(updatedContent).toContain(
-            "import type { getPetById, updatePet, deletePet }",
-          );
-          expect(updatedContent).toContain("export const GET: getPetById");
-          expect(updatedContent).toContain("export const PUT: updatePet");
-          expect(updatedContent).toContain("export const DELETE: deletePet");
-          expect(updatedContent).not.toContain("HTTP_GET");
-          expect(updatedContent).not.toContain("HTTP_PUT");
-          expect(updatedContent).not.toContain("HTTP_DELETE");
-        },
-      );
+        expect(updatedContent).toContain(
+          "import type { getPetById, updatePet, deletePet }",
+        );
+        expect(updatedContent).toContain("export const GET: getPetById");
+        expect(updatedContent).toContain("export const PUT: updatePet");
+        expect(updatedContent).toContain("export const DELETE: deletePet");
+        expect(updatedContent).not.toContain("HTTP_GET");
+        expect(updatedContent).not.toContain("HTTP_PUT");
+        expect(updatedContent).not.toContain("HTTP_DELETE");
+      });
     });
 
     it("handles root path route", async () => {
@@ -206,28 +194,24 @@ export const GET: HTTP_GET = ($) => {
 };
 `;
 
-      await withTemporaryFiles(
-        {
-          "openapi.json": JSON.stringify(openApiSpec),
-          "routes/index.ts": routeFile,
-        },
-        async (tempDir, { path: getPath }) => {
-          const migrated = await updateRouteTypes(
-            tempDir,
-            getPath("openapi.json"),
-          );
+      await usingTemporaryFiles(async ($) => {
+        await $.add("openapi.json", JSON.stringify(openApiSpec));
+        await $.add("routes/index.ts", routeFile);
+        const migrated = await updateRouteTypes(
+          $.path(""),
+          $.path("openapi.json"),
+        );
 
-          expect(migrated).toBe(true);
+        expect(migrated).toBe(true);
 
-          const updatedContent = await fs.readFile(
-            getPath("routes/index.ts"),
-            "utf8",
-          );
+        const updatedContent = await fs.readFile(
+          $.path("routes/index.ts"),
+          "utf8",
+        );
 
-          expect(updatedContent).toContain("import type { getRoot }");
-          expect(updatedContent).toContain("export const GET: getRoot");
-        },
-      );
+        expect(updatedContent).toContain("import type { getRoot }");
+        expect(updatedContent).toContain("export const GET: getRoot");
+      });
     });
 
     it("keeps HTTP_METHOD when no operationId is present", async () => {
@@ -249,30 +233,26 @@ export const GET: HTTP_GET = ($) => {
 };
 `;
 
-      await withTemporaryFiles(
-        {
-          "openapi.json": JSON.stringify(openApiSpec),
-          "routes/anonymous.ts": routeFile,
-        },
-        async (tempDir, { path: getPath }) => {
-          const migrated = await updateRouteTypes(
-            tempDir,
-            getPath("openapi.json"),
-          );
+      await usingTemporaryFiles(async ($) => {
+        await $.add("openapi.json", JSON.stringify(openApiSpec));
+        await $.add("routes/anonymous.ts", routeFile);
+        const migrated = await updateRouteTypes(
+          $.path(""),
+          $.path("openapi.json"),
+        );
 
-          // Should return false because no changes needed (HTTP_GET stays HTTP_GET)
-          expect(migrated).toBe(false);
+        // Should return false because no changes needed (HTTP_GET stays HTTP_GET)
+        expect(migrated).toBe(false);
 
-          const updatedContent = await fs.readFile(
-            getPath("routes/anonymous.ts"),
-            "utf8",
-          );
+        const updatedContent = await fs.readFile(
+          $.path("routes/anonymous.ts"),
+          "utf8",
+        );
 
-          // File should remain unchanged
-          expect(updatedContent).toContain("import type { HTTP_GET }");
-          expect(updatedContent).toContain("export const GET: HTTP_GET");
-        },
-      );
+        // File should remain unchanged
+        expect(updatedContent).toContain("import type { HTTP_GET }");
+        expect(updatedContent).toContain("export const GET: HTTP_GET");
+      });
     });
   });
 
@@ -297,28 +277,24 @@ export const GET: HTTP_GET = ($) => {
 };
 `;
 
-      await withTemporaryFiles(
-        {
-          "openapi.json": JSON.stringify(openApiSpec),
-          "routes/api/v1/users/{id}.ts": routeFile,
-        },
-        async (tempDir, { path: getPath }) => {
-          const migrated = await updateRouteTypes(
-            tempDir,
-            getPath("openapi.json"),
-          );
+      await usingTemporaryFiles(async ($) => {
+        await $.add("openapi.json", JSON.stringify(openApiSpec));
+        await $.add("routes/api/v1/users/{id}.ts", routeFile);
+        const migrated = await updateRouteTypes(
+          $.path(""),
+          $.path("openapi.json"),
+        );
 
-          expect(migrated).toBe(true);
+        expect(migrated).toBe(true);
 
-          const updatedContent = await fs.readFile(
-            getPath("routes/api/v1/users/{id}.ts"),
-            "utf8",
-          );
+        const updatedContent = await fs.readFile(
+          $.path("routes/api/v1/users/{id}.ts"),
+          "utf8",
+        );
 
-          expect(updatedContent).toContain("import type { getUserById }");
-          expect(updatedContent).toContain("export const GET: getUserById");
-        },
-      );
+        expect(updatedContent).toContain("import type { getUserById }");
+        expect(updatedContent).toContain("export const GET: getUserById");
+      });
     });
 
     it("processes multiple files across different directories", async () => {
@@ -346,46 +322,48 @@ export const GET: HTTP_GET = ($) => {
         },
       };
 
-      await withTemporaryFiles(
-        {
-          "openapi.json": JSON.stringify(openApiSpec),
-          "routes/pets.ts": `import type { HTTP_GET } from "../types/paths/pets.types.ts";
+      await usingTemporaryFiles(async ($) => {
+        await $.add("openapi.json", JSON.stringify(openApiSpec));
+        await $.add(
+          "routes/pets.ts",
+          `import type { HTTP_GET } from "../types/paths/pets.types.ts";
 export const GET: HTTP_GET = ($) => ({ status: 200 });`,
-          "routes/pets/{id}.ts": `import type { HTTP_GET } from "../types/paths/pets/{id}.types.ts";
+        );
+        await $.add(
+          "routes/pets/{id}.ts",
+          `import type { HTTP_GET } from "../types/paths/pets/{id}.types.ts";
 export const GET: HTTP_GET = ($) => ({ status: 200 });`,
-          "routes/users.ts": `import type { HTTP_GET } from "../types/paths/users.types.ts";
+        );
+        await $.add(
+          "routes/users.ts",
+          `import type { HTTP_GET } from "../types/paths/users.types.ts";
 export const GET: HTTP_GET = ($) => ({ status: 200 });`,
-        },
-        async (tempDir, { path: getPath }) => {
-          const migrated = await updateRouteTypes(
-            tempDir,
-            getPath("openapi.json"),
-          );
+        );
+        const migrated = await updateRouteTypes(
+          $.path(""),
+          $.path("openapi.json"),
+        );
 
-          expect(migrated).toBe(true);
+        expect(migrated).toBe(true);
 
-          const petsContent = await fs.readFile(
-            getPath("routes/pets.ts"),
-            "utf8",
-          );
-          expect(petsContent).toContain("import type { listPets }");
-          expect(petsContent).toContain("export const GET: listPets");
+        const petsContent = await fs.readFile($.path("routes/pets.ts"), "utf8");
+        expect(petsContent).toContain("import type { listPets }");
+        expect(petsContent).toContain("export const GET: listPets");
 
-          const petByIdContent = await fs.readFile(
-            getPath("routes/pets/{id}.ts"),
-            "utf8",
-          );
-          expect(petByIdContent).toContain("import type { getPetById }");
-          expect(petByIdContent).toContain("export const GET: getPetById");
+        const petByIdContent = await fs.readFile(
+          $.path("routes/pets/{id}.ts"),
+          "utf8",
+        );
+        expect(petByIdContent).toContain("import type { getPetById }");
+        expect(petByIdContent).toContain("export const GET: getPetById");
 
-          const usersContent = await fs.readFile(
-            getPath("routes/users.ts"),
-            "utf8",
-          );
-          expect(usersContent).toContain("import type { listUsers }");
-          expect(usersContent).toContain("export const GET: listUsers");
-        },
-      );
+        const usersContent = await fs.readFile(
+          $.path("routes/users.ts"),
+          "utf8",
+        );
+        expect(usersContent).toContain("import type { listUsers }");
+        expect(usersContent).toContain("export const GET: listUsers");
+      });
     });
   });
 
@@ -410,29 +388,25 @@ export const GET: getPetById = ($) => {
 };
 `;
 
-      await withTemporaryFiles(
-        {
-          "openapi.json": JSON.stringify(openApiSpec),
-          "routes/pet/{id}.ts": alreadyMigratedFile,
-        },
-        async (tempDir, { path: getPath }) => {
-          const migrated = await updateRouteTypes(
-            tempDir,
-            getPath("openapi.json"),
-          );
+      await usingTemporaryFiles(async ($) => {
+        await $.add("openapi.json", JSON.stringify(openApiSpec));
+        await $.add("routes/pet/{id}.ts", alreadyMigratedFile);
+        const migrated = await updateRouteTypes(
+          $.path(""),
+          $.path("openapi.json"),
+        );
 
-          // Should return false because file is already migrated
-          expect(migrated).toBe(false);
+        // Should return false because file is already migrated
+        expect(migrated).toBe(false);
 
-          const updatedContent = await fs.readFile(
-            getPath("routes/pet/{id}.ts"),
-            "utf8",
-          );
+        const updatedContent = await fs.readFile(
+          $.path("routes/pet/{id}.ts"),
+          "utf8",
+        );
 
-          // File should remain exactly the same
-          expect(updatedContent).toBe(alreadyMigratedFile);
-        },
-      );
+        // File should remain exactly the same
+        expect(updatedContent).toBe(alreadyMigratedFile);
+      });
     });
 
     it("can be run multiple times without issues", async () => {
@@ -455,41 +429,37 @@ export const POST: HTTP_POST = ($) => {
 };
 `;
 
-      await withTemporaryFiles(
-        {
-          "openapi.json": JSON.stringify(openApiSpec),
-          "routes/pet.ts": routeFile,
-        },
-        async (tempDir, { path: getPath }) => {
-          // First migration
-          const firstMigration = await updateRouteTypes(
-            tempDir,
-            getPath("openapi.json"),
-          );
-          expect(firstMigration).toBe(true);
+      await usingTemporaryFiles(async ($) => {
+        await $.add("openapi.json", JSON.stringify(openApiSpec));
+        await $.add("routes/pet.ts", routeFile);
+        // First migration
+        const firstMigration = await updateRouteTypes(
+          $.path(""),
+          $.path("openapi.json"),
+        );
+        expect(firstMigration).toBe(true);
 
-          const afterFirstMigration = await fs.readFile(
-            getPath("routes/pet.ts"),
-            "utf8",
-          );
+        const afterFirstMigration = await fs.readFile(
+          $.path("routes/pet.ts"),
+          "utf8",
+        );
 
-          // Second migration
-          const secondMigration = await updateRouteTypes(
-            tempDir,
-            getPath("openapi.json"),
-          );
-          expect(secondMigration).toBe(false);
+        // Second migration
+        const secondMigration = await updateRouteTypes(
+          $.path(""),
+          $.path("openapi.json"),
+        );
+        expect(secondMigration).toBe(false);
 
-          const afterSecondMigration = await fs.readFile(
-            getPath("routes/pet.ts"),
-            "utf8",
-          );
+        const afterSecondMigration = await fs.readFile(
+          $.path("routes/pet.ts"),
+          "utf8",
+        );
 
-          // Content should be identical after both runs
-          expect(afterFirstMigration).toBe(afterSecondMigration);
-          expect(afterSecondMigration).toContain("import type { addPet }");
-        },
-      );
+        // Content should be identical after both runs
+        expect(afterFirstMigration).toBe(afterSecondMigration);
+        expect(afterSecondMigration).toContain("import type { addPet }");
+      });
     });
   });
 
@@ -512,49 +482,47 @@ export const POST: HTTP_POST = ($) => {
 }
 `;
 
-      await withTemporaryFiles(
-        {
-          "openapi.json": JSON.stringify(openApiSpec),
-          "routes/pet.ts": `import type { HTTP_GET } from "../types/paths/pet.types.ts";
+      await usingTemporaryFiles(async ($) => {
+        await $.add("openapi.json", JSON.stringify(openApiSpec));
+        await $.add(
+          "routes/pet.ts",
+          `import type { HTTP_GET } from "../types/paths/pet.types.ts";
 export const GET: HTTP_GET = ($) => ({ status: 200 });`,
-          "routes/_.context.ts": contextFile,
-        },
-        async (tempDir, { path: getPath }) => {
-          await updateRouteTypes(tempDir, getPath("openapi.json"));
+        );
+        await $.add("routes/_.context.ts", contextFile);
+        await updateRouteTypes($.path(""), $.path("openapi.json"));
 
-          const contextContent = await fs.readFile(
-            getPath("routes/_.context.ts"),
-            "utf8",
-          );
+        const contextContent = await fs.readFile(
+          $.path("routes/_.context.ts"),
+          "utf8",
+        );
 
-          // Context file should remain unchanged
-          expect(contextContent).toBe(contextFile);
-        },
-      );
+        // Context file should remain unchanged
+        expect(contextContent).toBe(contextFile);
+      });
     });
 
     it("returns false when no routes directory exists", async () => {
-      await withTemporaryFiles(
-        {
-          "openapi.json": JSON.stringify({
+      await usingTemporaryFiles(async ($) => {
+        await $.add(
+          "openapi.json",
+          JSON.stringify({
             openapi: "3.0.0",
             paths: {},
           }),
-        },
-        async (tempDir, { path: getPath }) => {
-          const migrated = await updateRouteTypes(
-            tempDir,
-            getPath("openapi.json"),
-          );
+        );
+        const migrated = await updateRouteTypes(
+          $.path(""),
+          $.path("openapi.json"),
+        );
 
-          expect(migrated).toBe(false);
-        },
-      );
+        expect(migrated).toBe(false);
+      });
     });
 
     it("returns false when openApiPath is '_'", async () => {
-      await withTemporaryFiles({}, async (tempDir) => {
-        const migrated = await updateRouteTypes(tempDir, "_");
+      await usingTemporaryFiles(async ($) => {
+        const migrated = await updateRouteTypes($.path(""), "_");
 
         expect(migrated).toBe(false);
       });
@@ -580,26 +548,19 @@ export const config = {
 };
 `;
 
-      await withTemporaryFiles(
-        {
-          "openapi.json": JSON.stringify(openApiSpec),
-          "routes/config.ts": nonMigrationFile,
-        },
-        async (tempDir, { path: getPath }) => {
-          const migrated = await updateRouteTypes(
-            tempDir,
-            getPath("openapi.json"),
-          );
+      await usingTemporaryFiles(async ($) => {
+        await $.add("openapi.json", JSON.stringify(openApiSpec));
+        await $.add("routes/config.ts", nonMigrationFile);
+        const migrated = await updateRouteTypes(
+          $.path(""),
+          $.path("openapi.json"),
+        );
 
-          expect(migrated).toBe(false);
+        expect(migrated).toBe(false);
 
-          const content = await fs.readFile(
-            getPath("routes/config.ts"),
-            "utf8",
-          );
-          expect(content).toBe(nonMigrationFile);
-        },
-      );
+        const content = await fs.readFile($.path("routes/config.ts"), "utf8");
+        expect(content).toBe(nonMigrationFile);
+      });
     });
 
     it("handles import statements with various whitespace formats", async () => {
@@ -630,30 +591,26 @@ export const POST : HTTP_POST= ($) => {
 };
 `;
 
-      await withTemporaryFiles(
-        {
-          "openapi.json": JSON.stringify(openApiSpec),
-          "routes/pet.ts": routeFile,
-        },
-        async (tempDir, { path: getPath }) => {
-          const migrated = await updateRouteTypes(
-            tempDir,
-            getPath("openapi.json"),
-          );
+      await usingTemporaryFiles(async ($) => {
+        await $.add("openapi.json", JSON.stringify(openApiSpec));
+        await $.add("routes/pet.ts", routeFile);
+        const migrated = await updateRouteTypes(
+          $.path(""),
+          $.path("openapi.json"),
+        );
 
-          expect(migrated).toBe(true);
+        expect(migrated).toBe(true);
 
-          const updatedContent = await fs.readFile(
-            getPath("routes/pet.ts"),
-            "utf8",
-          );
+        const updatedContent = await fs.readFile(
+          $.path("routes/pet.ts"),
+          "utf8",
+        );
 
-          expect(updatedContent).toContain("getPet");
-          expect(updatedContent).toContain("addPet");
-          expect(updatedContent).not.toContain("HTTP_GET");
-          expect(updatedContent).not.toContain("HTTP_POST");
-        },
-      );
+        expect(updatedContent).toContain("getPet");
+        expect(updatedContent).toContain("addPet");
+        expect(updatedContent).not.toContain("HTTP_GET");
+        expect(updatedContent).not.toContain("HTTP_POST");
+      });
     });
 
     it("handles all HTTP methods", async () => {
@@ -704,63 +661,58 @@ export const HEAD: HTTP_HEAD = ($) => ({ status: 200 });
 export const OPTIONS: HTTP_OPTIONS = ($) => ({ status: 200 });
 `;
 
-      await withTemporaryFiles(
-        {
-          "openapi.json": JSON.stringify(openApiSpec),
-          "routes/resource.ts": routeFile,
-        },
-        async (tempDir, { path: getPath }) => {
-          const migrated = await updateRouteTypes(
-            tempDir,
-            getPath("openapi.json"),
-          );
+      await usingTemporaryFiles(async ($) => {
+        await $.add("openapi.json", JSON.stringify(openApiSpec));
+        await $.add("routes/resource.ts", routeFile);
+        const migrated = await updateRouteTypes(
+          $.path(""),
+          $.path("openapi.json"),
+        );
 
-          expect(migrated).toBe(true);
+        expect(migrated).toBe(true);
 
-          const updatedContent = await fs.readFile(
-            getPath("routes/resource.ts"),
-            "utf8",
-          );
+        const updatedContent = await fs.readFile(
+          $.path("routes/resource.ts"),
+          "utf8",
+        );
 
-          expect(updatedContent).toContain("getResource");
-          expect(updatedContent).toContain("createResource");
-          expect(updatedContent).toContain("updateResource");
-          expect(updatedContent).toContain("patchResource");
-          expect(updatedContent).toContain("deleteResource");
-          expect(updatedContent).toContain("headResource");
-          expect(updatedContent).toContain("optionsResource");
+        expect(updatedContent).toContain("getResource");
+        expect(updatedContent).toContain("createResource");
+        expect(updatedContent).toContain("updateResource");
+        expect(updatedContent).toContain("patchResource");
+        expect(updatedContent).toContain("deleteResource");
+        expect(updatedContent).toContain("headResource");
+        expect(updatedContent).toContain("optionsResource");
 
-          // Verify none of the old names remain
-          expect(updatedContent).not.toContain("HTTP_GET");
-          expect(updatedContent).not.toContain("HTTP_POST");
-          expect(updatedContent).not.toContain("HTTP_PUT");
-          expect(updatedContent).not.toContain("HTTP_PATCH");
-          expect(updatedContent).not.toContain("HTTP_DELETE");
-          expect(updatedContent).not.toContain("HTTP_HEAD");
-          expect(updatedContent).not.toContain("HTTP_OPTIONS");
-        },
-      );
+        // Verify none of the old names remain
+        expect(updatedContent).not.toContain("HTTP_GET");
+        expect(updatedContent).not.toContain("HTTP_POST");
+        expect(updatedContent).not.toContain("HTTP_PUT");
+        expect(updatedContent).not.toContain("HTTP_PATCH");
+        expect(updatedContent).not.toContain("HTTP_DELETE");
+        expect(updatedContent).not.toContain("HTTP_HEAD");
+        expect(updatedContent).not.toContain("HTTP_OPTIONS");
+      });
     });
   });
 
   describe("error handling", () => {
     it("handles invalid OpenAPI spec gracefully", async () => {
-      await withTemporaryFiles(
-        {
-          "openapi.json": "{ invalid json",
-          "routes/pet.ts": `import type { HTTP_GET } from "../types/paths/pet.types.ts";
+      await usingTemporaryFiles(async ($) => {
+        await $.add("openapi.json", "{ invalid json");
+        await $.add(
+          "routes/pet.ts",
+          `import type { HTTP_GET } from "../types/paths/pet.types.ts";
 export const GET: HTTP_GET = ($) => ({ status: 200 });`,
-        },
-        async (tempDir, { path: getPath }) => {
-          // Should not throw, should return false
-          const migrated = await updateRouteTypes(
-            tempDir,
-            getPath("openapi.json"),
-          );
+        );
+        // Should not throw, should return false
+        const migrated = await updateRouteTypes(
+          $.path(""),
+          $.path("openapi.json"),
+        );
 
-          expect(migrated).toBe(false);
-        },
-      );
+        expect(migrated).toBe(false);
+      });
     });
 
     it("handles spec with no paths", async () => {
@@ -769,21 +721,20 @@ export const GET: HTTP_GET = ($) => ({ status: 200 });`,
         info: { title: "Test", version: "1.0.0" },
       };
 
-      await withTemporaryFiles(
-        {
-          "openapi.json": JSON.stringify(openApiSpec),
-          "routes/pet.ts": `import type { HTTP_GET } from "../types/paths/pet.types.ts";
+      await usingTemporaryFiles(async ($) => {
+        await $.add("openapi.json", JSON.stringify(openApiSpec));
+        await $.add(
+          "routes/pet.ts",
+          `import type { HTTP_GET } from "../types/paths/pet.types.ts";
 export const GET: HTTP_GET = ($) => ({ status: 200 });`,
-        },
-        async (tempDir, { path: getPath }) => {
-          const migrated = await updateRouteTypes(
-            tempDir,
-            getPath("openapi.json"),
-          );
+        );
+        const migrated = await updateRouteTypes(
+          $.path(""),
+          $.path("openapi.json"),
+        );
 
-          expect(migrated).toBe(false);
-        },
-      );
+        expect(migrated).toBe(false);
+      });
     });
   });
 });

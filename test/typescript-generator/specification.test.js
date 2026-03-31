@@ -3,24 +3,24 @@ import { pathToFileURL } from "node:url";
 import { describe, expect, it } from "@jest/globals";
 import Koa from "koa";
 
+import { usingTemporaryFiles } from "using-temporary-files";
+
 import { Requirement } from "../../src/typescript-generator/requirement.js";
 import { Specification } from "../../src/typescript-generator/specification.js";
-import { withTemporaryFiles } from "../lib/with-temporary-files.ts";
 
 describe("a Specification", () => {
   it("loads a file from disk", async () => {
-    await withTemporaryFiles(
-      { "openapi.yaml": "hello:\n  world" },
-      async (temporaryDirectory, { path }) => {
-        const specification = await Specification.fromFile(
-          path("openapi.yaml"),
-        );
+    await usingTemporaryFiles(async ($) => {
+      await $.add("openapi.yaml", "hello:\n  world");
 
-        expect(specification.rootRequirement.data).toStrictEqual({
-          hello: "world",
-        });
-      },
-    );
+      const specification = await Specification.fromFile(
+        $.path("openapi.yaml"),
+      );
+
+      expect(specification.rootRequirement.data).toStrictEqual({
+        hello: "world",
+      });
+    });
   });
 
   it("loads a file from disk with a file URL", async () => {
@@ -29,18 +29,17 @@ describe("a Specification", () => {
       // Not sure why this test started failing in Windows.
       return;
     }
-    await withTemporaryFiles(
-      { "openapi.yaml": "hello:\n  world" },
-      async (temporaryDirectory, { path }) => {
-        const { href } = pathToFileURL(path("openapi.yaml"));
+    await usingTemporaryFiles(async ($) => {
+      await $.add("openapi.yaml", "hello:\n  world");
 
-        const specification = await Specification.fromFile(href);
+      const { href } = pathToFileURL($.path("openapi.yaml"));
 
-        expect(specification.rootRequirement.data).toStrictEqual({
-          hello: "world",
-        });
-      },
-    );
+      const specification = await Specification.fromFile(href);
+
+      expect(specification.rootRequirement.data).toStrictEqual({
+        hello: "world",
+      });
+    });
   });
 
   it("loads a file from the web", async () => {
