@@ -1,6 +1,6 @@
-import http from "node:http";
-
 import type { OpenApiDocument } from "../server/dispatcher.js";
+
+import { RawHttpClient } from "./RawHttpClient.js";
 
 type Params = Record<string, boolean | number | string>;
 
@@ -31,12 +31,6 @@ export interface MissingParams {
   header?: MissingParam[];
   path?: MissingParam[];
   query?: MissingParam[];
-}
-
-export interface SendResult {
-  body: unknown;
-  headers: unknown;
-  status: number | undefined;
 }
 
 export class RouteBuilder {
@@ -266,7 +260,7 @@ export class RouteBuilder {
     return lines.join("\n");
   }
 
-  public async send(): Promise<SendResult> {
+  public async send(): Promise<unknown> {
     if (!this._method) {
       throw new Error(
         'No HTTP method set. Use .method("get") to set the method.',
@@ -323,63 +317,32 @@ export class RouteBuilder {
       url = `${url}?${qs}`;
     }
 
-    return new Promise((resolve, reject) => {
-      const bodyStr =
-        this._body !== undefined ? JSON.stringify(this._body) : undefined;
+    const client = new RawHttpClient(this._host, this._port);
+    const headers = Object.fromEntries(
+      Object.entries(this._headerParams).map(([k, v]) => [k, String(v)]),
+    );
+    const method = this._method.toLowerCase();
 
-      const reqHeaders: Record<string, number | string> = {
-        ...Object.fromEntries(
-          Object.entries(this._headerParams).map(([k, v]) => [k, String(v)]),
-        ),
-      };
-
-      if (bodyStr !== undefined) {
-        reqHeaders["Content-Type"] = "application/json";
-        reqHeaders["Content-Length"] = Buffer.byteLength(bodyStr);
-      }
-
-      const req = http.request(
-        {
-          headers: reqHeaders,
-          host: this._host,
-          method: this._method,
-          path: url,
-          port: this._port,
-        },
-        (res) => {
-          const chunks: Buffer[] = [];
-
-          res.on("data", (chunk: Buffer) => {
-            chunks.push(chunk);
-          });
-
-          res.on("end", () => {
-            const responseBody = Buffer.concat(chunks).toString("utf8");
-            let parsedBody: unknown = responseBody;
-
-            try {
-              parsedBody = JSON.parse(responseBody);
-            } catch {
-              // keep as string
-            }
-
-            resolve({
-              body: parsedBody,
-              headers: res.headers,
-              status: res.statusCode,
-            });
-          });
-        },
-      );
-
-      req.on("error", reject);
-
-      if (bodyStr !== undefined) {
-        req.write(bodyStr);
-      }
-
-      req.end();
-    });
+    switch (method) {
+      case "get":
+        return client.get(url, headers);
+      case "head":
+        return client.head(url, headers);
+      case "delete":
+        return client.delete(url, headers);
+      case "options":
+        return client.options(url, headers);
+      case "trace":
+        return client.trace(url, headers);
+      case "post":
+        return client.post(url, this._body as string | object, headers);
+      case "put":
+        return client.put(url, this._body as string | object, headers);
+      case "patch":
+        return client.patch(url, this._body as string | object, headers);
+      default:
+        throw new Error(`Unsupported HTTP method: ${this._method}`);
+    }
   }
 
   public [Symbol.for("nodejs.util.inspect.custom")](): string {
