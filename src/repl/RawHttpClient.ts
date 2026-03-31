@@ -80,11 +80,11 @@ export class RawHttpClient {
     return this.#send("HEAD", path, "", headers);
   }
 
-  post(path: string, body = "", headers = {}) {
+  post(path: string, body: string | object = "", headers = {}) {
     return this.#send("POST", path, body, headers);
   }
 
-  put(path: string, body = "", headers = {}) {
+  put(path: string, body: string | object = "", headers = {}) {
     return this.#send("PUT", path, body, headers);
   }
 
@@ -104,7 +104,7 @@ export class RawHttpClient {
     return this.#send("TRACE", path, "", headers);
   }
 
-  patch(path: string, body = "", headers = {}) {
+  patch(path: string, body: string | object = "", headers = {}) {
     return this.#send("PATCH", path, body, headers);
   }
 
