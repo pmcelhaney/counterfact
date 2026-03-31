@@ -346,10 +346,7 @@ export const GET: HTTP_GET = ($) => ({ status: 200 });`,
 
         expect(migrated).toBe(true);
 
-        const petsContent = await fs.readFile(
-          $.path("routes/pets.ts"),
-          "utf8",
-        );
+        const petsContent = await fs.readFile($.path("routes/pets.ts"), "utf8");
         expect(petsContent).toContain("import type { listPets }");
         expect(petsContent).toContain("export const GET: listPets");
 
@@ -561,10 +558,7 @@ export const config = {
 
         expect(migrated).toBe(false);
 
-        const content = await fs.readFile(
-          $.path("routes/config.ts"),
-          "utf8",
-        );
+        const content = await fs.readFile($.path("routes/config.ts"), "utf8");
         expect(content).toBe(nonMigrationFile);
       });
     });
