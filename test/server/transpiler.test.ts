@@ -5,6 +5,13 @@ import { usingTemporaryFiles } from "using-temporary-files";
 
 import { Transpiler } from "../../src/server/transpiler.js";
 
+// The Transpiler internally uses string replacement on paths after normalizing
+// chokidar paths to forward slashes, so source/destination paths must also use
+// forward slashes (especially on Windows where nodePath.join uses backslashes).
+function forwardSlash(p: string): string {
+  return p.replaceAll("\\", "/");
+}
+
 const TYPESCRIPT_SOURCE = `export const x:number = 1;\n`;
 const JAVASCRIPT_SOURCE = `export const x = 1;\n`;
 const JAVASCRIPT_SOURCE_COMMONJS = `"use strict";\nObject.defineProperty(exports, "__esModule", { value: true });\nexports.x = void 0;\nexports.x = 1;\n`;
@@ -28,7 +35,11 @@ describe("a Transpiler", () => {
     await usingTemporaryFiles(async ($) => {
       await $.add("src/found.ts", TYPESCRIPT_SOURCE);
 
-      transpiler = new Transpiler($.path("src"), $.path("dist"), "module");
+      transpiler = new Transpiler(
+        forwardSlash($.path("src")),
+        forwardSlash($.path("dist")),
+        "module",
+      );
 
       await transpiler.watch();
 
@@ -50,7 +61,11 @@ describe("a Transpiler", () => {
     await usingTemporaryFiles(async ($) => {
       await $.add("src/starter.ts", TYPESCRIPT_SOURCE);
 
-      transpiler = new Transpiler($.path("src"), $.path("dist"), "module");
+      transpiler = new Transpiler(
+        forwardSlash($.path("src")),
+        forwardSlash($.path("dist")),
+        "module",
+      );
 
       await transpiler.watch();
 
@@ -79,7 +94,11 @@ describe("a Transpiler", () => {
     await usingTemporaryFiles(async ($) => {
       await $.add("src/update-me.ts", "const x = 'code to be overwritten';\n");
 
-      transpiler = new Transpiler($.path("src"), $.path("dist"), "module");
+      transpiler = new Transpiler(
+        forwardSlash($.path("src")),
+        forwardSlash($.path("dist")),
+        "module",
+      );
 
       const initialWrite = once(transpiler, "write");
 
@@ -103,7 +122,11 @@ describe("a Transpiler", () => {
     await usingTemporaryFiles(async ($) => {
       await $.add("src/delete-me.ts", TYPESCRIPT_SOURCE);
 
-      transpiler = new Transpiler($.path("src"), $.path("dist"), "module");
+      transpiler = new Transpiler(
+        forwardSlash($.path("src")),
+        forwardSlash($.path("dist")),
+        "module",
+      );
 
       await transpiler.watch();
       await $.remove("src/delete-me.ts");
@@ -121,7 +144,11 @@ describe("a Transpiler", () => {
     await usingTemporaryFiles(async ($) => {
       await $.add("src/found.ts", TYPESCRIPT_SOURCE);
 
-      transpiler = new Transpiler($.path("src"), $.path("dist"), "commonjs");
+      transpiler = new Transpiler(
+        forwardSlash($.path("src")),
+        forwardSlash($.path("dist")),
+        "commonjs",
+      );
 
       await transpiler.watch();
 
