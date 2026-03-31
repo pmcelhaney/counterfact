@@ -4,7 +4,7 @@ import type { OpenApiDocument } from "../../src/server/dispatcher.js";
 import {
   RouteBuilder,
   createRouteFunction,
-} from "../../src/repl/RouteBuilder.js";
+} from "../../src/repl/route-builder.js";
 
 const OPEN_API_DOCUMENT: OpenApiDocument = {
   paths: {

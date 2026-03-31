@@ -6,7 +6,7 @@ import type { OpenApiDocument } from "../server/dispatcher.js";
 import type { Registry } from "../server/registry.js";
 
 import { RawHttpClient } from "./RawHttpClient.js";
-import { createRouteFunction } from "./RouteBuilder.js";
+import { createRouteFunction } from "./route-builder.js";
 
 function printToStdout(line: string) {
   process.stdout.write(`${line}\n`);
