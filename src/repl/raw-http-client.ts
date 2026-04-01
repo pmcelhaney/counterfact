@@ -118,6 +118,18 @@ export class RawHttpClient {
 
     const body = stringifyBody(bodyAsStringOrObject);
 
+    const effectiveHeaders = { ...headers };
+
+    if (
+      typeof bodyAsStringOrObject === "object" &&
+      bodyAsStringOrObject !== null &&
+      !Object.keys(effectiveHeaders).some(
+        (k) => k.toLowerCase() === "content-type",
+      )
+    ) {
+      effectiveHeaders["Content-Type"] = "application/json";
+    }
+
     return new Promise((resolve, reject) => {
       const socket = net.createConnection(
         { host: this.host, port: this.port },
@@ -130,7 +142,7 @@ export class RawHttpClient {
             request += `Content-Length: ${Buffer.byteLength(body)}\r\n`;
           }
 
-          for (const [key, value] of Object.entries(headers)) {
+          for (const [key, value] of Object.entries(effectiveHeaders)) {
             request += `${key}: ${value}\r\n`;
           }
 
