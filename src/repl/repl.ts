@@ -4,6 +4,8 @@ import type { Config } from "../server/config.js";
 import type { ContextRegistry } from "../server/context-registry.js";
 import type { Registry } from "../server/registry.js";
 
+import { parseDsl } from "./agent/dsl-parser.js";
+import { executeOperations } from "./agent/interpreter.js";
 import { RawHttpClient } from "./RawHttpClient.js";
 
 function printToStdout(line: string) {
@@ -167,6 +169,70 @@ export function startRepl(
     },
 
     help: 'proxy configuration (".proxy help" for details)',
+  });
+
+  replServer.defineCommand("agent", {
+    action(text: string) {
+      const isDebug = text.startsWith("--debug ");
+      const dsl = isDebug ? text.slice("--debug ".length) : text;
+
+      if (!dsl.trim()) {
+        print("Usage: .agent [--debug] <dsl>");
+        print("");
+        print("Execute DSL operations on the context object.");
+        print("");
+        print("DSL statement forms:");
+        print("  context.<path> = <json-value>  (property assignment)");
+        print("  context.<path>(<json-args>)     (method call)");
+        print("");
+        print("Example:");
+        print('  .agent context.store.addPet({ "type": "cat" })');
+        print("  .agent context.checkout.fail = true");
+        this.clearBufferedCommand();
+        this.displayPrompt();
+
+        return;
+      }
+
+      try {
+        const operations = parseDsl(dsl);
+
+        if (isDebug) {
+          print("DSL input:");
+          for (const line of dsl.split("\n")) {
+            const trimmed = line.trim();
+
+            if (trimmed && !trimmed.startsWith("//")) {
+              print(`  ${trimmed}`);
+            }
+          }
+
+          print("");
+          print("Parsed operations:");
+
+          for (const op of operations) {
+            print(`  ${JSON.stringify(op)}`);
+          }
+
+          print("");
+        }
+
+        const context = replServer.context["context"] as Record<
+          string,
+          unknown
+        >;
+        const result = executeOperations(context, operations);
+
+        print(`Executed ${result.operationsExecuted.toString()} operation(s).`);
+      } catch (error) {
+        print(`Error: ${(error as Error).message}`);
+      }
+
+      this.clearBufferedCommand();
+      this.displayPrompt();
+    },
+
+    help: 'execute DSL operations on context (".agent" for usage)',
   });
 
   replServer.context.loadContext = (path: string) => contextRegistry.find(path);
