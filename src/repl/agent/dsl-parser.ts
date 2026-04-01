@@ -125,15 +125,9 @@ export function parseDslLine(line: string): Operation {
     );
   }
 
-  const pathMatch = PATH_RE.exec(body);
-
-  // PATH_RE will always match here since we already checked IDENTIFIER_RE.
-  /* istanbul ignore next */
-  if (!pathMatch) {
-    throw new Error(`Invalid path in DSL statement: "${trimmed}".`);
-  }
-
-  const pathStr = pathMatch[0];
+  // PATH_RE shares the same leading pattern as IDENTIFIER_RE, so it always
+  // matches after the IDENTIFIER_RE guard above.
+  const pathStr = (PATH_RE.exec(body) as RegExpExecArray)[0];
   const path = pathStr.split(".");
   const remainder = body.slice(pathStr.length).trimStart();
 

@@ -82,7 +82,7 @@ export function executeOperation(
   // Exhaustive check — unreachable at runtime.
   /* istanbul ignore next */
   throw new Error(
-    `Unknown operation kind: "${(operation as { kind: string }).kind}".`,
+    `Unknown operation kind: ${JSON.stringify(operation)}.`,
   );
 }
 
