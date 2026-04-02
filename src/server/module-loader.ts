@@ -208,7 +208,6 @@ export class ModuleLoader extends EventTarget {
           ? `There is a syntax error in the route file: ${displayPath}`
           : `There was an error loading the route file: ${displayPath}`;
 
-        process.stdout.write(`\n${message}\n`);
 
         const errorResponse = () => ({
           body: message,
