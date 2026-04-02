@@ -393,4 +393,44 @@ describe("a module loader", () => {
       await loader.stopWatching();
     });
   });
+
+  it("registers a 500 handler for an ESM route file with a syntax error", async () => {
+    await usingTemporaryFiles(async ($) => {
+      await $.add("bad-syntax.js", "this is not valid javascript @@@");
+      await $.add("package.json", '{ "type": "module" }');
+
+      const registry: Registry = new Registry();
+      const loader: ModuleLoader = new ModuleLoader($.path(""), registry);
+
+      await loader.load();
+
+      expect(registry.exists("GET", "/bad-syntax")).toBe(true);
+
+      // @ts-expect-error - not going to create a whole request object for a test
+      const response = await registry.endpoint("GET", "/bad-syntax")({});
+
+      expect(response?.status).toBe(500);
+      expect(response?.body).toContain("bad-syntax.js");
+    });
+  });
+
+  it("registers a 500 handler for a CJS route file with a syntax error", async () => {
+    await usingTemporaryFiles(async ($) => {
+      await $.add("bad-syntax.cjs", "this is not valid javascript @@@");
+
+      const registry: Registry = new Registry();
+      const loader: ModuleLoader = new ModuleLoader($.path(""), registry);
+
+      await loader.load();
+
+      expect(registry.exists("GET", "/bad-syntax")).toBe(true);
+
+      // @ts-expect-error - not going to create a whole request object for a test
+      const response = await registry.endpoint("GET", "/bad-syntax")({});
+
+      expect(response?.status).toBe(500);
+      expect(response?.body).toContain("bad-syntax.cjs");
+      expect(response?.body).toContain("syntax error");
+    });
+  });
 });
