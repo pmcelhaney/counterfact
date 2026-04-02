@@ -91,6 +91,31 @@ describe("a module loader", () => {
     });
   });
 
+  it("does not crash when a context file is deleted", async () => {
+    await usingTemporaryFiles(async ($) => {
+      await $.add("_.context.js", "export class Context { value = 42 }");
+      await $.add(
+        "hello.js",
+        'export function GET() { return { body: "hello" }; }',
+      );
+      await $.add("package.json", '{ "type": "module" }');
+
+      const registry: Registry = new Registry();
+      const loader: ModuleLoader = new ModuleLoader($.path("."), registry);
+
+      await loader.load();
+      await loader.watch();
+
+      await $.remove("_.context.js");
+      await once(loader, "remove");
+
+      // Should not crash and the route should still be accessible
+      expect(registry.exists("GET", "/hello")).toBe(true);
+
+      await loader.stopWatching();
+    });
+  });
+
   it("ignores files with the wrong file extension", async () => {
     await usingTemporaryFiles(async ($) => {
       const registry: Registry = new Registry();
