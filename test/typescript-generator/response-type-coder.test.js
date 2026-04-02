@@ -97,6 +97,27 @@ describe("a ResponsesTypeCoder", () => {
     });
   });
 
+  describe("buildContentObjectType", () => {
+    it("uses 'unknown' for schema when content has no schema", () => {
+      const coder = new ResponseTypeCoder({ data: {} });
+      const response = new Requirement({
+        content: {
+          "application/json": {
+            examples: {
+              "Example 1": { value: { stuffId: 123 } },
+            },
+          },
+        },
+      });
+
+      const result = coder.buildContentObjectType({}, response);
+
+      expect(result).toStrictEqual([
+        ["application/json", "{ \n            schema:  unknown\n         }"],
+      ]);
+    });
+  });
+
   describe("writeCode", () => {
     it("includes an 'examples' field in the output", () => {
       const response = new Requirement({
