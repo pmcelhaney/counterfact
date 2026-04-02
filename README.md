@@ -206,7 +206,7 @@ npx counterfact@latest [openapi.yaml] [destination] [options]
 | `--proxy-url <url>` | Forward all requests to this URL by default |
 | `--prefix <path>`   | Base path prefix (e.g. `/api/v1`)           |
 
-Run `npx counterfact --help` for the full list of options.
+Run `npx counterfact@latest --help` for the full list of options.
 
 ---
 
