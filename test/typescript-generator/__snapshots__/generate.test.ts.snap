@@ -1647,7 +1647,7 @@ export type HTTP_GET = (
 `;
 
 exports[`end-to-end test generates the same code for the example that it did on the last test run 11`] = `
-"routes/weird/path/with:colon.ts:import type { HTTP_GET } from "../../../types/paths/weird/path/with:colon.types.js";
+"routes/weird/path/with:colon.ts:import type { HTTP_GET } from "../../../types/paths/weird/path/with∶colon.types.js";
 
 export const GET: HTTP_GET = async ($) => {
   return $.response[200].random();

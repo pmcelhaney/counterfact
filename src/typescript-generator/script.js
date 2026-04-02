@@ -3,6 +3,8 @@ import nodePath from "node:path";
 import createDebugger from "debug";
 import { format } from "prettier";
 
+import { escapePathForWindows } from "../util/windows-escape.js";
+
 const debug = createDebugger("counterfact:typescript-generator:script");
 
 export class Script {
@@ -178,12 +180,14 @@ export class Script {
 
   importStatements() {
     return Array.from(this.imports, ([name, { isDefault, isType, script }]) => {
-      const resolvedPath = nodePath
-        .relative(
-          nodePath.dirname(this.path).replaceAll("\\", "/"),
-          script.path.replace(/\.ts$/u, ".js"),
-        )
-        .replaceAll("\\", "/");
+      const resolvedPath = escapePathForWindows(
+        nodePath
+          .relative(
+            nodePath.dirname(this.path).replaceAll("\\", "/"),
+            script.path.replace(/\.ts$/u, ".js"),
+          )
+          .replaceAll("\\", "/"),
+      );
 
       return `import${isType ? " type" : ""} ${
         isDefault ? name : `{ ${name} }`
