@@ -37,11 +37,15 @@ const HEADERS_TO_DROP = new Set([
   "trailers",
 ]);
 
-function addCors(ctx: Koa.ExtendableContext, headers?: IncomingHttpHeaders) {
+function addCors(
+  ctx: Koa.ExtendableContext,
+  allowedMethods: string,
+  headers?: IncomingHttpHeaders,
+) {
   // Always append CORS headers, reflecting back the headers requested if any
 
   ctx.set("Access-Control-Allow-Origin", headers?.origin ?? "*");
-  ctx.set("Access-Control-Allow-Methods", "GET,HEAD,PUT,POST,DELETE,PATCH");
+  ctx.set("Access-Control-Allow-Methods", allowedMethods);
   ctx.set(
     "Access-Control-Allow-Headers",
     headers?.["access-control-request-headers"] ?? [],
@@ -106,7 +110,7 @@ export function koaMiddleware(
       return proxy("/", { changeOrigin: true, target: proxyUrl })(ctx, next);
     }
 
-    addCors(ctx, headers);
+    addCors(ctx, dispatcher.registry.allowedMethods(path), headers);
 
     if (method === "OPTIONS") {
       ctx.status = HTTP_STATUS_CODE_OK;

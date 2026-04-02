@@ -107,6 +107,7 @@ export class ModuleLoader extends EventTarget {
         if (eventName === "unlink") {
           this.registry.remove(url);
           this.dispatchEvent(new Event("remove"));
+          return;
         }
 
         const dependencies = this.dependencyGraph.dependentsOf(pathName);
@@ -188,9 +189,13 @@ export class ModuleLoader extends EventTarget {
           ? uncachedRequire
           : uncachedImport;
 
-      const endpoint = (await doImport(pathName).catch(() => {
-        console.log("ERROR");
+      const endpoint = (await doImport(pathName).catch((error: unknown) => {
+        console.error(`Failed to import ${pathName}:`, error);
       })) as ContextModule | Module;
+
+      if (!endpoint) {
+        return;
+      }
 
       this.dispatchEvent(new Event("add"));
 

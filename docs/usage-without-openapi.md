@@ -7,13 +7,13 @@ If you don't have an [OpenAPI document](https://swagger.io/specification/), you 
 If you run Counterfact without any arguments, it will run in "OpenAPI-free" mode. (Technically, under the covers, it uses an empty OpenAPI document.)
 
 ```sh
-npx counterfact
+npx counterfact@latest
 ```
 
 If you want to specify the path where code is generated, enter "\_" in place of the path or URL to the OpenAPI document. For example, to put the code in an `api` directory under the working directory:
 
 ```sh
-npx counterfact _ api
+npx counterfact@latest _ api
 ```
 
 ## Creating routes
