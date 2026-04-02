@@ -335,5 +335,32 @@ describe("REPL", () => {
         expect(completions).toEqual(["/pets"]);
       },
     );
+
+    it('returns matching routes when typing route("', async () => {
+      const registry = new Registry();
+
+      registry.add("/pets", { GET() {} });
+      registry.add("/pets/{petId}", { GET() {} });
+      registry.add("/users", { GET() {} });
+
+      const completer = createCompleter(registry);
+      const [completions, prefix] = await callCompleter(completer, 'route("/p');
+
+      expect(prefix).toBe("/p");
+      expect(completions).toEqual(["/pets", "/pets/{petId}"]);
+    });
+
+    it('returns all routes when typing route(" with no partial', async () => {
+      const registry = new Registry();
+
+      registry.add("/pets", { GET() {} });
+      registry.add("/users", { GET() {} });
+
+      const completer = createCompleter(registry);
+      const [completions, prefix] = await callCompleter(completer, 'route("');
+
+      expect(prefix).toBe("");
+      expect(completions).toEqual(["/pets", "/users"]);
+    });
   });
 });
