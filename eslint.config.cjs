@@ -217,10 +217,7 @@ module.exports = [
     },
   },
   {
-    files: [
-      "src/**/*.{ts,tsx,js,cjs,mjs}",
-      "test/**/*.{ts,tsx,js,cjs,mjs}",
-    ],
+    files: ["src/**/*.{ts,tsx,js,cjs,mjs}", "test/**/*.{ts,tsx,js,cjs,mjs}"],
     plugins: {
       "filename-rules": {
         rules: {
@@ -229,9 +226,11 @@ module.exports = [
               return {
                 Program() {
                   const filename = context.filename;
-                  const basename = path.basename(filename).replace(/\..*$/u, "");
+                  const basename = path
+                    .basename(filename)
+                    .replace(/\..*$/u, "");
 
-                  if (!/^[a-z0-9]+(-[a-z0-9]+)*$/u.test(basename)) {
+                  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/u.test(basename)) {
                     context.report({
                       loc: { line: 1, column: 0 },
                       message: `Filename '${basename}' must be kebab-case.`,
