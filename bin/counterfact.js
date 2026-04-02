@@ -23,6 +23,18 @@ if (Number.parseInt(process.versions.node.split("."), 10) < MIN_NODE_VERSION) {
   process.exit(1);
 }
 
+const packageJson = JSON.parse(
+  await readFile(
+    nodePath.join(
+      nodePath.dirname(fileURLToPath(import.meta.url)),
+      "../package.json",
+    ),
+    "utf8",
+  ),
+);
+
+const CURRENT_VERSION = packageJson.version;
+
 const taglinesFile = await readFile(
   nodePath.join(
     nodePath.dirname(fileURLToPath(import.meta.url)),
@@ -36,6 +48,48 @@ const taglines = taglinesFile.split("\n").slice(0, -1);
 const DEFAULT_PORT = 3100;
 
 const debug = createDebug("counterfact:bin:counterfact");
+
+function isOutdated(current, latest) {
+  const [cMajor, cMinor, cPatch] = current.split(".").map(Number);
+  const [lMajor, lMinor, lPatch] = latest.split(".").map(Number);
+
+  if (lMajor > cMajor) return true;
+  if (lMajor === cMajor && lMinor > cMinor) return true;
+  if (lMajor === cMajor && lMinor === cMinor && lPatch > cPatch) return true;
+
+  return false;
+}
+
+async function checkForUpdates(currentVersion) {
+  if (process.env.CI) {
+    debug("skipping update check in CI environment");
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      "https://registry.npmjs.org/counterfact/latest",
+    );
+
+    if (!response.ok) {
+      debug("update check failed with status %d", response.status);
+      return;
+    }
+
+    const data = await response.json();
+    const latestVersion = data.version;
+
+    if (isOutdated(currentVersion, latestVersion)) {
+      process.stdout.write(
+        `\n⚠️  You're running counterfact ${currentVersion}\n`,
+      );
+      process.stdout.write(`   Latest version is ${latestVersion}\n`);
+      process.stdout.write(`   Run: npx counterfact@latest\n`);
+    }
+  } catch (error) {
+    debug("update check error: %o", error);
+  }
+}
 
 debug("running ./bin/counterfact.js");
 
@@ -101,6 +155,11 @@ async function main(source, destination) {
   debug("executing the main function");
 
   const options = program.opts();
+
+  const updateCheckPromise =
+    options.updateCheck === false
+      ? Promise.resolve()
+      : checkForUpdates(CURRENT_VERSION);
 
   // --spec takes precedence over the positional [openapi.yaml] argument.
   // When --spec is provided, the [openapi.yaml] positional slot shifts to
@@ -226,6 +285,7 @@ async function main(source, destination) {
     String.raw`   |___ [__] |__| |\|  |  |=== |--< |--- |--| |___  | `,
     "   " + padTagLine(taglines[Math.floor(Math.random() * taglines.length)]),
     "",
+    `   Version       ${CURRENT_VERSION}`,
     `   API Base URL  ${url}`,
     source === "_" ? undefined : `   Swagger UI    ${swaggerUrl}`,
     "",
@@ -253,6 +313,8 @@ async function main(source, destination) {
   debug("starting server");
   await start(config);
   debug("started server");
+
+  await updateCheckPromise;
 
   if (config.startRepl) {
     startRepl();
@@ -346,5 +408,6 @@ program
     "--spec <string>",
     "path or URL to OpenAPI document (alternative to the positional [openapi.yaml] argument)",
   )
+  .option("--no-update-check", "disable the npm update check on startup")
   .action(main)
   .parse(process.argv);

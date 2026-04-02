@@ -41,7 +41,7 @@ No. The fact that you can change the code while the server is running is what ma
 Yes. Maybe you're working on a feature and a recent Counterfact bump has caused your types to get updated and it's cluttering your staging area. No problem. You can use the `--generate`, `--generate-types` and `--generate-routes` options to have more control over when the generated code is created. This allows you to generate the types and routes separately and to run the server without generating the code.
 
 ```bash
-npx counterfact my-api.yml --generate-types
+npx counterfact@latest my-api.yml --generate-types
 ```
 
 You can use the `--watch`, `--watch-types` and `--watch-routes` flags to have Counterfact watch the types and routes files for changes and regenerate the code when they change. Watching will always include generating the code.
