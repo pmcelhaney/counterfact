@@ -103,6 +103,30 @@ describe("a Script", () => {
     ]);
   });
 
+  it("escapes colons in import paths (routes with colons like /stuff:action)", () => {
+    const repository = new Repository("/base/path");
+
+    class CoderWithColonPath extends Coder {
+      *names() {
+        yield "stuffAction";
+      }
+
+      modulePath() {
+        return "types/paths/stuff:action.types.ts";
+      }
+    }
+
+    const coder = new CoderWithColonPath({});
+
+    const script = repository.get("routes/stuff:action.ts");
+
+    script.importType(coder);
+
+    expect(script.importStatements()).toStrictEqual([
+      'import type { stuffAction } from "../types/paths/stuff∶action.types.js";',
+    ]);
+  });
+
   it("creates external import statements", () => {
     const repository = new Repository("/base/path");
 
