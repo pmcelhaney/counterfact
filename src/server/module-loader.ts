@@ -189,9 +189,45 @@ export class ModuleLoader extends EventTarget {
           ? uncachedRequire
           : uncachedImport;
 
+      let importError: unknown;
+
       const endpoint = (await doImport(pathName).catch((error: unknown) => {
-        console.error(`Failed to import ${pathName}:`, error);
+        importError = error;
       })) as ContextModule | Module;
+
+      if (importError !== undefined) {
+        const isSyntaxError =
+          importError instanceof SyntaxError ||
+          String(importError).startsWith("SyntaxError:");
+
+        const displayPath = nodePath
+          .relative(process.cwd(), unescapePathForWindows(pathName))
+          .replaceAll("\\", "/");
+
+        const message = isSyntaxError
+          ? `There is a syntax error in the route file: ${displayPath}`
+          : `There was an error loading the route file: ${displayPath}`;
+
+        const errorResponse = () => ({
+          body: message,
+          status: 500,
+        });
+
+        this.registry.add(url, {
+          DELETE: errorResponse,
+          GET: errorResponse,
+          HEAD: errorResponse,
+          OPTIONS: errorResponse,
+          PATCH: errorResponse,
+          POST: errorResponse,
+          PUT: errorResponse,
+          TRACE: errorResponse,
+        });
+
+        this.dispatchEvent(new Event("add"));
+
+        return;
+      }
 
       if (!endpoint) {
         return;
