@@ -8,7 +8,6 @@ import createDebug from "debug";
 import { ensureDirectoryExists } from "../util/ensure-directory-exists.js";
 import { CONTEXT_FILE_TOKEN } from "./context-file-token.js";
 import { Script } from "./script.js";
-
 import { escapePathForWindows } from "../util/windows-escape.js";
 
 const debug = createDebug("counterfact:server:repository");
@@ -17,18 +16,25 @@ const __dirname = dirname(fileURLToPath(import.meta.url)).replaceAll("\\", "/");
 
 debug("dirname is %s", __dirname);
 
+interface WriteFilesOptions {
+  routes?: boolean;
+  types?: boolean;
+}
+
 export class Repository {
-  constructor() {
+  public scripts: Map<string, Script>;
+
+  public constructor() {
     this.scripts = new Map();
   }
 
-  get(path) {
+  public get(path: string): Script {
     debug("getting script at %s", path);
 
     if (this.scripts.has(path)) {
       debug("already have script %s, returning it", path);
 
-      return this.scripts.get(path);
+      return this.scripts.get(path)!;
     }
 
     debug("don't have %s, creating it", path);
@@ -40,7 +46,7 @@ export class Repository {
     return script;
   }
 
-  async finished() {
+  public async finished(): Promise<void> {
     while (
       Array.from(this.scripts.values()).some((script) => script.isInProgress())
     ) {
@@ -52,7 +58,7 @@ export class Repository {
     }
   }
 
-  async copyCoreFiles(destination) {
+  public async copyCoreFiles(destination: string): Promise<boolean | void> {
     const sourcePath = nodePath.join(
       __dirname,
       "../../dist/server/counterfact-types",
@@ -63,11 +69,13 @@ export class Repository {
       return false;
     }
 
-    // eslint-disable-next-line n/no-unsupported-features/node-builtins
     return fs.cp(sourcePath, destinationPath, { recursive: true });
   }
 
-  async writeFiles(destination, { routes, types }) {
+  public async writeFiles(
+    destination: string,
+    { routes, types }: WriteFilesOptions,
+  ): Promise<void> {
     debug(
       "waiting for %i or more scripts to finish before writing files",
       this.scripts.size,
@@ -125,7 +133,7 @@ export class Repository {
     }
   }
 
-  async createDefaultContextFile(destination) {
+  public async createDefaultContextFile(destination: string): Promise<void> {
     const contextFilePath = nodePath.join(
       destination,
       "routes",
@@ -157,7 +165,7 @@ export class Context {
     );
   }
 
-  findContextPath(destination, path) {
+  public findContextPath(destination: string, path: string): string {
     return nodePath
       .relative(
         nodePath.join(destination, nodePath.dirname(path)),
@@ -166,7 +174,7 @@ export class Context {
       .replaceAll("\\", "/");
   }
 
-  nearestContextFile(destination, path) {
+  public nearestContextFile(destination: string, path: string): string {
     const directory = nodePath
       .dirname(path)
       .replaceAll("\\", "/")

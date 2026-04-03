@@ -1,7 +1,10 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
 
-async function copyAndModifyFiles(sourceDirectory, destinationDirectory) {
+async function copyAndModifyFiles(
+  sourceDirectory: string,
+  destinationDirectory: string,
+): Promise<void> {
   try {
     const entries = await fs.readdir(sourceDirectory, { withFileTypes: true });
 
@@ -25,7 +28,7 @@ async function copyAndModifyFiles(sourceDirectory, destinationDirectory) {
   }
 }
 
-export async function pathsToRoutes(rootDirectory) {
+export async function pathsToRoutes(rootDirectory: string): Promise<void> {
   await copyAndModifyFiles(
     path.join(rootDirectory, "paths"),
     path.join(rootDirectory, "routes"),

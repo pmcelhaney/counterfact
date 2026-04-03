@@ -8,12 +8,15 @@ const debug = createDebug("counterfact:typescript-generator:prune");
 /**
  * Collects all .ts route files in a directory recursively.
  * Context files (_.context.ts) are excluded.
- * @param {string} routesDir - Path to routes directory
- * @param {string} currentPath - Current subdirectory being processed (relative to routesDir)
- * @returns {Promise<string[]>} - Array of relative paths (using forward slashes)
+ * @param routesDir - Path to routes directory
+ * @param currentPath - Current subdirectory being processed (relative to routesDir)
+ * @returns Array of relative paths (using forward slashes)
  */
-async function collectRouteFiles(routesDir, currentPath = "") {
-  const files = [];
+async function collectRouteFiles(
+  routesDir: string,
+  currentPath = "",
+): Promise<string[]> {
+  const files: string[] = [];
 
   try {
     const fullDir = currentPath
@@ -33,7 +36,7 @@ async function collectRouteFiles(routesDir, currentPath = "") {
       }
     }
   } catch (error) {
-    if (error.code !== "ENOENT") {
+    if ((error as NodeJS.ErrnoException).code !== "ENOENT") {
       throw error;
     }
   }
@@ -43,10 +46,13 @@ async function collectRouteFiles(routesDir, currentPath = "") {
 
 /**
  * Recursively removes empty directories under rootDir, but not rootDir itself.
- * @param {string} dir - Directory to check
- * @param {string} rootDir - Root directory that should never be removed
+ * @param dir - Directory to check
+ * @param rootDir - Root directory that should never be removed
  */
-async function removeEmptyDirectories(dir, rootDir) {
+async function removeEmptyDirectories(
+  dir: string,
+  rootDir: string,
+): Promise<void> {
   let entries;
 
   try {
@@ -76,10 +82,9 @@ async function removeEmptyDirectories(dir, rootDir) {
 /**
  * Converts an OpenAPI path to the expected route file path (relative to routesDir).
  * e.g. "/pet/{id}" -> "pet/{id}.ts", "/" -> "index.ts"
- * @param {string} openApiPath
- * @returns {string}
+ * @param openApiPath - The OpenAPI path string
  */
-function openApiPathToRouteFile(openApiPath) {
+function openApiPathToRouteFile(openApiPath: string): string {
   const filePath = openApiPath === "/" ? "index" : openApiPath.slice(1);
 
   return `${filePath}.ts`;
@@ -88,11 +93,14 @@ function openApiPathToRouteFile(openApiPath) {
 /**
  * Prunes route files that no longer correspond to any path in the OpenAPI spec.
  * Context files (_.context.ts) are never pruned.
- * @param {string} destination - Base destination directory (contains the routes/ sub-directory)
- * @param {Iterable<string>} openApiPaths - Iterable of OpenAPI path strings (e.g. "/pet/{id}")
- * @returns {Promise<number>} - Number of files removed
+ * @param destination - Base destination directory (contains the routes/ sub-directory)
+ * @param openApiPaths - Iterable of OpenAPI path strings (e.g. "/pet/{id}")
+ * @returns Number of files removed
  */
-export async function pruneRoutes(destination, openApiPaths) {
+export async function pruneRoutes(
+  destination: string,
+  openApiPaths: Iterable<string>,
+): Promise<number> {
   const routesDir = nodePath.join(destination, "routes");
 
   const expectedFiles = new Set(

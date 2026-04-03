@@ -6,13 +6,20 @@ import createDebug from "debug";
 
 import { ensureDirectoryExists } from "../util/ensure-directory-exists.js";
 import { OperationCoder } from "./operation-coder.js";
+import { type SecurityScheme } from "./operation-type-coder.js";
 import { pruneRoutes } from "./prune.js";
 import { Repository } from "./repository.js";
 import { Specification } from "./specification.js";
 
 const debug = createDebug("counterfact:typescript-generator:generate");
 
-async function buildCacheDirectory(destination) {
+interface GenerateOptions {
+  prune?: boolean;
+  routes?: boolean;
+  types?: boolean;
+}
+
+async function buildCacheDirectory(destination: string): Promise<void> {
   const gitignorePath = nodePath.join(destination, ".gitignore");
   const cacheReadmePath = nodePath.join(destination, ".cache", "README.md");
 
@@ -36,24 +43,26 @@ async function buildCacheDirectory(destination) {
   );
 }
 
-async function getPathsFromSpecification(specification) {
+async function getPathsFromSpecification(
+  specification: Specification,
+): Promise<ReturnType<Specification["getRequirement"]>> {
   try {
-    return specification.getRequirement("#/paths") ?? new Set();
+    return specification.getRequirement("#/paths") ?? new Set<never>();
   } catch (error) {
     process.stderr.write(
-      `Could not find #/paths in the specification.\n${error}\n`,
+      `Could not find #/paths in the specification.\n${error as string}\n`,
     );
 
-    return new Set();
+    return undefined as unknown as ReturnType<Specification["getRequirement"]>;
   }
 }
 
 export async function generate(
-  source,
-  destination,
-  generateOptions,
+  source: string,
+  destination: string,
+  generateOptions: GenerateOptions,
   repository = new Repository(),
-) {
+): Promise<void> {
   debug("generating code from %s to %s", source, destination);
 
   debug("initializing the .cache directory");
@@ -70,11 +79,14 @@ export async function generate(
 
   const paths = await getPathsFromSpecification(specification);
 
-  debug("got %i paths", paths.size);
+  debug("got %i paths", paths?.map?.length ?? 0);
 
   if (generateOptions.prune && generateOptions.routes) {
     debug("pruning defunct route files");
-    await pruneRoutes(destination, paths.keys());
+    await pruneRoutes(
+      destination,
+      paths.map((_v, key) => key),
+    );
     debug("done pruning");
   }
 
@@ -82,13 +94,15 @@ export async function generate(
     "#/components/securitySchemes",
   );
 
-  const securitySchemes = Object.values(securityRequirement?.data ?? {});
+  const securitySchemes = Object.values(
+    (securityRequirement?.data as Record<string, unknown>) ?? {},
+  ) as SecurityScheme[];
 
-  paths.forEach((pathDefinition, key) => {
+  paths.forEach((pathDefinition, key: string) => {
     debug("processing path %s", key);
 
     const path = key === "/" ? "/index" : key;
-    pathDefinition.forEach((operation, requestMethod) => {
+    pathDefinition.forEach((operation, requestMethod: string) => {
       repository
         .get(`routes${path}.ts`)
         .export(new OperationCoder(operation, requestMethod, securitySchemes));

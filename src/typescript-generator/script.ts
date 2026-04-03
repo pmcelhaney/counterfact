@@ -4,11 +4,35 @@ import createDebugger from "debug";
 import { format } from "prettier";
 
 import { escapePathForWindows } from "../util/windows-escape.js";
+import type { Coder, ExportStatement } from "./coder.js";
+import type { Repository } from "./repository.js";
 
 const debug = createDebugger("counterfact:typescript-generator:script");
 
+interface ImportEntry {
+  isDefault: boolean;
+  isType: boolean;
+  name: string;
+  script: Script;
+}
+
+interface ExternalImportEntry {
+  isDefault?: boolean;
+  isType: boolean;
+  modulePath: string;
+}
+
 export class Script {
-  constructor(repository, path) {
+  public repository: Repository;
+  public comments: string[];
+  public exports: Map<string, ExportStatement>;
+  public imports: Map<string, ImportEntry>;
+  public externalImport: Map<string, ExternalImportEntry>;
+  public cache: Map<string, string>;
+  public typeCache: Map<string, string>;
+  public path: string;
+
+  public constructor(repository: Repository, path: string) {
     this.repository = repository;
     this.comments = [];
     this.exports = new Map();
@@ -19,7 +43,7 @@ export class Script {
     this.path = path;
   }
 
-  get relativePathToBase() {
+  public get relativePathToBase(): string {
     return this.path
       .split("/")
       .slice(0, -1)
@@ -27,7 +51,7 @@ export class Script {
       .join("/");
   }
 
-  firstUniqueName(coder) {
+  public firstUniqueName(coder: Coder): string {
     for (const name of coder.names()) {
       if (!this.imports.has(name)) {
         return name;
@@ -37,18 +61,18 @@ export class Script {
     throw new Error(`could not find a unique name for ${coder.id}`);
   }
 
-  export(coder, isType = false, isDefault = false) {
+  public export(coder: Coder, isType = false, isDefault = false): string {
     const cacheKey = isDefault ? "default" : `${coder.id}:${isType}`;
 
     if (this.cache.has(cacheKey)) {
-      return this.cache.get(cacheKey);
+      return this.cache.get(cacheKey)!;
     }
 
     const name = this.firstUniqueName(coder);
 
     this.cache.set(cacheKey, name);
 
-    const exportStatement = {
+    const exportStatement: ExportStatement = {
       beforeExport: coder.beforeExport(this.path),
       done: false,
       id: coder.id,
@@ -67,9 +91,10 @@ export class Script {
         return availableCoder;
       })
 
-      .catch((error) => {
+      .catch((error: Error) => {
         exportStatement.code = `{/* error creating export "${name}" for ${this.path}: ${error.stack} */}`;
         exportStatement.error = error;
+        return undefined;
       })
 
       .finally(() => {
@@ -81,11 +106,11 @@ export class Script {
     return name;
   }
 
-  exportDefault(coder, isType = false) {
+  public exportDefault(coder: Coder, isType = false): void {
     this.export(coder, isType, true);
   }
 
-  import(coder, isType = false, isDefault = false) {
+  public import(coder: Coder, isType = false, isDefault = false): string {
     debug("import coder: %s", coder.id);
 
     const modulePath = coder.modulePath();
@@ -97,7 +122,7 @@ export class Script {
     if (this.cache.has(cacheKey)) {
       debug("cache hit: %s", cacheKey);
 
-      return this.cache.get(cacheKey);
+      return this.cache.get(cacheKey)!;
     }
 
     debug("cache miss: %s", cacheKey);
@@ -124,25 +149,29 @@ export class Script {
     return name;
   }
 
-  importType(coder) {
+  public importType(coder: Coder): string {
     return this.import(coder, true);
   }
 
-  importDefault(coder, isType = false) {
+  public importDefault(coder: Coder, isType = false): string {
     return this.import(coder, isType, true);
   }
 
-  importExternal(name, modulePath, isType = false) {
+  public importExternal(
+    name: string,
+    modulePath: string,
+    isType = false,
+  ): string {
     this.externalImport.set(name, { isType, modulePath });
 
     return name;
   }
 
-  importExternalType(name, modulePath) {
+  public importExternalType(name: string, modulePath: string): string {
     return this.importExternal(name, modulePath, true);
   }
 
-  importSharedType(name) {
+  public importSharedType(name: string): string {
     return this.importExternal(
       name,
       nodePath
@@ -152,23 +181,23 @@ export class Script {
     );
   }
 
-  exportType(coder) {
+  public exportType(coder: Coder): string {
     return this.export(coder, true);
   }
 
-  isInProgress() {
+  public isInProgress(): boolean {
     return Array.from(this.exports.values()).some(
       (exportStatement) => !exportStatement.done,
     );
   }
 
-  finished() {
+  public finished(): Promise<(Coder | undefined)[]> {
     return Promise.all(
-      Array.from(this.exports.values(), (value) => value.promise),
+      Array.from(this.exports.values(), (value) => value.promise!),
     );
   }
 
-  externalImportStatements() {
+  public externalImportStatements(): string[] {
     return Array.from(
       this.externalImport,
       ([name, { isDefault, isType, modulePath }]) =>
@@ -178,7 +207,7 @@ export class Script {
     );
   }
 
-  importStatements() {
+  public importStatements(): string[] {
     return Array.from(this.imports, ([name, { isDefault, isType, script }]) => {
       const resolvedPath = escapePathForWindows(
         nodePath
@@ -195,28 +224,30 @@ export class Script {
     });
   }
 
-  exportStatements() {
+  public exportStatements(): string[] {
     return Array.from(
       this.exports.values(),
       ({ beforeExport, code, isDefault, isType, name, typeDeclaration }) => {
-        if (code.raw) {
+        if (typeof code === "object" && code !== null && "raw" in code) {
           return code.raw;
         }
 
         if (isDefault) {
-          return `${beforeExport}export default ${code};`;
+          return `${beforeExport}export default ${code as string};`;
         }
 
         const keyword = isType ? "type" : "const";
         const typeAnnotation =
-          typeDeclaration.length === 0 ? "" : `:${typeDeclaration}`;
+          (typeDeclaration ?? "").length === 0
+            ? ""
+            : `:${typeDeclaration ?? ""}`;
 
-        return `${beforeExport}export ${keyword} ${name}${typeAnnotation} = ${code};`;
+        return `${beforeExport}export ${keyword} ${name ?? ""}${typeAnnotation} = ${code as string};`;
       },
     );
   }
 
-  contents() {
+  public contents(): Promise<string> {
     return format(
       [
         this.comments.map((comment) => `// ${comment}`).join("\n"),

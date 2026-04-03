@@ -2,32 +2,41 @@ import nodePath from "node:path";
 
 import { SchemaTypeCoder } from "./schema-type-coder.js";
 import { TypeCoder } from "./type-coder.js";
+import type { Requirement } from "./requirement.js";
+import type { Script } from "./script.js";
 
 export class ParametersTypeCoder extends TypeCoder {
-  constructor(requirement, placement) {
+  public placement: string;
+
+  public constructor(requirement: Requirement, placement: string) {
     super(requirement);
 
     this.placement = placement;
   }
 
-  names() {
+  public override names(): Generator<string> {
     return super.names("parameters");
   }
 
-  writeCode(script) {
-    const typeDefinitions = (this.requirement?.data ?? [])
+  public override writeCode(script: Script): string {
+    const typeDefinitions = (
+      (this.requirement?.data as unknown as unknown[]) ?? []
+    )
       .map((_, index) => {
-        return this.requirement.get(index);
+        return this.requirement.get(index)!;
       })
-      .filter((parameter) => parameter.get("in").data === this.placement)
+      .filter(
+        (parameter) =>
+          (parameter.get("in")!.data as unknown as string) === this.placement,
+      )
       .map((parameter) => {
-        const name = parameter.get("name")?.data;
-        const required = parameter.get("required")?.data;
+        const name = parameter.get("name")?.data as string | undefined;
+        const required = parameter.get("required")?.data as boolean | undefined;
 
         const optionalFlag = required ? "" : "?";
 
         const schema = parameter.has("schema")
-          ? parameter.get("schema")
+          ? parameter.get("schema")!
           : parameter;
 
         return `"${name}"${optionalFlag}: ${new SchemaTypeCoder(schema).write(
@@ -42,10 +51,10 @@ export class ParametersTypeCoder extends TypeCoder {
     return `{${typeDefinitions.join(", ")}}`;
   }
 
-  modulePath() {
+  public override modulePath(): string {
     const pathString = this.requirement.url
       .split("/")
-      .at(-2)
+      .at(-2)!
       .replaceAll("~1", "/");
 
     return `${nodePath
