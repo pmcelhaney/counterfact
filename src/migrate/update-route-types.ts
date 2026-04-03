@@ -3,7 +3,10 @@ import path from "node:path";
 
 import createDebug from "debug";
 
-import { OperationTypeCoder } from "../typescript-generator/operation-type-coder.js";
+import {
+  OperationTypeCoder,
+  type SecurityScheme,
+} from "../typescript-generator/operation-type-coder.js";
 import { Specification } from "../typescript-generator/specification.js";
 
 const debug = createDebug("counterfact:migrate:update-route-types");
@@ -16,13 +19,15 @@ const HTTP_METHODS = [
   "PATCH",
   "HEAD",
   "OPTIONS",
-];
+] as const;
+
+type HttpMethod = (typeof HTTP_METHODS)[number];
 
 /**
  * Converts an OpenAPI path to a file system path
  * e.g., "/hello/{name}" -> "hello/{name}"
  */
-function openApiPathToFilePath(openApiPath) {
+function openApiPathToFilePath(openApiPath: string): string {
   if (openApiPath === "/") {
     return "index";
   }
@@ -31,13 +36,15 @@ function openApiPathToFilePath(openApiPath) {
 
 /**
  * Builds a mapping of route file paths to their operation type names per method
- * @param {Specification} specification - The OpenAPI specification
- * @returns {Promise<Map<string, Map<string, string>>>} - Map of filePath -> Map of method -> typeName
+ * @param specification - The OpenAPI specification
+ * @returns Map of filePath -> Map of method -> typeName
  */
-async function buildTypeNameMapping(specification) {
+async function buildTypeNameMapping(
+  specification: Specification,
+): Promise<Map<string, Map<string, string>>> {
   debug("building type name mapping from specification");
 
-  const mapping = new Map();
+  const mapping = new Map<string, Map<string, string>>();
 
   try {
     const paths = specification.getRequirement("#/paths");
@@ -50,15 +57,17 @@ async function buildTypeNameMapping(specification) {
     const securityRequirement = specification.getRequirement(
       "#/components/securitySchemes",
     );
-    const securitySchemes = Object.values(securityRequirement?.data ?? {});
+    const securitySchemes = Object.values(
+      (securityRequirement?.data as Record<string, unknown>) ?? {},
+    ) as SecurityScheme[];
 
-    paths.forEach((pathDefinition, openApiPath) => {
+    paths.forEach((pathDefinition, openApiPath: string) => {
       const filePath = openApiPathToFilePath(openApiPath);
-      const methodMap = new Map();
+      const methodMap = new Map<string, string>();
 
-      pathDefinition.forEach((operation, requestMethod) => {
+      pathDefinition.forEach((operation, requestMethod: string) => {
         // Skip if not a standard HTTP method
-        if (!HTTP_METHODS.includes(requestMethod.toUpperCase())) {
+        if (!HTTP_METHODS.includes(requestMethod.toUpperCase() as HttpMethod)) {
           return;
         }
 
@@ -70,7 +79,7 @@ async function buildTypeNameMapping(specification) {
         );
 
         // Get the type name (first from the names generator)
-        const typeName = typeCoder.names().next().value;
+        const typeName = typeCoder.names().next().value as string;
 
         methodMap.set(requestMethod.toUpperCase(), typeName);
 
@@ -98,10 +107,9 @@ async function buildTypeNameMapping(specification) {
 
 /**
  * Checks if a route file needs migration by looking for old-style HTTP_ imports
- * @param {string} content - The file content
- * @returns {boolean}
+ * @param content - The file content
  */
-function needsMigration(content) {
+function needsMigration(content: string): boolean {
   const methodAlternation = HTTP_METHODS.map((method) =>
     method.toUpperCase(),
   ).join("|");
@@ -114,11 +122,14 @@ function needsMigration(content) {
 
 /**
  * Updates a single route file with the correct type names
- * @param {string} filePath - Absolute path to the route file
- * @param {Map<string, string>} methodToTypeName - Map of HTTP method to type name
- * @returns {Promise<boolean>} - True if file was updated
+ * @param filePath - Absolute path to the route file
+ * @param methodToTypeName - Map of HTTP method to type name
+ * @returns True if file was updated
  */
-async function updateRouteFile(filePath, methodToTypeName) {
+async function updateRouteFile(
+  filePath: string,
+  methodToTypeName: Map<string, string>,
+): Promise<boolean> {
   debug("processing route file: %s", filePath);
 
   let content = await fs.readFile(filePath, "utf8");
@@ -132,7 +143,7 @@ async function updateRouteFile(filePath, methodToTypeName) {
   let modified = false;
 
   // Build a map of old type names to new type names found in this file
-  const replacements = new Map();
+  const replacements = new Map<string, string>();
 
   // Find all import statements with HTTP_ patterns
   const importRegex =
@@ -140,7 +151,7 @@ async function updateRouteFile(filePath, methodToTypeName) {
   let importMatch;
 
   while ((importMatch = importRegex.exec(content)) !== null) {
-    const importedTypes = importMatch.groups.types
+    const importedTypes = (importMatch.groups?.["types"] ?? "")
       .split(",")
       .map((t) => t.trim())
       .filter((t) => t.length > 0);
@@ -152,7 +163,7 @@ async function updateRouteFile(filePath, methodToTypeName) {
       );
 
       if (httpMethodMatch) {
-        const method = httpMethodMatch.groups.method;
+        const method = httpMethodMatch.groups?.["method"] ?? "";
         const newTypeName = methodToTypeName.get(method);
 
         if (newTypeName && newTypeName !== importedType) {
@@ -183,7 +194,7 @@ async function updateRouteFile(filePath, methodToTypeName) {
       new RegExp(`^HTTP_(?<method>${HTTP_METHODS.join("|")})$`, "u"),
     );
     if (methodMatch) {
-      const method = methodMatch.groups.method;
+      const method = methodMatch.groups?.["method"] ?? "";
       const exportPattern = new RegExp(
         `(export\\s+const\\s+${method}\\s*:\\s*)${oldName}(\\b)`,
         "g",
@@ -204,12 +215,16 @@ async function updateRouteFile(filePath, methodToTypeName) {
 
 /**
  * Recursively processes route files in a directory
- * @param {string} routesDir - Path to routes directory
- * @param {string} currentPath - Current subdirectory being processed
- * @param {Map<string, Map<string, string>>} mapping - Type name mapping
- * @returns {Promise<number>} - Number of files updated
+ * @param routesDir - Path to routes directory
+ * @param currentPath - Current subdirectory being processed
+ * @param mapping - Type name mapping
+ * @returns Number of files updated
  */
-async function processRouteDirectory(routesDir, currentPath, mapping) {
+async function processRouteDirectory(
+  routesDir: string,
+  currentPath: string,
+  mapping: Map<string, Map<string, string>>,
+): Promise<number> {
   let updatedCount = 0;
 
   try {
@@ -244,7 +259,7 @@ async function processRouteDirectory(routesDir, currentPath, mapping) {
       }
     }
   } catch (error) {
-    if (error.code !== "ENOENT") {
+    if ((error as NodeJS.ErrnoException).code !== "ENOENT") {
       debug("error processing directory %s: %o", currentPath, error);
     }
   }
@@ -254,10 +269,9 @@ async function processRouteDirectory(routesDir, currentPath, mapping) {
 
 /**
  * Checks if any route files need migration
- * @param {string} routesDir - Path to routes directory
- * @returns {Promise<boolean>}
+ * @param routesDir - Path to routes directory
  */
-async function checkIfMigrationNeeded(routesDir) {
+async function checkIfMigrationNeeded(routesDir: string): Promise<boolean> {
   try {
     const entries = await fs.readdir(routesDir, { withFileTypes: true });
 
@@ -289,11 +303,14 @@ async function checkIfMigrationNeeded(routesDir) {
 
 /**
  * Main migration function - updates route type imports to use new naming convention
- * @param {string} basePath - Base path where routes and types are located
- * @param {string} openApiPath - Path or URL to OpenAPI specification
- * @returns {Promise<boolean>} - True if migration was performed
+ * @param basePath - Base path where routes and types are located
+ * @param openApiPath - Path or URL to OpenAPI specification
+ * @returns True if migration was performed
  */
-export async function updateRouteTypes(basePath, openApiPath) {
+export async function updateRouteTypes(
+  basePath: string,
+  openApiPath: string,
+): Promise<boolean> {
   debug("starting route type migration for base path: %s", basePath);
 
   // Skip if running without OpenAPI spec
@@ -342,7 +359,7 @@ export async function updateRouteTypes(basePath, openApiPath) {
   } catch (error) {
     debug("error during migration: %o", error);
     process.stderr.write(
-      `Warning: Could not migrate route types: ${error.message}\n`,
+      `Warning: Could not migrate route types: ${(error as Error).message}\n`,
     );
     return false;
   }

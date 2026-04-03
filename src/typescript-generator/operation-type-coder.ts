@@ -1,12 +1,14 @@
 import nodePath from "node:path";
 
 import { CONTEXT_FILE_TOKEN } from "./context-file-token.js";
+import { ParameterExportTypeCoder } from "./parameter-export-type-coder.js";
 import { ParametersTypeCoder } from "./parameters-type-coder.js";
 import { READ_ONLY_COMMENTS } from "./read-only-comments.js";
 import { ResponsesTypeCoder } from "./responses-type-coder.js";
 import { SchemaTypeCoder } from "./schema-type-coder.js";
 import { TypeCoder } from "./type-coder.js";
-import { ParameterExportTypeCoder } from "./parameter-export-type-coder.js";
+import type { Requirement } from "./requirement.js";
+import type { Script } from "./script.js";
 
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Lexical_grammar#reserved_words
 const RESERVED_WORDS = new Set([
@@ -59,9 +61,9 @@ const RESERVED_WORDS = new Set([
   "type",
 ]);
 
-function sanitizeIdentifier(value) {
+function sanitizeIdentifier(value: string): string {
   // Treat any run of non-identifier characters as a camelCase separator
-  let result = value.replaceAll(/[^\w$]+(?<next>.)/gu, (_, char) =>
+  let result = value.replaceAll(/[^\w$]+(?<next>.)/gu, (_, char: string) =>
     char.toUpperCase(),
   );
 
@@ -81,8 +83,20 @@ function sanitizeIdentifier(value) {
   return result || "_";
 }
 
+export interface SecurityScheme {
+  scheme?: string;
+  type?: string;
+}
+
 export class OperationTypeCoder extends TypeCoder {
-  constructor(requirement, requestMethod, securitySchemes = []) {
+  public requestMethod: string;
+  public securitySchemes: SecurityScheme[];
+
+  public constructor(
+    requirement: Requirement,
+    requestMethod: string,
+    securitySchemes: SecurityScheme[] = [],
+  ) {
     super(requirement);
 
     if (requestMethod === undefined) {
@@ -93,24 +107,33 @@ export class OperationTypeCoder extends TypeCoder {
     this.securitySchemes = securitySchemes;
   }
 
-  getOperationBaseName() {
-    const operationId = this.requirement.get("operationId")?.data;
+  public getOperationBaseName(): string {
+    const operationId = this.requirement.get("operationId")?.data as
+      | string
+      | undefined;
 
     return operationId
       ? sanitizeIdentifier(operationId)
       : `HTTP_${this.requestMethod.toUpperCase()}`;
   }
 
-  names() {
+  public override names(): Generator<string> {
     return super.names(this.getOperationBaseName());
   }
 
-  exportParameterType(script, parameterKind, inlineType, baseName, modulePath) {
+  public exportParameterType(
+    script: Script,
+    parameterKind: string,
+    inlineType: string,
+    baseName: string,
+    modulePath: string,
+  ): string {
     if (inlineType === "never") {
       return "never";
     }
 
-    const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
+    const capitalize = (str: string): string =>
+      str.charAt(0).toUpperCase() + str.slice(1);
     const typeName = `${baseName}_${capitalize(parameterKind)}`;
 
     const coder = new ParameterExportTypeCoder(
@@ -124,39 +147,42 @@ export class OperationTypeCoder extends TypeCoder {
     return script.export(coder, true);
   }
 
-  responseTypes(script) {
+  public responseTypes(script: Script): string {
     return this.requirement
-      .get("responses")
-      .flatMap((response, responseCode) => {
+      .get("responses")!
+      .flatMap((response, responseCode): string | string[] => {
         const status =
           responseCode === "default"
             ? "number | undefined"
             : Number.parseInt(responseCode, 10);
 
         if (response.has("content")) {
-          return response.get("content").map(
+          return response.get("content")!.map(
             (content, contentType) => `{  
               status: ${status}, 
               contentType?: "${contentType}",
-              body?: ${content.has("schema") ? new SchemaTypeCoder(content.get("schema")).write(script) : "unknown"}
+              body?: ${content.has("schema") ? new SchemaTypeCoder(content.get("schema")!).write(script) : "unknown"}
             }`,
           );
         }
 
         if (response.has("schema")) {
-          const produces =
-            this.requirement?.get("produces")?.data ??
-            this.requirement.specification.rootRequirement.get("produces").data;
+          const producesReq =
+            this.requirement?.get("produces") ??
+            this.requirement.specification?.rootRequirement?.get("produces");
+          const produces = producesReq?.data as string[] | undefined;
 
-          return produces
-            .map(
-              (contentType) => `{
+          if (produces) {
+            return produces
+              .map(
+                (contentType) => `{
             status: ${status},
             contentType?: "${contentType}",
-            body?: ${new SchemaTypeCoder(response.get("schema")).write(script)}
+            body?: ${new SchemaTypeCoder(response.get("schema")!).write(script)}
           }`,
-            )
-            .join(" | ");
+              )
+              .join(" | ");
+          }
         }
 
         return `{  
@@ -167,10 +193,10 @@ export class OperationTypeCoder extends TypeCoder {
       .join(" | ");
   }
 
-  modulePath() {
+  public override modulePath(): string {
     const pathString = this.requirement.url
       .split("/")
-      .at(-2)
+      .at(-2)!
       .replaceAll("~1", "/");
 
     return `${nodePath
@@ -178,7 +204,7 @@ export class OperationTypeCoder extends TypeCoder {
       .replaceAll("\\", "/")}.types.ts`;
   }
 
-  userType() {
+  public userType(): string {
     if (
       this.securitySchemes.some(
         ({ scheme, type }) => type === "http" && scheme === "basic",
@@ -190,7 +216,7 @@ export class OperationTypeCoder extends TypeCoder {
     return "never";
   }
 
-  writeCode(script) {
+  public override writeCode(script: Script): string {
     script.comments = READ_ONLY_COMMENTS;
 
     const xType = script.importSharedType("WideOperationArgument");
@@ -206,26 +232,28 @@ export class OperationTypeCoder extends TypeCoder {
 
     const parameters = this.requirement.get("parameters");
 
-    const queryType = new ParametersTypeCoder(parameters, "query").write(
+    const queryType = new ParametersTypeCoder(parameters!, "query").write(
       script,
     );
 
-    const pathType = new ParametersTypeCoder(parameters, "path").write(script);
+    const pathType = new ParametersTypeCoder(parameters!, "path").write(script);
 
-    const headersType = new ParametersTypeCoder(parameters, "header").write(
+    const headersType = new ParametersTypeCoder(parameters!, "header").write(
       script,
     );
 
-    const cookieType = new ParametersTypeCoder(parameters, "cookie").write(
+    const cookieType = new ParametersTypeCoder(parameters!, "cookie").write(
       script,
     );
 
     const bodyRequirement =
-      this.requirement.get("consumes") ||
-      this.requirement.specification?.rootRequirement?.get("consumes")
+      (this.requirement.get("consumes") ??
+      this.requirement.specification?.rootRequirement?.get("consumes"))
         ? parameters
             ?.find((parameter) =>
-              ["body", "formData"].includes(parameter.get("in").data),
+              ["body", "formData"].includes(
+                parameter.get("in")?.data as unknown as string,
+              ),
             )
             ?.get("schema")
         : this.requirement.select(
@@ -238,9 +266,10 @@ export class OperationTypeCoder extends TypeCoder {
         : new SchemaTypeCoder(bodyRequirement).write(script);
 
     const responseType = new ResponsesTypeCoder(
-      this.requirement.get("responses"),
-      this.requirement.get("produces")?.data ??
-        this.requirement.specification?.rootRequirement?.get("produces")?.data,
+      this.requirement.get("responses")!,
+      (this.requirement.get("produces")?.data ??
+        this.requirement.specification?.rootRequirement?.get("produces")
+          ?.data) as string[] | undefined,
     ).write(script);
 
     const proxyType = "(url: string) => COUNTERFACT_RESPONSE";

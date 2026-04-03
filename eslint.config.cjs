@@ -132,6 +132,16 @@ module.exports = [
       "@typescript-eslint/lines-around-comment": "off",
       "@typescript-eslint/naming-convention": "off",
       "@typescript-eslint/no-magic-numbers": "off",
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          argsIgnorePattern: "^_",
+          caughtErrorsIgnorePattern: "^_",
+          destructuredArrayIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+          ignoreRestSiblings: true,
+        },
+      ],
       "@typescript-eslint/prefer-readonly-parameter-types": "off",
       camelcase: "off",
       "eslint-comments/no-unused-disable": "off",

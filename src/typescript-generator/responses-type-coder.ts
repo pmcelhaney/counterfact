@@ -1,15 +1,22 @@
 import { printObjectWithoutQuotes } from "./printers.js";
 import { ResponseTypeCoder } from "./response-type-coder.js";
 import { TypeCoder } from "./type-coder.js";
+import type { Requirement } from "./requirement.js";
+import type { Script } from "./script.js";
 
 export class ResponsesTypeCoder extends TypeCoder {
-  constructor(requirement, openApi2MediaTypes = []) {
+  public openApi2MediaTypes: string[];
+
+  public constructor(
+    requirement: Requirement,
+    openApi2MediaTypes: string[] = [],
+  ) {
     super(requirement);
 
     this.openApi2MediaTypes = openApi2MediaTypes;
   }
 
-  typeForDefaultStatusCode(listedStatusCodes) {
+  public typeForDefaultStatusCode(listedStatusCodes: string[]): string {
     const definedStatusCodes = listedStatusCodes.filter(
       (key) => key !== "default",
     );
@@ -23,24 +30,26 @@ export class ResponsesTypeCoder extends TypeCoder {
     )}>]`;
   }
 
-  normalizeStatusCode(statusCode) {
+  public normalizeStatusCode(statusCode: string): string {
     if (statusCode === "default") {
-      return this.typeForDefaultStatusCode(Object.keys(this.requirement.data));
+      return this.typeForDefaultStatusCode(
+        Object.keys(this.requirement.data as Record<string, unknown>),
+      );
     }
 
     return statusCode;
   }
 
-  buildResponseObjectType(script) {
+  public buildResponseObjectType(script: Script): string {
     return printObjectWithoutQuotes(
-      this.requirement.map((response, responseCode) => [
+      this.requirement.map((response, responseCode): [string, string] => [
         this.normalizeStatusCode(responseCode),
         new ResponseTypeCoder(response, this.openApi2MediaTypes).write(script),
       ]),
     );
   }
 
-  writeCode(script) {
+  public override writeCode(script: Script): string {
     script.importSharedType("ResponseBuilderFactory");
 
     const text = `ResponseBuilderFactory<${this.buildResponseObjectType(

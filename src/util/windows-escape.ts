@@ -1,7 +1,7 @@
 const UNICODE_RATIO_SYMBOL = "∶"; // U+2236
 const REGULAR_COLON = ":";
 
-export function escapePathForWindows(path) {
+export function escapePathForWindows(path: string): string {
   if (path.at(1) === ":") {
     return (
       path.slice(0, 2) +
@@ -11,6 +11,6 @@ export function escapePathForWindows(path) {
   return path.replaceAll(REGULAR_COLON, UNICODE_RATIO_SYMBOL);
 }
 
-export function unescapePathForWindows(path) {
+export function unescapePathForWindows(path: string): string {
   return path.replaceAll(UNICODE_RATIO_SYMBOL, REGULAR_COLON);
 }
