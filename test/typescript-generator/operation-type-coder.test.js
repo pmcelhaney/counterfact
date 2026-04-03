@@ -129,6 +129,50 @@ describe("an OperationTypeCoder", () => {
 
       expect(coder.getOperationBaseName()).toBe("_123getUser");
     });
+
+    it("appends underscore when operationId is a reserved word", () => {
+      const coder = new OperationTypeCoder(
+        new Requirement({ operationId: "delete" }, "#/paths/stuff/delete"),
+        "delete",
+      );
+
+      expect(coder.getOperationBaseName()).toBe("delete_");
+    });
+
+    it("appends underscore when operationId is another reserved word", () => {
+      const coder = new OperationTypeCoder(
+        new Requirement({ operationId: "import" }, "#/paths/stuff/post"),
+        "post",
+      );
+
+      expect(coder.getOperationBaseName()).toBe("import_");
+    });
+
+    it("appends underscore when operationId is await", () => {
+      const coder = new OperationTypeCoder(
+        new Requirement({ operationId: "await" }, "#/paths/stuff/get"),
+        "get",
+      );
+
+      expect(coder.getOperationBaseName()).toBe("await_");
+    });
+    it("appends underscore when operationId becomes a reserved word after stripping trailing non-identifier chars", () => {
+      const coder = new OperationTypeCoder(
+        new Requirement({ operationId: "delete!!" }, "#/paths/stuff/delete"),
+        "delete",
+      );
+
+      expect(coder.getOperationBaseName()).toBe("delete_");
+    });
+
+    it("does not append underscore when operationId already has a suffix making it non-reserved", () => {
+      const coder = new OperationTypeCoder(
+        new Requirement({ operationId: "deleteItem" }, "#/paths/stuff/delete"),
+        "delete",
+      );
+
+      expect(coder.getOperationBaseName()).toBe("deleteItem");
+    });
   });
 
   it("creates a type declaration", () => {
@@ -616,5 +660,40 @@ describe("an OperationTypeCoder", () => {
     );
     expect(result).toContain("cookie: getSession_Cookie");
     expect(result).not.toContain("cookie: never");
+  });
+
+  it("uses 'unknown' body type when response content has no schema", () => {
+    const requirement = new Requirement(
+      {
+        operationId: "createStuff",
+        requestBody: {
+          content: {
+            "application/json": {
+              schema: {
+                type: "object",
+                properties: { name: { type: "string" } },
+              },
+            },
+          },
+        },
+        responses: {
+          200: {
+            content: {
+              "application/json": {
+                examples: {
+                  "Example 1": { value: { stuffId: 123 } },
+                },
+              },
+            },
+          },
+        },
+      },
+      "#/paths/stuff/post",
+    );
+
+    const coder = new OperationTypeCoder(requirement, "post");
+
+    expect(() => coder.responseTypes(dummyScript)).not.toThrow();
+    expect(coder.responseTypes(dummyScript)).toContain("body?: unknown");
   });
 });
