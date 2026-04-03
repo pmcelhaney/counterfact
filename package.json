@@ -66,7 +66,6 @@
   "scripts": {
     "test": "yarn node --experimental-vm-modules ./node_modules/jest-cli/bin/jest --testPathIgnorePatterns=black-box",
     "test:black-box": "rimraf dist && yarn build && python3 -m pytest test-black-box/ -v",
-    "test:mutants": "stryker run stryker.config.json",
     "test:tsd": "tsd --typings ./dist/server/counterfact-types/index.ts --files ./test/**/*.test-d.ts",
     "build": "rm -rf dist && tsc && copyfiles -f \"src/client/**\" dist/client && copyfiles -f \"src/counterfact-types/*.ts\" dist/server/counterfact-types && copyfiles -f \"src/server/*.cjs\" dist/server",
     "prepack": "yarn build",
@@ -85,9 +84,6 @@
     "@changesets/cli": "2.30.0",
     "@eslint/js": "10.0.1",
     "@jest/globals": "^30.3.0",
-    "@stryker-mutator/core": "9.6.0",
-    "@stryker-mutator/jest-runner": "9.6.0",
-    "@stryker-mutator/typescript-checker": "9.6.0",
     "@swc/core": "1.15.21",
     "@swc/jest": "0.2.39",
     "@testing-library/dom": "10.4.1",
@@ -123,7 +119,6 @@
     "jest-retries": "1.0.1",
     "node-mocks-http": "1.17.2",
     "rimraf": "6.1.3",
-    "stryker-cli": "1.1.0",
     "supertest": "7.2.2",
     "tsd": "0.33.0",
     "using-temporary-files": "2.2.1"
