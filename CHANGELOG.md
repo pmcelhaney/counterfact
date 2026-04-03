@@ -1,5 +1,11 @@
 # counterfact
 
+## 2.5.1
+
+### Patch Changes
+
+- a10ac3d: Convert remaining JavaScript source files and tests to TypeScript with proper types
+
 ## 2.5.0
 
 ### Minor Changes
