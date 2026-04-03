@@ -36,6 +36,7 @@ Each item must use this format:
 ## Required PR Checklist
 
 - Every PR must pass CI: lint (ESLint), type check (`tsc --noEmit`), unit tests, black-box tests, and type tests.
+- Run `yarn lint:fix` before each commit to auto-fix linting issues, then `yarn lint` to confirm no remaining errors.
 - Include a changeset (`npx changeset`) for any user-facing change.
 - Keep commits focused; prefer multiple small commits over one large one.
 - Do not commit build artifacts (`dist/`, `out/`, `coverage/`) — they are in `.gitignore`.
@@ -76,10 +77,11 @@ templates/                    # Scaffold templates used during code generation
 | Unit tests                    | `yarn test`                      |
 | Black-box (integration) tests | `yarn test:black-box`            |
 | TypeScript type tests         | `yarn build && yarn test:tsd`    |
-| Lint                          | `yarn lint`                      |
+| Lint (check)                  | `yarn lint`                      |
+| Lint (auto-fix)               | `yarn lint:fix`                  |
 | Run against Petstore          | `yarn go:petstore`               |
 
-Always run `yarn test` after making code changes. Run `yarn lint` before opening a PR. Black-box tests require a build (`yarn build`) and Python 3 with pytest and requests installed (`pip install -r test-black-box/requirements.txt`); run them when touching server startup or CLI behaviour.
+Always run `yarn lint:fix` before committing to automatically fix linting issues, then run `yarn test` to verify nothing is broken. Run `yarn lint` before opening a PR to confirm no remaining errors. Black-box tests require a build (`yarn build`) and Python 3 with pytest and requests installed (`pip install -r test-black-box/requirements.txt`); run them when touching server startup or CLI behaviour.
 
 ## Coding Conventions
 
