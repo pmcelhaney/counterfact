@@ -1,5 +1,7 @@
 "use strict";
 
+const path = require("path");
+
 const js = require("@eslint/js");
 const prettierPlugin = require("eslint-plugin-prettier");
 const typescriptParser = require("@typescript-eslint/parser");
@@ -212,6 +214,37 @@ module.exports = [
     files: [".yarn/releases/*.cjs"],
     rules: {
       "n/no-deprecated-api": "off",
+    },
+  },
+  {
+    files: ["src/**/*.{ts,tsx,js,cjs,mjs}", "test/**/*.{ts,tsx,js,cjs,mjs}"],
+    plugins: {
+      "filename-rules": {
+        rules: {
+          "kebab-case": {
+            create(context) {
+              return {
+                Program() {
+                  const filename = context.filename;
+                  const basename = path
+                    .basename(filename)
+                    .replace(/\..*$/u, "");
+
+                  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/u.test(basename)) {
+                    context.report({
+                      loc: { line: 1, column: 0 },
+                      message: `Filename '${basename}' must be kebab-case.`,
+                    });
+                  }
+                },
+              };
+            },
+          },
+        },
+      },
+    },
+    rules: {
+      "filename-rules/kebab-case": "error",
     },
   },
 ];

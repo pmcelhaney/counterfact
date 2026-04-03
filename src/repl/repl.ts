@@ -4,7 +4,7 @@ import type { Config } from "../server/config.js";
 import type { ContextRegistry } from "../server/context-registry.js";
 import type { Registry } from "../server/registry.js";
 
-import { RawHttpClient } from "./RawHttpClient.js";
+import { RawHttpClient } from "./raw-http-client.js";
 
 function printToStdout(line: string) {
   process.stdout.write(`${line}\n`);
