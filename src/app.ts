@@ -85,6 +85,7 @@ export async function createMswHandlers(
     compiledPathsDirectory,
     registry,
     contextRegistry,
+    openApiDocument,
   );
   await moduleLoader.load();
   const routes = registry.routes;
@@ -129,10 +130,12 @@ export async function counterfact(config: Config) {
     config.generate,
   );
 
+  const openApiDocument = await loadOpenApiDocument(config.openApiPath);
+
   const dispatcher = new Dispatcher(
     registry,
     contextRegistry,
-    await loadOpenApiDocument(config.openApiPath),
+    openApiDocument,
     config,
   );
 
@@ -146,6 +149,7 @@ export async function counterfact(config: Config) {
     compiledPathsDirectory,
     registry,
     contextRegistry,
+    openApiDocument,
   );
 
   const middleware = koaMiddleware(dispatcher, config);

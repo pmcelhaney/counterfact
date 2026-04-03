@@ -363,6 +363,33 @@ describe("a module loader", () => {
     });
   });
 
+  it("passes openApiDocument to the Context constructor", async () => {
+    await usingTemporaryFiles(async ($) => {
+      await $.add(
+        "_.context.js",
+        "export class Context { constructor({ openApiDocument }) { this.openApiDocument = openApiDocument; } }",
+      );
+      await $.add("package.json", '{ "type": "module" }');
+
+      const registry: Registry = new Registry();
+      const contextRegistry: ContextRegistry = new ContextRegistry();
+      const openApiDocument = { paths: { "/hello": {} } };
+
+      const loader: ModuleLoader = new ModuleLoader(
+        $.path("."),
+        registry,
+        contextRegistry,
+        openApiDocument,
+      );
+
+      await loader.load();
+
+      const rootContext = contextRegistry.find("/") as any;
+
+      expect(rootContext?.openApiDocument).toBe(openApiDocument);
+    });
+  });
+
   // can't test because I can't get Jest to refresh modules
   it.skip("updates the registry when a dependency is updated", async () => {
     await usingTemporaryFiles(async ($) => {

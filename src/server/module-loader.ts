@@ -9,6 +9,7 @@ import createDebug from "debug";
 import { CHOKIDAR_OPTIONS } from "./constants.js";
 import { type Context, ContextRegistry } from "./context-registry.js";
 import { determineModuleKind } from "./determine-module-kind.js";
+import type { OpenApiDocument } from "./dispatcher.js";
 import { ModuleDependencyGraph } from "./module-dependency-graph.js";
 import type { MiddlewareFunction, Module, Registry } from "./registry.js";
 import { uncachedImport } from "./uncached-import.js";
@@ -51,6 +52,8 @@ export class ModuleLoader extends EventTarget {
 
   private readonly contextRegistry: ContextRegistry;
 
+  private readonly openApiDocument: OpenApiDocument | undefined;
+
   private readonly dependencyGraph = new ModuleDependencyGraph();
 
   private readonly uncachedImport: (moduleName: string) => Promise<unknown> =
@@ -62,11 +65,13 @@ export class ModuleLoader extends EventTarget {
     basePath: string,
     registry: Registry,
     contextRegistry = new ContextRegistry(),
+    openApiDocument?: OpenApiDocument,
   ) {
     super();
     this.basePath = basePath.replaceAll("\\", "/");
     this.registry = registry;
     this.contextRegistry = contextRegistry;
+    this.openApiDocument = openApiDocument;
   }
 
   public async watch(): Promise<void> {
@@ -268,6 +273,7 @@ export class ModuleLoader extends EventTarget {
 
           new endpoint.Context({
             loadContext,
+            openApiDocument: this.openApiDocument,
             readJson,
           }),
         );
