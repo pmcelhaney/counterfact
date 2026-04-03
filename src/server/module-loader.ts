@@ -52,7 +52,7 @@ export class ModuleLoader extends EventTarget {
 
   private readonly contextRegistry: ContextRegistry;
 
-  private readonly openApiDocument: OpenApiDocument | undefined;
+  private openApiDocument: OpenApiDocument | undefined;
 
   private readonly dependencyGraph = new ModuleDependencyGraph();
 
@@ -72,6 +72,18 @@ export class ModuleLoader extends EventTarget {
     this.registry = registry;
     this.contextRegistry = contextRegistry;
     this.openApiDocument = openApiDocument;
+  }
+
+  public setOpenApiDocument(newDoc: OpenApiDocument): void {
+    if (this.openApiDocument === undefined) {
+      return;
+    }
+
+    for (const key of Object.keys(this.openApiDocument)) {
+      delete (this.openApiDocument as Record<string, unknown>)[key];
+    }
+
+    Object.assign(this.openApiDocument, newDoc);
   }
 
   public async watch(): Promise<void> {

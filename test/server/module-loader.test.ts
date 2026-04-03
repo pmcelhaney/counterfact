@@ -390,6 +390,40 @@ describe("a module loader", () => {
     });
   });
 
+  it("updates the openApiDocument reference in-place when setOpenApiDocument is called", async () => {
+    await usingTemporaryFiles(async ($) => {
+      await $.add(
+        "_.context.js",
+        "export class Context { constructor({ openApiDocument }) { this.openApiDocument = openApiDocument; } }",
+      );
+      await $.add("package.json", '{ "type": "module" }');
+
+      const registry: Registry = new Registry();
+      const contextRegistry: ContextRegistry = new ContextRegistry();
+      const openApiDocument = { paths: { "/hello": {} } };
+
+      const loader: ModuleLoader = new ModuleLoader(
+        $.path("."),
+        registry,
+        contextRegistry,
+        openApiDocument,
+      );
+
+      await loader.load();
+
+      const rootContext = contextRegistry.find("/") as any;
+      const capturedReference = rootContext?.openApiDocument;
+
+      const updatedDocument = { paths: { "/goodbye": {} } };
+      loader.setOpenApiDocument(updatedDocument);
+
+      // The same object reference should be updated in-place
+      expect(rootContext?.openApiDocument).toBe(capturedReference);
+      expect(rootContext?.openApiDocument.paths).toEqual({ "/goodbye": {} });
+      expect(rootContext?.openApiDocument.paths["/hello"]).toBeUndefined();
+    });
+  });
+
   // can't test because I can't get Jest to refresh modules
   it.skip("updates the registry when a dependency is updated", async () => {
     await usingTemporaryFiles(async ($) => {

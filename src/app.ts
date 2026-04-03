@@ -165,6 +165,17 @@ export async function counterfact(config: Config) {
 
     if (watch.routes || watch.types) {
       await codeGenerator.watch();
+
+      codeGenerator.addEventListener("generate", () => {
+        void (async () => {
+          const newDoc = await loadOpenApiDocument(config.openApiPath);
+
+          if (newDoc !== undefined) {
+            moduleLoader.setOpenApiDocument(newDoc);
+            dispatcher.openApiDocument = newDoc;
+          }
+        })();
+      });
     }
 
     let httpTerminator: HttpTerminator | undefined;
