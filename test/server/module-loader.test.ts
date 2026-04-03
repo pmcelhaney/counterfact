@@ -386,7 +386,7 @@ describe("a module loader", () => {
 
       const rootContext = contextRegistry.find("/") as any;
 
-      expect(rootContext?.openApiDocument).toBe(openApiDocument);
+      expect(rootContext?.openApiDocument.paths).toEqual({ "/hello": {} });
     });
   });
 
@@ -412,13 +412,16 @@ describe("a module loader", () => {
       await loader.load();
 
       const rootContext = contextRegistry.find("/") as any;
+
+      // Capture the proxy reference — it should remain stable
       const capturedReference = rootContext?.openApiDocument;
 
       const updatedDocument = { paths: { "/goodbye": {} } };
       loader.setOpenApiDocument(updatedDocument);
 
-      // The same object reference should be updated in-place
+      // The proxy reference is stable
       expect(rootContext?.openApiDocument).toBe(capturedReference);
+      // But the data it reads reflects the new document
       expect(rootContext?.openApiDocument.paths).toEqual({ "/goodbye": {} });
       expect(rootContext?.openApiDocument.paths["/hello"]).toBeUndefined();
     });

@@ -52,7 +52,9 @@ export class ModuleLoader extends EventTarget {
 
   private readonly contextRegistry: ContextRegistry;
 
-  private openApiDocument: OpenApiDocument | undefined;
+  private readonly openApiDocumentRef: { current: OpenApiDocument | undefined };
+
+  private readonly openApiDocumentProxy: OpenApiDocument | undefined;
 
   private readonly dependencyGraph = new ModuleDependencyGraph();
 
@@ -71,19 +73,53 @@ export class ModuleLoader extends EventTarget {
     this.basePath = basePath.replaceAll("\\", "/");
     this.registry = registry;
     this.contextRegistry = contextRegistry;
-    this.openApiDocument = openApiDocument;
+    this.openApiDocumentRef = { current: openApiDocument };
+
+    if (openApiDocument !== undefined) {
+      const ref = this.openApiDocumentRef;
+
+      this.openApiDocumentProxy = new Proxy({} as OpenApiDocument, {
+        deleteProperty() {
+          return false;
+        },
+
+        get(_target, prop) {
+          if (ref.current === undefined) {
+            return undefined;
+          }
+
+          return Reflect.get(ref.current as object, prop);
+        },
+
+        getOwnPropertyDescriptor(_target, prop) {
+          if (ref.current === undefined) {
+            return undefined;
+          }
+
+          return Reflect.getOwnPropertyDescriptor(ref.current, prop);
+        },
+
+        has(_target, prop) {
+          return ref.current !== undefined && Reflect.has(ref.current, prop);
+        },
+
+        ownKeys() {
+          return ref.current !== undefined ? Reflect.ownKeys(ref.current) : [];
+        },
+
+        set() {
+          return false;
+        },
+      });
+    }
   }
 
   public setOpenApiDocument(newDoc: OpenApiDocument): void {
-    if (this.openApiDocument === undefined) {
+    if (this.openApiDocumentRef.current === undefined) {
       return;
     }
 
-    for (const key of Object.keys(this.openApiDocument)) {
-      delete (this.openApiDocument as Record<string, unknown>)[key];
-    }
-
-    Object.assign(this.openApiDocument, newDoc);
+    this.openApiDocumentRef.current = newDoc;
   }
 
   public async watch(): Promise<void> {
@@ -285,7 +321,7 @@ export class ModuleLoader extends EventTarget {
 
           new endpoint.Context({
             loadContext,
-            openApiDocument: this.openApiDocument,
+            openApiDocument: this.openApiDocumentProxy,
             readJson,
           }),
         );
