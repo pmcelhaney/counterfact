@@ -145,6 +145,7 @@
     "node-fetch": "3.3.2",
     "open": "11.0.0",
     "patch-package": "8.0.1",
+    "posthog-node": "^5.28.11",
     "precinct": "12.2.0",
     "prettier": "3.8.1",
     "typescript": "6.0.2"
