@@ -47,6 +47,7 @@ const RESERVED_WORDS = new Set([
   "while",
   "with",
   "yield",
+  "await",
   "enum",
   "implements",
   "interface",
