@@ -138,7 +138,7 @@ export class OperationTypeCoder extends TypeCoder {
             (content, contentType) => `{  
               status: ${status}, 
               contentType?: "${contentType}",
-              body?: ${new SchemaTypeCoder(content.get("schema")).write(script)}
+              body?: ${content.has("schema") ? new SchemaTypeCoder(content.get("schema")).write(script) : "unknown"}
             }`,
           );
         }

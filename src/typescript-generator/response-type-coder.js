@@ -18,7 +18,7 @@ export class ResponseTypeCoder extends TypeCoder {
       return response.get("content").map((content, mediaType) => [
         mediaType,
         `{ 
-            schema:  ${new SchemaTypeCoder(content.get("schema")).write(script)}
+            schema:  ${content.has("schema") ? new SchemaTypeCoder(content.get("schema")).write(script) : "unknown"}
          }`,
       ]);
     }
