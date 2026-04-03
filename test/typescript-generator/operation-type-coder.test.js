@@ -148,6 +148,14 @@ describe("an OperationTypeCoder", () => {
       expect(coder.getOperationBaseName()).toBe("import_");
     });
 
+    it("appends underscore when operationId is await", () => {
+      const coder = new OperationTypeCoder(
+        new Requirement({ operationId: "await" }, "#/paths/stuff/get"),
+        "get",
+      );
+
+      expect(coder.getOperationBaseName()).toBe("await_");
+    });
     it("appends underscore when operationId becomes a reserved word after stripping trailing non-identifier chars", () => {
       const coder = new OperationTypeCoder(
         new Requirement({ operationId: "delete!!" }, "#/paths/stuff/delete"),
