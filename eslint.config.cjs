@@ -32,7 +32,6 @@ module.exports = [
       "out/**",
       "dist/**",
       "_includes",
-      ".stryker-tmp",
       ".yarn/**",
       "jest.config.js",
       ".eslintrc.cjs",
