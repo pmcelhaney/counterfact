@@ -8,6 +8,57 @@ import { SchemaTypeCoder } from "./schema-type-coder.js";
 import { TypeCoder } from "./type-coder.js";
 import { ParameterExportTypeCoder } from "./parameter-export-type-coder.js";
 
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Lexical_grammar#reserved_words
+const RESERVED_WORDS = new Set([
+  "break",
+  "case",
+  "catch",
+  "class",
+  "const",
+  "continue",
+  "debugger",
+  "default",
+  "delete",
+  "do",
+  "else",
+  "export",
+  "extends",
+  "false",
+  "finally",
+  "for",
+  "function",
+  "if",
+  "import",
+  "in",
+  "instanceof",
+  "new",
+  "null",
+  "return",
+  "static",
+  "super",
+  "switch",
+  "this",
+  "throw",
+  "true",
+  "try",
+  "typeof",
+  "var",
+  "void",
+  "while",
+  "with",
+  "yield",
+  "await",
+  "enum",
+  "implements",
+  "interface",
+  "let",
+  "package",
+  "private",
+  "protected",
+  "public",
+  "type",
+]);
+
 function sanitizeIdentifier(value) {
   // Treat any run of non-identifier characters as a camelCase separator
   let result = value.replaceAll(/[^\w$]+(?<next>.)/gu, (_, char) =>
@@ -20,6 +71,11 @@ function sanitizeIdentifier(value) {
   // If the identifier starts with a digit, prefix with an underscore
   if (/^\d/u.test(result)) {
     result = `_${result}`;
+  }
+
+  // If the identifier is a reserved word, append an underscore
+  if (RESERVED_WORDS.has(result)) {
+    result = `${result}_`;
   }
 
   return result || "_";
