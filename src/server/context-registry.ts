@@ -1,5 +1,3 @@
-import cloneDeep from "lodash/cloneDeep.js";
-
 export class Context {
   public constructor() {}
 
@@ -8,6 +6,38 @@ export class Context {
 
 export function parentPath(path: string): string {
   return String(path.split("/").slice(0, -1).join("/")) || "/";
+}
+
+/**
+ * Deep-clones an object for caching purposes.
+ * Plain objects and class instances have their own enumerable properties
+ * recursively cloned (preserving the prototype chain). Functions are copied
+ * by reference since they are not structurally comparable data.
+ */
+function cloneForCache(value: unknown): unknown {
+  if (value === null || typeof value === "function") {
+    return value;
+  }
+
+  if (typeof value !== "object") {
+    return value;
+  }
+
+  if (Array.isArray(value)) {
+    return (value as unknown[]).map(cloneForCache);
+  }
+
+  const proto = Object.getPrototypeOf(value) as object | null;
+  const clone: Record<string, unknown> =
+    proto !== null && proto !== Object.prototype
+      ? (Object.create(proto) as Record<string, unknown>)
+      : {};
+
+  for (const key of Object.keys(value)) {
+    clone[key] = cloneForCache((value as Record<string, unknown>)[key]);
+  }
+
+  return clone;
 }
 
 export class ContextRegistry {
@@ -36,7 +66,7 @@ export class ContextRegistry {
   public add(path: string, context: Context): void {
     this.entries.set(path, context);
 
-    this.cache.set(path, cloneDeep(context));
+    this.cache.set(path, cloneForCache(context) as Context);
   }
 
   public find(path: string): Context {
@@ -68,7 +98,7 @@ export class ContextRegistry {
 
     Object.setPrototypeOf(context, Object.getPrototypeOf(updatedContext));
 
-    this.cache.set(path, cloneDeep(updatedContext));
+    this.cache.set(path, cloneForCache(updatedContext) as Context);
   }
 
   public getAllPaths(): string[] {

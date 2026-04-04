@@ -1,5 +1,32 @@
 #!/usr/bin/env node
 
+/**
+ * bin/counterfact.js — CLI entry point for the `counterfact` command.
+ *
+ * Responsibilities:
+ *  1. Parse CLI arguments and build a `Config` object via Commander.
+ *  2. Run any pending migrations (paths → routes directory layout).
+ *  3. Delegate to `counterfact()` from `src/app.ts` to start the server,
+ *     code generator, transpiler, module loader, and optional REPL.
+ *  4. Print the startup banner and open the browser when requested.
+ *  5. Check for available updates against the npm registry.
+ *
+ * Architecture (high-level data flow):
+ *
+ *   CLI args  ──▶  Commander  ──▶  Config
+ *                                     │
+ *                         ┌───────────▼───────────┐
+ *                         │      counterfact()     │
+ *                         │   (src/app.ts)         │
+ *                         │                        │
+ *                         │  CodeGenerator         │  reads OpenAPI spec, emits .ts route/type files
+ *                         │  Transpiler            │  compiles .ts → .cjs and watches for changes
+ *                         │  ModuleLoader          │  loads compiled modules into Registry
+ *                         │  Dispatcher + KoaApp   │  handles HTTP requests
+ *                         │  REPL (optional)       │  interactive terminal session
+ *                         └────────────────────────┘
+ */
+
 import fs from "node:fs";
 import { readFile } from "node:fs/promises";
 import nodePath from "node:path";
@@ -247,6 +274,14 @@ async function main(source, destination) {
   };
 
   debug("loading counterfact (%o)", configForLogging);
+
+  if (config.startAdminApi && !config.adminApiToken) {
+    process.stderr.write(
+      "⚠️  WARNING: The admin API is enabled without an authentication token.\n" +
+        "   Any process on this machine can read and modify server state via /_counterfact/api/*.\n" +
+        "   Set --admin-api-token or COUNTERFACT_ADMIN_API_TOKEN to restrict access.\n\n",
+    );
+  }
 
   let didMigrate = false;
   let didMigrateRouteTypes;

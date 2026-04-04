@@ -2,6 +2,7 @@ import fs, { rm } from "node:fs/promises";
 import nodePath from "node:path";
 
 import { dereference } from "@apidevtools/json-schema-ref-parser";
+import createDebug from "debug";
 import { createHttpTerminator, type HttpTerminator } from "http-terminator";
 
 import { startRepl as startReplServer } from "./repl/repl.js";
@@ -18,6 +19,8 @@ import { ModuleLoader } from "./server/module-loader.js";
 import { Registry } from "./server/registry.js";
 import { Transpiler } from "./server/transpiler.js";
 import { CodeGenerator } from "./typescript-generator/code-generator.js";
+
+const debug = createDebug("counterfact:app");
 
 type MswHandlerMap = {
   [key: string]: (request: MockRequest) => Promise<unknown>;
@@ -38,7 +41,8 @@ export type MockRequest = DispatcherRequest & { rawPath: string };
 export async function loadOpenApiDocument(source: string) {
   try {
     return (await dereference(source)) as OpenApiDocument;
-  } catch {
+  } catch (error) {
+    debug("could not load OpenAPI document from %s: %o", source, error);
     return undefined;
   }
 }

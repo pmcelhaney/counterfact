@@ -111,7 +111,7 @@ export class Transpiler extends EventTarget {
 
     const source = await fs.readFile(sourcePath, "utf8");
 
-    const result: string = ts.transpileModule(source, {
+    const transpileOutput = ts.transpileModule(source, {
       compilerOptions: {
         module:
           ts.ModuleKind[
@@ -120,7 +120,20 @@ export class Transpiler extends EventTarget {
 
         target: ts.ScriptTarget.ES2015,
       },
-    }).outputText;
+      reportDiagnostics: true,
+    });
+
+    if (transpileOutput.diagnostics?.length) {
+      for (const diagnostic of transpileOutput.diagnostics) {
+        const message = ts.flattenDiagnosticMessageText(
+          diagnostic.messageText,
+          "\n",
+        );
+        debug("TypeScript diagnostic in %s: %s", sourcePath, message);
+      }
+    }
+
+    const result: string = transpileOutput.outputText;
 
     const fullDestination = nodePath
       .join(
@@ -135,11 +148,15 @@ export class Transpiler extends EventTarget {
 
     try {
       await fs.writeFile(fullDestination, resultWithTransformedFileExtensions);
-    } catch {
-      debug("error transpiling %s", fullDestination);
+    } catch (error) {
+      debug(
+        "error writing transpiled output to %s: %o",
+        fullDestination,
+        error,
+      );
       this.dispatchEvent(new Event("error"));
 
-      throw new Error("could not transpile");
+      throw new Error("could not transpile", { cause: error });
     }
 
     this.dispatchEvent(new Event("write"));

@@ -15,24 +15,24 @@ We can also use those types on the _client_ side, assuming the client is written
 | File | Description |
 |---|---|
 | `code-generator.ts` | Top-level `CodeGenerator` class; orchestrates the generate pipeline and file watching via `EventTarget` |
-| `generate.js` | Main async pipeline: reads the OpenAPI spec, iterates over paths/operations, and drives the `Repository` to write output files |
-| `specification.js` | `Specification` class: loads and parses an OpenAPI document and provides cached `Requirement` lookup via JSON Pointer |
-| `requirement.js` | `Requirement` class: wraps a single OpenAPI schema object with its URL and resolves `$ref` pointers |
-| `repository.js` | `Repository` class: manages all output `Script` instances, deduplicates them, and coordinates async export resolution |
-| `script.js` | `Script` class: manages code generation for a single output file — imports, exports, deduplication, and Prettier formatting |
-| `coder.js` | Abstract `Coder` base class: defines the Template Method pattern used by all code-generating components |
-| `type-coder.js` | Abstract `TypeCoder` base class (extends `Coder`): specialises `Coder` for type-generating components |
-| `operation-coder.js` | `OperationCoder`: generates the route handler function for an OpenAPI operation |
-| `operation-type-coder.js` | `OperationTypeCoder`: generates the TypeScript type for a route handler, including parameters and response builder |
-| `parameters-type-coder.js` | `ParametersTypeCoder`: generates the typed object for path/query/header parameters of an operation |
-| `parameter-export-type-coder.js` | `ParameterExportTypeCoder`: generates and exports the type for a single request parameter |
-| `responses-type-coder.js` | `ResponsesTypeCoder`: generates the response builder factory type covering all HTTP status codes for an operation |
-| `response-type-coder.js` | `ResponseTypeCoder`: generates the type for a single HTTP response, including headers, content, and named examples |
-| `schema-type-coder.js` | `SchemaTypeCoder`: converts an OpenAPI schema definition to a TypeScript type (objects, arrays, unions, enums) |
-| `schema-coder.js` | `SchemaCoder`: generates a JSON Schema representation of an OpenAPI schema for use in runtime validation |
-| `context-file-token.js` | Exports a placeholder token used to reference context file paths during code generation |
-| `printers.js` | Utility functions for formatting TypeScript object literals in generated code |
-| `read-only-comments.js` | Standard warning comments inserted into generated type files to discourage manual edits |
+| `generate.ts` | Main async pipeline: reads the OpenAPI spec, iterates over paths/operations, and drives the `Repository` to write output files |
+| `specification.ts` | `Specification` class: loads and parses an OpenAPI document and provides cached `Requirement` lookup via JSON Pointer |
+| `requirement.ts` | `Requirement` class: wraps a single OpenAPI schema object with its URL and resolves `$ref` pointers |
+| `repository.ts` | `Repository` class: manages all output `Script` instances, deduplicates them, and coordinates async export resolution |
+| `script.ts` | `Script` class: manages code generation for a single output file — imports, exports, deduplication, and Prettier formatting |
+| `coder.ts` | Abstract `Coder` base class: defines the Template Method pattern used by all code-generating components |
+| `type-coder.ts` | Abstract `TypeCoder` base class (extends `Coder`): specialises `Coder` for type-generating components |
+| `operation-coder.ts` | `OperationCoder`: generates the route handler function for an OpenAPI operation |
+| `operation-type-coder.ts` | `OperationTypeCoder`: generates the TypeScript type for a route handler, including parameters and response builder |
+| `parameters-type-coder.ts` | `ParametersTypeCoder`: generates the typed object for path/query/header parameters of an operation |
+| `parameter-export-type-coder.ts` | `ParameterExportTypeCoder`: generates and exports the type for a single request parameter |
+| `responses-type-coder.ts` | `ResponsesTypeCoder`: generates the response builder factory type covering all HTTP status codes for an operation |
+| `response-type-coder.ts` | `ResponseTypeCoder`: generates the type for a single HTTP response, including headers, content, and named examples |
+| `schema-type-coder.ts` | `SchemaTypeCoder`: converts an OpenAPI schema definition to a TypeScript type (objects, arrays, unions, enums) |
+| `schema-coder.ts` | `SchemaCoder`: generates a JSON Schema representation of an OpenAPI schema for use in runtime validation |
+| `context-file-token.ts` | Exports a placeholder token used to reference context file paths during code generation |
+| `printers.ts` | Utility functions for formatting TypeScript object literals in generated code |
+| `read-only-comments.ts` | Standard warning comments inserted into generated type files to discourage manual edits |
 
 ## Architecture
 
