@@ -390,6 +390,61 @@ describe("a module loader", () => {
     });
   });
 
+  it("defaults openApiDocument to an empty object when none is provided", async () => {
+    await usingTemporaryFiles(async ($) => {
+      await $.add(
+        "_.context.js",
+        "export class Context { constructor({ openApiDocument }) { this.openApiDocument = openApiDocument; } }",
+      );
+      await $.add("package.json", '{ "type": "module" }');
+
+      const registry: Registry = new Registry();
+      const contextRegistry: ContextRegistry = new ContextRegistry();
+
+      const loader: ModuleLoader = new ModuleLoader(
+        $.path("."),
+        registry,
+        contextRegistry,
+      );
+
+      await loader.load();
+
+      const rootContext = contextRegistry.find("/") as any;
+
+      expect(rootContext?.openApiDocument).toBeDefined();
+      expect(typeof rootContext?.openApiDocument).toBe("object");
+    });
+  });
+
+  it("setOpenApiDocument works even when no initial document was provided", async () => {
+    await usingTemporaryFiles(async ($) => {
+      await $.add(
+        "_.context.js",
+        "export class Context { constructor({ openApiDocument }) { this.openApiDocument = openApiDocument; } }",
+      );
+      await $.add("package.json", '{ "type": "module" }');
+
+      const registry: Registry = new Registry();
+      const contextRegistry: ContextRegistry = new ContextRegistry();
+
+      const loader: ModuleLoader = new ModuleLoader(
+        $.path("."),
+        registry,
+        contextRegistry,
+      );
+
+      await loader.load();
+
+      const rootContext = contextRegistry.find("/") as any;
+      const capturedReference = rootContext?.openApiDocument;
+
+      loader.setOpenApiDocument({ paths: { "/added": {} } });
+
+      expect(rootContext?.openApiDocument).toBe(capturedReference);
+      expect(rootContext?.openApiDocument.paths).toEqual({ "/added": {} });
+    });
+  });
+
   it("updates the openApiDocument reference in-place when setOpenApiDocument is called", async () => {
     await usingTemporaryFiles(async ($) => {
       await $.add(

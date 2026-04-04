@@ -52,9 +52,9 @@ export class ModuleLoader extends EventTarget {
 
   private readonly contextRegistry: ContextRegistry;
 
-  private readonly openApiDocumentRef: { current: OpenApiDocument | undefined };
+  private openApiDocumentRef: OpenApiDocument;
 
-  private readonly openApiDocumentProxy: OpenApiDocument | undefined;
+  private readonly openApiDocumentProxy: OpenApiDocument;
 
   private readonly dependencyGraph = new ModuleDependencyGraph();
 
@@ -67,59 +67,46 @@ export class ModuleLoader extends EventTarget {
     basePath: string,
     registry: Registry,
     contextRegistry = new ContextRegistry(),
-    openApiDocument?: OpenApiDocument,
+    openApiDocument: OpenApiDocument = {},
   ) {
     super();
     this.basePath = basePath.replaceAll("\\", "/");
     this.registry = registry;
     this.contextRegistry = contextRegistry;
-    this.openApiDocumentRef = { current: openApiDocument };
+    this.openApiDocumentRef = openApiDocument;
 
-    if (openApiDocument !== undefined) {
-      const ref = this.openApiDocumentRef;
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
+    const self = this;
 
-      this.openApiDocumentProxy = new Proxy({} as OpenApiDocument, {
-        deleteProperty() {
-          return false;
-        },
+    this.openApiDocumentProxy = new Proxy({} as OpenApiDocument, {
+      deleteProperty() {
+        return false;
+      },
 
-        get(_target, prop) {
-          if (ref.current === undefined) {
-            return undefined;
-          }
+      get(_target, prop) {
+        return Reflect.get(self.openApiDocumentRef as object, prop);
+      },
 
-          return Reflect.get(ref.current as object, prop);
-        },
+      getOwnPropertyDescriptor(_target, prop) {
+        return Reflect.getOwnPropertyDescriptor(self.openApiDocumentRef, prop);
+      },
 
-        getOwnPropertyDescriptor(_target, prop) {
-          if (ref.current === undefined) {
-            return undefined;
-          }
+      has(_target, prop) {
+        return Reflect.has(self.openApiDocumentRef, prop);
+      },
 
-          return Reflect.getOwnPropertyDescriptor(ref.current, prop);
-        },
+      ownKeys() {
+        return Reflect.ownKeys(self.openApiDocumentRef);
+      },
 
-        has(_target, prop) {
-          return ref.current !== undefined && Reflect.has(ref.current, prop);
-        },
-
-        ownKeys() {
-          return ref.current !== undefined ? Reflect.ownKeys(ref.current) : [];
-        },
-
-        set() {
-          return false;
-        },
-      });
-    }
+      set() {
+        return false;
+      },
+    });
   }
 
   public setOpenApiDocument(newDoc: OpenApiDocument): void {
-    if (this.openApiDocumentRef.current === undefined) {
-      return;
-    }
-
-    this.openApiDocumentRef.current = newDoc;
+    this.openApiDocumentRef = newDoc;
   }
 
   public async watch(): Promise<void> {
