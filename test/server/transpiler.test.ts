@@ -163,4 +163,31 @@ describe("a Transpiler", () => {
       await transpiler.stopWatching();
     });
   });
+
+  it("converts requires of .js files to .cjs", async () => {
+    await usingTemporaryFiles(async ($) => {
+      await $.add(
+        "src/importer.ts",
+        'import local from "./local.js"; local();',
+      );
+
+      transpiler = new Transpiler(
+        forwardSlash($.path("src")),
+        forwardSlash($.path("dist")),
+        "commonjs",
+      );
+
+      await transpiler.watch();
+
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      expect(fs.existsSync($.path("dist/importer.cjs"))).toBe(true);
+
+      const contents = fs.readFileSync($.path("dist/importer.cjs"), "utf8");
+
+      expect(contents.includes('require("./local.cjs")')).toBe(true);
+
+      await transpiler.stopWatching();
+    });
+  });
 });

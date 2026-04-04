@@ -198,15 +198,15 @@ The main areas for improvement are test coverage in a small number of critical p
 
 ## Summary of Recommended Actions
 
-| Priority | Action |
-|---|---|
-| High | Remove silent `catch {}` blocks; log errors through the `debug` channel |
-| High | Warn at startup when the admin API is enabled without a token |
-| Medium | Replace `lodash` (`cloneDeep`) with native `structuredClone` to remove the dependency |
-| Medium | Remove or fix the `transpiler-sketchy.test.ts` flaky-test file |
-| Medium | Fix stale `.js` extension references in `typescript-generator/README.md` |
-| Medium | Remove the redundant `fetch` v1 production dependency |
-| Low | Remove `DUMMY_EXPORT_FOR_TEST_COVERAGE` from `config.ts` |
-| Low | Surface TypeScript diagnostic messages from the `Transpiler` on compilation failure |
-| Low | Add a `--template-dir` option to allow custom dashboard templates |
-| Low | Add a README or inline overview to `bin/counterfact.js` |
+| Priority | Action | Status |
+|---|---|---|
+| High | Remove silent `catch {}` blocks; log errors through the `debug` channel | ✅ Done |
+| High | Warn at startup when the admin API is enabled without a token | ✅ Done |
+| Medium | Replace `lodash` (`cloneDeep`) with a native deep-clone (custom `cloneForCache` helper, avoids `structuredClone` limitation with functions) | ✅ Done |
+| Medium | Remove or fix the `transpiler-sketchy.test.ts` flaky-test file | ✅ Done (unique test migrated to `transpiler.test.ts`; sketchy file deleted) |
+| Medium | Fix stale `.js` extension references in `typescript-generator/README.md` | ✅ Done |
+| Medium | Remove the redundant `fetch` v1 production dependency | ✅ Done |
+| Low | Remove `DUMMY_EXPORT_FOR_TEST_COVERAGE` from `config.ts` | ✅ Done |
+| Low | Surface TypeScript diagnostic messages from the `Transpiler` on compilation failure | ✅ Done |
+| Low | Add a `--template-dir` option to allow custom dashboard templates | ⏭ Skipped (out of scope) |
+| Low | Add a README or inline overview to `bin/counterfact.js` | ✅ Done |
