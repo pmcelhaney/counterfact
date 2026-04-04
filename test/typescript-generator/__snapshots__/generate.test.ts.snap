@@ -1307,13 +1307,15 @@ export type Pet = {
    * @format int64
    * @example 10
    */
-  id?: number; /**
+  id?: number;
+  /**
    * @example "doggie"
    */
   name: string;
   category?: Category;
   photoUrls: Array<string>;
-  tags?: Array<Tag>; /**
+  tags?: Array<Tag>;
+  /**
    * pet status in the store
    */
   status?: "available" | "pending" | "sold";
@@ -1339,18 +1341,22 @@ exports[`end-to-end test generates the same code for pet store that it did on th
    * @format int64
    * @example 10
    */
-  id?: number; /**
+  id?: number;
+  /**
    * @format int64
    * @example 198772
    */
-  petId?: number; /**
+  petId?: number;
+  /**
    * @format int32
    * @example 7
    */
-  quantity?: number; /**
+  quantity?: number;
+  /**
    * @format date-time
    */
-  shipDate?: string; /**
+  shipDate?: string;
+  /**
    * Order Status
    * @example "approved"
    */
@@ -1366,25 +1372,32 @@ exports[`end-to-end test generates the same code for pet store that it did on th
    * @format int64
    * @example 10
    */
-  id?: number; /**
+  id?: number;
+  /**
    * @example "theUser"
    */
-  username?: string; /**
+  username?: string;
+  /**
    * @example "John"
    */
-  firstName?: string; /**
+  firstName?: string;
+  /**
    * @example "James"
    */
-  lastName?: string; /**
+  lastName?: string;
+  /**
    * @example "john@email.com"
    */
-  email?: string; /**
+  email?: string;
+  /**
    * @example 12345
    */
-  password?: string; /**
+  password?: string;
+  /**
    * @example 12345
    */
-  phone?: string; /**
+  phone?: string;
+  /**
    * User Status
    * @format int32
    * @example 1
@@ -1400,7 +1413,8 @@ exports[`end-to-end test generates the same code for pet store that it did on th
    * @format int64
    * @example 1
    */
-  id?: number; /**
+  id?: number;
+  /**
    * @example "Dogs"
    */
   name?: string;
@@ -1852,7 +1866,8 @@ export type Error = {
   /**
    * A machine readable error code
    */
-  code?: string; /**
+  code?: string;
+  /**
    * A detailed description of the error
    */
   message: string;
