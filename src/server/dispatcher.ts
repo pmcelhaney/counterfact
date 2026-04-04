@@ -277,7 +277,7 @@ export class Dispatcher {
       this.openApiDocument?.basePath !== undefined &&
       path.toLowerCase().startsWith(this.openApiDocument.basePath.toLowerCase())
     ) {
-      path = path.replace(new RegExp(this.openApiDocument.basePath, "iu"), "");
+      path = path.slice(this.openApiDocument.basePath.length);
     }
 
     const { matchedPath } = this.registry.handler(path, method);
