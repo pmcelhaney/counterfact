@@ -27,6 +27,9 @@ import type { Context } from "@@CONTEXT_FILE_TOKEN@@";
 import type { ResponseBuilderFactory } from "../../counterfact-types/index.ts";
 import type { Pet } from "../components/schemas/Pet.js";
 
+/**
+ * Add a new pet to the store
+ */
 export type addPet = (
   $: OmitValueWhenNever<{
     query: never;
@@ -80,6 +83,9 @@ export type addPet = (
   | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
 >;
 
+/**
+ * Update an existing pet by Id
+ */
 export type updatePet = (
   $: OmitValueWhenNever<{
     query: never;
@@ -175,6 +181,9 @@ import type { Context } from "@@CONTEXT_FILE_TOKEN@@";
 import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts";
 import type { Pet } from "../../components/schemas/Pet.js";
 
+/**
+ * Multiple status values can be provided with comma separated strings
+ */
 export type findPetsByStatus = (
   $: OmitValueWhenNever<{
     query: findPetsByStatus_Query;
@@ -256,6 +265,9 @@ import type { Context } from "@@CONTEXT_FILE_TOKEN@@";
 import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts";
 import type { Pet } from "../../components/schemas/Pet.js";
 
+/**
+ * Multiple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.
+ */
 export type findPetsByTags = (
   $: OmitValueWhenNever<{
     query: findPetsByTags_Query;
@@ -345,6 +357,9 @@ import type { Context } from "@@CONTEXT_FILE_TOKEN@@";
 import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts";
 import type { Pet } from "../../components/schemas/Pet.js";
 
+/**
+ * Returns a single pet
+ */
 export type getPetById = (
   $: OmitValueWhenNever<{
     query: never;
@@ -564,6 +579,9 @@ import type { COUNTERFACT_RESPONSE } from "../../../counterfact-types/index.ts";
 import type { Context } from "@@CONTEXT_FILE_TOKEN@@";
 import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts";
 
+/**
+ * Returns a map of status codes to quantities
+ */
 export type getInventory = (
   $: OmitValueWhenNever<{
     query: never;
@@ -624,6 +642,9 @@ import type { Context } from "@@CONTEXT_FILE_TOKEN@@";
 import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts";
 import type { Order } from "../../components/schemas/Order.js";
 
+/**
+ * Place a new order in the store
+ */
 export type placeOrder = (
   $: OmitValueWhenNever<{
     query: never;
@@ -698,6 +719,9 @@ import type { Context } from "@@CONTEXT_FILE_TOKEN@@";
 import type { ResponseBuilderFactory } from "../../../../counterfact-types/index.ts";
 import type { Order } from "../../../components/schemas/Order.js";
 
+/**
+ * For valid response try integer IDs with value <= 5 or > 10. Other values will generate exceptions.
+ */
 export type getOrderById = (
   $: OmitValueWhenNever<{
     query: never;
@@ -760,6 +784,9 @@ export type getOrderById = (
   | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
 >;
 
+/**
+ * For valid response try integer IDs with value < 1000. Anything above 1000 or nonintegers will generate API errors
+ */
 export type deleteOrder = (
   $: OmitValueWhenNever<{
     query: never;
@@ -828,6 +855,9 @@ import type { ResponseBuilderFactory } from "../../counterfact-types/index.ts";
 import type { HttpStatusCode } from "../../counterfact-types/index.ts";
 import type { User } from "../components/schemas/User.js";
 
+/**
+ * This can only be done by the logged in user.
+ */
 export type createUser = (
   $: OmitValueWhenNever<{
     query: never;
@@ -897,6 +927,9 @@ import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts
 import type { HttpStatusCode } from "../../../counterfact-types/index.ts";
 import type { User } from "../../components/schemas/User.js";
 
+/**
+ * Creates list of users with given input array
+ */
 export type createUsersWithListInput = (
   $: OmitValueWhenNever<{
     query: never;
@@ -1182,6 +1215,9 @@ export type getUserByName = (
   | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
 >;
 
+/**
+ * This can only be done by the logged in user.
+ */
 export type updateUser = (
   $: OmitValueWhenNever<{
     query: never;
@@ -1212,6 +1248,9 @@ export type updateUser = (
   | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
 >;
 
+/**
+ * This can only be done by the logged in user.
+ */
 export type deleteUser = (
   $: OmitValueWhenNever<{
     query: never;
@@ -1264,27 +1303,57 @@ exports[`end-to-end test generates the same code for pet store that it did on th
 import type { Tag } from "./Tag.js";
 
 export type Pet = {
-  id?: number;
+  /**
+   * @format int64
+   * @example 10
+   */
+  id?: number; /**
+   * @example "doggie"
+   */
   name: string;
   category?: Category;
   photoUrls: Array<string>;
-  tags?: Array<Tag>;
+  tags?: Array<Tag>; /**
+   * pet status in the store
+   */
   status?: "available" | "pending" | "sold";
 };
 "
 `;
 
 exports[`end-to-end test generates the same code for pet store that it did on the last test run 28`] = `
-"types/components/schemas/ApiResponse.ts:export type ApiResponse = { code?: number; type?: string; message?: string };
+"types/components/schemas/ApiResponse.ts:export type ApiResponse = {
+  /**
+   * @format int32
+   */
+  code?: number;
+  type?: string;
+  message?: string;
+};
 "
 `;
 
 exports[`end-to-end test generates the same code for pet store that it did on the last test run 29`] = `
 "types/components/schemas/Order.ts:export type Order = {
-  id?: number;
-  petId?: number;
-  quantity?: number;
-  shipDate?: string;
+  /**
+   * @format int64
+   * @example 10
+   */
+  id?: number; /**
+   * @format int64
+   * @example 198772
+   */
+  petId?: number; /**
+   * @format int32
+   * @example 7
+   */
+  quantity?: number; /**
+   * @format date-time
+   */
+  shipDate?: string; /**
+   * Order Status
+   * @example "approved"
+   */
   status?: "placed" | "approved" | "delivered";
   complete?: boolean;
 };
@@ -1293,25 +1362,60 @@ exports[`end-to-end test generates the same code for pet store that it did on th
 
 exports[`end-to-end test generates the same code for pet store that it did on the last test run 30`] = `
 "types/components/schemas/User.ts:export type User = {
-  id?: number;
-  username?: string;
-  firstName?: string;
-  lastName?: string;
-  email?: string;
-  password?: string;
-  phone?: string;
+  /**
+   * @format int64
+   * @example 10
+   */
+  id?: number; /**
+   * @example "theUser"
+   */
+  username?: string; /**
+   * @example "John"
+   */
+  firstName?: string; /**
+   * @example "James"
+   */
+  lastName?: string; /**
+   * @example "john@email.com"
+   */
+  email?: string; /**
+   * @example 12345
+   */
+  password?: string; /**
+   * @example 12345
+   */
+  phone?: string; /**
+   * User Status
+   * @format int32
+   * @example 1
+   */
   userStatus?: number;
 };
 "
 `;
 
 exports[`end-to-end test generates the same code for pet store that it did on the last test run 31`] = `
-"types/components/schemas/Category.ts:export type Category = { id?: number; name?: string };
+"types/components/schemas/Category.ts:export type Category = {
+  /**
+   * @format int64
+   * @example 1
+   */
+  id?: number; /**
+   * @example "Dogs"
+   */
+  name?: string;
+};
 "
 `;
 
 exports[`end-to-end test generates the same code for pet store that it did on the last test run 32`] = `
-"types/components/schemas/Tag.ts:export type Tag = { id?: number; name?: string };
+"types/components/schemas/Tag.ts:export type Tag = {
+  /**
+   * @format int64
+   */
+  id?: number;
+  name?: string;
+};
 "
 `;
 
@@ -1347,6 +1451,9 @@ import type { Context } from "@@CONTEXT_FILE_TOKEN@@";
 import type { ResponseBuilderFactory } from "../../counterfact-types/index.ts";
 import type { HttpStatusCode } from "../../counterfact-types/index.ts";
 
+/**
+ * the root
+ */
 export type HTTP_GET = (
   $: OmitValueWhenNever<{
     query: never;
@@ -1409,6 +1516,9 @@ import type { Context } from "@@CONTEXT_FILE_TOKEN@@";
 import type { ResponseBuilderFactory } from "../../counterfact-types/index.ts";
 import type { HttpStatusCode } from "../../counterfact-types/index.ts";
 
+/**
+ * outputs the number of time each URL was visited
+ */
 export type HTTP_GET = (
   $: OmitValueWhenNever<{
     query: never;
@@ -1471,6 +1581,9 @@ import type { Context } from "@@CONTEXT_FILE_TOKEN@@";
 import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts";
 import type { HttpStatusCode } from "../../../counterfact-types/index.ts";
 
+/**
+ * HTML with a hello kitty image
+ */
 export type helloKitty = (
   $: OmitValueWhenNever<{
     query: never;
@@ -1533,6 +1646,9 @@ import type { Context } from "@@CONTEXT_FILE_TOKEN@@";
 import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts";
 import type { HttpStatusCode } from "../../../counterfact-types/index.ts";
 
+/**
+ * says hello to someone
+ */
 export type HTTP_GET = (
   $: OmitValueWhenNever<{
     query: never;
@@ -1729,7 +1845,18 @@ export type BadRequest = {
 `;
 
 exports[`end-to-end test generates the same code for the example that it did on the last test run 15`] = `
-"types/components/schemas/Error.ts:export type Error = { code?: string; message: string };
+"types/components/schemas/Error.ts:/**
+ * A generic error message suitable for 4xx and 5xx responses
+ */
+export type Error = {
+  /**
+   * A machine readable error code
+   */
+  code?: string; /**
+   * A detailed description of the error
+   */
+  message: string;
+};
 "
 `;
 

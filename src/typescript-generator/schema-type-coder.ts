@@ -1,3 +1,4 @@
+import { buildJsDoc } from "./jsdoc.js";
 import { TypeCoder } from "./type-coder.js";
 import type { Requirement } from "./requirement.js";
 import type { Script } from "./script.js";
@@ -7,6 +8,10 @@ export class SchemaTypeCoder extends TypeCoder {
     return super.names(
       (this.requirement.data["$ref"] as string | undefined)?.split("/").at(-1),
     );
+  }
+
+  public override jsdoc(): string {
+    return buildJsDoc(this.requirement.data);
   }
 
   public additionalPropertiesType(script: Script): string {
@@ -51,9 +56,11 @@ export class SchemaTypeCoder extends TypeCoder {
         typedData.required?.includes(name) || propertyData.required === true;
       const optionalFlag = isRequired ? "" : "?";
 
-      return `"${name}"${optionalFlag}: ${new SchemaTypeCoder(property).write(
-        script,
-      )}`;
+      const comment = buildJsDoc(property.data);
+
+      return `${comment}"${name}"${optionalFlag}: ${new SchemaTypeCoder(
+        property,
+      ).write(script)}`;
     });
 
     if (typedData.additionalProperties) {
