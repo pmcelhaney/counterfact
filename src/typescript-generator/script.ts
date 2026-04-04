@@ -78,6 +78,7 @@ export class Script {
       id: coder.id,
       isDefault,
       isType,
+      jsdoc: "",
       typeDeclaration: coder.typeDeclaration(this.exports, this),
     };
 
@@ -87,6 +88,7 @@ export class Script {
       .then((availableCoder) => {
         exportStatement.name = name;
         exportStatement.code = availableCoder.write(this);
+        exportStatement.jsdoc = availableCoder.jsdoc();
 
         return availableCoder;
       })
@@ -227,13 +229,21 @@ export class Script {
   public exportStatements(): string[] {
     return Array.from(
       this.exports.values(),
-      ({ beforeExport, code, isDefault, isType, name, typeDeclaration }) => {
+      ({
+        beforeExport,
+        code,
+        isDefault,
+        isType,
+        jsdoc,
+        name,
+        typeDeclaration,
+      }) => {
         if (typeof code === "object" && code !== null && "raw" in code) {
           return code.raw;
         }
 
         if (isDefault) {
-          return `${beforeExport}export default ${code as string};`;
+          return `${jsdoc}${beforeExport}export default ${code as string};`;
         }
 
         const keyword = isType ? "type" : "const";
@@ -242,7 +252,7 @@ export class Script {
             ? ""
             : `:${typeDeclaration ?? ""}`;
 
-        return `${beforeExport}export ${keyword} ${name ?? ""}${typeAnnotation} = ${code as string};`;
+        return `${jsdoc}${beforeExport}export ${keyword} ${name ?? ""}${typeAnnotation} = ${code as string};`;
       },
     );
   }
