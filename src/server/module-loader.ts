@@ -9,6 +9,7 @@ import createDebug from "debug";
 import { CHOKIDAR_OPTIONS } from "./constants.js";
 import { type Context, ContextRegistry } from "./context-registry.js";
 import { determineModuleKind } from "./determine-module-kind.js";
+import type { OpenApiDocument } from "./dispatcher.js";
 import { ModuleDependencyGraph } from "./module-dependency-graph.js";
 import type { MiddlewareFunction, Module, Registry } from "./registry.js";
 import { uncachedImport } from "./uncached-import.js";
@@ -51,6 +52,10 @@ export class ModuleLoader extends EventTarget {
 
   private readonly contextRegistry: ContextRegistry;
 
+  private openApiDocumentRef: OpenApiDocument;
+
+  private readonly openApiDocumentProxy: OpenApiDocument;
+
   private readonly dependencyGraph = new ModuleDependencyGraph();
 
   private readonly uncachedImport: (moduleName: string) => Promise<unknown> =
@@ -62,11 +67,46 @@ export class ModuleLoader extends EventTarget {
     basePath: string,
     registry: Registry,
     contextRegistry = new ContextRegistry(),
+    openApiDocument: OpenApiDocument = {},
   ) {
     super();
     this.basePath = basePath.replaceAll("\\", "/");
     this.registry = registry;
     this.contextRegistry = contextRegistry;
+    this.openApiDocumentRef = openApiDocument;
+
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
+    const self = this;
+
+    this.openApiDocumentProxy = new Proxy({} as OpenApiDocument, {
+      deleteProperty() {
+        return false;
+      },
+
+      get(_target, prop) {
+        return Reflect.get(self.openApiDocumentRef as object, prop);
+      },
+
+      getOwnPropertyDescriptor(_target, prop) {
+        return Reflect.getOwnPropertyDescriptor(self.openApiDocumentRef, prop);
+      },
+
+      has(_target, prop) {
+        return Reflect.has(self.openApiDocumentRef, prop);
+      },
+
+      ownKeys() {
+        return Reflect.ownKeys(self.openApiDocumentRef);
+      },
+
+      set() {
+        return false;
+      },
+    });
+  }
+
+  public setOpenApiDocument(newDoc: OpenApiDocument): void {
+    this.openApiDocumentRef = newDoc;
   }
 
   public async watch(): Promise<void> {
@@ -268,6 +308,7 @@ export class ModuleLoader extends EventTarget {
 
           new endpoint.Context({
             loadContext,
+            openApiDocument: this.openApiDocumentProxy,
             readJson,
           }),
         );

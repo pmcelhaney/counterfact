@@ -89,6 +89,7 @@ export async function createMswHandlers(
     compiledPathsDirectory,
     registry,
     contextRegistry,
+    openApiDocument,
   );
   await moduleLoader.load();
   const routes = registry.routes;
@@ -133,10 +134,12 @@ export async function counterfact(config: Config) {
     config.generate,
   );
 
+  const openApiDocument = await loadOpenApiDocument(config.openApiPath);
+
   const dispatcher = new Dispatcher(
     registry,
     contextRegistry,
-    await loadOpenApiDocument(config.openApiPath),
+    openApiDocument,
     config,
   );
 
@@ -150,6 +153,7 @@ export async function counterfact(config: Config) {
     compiledPathsDirectory,
     registry,
     contextRegistry,
+    openApiDocument,
   );
 
   const middleware = koaMiddleware(dispatcher, config);
@@ -165,6 +169,17 @@ export async function counterfact(config: Config) {
 
     if (watch.routes || watch.types) {
       await codeGenerator.watch();
+
+      codeGenerator.addEventListener("generate", () => {
+        void (async () => {
+          const newDoc = await loadOpenApiDocument(config.openApiPath);
+
+          if (newDoc !== undefined) {
+            moduleLoader.setOpenApiDocument(newDoc);
+            dispatcher.openApiDocument = newDoc;
+          }
+        })();
+      });
     }
 
     let httpTerminator: HttpTerminator | undefined;

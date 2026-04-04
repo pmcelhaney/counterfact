@@ -363,6 +363,125 @@ describe("a module loader", () => {
     });
   });
 
+  it("passes openApiDocument to the Context constructor", async () => {
+    await usingTemporaryFiles(async ($) => {
+      await $.add(
+        "_.context.js",
+        "export class Context { constructor({ openApiDocument }) { this.openApiDocument = openApiDocument; } }",
+      );
+      await $.add("package.json", '{ "type": "module" }');
+
+      const registry: Registry = new Registry();
+      const contextRegistry: ContextRegistry = new ContextRegistry();
+      const openApiDocument = { paths: { "/hello": {} } };
+
+      const loader: ModuleLoader = new ModuleLoader(
+        $.path("."),
+        registry,
+        contextRegistry,
+        openApiDocument,
+      );
+
+      await loader.load();
+
+      const rootContext = contextRegistry.find("/") as any;
+
+      expect(rootContext?.openApiDocument.paths).toEqual({ "/hello": {} });
+    });
+  });
+
+  it("defaults openApiDocument to an empty object when none is provided", async () => {
+    await usingTemporaryFiles(async ($) => {
+      await $.add(
+        "_.context.js",
+        "export class Context { constructor({ openApiDocument }) { this.openApiDocument = openApiDocument; } }",
+      );
+      await $.add("package.json", '{ "type": "module" }');
+
+      const registry: Registry = new Registry();
+      const contextRegistry: ContextRegistry = new ContextRegistry();
+
+      const loader: ModuleLoader = new ModuleLoader(
+        $.path("."),
+        registry,
+        contextRegistry,
+      );
+
+      await loader.load();
+
+      const rootContext = contextRegistry.find("/") as any;
+
+      expect(rootContext?.openApiDocument).toBeDefined();
+      expect(typeof rootContext?.openApiDocument).toBe("object");
+    });
+  });
+
+  it("setOpenApiDocument works even when no initial document was provided", async () => {
+    await usingTemporaryFiles(async ($) => {
+      await $.add(
+        "_.context.js",
+        "export class Context { constructor({ openApiDocument }) { this.openApiDocument = openApiDocument; } }",
+      );
+      await $.add("package.json", '{ "type": "module" }');
+
+      const registry: Registry = new Registry();
+      const contextRegistry: ContextRegistry = new ContextRegistry();
+
+      const loader: ModuleLoader = new ModuleLoader(
+        $.path("."),
+        registry,
+        contextRegistry,
+      );
+
+      await loader.load();
+
+      const rootContext = contextRegistry.find("/") as any;
+      const capturedReference = rootContext?.openApiDocument;
+
+      loader.setOpenApiDocument({ paths: { "/added": {} } });
+
+      expect(rootContext?.openApiDocument).toBe(capturedReference);
+      expect(rootContext?.openApiDocument.paths).toEqual({ "/added": {} });
+    });
+  });
+
+  it("updates the openApiDocument reference in-place when setOpenApiDocument is called", async () => {
+    await usingTemporaryFiles(async ($) => {
+      await $.add(
+        "_.context.js",
+        "export class Context { constructor({ openApiDocument }) { this.openApiDocument = openApiDocument; } }",
+      );
+      await $.add("package.json", '{ "type": "module" }');
+
+      const registry: Registry = new Registry();
+      const contextRegistry: ContextRegistry = new ContextRegistry();
+      const openApiDocument = { paths: { "/hello": {} } };
+
+      const loader: ModuleLoader = new ModuleLoader(
+        $.path("."),
+        registry,
+        contextRegistry,
+        openApiDocument,
+      );
+
+      await loader.load();
+
+      const rootContext = contextRegistry.find("/") as any;
+
+      // Capture the proxy reference — it should remain stable
+      const capturedReference = rootContext?.openApiDocument;
+
+      const updatedDocument = { paths: { "/goodbye": {} } };
+      loader.setOpenApiDocument(updatedDocument);
+
+      // The proxy reference is stable
+      expect(rootContext?.openApiDocument).toBe(capturedReference);
+      // But the data it reads reflects the new document
+      expect(rootContext?.openApiDocument.paths).toEqual({ "/goodbye": {} });
+      expect(rootContext?.openApiDocument.paths["/hello"]).toBeUndefined();
+    });
+  });
+
   // can't test because I can't get Jest to refresh modules
   it.skip("updates the registry when a dependency is updated", async () => {
     await usingTemporaryFiles(async ($) => {
