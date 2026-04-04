@@ -46,24 +46,12 @@ function parseCookies(cookieHeader: string): Record<string, string> {
 }
 
 interface ParameterTypes {
-  body: {
-    [key: string]: string;
-  };
-  cookie: {
-    [key: string]: string;
-  };
-  formData: {
-    [key: string]: string;
-  };
-  header: {
-    [key: string]: string;
-  };
-  path: {
-    [key: string]: string;
-  };
-  query: {
-    [key: string]: string;
-  };
+  body: Map<string, string>;
+  cookie: Map<string, string>;
+  formData: Map<string, string>;
+  header: Map<string, string>;
+  path: Map<string, string>;
+  query: Map<string, string>;
 }
 
 export interface OpenApiDocument {
@@ -123,12 +111,12 @@ export class Dispatcher {
     parameters: OpenApiParameters[] | undefined,
   ): ParameterTypes {
     const types: ParameterTypes = {
-      body: {},
-      cookie: {},
-      formData: {},
-      header: {},
-      path: {},
-      query: {},
+      body: new Map(),
+      cookie: new Map(),
+      formData: new Map(),
+      header: new Map(),
+      path: new Map(),
+      query: new Map(),
     };
 
     if (!parameters) {
@@ -139,8 +127,10 @@ export class Dispatcher {
       const type = parameter?.type;
 
       if (type !== undefined) {
-        types[parameter.in][parameter.name] =
-          type === "integer" ? "number" : type;
+        types[parameter.in].set(
+          parameter.name,
+          type === "integer" ? "number" : type,
+        );
       }
     }
 
