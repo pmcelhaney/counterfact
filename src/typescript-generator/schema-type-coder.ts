@@ -57,8 +57,9 @@ export class SchemaTypeCoder extends TypeCoder {
       const optionalFlag = isRequired ? "" : "?";
 
       const comment = buildJsDoc(property.data);
+      const commentPrefix = comment ? `\n${comment}` : "";
 
-      return `${comment ? `\n${comment}` : ""}"${name}"${optionalFlag}: ${new SchemaTypeCoder(
+      return `${commentPrefix}"${name}"${optionalFlag}: ${new SchemaTypeCoder(
         property,
       ).write(script)}`;
     });
