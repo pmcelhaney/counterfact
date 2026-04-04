@@ -23,6 +23,44 @@ const HTTP_METHODS = [
 
 type HttpMethod = (typeof HTTP_METHODS)[number];
 
+// Pre-compile regex patterns derived from HTTP_METHODS
+const HTTP_METHOD_ALTERNATION = HTTP_METHODS.join("|");
+
+// eslint-disable-next-line security/detect-non-literal-regexp
+const NEEDS_MIGRATION_REGEX = new RegExp(
+  `import\\s+type\\s+\\{[^}]*HTTP_(?:${HTTP_METHOD_ALTERNATION})[^}]*\\}`,
+  "iu",
+);
+
+// eslint-disable-next-line security/detect-non-literal-regexp
+const HTTP_TYPE_NAME_REGEX = new RegExp(
+  `^HTTP_(?<method>${HTTP_METHOD_ALTERNATION})$`,
+  "u",
+);
+
+// Pre-build import/export replacement patterns for each HTTP method type name
+const IMPORT_REPLACE_PATTERNS = new Map(
+  HTTP_METHODS.map((method) => [
+    `HTTP_${method}`,
+    // eslint-disable-next-line security/detect-non-literal-regexp
+    new RegExp(
+      `(import\\s+type\\s+\\{[^}]*\\b)HTTP_${method}(\\b[^}]*\\}\\s+from)`,
+      "g",
+    ),
+  ]),
+);
+
+const EXPORT_REPLACE_PATTERNS = new Map(
+  HTTP_METHODS.map((method) => [
+    `HTTP_${method}`,
+    // eslint-disable-next-line security/detect-non-literal-regexp
+    new RegExp(
+      `(export\\s+const\\s+${method}\\s*:\\s*)HTTP_${method}(\\b)`,
+      "g",
+    ),
+  ]),
+);
+
 /**
  * Converts an OpenAPI path to a file system path
  * e.g., "/hello/{name}" -> "hello/{name}"
@@ -110,14 +148,7 @@ async function buildTypeNameMapping(
  * @param content - The file content
  */
 function needsMigration(content: string): boolean {
-  const methodAlternation = HTTP_METHODS.map((method) =>
-    method.toUpperCase(),
-  ).join("|");
-  const pattern = new RegExp(
-    `import\\s+type\\s+\\{[^}]*HTTP_(?:${methodAlternation})[^}]*\\}`,
-    "iu",
-  );
-  return pattern.test(content);
+  return NEEDS_MIGRATION_REGEX.test(content);
 }
 
 /**
@@ -158,9 +189,7 @@ async function updateRouteFile(
 
     for (const importedType of importedTypes) {
       // Check if this is an HTTP_ type
-      const httpMethodMatch = importedType.match(
-        new RegExp(`^HTTP_(?<method>${HTTP_METHODS.join("|")})$`, "u"),
-      );
+      const httpMethodMatch = importedType.match(HTTP_TYPE_NAME_REGEX);
 
       if (httpMethodMatch) {
         const method = httpMethodMatch.groups?.["method"] ?? "";
@@ -182,24 +211,21 @@ async function updateRouteFile(
   // Apply replacements
   for (const [oldName, newName] of replacements.entries()) {
     // Replace in import statement
-    const importPattern = new RegExp(
-      `(import\\s+type\\s+\\{[^}]*\\b)${oldName}(\\b[^}]*\\}\\s+from)`,
-      "g",
-    );
-    content = content.replace(importPattern, `$1${newName}$2`);
+    const importPattern = IMPORT_REPLACE_PATTERNS.get(oldName);
+    if (importPattern) {
+      importPattern.lastIndex = 0;
+      content = content.replace(importPattern, `$1${newName}$2`);
+    }
 
     // Replace in export statement (e.g., "export const GET: HTTP_GET")
     // Match the method from the old type name
-    const methodMatch = oldName.match(
-      new RegExp(`^HTTP_(?<method>${HTTP_METHODS.join("|")})$`, "u"),
-    );
+    const methodMatch = oldName.match(HTTP_TYPE_NAME_REGEX);
     if (methodMatch) {
-      const method = methodMatch.groups?.["method"] ?? "";
-      const exportPattern = new RegExp(
-        `(export\\s+const\\s+${method}\\s*:\\s*)${oldName}(\\b)`,
-        "g",
-      );
-      content = content.replace(exportPattern, `$1${newName}$2`);
+      const exportPattern = EXPORT_REPLACE_PATTERNS.get(oldName);
+      if (exportPattern) {
+        exportPattern.lastIndex = 0;
+        content = content.replace(exportPattern, `$1${newName}$2`);
+      }
     }
 
     modified = true;
