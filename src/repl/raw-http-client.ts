@@ -13,8 +13,8 @@ const colors = {
 };
 
 function isLikelyJson(headersBlock: string, body: string) {
-  const m = headersBlock.match(/^content-type:\s*([^\r\n;]+)/im);
-  const ct = (m?.[1] ?? "").toLowerCase();
+  const m = headersBlock.match(/^content-type:\s*(?<contentType>[^\r\n;]+)/im);
+  const ct = (m?.groups?.["contentType"] ?? "").toLowerCase();
   if (ct.includes("application/json") || ct.includes("+json")) return true;
 
   const s = body.trim();
@@ -36,7 +36,7 @@ function highlightJson(text: string) {
   const pretty = JSON.stringify(obj, null, 2);
 
   return pretty.replace(
-    /("(?:\\.|[^"\\])*")(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?/g,
+    /(?<str>"(?:\\.|[^"\\])*")(?<colon>\s*:)?|\b(?<boolOrNull>true|false|null)\b|-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?/g,
     (match, str, colon, boolOrNull) => {
       if (str) {
         if (colon) return `${colors.blue}${str}${colors.reset}${colon}`;
@@ -201,9 +201,9 @@ export class RawHttpClient {
     const statusLine = lines[0] ?? "";
 
     let statusColor = colors.green;
-    const match = statusLine.match(/HTTP\/\d+\.\d+\s+(\d+)/);
+    const match = statusLine.match(/HTTP\/\d+\.\d+\s+(?<statusCode>\d+)/);
     if (match) {
-      const code = Number(match[1]);
+      const code = Number(match.groups?.["statusCode"]);
       if (code >= 400) statusColor = colors.red;
       else if (code >= 300) statusColor = colors.yellow;
     }
