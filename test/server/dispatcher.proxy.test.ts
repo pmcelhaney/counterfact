@@ -84,7 +84,7 @@ describe("a dispatcher passes a proxy function to the operation", () => {
     expect(response.status).toBe(200);
   });
 
-  it("throws when proxying a POST request with a non-JSON content-type", async () => {
+  it("does not throw when proxying a POST request with a non-JSON content-type", async () => {
     const registry = new Registry();
 
     registry.add("/a", {
@@ -95,18 +95,29 @@ describe("a dispatcher passes a proxy function to the operation", () => {
 
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
 
-    /* @ts-expect-error not including all properties of request */
-    await expect(
-      dispatcher.request({
-        body: "plain text body",
-        headers: { "content-type": "text/plain" },
-        method: "POST",
-        path: "/a",
+    dispatcher.fetch = async (url) =>
+      /* @ts-expect-error not mocking all properties of fetch response */
+      await Promise.resolve({
+        headers: new Headers([["content-type", "text/plain"]]),
+        status: 200,
 
-        req: {
-          path: "/a",
+        async text() {
+          return await Promise.resolve(`body from ${url}`);
         },
-      }),
-    ).rejects.toThrow("application/json");
+      });
+
+    /* @ts-expect-error not including all properties of request */
+    const response = await dispatcher.request({
+      body: "plain text body",
+      headers: { "content-type": "text/plain" },
+      method: "POST",
+      path: "/a",
+
+      req: {
+        path: "/a",
+      },
+    });
+
+    expect(response.status).toBe(200);
   });
 });

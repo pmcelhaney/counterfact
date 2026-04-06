@@ -327,21 +327,15 @@ export class Dispatcher {
       headers,
 
       proxy: async (url: string) => {
-        if (
-          body !== undefined &&
-          headers["content-type"] !== "application/json"
-        ) {
-          throw new Error(
-            `$.proxy() is currently limited to application/json requests. You tried to proxy to ${url} with a Content-Type of ${
-              headers["content-type"] ?? "[unknown]"
-            }. Please open an issue at https://github.com/pmcelhaney/counterfact/issues and prod me to fix this limitation.`,
-          );
-        }
-
         delete headers.host;
 
         const fetchResponse = await this.fetch(`${url}${req.path ?? ""}`, {
-          body: body === undefined ? undefined : JSON.stringify(body),
+          body:
+            body === undefined
+              ? undefined
+              : headers["content-type"] === "application/json"
+                ? JSON.stringify(body)
+                : String(body),
           headers: new Headers(headers),
           method,
         });
