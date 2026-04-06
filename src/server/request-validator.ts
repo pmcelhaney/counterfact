@@ -57,7 +57,7 @@ export function validateRequest(
 
       if (!valid && ajv.errors) {
         for (const error of ajv.errors) {
-          const path = error.instancePath;
+          const path = error.instancePath ?? "";
 
           errors.push(`body${path} ${error.message ?? "is invalid"}`);
         }
@@ -75,7 +75,7 @@ export function validateRequest(
 
     if (!valid && ajv.errors) {
       for (const error of ajv.errors) {
-        const path = error.instancePath;
+        const path = error.instancePath ?? "";
 
         errors.push(`body${path} ${error.message ?? "is invalid"}`);
       }
