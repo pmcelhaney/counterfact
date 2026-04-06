@@ -261,6 +261,7 @@ async function main(source, destination) {
     startRepl: options.repl,
     startServer: options.serve,
     buildCache: options.buildCache || false,
+    validateRequests: options.validateRequest !== false,
 
     watch: {
       routes: options.watch || options.watchRoutes,
@@ -444,5 +445,9 @@ program
     "path or URL to OpenAPI document (alternative to the positional [openapi.yaml] argument)",
   )
   .option("--no-update-check", "disable the npm update check on startup")
+  .option(
+    "--no-validate-request",
+    "disable request validation against the OpenAPI spec",
+  )
   .action(main)
   .parse(process.argv);
