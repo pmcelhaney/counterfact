@@ -19,7 +19,7 @@ export class FileDiscovery {
       .replaceAll("\\", "/");
 
     if (!existsSync(fullDir)) {
-      throw new Error(`Directory does not exist ${this.basePath}`);
+      throw new Error(`Directory does not exist ${fullDir}`);
     }
 
     const entries = await fs.readdir(fullDir, { withFileTypes: true });
