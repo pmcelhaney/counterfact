@@ -165,11 +165,11 @@ export async function counterfact(config: Config) {
   async function start(options: Config) {
     const { generate, startServer, watch, buildCache } = options;
 
-    if (generate.routes || generate.types) {
+    if (config.openApiPath !== "_" && (generate.routes || generate.types)) {
       await codeGenerator.generate();
     }
 
-    if (watch.routes || watch.types) {
+    if (config.openApiPath !== "_" && (watch.routes || watch.types)) {
       await codeGenerator.watch();
     }
 
