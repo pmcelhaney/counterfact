@@ -16,6 +16,7 @@ export interface Config {
   startAdminApi: boolean;
   startRepl: boolean;
   startServer: boolean;
+  validateRequests: boolean;
   watch: {
     routes: boolean;
     types: boolean;

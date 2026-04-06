@@ -10,6 +10,7 @@ import type {
   Registry,
 } from "./registry.js";
 import { createResponseBuilder } from "./response-builder.js";
+import { validateRequest } from "./request-validator.js";
 import { Tools } from "./tools.js";
 import type {
   OpenApiOperation,
@@ -296,6 +297,18 @@ export class Dispatcher {
     }
 
     const operation = this.operationForPathAndMethod(matchedPath, method);
+
+    if (this.config?.validateRequests !== false) {
+      const validation = validateRequest(operation, { body, headers, query });
+
+      if (!validation.valid) {
+        return {
+          body: `Request validation failed:\n${validation.errors.join("\n")}`,
+          contentType: "text/plain",
+          status: 400,
+        };
+      }
+    }
 
     const continuousDistribution = (min: number, max: number) => {
       return min + Math.random() * (max - min);
