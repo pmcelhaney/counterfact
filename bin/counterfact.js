@@ -300,6 +300,7 @@ async function main(source, destination) {
     startRepl: options.repl,
     startServer: options.serve,
     buildCache: options.buildCache || false,
+    validateRequests: options.validateRequest !== false,
 
     watch: {
       routes: options.watch || options.watchRoutes,
@@ -340,7 +341,16 @@ async function main(source, destination) {
     didMigrate = true;
   }
 
-  const { start, startRepl } = await counterfact(config);
+  let start;
+  let startRepl;
+  try {
+    ({ start, startRepl } = await counterfact(config));
+  } catch (error) {
+    process.stderr.write(
+      `\n❌ ${error instanceof Error ? error.message : String(error)}\n\n`,
+    );
+    process.exit(1);
+  }
 
   debug("loaded counterfact", configForLogging);
 
@@ -385,7 +395,14 @@ async function main(source, destination) {
   process.stdout.write("\n\n");
 
   debug("starting server");
-  await start(config);
+  try {
+    await start(config);
+  } catch (error) {
+    process.stderr.write(
+      `\n❌ ${error instanceof Error ? error.message : String(error)}\n\n`,
+    );
+    process.exit(1);
+  }
   debug("started server");
 
   await updateCheckPromise;
@@ -483,5 +500,9 @@ program
     "path or URL to OpenAPI document (alternative to the positional [openapi.yaml] argument)",
   )
   .option("--no-update-check", "disable the npm update check on startup")
+  .option(
+    "--no-validate-request",
+    "disable request validation against the OpenAPI spec",
+  )
   .action(main)
   .parse(process.argv);

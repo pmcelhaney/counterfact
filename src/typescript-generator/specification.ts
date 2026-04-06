@@ -29,10 +29,18 @@ export class Specification {
   }
 
   public async load(urlOrPath: string): Promise<void> {
-    this.rootRequirement = new Requirement(
-      (await bundle(urlOrPath)) as RequirementData,
-      urlOrPath,
-      this,
-    );
+    try {
+      this.rootRequirement = new Requirement(
+        (await bundle(urlOrPath)) as RequirementData,
+        urlOrPath,
+        this,
+      );
+    } catch (error) {
+      const details = error instanceof Error ? error.message : String(error);
+      throw new Error(
+        `Could not load the OpenAPI spec from "${urlOrPath}".\n${details}`,
+        { cause: error },
+      );
+    }
   }
 }
