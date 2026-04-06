@@ -77,7 +77,6 @@ if (!isTelemetryDisabled) {
   try {
     const posthog = new PostHog(telemetryKey, { host: telemetryHost });
 
-    console.log("capture");
     posthog.capture({
       distinctId: randomUUID(),
       event: "counterfact_started",
