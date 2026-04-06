@@ -185,7 +185,7 @@ describe("koa middleware", () => {
     expect(ctx.set).toHaveBeenCalledWith("Access-Control-Allow-Origin", "*");
     expect(ctx.set).toHaveBeenCalledWith(
       "Access-Control-Allow-Methods",
-      "GET,HEAD,PUT,POST,DELETE,PATCH",
+      "POST",
     );
     expect(ctx.set).toHaveBeenCalledWith("Access-Control-Allow-Headers", []);
     expect(ctx.set).toHaveBeenCalledWith("Access-Control-Expose-Headers", []);
@@ -239,7 +239,7 @@ describe("koa middleware", () => {
     );
     expect(ctx.set).toHaveBeenCalledWith(
       "Access-Control-Allow-Methods",
-      "GET,HEAD,PUT,POST,DELETE,PATCH",
+      "POST",
     );
     expect(ctx.set).toHaveBeenCalledWith(
       "Access-Control-Allow-Headers",

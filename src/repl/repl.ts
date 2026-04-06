@@ -2,9 +2,11 @@ import repl from "node:repl";
 
 import type { Config } from "../server/config.js";
 import type { ContextRegistry } from "../server/context-registry.js";
+import type { OpenApiDocument } from "../server/dispatcher.js";
 import type { Registry } from "../server/registry.js";
 
-import { RawHttpClient } from "./RawHttpClient.js";
+import { RawHttpClient } from "./raw-http-client.js";
+import { createRouteFunction } from "./route-builder.js";
 
 function printToStdout(line: string) {
   process.stdout.write(`${line}\n`);
@@ -15,13 +17,39 @@ export type CompleterCallback = (
   result: [string[], string],
 ) => void;
 
+const ROUTE_BUILDER_METHODS = [
+  "body(",
+  "headers(",
+  "help(",
+  "method(",
+  "missing(",
+  "path(",
+  "query(",
+  "ready(",
+  "send(",
+];
+
 export function createCompleter(
   registry: Registry,
   fallback?: (line: string, callback: CompleterCallback) => void,
 ) {
   return (line: string, callback: CompleterCallback): void => {
+    // Check for RouteBuilder method completion: route("..."). or chained calls
+    const builderMatch = line.match(/route\(.*\)\.(?<partial>[a-zA-Z]*)$/u);
+
+    if (builderMatch) {
+      const partial = builderMatch.groups?.["partial"] ?? "";
+      const matches = ROUTE_BUILDER_METHODS.filter((m) =>
+        m.startsWith(partial),
+      );
+
+      callback(null, [matches, partial]);
+
+      return;
+    }
+
     const match = line.match(
-      /client\.(?:get|post|put|patch|delete)\("(?<partial>[^"]*)$/u,
+      /(?:client\.(?:get|post|put|patch|delete)|route)\("(?<partial>[^"]*)$/u,
     );
 
     if (!match) {
@@ -47,6 +75,7 @@ export function startRepl(
   registry: Registry,
   config: Config,
   print = printToStdout,
+  openApiDocument?: OpenApiDocument,
 ) {
   function printProxyStatus() {
     if (config.proxyUrl === "") {
@@ -134,6 +163,9 @@ export function startRepl(
         "- loadContext('/some/path'): to access the context object for a given path",
       );
       print("- context: the root context ( same as loadContext('/') )");
+      print(
+        "- route('/some/path'): create a request builder for the given path",
+      );
       print("");
       print(
         "For more information, see https://counterfact.dev/docs/usage.html",
@@ -175,6 +207,12 @@ export function startRepl(
 
   replServer.context.client = new RawHttpClient("localhost", config.port);
   replServer.context.RawHttpClient = RawHttpClient;
+
+  replServer.context.route = createRouteFunction(
+    config.port,
+    "localhost",
+    openApiDocument,
+  );
 
   return replServer;
 }

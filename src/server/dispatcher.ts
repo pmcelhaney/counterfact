@@ -10,6 +10,7 @@ import type {
   Registry,
 } from "./registry.js";
 import { createResponseBuilder } from "./response-builder.js";
+import { validateRequest } from "./request-validator.js";
 import { Tools } from "./tools.js";
 import type {
   OpenApiOperation,
@@ -35,7 +36,8 @@ function parseCookies(cookieHeader: string): Record<string, string> {
     if (key && !(key in cookies)) {
       try {
         cookies[key] = decodeURIComponent(value);
-      } catch {
+      } catch (error) {
+        debug("could not decode cookie value for key %s: %o", key, error);
         cookies[key] = value;
       }
     }
@@ -45,24 +47,12 @@ function parseCookies(cookieHeader: string): Record<string, string> {
 }
 
 interface ParameterTypes {
-  body: {
-    [key: string]: string;
-  };
-  cookie: {
-    [key: string]: string;
-  };
-  formData: {
-    [key: string]: string;
-  };
-  header: {
-    [key: string]: string;
-  };
-  path: {
-    [key: string]: string;
-  };
-  query: {
-    [key: string]: string;
-  };
+  body: Map<string, string>;
+  cookie: Map<string, string>;
+  formData: Map<string, string>;
+  header: Map<string, string>;
+  path: Map<string, string>;
+  query: Map<string, string>;
 }
 
 export interface OpenApiDocument {
@@ -122,12 +112,12 @@ export class Dispatcher {
     parameters: OpenApiParameters[] | undefined,
   ): ParameterTypes {
     const types: ParameterTypes = {
-      body: {},
-      cookie: {},
-      formData: {},
-      header: {},
-      path: {},
-      query: {},
+      body: new Map(),
+      cookie: new Map(),
+      formData: new Map(),
+      header: new Map(),
+      path: new Map(),
+      query: new Map(),
     };
 
     if (!parameters) {
@@ -138,8 +128,10 @@ export class Dispatcher {
       const type = parameter?.type;
 
       if (type !== undefined) {
-        types[parameter.in][parameter.name] =
-          type === "integer" ? "number" : type;
+        types[parameter.in].set(
+          parameter.name,
+          type === "integer" ? "number" : type,
+        );
       }
     }
 
@@ -277,7 +269,7 @@ export class Dispatcher {
       this.openApiDocument?.basePath !== undefined &&
       path.toLowerCase().startsWith(this.openApiDocument.basePath.toLowerCase())
     ) {
-      path = path.replace(new RegExp(this.openApiDocument.basePath, "iu"), "");
+      path = path.slice(this.openApiDocument.basePath.length);
     }
 
     const { matchedPath } = this.registry.handler(path, method);
@@ -295,6 +287,18 @@ export class Dispatcher {
     }
 
     const operation = this.operationForPathAndMethod(matchedPath, method);
+
+    if (this.config?.validateRequests !== false) {
+      const validation = validateRequest(operation, { body, headers, query });
+
+      if (!validation.valid) {
+        return {
+          body: `Request validation failed:\n${validation.errors.join("\n")}`,
+          contentType: "text/plain",
+          status: 400,
+        };
+      }
+    }
 
     const continuousDistribution = (min: number, max: number) => {
       return min + Math.random() * (max - min);

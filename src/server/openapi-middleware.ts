@@ -1,5 +1,5 @@
 import { bundle } from "@apidevtools/json-schema-ref-parser";
-import yaml from "js-yaml";
+import { dump } from "js-yaml";
 import type Koa from "koa";
 
 export function openapiMiddleware(openApiPath: string, url: string) {
@@ -20,7 +20,7 @@ export function openapiMiddleware(openApiPath: string, url: string) {
       // OpenApi 2 support:
       openApiDocument.host = url;
 
-      ctx.body = yaml.dump(openApiDocument);
+      ctx.body = dump(openApiDocument);
 
       return;
     }

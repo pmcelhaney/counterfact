@@ -1,8 +1,16 @@
 import { once } from "node:events";
 import fs, { constants as fsConstants } from "node:fs";
 
+import { usingTemporaryFiles } from "using-temporary-files";
+
 import { Transpiler } from "../../src/server/transpiler.js";
-import { withTemporaryFiles } from "../lib/with-temporary-files.js";
+
+// The Transpiler internally uses string replacement on paths after normalizing
+// chokidar paths to forward slashes, so source/destination paths must also use
+// forward slashes (especially on Windows where nodePath.join uses backslashes).
+function forwardSlash(p: string): string {
+  return p.replaceAll("\\", "/");
+}
 
 const TYPESCRIPT_SOURCE = `export const x:number = 1;\n`;
 const JAVASCRIPT_SOURCE = `export const x = 1;\n`;
@@ -24,20 +32,22 @@ describe("a Transpiler", () => {
   });
 
   it("finds a file and transpiles it", async () => {
-    const files = {
-      "src/found.ts": TYPESCRIPT_SOURCE,
-    };
+    await usingTemporaryFiles(async ($) => {
+      await $.add("src/found.ts", TYPESCRIPT_SOURCE);
 
-    await withTemporaryFiles(files, async (basePath, { path }) => {
-      transpiler = new Transpiler(path("src"), path("dist"), "module");
+      transpiler = new Transpiler(
+        forwardSlash($.path("src")),
+        forwardSlash($.path("dist")),
+        "module",
+      );
 
       await transpiler.watch();
 
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      expect(fs.existsSync(path("dist/found.js"))).toBe(true);
+      expect(fs.existsSync($.path("dist/found.js"))).toBe(true);
 
-      expect(normalize(fs.readFileSync(path("dist/found.js"), "utf8"))).toBe(
+      expect(normalize(fs.readFileSync($.path("dist/found.js"), "utf8"))).toBe(
         normalize(JAVASCRIPT_SOURCE),
       );
 
@@ -48,42 +58,47 @@ describe("a Transpiler", () => {
   it("discovers a new file and transpiles it", async () => {
     // on Linux the watcher doesn't seem to work consistently if there's not a file in the directory to begin with
 
-    await withTemporaryFiles(
-      { "src/starter.ts": TYPESCRIPT_SOURCE },
-      async (basePath, { add, path }) => {
-        transpiler = new Transpiler(path("src"), path("dist"), "module");
+    await usingTemporaryFiles(async ($) => {
+      await $.add("src/starter.ts", TYPESCRIPT_SOURCE);
 
-        await transpiler.watch();
+      transpiler = new Transpiler(
+        forwardSlash($.path("src")),
+        forwardSlash($.path("dist")),
+        "module",
+      );
 
-        const write = once(transpiler, "write");
-        const error = once(transpiler, "error");
+      await transpiler.watch();
 
-        await add("src/added.ts", TYPESCRIPT_SOURCE);
+      const write = once(transpiler, "write");
+      const error = once(transpiler, "error");
 
-        if (process.platform === "win32") {
-          // Chokidar's add event seems to be unreliable on Windows
-          // Not sure what to do about it, so just skip this test
-          return;
-        }
+      await $.add("src/added.ts", TYPESCRIPT_SOURCE);
 
-        await Promise.race([write, error]);
+      if (process.platform === "win32") {
+        // Chokidar's add event seems to be unreliable on Windows
+        // Not sure what to do about it, so just skip this test
+        return;
+      }
 
-        expect(normalize(fs.readFileSync(path("dist/added.js"), "utf8"))).toBe(
-          normalize(JAVASCRIPT_SOURCE),
-        );
+      await Promise.race([write, error]);
 
-        await transpiler.stopWatching();
-      },
-    );
+      expect(normalize(fs.readFileSync($.path("dist/added.js"), "utf8"))).toBe(
+        normalize(JAVASCRIPT_SOURCE),
+      );
+
+      await transpiler.stopWatching();
+    });
   });
 
   it("sees an updated file and transpiles it", async () => {
-    const files = {
-      "src/update-me.ts": "const x = 'code to be overwritten';\n",
-    };
+    await usingTemporaryFiles(async ($) => {
+      await $.add("src/update-me.ts", "const x = 'code to be overwritten';\n");
 
-    await withTemporaryFiles(files, async (basePath, { add, path }) => {
-      transpiler = new Transpiler(path("src"), path("dist"), "module");
+      transpiler = new Transpiler(
+        forwardSlash($.path("src")),
+        forwardSlash($.path("dist")),
+        "module",
+      );
 
       const initialWrite = once(transpiler, "write");
 
@@ -92,11 +107,11 @@ describe("a Transpiler", () => {
 
       const overwrite = once(transpiler, "write");
 
-      await add("src/update-me.ts", TYPESCRIPT_SOURCE);
+      await $.add("src/update-me.ts", TYPESCRIPT_SOURCE);
       await overwrite;
 
       expect(
-        normalize(fs.readFileSync(path("dist/update-me.js"), "utf8")),
+        normalize(fs.readFileSync($.path("dist/update-me.js"), "utf8")),
       ).toBe(normalize(JAVASCRIPT_SOURCE));
 
       await transpiler.stopWatching();
@@ -104,19 +119,21 @@ describe("a Transpiler", () => {
   }, 10_000);
 
   it("sees a removed TypeScript file and deletes the JavaScript file", async () => {
-    const files = {
-      "src/delete-me.ts": TYPESCRIPT_SOURCE,
-    };
+    await usingTemporaryFiles(async ($) => {
+      await $.add("src/delete-me.ts", TYPESCRIPT_SOURCE);
 
-    await withTemporaryFiles(files, async (basePath, { path, remove }) => {
-      transpiler = new Transpiler(path("src"), path("dist"), "module");
+      transpiler = new Transpiler(
+        forwardSlash($.path("src")),
+        forwardSlash($.path("dist")),
+        "module",
+      );
 
       await transpiler.watch();
-      await remove("src/delete-me.ts");
+      await $.remove("src/delete-me.ts");
       await once(transpiler, "delete");
 
       expect(() => {
-        fs.accessSync(path("dist/delete-me.js"), fsConstants.F_OK);
+        fs.accessSync($.path("dist/delete-me.js"), fsConstants.F_OK);
       }).toThrow(/ENOENT/u);
 
       await transpiler.stopWatching();
@@ -124,22 +141,51 @@ describe("a Transpiler", () => {
   });
 
   it("transpiles as CommonJS when specified", async () => {
-    const files = {
-      "src/found.ts": TYPESCRIPT_SOURCE,
-    };
+    await usingTemporaryFiles(async ($) => {
+      await $.add("src/found.ts", TYPESCRIPT_SOURCE);
 
-    await withTemporaryFiles(files, async (basePath, { path }) => {
-      transpiler = new Transpiler(path("src"), path("dist"), "commonjs");
+      transpiler = new Transpiler(
+        forwardSlash($.path("src")),
+        forwardSlash($.path("dist")),
+        "commonjs",
+      );
 
       await transpiler.watch();
 
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      expect(fs.existsSync(path("dist/found.cjs"))).toBe(true);
+      expect(fs.existsSync($.path("dist/found.cjs"))).toBe(true);
 
-      expect(normalize(fs.readFileSync(path("dist/found.cjs"), "utf8"))).toBe(
+      expect(normalize(fs.readFileSync($.path("dist/found.cjs"), "utf8"))).toBe(
         normalize(JAVASCRIPT_SOURCE_COMMONJS),
       );
+
+      await transpiler.stopWatching();
+    });
+  });
+
+  it("converts requires of .js files to .cjs", async () => {
+    await usingTemporaryFiles(async ($) => {
+      await $.add(
+        "src/importer.ts",
+        'import local from "./local.js"; local();',
+      );
+
+      transpiler = new Transpiler(
+        forwardSlash($.path("src")),
+        forwardSlash($.path("dist")),
+        "commonjs",
+      );
+
+      await transpiler.watch();
+
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      expect(fs.existsSync($.path("dist/importer.cjs"))).toBe(true);
+
+      const contents = fs.readFileSync($.path("dist/importer.cjs"), "utf8");
+
+      expect(contents.includes('require("./local.cjs")')).toBe(true);
 
       await transpiler.stopWatching();
     });

@@ -11,7 +11,7 @@ This directory contains the executable script that is run when a developer invok
 ## How It Works
 
 ```
-npx counterfact openapi.yaml ./api [options]
+npx counterfact@latest openapi.yaml ./api [options]
         │
         ▼
 ┌────────────────────────────┐
@@ -40,5 +40,7 @@ npx counterfact openapi.yaml ./api [options]
 | `--spec <path>` | Path or URL to the OpenAPI document (alternative to positional argument) |
 | `--proxy-url <url>` | Forward all unmatched requests to this upstream URL |
 | `--prefix <path>` | Base path prefix for all routes (e.g. `/api/v1`) |
+| `--no-update-check` | Disable the npm update check on startup |
+| `--no-validate-request` | Disable request validation against the OpenAPI spec |
 
-Run `npx counterfact --help` to see the full option list.
+Run `npx counterfact@latest --help` to see the full option list.
