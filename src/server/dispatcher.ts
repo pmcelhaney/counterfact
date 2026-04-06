@@ -57,7 +57,7 @@ interface ParameterTypes {
 
 export interface OpenApiDocument {
   basePath?: string;
-  paths: {
+  paths?: {
     [key: string]: {
       [key in Lowercase<HttpMethods>]?: OpenApiOperation;
     };
