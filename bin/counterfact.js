@@ -34,7 +34,6 @@ import nodePath from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { randomUUID } from "node:crypto";
 
-
 import { program } from "commander";
 import createDebug from "debug";
 import open from "open";
