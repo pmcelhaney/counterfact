@@ -485,6 +485,19 @@ client.put("/users/1", { name: "robert" }, { "x-api-version": "2" });
 
 All standard HTTP methods are supported. Arguments are: path, body (where applicable), headers.
 
+The built-in `route()` function creates a fluent request builder that validates required parameters against your OpenAPI document before sending:
+
+```js
+// Build and inspect before sending
+const req = route("/pet/{petId}").method("get").path({ petId: 42 })
+req.ready()    // true / false
+req.missing()  // lists missing required parameters
+req.help()     // prints OpenAPI docs for the operation
+await req.send()
+```
+
+See the [Route Builder guide](./route-builder.md) for full documentation.
+
 ---
 
 ## Proxy 🔀

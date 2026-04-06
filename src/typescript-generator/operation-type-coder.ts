@@ -1,6 +1,7 @@
 import nodePath from "node:path";
 
 import { CONTEXT_FILE_TOKEN } from "./context-file-token.js";
+import { buildJsDoc } from "./jsdoc.js";
 import { ParameterExportTypeCoder } from "./parameter-export-type-coder.js";
 import { ParametersTypeCoder } from "./parameters-type-coder.js";
 import { READ_ONLY_COMMENTS } from "./read-only-comments.js";
@@ -115,6 +116,10 @@ export class OperationTypeCoder extends TypeCoder {
     return operationId
       ? sanitizeIdentifier(operationId)
       : `HTTP_${this.requestMethod.toUpperCase()}`;
+  }
+
+  public override jsdoc(): string {
+    return buildJsDoc(this.requirement.data);
   }
 
   public override names(): Generator<string> {

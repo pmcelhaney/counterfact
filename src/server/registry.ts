@@ -114,12 +114,12 @@ function castParameter(value: string | number | boolean, type: string) {
 
 function castParameters(
   parameters: { [key: string]: string | number | boolean } = {},
-  parameterTypes: { [key: string]: string } = {},
+  parameterTypes: Map<string, string> = new Map(),
 ) {
   const copy: { [key: string]: boolean | number | string } = {};
 
   Object.entries(parameters).forEach(([key, value]) => {
-    copy[key] = castParameter(value, parameterTypes?.[key] ?? "string");
+    copy[key] = castParameter(value, parameterTypes.get(key) ?? "string");
   });
 
   return copy;
@@ -184,9 +184,9 @@ export class Registry {
     httpRequestMethod: HttpMethods,
     url: string,
     parameterTypes: {
-      header?: { [key: string]: string };
-      path?: { [key: string]: string };
-      query?: { [key: string]: string };
+      header?: Map<string, string>;
+      path?: Map<string, string>;
+      query?: Map<string, string>;
     } = {},
   ) {
     const handler = this.handler(url, httpRequestMethod);
