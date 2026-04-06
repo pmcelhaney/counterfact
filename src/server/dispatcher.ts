@@ -35,7 +35,8 @@ function parseCookies(cookieHeader: string): Record<string, string> {
     if (key && !(key in cookies)) {
       try {
         cookies[key] = decodeURIComponent(value);
-      } catch {
+      } catch (error) {
+        debug("could not decode cookie value for key %s: %o", key, error);
         cookies[key] = value;
       }
     }

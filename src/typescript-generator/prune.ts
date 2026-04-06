@@ -57,7 +57,8 @@ async function removeEmptyDirectories(
 
   try {
     entries = await fs.readdir(dir, { withFileTypes: true });
-  } catch {
+  } catch (error) {
+    debug("could not read directory %s: %o", dir, error);
     return;
   }
 

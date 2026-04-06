@@ -21,5 +21,3 @@ export interface Config {
     types: boolean;
   };
 }
-
-export const DUMMY_EXPORT_FOR_TEST_COVERAGE = 1;

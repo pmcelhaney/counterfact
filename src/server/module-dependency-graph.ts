@@ -1,6 +1,9 @@
 import { dirname, resolve } from "node:path";
 
+import createDebug from "debug";
 import precinct from "precinct";
+
+const debug = createDebug("counterfact:server:module-dependency-graph");
 
 export class ModuleDependencyGraph {
   private readonly dependents = new Map<string, Set<string>>();
@@ -8,7 +11,8 @@ export class ModuleDependencyGraph {
   private loadDependencies(path: string) {
     try {
       return precinct.paperwork(path);
-    } catch {
+    } catch (error) {
+      debug("could not load dependencies for %s: %o", path, error);
       return [];
     }
   }
