@@ -77,12 +77,6 @@ if (!isTelemetryDisabled) {
   }
 }
 
-if (!isCI && isBeforeRollout && telemetryDisabledEnv !== "true") {
-  process.stderr.write(
-    "Telemetry will be enabled by default starting May 1, 2026. Learn more and how to disable: https://counterfact.dev/telemetry\n",
-  );
-}
-
 const taglinesFile = await readFile(
   nodePath.join(
     nodePath.dirname(fileURLToPath(import.meta.url)),
@@ -328,6 +322,14 @@ async function main(source, destination) {
 
   const watchMessage = createWatchMessage(config);
 
+  const telemetryWarning = isTelemetryDisabled
+    ? []
+    : [
+        "⚠️  Telemetry will be enabled by default starting May 1, 2026.",
+        "   Learn more and how to disable: https://counterfact.dev/telemetry-discussion",
+        "",
+      ];
+
   const introduction = [
     "   ____ ____ _  _ _ _ ___ ____ ____ ____ ____ ____ ___",
     String.raw`   |___ [__] |__| |\|  |  |=== |--< |--- |--| |___  | `,
@@ -340,6 +342,7 @@ async function main(source, destination) {
     "   Instructions  https://counterfact.dev/docs/usage.html",
     "   Help/feedback https://github.com/pmcelhaney/counterfact/issues",
     "",
+    ...telemetryWarning,
     watchMessage,
     config.startServer ? "   Starting server" : undefined,
     config.startRepl
