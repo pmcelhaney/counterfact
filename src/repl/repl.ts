@@ -17,11 +17,37 @@ export type CompleterCallback = (
   result: [string[], string],
 ) => void;
 
+const ROUTE_BUILDER_METHODS = [
+  "body(",
+  "headers(",
+  "help(",
+  "method(",
+  "missing(",
+  "path(",
+  "query(",
+  "ready(",
+  "send(",
+];
+
 export function createCompleter(
   registry: Registry,
   fallback?: (line: string, callback: CompleterCallback) => void,
 ) {
   return (line: string, callback: CompleterCallback): void => {
+    // Check for RouteBuilder method completion: route("..."). or chained calls
+    const builderMatch = line.match(/route\(.*\)\.(?<partial>[a-zA-Z]*)$/u);
+
+    if (builderMatch) {
+      const partial = builderMatch.groups?.["partial"] ?? "";
+      const matches = ROUTE_BUILDER_METHODS.filter((m) =>
+        m.startsWith(partial),
+      );
+
+      callback(null, [matches, partial]);
+
+      return;
+    }
+
     const match = line.match(
       /(?:client\.(?:get|post|put|patch|delete)|route)\("(?<partial>[^"]*)$/u,
     );
