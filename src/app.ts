@@ -138,14 +138,10 @@ export async function counterfact(config: Config) {
     config.generate,
   );
 
-<<<<<<< copilot/pass-openapi-document-to-context
-  const openApiDocument = await loadOpenApiDocument(config.openApiPath);
-=======
   const openApiDocument =
     config.openApiPath === "_"
       ? undefined
       : await loadOpenApiDocument(config.openApiPath);
->>>>>>> main
 
   const dispatcher = new Dispatcher(
     registry,

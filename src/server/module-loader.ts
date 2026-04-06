@@ -8,16 +8,13 @@ import createDebug from "debug";
 import { CHOKIDAR_OPTIONS } from "./constants.js";
 import { ContextRegistry } from "./context-registry.js";
 import { determineModuleKind } from "./determine-module-kind.js";
-<<<<<<< copilot/pass-openapi-document-to-context
 import type { OpenApiDocument } from "./dispatcher.js";
-=======
 import { FileDiscovery } from "./file-discovery.js";
 import {
   type ContextModule,
   isContextModule,
   isMiddlewareModule,
 } from "./middleware-detector.js";
->>>>>>> main
 import { ModuleDependencyGraph } from "./module-dependency-graph.js";
 import type { Module, Registry } from "./registry.js";
 import { uncachedImport } from "./uncached-import.js";
@@ -59,7 +56,6 @@ export class ModuleLoader extends EventTarget {
     this.basePath = basePath.replaceAll("\\", "/");
     this.registry = registry;
     this.contextRegistry = contextRegistry;
-<<<<<<< copilot/pass-openapi-document-to-context
     this.openApiDocumentRef = openApiDocument;
 
     // eslint-disable-next-line @typescript-eslint/no-this-alias
@@ -90,13 +86,11 @@ export class ModuleLoader extends EventTarget {
         return false;
       },
     });
+    this.fileDiscovery = new FileDiscovery(this.basePath);
   }
 
   public setOpenApiDocument(newDoc: OpenApiDocument): void {
     this.openApiDocumentRef = newDoc;
-=======
-    this.fileDiscovery = new FileDiscovery(this.basePath);
->>>>>>> main
   }
 
   public async watch(): Promise<void> {
