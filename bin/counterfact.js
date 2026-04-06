@@ -32,10 +32,12 @@ import { readFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import nodePath from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { randomUUID } from "node:crypto";
 
 import { program } from "commander";
 import createDebug from "debug";
 import open from "open";
+import { PostHog } from "posthog-node";
 
 const MIN_NODE_VERSION = 17;
 
@@ -54,6 +56,46 @@ const packageJson = JSON.parse(
 );
 
 const CURRENT_VERSION = packageJson.version;
+
+// Telemetry — fire-and-forget, never blocks startup
+const POSTHOG_API_KEY = "phc_msXmBxiL8FVugNMLCx9bnPQGqfEMqmyBjnVkKhHkN3m7";
+const POSTHOG_HOST = "https://us.i.posthog.com";
+
+const telemetryKey = process.env.POSTHOG_API_KEY ?? POSTHOG_API_KEY;
+const telemetryHost = process.env.POSTHOG_HOST ?? POSTHOG_HOST;
+
+const isCI = Boolean(process.env.CI);
+const isBeforeRollout = new Date() < new Date("2026-05-01");
+const telemetryDisabledEnv = process.env.COUNTERFACT_TELEMETRY_DISABLED;
+
+const isTelemetryDisabled =
+  isCI ||
+  telemetryDisabledEnv === "true" ||
+  (isBeforeRollout && telemetryDisabledEnv !== "false");
+
+if (!isTelemetryDisabled) {
+  try {
+    const posthog = new PostHog(telemetryKey, { host: telemetryHost });
+
+    posthog.capture({
+      distinctId: randomUUID(),
+      event: "counterfact_started",
+      properties: {
+        version: CURRENT_VERSION,
+        nodeVersion: process.version,
+        platform: process.platform,
+        arch: process.arch,
+        source: "counterfact-cli",
+      },
+    });
+
+    posthog.shutdownAsync().catch(() => {
+      // ignore errors — telemetry is best-effort
+    });
+  } catch {
+    // ignore errors — telemetry must never surface to the user
+  }
+}
 
 const taglinesFile = await readFile(
   nodePath.join(__binDir, "taglines.txt"),
@@ -364,6 +406,14 @@ async function main(source, destination) {
 
   const watchMessage = createWatchMessage(config);
 
+  const telemetryWarning = isTelemetryDisabled
+    ? []
+    : [
+        "⚠️  Telemetry will be enabled by default starting May 1, 2026.",
+        "   Learn more and how to disable: https://counterfact.dev/telemetry-discussion",
+        "",
+      ];
+
   const introduction = [
     "   ____ ____ _  _ _ _ ___ ____ ____ ____ ____ ____ ___",
     String.raw`   |___ [__] |__| |\|  |  |=== |--< |--- |--| |___  | `,
@@ -376,11 +426,7 @@ async function main(source, destination) {
     "   Instructions  https://counterfact.dev/docs/usage.html",
     "   Help/feedback https://github.com/pmcelhaney/counterfact/issues",
     "",
-    "",
-    "🔔 PLEASE READ: Feedback, Telemetry, and Privacy Discussion (10 March 2026)",
-    "   https://counterfact.dev/telemetry-discussion",
-    "",
-    "",
+    ...telemetryWarning,
     watchMessage,
     config.startServer ? "   Starting server" : undefined,
     config.startRepl
