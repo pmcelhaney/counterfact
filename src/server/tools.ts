@@ -25,7 +25,7 @@ export class Tools {
     const acceptTypes = String(acceptHeader).split(",");
 
     return acceptTypes.some((acceptType) => {
-      const [type, subtype] = acceptType.split("/");
+      const [type, subtype] = acceptType.trim().split("/");
 
       return (
         (type === "*" || type === contentType.split("/")[0]) &&

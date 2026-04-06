@@ -16,6 +16,7 @@ describe("tools", () => {
     ${"text/html"}        | ${"text/*"}
     ${"application/json"} | ${"*/json"}
     ${"text/*"}           | ${"text/*"}
+    ${"application/json"} | ${"text/html, application/json"}
   `(
     "accept('$contentType') returns true when the accept header is $acceptHeader",
     ({ acceptHeader, contentType }) => {
