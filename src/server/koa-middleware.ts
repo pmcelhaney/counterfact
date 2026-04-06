@@ -12,6 +12,7 @@ import type { HttpMethods } from "./registry.js";
 declare module "koa" {
   interface Request {
     body?: unknown;
+    rawBody?: string;
   }
 }
 
@@ -100,7 +101,7 @@ export function koaMiddleware(
 
     const auth = getAuthObject(ctx);
 
-    const { body, headers, query } = ctx.request;
+    const { body, headers, query, rawBody } = ctx.request;
 
     const path = ctx.request.path.slice(routePrefix.length);
 
@@ -130,6 +131,7 @@ export function koaMiddleware(
 
       /* @ts-expect-error the value of a querystring item can be an array and we don't have a solution for that yet */
       query,
+      rawBody: method === "HEAD" || method === "GET" ? undefined : rawBody,
       req: { path: "", ...ctx.req },
     });
 

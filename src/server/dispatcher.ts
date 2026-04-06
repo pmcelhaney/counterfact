@@ -79,6 +79,7 @@ export type DispatcherRequest = {
   query: {
     [key: string]: string;
   };
+  rawBody?: string;
   req: {
     path?: string;
   };
@@ -258,6 +259,7 @@ export class Dispatcher {
     method,
     path,
     query,
+    rawBody,
     req,
   }: DispatcherRequest): Promise<CounterfactResponseObject> {
     debug(`request: ${method} ${path}`);
@@ -327,18 +329,10 @@ export class Dispatcher {
       headers,
 
       proxy: async (url: string) => {
-        if (body !== undefined && headers.contentType !== "application/json") {
-          throw new Error(
-            `$.proxy() is currently limited to application/json requests. You tried to proxy to ${url} with a Content-Type of ${
-              headers.contentType ?? "[unknown]"
-            }. Please open an issue at https://github.com/pmcelhaney/counterfact/issues and prod me to fix this limitation.`,
-          );
-        }
-
         delete headers.host;
 
         const fetchResponse = await this.fetch(`${url}${req.path ?? ""}`, {
-          body: body === undefined ? undefined : JSON.stringify(body),
+          body: body === undefined ? undefined : rawBody,
           headers: new Headers(headers),
           method,
         });
