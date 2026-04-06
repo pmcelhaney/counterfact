@@ -11,7 +11,7 @@ import { ContextRegistry } from "./server/context-registry.js";
 import { createKoaApp } from "./server/create-koa-app.js";
 import {
   Dispatcher,
-  DispatcherRequest,
+  type DispatcherRequest,
   type OpenApiDocument,
 } from "./server/dispatcher.js";
 import { koaMiddleware } from "./server/koa-middleware.js";
@@ -19,6 +19,7 @@ import { ModuleLoader } from "./server/module-loader.js";
 import { Registry } from "./server/registry.js";
 import { Transpiler } from "./server/transpiler.js";
 import { CodeGenerator } from "./typescript-generator/code-generator.js";
+import { runtimeCanExecuteErasableTs } from "./util/runtime-can-execute-erasable-ts.js";
 
 const debug = createDebug("counterfact:app");
 
@@ -43,7 +44,11 @@ export async function loadOpenApiDocument(source: string) {
     return (await dereference(source)) as OpenApiDocument;
   } catch (error) {
     debug("could not load OpenAPI document from %s: %o", source, error);
-    return undefined;
+    const details = error instanceof Error ? error.message : String(error);
+    throw new Error(
+      `Could not load the OpenAPI spec from "${source}".\n${details}`,
+      { cause: error },
+    );
   }
 }
 
@@ -67,11 +72,6 @@ export async function createMswHandlers(
   // If we "pre-read" the file here it works. This is a workaround to avoid the issue.
   await fs.readFile(config.openApiPath);
   const openApiDocument = await loadOpenApiDocument(config.openApiPath);
-  if (openApiDocument === undefined) {
-    throw new Error(
-      `Could not load OpenAPI document from ${config.openApiPath}`,
-    );
-  }
   const modulesPath = config.basePath;
   const compiledPathsDirectory = nodePath
     .join(modulesPath, ".cache")
@@ -117,11 +117,15 @@ export async function createMswHandlers(
 export async function counterfact(config: Config) {
   const modulesPath = config.basePath;
 
+  const nativeTs = await runtimeCanExecuteErasableTs();
+
   const compiledPathsDirectory = nodePath
-    .join(modulesPath, ".cache")
+    .join(modulesPath, nativeTs ? "routes" : ".cache")
     .replaceAll("\\", "/");
 
-  await rm(compiledPathsDirectory, { force: true, recursive: true });
+  if (!nativeTs) {
+    await rm(compiledPathsDirectory, { force: true, recursive: true });
+  }
 
   const registry = new Registry();
 
@@ -136,7 +140,9 @@ export async function counterfact(config: Config) {
   const dispatcher = new Dispatcher(
     registry,
     contextRegistry,
-    await loadOpenApiDocument(config.openApiPath),
+    config.openApiPath === "_"
+      ? undefined
+      : await loadOpenApiDocument(config.openApiPath),
     config,
   );
 
@@ -159,18 +165,20 @@ export async function counterfact(config: Config) {
   async function start(options: Config) {
     const { generate, startServer, watch, buildCache } = options;
 
-    if (generate.routes || generate.types) {
+    if (config.openApiPath !== "_" && (generate.routes || generate.types)) {
       await codeGenerator.generate();
     }
 
-    if (watch.routes || watch.types) {
+    if (config.openApiPath !== "_" && (watch.routes || watch.types)) {
       await codeGenerator.watch();
     }
 
     let httpTerminator: HttpTerminator | undefined;
 
     if (startServer) {
-      await transpiler.watch();
+      if (!nativeTs) {
+        await transpiler.watch();
+      }
       await moduleLoader.load();
       await moduleLoader.watch();
 

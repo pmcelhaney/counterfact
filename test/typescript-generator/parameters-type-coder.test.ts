@@ -85,6 +85,41 @@ describe("a ParametersTypeCoder", () => {
     expect(coder.typeDeclaration(undefined, {})).toBe("");
   });
 
+  it("includes JSDoc from parameter description", async () => {
+    const requirement = new Requirement([
+      {
+        in: "query",
+        name: "status",
+        description: "Status values for filter",
+        schema: { type: "string" },
+      },
+    ]);
+
+    const coder = new ParametersTypeCoder(requirement, "query");
+    const result = await format(`type TestType = ${coder.write({})}`);
+
+    expect(result).toContain("* Status values for filter");
+    expect(result).toContain("status?: string");
+  });
+
+  it("includes @deprecated and @example in parameter JSDoc", async () => {
+    const requirement = new Requirement([
+      {
+        in: "query",
+        name: "legacyParam",
+        deprecated: true,
+        example: "foo",
+        schema: { type: "string" },
+      },
+    ]);
+
+    const coder = new ParametersTypeCoder(requirement, "query");
+    const result = await format(`type TestType = ${coder.write({})}`);
+
+    expect(result).toContain("@deprecated");
+    expect(result).toContain('@example "foo"');
+  });
+
   it("calculates the modulePath", () => {
     const coder = new ParametersTypeCoder(
       new Requirement({}, "/components/parameters/foo"),

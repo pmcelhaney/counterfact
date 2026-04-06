@@ -143,4 +143,22 @@ templates/                    # Scaffold templates used during code generation
 
 Always run `yarn lint:fix` before committing to automatically fix linting issues, then run `yarn test` to verify nothing is broken. Run `yarn lint` before opening a PR to confirm no remaining errors. Black-box tests require a build (`yarn build`) and Python 3 with pytest and requests installed (`pip install -r test-black-box/requirements.txt`); run them when touching server startup or CLI behaviour.
 
+## Proposing New GitHub Issues
+
+When planning work that requires new GitHub issues, follow the conventions in:
+
+```
+.github/instructions/issue-proposals.instructions.md
+```
+
+Key rules:
+
+- **Never** create GitHub issues directly via the API, browser automation, or any other means.
+- **Always** propose new issues as Markdown files under `.github/issue-proposals/`.
+- Use YAML front matter for metadata (`title`, `parentIssue`, `labels`, `assignees`, `milestone`).
+- Include `parentIssue` in front matter whenever you know the parent issue number.
+- Write clear issue bodies with a summary, context/motivation, and acceptance criteria.
+
+Proposal files are reviewed in a pull request and converted into real issues automatically on merge.
+
 
