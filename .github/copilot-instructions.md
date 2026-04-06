@@ -68,6 +68,22 @@ test-black-box/               # Python black-box integration tests (pytest)
 templates/                    # Scaffold templates used during code generation
 ```
 
+## Test-Driven Development (TDD)
+
+Always follow the red / green / refactor cycle when writing code:
+
+1. **Red** — Write a failing test that describes the desired behavior before writing any implementation code. Run the test to confirm it fails for the right reason.
+2. **Green** — Write the minimum amount of implementation code needed to make the failing test pass. Do not add anything beyond what the test requires.
+3. **Refactor** — Clean up the code (remove duplication, improve naming, simplify logic) without changing behavior. Re-run the tests after each refactor step to confirm they still pass.
+
+### Guidelines
+
+- Never write implementation code without a failing test to justify it.
+- Keep each red → green cycle small: one behavior at a time.
+- Commit after each green phase so the history reflects incremental progress.
+- Refactor only on green — never refactor while tests are failing.
+- If a bug is found, write a failing test that reproduces it before fixing it.
+
 ## Essential Commands
 
 | Task                          | Command                          |
