@@ -205,6 +205,7 @@ npx counterfact@latest [openapi.yaml] [destination] [options]
 | `--spec <path>`     | Path or URL to the OpenAPI document         |
 | `--proxy-url <url>` | Forward all requests to this URL by default |
 | `--prefix <path>`   | Base path prefix (e.g. `/api/v1`)           |
+| `--no-validate-request` | Disable request validation against the OpenAPI spec |
 
 Run `npx counterfact@latest --help` for the full list of options.
 

@@ -412,4 +412,69 @@ describe("a SchemaTypeCoder", () => {
       expected,
     );
   });
+
+  it("adds JSDoc for properties with description", async () => {
+    const coder = new SchemaTypeCoder(
+      new Requirement({
+        properties: {
+          id: { type: "integer", description: "Unique identifier" },
+          name: { type: "string" },
+        },
+        type: "object",
+      }),
+    );
+
+    const result = await format(`type x = ${coder.write({})}`);
+
+    expect(result).toContain("* Unique identifier");
+    expect(result).toContain("id?: number");
+  });
+
+  it("adds @example tag for properties with example", async () => {
+    const coder = new SchemaTypeCoder(
+      new Requirement({
+        properties: {
+          name: { type: "string", example: "Fido" },
+        },
+        type: "object",
+      }),
+    );
+
+    const result = await format(`type x = ${coder.write({})}`);
+
+    expect(result).toContain('@example "Fido"');
+  });
+
+  it("adds @deprecated tag for deprecated properties", async () => {
+    const coder = new SchemaTypeCoder(
+      new Requirement({
+        properties: {
+          oldField: { type: "string", deprecated: true },
+        },
+        type: "object",
+      }),
+    );
+
+    const result = await format(`type x = ${coder.write({})}`);
+
+    expect(result).toContain("@deprecated");
+  });
+
+  it("returns JSDoc from jsdoc() for schema with description", () => {
+    const coder = new SchemaTypeCoder(
+      new Requirement({
+        description: "A pet in the store",
+        type: "object",
+        properties: {},
+      }),
+    );
+
+    expect(coder.jsdoc()).toBe("/**\n * A pet in the store\n */\n");
+  });
+
+  it("returns empty string from jsdoc() when no metadata", () => {
+    const coder = new SchemaTypeCoder(new Requirement({ type: "string" }));
+
+    expect(coder.jsdoc()).toBe("");
+  });
 });

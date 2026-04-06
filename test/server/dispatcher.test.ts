@@ -1186,4 +1186,167 @@ describe("given a request that contains the differently cased path", () => {
 
     expect(response.body).toBe("ok");
   });
+
+  describe("request validation", () => {
+    const openApiDocument: OpenApiDocument = {
+      paths: {
+        "/widgets": {
+          post: {
+            parameters: [
+              { in: "query", name: "required-query", required: true },
+              { in: "query", name: "optional-query" },
+              { in: "header", name: "x-required-header", required: true },
+            ],
+            requestBody: {
+              content: {
+                "application/json": {
+                  schema: {
+                    properties: {
+                      name: { type: "string" },
+                    },
+                    required: ["name"],
+                    type: "object",
+                  },
+                },
+              },
+            },
+            responses: {
+              200: {
+                content: { "text/plain": { schema: { type: "string" } } },
+              },
+            },
+          },
+        },
+      },
+    };
+
+    function makeDispatcher(validateRequests: boolean) {
+      const registry = new Registry();
+
+      registry.add("/widgets", {
+        POST() {
+          return { body: "ok", status: 200 };
+        },
+      });
+
+      return new Dispatcher(registry, new ContextRegistry(), openApiDocument, {
+        adminApiToken: "",
+        alwaysFakeOptionals: false,
+        basePath: "/",
+        buildCache: false,
+        generate: { routes: false, types: false },
+        openApiPath: "",
+        port: 3100,
+        proxyPaths: new Map(),
+        proxyUrl: "",
+        routePrefix: "",
+        startAdminApi: false,
+        startRepl: false,
+        startServer: true,
+        validateRequests,
+        watch: { routes: false, types: false },
+      });
+    }
+
+    it("returns 400 when a required query parameter is missing", async () => {
+      const dispatcher = makeDispatcher(true);
+
+      const response = await dispatcher.request({
+        body: { name: "sprocket" },
+        headers: { "x-required-header": "yes" },
+        method: "POST",
+        path: "/widgets",
+        query: {},
+        req: { path: "/widgets" },
+      });
+
+      expect(response.status).toBe(400);
+      expect(response.body).toContain("required-query");
+    });
+
+    it("returns 400 when a required header is missing", async () => {
+      const dispatcher = makeDispatcher(true);
+
+      const response = await dispatcher.request({
+        body: { name: "sprocket" },
+        headers: {},
+        method: "POST",
+        path: "/widgets",
+        query: { "required-query": "yes" },
+        req: { path: "/widgets" },
+      });
+
+      expect(response.status).toBe(400);
+      expect(response.body).toContain("x-required-header");
+    });
+
+    it("returns 400 when the request body is missing a required field", async () => {
+      const dispatcher = makeDispatcher(true);
+
+      const response = await dispatcher.request({
+        body: {},
+        headers: { "x-required-header": "yes" },
+        method: "POST",
+        path: "/widgets",
+        query: { "required-query": "yes" },
+        req: { path: "/widgets" },
+      });
+
+      expect(response.status).toBe(400);
+      expect(response.body).toContain("name");
+    });
+
+    it("returns 200 when all required parameters and body are valid", async () => {
+      const dispatcher = makeDispatcher(true);
+
+      const response = await dispatcher.request({
+        body: { name: "sprocket" },
+        headers: { "x-required-header": "yes" },
+        method: "POST",
+        path: "/widgets",
+        query: { "required-query": "yes" },
+        req: { path: "/widgets" },
+      });
+
+      expect(response.status).toBe(200);
+    });
+
+    it("skips validation when validateRequests is false", async () => {
+      const dispatcher = makeDispatcher(false);
+
+      const response = await dispatcher.request({
+        body: {},
+        headers: {},
+        method: "POST",
+        path: "/widgets",
+        query: {},
+        req: { path: "/widgets" },
+      });
+
+      expect(response.status).toBe(200);
+    });
+
+    it("skips validation when there is no OpenAPI document", async () => {
+      const registry = new Registry();
+
+      registry.add("/widgets", {
+        POST() {
+          return { body: "ok", status: 200 };
+        },
+      });
+
+      const dispatcher = new Dispatcher(registry, new ContextRegistry());
+
+      const response = await dispatcher.request({
+        body: {},
+        headers: {},
+        method: "POST",
+        path: "/widgets",
+        query: {},
+        req: { path: "/widgets" },
+      });
+
+      expect(response.status).toBe(200);
+    });
+  });
 });
