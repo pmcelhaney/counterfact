@@ -235,6 +235,25 @@ describe("REPL", () => {
     expect(harness.isReset()).toBe(true);
   });
 
+  it("displays help information for the counterfact command", () => {
+    const { harness } = createHarness();
+
+    harness.call("counterfact", "");
+
+    expect(harness.output).toEqual([
+      "This is a read-eval-print loop (REPL), the same as the one you get when you run node with no arguments.",
+      "Except that it's connected to the running server, which you can access with the following globals:",
+      "",
+      "- loadContext('/some/path'): to access the context object for a given path",
+      "- context: the root context ( same as loadContext('/') )",
+      "- route('/some/path'): create a request builder for the given path",
+      "",
+      "For more information, see https://counterfact.dev/docs/usage.html",
+      "",
+    ]);
+    expect(harness.isReset()).toBe(true);
+  });
+
   describe("route autocomplete", () => {
     function callCompleter(
       completer: ReturnType<typeof createCompleter>,
@@ -335,5 +354,91 @@ describe("REPL", () => {
         expect(completions).toEqual(["/pets"]);
       },
     );
+
+    it('returns matching routes when typing route("', async () => {
+      const registry = new Registry();
+
+      registry.add("/pets", { GET() {} });
+      registry.add("/pets/{petId}", { GET() {} });
+      registry.add("/users", { GET() {} });
+
+      const completer = createCompleter(registry);
+      const [completions, prefix] = await callCompleter(completer, 'route("/p');
+
+      expect(prefix).toBe("/p");
+      expect(completions).toEqual(["/pets", "/pets/{petId}"]);
+    });
+
+    it('returns all routes when typing route(" with no partial', async () => {
+      const registry = new Registry();
+
+      registry.add("/pets", { GET() {} });
+      registry.add("/users", { GET() {} });
+
+      const completer = createCompleter(registry);
+      const [completions, prefix] = await callCompleter(completer, 'route("');
+
+      expect(prefix).toBe("");
+      expect(completions).toEqual(["/pets", "/users"]);
+    });
+
+    it('suggests all RouteBuilder methods after route("/path").', async () => {
+      const registry = new Registry();
+      const completer = createCompleter(registry);
+
+      const [completions, prefix] = await callCompleter(
+        completer,
+        'route("/pets").',
+      );
+
+      expect(prefix).toBe("");
+      expect(completions).toEqual([
+        "body(",
+        "headers(",
+        "help(",
+        "method(",
+        "missing(",
+        "path(",
+        "query(",
+        "ready(",
+        "send(",
+      ]);
+    });
+
+    it('filters RouteBuilder methods based on typed prefix after route("/path").', async () => {
+      const registry = new Registry();
+      const completer = createCompleter(registry);
+
+      const [completions, prefix] = await callCompleter(
+        completer,
+        'route("/pets").me',
+      );
+
+      expect(prefix).toBe("me");
+      expect(completions).toEqual(["method("]);
+    });
+
+    it('suggests RouteBuilder methods after a chained call like route("/path").method("get").', async () => {
+      const registry = new Registry();
+      const completer = createCompleter(registry);
+
+      const [completions, prefix] = await callCompleter(
+        completer,
+        'route("/pets").method("get").',
+      );
+
+      expect(prefix).toBe("");
+      expect(completions).toEqual([
+        "body(",
+        "headers(",
+        "help(",
+        "method(",
+        "missing(",
+        "path(",
+        "query(",
+        "ready(",
+        "send(",
+      ]);
+    });
   });
 });

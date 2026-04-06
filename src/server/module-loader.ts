@@ -1,5 +1,4 @@
 import { once } from "node:events";
-import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
 import nodePath, { basename, dirname } from "node:path";
 
@@ -7,41 +6,26 @@ import { type FSWatcher, watch } from "chokidar";
 import createDebug from "debug";
 
 import { CHOKIDAR_OPTIONS } from "./constants.js";
-import { type Context, ContextRegistry } from "./context-registry.js";
+import { ContextRegistry } from "./context-registry.js";
 import { determineModuleKind } from "./determine-module-kind.js";
+<<<<<<< copilot/pass-openapi-document-to-context
 import type { OpenApiDocument } from "./dispatcher.js";
+=======
+import { FileDiscovery } from "./file-discovery.js";
+import {
+  type ContextModule,
+  isContextModule,
+  isMiddlewareModule,
+} from "./middleware-detector.js";
+>>>>>>> main
 import { ModuleDependencyGraph } from "./module-dependency-graph.js";
-import type { MiddlewareFunction, Module, Registry } from "./registry.js";
+import type { Module, Registry } from "./registry.js";
 import { uncachedImport } from "./uncached-import.js";
+import { unescapePathForWindows } from "../util/windows-escape.js";
 
 const { uncachedRequire } = await import("./uncached-require.cjs");
 
 const debug = createDebug("counterfact:server:module-loader");
-
-import {
-  escapePathForWindows,
-  unescapePathForWindows,
-} from "../util/windows-escape.js";
-
-interface ContextModule {
-  Context?: Context;
-}
-
-function isContextModule(
-  module: ContextModule | Module,
-): module is ContextModule {
-  return "Context" in module && typeof module.Context === "function";
-}
-
-function isMiddlewareModule(
-  module: ContextModule | Module,
-): module is ContextModule & { middleware: MiddlewareFunction } {
-  return (
-    "middleware" in module &&
-    typeof Object.getOwnPropertyDescriptor(module, "middleware")?.value ===
-      "function"
-  );
-}
 
 export class ModuleLoader extends EventTarget {
   private readonly basePath: string;
@@ -58,6 +42,8 @@ export class ModuleLoader extends EventTarget {
 
   private readonly dependencyGraph = new ModuleDependencyGraph();
 
+  private readonly fileDiscovery: FileDiscovery;
+
   private readonly uncachedImport: (moduleName: string) => Promise<unknown> =
     async function (moduleName: string) {
       throw new Error(`uncachedImport not set up; importing ${moduleName}`);
@@ -73,6 +59,7 @@ export class ModuleLoader extends EventTarget {
     this.basePath = basePath.replaceAll("\\", "/");
     this.registry = registry;
     this.contextRegistry = contextRegistry;
+<<<<<<< copilot/pass-openapi-document-to-context
     this.openApiDocumentRef = openApiDocument;
 
     // eslint-disable-next-line @typescript-eslint/no-this-alias
@@ -107,6 +94,9 @@ export class ModuleLoader extends EventTarget {
 
   public setOpenApiDocument(newDoc: OpenApiDocument): void {
     this.openApiDocumentRef = newDoc;
+=======
+    this.fileDiscovery = new FileDiscovery(this.basePath);
+>>>>>>> main
   }
 
   public async watch(): Promise<void> {
@@ -167,42 +157,8 @@ export class ModuleLoader extends EventTarget {
   }
 
   public async load(directory = ""): Promise<void> {
-    if (
-      !existsSync(nodePath.join(this.basePath, directory).replaceAll("\\", "/"))
-    ) {
-      throw new Error(`Directory does not exist ${this.basePath}`);
-    }
-
-    const files = await fs.readdir(
-      nodePath.join(this.basePath, directory).replaceAll("\\", "/"),
-      {
-        withFileTypes: true,
-      },
-    );
-
-    const imports = files.flatMap(async (file): Promise<void> => {
-      const extension = file.name.split(".").at(-1);
-
-      if (file.isDirectory()) {
-        await this.load(
-          nodePath.join(directory, file.name).replaceAll("\\", "/"),
-        );
-
-        return;
-      }
-
-      if (!["cjs", "cts", "js", "mjs", "mts", "ts"].includes(extension ?? "")) {
-        return;
-      }
-
-      const fullPath = nodePath
-        .join(this.basePath, directory, file.name)
-        .replaceAll("\\", "/");
-
-      await this.loadEndpoint(escapePathForWindows(fullPath));
-    });
-
-    await Promise.all(imports);
+    const files = await this.fileDiscovery.findFiles(directory);
+    await Promise.all(files.map((file) => this.loadEndpoint(file)));
   }
 
   private async loadEndpoint(pathName: string) {

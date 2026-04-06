@@ -13,8 +13,8 @@ interface File {
 }
 
 interface Directory {
-  directories: { [key: string]: Directory };
-  files: { [key: string]: File };
+  directories: Map<string, Directory>;
+  files: Map<string, File>;
   isWildcard: boolean;
   name: string;
   rawName: string;
@@ -34,8 +34,8 @@ function isDirectory(test: Directory | undefined): test is Directory {
 
 export class ModuleTree {
   public readonly root: Directory = {
-    directories: {},
-    files: {},
+    directories: new Map(),
+    files: new Map(),
     isWildcard: false,
     name: "",
     rawName: "",
@@ -52,20 +52,25 @@ export class ModuleTree {
       return directory;
     }
 
-    const isNewDirectory =
-      directory.directories[segment.toLowerCase()] === undefined;
+    const isNewDirectory = !directory.directories.has(segment.toLowerCase());
 
-    const nextDirectory = (directory.directories[segment.toLowerCase()] ??= {
-      directories: {},
-      files: {},
-      isWildcard: segment.startsWith("{"),
-      name: segment.replace(/^\{(?<name>.*)\}$/u, "$<name>"),
-      rawName: segment,
-    });
+    if (isNewDirectory) {
+      directory.directories.set(segment.toLowerCase(), {
+        directories: new Map(),
+        files: new Map(),
+        isWildcard: segment.startsWith("{"),
+        name: segment.replace(/^\{(?<name>.*)\}$/u, "$<name>"),
+        rawName: segment,
+      });
+    }
+
+    const nextDirectory = directory.directories.get(
+      segment.toLowerCase(),
+    ) as Directory;
 
     if (isNewDirectory && segment.startsWith("{")) {
-      const ambiguousWildcardDirectories = Object.values(
-        directory.directories,
+      const ambiguousWildcardDirectories = Array.from(
+        directory.directories.values(),
       ).filter((subdirectory) => subdirectory.isWildcard);
 
       if (ambiguousWildcardDirectories.length > 1) {
@@ -97,16 +102,16 @@ export class ModuleTree {
       );
     }
 
-    targetDirectory.files[filename] = {
+    targetDirectory.files.set(filename, {
       isWildcard: filename.startsWith("{"),
       module,
       name: filename.replace(/^\{(?<name>.*)\}$/u, "$<name>"),
       rawName: filename,
-    };
+    });
 
     if (filename.startsWith("{")) {
-      const ambiguousWildcardFiles = Object.values(
-        targetDirectory.files,
+      const ambiguousWildcardFiles = Array.from(
+        targetDirectory.files.values(),
       ).filter((file) => file.isWildcard);
 
       if (ambiguousWildcardFiles.length > 1) {
@@ -136,13 +141,13 @@ export class ModuleTree {
     }
 
     if (remainingSegments.length === 0) {
-      delete directory.files[segment.toLowerCase()];
+      directory.files.delete(segment.toLowerCase());
 
       return;
     }
 
     this.removeModuleFromDirectory(
-      directory.directories[segment.toLowerCase()],
+      directory.directories.get(segment.toLowerCase()),
       remainingSegments,
     );
   }
@@ -165,7 +170,7 @@ export class ModuleTree {
     method: string,
   ): Match | undefined {
     function normalizedSegment(segment: string, directory: Directory) {
-      for (const file in directory.files) {
+      for (const file of directory.files.keys()) {
         if (file.toLowerCase() === segment.toLowerCase()) {
           return file;
         }
@@ -173,8 +178,9 @@ export class ModuleTree {
       return "";
     }
 
-    const exactMatchFile =
-      directory.files[normalizedSegment(segment, directory)];
+    const exactMatchFile = directory.files.get(
+      normalizedSegment(segment, directory),
+    );
 
     // If the URL segment literally matches a file key (e.g., requesting "/{x}"
     // as a literal URL value), exactMatchFile may be a wildcard file. In that
@@ -187,7 +193,7 @@ export class ModuleTree {
       };
     }
 
-    const wildcardFiles = Object.values(directory.files).filter(
+    const wildcardFiles = Array.from(directory.files.values()).filter(
       (file) => file.isWildcard && this.fileModuleDefined(file, method),
     );
 
@@ -265,7 +271,7 @@ export class ModuleTree {
       );
     }
 
-    const exactMatch = directory.directories[segment.toLowerCase()];
+    const exactMatch = directory.directories.get(segment.toLowerCase());
 
     if (isDirectory(exactMatch)) {
       return this.matchWithinDirectory(
@@ -277,9 +283,9 @@ export class ModuleTree {
       );
     }
 
-    const wildcardDirectories = Object.values(directory.directories).filter(
-      (subdirectory) => subdirectory.isWildcard,
-    );
+    const wildcardDirectories = Array.from(
+      directory.directories.values(),
+    ).filter((subdirectory) => subdirectory.isWildcard);
 
     const wildcardMatches: Match[] = [];
 
@@ -323,11 +329,11 @@ export class ModuleTree {
     const routes: Route[] = [];
 
     function traverse(directory: Directory, path: string) {
-      Object.values(directory.directories).forEach((subdirectory) => {
+      directory.directories.forEach((subdirectory) => {
         traverse(subdirectory, `${path}/${subdirectory.rawName}`);
       });
 
-      Object.values(directory.files).forEach((file) => {
+      directory.files.forEach((file) => {
         const methods: [string, string][] = Object.entries(file.module).map(
           ([method, implementation]) => [method, String(implementation)],
         );

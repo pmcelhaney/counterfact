@@ -8,7 +8,7 @@ const httpMethod = "get";
 
 // Minimal valid mock Config
 const mockConfig = {
-  openApiPath: "foo.yaml",
+  openApiPath: "_",
   basePath: ".",
   port: 1234,
   alwaysFakeOptionals: false,
