@@ -255,8 +255,10 @@ type HttpStatusCode =
 interface OpenApiParameters {
   in: "body" | "cookie" | "formData" | "header" | "path" | "query";
   name: string;
+  required?: boolean;
   schema?: {
-    type: string;
+    [key: string]: unknown;
+    type?: string;
   };
   type?: "string" | "number" | "integer" | "boolean";
 }
@@ -264,6 +266,14 @@ interface OpenApiParameters {
 interface OpenApiOperation {
   parameters?: OpenApiParameters[];
   produces?: string[];
+  requestBody?: {
+    content?: {
+      [mediaType: string]: {
+        schema: { [key: string]: unknown };
+      };
+    };
+    required?: boolean;
+  };
   responses: {
     [status: string]: {
       content?: {

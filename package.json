@@ -126,6 +126,7 @@
     "@apidevtools/json-schema-ref-parser": "13.0.5",
     "@hapi/accept": "6.0.3",
     "@types/json-schema": "7.0.15",
+    "ajv": "6.14.0",
     "chokidar": "5.0.0",
     "commander": "14.0.3",
     "debug": "4.4.3",
