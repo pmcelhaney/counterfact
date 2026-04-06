@@ -67,6 +67,59 @@ Then run `npm run mock` or `yarn mock`. This ensures every developer on the team
 
 </details>
 
+<details>
+<summary>Running in TypeScript native mode — no build step required</summary>
+
+By default Counterfact pre-compiles your route files into a `.cache/` directory using the TypeScript compiler. If you run Counterfact under a TypeScript-aware runtime, it detects this automatically and skips compilation entirely — loading the `.ts` source files directly.
+
+**With [tsx](https://tsx.is/) (recommended for simplicity)**
+
+Install tsx as a dev dependency:
+
+```sh
+npm install --save-dev tsx
+# or
+yarn add --dev tsx
+```
+
+Then invoke `counterfact` via tsx:
+
+```sh
+npx tsx ./node_modules/counterfact/bin/counterfact.js openapi.yaml api --serve --watch
+```
+
+Or in `package.json`:
+
+```json
+"scripts": {
+  "mock": "tsx ./node_modules/counterfact/bin/counterfact.js openapi.yaml api --serve --watch"
+}
+```
+
+**With plain Node.js (Node 22.6+ required)**
+
+Node's built-in `--experimental-strip-types` removes TypeScript type annotations without any extra dependency. A small loader included with Counterfact handles the `.js` → `.ts` import remapping that the TypeScript codebase relies on:
+
+```sh
+node \
+  --experimental-strip-types \
+  --import ./node_modules/counterfact/bin/register-ts-loader.mjs \
+  ./node_modules/counterfact/bin/counterfact.js \
+  openapi.yaml api --serve --watch
+```
+
+Or in `package.json`:
+
+```json
+"scripts": {
+  "mock": "node --experimental-strip-types --import ./node_modules/counterfact/bin/register-ts-loader.mjs ./node_modules/counterfact/bin/counterfact.js openapi.yaml api --serve --watch"
+}
+```
+
+> **Note:** `--experimental-strip-types` is stable enough for development use but the flag name may change before it graduates from experimental status.
+
+</details>
+
 ---
 
 ## Generated Code
@@ -107,17 +160,16 @@ Each exported function handles one HTTP method. The single argument `$` gives yo
 
 `$.response` is a fluent builder for HTTP responses. Start by picking a status code, then chain one or more methods:
 
-| Method | Description |
-|--------|-------------|
-| `.random()` | Returns random data generated from the OpenAPI schema (uses `examples` where available) |
-| `.example(name)` | Returns a specific named example from the OpenAPI spec |
-| `.json(content)` | Returns a JSON body (also converts to XML automatically when the client requests it) |
-| `.text(content)` | Returns a plain-text body |
-| `.html(content)` | Returns an HTML body |
-| `.xml(content)` | Returns an XML body |
-| `.match(contentType, content)` | Returns a body with an explicit content type; chain multiple for content negotiation |
-| `.header(name, value)` | Adds a response header |
-| `.cookie(name, value, options?)` | Adds a `Set-Cookie` response header; can be called multiple times |
+| Method                         | Description                                                                             |
+| ------------------------------ | --------------------------------------------------------------------------------------- |
+| `.random()`                    | Returns random data generated from the OpenAPI schema (uses `examples` where available) |
+| `.example(name)`               | Returns a specific named example from the OpenAPI spec                                  |
+| `.json(content)`               | Returns a JSON body (also converts to XML automatically when the client requests it)    |
+| `.text(content)`               | Returns a plain-text body                                                               |
+| `.html(content)`               | Returns an HTML body                                                                    |
+| `.xml(content)`                | Returns an XML body                                                                     |
+| `.match(contentType, content)` | Returns a body with an explicit content type; chain multiple for content negotiation    |
+| `.header(name, value)`         | Adds a response header                                                                  |
 
 ```ts
 return $.response[200].header("x-request-id", "abc123").json({ ok: true });
@@ -169,7 +221,9 @@ If your OpenAPI spec defines named examples for a response, you can return a spe
 return $.response[200].example("successResponse");
 
 // Chain additional decorations after selecting an example
-return $.response[200].example("successResponse").header("x-request-id", "abc123");
+return $.response[200]
+  .example("successResponse")
+  .header("x-request-id", "abc123");
 ```
 
 > [!TIP]
@@ -179,12 +233,12 @@ return $.response[200].example("successResponse").header("x-request-id", "abc123
 
 The request is exposed through four typed properties:
 
-| Property | Contents |
-|----------|----------|
-| `$.path` | Path parameters (e.g. `$.path.userId` for `/users/{userId}`) |
-| `$.query` | Query string parameters |
-| `$.headers` | Request headers |
-| `$.body` | Request body |
+| Property    | Contents                                                     |
+| ----------- | ------------------------------------------------------------ |
+| `$.path`    | Path parameters (e.g. `$.path.userId` for `/users/{userId}`) |
+| `$.query`   | Query string parameters                                      |
+| `$.headers` | Request headers                                              |
+| `$.body`    | Request body                                                 |
 
 ```ts
 export const GET: HTTP_GET = ($) => {
@@ -192,8 +246,9 @@ export const GET: HTTP_GET = ($) => {
     return $.response[401].text("Unauthorized");
   }
 
-  const content = `Results for "${$.query.keyword}" in ${$.path.groupName}`
-    + ` with tags: ${$.body.tags.join(", ")}`;
+  const content =
+    `Results for "${$.query.keyword}" in ${$.path.groupName}` +
+    ` with tags: ${$.body.tags.join(", ")}`;
 
   return $.response[200].text(content);
 };
@@ -228,7 +283,7 @@ Counterfact translates your OpenAPI spec into strict TypeScript types. If your s
 ```ts
 export const GET: HTTP_GET = ($) => {
   // header not defined in OpenAPI spec
-  $.headers["my-undocumented-header"];   // TypeScript error
+  $.headers["my-undocumented-header"]; // TypeScript error
   $.x.headers["my-undocumented-header"]; // ok
 
   // status code not defined in OpenAPI spec
@@ -254,7 +309,8 @@ export const POST: HTTP_POST = ($) => {
 // routes/pet/{petId}.ts
 export const GET: HTTP_GET = ($) => {
   const pet = $.context.getPetById($.path.petId);
-  if (pet === undefined) return $.response[404].text(`Pet ${$.path.petId} not found.`);
+  if (pet === undefined)
+    return $.response[404].text(`Pet ${$.path.petId} not found.`);
   return $.response[200].json(pet);
 };
 ```
@@ -314,6 +370,60 @@ export class Context {
 
 ---
 
+## TypeScript Native Mode
+
+By default Counterfact compiles your route files into a `.cache/` directory before loading them. When you run Counterfact under a TypeScript-aware runtime it detects this automatically and skips compilation, loading `.ts` source files directly. The result is the same hot-reload experience with no build step.
+
+### How detection works
+
+At startup Counterfact writes a small temporary TypeScript file to a system temp directory and attempts to import it. If the import succeeds the runtime is TypeScript-capable and the transpiler is skipped. No configuration is needed.
+
+### With tsx
+
+Invoke the `counterfact` binary through [tsx](https://tsx.is/):
+
+```sh
+# one-off via npx
+npx tsx ./node_modules/counterfact/bin/counterfact.js openapi.yaml api --serve --watch
+
+# or in package.json scripts
+"mock": "tsx ./node_modules/counterfact/bin/counterfact.js openapi.yaml api --serve --watch"
+```
+
+tsx is available as a dev dependency (`npm install --save-dev tsx`).
+
+### With plain Node.js
+
+Node 22.6+ ships with `--experimental-strip-types`. A small module hook bundled with Counterfact (`bin/register-ts-loader.mjs`) adds the `.js` → `.ts` import remapping that Node doesn't do on its own:
+
+```sh
+node \
+  --experimental-strip-types \
+  --import ./node_modules/counterfact/bin/register-ts-loader.mjs \
+  ./node_modules/counterfact/bin/counterfact.js \
+  openapi.yaml api --serve --watch
+```
+
+In `package.json`:
+
+```json
+"scripts": {
+  "mock": "node --experimental-strip-types --import ./node_modules/counterfact/bin/register-ts-loader.mjs ./node_modules/counterfact/bin/counterfact.js openapi.yaml api --serve --watch"
+}
+```
+
+### What changes in native mode
+
+|                     | Default (compiled)                     | Native TS                  |
+| ------------------- | -------------------------------------- | -------------------------- |
+| Startup             | Compiles routes to `.cache/` first     | Loads `.ts` files directly |
+| `.cache/` directory | Created and managed automatically      | Not used                   |
+| Dependencies        | None extra                             | tsx _or_ Node 22.6+        |
+| Route file format   | Generated `.ts` files (same as always) | Same                       |
+| Hot reload          | ✅                                     | ✅                         |
+
+---
+
 ## Hot Reload 🔥
 
 Save a file — any route or context file — and the running server picks it up immediately. No restart needed, and in-memory state is preserved across reloads.
@@ -324,9 +434,9 @@ This makes it fast to set up edge cases like:
 - What if there are zero results? What if there are 10,000?
 - What if the server is slow?
 
-Find the file corresponding to the route, change behavior by editing the TypeScript code, and continue testing. 
+Find the file corresponding to the route, change behavior by editing the TypeScript code, and continue testing.
 
-Depending on the scenario, you may want to commmit your changes to source control or throw them away. 
+Depending on the scenario, you may want to commmit your changes to source control or throw them away.
 
 ---
 
@@ -352,7 +462,8 @@ At the prompt you can interact with the live context:
 context.addPet({ name: "Fluffy", photoUrls: [] });
 
 // add 100 pets
-for (let i = 0; i < 100; i++) context.addPet({ name: `Pet ${i}`, photoUrls: [] });
+for (let i = 0; i < 100; i++)
+  context.addPet({ name: `Pet ${i}`, photoUrls: [] });
 
 // query state
 context.pets.filter((pet) => pet.name.startsWith("F"));
@@ -378,7 +489,7 @@ All standard HTTP methods are supported. Arguments are: path, body (where applic
 
 ## Proxy 🔀
 
-You can mix real backend calls with mocks — useful when some endpoints are not finished or you need to test edge cases like 500 errors. 
+You can mix real backend calls with mocks — useful when some endpoints are not finished or you need to test edge cases like 500 errors.
 
 To proxy a single endpoint from within a route file:
 
@@ -431,7 +542,7 @@ Counterfact can be used as a library — for example, from [Playwright](https://
 import { counterfact } from "counterfact";
 
 const config = {
-  basePath: "./api",        // directory containing your routes/
+  basePath: "./api", // directory containing your routes/
   openApiPath: "./api.yaml", // optional; pass "_" to run without a spec
   port: 8100,
   alwaysFakeOptionals: false,
@@ -440,7 +551,7 @@ const config = {
   proxyUrl: "",
   routePrefix: "",
   startAdminApi: false,
-  startRepl: false,         // do not auto-start the REPL
+  startRepl: false, // do not auto-start the REPL
   startServer: true,
   watch: { routes: false, types: false },
 };
@@ -517,14 +628,14 @@ it("prompts for a password change when the password has expired", async () => {
 
 ### Return value of `counterfact()`
 
-| Property | Type | Description |
-|---|---|---|
-| `contextRegistry` | `ContextRegistry` | Registry of all context objects keyed by path. Call `.find(path)` to get the context for a given route prefix. |
-| `registry` | `Registry` | Registry of all loaded route modules. |
-| `koaApp` | `Koa` | The underlying Koa application. |
-| `koaMiddleware` | `Koa.Middleware` | The Counterfact request-dispatch middleware. |
-| `start(config)` | `async (config) => { stop() }` | Starts the server (and optionally the file watcher and code generator). Returns a `stop()` function to gracefully shut down. |
-| `startRepl()` | `() => REPLServer` | Starts the interactive REPL. Returns the REPL server instance. |
+| Property          | Type                           | Description                                                                                                                  |
+| ----------------- | ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------- |
+| `contextRegistry` | `ContextRegistry`              | Registry of all context objects keyed by path. Call `.find(path)` to get the context for a given route prefix.               |
+| `registry`        | `Registry`                     | Registry of all loaded route modules.                                                                                        |
+| `koaApp`          | `Koa`                          | The underlying Koa application.                                                                                              |
+| `koaMiddleware`   | `Koa.Middleware`               | The Counterfact request-dispatch middleware.                                                                                 |
+| `start(config)`   | `async (config) => { stop() }` | Starts the server (and optionally the file watcher and code generator). Returns a `stop()` function to gracefully shut down. |
+| `startRepl()`     | `() => REPLServer`             | Starts the interactive REPL. Returns the REPL server instance.                                                               |
 
 ---
 
