@@ -1,6 +1,6 @@
 import type { OpenApiDocument } from "../server/dispatcher.js";
 
-import { RawHttpClient } from "./RawHttpClient.js";
+import { RawHttpClient } from "./raw-http-client.js";
 
 type Params = Record<string, boolean | number | string>;
 

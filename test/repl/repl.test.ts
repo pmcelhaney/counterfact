@@ -246,6 +246,7 @@ describe("REPL", () => {
       "",
       "- loadContext('/some/path'): to access the context object for a given path",
       "- context: the root context ( same as loadContext('/') )",
+      "- route('/some/path'): create a request builder for the given path",
       "",
       "For more information, see https://counterfact.dev/docs/usage.html",
       "",
