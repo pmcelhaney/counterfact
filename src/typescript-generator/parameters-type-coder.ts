@@ -1,5 +1,6 @@
 import nodePath from "node:path";
 
+import { buildJsDoc } from "./jsdoc.js";
 import { SchemaTypeCoder } from "./schema-type-coder.js";
 import { TypeCoder } from "./type-coder.js";
 import type { Requirement } from "./requirement.js";
@@ -39,7 +40,10 @@ export class ParametersTypeCoder extends TypeCoder {
           ? parameter.get("schema")!
           : parameter;
 
-        return `"${name}"${optionalFlag}: ${new SchemaTypeCoder(schema).write(
+        const comment = buildJsDoc(parameter.data);
+        const commentPrefix = comment ? `\n${comment}` : "";
+
+        return `${commentPrefix}"${name}"${optionalFlag}: ${new SchemaTypeCoder(schema).write(
           script,
         )}`;
       });
