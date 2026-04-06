@@ -73,39 +73,39 @@ export class RawHttpClient {
   }
 
   get(path: string, headers = {}) {
-    this.#send("GET", path, "", headers);
+    return this.#send("GET", path, "", headers);
   }
 
   head(path: string, headers = {}) {
-    this.#send("HEAD", path, "", headers);
+    return this.#send("HEAD", path, "", headers);
   }
 
-  post(path: string, body = "", headers = {}) {
-    this.#send("POST", path, body, headers);
+  post(path: string, body: string | object = "", headers = {}) {
+    return this.#send("POST", path, body, headers);
   }
 
-  put(path: string, body = "", headers = {}) {
-    this.#send("PUT", path, body, headers);
+  put(path: string, body: string | object = "", headers = {}) {
+    return this.#send("PUT", path, body, headers);
   }
 
   delete(path: string, headers = {}) {
-    this.#send("DELETE", path, "", headers);
+    return this.#send("DELETE", path, "", headers);
   }
 
   connect(path: string, headers = {}) {
-    this.#send("CONNECT", path, "", headers);
+    return this.#send("CONNECT", path, "", headers);
   }
 
   options(path: string, headers = {}) {
-    this.#send("OPTIONS", path, "", headers);
+    return this.#send("OPTIONS", path, "", headers);
   }
 
   trace(path: string, headers = {}) {
-    this.#send("TRACE", path, "", headers);
+    return this.#send("TRACE", path, "", headers);
   }
 
-  patch(path: string, body = "", headers = {}) {
-    this.#send("PATCH", path, body, headers);
+  patch(path: string, body: string | object = "", headers = {}) {
+    return this.#send("PATCH", path, body, headers);
   }
 
   #send(
