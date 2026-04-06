@@ -41,5 +41,6 @@ npx counterfact@latest openapi.yaml ./api [options]
 | `--proxy-url <url>` | Forward all unmatched requests to this upstream URL |
 | `--prefix <path>` | Base path prefix for all routes (e.g. `/api/v1`) |
 | `--no-update-check` | Disable the npm update check on startup |
+| `--no-validate-request` | Disable request validation against the OpenAPI spec |
 
 Run `npx counterfact@latest --help` to see the full option list.
