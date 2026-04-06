@@ -66,7 +66,7 @@ const telemetryKey = process.env.POSTHOG_API_KEY ?? POSTHOG_API_KEY;
 const telemetryHost = process.env.POSTHOG_HOST ?? POSTHOG_HOST;
 
 const isCI = Boolean(process.env.CI);
-const isBeforeRollout = new Date() < new Date("2026-04-01");
+const isBeforeRollout = new Date() < new Date("2026-05-01");
 const telemetryDisabledEnv = process.env.COUNTERFACT_TELEMETRY_DISABLED;
 
 const isTelemetryDisabled =
