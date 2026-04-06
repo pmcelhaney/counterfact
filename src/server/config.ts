@@ -16,10 +16,9 @@ export interface Config {
   startAdminApi: boolean;
   startRepl: boolean;
   startServer: boolean;
+  validateRequests: boolean;
   watch: {
     routes: boolean;
     types: boolean;
   };
 }
-
-export const DUMMY_EXPORT_FOR_TEST_COVERAGE = 1;

@@ -235,6 +235,24 @@ describe("REPL", () => {
     expect(harness.isReset()).toBe(true);
   });
 
+  it("displays help information for the counterfact command", () => {
+    const { harness } = createHarness();
+
+    harness.call("counterfact", "");
+
+    expect(harness.output).toEqual([
+      "This is a read-eval-print loop (REPL), the same as the one you get when you run node with no arguments.",
+      "Except that it's connected to the running server, which you can access with the following globals:",
+      "",
+      "- loadContext('/some/path'): to access the context object for a given path",
+      "- context: the root context ( same as loadContext('/') )",
+      "",
+      "For more information, see https://counterfact.dev/docs/usage.html",
+      "",
+    ]);
+    expect(harness.isReset()).toBe(true);
+  });
+
   describe("route autocomplete", () => {
     function callCompleter(
       completer: ReturnType<typeof createCompleter>,

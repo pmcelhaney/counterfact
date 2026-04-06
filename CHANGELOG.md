@@ -1,5 +1,28 @@
 # counterfact
 
+## 2.5.1
+
+### Patch Changes
+
+- a10ac3d: Convert remaining JavaScript source files and tests to TypeScript with proper types
+
+## 2.5.0
+
+### Minor Changes
+
+- f440a20: Display the current version on startup and warn when a newer version is available on npm. The version check runs non-blocking in the background after the server starts, and can be suppressed with `--no-update-check` or by setting the `CI` environment variable.
+
+### Patch Changes
+
+- cdb4c42: Fix import path in generated route handler files when the OpenAPI path contains a colon (e.g. `/stuff:action`). Previously, the import statement used a literal `:` but the type file was written to disk with the Unicode ratio symbol `∶` (U+2236), causing TypeScript to fail to resolve the type and fall back to `any`.
+- eb65932: Fix `Access-Control-Allow-Methods` CORS header to reflect only the HTTP methods actually implemented by the route handler, instead of hardcoding `GET,HEAD,PUT,POST,DELETE,PATCH` for every route.
+- d522f6f: Fix crash when a route file is deleted while the server is running. Previously, the file-watch handler would attempt to re-import the deleted file after removing it from the registry, causing a `TypeError`. Now the handler returns immediately after processing the `unlink` event.
+- d306720: Fix crash when a route file has a syntax error. Previously, Counterfact would crash with an unhandled promise rejection when a CommonJS route file had a syntax error. Now the server stays running and requests to that route return a 500 response with a message indicating which file has the error.
+- 6ca6998: Fix request body parsing: `RawHttpClient` now automatically sets `Content-Type: application/json` when the body is an object, so `$.body` is populated correctly in route handlers.
+- df8abcf: Fix TypeError when a response content entry has no schema defined. Previously, the TypeScript type generator would crash with `TypeError: Cannot read properties of undefined (reading 'data')` and emit an empty error comment type. Now it gracefully falls back to `unknown` for the body type.
+- 37dec24: Updated dependency `koa` to `3.2.0`.
+- a1973c7: Updated dependency `lodash` to `4.18.1`.
+
 ## 2.4.0
 
 ### Minor Changes

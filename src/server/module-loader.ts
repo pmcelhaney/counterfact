@@ -107,6 +107,7 @@ export class ModuleLoader extends EventTarget {
         if (eventName === "unlink") {
           this.registry.remove(url);
           this.dispatchEvent(new Event("remove"));
+          return;
         }
 
         const dependencies = this.dependencyGraph.dependentsOf(pathName);
@@ -188,9 +189,49 @@ export class ModuleLoader extends EventTarget {
           ? uncachedRequire
           : uncachedImport;
 
-      const endpoint = (await doImport(pathName).catch(() => {
-        console.log("ERROR");
+      let importError: unknown;
+
+      const endpoint = (await doImport(pathName).catch((error: unknown) => {
+        importError = error;
       })) as ContextModule | Module;
+
+      if (importError !== undefined) {
+        const isSyntaxError =
+          importError instanceof SyntaxError ||
+          String(importError).startsWith("SyntaxError:");
+
+        const displayPath = nodePath
+          .relative(process.cwd(), unescapePathForWindows(pathName))
+          .replaceAll("\\", "/");
+
+        const message = isSyntaxError
+          ? `There is a syntax error in the route file: ${displayPath}`
+          : `There was an error loading the route file: ${displayPath}`;
+
+        const errorResponse = () => ({
+          body: message,
+          status: 500,
+        });
+
+        this.registry.add(url, {
+          DELETE: errorResponse,
+          GET: errorResponse,
+          HEAD: errorResponse,
+          OPTIONS: errorResponse,
+          PATCH: errorResponse,
+          POST: errorResponse,
+          PUT: errorResponse,
+          TRACE: errorResponse,
+        });
+
+        this.dispatchEvent(new Event("add"));
+
+        return;
+      }
+
+      if (!endpoint) {
+        return;
+      }
 
       this.dispatchEvent(new Event("add"));
 

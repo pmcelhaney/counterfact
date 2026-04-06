@@ -91,6 +91,31 @@ describe("a module loader", () => {
     });
   });
 
+  it("does not crash when a context file is deleted", async () => {
+    await usingTemporaryFiles(async ($) => {
+      await $.add("_.context.js", "export class Context { value = 42 }");
+      await $.add(
+        "hello.js",
+        'export function GET() { return { body: "hello" }; }',
+      );
+      await $.add("package.json", '{ "type": "module" }');
+
+      const registry: Registry = new Registry();
+      const loader: ModuleLoader = new ModuleLoader($.path("."), registry);
+
+      await loader.load();
+      await loader.watch();
+
+      await $.remove("_.context.js");
+      await once(loader, "remove");
+
+      // Should not crash and the route should still be accessible
+      expect(registry.exists("GET", "/hello")).toBe(true);
+
+      await loader.stopWatching();
+    });
+  });
+
   it("ignores files with the wrong file extension", async () => {
     await usingTemporaryFiles(async ($) => {
       const registry: Registry = new Registry();
@@ -366,6 +391,46 @@ describe("a module loader", () => {
       expect(response).toEqual("changed");
 
       await loader.stopWatching();
+    });
+  });
+
+  it("registers a 500 handler for an ESM route file with a syntax error", async () => {
+    await usingTemporaryFiles(async ($) => {
+      await $.add("bad-syntax.js", "this is not valid javascript @@@");
+      await $.add("package.json", '{ "type": "module" }');
+
+      const registry: Registry = new Registry();
+      const loader: ModuleLoader = new ModuleLoader($.path(""), registry);
+
+      await loader.load();
+
+      expect(registry.exists("GET", "/bad-syntax")).toBe(true);
+
+      // @ts-expect-error - not going to create a whole request object for a test
+      const response = await registry.endpoint("GET", "/bad-syntax")({});
+
+      expect(response?.status).toBe(500);
+      expect(response?.body).toContain("bad-syntax.js");
+    });
+  });
+
+  it("registers a 500 handler for a CJS route file with a syntax error", async () => {
+    await usingTemporaryFiles(async ($) => {
+      await $.add("bad-syntax.cjs", "this is not valid javascript @@@");
+
+      const registry: Registry = new Registry();
+      const loader: ModuleLoader = new ModuleLoader($.path(""), registry);
+
+      await loader.load();
+
+      expect(registry.exists("GET", "/bad-syntax")).toBe(true);
+
+      // @ts-expect-error - not going to create a whole request object for a test
+      const response = await registry.endpoint("GET", "/bad-syntax")({});
+
+      expect(response?.status).toBe(500);
+      expect(response?.body).toContain("bad-syntax.cjs");
+      expect(response?.body).toContain("syntax error");
     });
   });
 });

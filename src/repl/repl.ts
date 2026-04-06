@@ -5,7 +5,7 @@ import type { ContextRegistry } from "../server/context-registry.js";
 import type { OpenApiDocument } from "../server/dispatcher.js";
 import type { Registry } from "../server/registry.js";
 
-import { RawHttpClient } from "./RawHttpClient.js";
+import { RawHttpClient } from "./raw-http-client.js";
 import { createRouteFunction } from "./route-builder.js";
 
 function printToStdout(line: string) {
