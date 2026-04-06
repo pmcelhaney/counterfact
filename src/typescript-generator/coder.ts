@@ -20,6 +20,10 @@ export class Coder {
     return "";
   }
 
+  public jsdoc(): string {
+    return "";
+  }
+
   public write(script: Script): string {
     if (this.requirement.isReference) {
       return script.import(this);
@@ -83,6 +87,7 @@ export interface ExportStatement {
   id: string;
   isDefault: boolean;
   isType: boolean;
+  jsdoc: string;
   typeDeclaration: string;
   name?: string;
   code?: string | { raw: string };
