@@ -22,7 +22,7 @@ Each item must use this format:
 - Include:
   - the main success path
   - at least one edge case
-  - a regression/backward compatibility check if applicable
+  - at least one regression/backward compatibility check if applicable
 - Do NOT check the boxes — they are for the human reviewer
 - Do NOT describe implementation tasks (e.g., "refactored code", "updated types")
 
@@ -32,6 +32,66 @@ Each item must use this format:
 - [ ] Invalid example name returns 500
 - [ ] Response includes `x-test` header when defined
 - [ ] Existing routes without examples behave unchanged
+
+## Test-driven workflow
+
+When implementing a change, work in a test-first or test-guided way whenever practical.
+
+### Default workflow
+
+1. Understand the requested behavior before changing code.
+2. Identify the smallest observable behavior that proves the change works.
+3. Add or update automated tests for that behavior first.
+4. Run the relevant tests and confirm they fail for the expected reason when feasible.
+5. Implement the smallest code change needed to make the tests pass.
+6. Refactor only after the tests are green.
+7. Run all relevant tests again before finishing.
+
+### Expectations
+
+- Prefer adding tests at the level that best captures user-visible behavior.
+- Do not change tests merely to accommodate broken behavior unless the requested behavior has changed.
+- Do not remove tests without explaining why.
+- Avoid over-mocking. Prefer realistic behavior and real integration boundaries where practical.
+- Keep tests readable. A test should make it obvious what behavior is expected.
+- Cover at least:
+  - the main success path
+  - one meaningful edge case
+  - one regression risk when applicable
+
+### When to add tests
+
+Add or update tests for:
+- bug fixes
+- new features
+- refactors that could change behavior
+- generated code, when generation behavior is being changed
+- any change that affects external contracts, APIs, schemas, or CLI behavior
+
+### When tests are hard to add
+
+If a test is difficult to write:
+1. Do not skip testing silently.
+2. Explain why the code is hard to test.
+3. Improve the design if possible to make testing easier.
+4. If automated coverage is still impractical, provide clear manual verification steps.
+
+### Definition of done
+
+A change is not complete until:
+- the relevant tests exist
+- the relevant tests pass
+- the implementation matches the requested behavior
+- manual verification steps are included when needed
+
+### Decision rule
+
+When choosing between:
+- writing more production code
+- tightening tests
+- simplifying design
+
+prefer the option that improves feedback quality and reduces ambiguity.
 
 ## Required PR Checklist
 
