@@ -43,7 +43,11 @@ export async function loadOpenApiDocument(source: string) {
     return (await dereference(source)) as OpenApiDocument;
   } catch (error) {
     debug("could not load OpenAPI document from %s: %o", source, error);
-    return undefined;
+    const details = error instanceof Error ? error.message : String(error);
+    throw new Error(
+      `Could not load the OpenAPI spec from "${source}".\n${details}`,
+      { cause: error },
+    );
   }
 }
 
@@ -67,11 +71,6 @@ export async function createMswHandlers(
   // If we "pre-read" the file here it works. This is a workaround to avoid the issue.
   await fs.readFile(config.openApiPath);
   const openApiDocument = await loadOpenApiDocument(config.openApiPath);
-  if (openApiDocument === undefined) {
-    throw new Error(
-      `Could not load OpenAPI document from ${config.openApiPath}`,
-    );
-  }
   const modulesPath = config.basePath;
   const compiledPathsDirectory = nodePath
     .join(modulesPath, ".cache")
@@ -136,7 +135,9 @@ export async function counterfact(config: Config) {
   const dispatcher = new Dispatcher(
     registry,
     contextRegistry,
-    await loadOpenApiDocument(config.openApiPath),
+    config.openApiPath === "_"
+      ? undefined
+      : await loadOpenApiDocument(config.openApiPath),
     config,
   );
 
