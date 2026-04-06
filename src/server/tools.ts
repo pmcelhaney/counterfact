@@ -14,7 +14,9 @@ export class Tools {
   }
 
   public accepts(contentType: string): boolean {
-    const acceptHeader = this.headers.Accept;
+    const acceptHeader = Object.entries(this.headers).find(
+      ([key]) => key.toLowerCase() === "accept",
+    )?.[1];
 
     if (acceptHeader === "" || acceptHeader === undefined) {
       return true;
