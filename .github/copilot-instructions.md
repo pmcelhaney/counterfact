@@ -84,6 +84,17 @@ Always follow the red / green / refactor cycle when writing code:
 - Refactor only on green — never refactor while tests are failing.
 - If a bug is found, write a failing test that reproduces it before fixing it.
 
+### How TDD works for AI agents
+
+Strict human-style TDD ("carefully design tests first, then code") doesn't map perfectly onto how AI agents work. Think of it instead as **test-guided development**:
+
+1. **Define behavior** — Identify the expected behavior through specs or examples.
+2. **Write tests** — Express that behavior as executable tests. Tests are *constraints*: pass = correct, fail = not done.
+3. **Iterate** — Write or generate implementation code, run the tests, fix failures, and repeat until all tests pass.
+4. **Refactor** — Once tests are green, clean up the code without changing behavior.
+
+Tests give the agent a clear, unambiguous definition of "done" and create a tight feedback loop that reduces hallucination and enables safe, aggressive refactoring. The human defines **what**; the agent figures out **how**.
+
 ## Essential Commands
 
 | Task                          | Command                          |
