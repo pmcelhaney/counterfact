@@ -94,4 +94,43 @@ describe("a Specification", () => {
 
     expect(requirement.data).toStrictEqual(person);
   });
+
+  describe("error handling", () => {
+    it("throws a user-friendly error when the file does not exist", async () => {
+      await expect(
+        Specification.fromFile("/nonexistent/path/to/openapi.yaml"),
+      ).rejects.toThrow(
+        'Could not load the OpenAPI spec from "/nonexistent/path/to/openapi.yaml".',
+      );
+    });
+
+    it("throws a user-friendly error for a broken $ref", async () => {
+      await usingTemporaryFiles(async ($) => {
+        await $.add(
+          "openapi.json",
+          JSON.stringify({ $ref: "./missing-file.json" }),
+        );
+
+        await expect(
+          Specification.fromFile($.path("openapi.json")),
+        ).rejects.toThrow(
+          `Could not load the OpenAPI spec from "${$.path("openapi.json")}".`,
+        );
+      });
+    });
+
+    it("includes the original error details in the thrown error message", async () => {
+      const error = await Specification.fromFile(
+        "/nonexistent/path/to/openapi.yaml",
+      ).catch((e: unknown) => e);
+
+      expect(error).toBeInstanceOf(Error);
+      const message = (error as Error).message;
+      expect(message).toContain(
+        'Could not load the OpenAPI spec from "/nonexistent/path/to/openapi.yaml".',
+      );
+      // The original ENOENT error details should appear after the first line
+      expect(message).toContain("ENOENT");
+    });
+  });
 });
