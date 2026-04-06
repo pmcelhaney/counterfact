@@ -47,7 +47,7 @@ describe("a dispatcher passes a proxy function to the operation", () => {
     expect(status).toBe(200);
   });
 
-  it("serializes an object body as JSON when forwarding to the upstream", async () => {
+  it("forwards the raw body to the upstream when proxying a POST with a JSON body", async () => {
     const registry = new Registry();
 
     registry.add("/a", {
@@ -80,6 +80,7 @@ describe("a dispatcher passes a proxy function to the operation", () => {
       headers: { "content-type": "application/json" },
       method: "POST",
       path: "/a",
+      rawBody: '{"foo":"bar"}',
 
       req: { path: "/a" },
     });
@@ -87,7 +88,7 @@ describe("a dispatcher passes a proxy function to the operation", () => {
     expect(capturedBody).toBe('{"foo":"bar"}');
   });
 
-  it("passes a string body through to the upstream without re-serializing", async () => {
+  it("forwards the raw body to the upstream when proxying a POST with a text/plain body", async () => {
     const registry = new Registry();
 
     registry.add("/a", {
@@ -120,6 +121,7 @@ describe("a dispatcher passes a proxy function to the operation", () => {
       headers: { "content-type": "text/plain" },
       method: "POST",
       path: "/a",
+      rawBody: "plain text body",
 
       req: { path: "/a" },
     });
@@ -127,7 +129,7 @@ describe("a dispatcher passes a proxy function to the operation", () => {
     expect(capturedBody).toBe("plain text body");
   });
 
-  it("serializes an object body as JSON even when content-type has a charset suffix", async () => {
+  it("forwards the raw body unchanged even when content-type has a charset suffix", async () => {
     const registry = new Registry();
 
     registry.add("/a", {
@@ -162,6 +164,7 @@ describe("a dispatcher passes a proxy function to the operation", () => {
       headers: { "content-type": "application/json; charset=utf-8" },
       method: "POST",
       path: "/a",
+      rawBody: '{"foo":"bar"}',
 
       req: { path: "/a" },
     });

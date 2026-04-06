@@ -79,6 +79,7 @@ export type DispatcherRequest = {
   query: {
     [key: string]: string;
   };
+  rawBody?: string;
   req: {
     path?: string;
   };
@@ -258,6 +259,7 @@ export class Dispatcher {
     method,
     path,
     query,
+    rawBody,
     req,
   }: DispatcherRequest): Promise<CounterfactResponseObject> {
     debug(`request: ${method} ${path}`);
@@ -330,12 +332,7 @@ export class Dispatcher {
         delete headers.host;
 
         const fetchResponse = await this.fetch(`${url}${req.path ?? ""}`, {
-          body:
-            body === undefined
-              ? undefined
-              : typeof body === "object" && body !== null
-                ? JSON.stringify(body)
-                : String(body),
+          body: body === undefined ? undefined : rawBody,
           headers: new Headers(headers),
           method,
         });
