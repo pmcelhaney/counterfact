@@ -57,9 +57,12 @@ export function validateRequest(
 
       if (!valid && ajv.errors) {
         for (const error of ajv.errors) {
-          errors.push(
-            `body${error.dataPath ? error.dataPath : ""} ${error.message ?? "is invalid"}`,
-          );
+          const path =
+            (error as { instancePath?: string }).instancePath ??
+            error.dataPath ??
+            "";
+
+          errors.push(`body${path} ${error.message ?? "is invalid"}`);
         }
       }
     } else if (operation.requestBody.required === true && !request.body) {
@@ -75,9 +78,12 @@ export function validateRequest(
 
     if (!valid && ajv.errors) {
       for (const error of ajv.errors) {
-        errors.push(
-          `body${error.dataPath ? error.dataPath : ""} ${error.message ?? "is invalid"}`,
-        );
+        const path =
+          (error as { instancePath?: string }).instancePath ??
+          error.dataPath ??
+          "";
+
+        errors.push(`body${path} ${error.message ?? "is invalid"}`);
       }
     }
   }
