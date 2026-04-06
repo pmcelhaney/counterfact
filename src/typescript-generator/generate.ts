@@ -71,15 +71,7 @@ export async function generate(
 
   debug("creating specification from %s", source);
 
-  let specification: Specification;
-
-  try {
-    specification = await Specification.fromFile(source);
-  } catch (error) {
-    const message = error instanceof Error ? error.message : String(error);
-    process.stderr.write(`\n❌ ${message}\n\n`);
-    return;
-  }
+  const specification = await Specification.fromFile(source);
 
   debug("created specification: $o", specification);
 

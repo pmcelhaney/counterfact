@@ -129,8 +129,8 @@ describe("a Specification", () => {
       expect(message).toContain(
         'Could not load the OpenAPI spec from "/nonexistent/path/to/openapi.yaml".',
       );
-      // The original error details should also be present (after the first line)
-      expect(message.split("\n").length).toBeGreaterThan(1);
+      // The original ENOENT error details should appear after the first line
+      expect(message).toContain("ENOENT");
     });
   });
 });
