@@ -38,14 +38,14 @@ const packageJson = JSON.parse(
 const CURRENT_VERSION = packageJson.version;
 
 // Telemetry — fire-and-forget, never blocks startup
-const POSTHOG_API_KEY = "phc_msXmBxiL8FVugNMLCx9bnPQGqfEMc";
-const POSTHOG_HOST = "https://app.posthog.com";
+const POSTHOG_API_KEY = "phc_msXmBxiL8FVugNMLCx9bnPQGqfEMqmyBjnVkKhHkN3m7";
+const POSTHOG_HOST = "https://us.i.posthog.com";
 
 const telemetryKey = process.env.POSTHOG_API_KEY ?? POSTHOG_API_KEY;
 const telemetryHost = process.env.POSTHOG_HOST ?? POSTHOG_HOST;
 
 const isCI = Boolean(process.env.CI);
-const isBeforeRollout = new Date() < new Date("2026-05-01");
+const isBeforeRollout = new Date() < new Date("2026-04-01");
 const telemetryDisabledEnv = process.env.COUNTERFACT_TELEMETRY_DISABLED;
 
 const isTelemetryDisabled =
@@ -57,6 +57,7 @@ if (!isTelemetryDisabled) {
   try {
     const posthog = new PostHog(telemetryKey, { host: telemetryHost });
 
+    console.log("capture");
     posthog.capture({
       distinctId: randomUUID(),
       event: "counterfact_started",
