@@ -47,7 +47,7 @@ describe("a dispatcher passes a proxy function to the operation", () => {
     expect(status).toBe(200);
   });
 
-  it("does not throw when proxying a POST request with a JSON body and content-type: application/json", async () => {
+  it("serializes an object body as JSON when forwarding to the upstream", async () => {
     const registry = new Registry();
 
     registry.add("/a", {
@@ -58,33 +58,36 @@ describe("a dispatcher passes a proxy function to the operation", () => {
 
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
 
-    dispatcher.fetch = async (url) =>
+    let capturedBody: string | undefined;
+
+    dispatcher.fetch = async (_url, options) => {
+      capturedBody = options?.body as string | undefined;
+
       /* @ts-expect-error not mocking all properties of fetch response */
-      await Promise.resolve({
+      return Promise.resolve({
         headers: new Headers([["content-type", "application/json"]]),
         status: 200,
 
         async text() {
-          return await Promise.resolve(`body from ${url}`);
+          return Promise.resolve("{}");
         },
       });
+    };
 
     /* @ts-expect-error not including all properties of request */
-    const response = await dispatcher.request({
+    await dispatcher.request({
       body: { foo: "bar" },
       headers: { "content-type": "application/json" },
       method: "POST",
       path: "/a",
 
-      req: {
-        path: "/a",
-      },
+      req: { path: "/a" },
     });
 
-    expect(response.status).toBe(200);
+    expect(capturedBody).toBe('{"foo":"bar"}');
   });
 
-  it("does not throw when proxying a POST request with a non-JSON content-type", async () => {
+  it("passes a string body through to the upstream without re-serializing", async () => {
     const registry = new Registry();
 
     registry.add("/a", {
@@ -95,29 +98,74 @@ describe("a dispatcher passes a proxy function to the operation", () => {
 
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
 
-    dispatcher.fetch = async (url) =>
+    let capturedBody: string | undefined;
+
+    dispatcher.fetch = async (_url, options) => {
+      capturedBody = options?.body as string | undefined;
+
       /* @ts-expect-error not mocking all properties of fetch response */
-      await Promise.resolve({
+      return Promise.resolve({
         headers: new Headers([["content-type", "text/plain"]]),
         status: 200,
 
         async text() {
-          return await Promise.resolve(`body from ${url}`);
+          return Promise.resolve("hello");
         },
       });
+    };
 
     /* @ts-expect-error not including all properties of request */
-    const response = await dispatcher.request({
+    await dispatcher.request({
       body: "plain text body",
       headers: { "content-type": "text/plain" },
       method: "POST",
       path: "/a",
 
-      req: {
-        path: "/a",
+      req: { path: "/a" },
+    });
+
+    expect(capturedBody).toBe("plain text body");
+  });
+
+  it("serializes an object body as JSON even when content-type has a charset suffix", async () => {
+    const registry = new Registry();
+
+    registry.add("/a", {
+      async POST({ proxy }) {
+        return await proxy("https://example.com");
       },
     });
 
-    expect(response.status).toBe(200);
+    const dispatcher = new Dispatcher(registry, new ContextRegistry());
+
+    let capturedBody: string | undefined;
+
+    dispatcher.fetch = async (_url, options) => {
+      capturedBody = options?.body as string | undefined;
+
+      /* @ts-expect-error not mocking all properties of fetch response */
+      return Promise.resolve({
+        headers: new Headers([
+          ["content-type", "application/json; charset=utf-8"],
+        ]),
+        status: 200,
+
+        async text() {
+          return Promise.resolve("{}");
+        },
+      });
+    };
+
+    /* @ts-expect-error not including all properties of request */
+    await dispatcher.request({
+      body: { foo: "bar" },
+      headers: { "content-type": "application/json; charset=utf-8" },
+      method: "POST",
+      path: "/a",
+
+      req: { path: "/a" },
+    });
+
+    expect(capturedBody).toBe('{"foo":"bar"}');
   });
 });

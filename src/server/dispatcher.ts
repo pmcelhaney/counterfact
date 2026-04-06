@@ -333,7 +333,7 @@ export class Dispatcher {
           body:
             body === undefined
               ? undefined
-              : headers["content-type"] === "application/json"
+              : typeof body === "object" && body !== null
                 ? JSON.stringify(body)
                 : String(body),
           headers: new Headers(headers),
