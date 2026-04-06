@@ -1,3 +1,5 @@
+import nodePath from "node:path";
+
 import { usingTemporaryFiles } from "using-temporary-files";
 
 import { FileDiscovery } from "../../src/server/file-discovery.js";
@@ -11,8 +13,8 @@ describe("FileDiscovery", () => {
       const discovery = new FileDiscovery($.path("."));
       const files = await discovery.findFiles();
 
-      expect(files.map((f) => f.replace($.path("."), ""))).toEqual(
-        expect.arrayContaining(["/a.js", "/b.mjs"]),
+      expect(files.map((f) => nodePath.basename(f))).toEqual(
+        expect.arrayContaining(["a.js", "b.mjs"]),
       );
       expect(files).toHaveLength(2);
     });

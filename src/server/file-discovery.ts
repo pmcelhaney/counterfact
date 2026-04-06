@@ -10,7 +10,7 @@ export class FileDiscovery {
   private readonly basePath: string;
 
   public constructor(basePath: string) {
-    this.basePath = basePath;
+    this.basePath = basePath.replaceAll("\\", "/");
   }
 
   public async findFiles(directory = ""): Promise<string[]> {
