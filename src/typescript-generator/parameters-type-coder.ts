@@ -43,9 +43,9 @@ export class ParametersTypeCoder extends TypeCoder {
         const comment = buildJsDoc(parameter.data);
         const commentPrefix = comment ? `\n${comment}` : "";
 
-        return `${commentPrefix}"${name}"${optionalFlag}: ${new SchemaTypeCoder(schema).write(
-          script,
-        )}`;
+        const typeString = new SchemaTypeCoder(schema).write(script);
+
+        return `${commentPrefix}"${name}"${optionalFlag}: ${typeString}`;
       });
 
     if (typeDefinitions.length === 0) {
