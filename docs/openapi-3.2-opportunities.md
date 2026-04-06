@@ -280,3 +280,72 @@ If the goal is to be listed as an **early adopter** with minimal investment, the
 3. **Server `name` field (12)** — Trivial change that shows up in every OpenAPI-aware UI.
 4. **Streaming / SSE (2)** — High user demand; worth investing in even though it requires more work.
 5. **`querystring` parameter (3)** — Useful for complex search/filter APIs; moderate effort.
+
+---
+
+## Creating GitHub Issues
+
+Run the following script to open one GitHub issue per opportunity (requires the `gh` CLI and `repo` scope):
+
+```sh
+#!/usr/bin/env bash
+set -euo pipefail
+DOCS="docs/openapi-3.2-opportunities.md"
+PARENT=1566  # parent issue: "Support for OpenAPI 3.2"
+
+gh issue create \
+  --title "OpenAPI 3.2: Add support for QUERY HTTP method" \
+  --body "OpenAPI 3.2 formally adds \`query\` as a first-class HTTP method. \`HttpMethods\` in \`src/server/registry.ts\` and \`HTTP_METHODS\` in \`src/migrate/update-route-types.ts\` do not include \`QUERY\`. The Koa layer, dispatcher, and migration helper all need updating.\n\n**Impact:** Medium | **Effort:** Low\n\nSee [$DOCS](../../blob/main/$DOCS#1a-native-query-method) for full details.\n\nParent: #$PARENT"
+
+gh issue create \
+  --title "OpenAPI 3.2: Support additionalOperations for arbitrary HTTP methods" \
+  --body "OpenAPI 3.2 introduces an \`additionalOperations\` key in Path Item Objects for HTTP methods that have no dedicated field (e.g. \`LINK\`, \`UNLINK\`). The generator in \`src/typescript-generator/generate.ts\` would silently ignore them.\n\n**Impact:** Low–Medium | **Effort:** Medium\n\nSee [$DOCS](../../blob/main/$DOCS#1b-arbitrary-methods-via-additionaloperations) for full details.\n\nParent: #$PARENT"
+
+gh issue create \
+  --title "OpenAPI 3.2: Streaming / SSE support via itemSchema" \
+  --body "OpenAPI 3.2 introduces first-class support for streaming responses (\`text/event-stream\`, \`application/jsonl\`, etc.) with a new \`itemSchema\` field. Counterfact currently has no concept of streaming or SSE.\n\nChanges needed in \`src/typescript-generator/response-type-coder.ts\`, \`schema-type-coder.ts\`, and the Koa middleware layer.\n\n**Impact:** High | **Effort:** High\n\nSee [$DOCS](../../blob/main/$DOCS#2-streaming-and-sequential-media-types) for full details.\n\nParent: #$PARENT"
+
+gh issue create \
+  --title "OpenAPI 3.2: Support querystring parameter location" \
+  --body "OpenAPI 3.2 adds \`querystring\` as a new value for the \`in\` field of a Parameter Object, treating the entire query string as a single schema-described field. \`ParametersTypeCoder\` and the dispatcher both need updating.\n\n**Impact:** Medium | **Effort:** Medium\n\nSee [$DOCS](../../blob/main/$DOCS#3-querystring-parameter-location) for full details.\n\nParent: #$PARENT"
+
+gh issue create \
+  --title "OpenAPI 3.2: Recognise dataValue and serializedValue in Example Objects" \
+  --body "OpenAPI 3.2 adds \`dataValue\` (structured) and \`serializedValue\` (wire-format string) to the Example Object. Counterfact currently reads only the \`value\` field when returning example responses.\n\nPrefer \`dataValue\` over \`value\` in the response-building / example-selection logic.\n\n**Impact:** Medium | **Effort:** Low\n\nSee [$DOCS](../../blob/main/$DOCS#4-example-object--datavalue-and-serializedvalue) for full details.\n\nParent: #$PARENT"
+
+gh issue create \
+  --title "OpenAPI 3.2: Handle optional discriminator propertyName and defaultMapping" \
+  --body "OpenAPI 3.2 makes \`discriminator.propertyName\` optional and adds a \`defaultMapping\` field. \`SchemaTypeCoder.writeGroup()\` needs a defensive null-check and should use \`defaultMapping\` when generating union types.\n\n**Impact:** Low–Medium | **Effort:** Low\n\nSee [$DOCS](../../blob/main/$DOCS#5-discriminator-improvements) for full details.\n\nParent: #$PARENT"
+
+gh issue create \
+  --title "OpenAPI 3.2: Use tag summary/parent/kind for hierarchical navigation in the UI" \
+  --body "OpenAPI 3.2 adds \`summary\`, \`parent\`, and \`kind\` fields to the Tag Object. The built-in dashboard (\`src/client/\`) could render a hierarchical navigation tree using these fields.\n\n**Impact:** Medium | **Effort:** Medium\n\nSee [$DOCS](../../blob/main/$DOCS#6-tag-enhancements) for full details.\n\nParent: #$PARENT"
+
+gh issue create \
+  --title "OpenAPI 3.2: Handle optional response description and new summary field" \
+  --body "OpenAPI 3.2 makes \`description\` optional on Response Objects and adds a \`summary\` field. A test should confirm that missing \`description\` is handled gracefully. The \`summary\` field can be surfaced in the API-testing UI (\`src/client/api-tester.html.hbs\`).\n\n**Impact:** Low | **Effort:** Very Low\n\nSee [$DOCS](../../blob/main/$DOCS#7-response-object-changes) for full details.\n\nParent: #$PARENT"
+
+gh issue create \
+  --title "OpenAPI 3.2: Support OAuth2 Device Authorization flow, oauth2MetadataUrl, and deprecated security schemes" \
+  --body "OpenAPI 3.2 updates OAuth2 security schemes with a \`deviceAuthorization\` flow, a top-level \`oauth2MetadataUrl\`, and a \`deprecated\` flag. \`OperationTypeCoder\` should recognise the device flow, and deprecated schemes should emit \`@deprecated\` JSDoc in generated types.\n\n**Impact:** Low–Medium | **Effort:** Low\n\nSee [$DOCS](../../blob/main/$DOCS#8-security-scheme-updates) for full details.\n\nParent: #$PARENT"
+
+gh issue create \
+  --title "OpenAPI 3.2: Verify \$self document identity and URL resolution" \
+  --body "OpenAPI 3.2 adds a top-level \`\$self\` field for canonical document URI. Counterfact uses \`@apidevtools/json-schema-ref-parser\` which likely handles it already, but a regression test with a spec using \`\$self\` should be added.\n\n**Impact:** Low | **Effort:** Very Low\n\nSee [$DOCS](../../blob/main/$DOCS#9-self--document-identity-and-url-resolution) for full details.\n\nParent: #$PARENT"
+
+gh issue create \
+  --title "OpenAPI 3.2: Verify \$ref resolution for components/mediaTypes" \
+  --body "OpenAPI 3.2 adds a \`mediaTypes\` key under \`components\` for reusable Media Type Objects. The bundler likely resolves these \`\$ref\`s already; add a test to confirm.\n\n**Impact:** Low | **Effort:** Very Low\n\nSee [$DOCS](../../blob/main/$DOCS#10-mediatypes-component) for full details.\n\nParent: #$PARENT"
+
+gh issue create \
+  --title "OpenAPI 3.2: Support XML nodeType field in json-to-xml serialisation" \
+  --body "OpenAPI 3.2 adds \`nodeType\` to the XML Object (\`element\`, \`attribute\`, \`text\`, \`cdata\`, \`none\`), deprecating \`attribute: true\` and \`wrapped: true\`. \`src/server/json-to-xml.ts\` needs to be updated.\n\n**Impact:** Low | **Effort:** Medium\n\nSee [$DOCS](../../blob/main/$DOCS#11-xml-nodetype-field) for full details.\n\nParent: #$PARENT"
+
+gh issue create \
+  --title "OpenAPI 3.2: Add name field to injected Counterfact server entry" \
+  --body "OpenAPI 3.2 adds a \`name\` field to the Server Object. \`src/server/openapi-middleware.ts\` injects a server entry with only \`description\` and \`url\`; adding \`name: \"Counterfact\"\` is a one-line change.\n\n**Impact:** Low | **Effort:** Very Low\n\nSee [$DOCS](../../blob/main/$DOCS#12-server-object-name-field) for full details.\n\nParent: #$PARENT"
+
+gh issue create \
+  --title "OpenAPI 3.2: Verify json-schema-faker alignment with draft-bhutton-json-schema-01" \
+  --body "OpenAPI 3.2 updates its JSON Schema reference to \`draft-bhutton-json-schema-01\`. Verify that \`json-schema-faker\` supports the revised keywords (\`unevaluatedProperties\`, \`unevaluatedItems\`, \`prefixItems\`) and upgrade or add workarounds as necessary.\n\n**Impact:** Medium | **Effort:** Low–Medium\n\nSee [$DOCS](../../blob/main/$DOCS#13-json-schema-alignment) for full details.\n\nParent: #$PARENT"
+```
