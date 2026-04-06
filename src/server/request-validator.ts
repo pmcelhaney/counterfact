@@ -4,7 +4,7 @@ import type { OpenApiOperation } from "../counterfact-types/index.js";
 
 const ajv = new Ajv({
   allErrors: true,
-  unknownFormats: "ignore",
+  strict: false,
   coerceTypes: false,
 });
 
@@ -57,10 +57,7 @@ export function validateRequest(
 
       if (!valid && ajv.errors) {
         for (const error of ajv.errors) {
-          const path =
-            (error as { instancePath?: string }).instancePath ??
-            error.dataPath ??
-            "";
+          const path = error.instancePath;
 
           errors.push(`body${path} ${error.message ?? "is invalid"}`);
         }
@@ -78,10 +75,7 @@ export function validateRequest(
 
     if (!valid && ajv.errors) {
       for (const error of ajv.errors) {
-        const path =
-          (error as { instancePath?: string }).instancePath ??
-          error.dataPath ??
-          "";
+        const path = error.instancePath;
 
         errors.push(`body${path} ${error.message ?? "is invalid"}`);
       }
