@@ -1,17 +1,41 @@
 #!/usr/bin/env node
 
+/**
+ * bin/counterfact.js — CLI entry point for the `counterfact` command.
+ *
+ * Responsibilities:
+ *  1. Parse CLI arguments and build a `Config` object via Commander.
+ *  2. Run any pending migrations (paths → routes directory layout).
+ *  3. Delegate to `counterfact()` from `src/app.ts` to start the server,
+ *     code generator, transpiler, module loader, and optional REPL.
+ *  4. Print the startup banner and open the browser when requested.
+ *  5. Check for available updates against the npm registry.
+ *
+ * Architecture (high-level data flow):
+ *
+ *   CLI args  ──▶  Commander  ──▶  Config
+ *                                     │
+ *                         ┌───────────▼───────────┐
+ *                         │      counterfact()     │
+ *                         │   (src/app.ts)         │
+ *                         │                        │
+ *                         │  CodeGenerator         │  reads OpenAPI spec, emits .ts route/type files
+ *                         │  Transpiler            │  compiles .ts → .cjs and watches for changes
+ *                         │  ModuleLoader          │  loads compiled modules into Registry
+ *                         │  Dispatcher + KoaApp   │  handles HTTP requests
+ *                         │  REPL (optional)       │  interactive terminal session
+ *                         └────────────────────────┘
+ */
+
 import fs from "node:fs";
 import { readFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
 import nodePath from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { program } from "commander";
 import createDebug from "debug";
 import open from "open";
-
-import { counterfact } from "../dist/app.js";
-import { pathsToRoutes } from "../dist/migrate/paths-to-routes.js";
-import { updateRouteTypes } from "../dist/migrate/update-route-types.js";
 
 const MIN_NODE_VERSION = 17;
 
@@ -23,27 +47,69 @@ if (Number.parseInt(process.versions.node.split("."), 10) < MIN_NODE_VERSION) {
   process.exit(1);
 }
 
+const __binDir = nodePath.dirname(fileURLToPath(import.meta.url));
+
 const packageJson = JSON.parse(
-  await readFile(
-    nodePath.join(
-      nodePath.dirname(fileURLToPath(import.meta.url)),
-      "../package.json",
-    ),
-    "utf8",
-  ),
+  await readFile(nodePath.join(__binDir, "../package.json"), "utf8"),
 );
 
 const CURRENT_VERSION = packageJson.version;
 
 const taglinesFile = await readFile(
-  nodePath.join(
-    nodePath.dirname(fileURLToPath(import.meta.url)),
-    "taglines.txt",
-  ),
+  nodePath.join(__binDir, "taglines.txt"),
   "utf8",
 );
 
 const taglines = taglinesFile.split("\n").slice(0, -1);
+
+// Probe whether the current runtime can natively execute TypeScript with
+// erasable type annotations AND resolve .js imports to .ts files (tsx-style).
+async function runtimeCanExecuteErasableTs() {
+  const dir = fs.mkdtempSync(nodePath.join(tmpdir(), "ts-probe-"));
+  // helper.ts is imported via .js extension — the TypeScript convention used
+  // throughout this codebase. If the runtime resolves helper.js → helper.ts,
+  // it is fully capable of running the TypeScript source tree.
+  fs.writeFileSync(
+    nodePath.join(dir, "helper.ts"),
+    'export const value: string = "ok";\n',
+    "utf8",
+  );
+  fs.writeFileSync(
+    nodePath.join(dir, "main.ts"),
+    'import { value } from "./helper.js"; export default value;\n',
+    "utf8",
+  );
+  try {
+    const mod = await import(pathToFileURL(nodePath.join(dir, "main.ts")).href);
+    return mod?.default === "ok";
+  } catch {
+    return false;
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+}
+
+const nativeTs = await runtimeCanExecuteErasableTs();
+
+const resolve = (rel) => pathToFileURL(nodePath.join(__binDir, rel)).href;
+
+const { counterfact } = await import(
+  resolve(nativeTs ? "../src/app.ts" : "../dist/app.js")
+);
+const { pathsToRoutes } = await import(
+  resolve(
+    nativeTs
+      ? "../src/migrate/paths-to-routes.js"
+      : "../dist/migrate/paths-to-routes.js",
+  )
+);
+const { updateRouteTypes } = await import(
+  resolve(
+    nativeTs
+      ? "../src/migrate/update-route-types.js"
+      : "../dist/migrate/update-route-types.js",
+  )
+);
 
 const DEFAULT_PORT = 3100;
 
@@ -247,6 +313,14 @@ async function main(source, destination) {
   };
 
   debug("loading counterfact (%o)", configForLogging);
+
+  if (config.startAdminApi && !config.adminApiToken) {
+    process.stderr.write(
+      "⚠️  WARNING: The admin API is enabled without an authentication token.\n" +
+        "   Any process on this machine can read and modify server state via /_counterfact/api/*.\n" +
+        "   Set --admin-api-token or COUNTERFACT_ADMIN_API_TOKEN to restrict access.\n\n",
+    );
+  }
 
   let didMigrate = false;
   let didMigrateRouteTypes;
