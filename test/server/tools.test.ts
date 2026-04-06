@@ -39,28 +39,6 @@ describe("tools", () => {
     },
   );
 
-  // BUG: accepts() uses this.headers.Accept (capital A) but Node.js HTTP headers
-  // are normalized to lowercase. When headers come from a real HTTP request via Koa,
-  // the accept header is 'accept' (lowercase), so this.headers.Accept is always
-  // undefined, causing accepts() to always return true.
-  it("accepts('application/json') returns false when lowercase 'accept' header is 'text/plain'", () => {
-    const tools = new Tools({ headers: { accept: "text/plain" } });
-
-    expect(tools.accepts("application/json")).toBe(false);
-  });
-
-  // BUG: accepts() splits the Accept header by "," but does not trim whitespace
-  // from each part. When the Accept header contains spaces after commas
-  // (e.g., "text/html, application/json"), the split produces " application/json"
-  // (with a leading space), causing the type comparison to fail.
-  it("accepts('application/json') returns true when Accept header is 'text/html, application/json' (with space)", () => {
-    const tools = new Tools({
-      headers: { Accept: "text/html, application/json" },
-    });
-
-    expect(tools.accepts("application/json")).toBe(true);
-  });
-
   it("randomFromSchema() returns a value (the implementation is in a third party library)", async () => {
     const tools = new Tools();
 

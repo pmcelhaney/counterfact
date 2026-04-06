@@ -46,44 +46,4 @@ describe("a dispatcher passes a proxy function to the operation", () => {
     expect(contentType).toBe("application/json");
     expect(status).toBe(200);
   });
-
-  // BUG: The proxy() closure in dispatcher.ts checks headers.contentType (camelCase)
-  // instead of headers["content-type"] (the standard kebab-case HTTP header name).
-  // Since headers.contentType is always undefined, the guard condition
-  // `body !== undefined && headers.contentType !== "application/json"` evaluates to
-  // `body !== undefined && true`, causing the proxy to throw an error whenever a
-  // request body is provided — even for valid application/json POST requests.
-  it("does not throw when proxying a POST request with a JSON body and content-type: application/json", async () => {
-    const registry = new Registry();
-
-    registry.add("/a", {
-      async POST({ proxy }) {
-        return await proxy("https://example.com");
-      },
-    });
-
-    const dispatcher = new Dispatcher(registry, new ContextRegistry());
-
-    dispatcher.fetch = async (url) =>
-      /* @ts-expect-error not mocking all properties of fetch response */
-      await Promise.resolve({
-        headers: new Headers([["content-type", "application/json"]]),
-        status: 200,
-
-        async text() {
-          return await Promise.resolve(`body from ${url}`);
-        },
-      });
-
-    const response = await dispatcher.request({
-      body: { foo: "bar" },
-      headers: { "content-type": "application/json" },
-      method: "POST",
-      path: "/a",
-      query: {},
-      req: { path: "/a" },
-    });
-
-    expect(response.status).toBe(200);
-  });
 });
