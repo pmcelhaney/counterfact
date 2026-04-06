@@ -327,10 +327,13 @@ export class Dispatcher {
       headers,
 
       proxy: async (url: string) => {
-        if (body !== undefined && headers.contentType !== "application/json") {
+        if (
+          body !== undefined &&
+          headers["content-type"] !== "application/json"
+        ) {
           throw new Error(
             `$.proxy() is currently limited to application/json requests. You tried to proxy to ${url} with a Content-Type of ${
-              headers.contentType ?? "[unknown]"
+              headers["content-type"] ?? "[unknown]"
             }. Please open an issue at https://github.com/pmcelhaney/counterfact/issues and prod me to fix this limitation.`,
           );
         }
