@@ -38,6 +38,8 @@ Replace the Petstore URL with your own spec. A `routes/` directory and `types/` 
 
 > **Requires Node ≥ 22.0.0**
 
+For a complete worked example — the Swagger Petstore fully implemented with custom logic and state — see [counterfact/example-petstore](https://github.com/counterfact/example-petstore).
+
 ---
 
 ## What does it generate?

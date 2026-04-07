@@ -20,7 +20,8 @@ Counterfact turns an [OpenAPI](https://www.openapis.org) spec into a stateful, T
 npx counterfact@latest https://petstore3.swagger.io/api/v3/openapi.json api
 ```
 
-> **Requires Node ≥ 22.0.0**
+> **Requires Node ≥ 22.0.0**  
+> A complete, worked Petstore implementation is available at [counterfact/example-petstore](https://github.com/counterfact/example-petstore).
 
 ---
 
@@ -167,6 +168,7 @@ See [How it compares](./docs/comparison.md) for a full breakdown.
 | [Reference](./docs/reference.md) | `$` parameter, response builder, CLI flags, architecture |
 | [FAQ](./docs/faq.md) | Common questions about state, types, regeneration, and more |
 | [How it compares](./docs/comparison.md) | Side-by-side with json-server, WireMock, Prism, Microcks, MSW |
+| [Petstore example](https://github.com/counterfact/example-petstore) | A complete worked example: the Swagger Petstore, fully implemented |
 | [Usage guide](./docs/usage.md) | Full documentation |
 | [Changelog](./CHANGELOG.md) | What's changed |
 | [Contributing](./CONTRIBUTING.md) | How to help |
