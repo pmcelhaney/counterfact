@@ -131,10 +131,14 @@ def resolve_parent_issue(metadata, repo, sha):
 
 
 def create_github_issue(repo, title, body, labels, assignees, milestone):
-    """Create a GitHub issue via the GitHub API. Return (issue_number, issue_url).
+    """Create a GitHub issue via the GitHub API. Return (issue_number, issue_id, issue_url).
 
     Uses ``gh api`` so the JSON response can be parsed reliably, avoiding any
     dependency on the URL format printed by ``gh issue create``.
+
+    Returns a 3-tuple: (issue_number, issue_id, issue_url).
+    ``issue_id`` is the internal integer ID required by the sub-issues API.
+    ``issue_number`` is the human-readable number shown in the URL.
     """
     fields = ["-f", f"title={title}", "-f", f"body={body}"]
 
@@ -156,23 +160,28 @@ def create_github_issue(repo, title, body, labels, assignees, milestone):
         f"repos/{repo}/issues",
         *fields,
         "--jq",
-        ".number,.html_url",
+        ".number,.id,.html_url",
     )
 
     lines = result.stdout.strip().splitlines()
-    if len(lines) < 2:
+    if len(lines) < 3:
         raise RuntimeError(f"Unexpected response from issues API: {result.stdout!r}")
 
     issue_number = int(lines[0])
-    issue_url = lines[1]
-    return issue_number, issue_url
+    issue_id = int(lines[1])
+    issue_url = lines[2]
+    return issue_number, issue_id, issue_url
 
 
-def add_sub_issue(repo, parent_number, child_number):
-    """Register child_number as a sub-issue of parent_number.
+def add_sub_issue(repo, parent_number, child_issue_id):
+    """Register the issue identified by child_issue_id as a sub-issue of parent_number.
 
     Uses the GitHub sub-issues REST API endpoint:
     POST /repos/{owner}/{repo}/issues/{issue_number}/sub_issues
+
+    ``child_issue_id`` must be the internal integer ID of the issue (the ``.id``
+    field in the GitHub API response), **not** the human-readable issue number.
+    See https://docs.github.com/en/rest/issues/sub-issues
 
     This endpoint requires the repository to have the Sub-issues feature
     enabled (available on GitHub Team and Enterprise plans, and as a public
@@ -187,11 +196,7 @@ def add_sub_issue(repo, parent_number, child_number):
         "Accept: application/vnd.github+json",
         f"repos/{repo}/issues/{parent_number}/sub_issues",
         "-f",
-        # The GitHub sub-issues API uses "sub_issue_id" as the field name but
-        # accepts the public issue number (the integer shown in the URL), not
-        # an internal database ID.  See:
-        # https://docs.github.com/en/rest/issues/sub-issues
-        f"sub_issue_id={child_number}",
+        f"sub_issue_id={child_issue_id}",
         check=False,
     )
     if result.returncode != 0:
@@ -265,7 +270,7 @@ def main():
         milestone = metadata.get("milestone")
 
         try:
-            issue_number, issue_url = create_github_issue(
+            issue_number, issue_id, issue_url = create_github_issue(
                 repo, title, body, labels, assignees, milestone
             )
         except RuntimeError as exc:
@@ -276,7 +281,7 @@ def main():
         print(f"  Created:      #{issue_number} — {issue_url}")
 
         # --- Sub-issue link ---
-        linked = add_sub_issue(repo, parent_issue, issue_number)
+        linked = add_sub_issue(repo, parent_issue, issue_id)
         if linked:
             print(f"  Linked as sub-issue of #{parent_issue}")
 
