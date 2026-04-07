@@ -259,14 +259,14 @@ npx counterfact@latest [spec] [output] [options]
 | --- | --- | --- |
 | `--port <n>` | `3100` | HTTP server port |
 | `-o, --open` | `false` | Open browser on start |
-| `-g, --generate` | — | Generate files and exit |
-| `-w, --watch` | — | Regenerate on spec changes |
-| `-s, --serve` | — | Start the server |
-| `-r, --repl` | — | Start the REPL |
-| `--spec <path>` | — | Path or URL to the OpenAPI document |
-| `--proxy-url <url>` | — | Default upstream for the proxy |
-| `--prefix <path>` | — | Global path prefix (e.g. `/api/v1`) |
-| `--no-validate-request` | — | Skip OpenAPI request validation |
+| `-g, --generate` | `false` | Generate files and exit |
+| `-w, --watch` | `false` | Regenerate on spec changes |
+| `-s, --serve` | `false` | Start the server |
+| `-r, --repl` | `false` | Start the REPL |
+| `--spec <path>` | _(positional arg)_ | Path or URL to the OpenAPI document |
+| `--proxy-url <url>` | _(none)_ | Default upstream for the proxy |
+| `--prefix <path>` | _(none)_ | Global path prefix (e.g. `/api/v1`) |
+| `--no-validate-request` | `false` | Skip OpenAPI request validation |
 
 Run `npx counterfact@latest --help` for the full list.
 
