@@ -1,15 +1,3 @@
-<div align="center" markdown="1">
-
-<img src="./counterfact.svg" alt="Counterfact" border=0>
-
-<br>
-
-![MIT License](https://img.shields.io/badge/license-MIT-blue) [![TypeScript](./typescript-badge.png)](https://github.com/ellerbrock/typescript-badges/) [![Coverage Status](https://coveralls.io/repos/github/pmcelhaney/counterfact/badge.svg)](https://coveralls.io/github/pmcelhaney/counterfact)
-
-</div>
-
----
-
 # How Does Counterfact Compare?
 
 There are several tools in the API mocking space. Here's an honest look at how Counterfact fits in.
@@ -110,6 +98,10 @@ Inspect state, fire requests, and trigger edge cases from an interactive termina
 
 If you're building an AI agent that calls third-party APIs, running against Counterfact eliminates rate limits, flaky network conditions, and costs during development. The local server responds immediately and you control every response.
 
+### 5. Works in automated test pipelines
+
+Counterfact starts fast enough to use in CI. Start it programmatically in a `beforeAll`, run real HTTP requests in your tests, and tear it down in `afterAll` — no separate test-double infrastructure required.
+
 ---
 
 ## Quickstart
@@ -118,20 +110,13 @@ If you're building an AI agent that calls third-party APIs, running against Coun
 npx counterfact@latest https://petstore3.swagger.io/api/v3/openapi.json api
 ```
 
-> Requires Node ≥ 22.0.0
+> **Requires Node ≥ 22.0.0**
 
 ---
 
-## Learn more
+## See also
 
-- [Usage Guide](./docs/usage.md)
-- [Changelog](./CHANGELOG.md)
-- [Contributing](./CONTRIBUTING.md)
-
----
-
-<div align="center" markdown="1">
-
-[Documentation](./docs/usage.md) | [Changelog](./CHANGELOG.md) | [Contributing](./CONTRIBUTING.md)
-
-</div>
+- [Getting started](./getting-started.md)
+- [Reference](./reference.md)
+- [FAQ](./faq.md)
+- [Usage guide](./usage.md)

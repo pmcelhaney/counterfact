@@ -4,224 +4,152 @@
 
 <br>
 
+**Your backend isn't ready. Your frontend can't wait. Counterfact closes the gap.**
+
+<br>
+
 ![MIT License](https://img.shields.io/badge/license-MIT-blue) [![TypeScript](./typescript-badge.png)](https://github.com/ellerbrock/typescript-badges/) [![Coverage Status](https://coveralls.io/repos/github/pmcelhaney/counterfact/badge.svg)](https://coveralls.io/github/pmcelhaney/counterfact)
 
 </div>
 
 ---
 
-**Counterfact instantly turns an [OpenAPI/Swagge](https://www.openapis.org) spec into a live, working API you can run locally.**
-
-Instead of waiting for a backend—or wiring up brittle mocks—it generates a server where every endpoint is backed by TypeScript code. Responses are valid by default, but fully customizable, and the system is stateful, interactive, and hot-reloading.
-
-It’s not just a mock server.
-
-It’s a controllable API environment you can shape in real time.
-
-> Built by Patrick McElhaney · Currently available for the right opportunity → https://patrickmcelhaney.org
-
----
-
-## Quick Start
+Counterfact turns an [OpenAPI](https://www.openapis.org) spec into a stateful, TypeScript-native mock server in one command. Every endpoint is a `.ts` file you own and can edit live — with type safety, hot reload, and an interactive REPL — so your team can build against a real-feeling API before the backend exists.
 
 ```sh
 npx counterfact@latest https://petstore3.swagger.io/api/v3/openapi.json api
 ```
 
-That's it. Counterfact reads your OpenAPI spec, generates TypeScript route files in `api/`, and starts a mock server — all in one command. Point it at your own spec instead of the Petstore whenever you're ready.
-
-> **Requires Node ≥ 17.0.0**
+> **Requires Node ≥ 22.0.0**
 
 ---
 
-## Features
+## Why Counterfact?
 
-- ⚡ **Zero config** — one command to generate and start a simulated api
-- 🔒 **Type-safe by default** — route handlers are typed directly from your OpenAPI spec
-- 🔄 **Hot reload** — edit route files while the server is running; state is preserved
-- 🧠 **State management** — POST data and GET it back; share state across routes with context objects
-- 🖥 **Live REPL** — inspect and modify server state from your terminal without touching files
-- 🔀 **Hybrid proxy** — route some paths to the real API while mocking others
-- 🎲 **Smart random data** — uses OpenAPI examples and schema metadata to generate realistic responses
-- 📖 **Built-in Swagger UI** — browse and test your mock API in a browser automatically
-- 🔌 **Middleware support** — add custom middleware with `_.middleware.ts` files
-
----
-
-## How It Works
-
-1. **Generate** — Counterfact reads your OpenAPI spec and creates a `routes/` directory with a `.ts` file for each path, plus a `types/` directory with fully typed request/response interfaces.
-2. **Customize** — Edit the route files to return exactly the data your frontend needs. The full power of TypeScript is at your disposal.
-3. **Run** — The server hot-reloads on every save. No restart, no lost state.
+| The old way | With Counterfact |
+|---|---|
+| Wait for the backend to be ready | Start building against a live mock today |
+| Hardcode fake data that breaks silently | Get type-safe responses generated from your spec |
+| Restart the server every time you change something | Hot-reload keeps state while you iterate |
+| Write a script to seed test data | Use the REPL to manipulate state interactively |
+| Mock a few endpoints, ignore the rest | Every endpoint works out of the box |
+| Return dumb static payloads | Write real logic — validate input, persist data, enforce business rules |
 
 ---
 
-## Examples
+## What you can do with it
 
-### Zero effort: random responses out of the box
+### ⚡ Instant responses — no code required
 
-Generated route files return random, schema-valid responses immediately — no editing required.
+Every generated route returns random, schema-valid data out of the box. No editing needed to get started.
 
 ```ts
-// mock-api/routes/store/order/{orderID}.ts
-import type { HTTP_GET } from "../../../types/paths/store/order/{orderId}.types.js";
-
-export const GET: HTTP_GET = ($) => {
-  return $.response[200].random();
-};
+// api/routes/pet/{petId}.ts  — generated, yours to edit
+export const GET: HTTP_GET = ($) => $.response[200].random();
 ```
 
-### Typed custom responses
+### 🔒 Type safety and documentation baked in
 
-Replace `.random()` with `.json()` to return specific data. TypeScript (via your IDE's autocomplete) guides you to a valid response.
+Your spec defines the contract. TypeScript enforces it. Autocomplete tells you exactly what response shapes are valid, and JSDoc comments — pulled straight from your OpenAPI descriptions — appear inline as you type.
 
 ```ts
-import type { HTTP_GET } from "../../../types/paths/store/order/{orderId}.types.js";
-import type { HTTP_DELETE } from "../../../types/paths/store/order/{orderId}.types.js";
-
-export const GET: HTTP_GET = ($) => {
-  const orders: Record<number, Order> = {
-    1: { petId: 100, status: "placed" },
-    2: { petId: 999, status: "approved" },
-    3: { petId: 1234, status: "delivered" },
-  };
-
-  const order = orders[$.path.orderID];
-  if (order === undefined) return $.response[404];
-  return $.response[200].json(order);
-};
-
-export const DELETE: HTTP_DELETE = ($) => {
-  return $.response[200];
-};
+export const GET: HTTP_GET = ($) =>
+  $.response[200].json({ id: $.path.petId, name: "Fluffy" });
+  //                       ^ hover over `id` or `name` to see the JSDoc from your spec
 ```
 
-### Returning named examples
+### 🧠 Shared state across routes
 
-If your OpenAPI spec defines named examples, use `.example(name)` to return a specific one. The name is autocompleted and type-checked from your spec:
-
-```ts
-export const GET: HTTP_GET = ($) => {
-  return $.response[200].example("successResponse");
-};
-```
-
-### State management with plain old objects
-
-Use a `_.context.ts` file to share in-memory state across routes. POST data and GET it back, just like a real API.
+Create a `_.context.ts` file to share in-memory state across routes. Because state lives in the same process as the server it's lightning-fast, scalability doesn't matter (you're the only one using it), and restarting the server resets everything to a known clean state — no leftover data between test runs.
 
 ```ts
-// mock-api/routes/_.context.ts
+// api/routes/_.context.ts
 export class Context {
-  pets: Pet[] = [];
+  private pets = new Map<number, Pet>();
+  private nextId = 1;
 
-  addPet(pet: Pet) {
-    const id = this.pets.length;
-    this.pets.push({ ...pet, id });
-    return this.pets[id];
+  add(data: Omit<Pet, "id">): Pet {
+    const pet = { ...data, id: this.nextId++ };
+    this.pets.set(pet.id, pet);
+    return pet;
   }
 
-  getPetById(id: number) {
-    return this.pets[id];
-  }
+  get(id: number): Pet | undefined { return this.pets.get(id); }
+  list(): Pet[] { return [...this.pets.values()]; }
+  remove(id: number): void { this.pets.delete(id); }
 }
 ```
 
 ```ts
-// mock-api/routes/pet.ts
-export const POST: HTTP_POST = ($) => {
-  return $.response[200].json($.context.addPet($.body));
-};
+// api/routes/pet.ts
+export const GET: HTTP_GET = ($) => $.response[200].json($.context.list());
+export const POST: HTTP_POST = ($) => $.response[200].json($.context.add($.body));
 
-// mock-api/routes/pet/{petId}.ts
+// api/routes/pet/{petId}.ts
 export const GET: HTTP_GET = ($) => {
-  const pet = $.context.getPetById($.path.petId);
-  if (!pet) return $.response[404].text(`Pet ${$.path.petId} not found.`);
-  return $.response[200].json(pet);
+  const pet = $.context.get($.path.petId);
+  return pet ? $.response[200].json(pet) : $.response[404].text(`No pet ${$.path.petId}`);
 };
 ```
 
-You can also interact with the context object using a REPL. It's like DevTools on the server side. (See "Live REPL" below.)
+### 🔄 Hot reload — no restart, no lost state
 
----
-
-## Key Capabilities
-
-### 🔄 Hot Reload
-
-Save a route file and the server picks it up instantly — no restart, no lost state. Your in-memory context survives every reload.
+Save a route file. The handler updates instantly. Your in-memory context survives every reload.
 
 ### 🖥 Live REPL
 
-The REPL gives you a JavaScript prompt connected directly to your running server. Inspect state, trigger edge cases, or adjust proxy settings without touching a file.
+A JavaScript prompt connected directly to your running server. Inspect state, fire requests, trigger edge cases — without touching a file.
 
 ```
-⬣> context.pets.length
-3
-⬣> context.addPet({ name: "Fluffy", photoUrls: [] })
-⬣> client.get("/pet/3")
-⬣> .proxy on /payments    # forward /payments to the real API
-⬣> .proxy off             # stop all proxying
+⬣> context.list()
+[ { id: 1, name: 'Fluffy', status: 'available' } ]
+
+⬣> context.add({ name: 'Rex', photoUrls: [], status: 'pending' })
+{ id: 2, name: 'Rex', status: 'pending', photoUrls: [] }
+
+⬣> client.get("/pet/2")
+{ status: 200, body: { id: 2, name: 'Rex', ... } }
 ```
 
-### 🔀 Hybrid Proxy
+### 🔀 Hybrid proxy
 
-Mock the paths that aren't ready yet while forwarding everything else to the real backend. See [Proxying](./docs/usage.md#proxy-peek-a-boo-) for details.
+Mock the paths that don't exist yet. Forward the rest to the real API. Toggle individual paths at runtime from the REPL.
 
 ```sh
-npx counterfact@latest openapi.yaml mock-api --proxy-url https://api.example.com
+npx counterfact@latest openapi.yaml api --proxy-url https://api.example.com
 ```
 
-### 🔒 Type Safety
-
-Every route handler is typed to match your OpenAPI spec. When the spec changes, regenerating the types surfaces any mismatches at compile time — before they become bugs.
-
-```ts
-export const GET: HTTP_GET = ($) => {
-  return $.response[200]
-    .header("x-request-id", $.headers["x-request-id"])
-    .json({
-      id: $.path.userId,
-    });
-};
+```
+⬣> .proxy on /payments    # /payments/* → real API
+⬣> .proxy off             # all paths → mock
 ```
 
 ---
 
-## CLI Reference
+## Perfect for
 
-```sh
-npx counterfact@latest [openapi.yaml] [destination] [options]
-```
-
-| Option              | Description                                 |
-| ------------------- | ------------------------------------------- |
-| `--port <number>`   | Server port (default: `3100`)               |
-| `-o, --open`        | Open browser automatically                  |
-| `-g, --generate`    | Generate route and type files               |
-| `-w, --watch`       | Generate and watch for spec changes         |
-| `-s, --serve`       | Start the mock server                       |
-| `-r, --repl`        | Start the interactive REPL                  |
-| `--spec <path>`     | Path or URL to the OpenAPI document         |
-| `--proxy-url <url>` | Forward all requests to this URL by default |
-| `--prefix <path>`   | Base path prefix (e.g. `/api/v1`)           |
-| `--no-validate-request` | Disable request validation against the OpenAPI spec |
-
-Run `npx counterfact@latest --help` for the full list of options.
+- **Frontend teams** building against an unfinished backend
+- **API-first teams** who design the contract before writing code
+- **QA engineers** who need to simulate edge cases, failure modes, and stateful scenarios on demand
+- **Developers** writing integration or end-to-end tests against a real HTTP server
+- **AI agents** that call third-party APIs — avoid rate limits and outages by running locally against a full-fidelity mock
+- **Developers exploring new APIs** — experiment freely before you have a signed contract or production credentials
 
 ---
 
-## About the Author
+## Go deeper
 
-Counterfact came out of a pattern I kept seeing: teams are slowed down more by coordination than by code.
+| | |
+|---|---|
+| [Getting started](./docs/getting-started.md) | Step-by-step walkthrough from zero to a stateful mock |
+| [Reference](./docs/reference.md) | `$` parameter, response builder, CLI flags, architecture |
+| [FAQ](./docs/faq.md) | Common questions about state, types, regeneration, and more |
+| [How it compares](./docs/comparison.md) | Side-by-side with json-server, WireMock, Prism, Microcks, MSW |
+| [Usage guide](./docs/usage.md) | Full documentation |
+| [Changelog](./CHANGELOG.md) | What's changed |
+| [Contributing](./CONTRIBUTING.md) | How to help |
 
-I’ve spent 25+ years building software and improving how engineering organizations operate across large enterprises, regulated industries, and complex systems. Most of that time, the real constraint wasn’t technology—it was dependency and coordination.
-
-Counterfact is one way of removing that friction.
-
-I’m currently available — not for long.
-
-→ https://patrickmcelhaney.org
+---
 
 <div align="center" markdown="1">
 
