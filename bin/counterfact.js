@@ -41,7 +41,9 @@ import { PostHog } from "posthog-node";
 
 const MIN_NODE_VERSION = 17;
 
-if (Number.parseInt(process.versions.node.split("."), 10) < MIN_NODE_VERSION) {
+if (
+  Number.parseInt(process.versions.node.split(".")[0], 10) < MIN_NODE_VERSION
+) {
   process.stdout.write(
     `Counterfact works with Node version ${MIN_NODE_VERSION}+. You are running version ${process.version}`,
   );
