@@ -61,7 +61,13 @@ export class Requirement {
       // Technically we should not be unescaping, but it came up in https://github.com/pmcelhaney/counterfact/issues/1083
       // and I can't think of a reason anyone would intentionally put a % in a key name.
 
-      .map(unescape);
+      .map((part) => {
+        try {
+          return decodeURIComponent(part);
+        } catch {
+          return part;
+        }
+      });
 
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     let result: Requirement | undefined = this;
