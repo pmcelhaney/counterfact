@@ -45,6 +45,24 @@ describe("a Requirement", () => {
     expect(phone.data).toStrictEqual({ type: "string" });
   });
 
+  it("select(path) - decodes percent-encoded path segments", () => {
+    const requirement = new Requirement({
+      " my key": { found: true },
+    });
+
+    expect(requirement.select("%20my%20key")?.data).toStrictEqual({
+      found: true,
+    });
+  });
+
+  it("select(path) - returns path segment unchanged when decodeURIComponent throws", () => {
+    const requirement = new Requirement({
+      "%invalid": { found: true },
+    });
+
+    expect(requirement.select("%invalid")?.data).toStrictEqual({ found: true });
+  });
+
   it("select(name) - escape special characters", () => {
     const requirement = new Requirement({
       "foo/bar": "slash",
