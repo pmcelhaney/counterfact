@@ -85,8 +85,11 @@ Use Counterfact when: you're a developer who wants to spin up a mock in seconds 
 
 Counterfact runs an actual HTTP server. Other processes — not just the browser — can call it. It has persistent state, a REPL, and hot reload. It is designed for development workflows, but it works equally well in automated test suites — particularly end-to-end and integration tests where you need a real HTTP server that any client can reach, not just the one running in the same process.
 
-Use MSW when: you're writing frontend unit/integration tests and want to mock fetch calls in-process without a running server.  
+**Using MSW and Counterfact together:** The two tools can complement each other. MSW can intercept browser fetch calls via its Service Worker and funnel all the traffic through a running Counterfact server. This lets you define all your route logic and state in Counterfact while MSW handles the browser-side interception — a natural fit for Playwright or Vitest browser-mode tests that need stateful, logic-rich mock routes.
+
+Use MSW when: you're writing frontend unit/integration tests and want to mock fetch calls in-process without a running server.
 Use Counterfact when: you want a real HTTP server that any client (browser, mobile app, another service, or automated test runner) can call — including in CI pipelines and integration test suites.
+Use both when: you need browser-level interception (MSW) plus real stateful mock routes (Counterfact).
 
 ---
 

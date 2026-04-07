@@ -32,6 +32,8 @@ Counterfact is a tool that turns an OpenAPI spec into a live, editable, stateful
 
 **AI agents** that make calls to third-party APIs — running against a local mock avoids rate limits, costs, and network flakiness.
 
+**AI agents helping developers explore an API** — an AI assistant can spin up a Counterfact mock from an OpenAPI spec, fire exploratory requests through Counterfact's programmatic API or REPL, inspect responses, and explain the API's behavior to the developer — all without hitting the real service. This is especially useful when the developer doesn't yet have credentials, or when the real API has complex authentication or rate limits that would slow down exploration.
+
 **Developers exploring a new API** before they have production credentials or a signed contract.
 
 ---

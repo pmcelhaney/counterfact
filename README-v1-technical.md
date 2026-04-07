@@ -292,6 +292,51 @@ export const GET: HTTP_GET = ($) => {
 
 ---
 
+## Admin API (for AI Agents and External Tools)
+
+Counterfact exposes an HTTP Admin API at `/_counterfact/api/` that lets AI agents, test runners, and external tooling interact with the mock server in all the same ways a developer can through the REPL — without any human in the loop.
+
+### Security
+
+By default the Admin API is restricted to loopback connections (`127.0.0.1` / `::1`). To allow remote access, set an environment variable or pass a config option:
+
+```sh
+COUNTERFACT_ADMIN_API_TOKEN=my-secret-token npx counterfact@latest openapi.yaml api
+```
+
+Remote requests then require an `Authorization: Bearer my-secret-token` header.
+
+### Endpoints
+
+| Method | Path | Description |
+| --- | --- | --- |
+| `GET` | `/_counterfact/api/health` | Server health, port, uptime |
+| `GET` | `/_counterfact/api/routes` | All registered routes |
+| `GET` | `/_counterfact/api/contexts` | All context paths and their current state |
+| `GET` | `/_counterfact/api/contexts/<path>` | Current state of a specific context |
+| `POST` | `/_counterfact/api/contexts/<path>` | Update a specific context (smart-merged) |
+| `GET` | `/_counterfact/api/config` | Current server configuration |
+| `GET` | `/_counterfact/api/config/proxy` | Current proxy configuration |
+| `PATCH` | `/_counterfact/api/config/proxy` | Update proxy URL and/or per-path proxy toggles |
+
+### Example: AI agent seeding state
+
+An AI assistant helping a developer explore an API can use these endpoints to set up known state and then fire real HTTP requests to observe responses — all without touching the keyboard:
+
+```sh
+# Seed the pets context with known data
+curl -X POST http://localhost:3100/_counterfact/api/contexts/pet \
+  -H "Content-Type: application/json" \
+  -d '{"pets": [{"id": 1, "name": "Fluffy", "status": "available"}]}'
+
+# Fire a real API request and inspect the response
+curl http://localhost:3100/pet/1
+```
+
+This makes Counterfact a powerful tool for LLM-powered developer assistants: the AI can load an OpenAPI spec, generate a running mock, probe endpoints, and explain the API's shape and behavior to the developer without touching the real service.
+
+---
+
 ## Related Documentation
 
 - [Usage Guide](./docs/usage.md)

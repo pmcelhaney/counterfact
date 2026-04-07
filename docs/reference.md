@@ -11,7 +11,7 @@ OpenAPI spec (YAML or JSON, local or URL)
         │
         ▼
 ┌──────────────────────┐
-│  TypeScript Generator │  → routes/  (one .ts per path)
+│ TypeScript Generator │  → routes/  (one .ts per path)
 │                      │  → types/   (request/response interfaces)
 └──────────────────────┘
         │
@@ -31,7 +31,7 @@ OpenAPI spec (YAML or JSON, local or URL)
 ```
 <output-directory>/
 ├── routes/
-│   ├── _.context.ts          # shared in-memory state (optional)
+│   ├── _.context.ts           # shared in-memory state (optional)
 │   ├── _.middleware.ts        # custom Koa middleware (optional)
 │   ├── pet.ts                 # handlers for /pet
 │   ├── pet/
@@ -46,6 +46,8 @@ OpenAPI spec (YAML or JSON, local or URL)
         └── store/
             └── order.types.ts
 ```
+
+> **Note:** Files under `types/` are automatically regenerated whenever the OpenAPI spec changes. Never edit them by hand — your changes will be overwritten on the next regeneration.
 
 ---
 
@@ -64,7 +66,7 @@ export const GET: HTTP_GET = ($) => {
 };
 ```
 
-### Custom JSON response
+### Custom response
 
 ```ts
 export const GET: HTTP_GET = ($) => {
@@ -73,6 +75,8 @@ export const GET: HTTP_GET = ($) => {
   return $.response[200].json(pet);
 };
 ```
+
+Counterfact handles content negotiation automatically. Calling `.json(content)` will also serve the same data as XML when the client sends `Accept: application/xml`.
 
 ### Named OpenAPI example
 
@@ -94,13 +98,13 @@ export const GET: HTTP_GET = ($) => {
 | `$.headers` | typed object | Request headers |
 | `$.body` | typed object | Parsed request body |
 | `$.context` | `Context` instance | Shared state for this route subtree |
-| `$.response[N]` | response builder | Fluent builder for HTTP status N |
+| `$.response[N]` | response builder | Fluent builder for HTTP status code N (e.g. `$.response[200]`, `$.response[404]`) |
 
 ---
 
 ## Response builder methods
 
-`$.response[N]` returns a fluent builder. Chain one or more of these methods:
+`$.response[N]` (where N is the HTTP status code) returns a fluent builder. Chain one or more of these methods:
 
 | Method | Description |
 | --- | --- |
@@ -154,6 +158,21 @@ export class Context {
     return this.pets.delete(id);
   }
 }
+```
+
+### Cross-context communication with `loadContext()`
+
+Route handlers can reach into a _different_ subtree's context using the `loadContext(path)` function injected into every handler. This lets sibling or parent routes share data without merging everything into one big context.
+
+```ts
+// routes/payments/{id}.ts
+export const GET: HTTP_GET = ($) => {
+  // Load the context that owns /users, even though this route lives under /payments
+  const usersContext = $.loadContext("/users") as import("../users/_.context.js").Context;
+  const user = usersContext.getById($.query.userId);
+  if (!user) return $.response[404].text("User not found");
+  return $.response[200].json({ paymentId: $.path.id, user });
+};
 ```
 
 ---

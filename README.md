@@ -45,7 +45,9 @@ Every generated route returns random, schema-valid data out of the box. No editi
 
 ```ts
 // api/routes/pet/{petId}.ts  — generated, yours to edit
-export const GET: HTTP_GET = ($) => $.response[200].random();
+export const GET: HTTP_GET = ($) => {
+  return $.response[200].random();
+};
 ```
 
 ### 🔒 Type safety and documentation baked in
@@ -53,9 +55,10 @@ export const GET: HTTP_GET = ($) => $.response[200].random();
 Your spec defines the contract. TypeScript enforces it. Autocomplete tells you exactly what response shapes are valid, and JSDoc comments — pulled straight from your OpenAPI descriptions — appear inline as you type.
 
 ```ts
-export const GET: HTTP_GET = ($) =>
-  $.response[200].json({ id: $.path.petId, name: "Fluffy" });
-  //                       ^ hover over `id` or `name` to see the JSDoc from your spec
+export const GET: HTTP_GET = ($) => {
+  return $.response[200].json({ id: $.path.petId, name: "Fluffy" });
+  //                             ^ hover over `id` or `name` to see the JSDoc from your spec
+};
 ```
 
 ### 🧠 Shared state across routes
@@ -133,7 +136,26 @@ npx counterfact@latest openapi.yaml api --proxy-url https://api.example.com
 - **QA engineers** who need to simulate edge cases, failure modes, and stateful scenarios on demand
 - **Developers** writing integration or end-to-end tests against a real HTTP server
 - **AI agents** that call third-party APIs — avoid rate limits and outages by running locally against a full-fidelity mock
-- **Developers exploring new APIs** — experiment freely before you have a signed contract or production credentials
+- **Developers exploring new APIs** — experiment freely before you have a signed contract, test credentials, or production access
+
+---
+
+## How it compares
+
+| | Counterfact | json-server | WireMock | Prism | Microcks |
+|---|---|---|---|---|---|
+| **OpenAPI-native** | ✅ | ❌ | Partial | ✅ | ✅ |
+| **Type-safe handlers** | ✅ TypeScript | ❌ | ❌ | ❌ | ❌ |
+| **Real logic in handlers** | ✅ | Limited | Via templating | ❌ | Via scripts |
+| **Hot reload** | ✅ state-preserving | ❌ | ❌ | ❌ | ❌ |
+| **In-memory state** | ✅ shared Context | ✅ flat JSON | ❌ | ❌ | ❌ |
+| **Interactive REPL** | ✅ | ❌ | ❌ | ❌ | ❌ |
+| **Hybrid proxy** | ✅ per-path | ❌ | ✅ | ✅ | ✅ |
+| **Request validation** | ✅ | ❌ | ✅ | ✅ | ✅ |
+| **Automated test use** | ✅ real HTTP server | ✅ | ✅ | ✅ | ✅ |
+| **Zero config** | ✅ one command | ✅ | ❌ | ❌ | ❌ |
+
+See [How it compares](./docs/comparison.md) for a full breakdown.
 
 ---
 

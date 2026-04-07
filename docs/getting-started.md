@@ -8,7 +8,7 @@ You have an OpenAPI spec. You need a backend. The real one isn't ready yet.
 
 ## The scenario
 
-Picture a common situation: your team finishes designing an API. The OpenAPI doc is written and agreed on. The frontend team is ready to build. But the backend isn't done yet — maybe it's two sprints out, maybe it's on another team's roadmap entirely.
+Picture a common situation: your team has written a first draft of the OpenAPI doc. The frontend team is ready to build, but the backend isn't done yet — maybe it's two sprints out, maybe it's on another team's roadmap entirely.
 
 What do you do?
 
@@ -48,7 +48,7 @@ api/
 
 **2. A server started.** Every endpoint is live immediately. By default, each one returns random, schema-valid data — no editing required.
 
-**3. Swagger UI opened.** Point your browser at `http://localhost:3100/counterfact/` to explore and test the API.
+**3. Swagger UI opened.** Point your browser at `http://localhost:3100/counterfact/swagger/` to explore and test the API.
 
 ---
 
@@ -125,11 +125,13 @@ Now your routes share that state:
 
 ```ts
 // api/routes/pet.ts
-export const GET: HTTP_GET = ($) =>
-  $.response[200].json($.context.list());
+export const GET: HTTP_GET = ($) => {
+  return $.response[200].json($.context.list());
+};
 
-export const POST: HTTP_POST = ($) =>
-  $.response[200].json($.context.add($.body));
+export const POST: HTTP_POST = ($) => {
+  return $.response[200].json($.context.add($.body));
+};
 ```
 
 ```ts
@@ -189,13 +191,15 @@ You can toggle individual paths at runtime from the REPL:
 
 ## When the spec changes
 
-Specs change. When they do, regenerate:
+Specs evolve. When yours does, Counterfact handles it automatically: if you're running with `--watch`, it detects the change, regenerates the types, and your IDE picks up the updated interfaces immediately — no restart, no manual command.
+
+If you're not watching, you can regenerate on demand:
 
 ```sh
-npx counterfact@latest openapi.yaml api --generate
+npx counterfact@latest openapi.yaml api --generate-types
 ```
 
-Counterfact updates the generated types and scaffolds any new routes. Your custom code in existing route files is preserved. TypeScript surfaces any handlers that no longer match the updated contract — you fix them, and you're done.
+Either way, Counterfact only scaffolds route files that don't exist yet. Your existing route code is never overwritten. TypeScript surfaces any handlers that no longer match the updated contract — you fix them, and you're done.
 
 ---
 
