@@ -40,6 +40,12 @@ describe("tools", () => {
     },
   );
 
+  it("accepts('application/json') returns false when lowercase 'accept' header is 'text/plain'", () => {
+    const tools = new Tools({ headers: { accept: "text/plain" } });
+
+    expect(tools.accepts("application/json")).toBe(false);
+  });
+
   it("randomFromSchema() returns a value (the implementation is in a third party library)", async () => {
     const tools = new Tools();
 
