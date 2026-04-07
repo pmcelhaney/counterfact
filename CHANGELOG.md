@@ -1,5 +1,46 @@
 # counterfact
 
+## 2.6.0
+
+### Minor Changes
+
+- 3b0334a: Add JSDoc comment generation for types from OpenAPI metadata
+
+  Generated TypeScript types now include inline JSDoc comments derived from the OpenAPI spec:
+  - Schema-level JSDoc from `description`/`summary`
+  - Property-level JSDoc including `description`, `@example`, `@default`, `@format`, and `@deprecated`
+  - Operation-level JSDoc from operation `summary`/`description`
+
+  This improves IDE hover documentation and AI-assisted development workflows.
+
+- a3b24f0: Add request validation against the OpenAPI spec. Incoming requests are now validated by default — missing required query parameters, missing required headers, and request bodies that do not match the declared schema all result in a 400 response with a descriptive error message. Validation can be disabled with the `--no-validate-request` CLI flag.
+- 3c5c284: Add lightweight telemetry using PostHog to track usage of Counterfact. Fires a single `counterfact_started` event on startup. Telemetry is disabled by default before May 1, 2026, disabled in CI, and can be controlled with the `COUNTERFACT_TELEMETRY_DISABLED` environment variable. A one-time warning is shown before the rollout date.
+- 6c9e30f: Add REPL-native request builder (`route()`) with fluent API, OpenAPI introspection, and autocomplete support.
+
+  The new `route()` function is available in the REPL and allows users to discover, construct, and execute API requests interactively:
+
+  ```js
+  const pet = route("/pet/{petId}").method("get").path({ petId: 1 });
+
+  await pet.send();
+  ```
+
+  Key capabilities:
+  - Fluent, immutable builder API (`.method()`, `.path()`, `.query()`, `.headers()`, `.body()`)
+  - OpenAPI-backed introspection via `.help()`, `.ready()`, and `.missing()`
+  - Actionable feedback when required parameters are absent
+  - Custom REPL display showing parameter status
+  - Autocomplete for `route("` in addition to existing `client.*` patterns
+
+### Patch Changes
+
+- 7a89d27: Refactor internal plain objects to Maps where appropriate:
+  - `Directory.directories` and `Directory.files` in `module-tree.ts` are now `Map<string, Directory>` and `Map<string, File>`
+  - `ParameterTypes` inner types in `dispatcher.ts` are now `Map<string, string>`
+  - `castParameters` in `registry.ts` now accepts `Map<string, string>` for parameter types
+- 5b7d8b3: Improve error messages for malformed or missing OpenAPI specs. Instead of showing a JavaScript stack trace, Counterfact now displays a clear, actionable message that includes the spec path and the underlying reason for the failure.
+- ff2ba80: Auto-detect TypeScript native runtime support (tsx, ts-node, node --experimental-strip-types) instead of requiring a --use-tsx flag
+
 ## 2.5.1
 
 ### Patch Changes
