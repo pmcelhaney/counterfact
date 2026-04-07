@@ -35,16 +35,17 @@ Teams waste weeks blocked on API dependencies. Counterfact eliminates that wait 
 | Restart the server every time you change something | Hot-reload keeps state while you iterate |
 | Write a script to seed test data | Use the REPL to manipulate state interactively |
 | Mock a few endpoints, ignore the rest | Every endpoint works out of the box |
+| Return dumb static payloads | Write real logic — validate input, persist data, enforce business rules |
 
 ---
 
 ## It's a real server. You control it.
 
-Counterfact isn't a record/replay proxy or a static fixture system. It's a **programmable server** you own.
+Counterfact isn't a record/replay proxy or a static fixture system. It's a **programmable server** you own. Every endpoint is a TypeScript file with real logic — you can validate input, maintain state, branch on query parameters, and return different status codes based on what was sent. It behaves like an actual backend because, for your purposes, it is one.
 
 - **TypeScript handlers** — every endpoint is a `.ts` file you can open and edit
+- **Real logic, not just fixtures** — POST data and GET it back; enforce validation; simulate errors
 - **Type safety from your spec** — autocomplete guides you to valid responses
-- **Stateful by default** — POST data and GET it back, just like a real API
 - **Hot reload** — save a file, changes apply instantly, no data lost
 - **Live REPL** — tweak state, trigger edge cases, test failure paths — without touching files
 
@@ -78,18 +79,19 @@ Every generated route returns random, schema-valid data out of the box.
 export const GET: HTTP_GET = ($) => $.response[200].random();
 ```
 
-### 🔒 Type safety baked in
+### 🔒 Type safety and documentation baked in
 
-Your spec defines the contract. TypeScript enforces it. Autocomplete tells you exactly what response shapes are valid.
+Your spec defines the contract. TypeScript enforces it. Autocomplete tells you exactly what response shapes are valid, and JSDoc comments — pulled straight from your OpenAPI descriptions — appear inline as you type.
 
 ```ts
 export const GET: HTTP_GET = ($) =>
   $.response[200].json({ id: $.path.petId, name: "Fluffy" });
+  //                       ^ hover over `id` or `name` to see the JSDoc from your spec
 ```
 
 ### 🧠 Shared state across routes
 
-Use a `_.context.ts` file to share in-memory state across related routes — like a real database, but in-process.
+Use a `_.context.ts` file to share in-memory state across related routes. Because state lives in the same process as the server it's lightning-fast, scalability doesn't matter (you're the only one using it), and restarting the server resets everything to a known clean state — no leftover data between test runs.
 
 ```ts
 // routes/_.context.ts
@@ -135,6 +137,8 @@ npx counterfact@latest openapi.yaml api --proxy-url https://api.example.com
 - **API-first teams** who design the contract before writing code
 - **QA engineers** who need to simulate edge cases and failure modes
 - **Developers** who want to prototype fast without standing up infrastructure
+- **AI agents** that call third-party APIs — avoid rate limits and outages by running locally against a full-fidelity mock
+- **Developers exploring new APIs** — experiment freely before you have a signed contract or production credentials
 
 ---
 
