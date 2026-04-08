@@ -1,16 +1,15 @@
 #!/usr/bin/env python3
 """Process issue proposal files and create GitHub issues.
 
-Reads every *.md file under .github/issue-proposals/, parses the YAML front
-matter, validates required fields, creates a GitHub issue via the gh CLI, links
-it as a sub-issue of the resolved parent, then deletes the proposal file.
+Reads file paths from the PROPOSAL_FILES environment variable (newline-separated),
+parses the YAML front matter, validates required fields, creates a GitHub issue
+via the gh CLI, and links it as a sub-issue of the resolved parent.
 
 Exit codes:
   0 – all proposals processed successfully (or no proposals found)
   1 – one or more proposals failed validation or issue creation
 """
 
-import glob
 import os
 import re
 import subprocess
@@ -194,6 +193,7 @@ def add_sub_issue(repo, parent_number, child_issue_id):
 def main():
     repo = os.environ.get("GITHUB_REPOSITORY", "")
     ref = os.environ.get("GITHUB_REF", "")
+    proposal_files_env = os.environ.get("PROPOSAL_FILES", "").strip()
 
     if not repo:
         print("Error: GITHUB_REPOSITORY environment variable is not set.", file=sys.stderr)
@@ -203,15 +203,13 @@ def main():
         print("Error: GITHUB_REF environment variable is not set.", file=sys.stderr)
         sys.exit(1)
 
-    proposal_dir = ".github/issue-proposals"
-    files = sorted(glob.glob(f"{proposal_dir}/*.md"))
+    files = [f.strip() for f in proposal_files_env.splitlines() if f.strip()]
 
     if not files:
         print("No proposal files found — nothing to do.")
         return
 
     failed = False
-    files_to_delete = []
 
     for filepath in files:
         print(f"\nProcessing: {filepath}")
@@ -271,13 +269,6 @@ def main():
         linked = add_sub_issue(repo, parent_issue, issue_id)
         if linked:
             print(f"  Linked as sub-issue of #{parent_issue}")
-
-        files_to_delete.append(filepath)
-
-    # --- Cleanup ---
-    for filepath in files_to_delete:
-        os.remove(filepath)
-        print(f"\nDeleted: {filepath}")
 
     if failed:
         sys.exit(1)

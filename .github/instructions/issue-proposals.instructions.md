@@ -4,9 +4,9 @@ This file defines the conventions for proposing new GitHub issues in the Counter
 
 ## Overview
 
-Copilot and contributors **must never create GitHub issues directly** via the API, browser automation, or any other means. Instead, propose issues as Markdown files on a dedicated branch. A GitHub Action automatically converts them into real issues when the branch is pushed.
+Copilot and contributors **must never create GitHub issues directly** via the API, browser automation, or any other means. Instead, propose issues as Markdown files in a pull request. A GitHub Action automatically converts them into real issues when the pull request is merged.
 
-**Do NOT open a pull request.** Simply push a branch named `issue-request/<description>` containing the proposal files. The CI workflow triggers on that branch name and processes the files automatically.
+**Open a pull request** that adds the proposal files. The CI workflow triggers on merge and processes all newly added files.
 
 ## File Location
 
@@ -69,31 +69,32 @@ Generate JSDoc comments for emitted TypeScript types using metadata from the Ope
 Every created issue is registered as a sub-issue of the current parent issue.
 
 - **Always include `parentIssue` in front matter** when you know the parent issue number. This makes the relationship explicit and auditable in the proposal file.
-- If `parentIssue` is absent, the CI workflow derives the parent from the branch name (for example, a branch named `issue-request/fix-1234-description` implies issue `#1234`).
+- If `parentIssue` is absent, the CI workflow derives the parent from the branch name (for example, a branch named `fix-1234-description` implies issue `#1234`).
 - If the workflow cannot determine the parent issue at all, the proposal file is **not processed** and the workflow fails. In that case, add `parentIssue` to the front matter and re-run.
 
 ## Rules for Copilot
 
 - **Never** create GitHub issues directly through the API, browser automation, or any other mechanism.
-- **Never** open a pull request for issue proposals. Just push the branch — no PR needed.
 - **Always** propose new issues as Markdown files under `.github/issue-proposals/`.
-- **Always** push proposal files on a branch named `issue-request/<description>` (e.g. `issue-request/fix-1234-add-logging`).
+- **Always** open a pull request that adds the proposal files.
 - Include `parentIssue` in the front matter whenever you know the parent issue number.
 - Write clear issue bodies with:
   - A summary of the problem or feature
   - Context and motivation
   - Acceptance criteria (as a Markdown checklist)
 
-## What Happens After Push
+## What Happens After Merge
 
-When a branch named `issue-request/**` containing proposal files is pushed, the CI workflow (`.github/workflows/create-issues.yml`) automatically:
+When a pull request that adds files under `.github/issue-proposals/` is merged, the CI workflow (`.github/workflows/create-issues.yml`) automatically:
 
-1. Parses each `.github/issue-proposals/*.md` file.
-2. Validates required fields (`title` and a non-empty body).
-3. Creates a GitHub issue.
-4. Links it as a sub-issue of the resolved parent issue.
-5. Applies `labels`, `assignees`, and `milestone` when provided.
-6. Deletes the proposal file after successful creation and commits the removal.
+1. Identifies which `.md` files were newly added by the pull request.
+2. Parses each newly added file.
+3. Validates required fields (`title` and a non-empty body).
+4. Creates a GitHub issue.
+5. Links it as a sub-issue of the resolved parent issue.
+6. Applies `labels`, `assignees`, and `milestone` when provided.
+
+The proposal files remain in the repository after issues are created. They serve as a permanent record of what was proposed and when. You do not need to remove them manually.
 
 If creation fails for any file, that file is left in the repository and the workflow fails so it can be retried after the problem is fixed.
 
