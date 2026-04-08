@@ -25,29 +25,27 @@ A script is a plain TypeScript module with a default export function. The script
 
 ```ts
 // repl/sold-pets.ts
-export default ({ context, builders, route }) => {
-  context.petService.reset();
+export default ($) => {
+  $.context.petService.reset();
 
-  context.petService.addPet({ id: 1, status: "sold" });
-  context.petService.addPet({ id: 2, status: "available" });
+  $.context.petService.addPet({ id: 1, status: "sold" });
+  $.context.petService.addPet({ id: 2, status: "available" });
 
-  builders.set(
-    "getSoldPets",
-    route("/pet/findByStatus").method("get").query({ status: "sold" }),
-  );
+  $.routes.getSoldPets = $.route("/pet/findByStatus").method("get").query({ status: "sold" });
 };
 ```
 
-This is identical in surface syntax to Approach 1. The difference is internal: `context` and `builders` passed to the script are **transparent reactive proxies** of the live objects.
+This is identical in surface syntax to Approach 1. The difference is internal: `$.context` and `$.routes` passed to the script are **transparent reactive proxies** of the live objects.
 
 ### Proxy-based change tracking
 
-Before calling the script, Counterfact wraps each environment object in a `Proxy` that intercepts `set`, `deleteProperty`, and `Map` mutations:
+Before calling the script, Counterfact wraps each environment object in a `Proxy` that intercepts `set`, `deleteProperty`, and property mutations on the `routes` plain object:
 
 ```ts
 const tracked = trackChanges(liveContext);
-await script({ context: tracked.proxy, builders: trackBuilders(liveBuilders) });
-const report = tracked.changes(); // returns structured diff
+const trackedRoutes = trackChanges(liveRoutes);
+await script({ context: tracked.proxy, routes: trackedRoutes.proxy, route: createRouteFunction(...) });
+const report = { context: tracked.changes(), routes: trackedRoutes.changes() };
 ```
 
 The proxy forwards all reads and writes to the underlying live object, so mutations take effect immediately. It also accumulates a change log:
@@ -71,7 +69,7 @@ Applied sold-pets
 Context changes:
   petService.pets: [] → [{id:1,status:"sold"},{id:2,status:"available"}]
 
-Builders added:
+Routes added:
   getSoldPets
 ```
 
@@ -96,7 +94,7 @@ Resolution order is the same as Approach 1:
 
 1. Add `.apply` as a dot-command in `src/repl/repl.ts`.
 2. Resolve the file path.
-3. Create proxy wrappers around `context` and `builders`.
+3. Create proxy wrappers around `context` and `routes`.
 4. Dynamically import and call the script with the proxy-wrapped arguments.
 5. Collect the accumulated change records from the proxies.
 6. Print the formatted diff.
@@ -144,7 +142,7 @@ Deep (nested) change tracking can be implemented by returning a recursive proxy 
 - [ ] `.apply <name>` resolves and executes a TypeScript file, passing proxy-wrapped environment objects
 - [ ] All top-level property assignments to `context` are captured in the change log
 - [ ] Nested property mutations (e.g. `context.petService.reset()`) are captured where feasible
-- [ ] `builders.set()` and `builders.delete()` calls are captured and reported
+- [ ] `$.routes.name = builder` assignments and `delete $.routes.name` are captured and reported
 - [ ] After the script runs, the REPL prints a structured diff of all recorded changes
 - [ ] The underlying live objects are mutated correctly (proxy is transparent for reads and writes)
 - [ ] Scripts that throw an error do not leave the change-tracking proxy in an inconsistent state

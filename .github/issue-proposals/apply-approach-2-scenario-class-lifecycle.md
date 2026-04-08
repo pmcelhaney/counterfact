@@ -28,20 +28,17 @@ import type { Scenario, ApplyContext } from "counterfact";
 export default class SoldPetsScenario implements Scenario {
   static dependencies = ["base"];
 
-  setup({ context, builders, route }: ApplyContext): void {
-    context.petService.addPet({ id: 1, status: "sold" });
-    context.petService.addPet({ id: 2, status: "available" });
+  setup($: ApplyContext): void {
+    $.context.petService.addPet({ id: 1, status: "sold" });
+    $.context.petService.addPet({ id: 2, status: "available" });
 
-    builders.set(
-      "getSoldPets",
-      route("/pet/findByStatus").method("get").query({ status: "sold" }),
-    );
+    $.routes.getSoldPets = $.route("/pet/findByStatus").method("get").query({ status: "sold" });
   }
 
-  teardown({ context, builders }: ApplyContext): void {
-    context.petService.removePet(1);
-    context.petService.removePet(2);
-    builders.delete("getSoldPets");
+  teardown($: ApplyContext): void {
+    $.context.petService.removePet(1);
+    $.context.petService.removePet(2);
+    delete $.routes.getSoldPets;
   }
 }
 ```
@@ -61,6 +58,8 @@ export interface Scenario {
 }
 ```
 
+> `ApplyContext` provides `{ context, loadContext, routes, route }` where `routes` is a plain object in the REPL execution context.
+
 ### Invocation
 
 ```
@@ -78,7 +77,7 @@ When a scenario declares `static dependencies`, Counterfact automatically applie
 # Counterfact first applies "base" (dependency), then "sold-pets"
 Applied base → sold-pets
 
-Builders added:
+Routes added:
   getSoldPets
 ```
 

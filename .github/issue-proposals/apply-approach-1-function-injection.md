@@ -27,15 +27,12 @@ An apply script is a TypeScript file with a default export:
 // repl/sold-pets.ts
 import type { ApplyContext } from "counterfact";
 
-export default ({ context, builders, route }: ApplyContext) => {
-  context.petService.reset();
-  context.petService.addPet({ id: 1, status: "sold" });
-  context.petService.addPet({ id: 2, status: "available" });
+export default ($: ApplyContext) => {
+  $.context.petService.reset();
+  $.context.petService.addPet({ id: 1, status: "sold" });
+  $.context.petService.addPet({ id: 2, status: "available" });
 
-  builders.set(
-    "getSoldPets",
-    route("/pet/findByStatus").method("get").query({ status: "sold" }),
-  );
+  $.routes.getSoldPets = $.route("/pet/findByStatus").method("get").query({ status: "sold" });
 };
 ```
 
@@ -47,8 +44,8 @@ export interface ApplyContext {
   context: Record<string, unknown>;
   /** Load a context object for a specific path */
   loadContext: (path: string) => Record<string, unknown>;
-  /** Named route builders injected into the REPL */
-  builders: Map<string, RouteBuilder>;
+  /** Named route builders available in the REPL execution context */
+  routes: Record<string, RouteBuilder>;
   /** Create a new RouteBuilder for a given path */
   route: (path: string) => RouteBuilder;
 }
@@ -74,7 +71,7 @@ After execution, Counterfact compares the environment state before and after the
 ```
 Applied sold-pets
 
-Builders added:
+Routes added:
   getSoldPets
 ```
 
@@ -88,7 +85,7 @@ Context diffs are not automatically tracked in this approach — the script auth
 2. Resolve the file path using the ordered lookup above.
 3. Dynamically import the resolved module (using `tsx` or the existing transpiler if the file is TypeScript).
 4. Call the exported function with the live environment objects.
-5. Snapshot `builders` before/after and print the diff.
+5. Snapshot `routes` before/after and print the diff.
 
 ---
 
@@ -108,8 +105,8 @@ Context diffs are not automatically tracked in this approach — the script auth
 
 - [ ] `.apply <name>` resolves and executes a TypeScript file from the configured `repl/` directory
 - [ ] `.apply <path>` resolves and executes a TypeScript file at the given relative path
-- [ ] The script receives `{ context, loadContext, builders, route }` as arguments
-- [ ] Builders injected by the script are available in the REPL after the command runs
-- [ ] The REPL prints a summary of builders added and removed after each apply
+- [ ] The script receives `$` with `{ context, loadContext, routes, route }` as properties
+- [ ] Routes injected by the script are available in the REPL after the command runs
+- [ ] The REPL prints a summary of routes added and removed after each apply
 - [ ] A meaningful error is shown when the file cannot be found or the export is not a function
 - [ ] Existing REPL commands and behavior are unaffected
