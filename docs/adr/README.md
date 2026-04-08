@@ -30,5 +30,5 @@ New ADR files are named `xxx-short-title.md` (with a literal `xxx` prefix) when 
 2. **Draft** an ADR as `docs/adr/xxx-short-title.md` on a new branch.
 3. **Discuss** the ADR in a pull request — update the document as the conversation evolves.
 4. **Decide** — update the Status to `accepted` and fill in the Decision section.
-5. **Merge** the PR. CI automatically assigns the next sequential ADR number.
+5. **Merge** the PR. CI automatically opens a separate pull request that renames `xxx-*.md` to the next sequential ADR number and sets it to auto-merge.
 6. **Plan implementation** — create a follow-up issue asking Copilot to break the decision into implementation tasks.

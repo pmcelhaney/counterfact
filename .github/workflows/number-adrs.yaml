@@ -12,27 +12,33 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      pull-requests: write
 
     steps:
       - name: Check out repository
         uses: actions/checkout@v6
-        with:
-          # A custom token is required so that the automated commit can trigger
-          # subsequent workflows (the default GITHUB_TOKEN cannot do this).
-          token: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
 
       - name: Assign sequential numbers to ADR placeholder files
         run: python3 .github/scripts/number_adrs.py
 
-      - name: Commit renamed ADR files
+      - name: Open a PR with the renamed ADR files
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add docs/adr/
           if git diff --cached --quiet; then
             echo "No ADR files were renamed — nothing to commit."
-          else
-            git commit -m "chore: assign sequential numbers to ADR files"
-            git pull --rebase
-            git push
+            exit 0
           fi
+          BRANCH="chore/number-adrs-${{ github.run_id }}"
+          git checkout -b "$BRANCH"
+          git commit -m "chore: assign sequential numbers to ADR files"
+          git push origin "$BRANCH"
+          PR_URL=$(gh pr create \
+            --base main \
+            --head "$BRANCH" \
+            --title "chore: assign sequential numbers to ADR files" \
+            --body "Automated PR: assigns sequential numbers to ADR placeholder files (xxx-*.md).")
+          gh pr merge --auto --squash "$PR_URL"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
