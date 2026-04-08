@@ -1,5 +1,4 @@
 import { describe, expect, it } from "@jest/globals";
-import { promises as fs } from "node:fs";
 
 import { usingTemporaryFiles } from "using-temporary-files";
 
@@ -21,10 +20,8 @@ describe("pruneRoutes", () => {
       const count = await pruneRoutes($.path(""), expectedPaths);
 
       expect(count).toBe(1);
-      await expect(
-        fs.access($.path("routes/pet/{id}.ts")),
-      ).resolves.toBeUndefined();
-      await expect(fs.access($.path("routes/pet/{name}.ts"))).rejects.toThrow();
+      await expect($.read("routes/pet/{id}.ts")).resolves.toBeDefined();
+      await expect($.read("routes/pet/{name}.ts")).rejects.toThrow();
     });
   });
 
@@ -41,12 +38,8 @@ describe("pruneRoutes", () => {
       const count = await pruneRoutes($.path(""), expectedPaths);
 
       expect(count).toBe(0);
-      await expect(
-        fs.access($.path("routes/_.context.ts")),
-      ).resolves.toBeUndefined();
-      await expect(
-        fs.access($.path("routes/pet/_.context.ts")),
-      ).resolves.toBeUndefined();
+      await expect($.read("routes/_.context.ts")).resolves.toBeDefined();
+      await expect($.read("routes/pet/_.context.ts")).resolves.toBeDefined();
     });
   });
 
@@ -60,7 +53,7 @@ describe("pruneRoutes", () => {
       const expectedPaths = [];
       await pruneRoutes($.path(""), expectedPaths);
 
-      await expect(fs.access($.path("routes/old"))).rejects.toThrow();
+      await expect($.read("routes/old/{id}.ts")).rejects.toThrow();
     });
   });
 
@@ -75,10 +68,7 @@ describe("pruneRoutes", () => {
       const expectedPaths = [];
       await pruneRoutes($.path(""), expectedPaths);
 
-      await expect(fs.access($.path("routes/old"))).resolves.toBeUndefined();
-      await expect(
-        fs.access($.path("routes/old/_.context.ts")),
-      ).resolves.toBeUndefined();
+      await expect($.read("routes/old/_.context.ts")).resolves.toBeDefined();
     });
   });
 
@@ -97,10 +87,8 @@ describe("pruneRoutes", () => {
       const count = await pruneRoutes($.path(""), expectedPaths);
 
       expect(count).toBe(1);
-      await expect(
-        fs.access($.path("routes/index.ts")),
-      ).resolves.toBeUndefined();
-      await expect(fs.access($.path("routes/old.ts"))).rejects.toThrow();
+      await expect($.read("routes/index.ts")).resolves.toBeDefined();
+      await expect($.read("routes/old.ts")).rejects.toThrow();
     });
   });
 
