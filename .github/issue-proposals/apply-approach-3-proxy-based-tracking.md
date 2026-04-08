@@ -21,18 +21,18 @@ This approach maximises ergonomics for script authors: a script looks like ordin
 
 ### Script format
 
-A script is a plain TypeScript module with a default export function. The script receives the live environment objects and mutates them directly, with no special wrapper required:
+A script is a plain TypeScript module that exports one or more named functions. The script receives the live environment objects and mutates them directly, with no special wrapper required:
 
 ```ts
 // repl/sold-pets.ts
-export default ($) => {
+export function soldPets($) {
   $.context.petService.reset();
 
   $.context.petService.addPet({ id: 1, status: "sold" });
   $.context.petService.addPet({ id: 2, status: "available" });
 
   $.routes.getSoldPets = $.route("/pet/findByStatus").method("get").query({ status: "sold" });
-};
+}
 ```
 
 This is identical in surface syntax to Approach 1. The difference is internal: `$.context` and `$.routes` passed to the script are **transparent reactive proxies** of the live objects.
@@ -44,7 +44,8 @@ Before calling the script, Counterfact wraps each environment object in a `Proxy
 ```ts
 const tracked = trackChanges(liveContext);
 const trackedRoutes = trackChanges(liveRoutes);
-await script({ context: tracked.proxy, routes: trackedRoutes.proxy, route: createRouteFunction(...) });
+const fn = module[functionName]; // named export resolved from path
+await fn({ context: tracked.proxy, routes: trackedRoutes.proxy, route: createRouteFunction(...) });
 const report = { context: tracked.changes(), routes: trackedRoutes.changes() };
 ```
 
@@ -64,7 +65,7 @@ interface ChangeRecord {
 After the script runs, Counterfact automatically prints a diff derived from the recorded changes:
 
 ```
-Applied sold-pets
+Applied sold-pets/soldPets
 
 Context changes:
   petService.pets: [] → [{id:1,status:"sold"},{id:2,status:"available"}]
@@ -77,25 +78,24 @@ No manual annotation is required from the script author.
 
 ### Invocation
 
+The same path/name convention as Approach 1 applies:
+
 ```
-.apply sold-pets
-.apply path/to/sold-pets.ts
+.apply foo          # repl/index.ts  → foo($) with proxy-wrapped $
+.apply foo/bar      # repl/foo.ts    → bar($) with proxy-wrapped $
+.apply foo/bar/baz  # repl/foo/bar.ts → baz($) with proxy-wrapped $
 ```
 
-Resolution order is the same as Approach 1:
-
-1. `<basePath>/repl/<name>.ts`
-2. `<basePath>/repl/<name>/index.ts`
-3. `<basePath>/<name>.ts`
+Resolution is the same as Approach 1; the difference is purely in what is passed to the function.
 
 ---
 
 ## Implementation sketch
 
 1. Add `.apply` as a dot-command in `src/repl/repl.ts`.
-2. Resolve the file path.
+2. Split the argument on `/`: the last segment is the function name; the rest form the file path.
 3. Create proxy wrappers around `context` and `routes`.
-4. Dynamically import and call the script with the proxy-wrapped arguments.
+4. Dynamically import the module, look up the named export, and call it with the proxy-wrapped arguments.
 5. Collect the accumulated change records from the proxies.
 6. Print the formatted diff.
 
@@ -139,7 +139,7 @@ Deep (nested) change tracking can be implemented by returning a recursive proxy 
 
 ## Acceptance criteria
 
-- [ ] `.apply <name>` resolves and executes a TypeScript file, passing proxy-wrapped environment objects
+- [ ] `.apply foo/bar` resolves `repl/foo.ts`, calls `bar($)` with proxy-wrapped environment objects
 - [ ] All top-level property assignments to `context` are captured in the change log
 - [ ] Nested property mutations (e.g. `context.petService.reset()`) are captured where feasible
 - [ ] `$.routes.name = builder` assignments and `delete $.routes.name` are captured and reported

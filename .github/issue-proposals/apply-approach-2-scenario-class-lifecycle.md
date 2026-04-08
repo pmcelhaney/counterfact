@@ -11,7 +11,7 @@ milestone:
 
 ## Summary
 
-Implement `.apply` using a `Scenario` class interface with explicit `setup()` and `teardown()` lifecycle hooks, plus optional `dependencies` declaration. This approach adds structure for scenarios that need cleanup and enables dependency-ordered composition.
+Implement `.apply` using a `Scenario` class interface with explicit `setup()` and `teardown()` lifecycle hooks, plus optional `dependencies` declaration. Classes are exported by name — the last segment of the `.apply` path selects the named export, and Counterfact instantiates it automatically. This approach adds structure for scenarios that need cleanup and enables dependency-ordered composition.
 
 ---
 
@@ -19,13 +19,13 @@ Implement `.apply` using a `Scenario` class interface with explicit `setup()` an
 
 ### Script format
 
-A scenario is a class that implements the `Scenario` interface:
+A scenario is a named class export that implements the `Scenario` interface:
 
 ```ts
 // repl/sold-pets.ts
 import type { Scenario, ApplyContext } from "counterfact";
 
-export default class SoldPetsScenario implements Scenario {
+export class soldPets implements Scenario {
   static dependencies = ["base"];
 
   setup($: ApplyContext): void {
@@ -62,10 +62,13 @@ export interface Scenario {
 
 ### Invocation
 
+The same path/name convention as Approach 1 applies. The last segment selects the named export; everything before it is the file path:
+
 ```
-.apply sold-pets           # apply a named scenario
-.unapply sold-pets         # tear down if teardown() is defined
-.apply base sold-pets      # apply multiple scenarios in order
+.apply foo              # repl/index.ts  → new foo().setup($)
+.apply foo/bar          # repl/foo.ts    → new bar().setup($)
+.unapply foo/bar        # repl/foo.ts    → new bar().teardown($)
+.apply base soldPets    # apply multiple scenarios in order
 ```
 
 ### Dependency resolution
@@ -73,9 +76,9 @@ export interface Scenario {
 When a scenario declares `static dependencies`, Counterfact automatically applies each dependency in order before applying the requested scenario. If a dependency is already applied (tracked by name), it is skipped.
 
 ```
-⬣> .apply sold-pets
-# Counterfact first applies "base" (dependency), then "sold-pets"
-Applied base → sold-pets
+⬣> .apply sold-pets/soldPets
+# Counterfact first applies "base" (dependency), then "soldPets"
+Applied base → soldPets
 
 Routes added:
   getSoldPets
@@ -122,10 +125,11 @@ Applied scenarios:
 
 ## Acceptance criteria
 
-- [ ] `.apply <name>` resolves, instantiates, and calls `setup()` on the scenario class
+- [ ] `.apply foo/bar` resolves `repl/foo.ts`, instantiates `bar`, and calls `setup($)`
+- [ ] `.apply foo` resolves `repl/index.ts`, instantiates `foo`, and calls `setup($)`
 - [ ] Static `dependencies` are applied automatically before the target scenario
 - [ ] A dependency that is already applied is not re-applied
-- [ ] `.unapply <name>` calls `teardown()` on the applied scenario instance
+- [ ] `.unapply foo/bar` calls `teardown($)` on the stored `bar` instance
 - [ ] The REPL tracks and displays the stack of currently applied scenarios
 - [ ] Scenarios that do not declare `teardown()` are still valid and usable
 - [ ] A meaningful error is shown when a dependency cycle is detected

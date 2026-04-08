@@ -11,9 +11,9 @@ milestone:
 
 ## Summary
 
-Implement `.apply` as a plain TypeScript module that exports a single default function. When the command is run, Counterfact dynamically imports the file, calls the function, and passes the live REPL environment as arguments.
+Implement `.apply` as a plain TypeScript module that exports one or more named functions. When the command is run, Counterfact dynamically imports the file, looks up the named export matching the last path segment, calls that function, and passes the live REPL environment as its argument.
 
-This is the simplest possible design: no new abstractions, no DSL, and no framework. A script is just a function.
+This is the simplest possible design: no new abstractions, no DSL, and no framework. A script is just a named function.
 
 ---
 
@@ -21,19 +21,19 @@ This is the simplest possible design: no new abstractions, no DSL, and no framew
 
 ### Script format
 
-An apply script is a TypeScript file with a default export:
+An apply script is a TypeScript file with one or more named function exports:
 
 ```ts
 // repl/sold-pets.ts
 import type { ApplyContext } from "counterfact";
 
-export default ($: ApplyContext) => {
+export function soldPets($: ApplyContext) {
   $.context.petService.reset();
   $.context.petService.addPet({ id: 1, status: "sold" });
   $.context.petService.addPet({ id: 2, status: "available" });
 
   $.routes.getSoldPets = $.route("/pet/findByStatus").method("get").query({ status: "sold" });
-};
+}
 ```
 
 ### The `ApplyContext` type
@@ -53,23 +53,20 @@ export interface ApplyContext {
 
 ### Invocation
 
-```
-.apply sold-pets
-.apply path/to/sold-pets.ts
-```
+The argument to `.apply` is a slash-separated path. The last segment is the **function name** to call; everything before it is the **file path** (resolved relative to `<basePath>/repl/`, with `index.ts` as the default file):
 
-**Resolution order for named scenarios:**
-
-1. `<basePath>/repl/<name>.ts`
-2. `<basePath>/repl/<name>/index.ts`
-3. `<basePath>/<name>.ts` (direct path)
+```
+.apply foo          # repl/index.ts  → foo($)
+.apply foo/bar      # repl/foo.ts    → bar($)
+.apply foo/bar/baz  # repl/foo/bar.ts → baz($)
+```
 
 ### Feedback output
 
 After execution, Counterfact compares the environment state before and after the script runs and prints a diff summary:
 
 ```
-Applied sold-pets
+Applied sold-pets/soldPets
 
 Routes added:
   getSoldPets
@@ -82,9 +79,9 @@ Context diffs are not automatically tracked in this approach — the script auth
 ## Implementation sketch
 
 1. Add `.apply` as a dot-command in `src/repl/repl.ts`.
-2. Resolve the file path using the ordered lookup above.
+2. Split the argument on `/`: the last segment is the function name; the rest form the file path.
 3. Dynamically import the resolved module (using `tsx` or the existing transpiler if the file is TypeScript).
-4. Call the exported function with the live environment objects.
+4. Look up the named export matching the function name and call it with the live environment objects.
 5. Snapshot `routes` before/after and print the diff.
 
 ---
@@ -103,9 +100,10 @@ Context diffs are not automatically tracked in this approach — the script auth
 
 ## Acceptance criteria
 
-- [ ] `.apply <name>` resolves and executes a TypeScript file from the configured `repl/` directory
-- [ ] `.apply <path>` resolves and executes a TypeScript file at the given relative path
-- [ ] The script receives `$` with `{ context, loadContext, routes, route }` as properties
+- [ ] `.apply foo` resolves `repl/index.ts` and calls the exported `foo` function
+- [ ] `.apply foo/bar` resolves `repl/foo.ts` and calls the exported `bar` function
+- [ ] `.apply foo/bar/baz` resolves `repl/foo/bar.ts` and calls the exported `baz` function
+- [ ] The function receives `$` with `{ context, loadContext, routes, route }` as properties
 - [ ] Routes injected by the script are available in the REPL after the command runs
 - [ ] The REPL prints a summary of routes added and removed after each apply
 - [ ] A meaningful error is shown when the file cannot be found or the export is not a function
