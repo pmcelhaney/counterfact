@@ -1,6 +1,7 @@
 import type { REPLServer } from "node:repl";
 
 import { jest } from "@jest/globals";
+import { usingTemporaryFiles } from "using-temporary-files";
 
 import { createCompleter, startRepl } from "../../src/repl/repl.js";
 import type { CompleterCallback } from "../../src/repl/repl.js";
@@ -66,6 +67,10 @@ class ReplHarness {
 
   public call(name: string, options: string) {
     this.server.commands[name]?.action.call(this.mock, options);
+  }
+
+  public async callAsync(name: string, options: string): Promise<void> {
+    await this.server.commands[name]?.action.call(this.mock, options);
   }
 
   public isReset() {
@@ -252,6 +257,138 @@ describe("REPL", () => {
       "",
     ]);
     expect(harness.isReset()).toBe(true);
+  });
+
+  describe(".apply command", () => {
+    it("calls the named export from scenarios/index for a single-segment path", async () => {
+      await usingTemporaryFiles(async ($) => {
+        await $.add(
+          "scenarios/index.js",
+          `export function foo($) { $.context.applied = "foo"; }`,
+        );
+        await $.add("scenarios/package.json", '{ "type": "module" }');
+
+        const contextRegistry = new ContextRegistry();
+        const registry = new Registry();
+        const config = { ...CONFIG, basePath: $.path("") };
+        const harness = new ReplHarness(contextRegistry, registry, config);
+
+        await harness.callAsync("apply", "foo");
+
+        expect(harness.output).toContain("Applied foo");
+        expect(contextRegistry.find("/")).toMatchObject({ applied: "foo" });
+        expect(harness.isReset()).toBe(true);
+      });
+    });
+
+    it("calls the named export from scenarios/<name> for a two-segment path", async () => {
+      await usingTemporaryFiles(async ($) => {
+        await $.add(
+          "scenarios/myscript.js",
+          `export function bar($) { $.context.applied = "bar"; }`,
+        );
+        await $.add("scenarios/package.json", '{ "type": "module" }');
+
+        const contextRegistry = new ContextRegistry();
+        const registry = new Registry();
+        const config = { ...CONFIG, basePath: $.path("") };
+        const harness = new ReplHarness(contextRegistry, registry, config);
+
+        await harness.callAsync("apply", "myscript/bar");
+
+        expect(harness.output).toContain("Applied myscript/bar");
+        expect(contextRegistry.find("/")).toMatchObject({ applied: "bar" });
+      });
+    });
+
+    it("calls the named export from scenarios/<dir>/<name> for a three-segment path", async () => {
+      await usingTemporaryFiles(async ($) => {
+        await $.add(
+          "scenarios/foo/bar.js",
+          `export function baz($) { $.context.applied = "baz"; }`,
+        );
+        await $.add("scenarios/foo/package.json", '{ "type": "module" }');
+
+        const contextRegistry = new ContextRegistry();
+        const registry = new Registry();
+        const config = { ...CONFIG, basePath: $.path("") };
+        const harness = new ReplHarness(contextRegistry, registry, config);
+
+        await harness.callAsync("apply", "foo/bar/baz");
+
+        expect(harness.output).toContain("Applied foo/bar/baz");
+        expect(contextRegistry.find("/")).toMatchObject({ applied: "baz" });
+      });
+    });
+
+    it("passes routes and route to the function", async () => {
+      await usingTemporaryFiles(async ($) => {
+        await $.add(
+          "scenarios/index.js",
+          `export function setup($) { $.routes.myRoute = { path: "/pets" }; }`,
+        );
+        await $.add("scenarios/package.json", '{ "type": "module" }');
+
+        const contextRegistry = new ContextRegistry();
+        const registry = new Registry();
+        const config = { ...CONFIG, basePath: $.path("") };
+        const harness = new ReplHarness(contextRegistry, registry, config);
+
+        await harness.callAsync("apply", "setup");
+
+        expect(harness.output).toContain("Applied setup");
+        expect(
+          (harness.server.context["routes"] as Record<string, unknown>)[
+            "myRoute"
+          ],
+        ).toMatchObject({ path: "/pets" });
+      });
+    });
+
+    it("shows an error when the file cannot be found", async () => {
+      await usingTemporaryFiles(async ($) => {
+        const contextRegistry = new ContextRegistry();
+        const registry = new Registry();
+        const config = { ...CONFIG, basePath: $.path("") };
+        const harness = new ReplHarness(contextRegistry, registry, config);
+
+        await harness.callAsync("apply", "nonexistent");
+
+        expect(harness.output[0]).toMatch(/Error: Could not find/u);
+        expect(harness.isReset()).toBe(true);
+      });
+    });
+
+    it("shows an error when the named export is not a function", async () => {
+      await usingTemporaryFiles(async ($) => {
+        await $.add(
+          "scenarios/index.js",
+          `export const notAFunction = "I am a string";`,
+        );
+        await $.add("scenarios/package.json", '{ "type": "module" }');
+
+        const contextRegistry = new ContextRegistry();
+        const registry = new Registry();
+        const config = { ...CONFIG, basePath: $.path("") };
+        const harness = new ReplHarness(contextRegistry, registry, config);
+
+        await harness.callAsync("apply", "notAFunction");
+
+        expect(harness.output[0]).toMatch(
+          /Error: "notAFunction" is not a function/u,
+        );
+        expect(harness.isReset()).toBe(true);
+      });
+    });
+
+    it("shows a usage message when called with no argument", async () => {
+      const { harness } = createHarness();
+
+      await harness.callAsync("apply", "");
+
+      expect(harness.output).toContain("usage: .apply <path>");
+      expect(harness.isReset()).toBe(true);
+    });
   });
 
   describe("route autocomplete", () => {

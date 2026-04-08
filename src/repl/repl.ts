@@ -1,9 +1,12 @@
+import fs from "node:fs/promises";
+import nodePath from "node:path";
 import repl from "node:repl";
 
 import type { Config } from "../server/config.js";
 import type { ContextRegistry } from "../server/context-registry.js";
 import type { OpenApiDocument } from "../server/dispatcher.js";
 import type { Registry } from "../server/registry.js";
+import { uncachedImport } from "../server/uncached-import.js";
 
 import { RawHttpClient } from "./raw-http-client.js";
 import { createRouteFunction } from "./route-builder.js";
@@ -213,6 +216,86 @@ export function startRepl(
     "localhost",
     openApiDocument,
   );
+
+  replServer.context.routes = {};
+
+  replServer.defineCommand("apply", {
+    async action(text: string) {
+      const parts = text.trim().split("/").filter(Boolean);
+
+      if (parts.length === 0) {
+        print("usage: .apply <path>");
+        this.clearBufferedCommand();
+        this.displayPrompt();
+        return;
+      }
+
+      const functionName = parts[parts.length - 1] ?? "";
+      const fileParts = parts.slice(0, -1);
+      const scenariosDir = nodePath.join(config.basePath, "scenarios");
+      const fileBase =
+        fileParts.length > 0
+          ? nodePath.join(scenariosDir, ...fileParts)
+          : nodePath.join(scenariosDir, "index");
+
+      let filePath: string | undefined;
+
+      for (const ext of [".ts", ".js"]) {
+        const candidate = fileBase + ext;
+
+        try {
+          await fs.access(candidate);
+          filePath = candidate;
+          break;
+        } catch {
+          // file not found with this extension, try next
+        }
+      }
+
+      if (filePath === undefined) {
+        print(`Error: Could not find ${fileBase}.ts or ${fileBase}.js`);
+        this.clearBufferedCommand();
+        this.displayPrompt();
+        return;
+      }
+
+      try {
+        const mod = await uncachedImport(filePath);
+        const fn = (mod as Record<string, unknown>)[functionName];
+
+        if (typeof fn !== "function") {
+          print(
+            `Error: "${functionName}" is not a function exported from ${nodePath.relative(config.basePath, filePath)}`,
+          );
+          this.clearBufferedCommand();
+          this.displayPrompt();
+          return;
+        }
+
+        const applyContext = {
+          context: replServer.context["context"] as Record<string, unknown>,
+          loadContext: replServer.context["loadContext"] as (
+            path: string,
+          ) => Record<string, unknown>,
+          route: replServer.context["route"] as (path: string) => unknown,
+          routes: replServer.context["routes"] as Record<string, unknown>,
+        };
+
+        await (fn as (ctx: typeof applyContext) => Promise<void> | void)(
+          applyContext,
+        );
+
+        print(`Applied ${text.trim()}`);
+      } catch (error) {
+        print(`Error: ${String(error)}`);
+      }
+
+      this.clearBufferedCommand();
+      this.displayPrompt();
+    },
+
+    help: 'apply a scenario script (".apply <path>" calls the named export from scenarios/)',
+  });
 
   return replServer;
 }
