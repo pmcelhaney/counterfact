@@ -1,3 +1,4 @@
+import { RESERVED_WORDS } from "./reserved-words.js";
 import type { Requirement } from "./requirement.js";
 import type { Script } from "./script.js";
 
@@ -53,9 +54,13 @@ export class Coder {
   public *names(
     rawName = this.requirement.url.split("/").at(-1)!,
   ): Generator<string> {
-    const name = rawName
+    let name = rawName
       .replace(/^\d/u, (digit) => `_${digit}`)
       .replaceAll(/[^\w$]/gu, "_");
+
+    if (RESERVED_WORDS.has(name)) {
+      name = `${name}_`;
+    }
 
     yield name;
 
