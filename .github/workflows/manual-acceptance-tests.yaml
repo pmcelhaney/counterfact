@@ -15,15 +15,26 @@ jobs:
         env:
           PR_BRANCH: ${{ github.event.pull_request.head.ref }}
           PR_BODY: ${{ github.event.pull_request.body }}
+          PR_LABELS: ${{ toJson(github.event.pull_request.labels.*.name) }}
         run: |
-          if [[ "$PR_BRANCH" == copilot* ]] || grep -iq "## manual acceptance tests" <<<"$PR_BODY"; then
+          if python3 -c "
+import json, os, sys
+try:
+    labels = json.loads(os.environ.get('PR_LABELS', '[]'))
+    sys.exit(0 if 'design' in labels else 1)
+except Exception as e:
+    print(f'Error parsing PR labels: {e}', file=sys.stderr)
+    sys.exit(1)
+"; then
+            echo "enforce=false" >> "$GITHUB_OUTPUT"
+          elif [[ "$PR_BRANCH" == copilot* ]] || grep -iq "## manual acceptance tests" <<<"$PR_BODY"; then
             echo "enforce=true" >> "$GITHUB_OUTPUT"
           else
             echo "enforce=false" >> "$GITHUB_OUTPUT"
           fi
       - name: Skip (no enforcement needed)
         if: steps.decide.outputs.enforce == 'false'
-        run: echo "Skipping manual acceptance test validation (not a Copilot PR and no section present)"
+        run: echo "Skipping manual acceptance test validation (design PR, not a Copilot PR, or no section present)"
 
       - name: Validate PR body
         if: steps.decide.outputs.enforce == 'true'
