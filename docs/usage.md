@@ -498,6 +498,50 @@ await req.send()
 
 See the [Route Builder guide](./route-builder.md) for full documentation.
 
+### Scenario scripts with `.apply`
+
+For more complex setups you can automate REPL interactions by writing _scenario scripts_ — plain TypeScript files that export named functions. Run them with `.apply`:
+
+```
+⬣> .apply soldPets
+```
+
+**Path resolution:** the argument to `.apply` is a slash-separated path. The last segment is the function name; everything before it is the file path, resolved relative to `<basePath>/scenarios/` (with `index.ts` as the default file).
+
+| Command | File | Function |
+|---|---|---|
+| `.apply foo` | `scenarios/index.ts` | `foo` |
+| `.apply foo/bar` | `scenarios/foo.ts` | `bar` |
+| `.apply foo/bar/baz` | `scenarios/foo/bar.ts` | `baz` |
+
+A scenario function receives a single argument with `{ context, loadContext, routes, route }`:
+
+```ts
+// scenarios/index.ts
+import type { ApplyContext } from "../types/apply-context.js";
+
+export function soldPets(ctx: ApplyContext) {
+  // Mutate context directly — same as typing in the REPL
+  ctx.context.petService.reset();
+  ctx.context.petService.addPet({ id: 1, status: "sold" });
+  ctx.context.petService.addPet({ id: 2, status: "available" });
+
+  // Store a pre-configured route builder for later use in the REPL
+  ctx.routes.findSold = ctx
+    .route("/pet/findByStatus")
+    .method("get")
+    .query({ status: "sold" });
+}
+```
+
+After the command runs you can immediately use anything stored in `ctx.routes`:
+
+```js
+⬣> routes.findSold.send()
+```
+
+The `ApplyContext` type is generated automatically into `types/apply-context.ts` when you run Counterfact with type generation enabled.
+
 ---
 
 ## Proxy 🔀
