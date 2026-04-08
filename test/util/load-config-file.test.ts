@@ -63,14 +63,14 @@ describe("loadConfigFile", () => {
   it("throws when the config file is a YAML list (not a mapping)", async () => {
     const filePath = await writeTemp("- item1\n- item2\n");
     await expect(loadConfigFile(filePath)).rejects.toThrow(
-      "Config file must contain a YAML mapping",
+      "Config file must be a YAML object",
     );
   });
 
   it("throws when the config file is a scalar (not a mapping)", async () => {
     const filePath = await writeTemp("just a string\n");
     await expect(loadConfigFile(filePath)).rejects.toThrow(
-      "Config file must contain a YAML mapping",
+      "Config file must be a YAML object",
     );
   });
 

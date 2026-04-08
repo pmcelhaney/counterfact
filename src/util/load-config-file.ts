@@ -55,7 +55,7 @@ export async function loadConfigFile(
 
   if (typeof parsed !== "object" || Array.isArray(parsed)) {
     throw new Error(
-      `Config file must contain a YAML mapping (key/value pairs): ${configPath}`,
+      `Config file must be a YAML object (mapping): ${configPath}`,
     );
   }
 
