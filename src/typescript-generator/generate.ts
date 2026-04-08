@@ -151,12 +151,19 @@ const DEFAULT_SCENARIOS_INDEX = `import type { ApplyContext } from "../types/app
 //   .apply <functionName>
 //
 // Example:
-// export function resetPets(ctx: ApplyContext) {
-//   ctx.context.pets = [];
+// export function myScenario(ctx: ApplyContext) {
+//   // Read or mutate the root context (same object routes see as $.context)
+//   // ctx.context.<property> = <value>;
+//
+//   // Load a context for a specific path
+//   // const petsCtx = ctx.loadContext("/pets");
+//
+//   // Store a pre-configured route builder for later use in the REPL
+//   // ctx.routes.myRequest = ctx.route("/pets").method("get");
 // }
 //
 // Then in the REPL:
-//   .apply resetPets
+//   .apply myScenario
 `;
 
 async function writeDefaultScenariosIndex(destination: string): Promise<void> {
