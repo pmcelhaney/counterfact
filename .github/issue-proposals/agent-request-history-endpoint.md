@@ -17,6 +17,13 @@ Adding a request-history endpoint to the Admin API gives agents a reliable, stru
 1. Add an in-memory ring buffer (e.g. last 100 entries, configurable via a `--history-size` flag or a field in `Config`) to the Koa dispatcher. After each request is handled, append a record:
 
 ```ts
+interface ValidationError {
+  location: "query" | "header" | "path" | "body";
+  name?: string;   // parameter name (for query/header/path)
+  path?: string;   // JSON Pointer (for body fields, e.g. "/price")
+  message: string; // human-readable description
+}
+
 interface HistoryEntry {
   id: number;                  // monotonically increasing
   timestamp: string;           // ISO-8601
@@ -29,7 +36,7 @@ interface HistoryEntry {
   responseHeaders: Record<string, string>;
   responseBody: unknown;
   durationMs: number;
-  validationErrors: string[];  // from the request-validator
+  validationErrors: ValidationError[];  // structured errors from the request-validator
 }
 ```
 

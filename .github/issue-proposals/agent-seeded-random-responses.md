@@ -29,6 +29,8 @@ DELETE /_counterfact/api/config/seed    → removes the seed, restoring random b
 
 Setting the seed at runtime resets the PRNG state, so the sequence of random values produced by subsequent requests is identical to what would be produced by starting the server with that seed.
 
+The seed must be a non-negative integer (0–2³²−1). Providing a non-integer, a negative number, or a value outside this range returns `400 { "error": "seed must be a non-negative integer ≤ 4294967295" }`.
+
 ## Motivation
 
 - Agents running regression tests need stable, assertable values.

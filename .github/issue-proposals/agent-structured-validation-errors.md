@@ -46,7 +46,10 @@ so agents (or middleware) can inspect validation errors without parsing the resp
 
 ### Config option
 
-Add a boolean `strictValidation` config option (default `false`). When `true`, validation errors immediately return `400` before the route handler is called. When `false` (the current default), the handler is still called and may choose to handle invalid input itself — but the `validationErrors` field is populated in the response if any errors exist.
+Add a boolean `strictValidation` config option (default `false`).
+
+- When `true`, validation errors immediately return `400` before the route handler is called. The response body is always `{ "error": "Validation failed", "validationErrors": […] }`.
+- When `false` (the current default), the handler is still called and its return value is used as the response body. If any validation errors exist, a top-level `validationErrors` key is added to the response body (the handler's own fields are preserved). If the handler's response body is not a JSON object (e.g. a string or array), `validationErrors` is instead delivered only via the `X-Counterfact-Validation-Errors` header to avoid mutating a non-object body.
 
 ## Motivation
 

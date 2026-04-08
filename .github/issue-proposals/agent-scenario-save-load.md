@@ -38,7 +38,7 @@ interface Scenario {
 
 ### Behaviour
 
-- Scenarios are stored **in memory** by default (cleared on restart). Optionally, persist them to a `.counterfact-scenarios.json` file in `basePath` if a `--persist-scenarios` flag is passed.
+- Scenarios are stored **in memory** by default (cleared on restart). When `--persist-scenarios` is passed, scenarios are read from `.counterfact-scenarios.json` in `basePath` at startup (if the file exists), and every create/update/delete operation is immediately written back to that file. This means a server restarted with `--persist-scenarios` automatically restores all previously saved scenarios.
 - `POST /_counterfact/api/scenarios/:name/load` calls the existing context reset logic, then replays every entry in the scenario's `contexts` map.
 
 ### Example workflow

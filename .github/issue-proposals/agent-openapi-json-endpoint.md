@@ -26,10 +26,11 @@ Optionally, also add:
 
 ```
 GET /_counterfact/api/openapi/paths              → just the `paths` object
-GET /_counterfact/api/openapi/paths/{path}       → schema for a single path item
+GET /_counterfact/api/openapi/paths?route=<path> → schema for a single path item
+                                                    (route is URL-encoded, e.g. route=%2Fpet%2F%7BpetId%7D)
 ```
 
-to allow agents to query narrow slices without fetching the entire spec.
+The `route` query parameter avoids the routing ambiguity that would arise from embedding a slash-containing OpenAPI path into URL segments.
 
 ## Motivation
 
