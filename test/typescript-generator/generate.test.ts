@@ -1,6 +1,3 @@
-import fs from "node:fs/promises";
-import nodePath from "node:path";
-
 import { usingTemporaryFiles } from "using-temporary-files";
 
 import { generate } from "../../src/typescript-generator/generate.js";
@@ -28,16 +25,9 @@ describe("end-to-end test", () => {
         expect(`${scriptPath}:${await script.contents()}`).toMatchSnapshot();
       }
 
-      expect(
-        await fs.readFile(nodePath.join(basePath, ".gitignore"), "utf8"),
-      ).toMatchSnapshot();
+      expect(await $.read(".gitignore")).toMatchSnapshot();
 
-      expect(
-        await fs.readFile(
-          nodePath.join(basePath, ".cache", "README.md"),
-          "utf8",
-        ),
-      ).toMatchSnapshot();
+      expect(await $.read(".cache/README.md")).toMatchSnapshot();
     });
   });
 
@@ -62,16 +52,9 @@ describe("end-to-end test", () => {
         expect(`${scriptPath}:${await script.contents()}`).toMatchSnapshot();
       }
 
-      expect(
-        await fs.readFile(nodePath.join(basePath, ".gitignore"), "utf8"),
-      ).toMatchSnapshot();
+      expect(await $.read(".gitignore")).toMatchSnapshot();
 
-      expect(
-        await fs.readFile(
-          nodePath.join(basePath, ".cache", "README.md"),
-          "utf8",
-        ),
-      ).toMatchSnapshot();
+      expect(await $.read(".cache/README.md")).toMatchSnapshot();
     });
   });
 });

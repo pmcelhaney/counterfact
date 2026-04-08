@@ -1,5 +1,4 @@
 import { once } from "node:events";
-import fs, { constants as fsConstants } from "node:fs";
 
 import { usingTemporaryFiles } from "using-temporary-files";
 
@@ -45,9 +44,7 @@ describe("a Transpiler", () => {
 
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      expect(fs.existsSync($.path("dist/found.js"))).toBe(true);
-
-      expect(normalize(fs.readFileSync($.path("dist/found.js"), "utf8"))).toBe(
+      expect(normalize(await $.read("dist/found.js"))).toBe(
         normalize(JAVASCRIPT_SOURCE),
       );
 
@@ -82,7 +79,7 @@ describe("a Transpiler", () => {
 
       await Promise.race([write, error]);
 
-      expect(normalize(fs.readFileSync($.path("dist/added.js"), "utf8"))).toBe(
+      expect(normalize(await $.read("dist/added.js"))).toBe(
         normalize(JAVASCRIPT_SOURCE),
       );
 
@@ -110,9 +107,9 @@ describe("a Transpiler", () => {
       await $.add("src/update-me.ts", TYPESCRIPT_SOURCE);
       await overwrite;
 
-      expect(
-        normalize(fs.readFileSync($.path("dist/update-me.js"), "utf8")),
-      ).toBe(normalize(JAVASCRIPT_SOURCE));
+      expect(normalize(await $.read("dist/update-me.js"))).toBe(
+        normalize(JAVASCRIPT_SOURCE),
+      );
 
       await transpiler.stopWatching();
     });
@@ -132,9 +129,7 @@ describe("a Transpiler", () => {
       await $.remove("src/delete-me.ts");
       await once(transpiler, "delete");
 
-      expect(() => {
-        fs.accessSync($.path("dist/delete-me.js"), fsConstants.F_OK);
-      }).toThrow(/ENOENT/u);
+      await expect($.read("dist/delete-me.js")).rejects.toThrow(/ENOENT/u);
 
       await transpiler.stopWatching();
     });
@@ -154,9 +149,7 @@ describe("a Transpiler", () => {
 
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      expect(fs.existsSync($.path("dist/found.cjs"))).toBe(true);
-
-      expect(normalize(fs.readFileSync($.path("dist/found.cjs"), "utf8"))).toBe(
+      expect(normalize(await $.read("dist/found.cjs"))).toBe(
         normalize(JAVASCRIPT_SOURCE_COMMONJS),
       );
 
@@ -181,9 +174,7 @@ describe("a Transpiler", () => {
 
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      expect(fs.existsSync($.path("dist/importer.cjs"))).toBe(true);
-
-      const contents = fs.readFileSync($.path("dist/importer.cjs"), "utf8");
+      const contents = await $.read("dist/importer.cjs");
 
       expect(contents.includes('require("./local.cjs")')).toBe(true);
 
