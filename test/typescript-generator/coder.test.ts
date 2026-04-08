@@ -24,6 +24,26 @@ describe("a Coder", () => {
     ]);
   });
 
+  it("appends _ to names that are reserved words", () => {
+    const coder = new Coder({ url: "#/components/schemas/import" });
+
+    const [one, two, three] = coder.names();
+
+    expect([one, two, three]).toStrictEqual([
+      "import_",
+      "import_2",
+      "import_3",
+    ]);
+  });
+
+  it("appends _ to other reserved words like class, return, type", () => {
+    for (const word of ["class", "return", "type", "null", "void"]) {
+      const coder = new Coder({ url: `#/components/schemas/${word}` });
+      const [first] = coder.names();
+      expect(first).toBe(`${word}_`);
+    }
+  });
+
   it("generates a list of potential names given a starting point", () => {
     const coder = new Coder({ url: "#/components/schemas/Person" });
 
