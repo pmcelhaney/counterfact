@@ -12,7 +12,7 @@
 
 </div>
 
----
+
 
 Counterfact turns an [OpenAPI](https://www.openapis.org) spec into a stateful, TypeScript-native mock server in one command. Every endpoint is a `.ts` file you own and can edit live — with type safety, hot reload, and an interactive REPL — so your team can build against a real-feeling API before the backend exists.
 
@@ -23,7 +23,6 @@ npx counterfact@latest https://petstore3.swagger.io/api/v3/openapi.json api
 > **Requires Node ≥ 22.0.0**  
 > A complete, worked Petstore implementation is available at [counterfact/example-petstore](https://github.com/counterfact/example-petstore).
 
----
 
 ## Why Counterfact?
 
@@ -36,11 +35,10 @@ npx counterfact@latest https://petstore3.swagger.io/api/v3/openapi.json api
 | Mock a few endpoints, ignore the rest | Every endpoint works out of the box |
 | Return dumb static payloads | Write real logic — validate input, persist data, enforce business rules |
 
----
 
 ## What you can do with it
 
-### ⚡ Instant responses — no code required
+### A usable server in 10 seconds
 
 Every generated route returns random, schema-valid data out of the box. No editing needed to get started.
 
@@ -51,7 +49,7 @@ export const GET: HTTP_GET = ($) => {
 };
 ```
 
-### 🔒 Type safety and documentation baked in
+### Type safety and documentation baked in
 
 Your spec defines the contract. TypeScript enforces it. Autocomplete tells you exactly what response shapes are valid, and JSDoc comments — pulled straight from your OpenAPI descriptions — appear inline as you type.
 
@@ -62,7 +60,7 @@ export const GET: HTTP_GET = ($) => {
 };
 ```
 
-### 🧠 Shared state across routes
+### Shared state across routes
 
 Create a `_.context.ts` file to share in-memory state across routes. Because state lives in the same process as the server it's lightning-fast, scalability doesn't matter (you're the only one using it), and restarting the server resets everything to a known clean state — no leftover data between test runs.
 
@@ -96,11 +94,13 @@ export const GET: HTTP_GET = ($) => {
 };
 ```
 
-### 🔄 Hot reload — no restart, no lost state
+### Hot reload — no restart, no lost state
 
 Save a route file. The handler updates instantly. Your in-memory context survives every reload.
 
-### 🖥 Live REPL
+Save the OpenAPI spec. Your types update instantly and changes show up in your IDE. 
+
+### Live REPL
 
 A JavaScript prompt connected directly to your running server. Inspect state, fire requests, trigger edge cases — without touching a file.
 
@@ -115,9 +115,9 @@ A JavaScript prompt connected directly to your running server. Inspect state, fi
 { status: 200, body: { id: 2, name: 'Rex', ... } }
 ```
 
-### 🔀 Hybrid proxy
+### Hybrid proxy
 
-Mock the paths that don't exist yet. Forward the rest to the real API. Toggle individual paths at runtime from the REPL.
+Mock the paths that you want to control. Forward the rest to the real API. Toggle individual paths at runtime from the REPL.
 
 ```sh
 npx counterfact@latest openapi.yaml api --proxy-url https://api.example.com
@@ -128,7 +128,6 @@ npx counterfact@latest openapi.yaml api --proxy-url https://api.example.com
 ⬣> .proxy off             # all paths → mock
 ```
 
----
 
 ## Perfect for
 
@@ -139,7 +138,6 @@ npx counterfact@latest openapi.yaml api --proxy-url https://api.example.com
 - **AI agents** that call third-party APIs — avoid rate limits and outages by running locally against a full-fidelity mock
 - **Developers exploring new APIs** — experiment freely before you have a signed contract, test credentials, or production access
 
----
 
 ## How it compares
 
@@ -158,7 +156,6 @@ npx counterfact@latest openapi.yaml api --proxy-url https://api.example.com
 
 See [How it compares](./docs/comparison.md) for a full breakdown.
 
----
 
 ## Go deeper
 
@@ -173,7 +170,6 @@ See [How it compares](./docs/comparison.md) for a full breakdown.
 | [Changelog](./CHANGELOG.md) | What's changed |
 | [Contributing](./CONTRIBUTING.md) | How to help |
 
----
 
 <div align="center" markdown="1">
 
