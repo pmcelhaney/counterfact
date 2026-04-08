@@ -39,7 +39,9 @@ it("example", async () => {
 ## Before Committing
 
 - Run `yarn lint:fix` to auto-fix linting issues, then `yarn lint` to confirm no remaining errors.
-- Include a changeset (`npx changeset`) for any user-facing change.
+- For any user-facing change, you **must**:
+  - Add a changeset by running `npx changeset`. Choose the appropriate semver bump (patch / minor / major) and write a short description of what changed.
+  - Update the relevant docs under `docs/` (e.g. `docs/usage.md`, `docs/getting-started.md`, or `docs/reference.md`) to reflect the change. If the change introduces a new feature or modifies existing behaviour, document it there.
 - When touching server startup or CLI behaviour, run the black-box tests: `yarn build` then `yarn test:black-box` (requires Python 3 with `pip install -r test-black-box/requirements.txt`).
 
 ## Context
