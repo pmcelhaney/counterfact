@@ -93,7 +93,8 @@ Identical surface syntax to Solution 1, but Counterfact wraps `context` and `rou
 
 ## Advice
 
-- **Apply this decision** whenever a new scenario management capability is considered for the REPL. Start with a named function in a `.ts` file; reach for classes or proxy wrappers only when a concrete need for lifecycle or auto-tracking is demonstrated.
-- **Revisit this decision** if the lack of teardown creates significant friction for users who need to reset state cleanly, or if the absence of automatic context diffing makes scripts hard to audit.
-- **Prefer Solution 2 or 3** when: (a) scenarios need deterministic cleanup, (b) dependency ordering between scenarios must be enforced automatically, or (c) context mutation tracking is required for auditing or debugging.
-- **Rule of thumb:** keep scripts as plain TypeScript. If you find yourself writing setup/teardown boilerplate repeatedly, that is the signal to revisit lifecycle support. If you find yourself commenting every context change for reviewers, that is the signal to revisit proxy-based diffing.
+- **Apply this decision** whenever a new scenario management capability is considered for the REPL. Start with a named function in a `.ts` file; reach for classes or proxy wrappers only when a concrete need for lifecycle or auto-tracking is demonstrated. (Copilot/Claude)
+- **Revisit this decision** if the lack of teardown creates significant friction for users who need to reset state cleanly, or if the absence of automatic context diffing makes scripts hard to audit. (Copilot/Claude)
+- **Prefer Solution 2 or 3** when: (a) scenarios need deterministic cleanup, (b) dependency ordering between scenarios must be enforced automatically, or (c) context mutation tracking is required for auditing or debugging. (Copilot/Claude)
+- **Rule of thumb:** keep scripts as plain TypeScript. If you find yourself writing setup/teardown boilerplate repeatedly, that is the signal to revisit lifecycle support. If you find yourself commenting every context change for reviewers, that is the signal to revisit proxy-based diffing. (Copilot/Claude)
+- **A natural extension point is the return value of the function** (currently `void`). It could be an optional string used to summarize the changes made by the script. It could also return an object containing a `teardown()` function, providing a lightweight path to lifecycle support without requiring a full class interface. (@pmcelhaney)

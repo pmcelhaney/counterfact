@@ -24,8 +24,8 @@ This is the simplest possible design: no new abstractions, no DSL, and no framew
 An apply script is a TypeScript file with one or more named function exports:
 
 ```ts
-// repl/sold-pets.ts
-import type { ApplyContext } from "counterfact";
+// scenarios/sold-pets.ts
+import type { ApplyContext } from "./types";
 
 export function soldPets($: ApplyContext) {
   $.context.petService.reset();
@@ -37,6 +37,8 @@ export function soldPets($: ApplyContext) {
 ```
 
 ### The `ApplyContext` type
+
+`ApplyContext` is a generated type that lives in `./types/`. In this first iteration it is always the same shape. In future iterations it will incorporate types from `_.context.ts` files, providing route-specific context types.
 
 ```ts
 export interface ApplyContext {
@@ -53,26 +55,21 @@ export interface ApplyContext {
 
 ### Invocation
 
-The argument to `.apply` is a slash-separated path. The last segment is the **function name** to call; everything before it is the **file path** (resolved relative to `<basePath>/repl/`, with `index.ts` as the default file):
+The argument to `.apply` is a slash-separated path. The last segment is the **function name** to call; everything before it is the **file path** (resolved relative to `<basePath>/scenarios/`, with `index.ts` as the default file):
 
 ```
-.apply foo          # repl/index.ts  → foo($)
-.apply foo/bar      # repl/foo.ts    → bar($)
-.apply foo/bar/baz  # repl/foo/bar.ts → baz($)
+.apply foo          # scenarios/index.ts  → foo($)
+.apply foo/bar      # scenarios/foo.ts    → bar($)
+.apply foo/bar/baz  # scenarios/foo/bar.ts → baz($)
 ```
 
 ### Feedback output
 
-After execution, Counterfact compares the environment state before and after the script runs and prints a diff summary:
+After execution, the REPL prints:
 
 ```
 Applied sold-pets/soldPets
-
-Routes added:
-  getSoldPets
 ```
-
-Context diffs are not automatically tracked in this approach — the script author is responsible for noting any context changes in a comment or in the summary.
 
 ---
 
@@ -82,7 +79,6 @@ Context diffs are not automatically tracked in this approach — the script auth
 2. Split the argument on `/`: the last segment is the function name; the rest form the file path.
 3. Dynamically import the resolved module (using `tsx` or the existing transpiler if the file is TypeScript).
 4. Look up the named export matching the function name and call it with the live environment objects.
-5. Snapshot `routes` before/after and print the diff.
 
 ---
 
@@ -100,11 +96,11 @@ Context diffs are not automatically tracked in this approach — the script auth
 
 ## Acceptance criteria
 
-- [ ] `.apply foo` resolves `repl/index.ts` and calls the exported `foo` function
-- [ ] `.apply foo/bar` resolves `repl/foo.ts` and calls the exported `bar` function
-- [ ] `.apply foo/bar/baz` resolves `repl/foo/bar.ts` and calls the exported `baz` function
+- [ ] `.apply foo` resolves `scenarios/index.ts` and calls the exported `foo` function
+- [ ] `.apply foo/bar` resolves `scenarios/foo.ts` and calls the exported `bar` function
+- [ ] `.apply foo/bar/baz` resolves `scenarios/foo/bar.ts` and calls the exported `baz` function
 - [ ] The function receives `$` with `{ context, loadContext, routes, route }` as properties
 - [ ] Routes injected by the script are available in the REPL after the command runs
-- [ ] The REPL prints a summary of routes added and removed after each apply
+- [ ] The REPL prints `Applied <path>` after each successful apply
 - [ ] A meaningful error is shown when the file cannot be found or the export is not a function
 - [ ] Existing REPL commands and behavior are unaffected
