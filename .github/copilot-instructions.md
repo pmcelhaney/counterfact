@@ -33,6 +33,14 @@ Each item must use this format:
 - [ ] Response includes `x-test` header when defined
 - [ ] Existing routes without examples behave unchanged
 
+### Exception: Design PRs
+
+When the goal of the **PR** is to **create more issues rather than write code** (e.g., proposing issue files under `.github/issue-proposals/`), treat the PR as a **design PR**:
+
+1. Add the `design` label to the PR.
+2. Do **not** include a "## Manual acceptance tests" section — omit it entirely.
+3. The CI check for manual acceptance tests will automatically pass for PRs with the `design` label.
+
 ## Test-driven workflow
 
 When implementing a change, work in a test-first or test-guided way whenever practical.
