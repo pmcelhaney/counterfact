@@ -54,15 +54,13 @@ export class Coder {
   public *names(
     rawName = this.requirement.url.split("/").at(-1)!,
   ): Generator<string> {
-    let name = rawName
+    const name = rawName
       .replace(/^\d/u, (digit) => `_${digit}`)
       .replaceAll(/[^\w$]/gu, "_");
 
-    if (RESERVED_WORDS.has(name)) {
-      name = `${name}_`;
-    }
+    const baseName = RESERVED_WORDS.has(name) ? `${name}_` : name;
 
-    yield name;
+    yield baseName;
 
     let index = 1;
 
@@ -70,7 +68,7 @@ export class Coder {
 
     while (index < MAX_NAMES_TO_GENERATE_BEFORE_GIVING_UP) {
       index += 1;
-      yield name + index;
+      yield baseName + index;
     }
   }
 
