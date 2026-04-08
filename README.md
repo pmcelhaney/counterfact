@@ -206,8 +206,30 @@ npx counterfact@latest [openapi.yaml] [destination] [options]
 | `--proxy-url <url>` | Forward all requests to this URL by default |
 | `--prefix <path>`   | Base path prefix (e.g. `/api/v1`)           |
 | `--no-validate-request` | Disable request validation against the OpenAPI spec |
+| `--config <path>`   | Path to a `counterfact.yaml` config file (default: `counterfact.yaml` in the current directory) |
 
 Run `npx counterfact@latest --help` for the full list of options.
+
+### Config file
+
+Instead of passing all options on the command line, you can store them in a `counterfact.yaml` file in your project root. Command-line options always override config file settings.
+
+```yaml
+# counterfact.yaml
+spec: ./openapi.yaml
+port: 8080
+serve: true
+repl: true
+watch: true
+proxy-url: https://api.example.com
+prefix: /api/v1
+```
+
+Use `--config <path>` to point to a config file in a different location:
+
+```sh
+npx counterfact@latest --config ./config/counterfact.yaml
+```
 
 ---
 
