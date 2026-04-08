@@ -53,9 +53,9 @@ Use an existing CLI tool to manage ADRs.
 
 ## Advice
 
-- Draft ADRs early — even a partially filled-in ADR creates useful discussion.
-- Keep ADRs concise. They should capture context and reasoning, not replace implementation documentation.
-- When implementing a decision, link the relevant ADR in commit messages and PR descriptions.
-- When asking Copilot to implement a decision, reference the ADR so it has the necessary context.
-- When a decision is revisited or reversed, update the old ADR's status to `Superseded by [NNN]` and create a new ADR explaining the change.
-- The three-stage workflow for acting on a decision is: ADR → plan → implementation, with a human review at each stage.
+- Draft ADRs early — even a partially filled-in ADR creates useful discussion. (Copilot/Claude)
+- Keep ADRs concise. They should capture context and reasoning, not replace implementation documentation. (Copilot/Claude)
+- When implementing a decision, link the relevant ADR in commit messages and PR descriptions. (Copilot/Claude)
+- When asking Copilot to implement a decision, reference the ADR so it has the necessary context. (Copilot/Claude)
+- When a decision is revisited or reversed, update the old ADR's status to `Superseded by [NNN]` and create a new ADR explaining the change. (Copilot/Claude)
+- The three-stage workflow for acting on a decision is: ADR → plan → implementation, with a human review at each stage. (Copilot/Claude)
