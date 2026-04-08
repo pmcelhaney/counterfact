@@ -33,6 +33,14 @@ Each item must use this format:
 - [ ] Response includes `x-test` header when defined
 - [ ] Existing routes without examples behave unchanged
 
+### Exception: Design PRs
+
+When the goal of the **PR** is to **create more issues rather than write code** (e.g., proposing issue files under `.github/issue-proposals/`), treat the PR as a **design PR**:
+
+1. Add the `design` label to the PR.
+2. Do **not** include a "## Manual acceptance tests" section — omit it entirely.
+3. The CI check for manual acceptance tests will automatically pass for PRs with the `design` label.
+
 ## Test-driven workflow
 
 When implementing a change, work in a test-first or test-guided way whenever practical.
@@ -67,6 +75,30 @@ Add or update tests for:
 - refactors that could change behavior
 - generated code, when generation behavior is being changed
 - any change that affects external contracts, APIs, schemas, or CLI behavior
+
+### File system operations in tests
+
+When tests need to read or write files, always use `usingTemporaryFiles()` from the `using-temporary-files` package (already a devDependency). Never import `node:fs`, `fs`, `node:fs/promises`, or `fs/promises` directly in test files.
+
+The `$` helper passed to the callback provides:
+- `$.add(relativePath, contents)` — create or overwrite a file
+- `$.addDirectory(relativePath)` — create a directory
+- `$.read(relativePath)` — read a file's contents (returns `Promise<string>`)
+- `$.remove(relativePath)` — delete a file
+- `$.path(relativePath)` — resolve an absolute path within the temporary directory (use this when passing paths to the code under test)
+
+```ts
+import { usingTemporaryFiles } from "using-temporary-files";
+
+it("example", async () => {
+  await usingTemporaryFiles(async ($) => {
+    await $.add("input.json", JSON.stringify({ key: "value" }));
+    const result = await myFunction($.path("input.json"));
+    const output = await $.read("output.txt");
+    expect(output).toBe("expected content");
+  });
+});
+```
 
 ### When tests are hard to add
 
