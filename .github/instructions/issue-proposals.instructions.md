@@ -4,7 +4,9 @@ This file defines the conventions for proposing new GitHub issues in the Counter
 
 ## Overview
 
-Copilot and contributors **must never create GitHub issues directly** via the API, browser automation, or any other means. Instead, propose issues as Markdown files. These files are reviewed in a pull request, and a GitHub Action automatically converts them into real issues when the PR is merged to `main`.
+Copilot and contributors **must never create GitHub issues directly** via the API, browser automation, or any other means. Instead, propose issues as Markdown files on a dedicated branch. A GitHub Action automatically converts them into real issues when the branch is pushed.
+
+**Do NOT open a pull request.** Simply push a branch named `issue-request/<description>` containing the proposal files. The CI workflow triggers on that branch name and processes the files automatically.
 
 ## File Location
 
@@ -67,22 +69,24 @@ Generate JSDoc comments for emitted TypeScript types using metadata from the Ope
 Every created issue is registered as a sub-issue of the current parent issue.
 
 - **Always include `parentIssue` in front matter** when you know the parent issue number. This makes the relationship explicit and auditable in the proposal file.
-- If `parentIssue` is absent, the CI workflow derives the parent from the pull request branch name (for example, a branch named `copilot/fix-1234-description` implies issue `#1234`).
+- If `parentIssue` is absent, the CI workflow derives the parent from the branch name (for example, a branch named `issue-request/fix-1234-description` implies issue `#1234`).
 - If the workflow cannot determine the parent issue at all, the proposal file is **not processed** and the workflow fails. In that case, add `parentIssue` to the front matter and re-run.
 
 ## Rules for Copilot
 
 - **Never** create GitHub issues directly through the API, browser automation, or any other mechanism.
+- **Never** open a pull request for issue proposals. Just push the branch — no PR needed.
 - **Always** propose new issues as Markdown files under `.github/issue-proposals/`.
+- **Always** push proposal files on a branch named `issue-request/<description>` (e.g. `issue-request/fix-1234-add-logging`).
 - Include `parentIssue` in the front matter whenever you know the parent issue number.
 - Write clear issue bodies with:
   - A summary of the problem or feature
   - Context and motivation
   - Acceptance criteria (as a Markdown checklist)
 
-## What Happens After Merge
+## What Happens After Push
 
-When a pull request containing proposal files is merged to `main`, the CI workflow (`.github/workflows/create-issues.yml`) automatically:
+When a branch named `issue-request/**` containing proposal files is pushed, the CI workflow (`.github/workflows/create-issues.yml`) automatically:
 
 1. Parses each `.github/issue-proposals/*.md` file.
 2. Validates required fields (`title` and a non-empty body).
@@ -100,6 +104,6 @@ The workflow fails if:
 - Front matter is missing or contains invalid YAML.
 - `title` is missing or empty.
 - The body content after the front matter is empty.
-- The parent issue cannot be determined from either front matter or repository context.
+- The parent issue cannot be determined from either front matter or the branch name.
 
 The workflow does **not** fail merely because `parentIssue` is absent from front matter.

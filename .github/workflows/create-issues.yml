@@ -3,7 +3,7 @@ name: Create Issues from Proposals
 on:
   push:
     branches:
-      - main
+      - 'issue-request/**'
     paths:
       - '.github/issue-proposals/*.md'
 
@@ -27,7 +27,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
-          GITHUB_SHA: ${{ github.sha }}
+          GITHUB_REF: ${{ github.ref }}
         run: python3 .github/scripts/create_issues.py
 
       - name: Commit deleted proposal files

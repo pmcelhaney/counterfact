@@ -60,36 +60,19 @@ def _gh(*args, check=True):
     return result
 
 
-def get_parent_issue_from_context(repo, sha):
-    """Try to derive a parent issue number from the pull request context.
+def get_parent_issue_from_context(ref):
+    """Try to derive a parent issue number from the current branch name.
+
+    ``ref`` is the value of the GITHUB_REF environment variable
+    (e.g. ``refs/heads/issue-request/fix-1234-description``).
 
     Returns an int or None.
     """
-    # Find the PR associated with this commit.
-    result = _gh(
-        "api",
-        f"repos/{repo}/commits/{sha}/pulls",
-        "--jq",
-        ".[0].number",
-        check=False,
-    )
-    if result.returncode != 0 or not result.stdout.strip():
+    if not ref:
         return None
 
-    pr_number = result.stdout.strip()
-
-    # Get the head branch of that PR.
-    result = _gh(
-        "api",
-        f"repos/{repo}/pulls/{pr_number}",
-        "--jq",
-        ".head.ref",
-        check=False,
-    )
-    if result.returncode != 0 or not result.stdout.strip():
-        return None
-
-    branch = result.stdout.strip()
+    # Strip the refs/heads/ prefix to get the bare branch name.
+    branch = re.sub(r"^refs/heads/", "", ref)
 
     # Extract an issue number from the branch name.
     # Try common naming conventions in order of specificity before falling back
@@ -97,10 +80,10 @@ def get_parent_issue_from_context(repo, sha):
     # not mistakenly treated as issue numbers.
     #
     # Supported patterns (examples):
-    #   copilot/fix-1234-description  →  issue-/fix-/feat-/bug- prefix
-    #   feature/issue-1234            →  "issue-" keyword
-    #   1234-my-feature               →  leading number in the last path segment
-    #   my-feature-1234               →  trailing number in the last path segment
+    #   issue-request/fix-1234-description  →  issue-/fix-/feat-/bug- prefix
+    #   issue-request/issue-1234            →  "issue-" keyword
+    #   issue-request/1234-my-feature       →  leading number in the last path segment
+    #   issue-request/my-feature-1234       →  trailing number in the last path segment
 
     segment = branch.split("/")[-1]  # consider only the last path component
 
@@ -117,7 +100,7 @@ def get_parent_issue_from_context(repo, sha):
     return None
 
 
-def resolve_parent_issue(metadata, repo, sha):
+def resolve_parent_issue(metadata, ref):
     """Return the parent issue number as int, or None."""
     # Front matter takes precedence when present and valid.
     raw = metadata.get("parentIssue")
@@ -127,7 +110,7 @@ def resolve_parent_issue(metadata, repo, sha):
         except (ValueError, TypeError):
             pass
 
-    return get_parent_issue_from_context(repo, sha)
+    return get_parent_issue_from_context(ref)
 
 
 def create_github_issue(repo, title, body, labels, assignees, milestone):
@@ -210,10 +193,14 @@ def add_sub_issue(repo, parent_number, child_issue_id):
 
 def main():
     repo = os.environ.get("GITHUB_REPOSITORY", "")
-    sha = os.environ.get("GITHUB_SHA", "")
+    ref = os.environ.get("GITHUB_REF", "")
 
     if not repo:
         print("Error: GITHUB_REPOSITORY environment variable is not set.", file=sys.stderr)
+        sys.exit(1)
+
+    if not ref:
+        print("Error: GITHUB_REF environment variable is not set.", file=sys.stderr)
         sys.exit(1)
 
     proposal_dir = ".github/issue-proposals"
@@ -250,11 +237,11 @@ def main():
             continue
 
         # --- Determine parent ---
-        parent_issue = resolve_parent_issue(metadata, repo, sha)
+        parent_issue = resolve_parent_issue(metadata, ref)
         if parent_issue is None:
             print(
                 f"  Error: cannot determine parent issue for {filepath!r}. "
-                "Add 'parentIssue' to front matter or ensure the PR branch "
+                "Add 'parentIssue' to front matter or ensure the branch name "
                 "includes an issue number.",
                 file=sys.stderr,
             )
