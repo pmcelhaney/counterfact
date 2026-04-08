@@ -1,0 +1,38 @@
+name: Number ADRs
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'docs/adr/xxx-*.md'
+
+jobs:
+  number-adrs:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+        with:
+          # A custom token is required so that the automated commit can trigger
+          # subsequent workflows (the default GITHUB_TOKEN cannot do this).
+          token: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
+
+      - name: Assign sequential numbers to ADR placeholder files
+        run: python3 .github/scripts/number_adrs.py
+
+      - name: Commit renamed ADR files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/adr/
+          if git diff --cached --quiet; then
+            echo "No ADR files were renamed — nothing to commit."
+          else
+            git commit -m "chore: assign sequential numbers to ADR files"
+            git pull --rebase
+            git push
+          fi
