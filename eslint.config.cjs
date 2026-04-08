@@ -114,6 +114,33 @@ module.exports = [
       "max-lines": "off",
       "new-cap": ["error", { capIsNewExceptionPattern: "GET|PUT|POST|DELETE" }],
       "no-magic-numbers": "off",
+      "no-restricted-imports": [
+        "error",
+        {
+          paths: [
+            {
+              name: "fs",
+              message:
+                "Do not import 'fs' in tests. Use usingTemporaryFiles() from 'using-temporary-files' instead.",
+            },
+            {
+              name: "node:fs",
+              message:
+                "Do not import 'node:fs' in tests. Use usingTemporaryFiles() from 'using-temporary-files' instead.",
+            },
+            {
+              name: "fs/promises",
+              message:
+                "Do not import 'fs/promises' in tests. Use usingTemporaryFiles() from 'using-temporary-files' instead.",
+            },
+            {
+              name: "node:fs/promises",
+              message:
+                "Do not import 'node:fs/promises' in tests. Use usingTemporaryFiles() from 'using-temporary-files' instead.",
+            },
+          ],
+        },
+      ],
       "no-shadow": "off",
     },
   },

@@ -76,6 +76,30 @@ Add or update tests for:
 - generated code, when generation behavior is being changed
 - any change that affects external contracts, APIs, schemas, or CLI behavior
 
+### File system operations in tests
+
+When tests need to read or write files, always use `usingTemporaryFiles()` from the `using-temporary-files` package (already a devDependency). Never import `node:fs`, `fs`, `node:fs/promises`, or `fs/promises` directly in test files.
+
+The `$` helper passed to the callback provides:
+- `$.add(relativePath, contents)` — create or overwrite a file
+- `$.addDirectory(relativePath)` — create a directory
+- `$.read(relativePath)` — read a file's contents (returns `Promise<string>`)
+- `$.remove(relativePath)` — delete a file
+- `$.path(relativePath)` — resolve an absolute path within the temporary directory (use this when passing paths to the code under test)
+
+```ts
+import { usingTemporaryFiles } from "using-temporary-files";
+
+it("example", async () => {
+  await usingTemporaryFiles(async ($) => {
+    await $.add("input.json", JSON.stringify({ key: "value" }));
+    const result = await myFunction($.path("input.json"));
+    const output = await $.read("output.txt");
+    expect(output).toBe("expected content");
+  });
+});
+```
+
 ### When tests are hard to add
 
 If a test is difficult to write:
