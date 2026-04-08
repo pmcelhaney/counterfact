@@ -264,7 +264,7 @@ describe("REPL", () => {
       await usingTemporaryFiles(async ($) => {
         await $.add(
           "scenarios/index.js",
-          `export function foo($) { $.context.applied = "foo"; }`,
+          `export function foo(ctx) { ctx.context.applied = "foo"; }`,
         );
         await $.add("scenarios/package.json", '{ "type": "module" }');
 
@@ -285,7 +285,7 @@ describe("REPL", () => {
       await usingTemporaryFiles(async ($) => {
         await $.add(
           "scenarios/myscript.js",
-          `export function bar($) { $.context.applied = "bar"; }`,
+          `export function bar(ctx) { ctx.context.applied = "bar"; }`,
         );
         await $.add("scenarios/package.json", '{ "type": "module" }');
 
@@ -305,7 +305,7 @@ describe("REPL", () => {
       await usingTemporaryFiles(async ($) => {
         await $.add(
           "scenarios/foo/bar.js",
-          `export function baz($) { $.context.applied = "baz"; }`,
+          `export function baz(ctx) { ctx.context.applied = "baz"; }`,
         );
         await $.add("scenarios/foo/package.json", '{ "type": "module" }');
 
@@ -325,7 +325,7 @@ describe("REPL", () => {
       await usingTemporaryFiles(async ($) => {
         await $.add(
           "scenarios/index.js",
-          `export function setup($) { $.routes.myRoute = { path: "/pets" }; }`,
+          `export function setup(ctx) { ctx.routes.myRoute = { path: "/pets" }; }`,
         );
         await $.add("scenarios/package.json", '{ "type": "module" }');
 
@@ -387,6 +387,15 @@ describe("REPL", () => {
       await harness.callAsync("apply", "");
 
       expect(harness.output).toContain("usage: .apply <path>");
+      expect(harness.isReset()).toBe(true);
+    });
+
+    it("rejects path traversal using '..' segments", async () => {
+      const { harness } = createHarness();
+
+      await harness.callAsync("apply", "../secret/foo");
+
+      expect(harness.output[0]).toMatch(/Error: Path must not contain/u);
       expect(harness.isReset()).toBe(true);
     });
   });

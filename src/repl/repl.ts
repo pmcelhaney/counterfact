@@ -230,6 +230,13 @@ export function startRepl(
         return;
       }
 
+      if (parts.some((part) => part === ".." || part === ".")) {
+        print("Error: Path must not contain '.' or '..' segments");
+        this.clearBufferedCommand();
+        this.displayPrompt();
+        return;
+      }
+
       const functionName = parts[parts.length - 1] ?? "";
       const fileParts = parts.slice(0, -1);
       const scenariosDir = nodePath.join(config.basePath, "scenarios");
@@ -237,6 +244,20 @@ export function startRepl(
         fileParts.length > 0
           ? nodePath.join(scenariosDir, ...fileParts)
           : nodePath.join(scenariosDir, "index");
+
+      // Guard against path traversal: resolved path must stay within scenariosDir
+      const resolvedBase = nodePath.resolve(fileBase);
+      const resolvedScenariosDir = nodePath.resolve(scenariosDir);
+
+      if (
+        !resolvedBase.startsWith(resolvedScenariosDir + nodePath.sep) &&
+        resolvedBase !== resolvedScenariosDir
+      ) {
+        print("Error: Path must not escape the scenarios directory");
+        this.clearBufferedCommand();
+        this.displayPrompt();
+        return;
+      }
 
       let filePath: string | undefined;
 
