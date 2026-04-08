@@ -1,5 +1,5 @@
 import { describe, expect, it } from "@jest/globals";
-import { promises as fs } from "node:fs";
+
 import { usingTemporaryFiles } from "using-temporary-files";
 
 // Import the main function - other functions are not exported so we test through integration
@@ -48,10 +48,7 @@ export const GET: HTTP_GET = ($) => {
 
         expect(migrated).toBe(true);
 
-        const updatedContent = await fs.readFile(
-          $.path("routes/pet/{id}.ts"),
-          "utf8",
-        );
+        const updatedContent = await $.read("routes/pet/{id}.ts");
 
         expect(updatedContent).toContain("import type { getPetById }");
         expect(updatedContent).toContain("export const GET: getPetById");
@@ -100,10 +97,7 @@ export const POST: HTTP_POST = ($) => {
 
         expect(migrated).toBe(true);
 
-        const updatedContent = await fs.readFile(
-          $.path("routes/pet.ts"),
-          "utf8",
-        );
+        const updatedContent = await $.read("routes/pet.ts");
 
         expect(updatedContent).toContain("import type { addPet }");
         expect(updatedContent).toContain("export const POST: addPet");
@@ -157,10 +151,7 @@ export const DELETE: HTTP_DELETE = ($) => {
 
         expect(migrated).toBe(true);
 
-        const updatedContent = await fs.readFile(
-          $.path("routes/pet/{id}.ts"),
-          "utf8",
-        );
+        const updatedContent = await $.read("routes/pet/{id}.ts");
 
         expect(updatedContent).toContain(
           "import type { getPetById, updatePet, deletePet }",
@@ -204,10 +195,7 @@ export const GET: HTTP_GET = ($) => {
 
         expect(migrated).toBe(true);
 
-        const updatedContent = await fs.readFile(
-          $.path("routes/index.ts"),
-          "utf8",
-        );
+        const updatedContent = await $.read("routes/index.ts");
 
         expect(updatedContent).toContain("import type { getRoot }");
         expect(updatedContent).toContain("export const GET: getRoot");
@@ -244,10 +232,7 @@ export const GET: HTTP_GET = ($) => {
         // Should return false because no changes needed (HTTP_GET stays HTTP_GET)
         expect(migrated).toBe(false);
 
-        const updatedContent = await fs.readFile(
-          $.path("routes/anonymous.ts"),
-          "utf8",
-        );
+        const updatedContent = await $.read("routes/anonymous.ts");
 
         // File should remain unchanged
         expect(updatedContent).toContain("import type { HTTP_GET }");
@@ -287,10 +272,7 @@ export const GET: HTTP_GET = ($) => {
 
         expect(migrated).toBe(true);
 
-        const updatedContent = await fs.readFile(
-          $.path("routes/api/v1/users/{id}.ts"),
-          "utf8",
-        );
+        const updatedContent = await $.read("routes/api/v1/users/{id}.ts");
 
         expect(updatedContent).toContain("import type { getUserById }");
         expect(updatedContent).toContain("export const GET: getUserById");
@@ -346,21 +328,15 @@ export const GET: HTTP_GET = ($) => ({ status: 200 });`,
 
         expect(migrated).toBe(true);
 
-        const petsContent = await fs.readFile($.path("routes/pets.ts"), "utf8");
+        const petsContent = await $.read("routes/pets.ts");
         expect(petsContent).toContain("import type { listPets }");
         expect(petsContent).toContain("export const GET: listPets");
 
-        const petByIdContent = await fs.readFile(
-          $.path("routes/pets/{id}.ts"),
-          "utf8",
-        );
+        const petByIdContent = await $.read("routes/pets/{id}.ts");
         expect(petByIdContent).toContain("import type { getPetById }");
         expect(petByIdContent).toContain("export const GET: getPetById");
 
-        const usersContent = await fs.readFile(
-          $.path("routes/users.ts"),
-          "utf8",
-        );
+        const usersContent = await $.read("routes/users.ts");
         expect(usersContent).toContain("import type { listUsers }");
         expect(usersContent).toContain("export const GET: listUsers");
       });
@@ -399,10 +375,7 @@ export const GET: getPetById = ($) => {
         // Should return false because file is already migrated
         expect(migrated).toBe(false);
 
-        const updatedContent = await fs.readFile(
-          $.path("routes/pet/{id}.ts"),
-          "utf8",
-        );
+        const updatedContent = await $.read("routes/pet/{id}.ts");
 
         // File should remain exactly the same
         expect(updatedContent).toBe(alreadyMigratedFile);
@@ -439,10 +412,7 @@ export const POST: HTTP_POST = ($) => {
         );
         expect(firstMigration).toBe(true);
 
-        const afterFirstMigration = await fs.readFile(
-          $.path("routes/pet.ts"),
-          "utf8",
-        );
+        const afterFirstMigration = await $.read("routes/pet.ts");
 
         // Second migration
         const secondMigration = await updateRouteTypes(
@@ -451,10 +421,7 @@ export const POST: HTTP_POST = ($) => {
         );
         expect(secondMigration).toBe(false);
 
-        const afterSecondMigration = await fs.readFile(
-          $.path("routes/pet.ts"),
-          "utf8",
-        );
+        const afterSecondMigration = await $.read("routes/pet.ts");
 
         // Content should be identical after both runs
         expect(afterFirstMigration).toBe(afterSecondMigration);
@@ -492,10 +459,7 @@ export const GET: HTTP_GET = ($) => ({ status: 200 });`,
         await $.add("routes/_.context.ts", contextFile);
         await updateRouteTypes($.path(""), $.path("openapi.json"));
 
-        const contextContent = await fs.readFile(
-          $.path("routes/_.context.ts"),
-          "utf8",
-        );
+        const contextContent = await $.read("routes/_.context.ts");
 
         // Context file should remain unchanged
         expect(contextContent).toBe(contextFile);
@@ -558,7 +522,7 @@ export const config = {
 
         expect(migrated).toBe(false);
 
-        const content = await fs.readFile($.path("routes/config.ts"), "utf8");
+        const content = await $.read("routes/config.ts");
         expect(content).toBe(nonMigrationFile);
       });
     });
@@ -601,10 +565,7 @@ export const POST : HTTP_POST= ($) => {
 
         expect(migrated).toBe(true);
 
-        const updatedContent = await fs.readFile(
-          $.path("routes/pet.ts"),
-          "utf8",
-        );
+        const updatedContent = await $.read("routes/pet.ts");
 
         expect(updatedContent).toContain("getPet");
         expect(updatedContent).toContain("addPet");
@@ -671,10 +632,7 @@ export const OPTIONS: HTTP_OPTIONS = ($) => ({ status: 200 });
 
         expect(migrated).toBe(true);
 
-        const updatedContent = await fs.readFile(
-          $.path("routes/resource.ts"),
-          "utf8",
-        );
+        const updatedContent = await $.read("routes/resource.ts");
 
         expect(updatedContent).toContain("getResource");
         expect(updatedContent).toContain("createResource");
