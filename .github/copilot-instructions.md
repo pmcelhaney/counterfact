@@ -35,11 +35,7 @@ Each item must use this format:
 
 ### Exception: Design PRs
 
-When the goal of the **PR** is to **create more issues rather than write code** (e.g., proposing issue files under `.github/issue-proposals/`), treat the PR as a **design PR**:
-
-1. Add the `design` label to the PR.
-2. Do **not** include a "## Manual acceptance tests" section — omit it entirely.
-3. The CI check for manual acceptance tests will automatically pass for PRs with the `design` label.
+When the goal of the **PR** is to **create more issues rather than write code** (e.g., proposing issue files under `.github/issue-proposals/`), do **not** open a PR at all — instead push an `issue-request/` branch as described in the "Proposing New GitHub Issues" section.
 
 ## Test-driven workflow
 
@@ -186,11 +182,13 @@ When planning work that requires new GitHub issues, follow the conventions in:
 Key rules:
 
 - **Never** create GitHub issues directly via the API, browser automation, or any other means.
+- **Never** open a pull request for issue proposals.
 - **Always** propose new issues as Markdown files under `.github/issue-proposals/`.
+- **Always** push proposal files on a branch named `issue-request/<description>` (e.g. `issue-request/fix-1234-add-logging`).
 - Use YAML front matter for metadata (`title`, `parentIssue`, `labels`, `assignees`, `milestone`).
 - Include `parentIssue` in front matter whenever you know the parent issue number.
 - Write clear issue bodies with a summary, context/motivation, and acceptance criteria.
 
-Proposal files are reviewed in a pull request and converted into real issues automatically on merge.
+Proposal files are pushed to an `issue-request/` branch and converted into real issues automatically.
 
 
