@@ -58,7 +58,7 @@ def main() -> None:
 
         if os.path.exists(new_filepath):
             print(
-                f"Error: target path {new_filepath!r} already exists — skipping {filepath!r}.",
+                f"Error: target path {new_filepath!r} already exists - skipping {filepath!r}.",
                 file=sys.stderr,
             )
             failed = True

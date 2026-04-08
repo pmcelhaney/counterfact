@@ -17,6 +17,8 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v6
         with:
+          # A custom token is required so that the automated commit can trigger
+          # subsequent workflows (the default GITHUB_TOKEN cannot do this).
           token: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
 
       - name: Assign sequential numbers to ADR placeholder files
