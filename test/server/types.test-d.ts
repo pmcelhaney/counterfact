@@ -287,3 +287,23 @@ declare const noBodyFactory: ResponseBuilderFactory<{
 }>;
 expectAssignable<COUNTERFACT_RESPONSE>(noBodyFactory[200]);
 expectAssignable<COUNTERFACT_RESPONSE>(noBodyFactory[404]);
+
+// GenericResponseBuilder: response with only optional headers (no content) resolves to the
+// ALL_REMAINING_HEADERS_ARE_OPTIONAL builder, exposing `header` and `ALL_REMAINING_HEADERS_ARE_OPTIONAL`.
+// Before the fix, `examples: {}` prevented this branch from being reached.
+type NoBodyWithOptionalHeadersResponse = {
+  content: never;
+  headers: { "x-request-id": { schema: string } };
+  requiredHeaders: never;
+  examples: {};
+};
+
+declare const optionalHeadersFactory: ResponseBuilderFactory<{
+  200: NoBodyWithOptionalHeadersResponse;
+}>;
+expectAssignable<COUNTERFACT_RESPONSE>(
+  optionalHeadersFactory[200].ALL_REMAINING_HEADERS_ARE_OPTIONAL,
+);
+expectAssignable<(header: "x-request-id", value: string) => unknown>(
+  optionalHeadersFactory[200].header,
+);
