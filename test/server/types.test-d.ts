@@ -6,6 +6,7 @@ import {
 } from "tsd";
 
 import type {
+  COUNTERFACT_RESPONSE,
   ExampleNames,
   GenericResponseBuilderInner,
   HttpStatusCode,
@@ -283,3 +284,40 @@ expectAssignable<() => unknown>(emptyBuilder.empty);
 // GenericResponseBuilderInner: response with content does not expose `empty`
 declare const noEmptyBuilder: GenericResponseBuilderInner<JsonOnlyResponse>;
 expectError(noEmptyBuilder.empty);
+
+// ResponseBuilderFactory: response with no body is directly assignable to COUNTERFACT_RESPONSE
+// This is the case when a route returns $.response[200] or $.response[404] with no content body,
+// e.g. for DELETE endpoints that return 200/404 with no body.
+type NoBodyResponse = {
+  content: never;
+  headers: never;
+  requiredHeaders: never;
+  examples: {};
+};
+
+declare const noBodyFactory: ResponseBuilderFactory<{
+  200: NoBodyResponse;
+  404: NoBodyResponse;
+}>;
+expectAssignable<COUNTERFACT_RESPONSE>(noBodyFactory[200]);
+expectAssignable<COUNTERFACT_RESPONSE>(noBodyFactory[404]);
+
+// GenericResponseBuilder: response with only optional headers (no content) resolves to the
+// ALL_REMAINING_HEADERS_ARE_OPTIONAL builder, exposing `header` and `ALL_REMAINING_HEADERS_ARE_OPTIONAL`.
+// Before the fix, `examples: {}` prevented this branch from being reached.
+type NoBodyWithOptionalHeadersResponse = {
+  content: never;
+  headers: { "x-request-id": { schema: string } };
+  requiredHeaders: never;
+  examples: {};
+};
+
+declare const optionalHeadersFactory: ResponseBuilderFactory<{
+  200: NoBodyWithOptionalHeadersResponse;
+}>;
+expectAssignable<COUNTERFACT_RESPONSE>(
+  optionalHeadersFactory[200].ALL_REMAINING_HEADERS_ARE_OPTIONAL,
+);
+expectAssignable<(header: "x-request-id", value: string) => unknown>(
+  optionalHeadersFactory[200].header,
+);

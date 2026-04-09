@@ -86,5 +86,5 @@ export function jsonToXml(
     return objectToXml(json, schema, name);
   }
 
-  return `<${name}>${String(json)}</${name}>`;
+  return `<${name}>${xmlEscape(String(json))}</${name}>`;
 }
