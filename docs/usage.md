@@ -44,8 +44,37 @@ Options:
   --prefix <string>          base path prefix (e.g. /api/v1)
   --always-fake-optionals    include optional fields in random responses
   -b, --build-cache          pre-compile routes and types without starting the server
+  --config <path>            path to a counterfact.yaml config file
   -h, --help                 display help
 ```
+
+</details>
+
+<details>
+<summary>Using a counterfact.yaml config file</summary>
+
+Any CLI option can also be placed in a `counterfact.yaml` file in the current working directory. Command-line flags always take precedence over values in the file.
+
+```yaml
+# counterfact.yaml
+spec: ./openapi.yaml
+port: 8080
+serve: true
+repl: true
+watch: true
+proxy-url: https://api.example.com
+prefix: /api/v1
+```
+
+Kebab-case keys (e.g. `proxy-url`, `always-fake-optionals`) are accepted and normalised automatically.
+
+Use `--config <path>` to load a config file from a non-default location:
+
+```sh
+npx counterfact@latest --config ./config/counterfact.yaml
+```
+
+If `--config` points to a file that does not exist, Counterfact exits with an error. If no `--config` flag is given and there is no `counterfact.yaml` in the current directory, startup proceeds normally using CLI options and defaults.
 
 </details>
 
