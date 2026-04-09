@@ -1,13 +1,13 @@
 import type { REPLServer } from "node:repl";
 
 import { jest } from "@jest/globals";
-import { usingTemporaryFiles } from "using-temporary-files";
 
 import { createCompleter, startRepl } from "../../src/repl/repl.js";
 import type { CompleterCallback } from "../../src/repl/repl.js";
 import type { Config } from "../../src/server/config.js";
 import { ContextRegistry } from "../../src/server/context-registry.js";
 import { Registry } from "../../src/server/registry.js";
+import { ScenarioRegistry } from "../../src/server/scenario-registry.js";
 
 const CONFIG: Config = {
   basePath: "",
@@ -59,9 +59,15 @@ class ReplHarness {
     contextRegistry: ContextRegistry,
     registry: Registry,
     config: Config,
+    scenarioRegistry?: ScenarioRegistry,
   ) {
-    this.server = startRepl(contextRegistry, registry, config, (line) =>
-      this.output.push(line),
+    this.server = startRepl(
+      contextRegistry,
+      registry,
+      config,
+      (line) => this.output.push(line),
+      undefined,
+      scenarioRegistry,
     );
   }
 
@@ -81,14 +87,19 @@ class ReplHarness {
   }
 }
 
-function createHarness() {
+function createHarness(scenarioRegistry?: ScenarioRegistry) {
   const contextRegistry = new ContextRegistry();
   const registry = new Registry();
   const config = { ...CONFIG };
 
   config.proxyPaths = new Map();
 
-  const harness = new ReplHarness(contextRegistry, registry, config);
+  const harness = new ReplHarness(
+    contextRegistry,
+    registry,
+    config,
+    scenarioRegistry,
+  );
 
   return { config, contextRegistry, harness, registry };
 }
@@ -261,124 +272,103 @@ describe("REPL", () => {
 
   describe(".apply command", () => {
     it("calls the named export from scenarios/index for a single-segment path", async () => {
-      await usingTemporaryFiles(async ($) => {
-        await $.add(
-          "scenarios/index.js",
-          `export function foo(ctx) { ctx.context.applied = "foo"; }`,
-        );
-        await $.add("scenarios/package.json", '{ "type": "module" }');
+      const scenarioRegistry = new ScenarioRegistry();
 
-        const contextRegistry = new ContextRegistry();
-        const registry = new Registry();
-        const config = { ...CONFIG, basePath: $.path("") };
-        const harness = new ReplHarness(contextRegistry, registry, config);
-
-        await harness.callAsync("apply", "foo");
-
-        expect(harness.output).toContain("Applied foo");
-        expect(contextRegistry.find("/")).toMatchObject({ applied: "foo" });
-        expect(harness.isReset()).toBe(true);
+      scenarioRegistry.add("index", {
+        foo(ctx: { context: Record<string, unknown> }) {
+          ctx.context["applied"] = "foo";
+        },
       });
+
+      const { harness, contextRegistry } = createHarness(scenarioRegistry);
+
+      await harness.callAsync("apply", "foo");
+
+      expect(harness.output).toContain("Applied foo");
+      expect(contextRegistry.find("/")).toMatchObject({ applied: "foo" });
+      expect(harness.isReset()).toBe(true);
     });
 
     it("calls the named export from scenarios/<name> for a two-segment path", async () => {
-      await usingTemporaryFiles(async ($) => {
-        await $.add(
-          "scenarios/myscript.js",
-          `export function bar(ctx) { ctx.context.applied = "bar"; }`,
-        );
-        await $.add("scenarios/package.json", '{ "type": "module" }');
+      const scenarioRegistry = new ScenarioRegistry();
 
-        const contextRegistry = new ContextRegistry();
-        const registry = new Registry();
-        const config = { ...CONFIG, basePath: $.path("") };
-        const harness = new ReplHarness(contextRegistry, registry, config);
-
-        await harness.callAsync("apply", "myscript/bar");
-
-        expect(harness.output).toContain("Applied myscript/bar");
-        expect(contextRegistry.find("/")).toMatchObject({ applied: "bar" });
+      scenarioRegistry.add("myscript", {
+        bar(ctx: { context: Record<string, unknown> }) {
+          ctx.context["applied"] = "bar";
+        },
       });
+
+      const { harness, contextRegistry } = createHarness(scenarioRegistry);
+
+      await harness.callAsync("apply", "myscript/bar");
+
+      expect(harness.output).toContain("Applied myscript/bar");
+      expect(contextRegistry.find("/")).toMatchObject({ applied: "bar" });
     });
 
     it("calls the named export from scenarios/<dir>/<name> for a three-segment path", async () => {
-      await usingTemporaryFiles(async ($) => {
-        await $.add(
-          "scenarios/foo/bar.js",
-          `export function baz(ctx) { ctx.context.applied = "baz"; }`,
-        );
-        await $.add("scenarios/foo/package.json", '{ "type": "module" }');
+      const scenarioRegistry = new ScenarioRegistry();
 
-        const contextRegistry = new ContextRegistry();
-        const registry = new Registry();
-        const config = { ...CONFIG, basePath: $.path("") };
-        const harness = new ReplHarness(contextRegistry, registry, config);
-
-        await harness.callAsync("apply", "foo/bar/baz");
-
-        expect(harness.output).toContain("Applied foo/bar/baz");
-        expect(contextRegistry.find("/")).toMatchObject({ applied: "baz" });
+      scenarioRegistry.add("foo/bar", {
+        baz(ctx: { context: Record<string, unknown> }) {
+          ctx.context["applied"] = "baz";
+        },
       });
+
+      const { harness, contextRegistry } = createHarness(scenarioRegistry);
+
+      await harness.callAsync("apply", "foo/bar/baz");
+
+      expect(harness.output).toContain("Applied foo/bar/baz");
+      expect(contextRegistry.find("/")).toMatchObject({ applied: "baz" });
     });
 
     it("passes routes and route to the function", async () => {
-      await usingTemporaryFiles(async ($) => {
-        await $.add(
-          "scenarios/index.js",
-          `export function setup(ctx) { ctx.routes.myRoute = { path: "/pets" }; }`,
-        );
-        await $.add("scenarios/package.json", '{ "type": "module" }');
+      const scenarioRegistry = new ScenarioRegistry();
 
-        const contextRegistry = new ContextRegistry();
-        const registry = new Registry();
-        const config = { ...CONFIG, basePath: $.path("") };
-        const harness = new ReplHarness(contextRegistry, registry, config);
-
-        await harness.callAsync("apply", "setup");
-
-        expect(harness.output).toContain("Applied setup");
-        expect(
-          (harness.server.context["routes"] as Record<string, unknown>)[
-            "myRoute"
-          ],
-        ).toMatchObject({ path: "/pets" });
+      scenarioRegistry.add("index", {
+        setup(ctx: { routes: Record<string, unknown> }) {
+          ctx.routes["myRoute"] = { path: "/pets" };
+        },
       });
+
+      const { harness } = createHarness(scenarioRegistry);
+
+      await harness.callAsync("apply", "setup");
+
+      expect(harness.output).toContain("Applied setup");
+      expect(
+        (harness.server.context["routes"] as Record<string, unknown>)[
+          "myRoute"
+        ],
+      ).toMatchObject({ path: "/pets" });
     });
 
-    it("shows an error when the file cannot be found", async () => {
-      await usingTemporaryFiles(async ($) => {
-        const contextRegistry = new ContextRegistry();
-        const registry = new Registry();
-        const config = { ...CONFIG, basePath: $.path("") };
-        const harness = new ReplHarness(contextRegistry, registry, config);
+    it("shows an error when the scenario file is not in the registry", async () => {
+      const scenarioRegistry = new ScenarioRegistry();
+      const { harness } = createHarness(scenarioRegistry);
 
-        await harness.callAsync("apply", "nonexistent");
+      await harness.callAsync("apply", "nonexistent");
 
-        expect(harness.output[0]).toMatch(/Error: Could not find/u);
-        expect(harness.isReset()).toBe(true);
-      });
+      expect(harness.output[0]).toMatch(/Error: Could not find/u);
+      expect(harness.isReset()).toBe(true);
     });
 
     it("shows an error when the named export is not a function", async () => {
-      await usingTemporaryFiles(async ($) => {
-        await $.add(
-          "scenarios/index.js",
-          `export const notAFunction = "I am a string";`,
-        );
-        await $.add("scenarios/package.json", '{ "type": "module" }');
+      const scenarioRegistry = new ScenarioRegistry();
 
-        const contextRegistry = new ContextRegistry();
-        const registry = new Registry();
-        const config = { ...CONFIG, basePath: $.path("") };
-        const harness = new ReplHarness(contextRegistry, registry, config);
-
-        await harness.callAsync("apply", "notAFunction");
-
-        expect(harness.output[0]).toMatch(
-          /Error: "notAFunction" is not a function/u,
-        );
-        expect(harness.isReset()).toBe(true);
+      scenarioRegistry.add("index", {
+        notAFunction: "I am a string",
       });
+
+      const { harness } = createHarness(scenarioRegistry);
+
+      await harness.callAsync("apply", "notAFunction");
+
+      expect(harness.output[0]).toMatch(
+        /Error: "notAFunction" is not a function/u,
+      );
+      expect(harness.isReset()).toBe(true);
     });
 
     it("shows a usage message when called with no argument", async () => {
@@ -601,121 +591,93 @@ describe("REPL", () => {
       });
     }
 
-    it("returns function names from scenarios/index.ts when no slash in partial", async () => {
-      await usingTemporaryFiles(async ($) => {
-        await $.add(
-          "scenarios/index.ts",
-          `export function soldPets(ctx) {}
-export function resetAll(ctx) {}
-export const notAScenario = 42;
-`,
-        );
+    it("returns function names from the index key when no slash in partial", () => {
+      const scenarioRegistry = new ScenarioRegistry();
 
-        const registry = new Registry();
-        const completer = createCompleter(
-          registry,
-          undefined,
-          $.path("scenarios"),
-        );
-
-        // Partial "sold" — should match soldPets only, not the const
-        const [completions, prefix] = await callCompleter(
-          completer,
-          ".apply sold",
-        );
-
-        expect(prefix).toBe("sold");
-        expect(completions).toEqual(["soldPets"]);
-        expect(completions).not.toContain("resetAll");
-
-        // Partial "reset" — should match resetAll only
-        const [completions2] = await callCompleter(completer, ".apply reset");
-
-        expect(completions2).toEqual(["resetAll"]);
-
-        // Non-function exports should not be suggested
-        const [completions3] = await callCompleter(completer, ".apply not");
-
-        expect(completions3).toEqual([]);
+      scenarioRegistry.add("index", {
+        soldPets() {},
+        resetAll() {},
+        notAScenario: 42,
       });
+
+      const registry = new Registry();
+      const completer = createCompleter(registry, undefined, scenarioRegistry);
+
+      // Partial "sold" — should match soldPets only, not the non-function export
+      const p1 = callCompleter(completer, ".apply sold").then(
+        ([completions, prefix]) => {
+          expect(prefix).toBe("sold");
+          expect(completions).toEqual(["soldPets"]);
+          expect(completions).not.toContain("resetAll");
+        },
+      );
+
+      // Partial "reset" — should match resetAll only
+      const p2 = callCompleter(completer, ".apply reset").then(
+        ([completions]) => {
+          expect(completions).toEqual(["resetAll"]);
+        },
+      );
+
+      // Non-function exports should not be suggested
+      const p3 = callCompleter(completer, ".apply not").then(
+        ([completions]) => {
+          expect(completions).toEqual([]);
+        },
+      );
+
+      return Promise.all([p1, p2, p3]);
     });
 
-    it("returns all exports and file prefixes when partial is empty", async () => {
-      await usingTemporaryFiles(async ($) => {
-        await $.add(
-          "scenarios/index.ts",
-          `export function foo(ctx) {}
-export function bar(ctx) {}
-`,
-        );
-        await $.add("scenarios/myscript.ts", `export function baz(ctx) {}`);
+    it("returns all function names and file prefixes when partial is empty", async () => {
+      const scenarioRegistry = new ScenarioRegistry();
 
-        const registry = new Registry();
-        const completer = createCompleter(
-          registry,
-          undefined,
-          $.path("scenarios"),
-        );
-        const [completions, prefix] = await callCompleter(completer, ".apply ");
+      scenarioRegistry.add("index", { foo() {}, bar() {} });
+      scenarioRegistry.add("myscript", { baz() {} });
 
-        expect(prefix).toBe("");
-        expect(completions).toContain("foo");
-        expect(completions).toContain("bar");
-        expect(completions).toContain("myscript/");
-      });
+      const registry = new Registry();
+      const completer = createCompleter(registry, undefined, scenarioRegistry);
+      const [completions, prefix] = await callCompleter(completer, ".apply ");
+
+      expect(prefix).toBe("");
+      expect(completions).toContain("foo");
+      expect(completions).toContain("bar");
+      expect(completions).toContain("myscript/");
     });
 
-    it("returns exports from the named file when partial contains a slash", async () => {
-      await usingTemporaryFiles(async ($) => {
-        await $.add(
-          "scenarios/myscript.ts",
-          `export function soldPets(ctx) {}
-export function resetAll(ctx) {}
-`,
-        );
+    it("returns exports from the named file key when partial contains a slash", async () => {
+      const scenarioRegistry = new ScenarioRegistry();
 
-        const registry = new Registry();
-        const completer = createCompleter(
-          registry,
-          undefined,
-          $.path("scenarios"),
-        );
-        const [completions, prefix] = await callCompleter(
-          completer,
-          ".apply myscript/sol",
-        );
+      scenarioRegistry.add("myscript", { soldPets() {}, resetAll() {} });
 
-        expect(prefix).toBe("myscript/sol");
-        expect(completions).toEqual(["myscript/soldPets"]);
-      });
+      const registry = new Registry();
+      const completer = createCompleter(registry, undefined, scenarioRegistry);
+      const [completions, prefix] = await callCompleter(
+        completer,
+        ".apply myscript/sol",
+      );
+
+      expect(prefix).toBe("myscript/sol");
+      expect(completions).toEqual(["myscript/soldPets"]);
     });
 
-    it("returns all exports from the named file when only the slash is typed", async () => {
-      await usingTemporaryFiles(async ($) => {
-        await $.add(
-          "scenarios/pets.ts",
-          `export function sold(ctx) {}
-export function reset(ctx) {}
-`,
-        );
+    it("returns all exports from the named file key when only the slash is typed", async () => {
+      const scenarioRegistry = new ScenarioRegistry();
 
-        const registry = new Registry();
-        const completer = createCompleter(
-          registry,
-          undefined,
-          $.path("scenarios"),
-        );
-        const [completions, prefix] = await callCompleter(
-          completer,
-          ".apply pets/",
-        );
+      scenarioRegistry.add("pets", { sold() {}, reset() {} });
 
-        expect(prefix).toBe("pets/");
-        expect(completions).toEqual(["pets/sold", "pets/reset"]);
-      });
+      const registry = new Registry();
+      const completer = createCompleter(registry, undefined, scenarioRegistry);
+      const [completions, prefix] = await callCompleter(
+        completer,
+        ".apply pets/",
+      );
+
+      expect(prefix).toBe("pets/");
+      expect(completions).toEqual(["pets/sold", "pets/reset"]);
     });
 
-    it("returns empty completions when scenariosDir is not provided", async () => {
+    it("returns empty completions when scenarioRegistry is not provided", async () => {
       const registry = new Registry();
       const completer = createCompleter(registry);
       const [completions] = await callCompleter(completer, ".apply sold");

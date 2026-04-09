@@ -1,12 +1,10 @@
-import fs from "node:fs/promises";
-import nodePath from "node:path";
 import repl from "node:repl";
 
 import type { Config } from "../server/config.js";
 import type { ContextRegistry } from "../server/context-registry.js";
 import type { OpenApiDocument } from "../server/dispatcher.js";
 import type { Registry } from "../server/registry.js";
-import { uncachedImport } from "../server/uncached-import.js";
+import type { ScenarioRegistry } from "../server/scenario-registry.js";
 
 import { RawHttpClient } from "./raw-http-client.js";
 import { createRouteFunction } from "./route-builder.js";
@@ -19,92 +17,6 @@ export type CompleterCallback = (
   err: Error | null,
   result: [string[], string],
 ) => void;
-
-async function getExportedNames(filePath: string): Promise<string[]> {
-  try {
-    const content = await fs.readFile(filePath, "utf8");
-    const names: string[] = [];
-
-    // Matches: export [async] function <name>
-    // Does not handle `export default` or `export { foo }` re-exports.
-    for (const match of content.matchAll(
-      /^export\s+(?:async\s+)?function\s+([a-zA-Z_$][\w$]*)/gmu,
-    )) {
-      if (match[1]) {
-        names.push(match[1]);
-      }
-    }
-
-    return names;
-  } catch {
-    return [];
-  }
-}
-
-async function getScenarioFilePrefixes(
-  scenariosDir: string,
-): Promise<string[]> {
-  try {
-    const entries = await fs.readdir(scenariosDir, { withFileTypes: true });
-    const prefixes: string[] = [];
-
-    for (const entry of entries) {
-      if (
-        entry.isFile() &&
-        /\.(?:ts|js)$/u.test(entry.name) &&
-        !/^index\./u.test(entry.name)
-      ) {
-        prefixes.push(entry.name.replace(/\.(?:ts|js)$/u, "") + "/");
-      } else if (entry.isDirectory()) {
-        prefixes.push(entry.name + "/");
-      }
-    }
-
-    return prefixes;
-  } catch {
-    return [];
-  }
-}
-
-async function getApplyCompletions(
-  scenariosDir: string,
-  partial: string,
-  callback: CompleterCallback,
-): Promise<void> {
-  const slashIdx = partial.lastIndexOf("/");
-
-  if (slashIdx === -1) {
-    // No slash: complete exports from scenarios/index.ts + file/dir name prefixes
-    const [tsExports, jsExports, filePrefixes] = await Promise.all([
-      getExportedNames(nodePath.join(scenariosDir, "index.ts")),
-      getExportedNames(nodePath.join(scenariosDir, "index.js")),
-      getScenarioFilePrefixes(scenariosDir),
-    ]);
-
-    const allOptions = [
-      ...new Set([...tsExports, ...jsExports, ...filePrefixes]),
-    ];
-    const matches = allOptions.filter((c) => c.startsWith(partial));
-
-    callback(null, [matches, partial]);
-  } else {
-    // Has slash: complete exports from scenarios/<filePrefix>.ts|js
-    const filePrefix = partial.slice(0, slashIdx);
-    const funcPartial = partial.slice(slashIdx + 1);
-    const fileSegments = filePrefix.split("/");
-    const [tsExports, jsExports] = await Promise.all([
-      getExportedNames(nodePath.join(scenariosDir, ...fileSegments) + ".ts"),
-      getExportedNames(nodePath.join(scenariosDir, ...fileSegments) + ".js"),
-    ]);
-
-    const allExports = [...new Set([...tsExports, ...jsExports])];
-    const matches = allExports
-      .filter((e) => e.startsWith(funcPartial))
-      .map((e) => `${filePrefix}/${e}`);
-
-    callback(null, [matches, partial]);
-  }
-}
 
 const ROUTE_BUILDER_METHODS = [
   "body(",
@@ -121,19 +33,42 @@ const ROUTE_BUILDER_METHODS = [
 export function createCompleter(
   registry: Registry,
   fallback?: (line: string, callback: CompleterCallback) => void,
-  scenariosDir?: string,
+  scenarioRegistry?: ScenarioRegistry,
 ) {
   return (line: string, callback: CompleterCallback): void => {
     // Check for .apply completion: .apply <partial>
     const applyMatch = line.match(/^\.apply\s+(?<partial>\S*)$/u);
 
     if (applyMatch) {
-      if (scenariosDir !== undefined) {
+      if (scenarioRegistry !== undefined) {
         const partial = applyMatch.groups?.["partial"] ?? "";
+        const slashIdx = partial.lastIndexOf("/");
 
-        getApplyCompletions(scenariosDir, partial, callback).catch(() => {
-          callback(null, [[], partial]);
-        });
+        if (slashIdx === -1) {
+          // No slash: complete exports from "index" key + top-level file prefixes
+          const indexFunctions =
+            scenarioRegistry.getExportedFunctionNames("index");
+          const fileKeys = scenarioRegistry
+            .getFileKeys()
+            .filter((k) => k !== "index");
+          const topLevelPrefixes = [
+            ...new Set(fileKeys.map((k) => k.split("/")[0] + "/")),
+          ];
+          const allOptions = [...indexFunctions, ...topLevelPrefixes];
+          const matches = allOptions.filter((c) => c.startsWith(partial));
+
+          callback(null, [matches, partial]);
+        } else {
+          // Has slash: complete exports from the named file key
+          const fileKey = partial.slice(0, slashIdx);
+          const funcPartial = partial.slice(slashIdx + 1);
+          const functions = scenarioRegistry.getExportedFunctionNames(fileKey);
+          const matches = functions
+            .filter((e) => e.startsWith(funcPartial))
+            .map((e) => `${fileKey}/${e}`);
+
+          callback(null, [matches, partial]);
+        }
       } else {
         callback(null, [[], line]);
       }
@@ -183,6 +118,7 @@ export function startRepl(
   config: Config,
   print = printToStdout,
   openApiDocument?: OpenApiDocument,
+  scenarioRegistry?: ScenarioRegistry,
 ) {
   function printProxyStatus() {
     if (config.proxyUrl === "") {
@@ -258,7 +194,7 @@ export function startRepl(
   (replServer as any).completer = createCompleter(
     registry,
     builtinCompleter,
-    nodePath.join(config.basePath, "scenarios"),
+    scenarioRegistry,
   );
 
   replServer.defineCommand("counterfact", {
@@ -346,61 +282,30 @@ export function startRepl(
       }
 
       const functionName = parts[parts.length - 1] ?? "";
-      const fileParts = parts.slice(0, -1);
-      const scenariosDir = nodePath.join(config.basePath, "scenarios");
-      const fileBase =
-        fileParts.length > 0
-          ? nodePath.join(scenariosDir, ...fileParts)
-          : nodePath.join(scenariosDir, "index");
+      const fileKey =
+        parts.length === 1 ? "index" : parts.slice(0, -1).join("/");
 
-      // Guard against path traversal: resolved path must stay within scenariosDir
-      const resolvedBase = nodePath.resolve(fileBase);
-      const resolvedScenariosDir = nodePath.resolve(scenariosDir);
+      const module = scenarioRegistry?.getModule(fileKey);
 
-      if (
-        !resolvedBase.startsWith(resolvedScenariosDir + nodePath.sep) &&
-        resolvedBase !== resolvedScenariosDir
-      ) {
-        print("Error: Path must not escape the scenarios directory");
+      if (module === undefined) {
+        print(`Error: Could not find scenario file "${fileKey}"`);
         this.clearBufferedCommand();
         this.displayPrompt();
         return;
       }
 
-      let filePath: string | undefined;
+      const fn = module[functionName];
 
-      for (const ext of [".ts", ".js"]) {
-        const candidate = fileBase + ext;
-
-        try {
-          await fs.access(candidate);
-          filePath = candidate;
-          break;
-        } catch {
-          // file not found with this extension, try next
-        }
-      }
-
-      if (filePath === undefined) {
-        print(`Error: Could not find ${fileBase}.ts or ${fileBase}.js`);
+      if (typeof fn !== "function") {
+        print(
+          `Error: "${functionName}" is not a function exported from "${fileKey}"`,
+        );
         this.clearBufferedCommand();
         this.displayPrompt();
         return;
       }
 
       try {
-        const mod = await uncachedImport(filePath);
-        const fn = (mod as Record<string, unknown>)[functionName];
-
-        if (typeof fn !== "function") {
-          print(
-            `Error: "${functionName}" is not a function exported from ${nodePath.relative(config.basePath, filePath)}`,
-          );
-          this.clearBufferedCommand();
-          this.displayPrompt();
-          return;
-        }
-
         const applyContext = {
           context: replServer.context["context"] as Record<string, unknown>,
           loadContext: replServer.context["loadContext"] as (

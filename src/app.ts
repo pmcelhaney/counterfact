@@ -17,6 +17,7 @@ import {
 import { koaMiddleware } from "./server/koa-middleware.js";
 import { ModuleLoader } from "./server/module-loader.js";
 import { Registry } from "./server/registry.js";
+import { ScenarioRegistry } from "./server/scenario-registry.js";
 import { Transpiler } from "./server/transpiler.js";
 import { CodeGenerator } from "./typescript-generator/code-generator.js";
 import { runtimeCanExecuteErasableTs } from "./util/runtime-can-execute-erasable-ts.js";
@@ -131,6 +132,8 @@ export async function counterfact(config: Config) {
 
   const contextRegistry = new ContextRegistry();
 
+  const scenarioRegistry = new ScenarioRegistry();
+
   const codeGenerator = new CodeGenerator(
     config.openApiPath,
     config.basePath,
@@ -159,6 +162,8 @@ export async function counterfact(config: Config) {
     compiledPathsDirectory,
     registry,
     contextRegistry,
+    nodePath.join(modulesPath, "scenarios").replaceAll("\\", "/"),
+    scenarioRegistry,
   );
 
   const middleware = koaMiddleware(dispatcher, config);
@@ -221,6 +226,7 @@ export async function counterfact(config: Config) {
         config,
         undefined, // use the default print function (stdout)
         openApiDocument,
+        scenarioRegistry,
       ),
   };
 }

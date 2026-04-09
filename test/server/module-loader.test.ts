@@ -434,3 +434,89 @@ describe("a module loader", () => {
     });
   });
 });
+
+describe("ModuleLoader scenario loading", () => {
+  it("loads scenario files into the ScenarioRegistry on load()", async () => {
+    const { ScenarioRegistry } =
+      await import("../../src/server/scenario-registry.js");
+
+    await usingTemporaryFiles(async ($) => {
+      await $.add("routes/package.json", '{ "type": "module" }');
+      await $.add(
+        "scenarios/index.js",
+        `export function soldPets() {}
+export function resetAll() {}
+export const notAFunction = 42;`,
+      );
+      await $.add("scenarios/package.json", '{ "type": "module" }');
+
+      const registry = new Registry();
+      const scenarioRegistry = new ScenarioRegistry();
+      const loader = new ModuleLoader(
+        $.path("routes"),
+        registry,
+        undefined,
+        $.path("scenarios"),
+        scenarioRegistry,
+      );
+
+      await loader.load();
+
+      const names = scenarioRegistry.getExportedFunctionNames("index");
+
+      expect(names).toContain("soldPets");
+      expect(names).toContain("resetAll");
+      // Non-functions are still stored but getExportedFunctionNames filters them
+      expect(names).not.toContain("notAFunction");
+    });
+  });
+
+  it("stores a nested scenario file under a slash-delimited key", async () => {
+    const { ScenarioRegistry } =
+      await import("../../src/server/scenario-registry.js");
+
+    await usingTemporaryFiles(async ($) => {
+      await $.add("routes/package.json", '{ "type": "module" }');
+      await $.add("scenarios/pets/index.js", `export function sold() {}`);
+      await $.add("scenarios/pets/package.json", '{ "type": "module" }');
+
+      const registry = new Registry();
+      const scenarioRegistry = new ScenarioRegistry();
+      const loader = new ModuleLoader(
+        $.path("routes"),
+        registry,
+        undefined,
+        $.path("scenarios"),
+        scenarioRegistry,
+      );
+
+      await loader.load();
+
+      const names = scenarioRegistry.getExportedFunctionNames("pets/index");
+
+      expect(names).toContain("sold");
+    });
+  });
+
+  it("does not throw when the scenarios directory does not exist", async () => {
+    const { ScenarioRegistry } =
+      await import("../../src/server/scenario-registry.js");
+
+    await usingTemporaryFiles(async ($) => {
+      await $.add("routes/package.json", '{ "type": "module" }');
+
+      const registry = new Registry();
+      const scenarioRegistry = new ScenarioRegistry();
+      const loader = new ModuleLoader(
+        $.path("routes"),
+        registry,
+        undefined,
+        $.path("scenarios"), // does not exist
+        scenarioRegistry,
+      );
+
+      await expect(loader.load()).resolves.toBeUndefined();
+      expect(scenarioRegistry.getFileKeys()).toHaveLength(0);
+    });
+  });
+});
