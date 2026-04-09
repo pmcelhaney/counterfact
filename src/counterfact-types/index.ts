@@ -127,6 +127,7 @@ interface ResponseBuilder {
     value: string,
     options?: CookieOptions,
   ) => ResponseBuilder;
+  empty: () => ResponseBuilder;
   example: (name: string) => ResponseBuilder;
   header: (name: string, value: string) => ResponseBuilder;
   headers: { [name: string]: string | string[] };
@@ -149,6 +150,9 @@ export type GenericResponseBuilderInner<
     value: string,
     options?: CookieOptions,
   ) => GenericResponseBuilder<Response>;
+  empty: [keyof Response["content"]] extends [never]
+    ? () => COUNTERFACT_RESPONSE
+    : never;
   header: [keyof Response["headers"]] extends [never]
     ? never
     : HeaderFunction<Response>;
@@ -293,6 +297,7 @@ interface OpenApiOperation {
 
 interface WideResponseBuilder {
   binary: (body: Uint8Array | string) => WideResponseBuilder;
+  empty: () => WideResponseBuilder;
   example: (name: string) => WideResponseBuilder;
   cookie: (
     name: string,

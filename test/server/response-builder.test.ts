@@ -90,6 +90,15 @@ describe("a response builder", () => {
     ]);
   });
 
+  it("returns a response with no body when empty() is called", () => {
+    const response = createResponseBuilder({
+      responses: { 204: {} },
+    })[204]?.empty();
+
+    expect(response?.status).toBe(204);
+    expect(response?.content).toBeUndefined();
+  });
+
   it("adds headers", () => {
     const response = createResponseBuilder({
       responses: { 200: { content: {}, schema: {} } },

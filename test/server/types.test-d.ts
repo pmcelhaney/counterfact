@@ -269,3 +269,17 @@ expectError(binaryBuilder.text);
 // GenericResponseBuilderInner: response without application/octet-stream does not expose `binary`
 declare const noBinaryBuilder: GenericResponseBuilderInner<JsonOnlyResponse>;
 expectError(noBinaryBuilder.binary);
+
+// GenericResponseBuilderInner: response with no content exposes `empty`
+type NoContentResponse = {
+  content: {};
+  headers: {};
+  requiredHeaders: never;
+};
+
+declare const emptyBuilder: GenericResponseBuilderInner<NoContentResponse>;
+expectAssignable<() => unknown>(emptyBuilder.empty);
+
+// GenericResponseBuilderInner: response with content does not expose `empty`
+declare const noEmptyBuilder: GenericResponseBuilderInner<JsonOnlyResponse>;
+expectError(noEmptyBuilder.empty);
