@@ -189,9 +189,12 @@ function routePathToAlias(routePath: string): string {
       .filter(Boolean)
       .map((seg) =>
         seg
-          .replace(/\{(.+?)\}/g, (_match, name: string) => name)
-          .replace(/[-_]([a-z])/g, (_match, c: string) => c.toUpperCase())
-          .replace(/^[a-z]/, (c) => c.toUpperCase()),
+          .replace(/\{(.+?)\}/g, (_match, name: string) =>
+            name.replace(/[^a-z0-9]/gi, " "),
+          )
+          .replace(/[-_\s]([a-z])/g, (_match, c: string) => c.toUpperCase())
+          .replace(/^[a-z]/, (c) => c.toUpperCase())
+          .replace(/[^a-z0-9]/gi, ""),
       )
       .join("") + "Context"
   );

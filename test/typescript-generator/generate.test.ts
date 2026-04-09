@@ -128,15 +128,15 @@ describe("apply-context type generation", () => {
       expect(content).toContain(
         'import type { Context as PetsContext } from "../routes/pets/_.context";',
       );
-      // Subdirectory overload should appear before root overload
-      const petsIndex = content.indexOf("PetsContext");
-      const rootIndex = content.lastIndexOf('"/" |');
-      expect(petsIndex).toBeLessThan(rootIndex);
       expect(content).toContain(
         'loadContext(path: "/pets" | `/pets/${string}`): PetsContext;',
       );
       expect(content).toContain(
         'loadContext(path: "/" | `/${string}`): Context;',
+      );
+      // Subdirectory overload must appear before root overload for correct resolution
+      expect(content.indexOf("PetsContext")).toBeLessThan(
+        content.indexOf('"/" |'),
       );
     });
   });
