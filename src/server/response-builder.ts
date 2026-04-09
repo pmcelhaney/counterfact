@@ -186,7 +186,7 @@ export function createResponseBuilder(
       },
 
       empty(this: ResponseBuilder): ResponseBuilder {
-        return { ...this };
+        return { ...this, content: undefined };
       },
 
       example(this: ResponseBuilder, name: string) {
