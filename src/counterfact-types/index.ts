@@ -177,9 +177,9 @@ export type GenericResponseBuilderInner<
 type GenericResponseBuilder<
   Response extends OpenApiResponse = OpenApiResponse,
 > =
-  object extends OmitValueWhenNever<Response>
+  object extends OmitValueWhenNever<Omit<Response, "examples">>
     ? COUNTERFACT_RESPONSE
-    : keyof OmitValueWhenNever<Response> extends "headers"
+    : keyof OmitValueWhenNever<Omit<Response, "examples">> extends "headers"
       ? {
           ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE;
           header: HeaderFunction<Response>;

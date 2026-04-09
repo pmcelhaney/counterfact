@@ -6,6 +6,7 @@ import {
 } from "tsd";
 
 import type {
+  COUNTERFACT_RESPONSE,
   ExampleNames,
   GenericResponseBuilderInner,
   HttpStatusCode,
@@ -269,3 +270,20 @@ expectError(binaryBuilder.text);
 // GenericResponseBuilderInner: response without application/octet-stream does not expose `binary`
 declare const noBinaryBuilder: GenericResponseBuilderInner<JsonOnlyResponse>;
 expectError(noBinaryBuilder.binary);
+
+// ResponseBuilderFactory: response with no body is directly assignable to COUNTERFACT_RESPONSE
+// This is the case when a route returns $.response[200] or $.response[404] with no content body,
+// e.g. for DELETE endpoints that return 200/404 with no body.
+type NoBodyResponse = {
+  content: never;
+  headers: never;
+  requiredHeaders: never;
+  examples: {};
+};
+
+declare const noBodyFactory: ResponseBuilderFactory<{
+  200: NoBodyResponse;
+  404: NoBodyResponse;
+}>;
+expectAssignable<COUNTERFACT_RESPONSE>(noBodyFactory[200]);
+expectAssignable<COUNTERFACT_RESPONSE>(noBodyFactory[404]);
