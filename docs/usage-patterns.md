@@ -2,16 +2,20 @@
 
 A pattern is a reusable solution to a recurring problem when building API simulations with Counterfact. Each pattern below describes a context, the problem it addresses, the solution, and its consequences.
 
+Most projects start with [Explore a New API](./patterns/explore-new-api.md) or [Executable Spec](./patterns/executable-spec.md) to get a running server from an OpenAPI spec with no code. From there, [Mock APIs with Dummy Data](./patterns/mock-with-dummy-data.md) and [AI-Assisted Implementation](./patterns/ai-assisted-implementation.md) are the natural next steps for adding realistic responses — the former by hand, the latter with an AI agent doing the heavy lifting. As the mock grows, [Test the Context, Not the Handlers](./patterns/test-context-not-handlers.md) keeps the stateful logic reliable. [Simulate Failures and Edge Cases](./patterns/simulate-failures.md) and [Simulate Realistic Latency](./patterns/simulate-latency.md) extend any mock to cover error paths and performance characteristics that real services exhibit. [Reference Implementation](./patterns/reference-implementation.md) and [Executable Spec](./patterns/executable-spec.md) make the mock a first-class artifact that teams can rely on as the API evolves. Finally, [Agentic Sandbox](./patterns/agentic-sandbox.md) and [Hybrid Proxy](./patterns/hybrid-proxy.md) address the two common integration strategies — isolating an AI agent from the real service, or blending mock and live traffic across endpoints.
+
 | Pattern | When to use it |
 |---|---|
 | [Explore a New API](./patterns/explore-new-api.md) | You have a spec but no running backend or production access |
-| [Simulate Failures and Edge Cases](./patterns/simulate-failures.md) | You need reproducible, on-demand error conditions for development or testing |
+| [Executable Spec](./patterns/executable-spec.md) | You want immediate feedback on how spec changes affect the running server during API design |
 | [Mock APIs with Dummy Data](./patterns/mock-with-dummy-data.md) | You need realistic-looking responses to build a UI, run a demo, or write assertions |
 | [AI-Assisted Implementation](./patterns/ai-assisted-implementation.md) | You want an AI agent to replace random responses with working handler logic |
+| [Test the Context, Not the Handlers](./patterns/test-context-not-handlers.md) | You want to keep shared stateful logic reliable as the mock grows |
+| [Simulate Failures and Edge Cases](./patterns/simulate-failures.md) | You need reproducible, on-demand error conditions for development or testing |
+| [Simulate Realistic Latency](./patterns/simulate-latency.md) | You want to test how clients and UIs behave under realistic response times |
+| [Reference Implementation](./patterns/reference-implementation.md) | You want a working, executable implementation that expresses intended API behavior in code |
 | [Agentic Sandbox](./patterns/agentic-sandbox.md) | You are building an AI coding agent and want to avoid rate limits and costs during development |
 | [Hybrid Proxy](./patterns/hybrid-proxy.md) | Some endpoints exist in the real backend; others need to be mocked |
-| [Reference Implementation](./patterns/reference-implementation.md) | You want a working, executable implementation that expresses intended API behavior in code |
-| [Executable Spec](./patterns/executable-spec.md) | You want immediate feedback on how spec changes affect the running server during API design |
 
 ## See also
 

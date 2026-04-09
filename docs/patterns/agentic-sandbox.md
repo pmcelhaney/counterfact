@@ -79,4 +79,5 @@ The agent's next request hits the 429. Its retry logic runs for real.
 
 - [Simulate Failures and Edge Cases](./simulate-failures.md) — the general technique for toggling error conditions at runtime
 - [Mock APIs with Dummy Data](./mock-with-dummy-data.md) — serve realistic responses for the happy path
+- [AI-Assisted Implementation](./ai-assisted-implementation.md) — use an AI agent to implement stateful handler logic so the mock more faithfully replicates the real API's semantics
 - [Hybrid Proxy](./hybrid-proxy.md) — selectively forward some agent calls to the real API while mocking others

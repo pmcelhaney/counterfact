@@ -39,9 +39,11 @@ Repeat for each route, or ask the agent to implement all routes in a single pass
 - TypeScript provides immediate feedback when agent output does not conform to the spec; the developer does not need to run tests to catch structural errors.
 - AI-generated implementations should be reviewed: type correctness does not guarantee behavioral correctness.
 - The pattern works best when context types are already defined; ask the agent to implement the context before the route handlers.
+- Unit-test the context class to keep shared logic reliable; handlers are intentionally thin and meant to be edited freely, so they do not need unit tests.
 
 ## Related Patterns
 
 - [Explore a New API](./explore-new-api.md) — the starting point; AI implementation upgrades random responses to working ones
+- [Test the Context, Not the Handlers](./test-context-not-handlers.md) — keep the context logic that the agent generates reliable and regression-proof
 - [Mock APIs with Dummy Data](./mock-with-dummy-data.md) — the manual alternative when you need precise control over response content
 - [Reference Implementation](./reference-implementation.md) — use the AI-generated handlers as the basis for a spec-conformant reference

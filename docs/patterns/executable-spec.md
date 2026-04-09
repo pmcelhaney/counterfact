@@ -44,14 +44,14 @@ components:
             $ref: "#/components/schemas/Vaccination"
 ```
 
-Save the file. Counterfact regenerates the types immediately. The GET `/pet/{petId}` handler's return type now includes `vaccinations`. Send a request and the response already includes the new field — no code change needed:
+Save the file. Counterfact regenerates the types immediately. The GET `/pet/{petId}` handler's return type now includes `vaccinations`. If the handler uses the default `random()` implementation, the server already returns the new field automatically:
 
 ```
 ⬣> client.get("/pet/1")
 { status: 200, body: { id: 1, name: 'Fluffy', vaccinations: [{ vaccine: 'Rabies', date: '2024-03-15' }] } }
 ```
 
-If a handler's existing return value is now structurally invalid given the spec change, your IDE highlights it immediately. You can iterate on the spec — adding fields, changing types, restructuring schemas — and see the downstream effects on handlers and responses before any client code is written.
+If the handler returns a fixed value, you will need to update it — but TypeScript guides you: the IDE highlights the mismatch and describes exactly what is missing or incorrect. You can iterate on the spec — adding fields, changing types, restructuring schemas — and see the downstream effects on handlers and responses before any client code is written.
 
 ## Consequences
 

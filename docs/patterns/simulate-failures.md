@@ -74,10 +74,11 @@ export const GET: HTTP_GET = ($) => {
 - Flag-based failures are deterministic and reproducible — valuable for automated tests. Random and counter-based approaches introduce non-determinism intentionally, to simulate flakiness.
 - The same handler serves both happy-path and failure traffic; a flag decides which.
 - The context's in-memory state resets on server restart, so you always start from a clean slate.
-- The pattern does not simulate network-level failures (dropped connections, latency). For those, use a network fault injector in front of Counterfact.
+- The pattern does not simulate network-level connection drops. For latency simulation, use `$.delay()` directly in the handler — see [Simulate Realistic Latency](./simulate-latency.md).
 
 ## Related Patterns
 
 - [Mock APIs with Dummy Data](./mock-with-dummy-data.md) — the baseline happy-path handler this pattern extends
+- [Simulate Realistic Latency](./simulate-latency.md) — add slow responses to complement error injection
 - [Executable Spec](./executable-spec.md) — run these scenarios as automated contract tests
 - [Agentic Sandbox](./agentic-sandbox.md) — test how an AI agent recovers from failures
