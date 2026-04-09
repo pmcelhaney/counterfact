@@ -617,6 +617,8 @@ export const notAScenario = 42;
           undefined,
           $.path("scenarios"),
         );
+
+        // Partial "sold" — should match soldPets only
         const [completions, prefix] = await callCompleter(
           completer,
           ".apply sold",
@@ -624,6 +626,12 @@ export const notAScenario = 42;
 
         expect(prefix).toBe("sold");
         expect(completions).toEqual(["soldPets"]);
+        expect(completions).not.toContain("resetAll");
+
+        // Partial "reset" — should match resetAll only
+        const [completions2] = await callCompleter(completer, ".apply reset");
+
+        expect(completions2).toEqual(["resetAll"]);
       });
     });
 

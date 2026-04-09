@@ -25,6 +25,8 @@ async function getExportedNames(filePath: string): Promise<string[]> {
     const content = await fs.readFile(filePath, "utf8");
     const names: string[] = [];
 
+    // Matches: export [async] function/const/let/var/class <name>
+    // Does not handle `export default` or `export { foo, bar }` re-exports.
     for (const match of content.matchAll(
       /^export\s+(?:async\s+)?(?:function|const|let|var|class)\s+([a-zA-Z_$][\w$]*)/gmu,
     )) {
