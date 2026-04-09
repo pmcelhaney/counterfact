@@ -591,7 +591,7 @@ describe("REPL", () => {
       });
     }
 
-    it("returns function names from the index key when no slash in partial", () => {
+    it("returns function names from the index key when no slash in partial", async () => {
       const scenarioRegistry = new ScenarioRegistry();
 
       scenarioRegistry.add("index", {
@@ -604,29 +604,21 @@ describe("REPL", () => {
       const completer = createCompleter(registry, undefined, scenarioRegistry);
 
       // Partial "sold" — should match soldPets only, not the non-function export
-      const p1 = callCompleter(completer, ".apply sold").then(
-        ([completions, prefix]) => {
-          expect(prefix).toBe("sold");
-          expect(completions).toEqual(["soldPets"]);
-          expect(completions).not.toContain("resetAll");
-        },
-      );
+      const [completions, prefix] = await callCompleter(completer, ".apply sold");
+
+      expect(prefix).toBe("sold");
+      expect(completions).toEqual(["soldPets"]);
+      expect(completions).not.toContain("resetAll");
 
       // Partial "reset" — should match resetAll only
-      const p2 = callCompleter(completer, ".apply reset").then(
-        ([completions]) => {
-          expect(completions).toEqual(["resetAll"]);
-        },
-      );
+      const [completions2] = await callCompleter(completer, ".apply reset");
+
+      expect(completions2).toEqual(["resetAll"]);
 
       // Non-function exports should not be suggested
-      const p3 = callCompleter(completer, ".apply not").then(
-        ([completions]) => {
-          expect(completions).toEqual([]);
-        },
-      );
+      const [completions3] = await callCompleter(completer, ".apply not");
 
-      return Promise.all([p1, p2, p3]);
+      expect(completions3).toEqual([]);
     });
 
     it("returns all function names and file prefixes when partial is empty", async () => {

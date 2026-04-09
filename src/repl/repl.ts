@@ -30,6 +30,14 @@ const ROUTE_BUILDER_METHODS = [
   "send(",
 ];
 
+/**
+ * Creates a tab-completion function for the REPL.
+ *
+ * @param registry - The route registry used to complete path arguments for `route()` and `client.*()` calls.
+ * @param fallback - Optional fallback completer (e.g. the Node.js built-in completer) invoked when no custom completion matches.
+ * @param scenarioRegistry - When provided, enables tab completion for `.apply` commands by enumerating
+ *   exported function names and file-key prefixes from the loaded scenario modules.
+ */
 export function createCompleter(
   registry: Registry,
   fallback?: (line: string, callback: CompleterCallback) => void,
