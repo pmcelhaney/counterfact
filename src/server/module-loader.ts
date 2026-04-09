@@ -156,7 +156,7 @@ export class ModuleLoader extends EventTarget {
     await this.loadScenarios();
   }
 
-  private isLoadableScenarioFile(pathName: string): boolean {
+  private shouldLoadScenarioFile(pathName: string): boolean {
     return !pathName.endsWith(".d.ts") && !pathName.endsWith(".map");
   }
 
@@ -167,7 +167,7 @@ export class ModuleLoader extends EventTarget {
       const fileDiscovery = new FileDiscovery(this.scenariosPath);
       const files = await fileDiscovery.findFiles();
       const loadableFiles = files.filter((file) =>
-        this.isLoadableScenarioFile(file),
+        this.shouldLoadScenarioFile(file),
       );
 
       await Promise.all(

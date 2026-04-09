@@ -200,20 +200,22 @@ function routePathToAlias(routePath: string): string {
   );
 }
 
+const PARAM_SEGMENT_REGEX = /^\{.+\}$/u;
+
 function buildLoadContextOverload(routePath: string, alias: string): string {
   if (routePath === "/") {
     return '  loadContext(path: "/" | `/${string}`): ' + alias + ";";
   }
 
   const segments = routePath.split("/").filter(Boolean);
-  const hasParam = segments.some((seg) => /^\{.+\}$/u.test(seg));
+  const hasParam = segments.some((seg) => PARAM_SEGMENT_REGEX.test(seg));
 
   if (!hasParam) {
     return `  loadContext(path: "${routePath}" | \`${routePath}/\${string}\`): ${alias};`;
   }
 
   const templatePath = `/${segments
-    .map((seg) => (/^\{.+\}$/u.test(seg) ? "${string}" : seg))
+    .map((seg) => (PARAM_SEGMENT_REGEX.test(seg) ? "${string}" : seg))
     .join("/")}`;
 
   return `  loadContext(path: \`${templatePath}\`): ${alias};`;
