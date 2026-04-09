@@ -148,7 +148,9 @@ export function koaMiddleware(
       for (const [key, value] of Object.entries(response.headers)) {
         if (!HEADERS_TO_DROP.has(key.toLowerCase())) {
           if (Array.isArray(value)) {
-            ctx.set(key, value);
+            for (const item of value) {
+              ctx.res.appendHeader(key, item);
+            }
           } else {
             ctx.set(key, value.toString());
           }
