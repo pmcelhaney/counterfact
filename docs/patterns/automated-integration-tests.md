@@ -27,24 +27,18 @@ import { counterfact } from "counterfact";
 const port = 4001;
 let stop: () => Promise<void>;
 
-beforeAll(async () => {
-  const app = await counterfact({
-    openApiPath: "./openapi.yaml",
-    basePath: "./api",
-    port,
-    startServer: true,
-    generate: { routes: false, types: false },
-    watch: { routes: false, types: false },
-  });
+const config = {
+  openApiPath: "./openapi.yaml",
+  basePath: "./api",
+  port,
+  startServer: true,
+  generate: { routes: false, types: false },
+  watch: { routes: false, types: false },
+};
 
-  ({ stop } = await app.start({
-    openApiPath: "./openapi.yaml",
-    basePath: "./api",
-    port,
-    startServer: true,
-    generate: { routes: false, types: false },
-    watch: { routes: false, types: false },
-  }));
+beforeAll(async () => {
+  const app = await counterfact(config);
+  ({ stop } = await app.start(config));
 });
 
 afterAll(async () => {
@@ -90,13 +84,29 @@ export const GET: HTTP_GET = ($) => {
 Reach into the live context via the `contextRegistry` returned by `counterfact()` to toggle behavior per test:
 
 ```ts
-let contextRegistry: import("counterfact").ContextRegistry;
+import { counterfact } from "counterfact";
+
+const port = 4001;
+let contextRegistry: Awaited<ReturnType<typeof counterfact>>["contextRegistry"];
 let stop: () => Promise<void>;
 
+const config = {
+  openApiPath: "./openapi.yaml",
+  basePath: "./api",
+  port,
+  startServer: true,
+  generate: { routes: false, types: false },
+  watch: { routes: false, types: false },
+};
+
 beforeAll(async () => {
-  const app = await counterfact({ /* config */ });
+  const app = await counterfact(config);
   contextRegistry = app.contextRegistry;
-  ({ stop } = await app.start({ /* config */ }));
+  ({ stop } = await app.start(config));
+});
+
+afterAll(async () => {
+  await stop();
 });
 
 it("returns 404 when the flag is set", async () => {

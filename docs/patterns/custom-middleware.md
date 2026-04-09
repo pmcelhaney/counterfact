@@ -42,13 +42,14 @@ Attach headers to every response in a subtree — useful for simulating CORS, ra
 
 ```ts
 // routes/_.middleware.ts
+import { randomUUID } from "node:crypto";
 import type { Middleware } from "koa";
 
 const middleware: Middleware = async (ctx, next) => {
   await next();
   ctx.set("x-ratelimit-limit", "1000");
   ctx.set("x-ratelimit-remaining", "999");
-  ctx.set("x-request-id", crypto.randomUUID());
+  ctx.set("x-request-id", randomUUID());
 };
 
 export default middleware;
