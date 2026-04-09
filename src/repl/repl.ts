@@ -48,8 +48,9 @@ export function createCompleter(
     const applyMatch = line.match(/^\.apply\s+(?<partial>\S*)$/u);
 
     if (applyMatch) {
+      const partial = applyMatch.groups?.["partial"] ?? "";
+
       if (scenarioRegistry !== undefined) {
-        const partial = applyMatch.groups?.["partial"] ?? "";
         const slashIdx = partial.lastIndexOf("/");
 
         if (slashIdx === -1) {
@@ -78,7 +79,7 @@ export function createCompleter(
           callback(null, [matches, partial]);
         }
       } else {
-        callback(null, [[], line]);
+        callback(null, [[], partial]);
       }
 
       return;

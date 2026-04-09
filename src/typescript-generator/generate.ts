@@ -1,4 +1,4 @@
-import { existsSync } from "node:fs";
+import { existsSync, type Dirent } from "node:fs";
 import fs from "node:fs/promises";
 import nodePath from "node:path";
 
@@ -149,7 +149,7 @@ async function walkForContextFiles(
   currentDir: string,
   results: ContextFileInfo[],
 ): Promise<void> {
-  let entries: fs.Dirent[];
+  let entries: Dirent[];
 
   try {
     entries = await fs.readdir(currentDir, { withFileTypes: true });
@@ -206,18 +206,17 @@ function buildLoadContextOverload(routePath: string, alias: string): string {
   }
 
   const segments = routePath.split("/").filter(Boolean);
-  const firstParamIndex = segments.findIndex((seg) => seg.startsWith("{"));
+  const hasParam = segments.some((seg) => /^\{.+\}$/u.test(seg));
 
-  if (firstParamIndex === -1) {
+  if (!hasParam) {
     return `  loadContext(path: "${routePath}" | \`${routePath}/\${string}\`): ${alias};`;
   }
 
-  const prefix =
-    firstParamIndex === 0
-      ? ""
-      : `/${segments.slice(0, firstParamIndex).join("/")}`;
+  const templatePath = `/${segments
+    .map((seg) => (/^\{.+\}$/u.test(seg) ? "${string}" : seg))
+    .join("/")}`;
 
-  return `  loadContext(path: \`${prefix}/\${string}\`): ${alias};`;
+  return `  loadContext(path: \`${templatePath}\`): ${alias};`;
 }
 
 function buildApplyContextContent(contextFiles: ContextFileInfo[]): string {

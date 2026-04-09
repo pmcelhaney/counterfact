@@ -604,7 +604,10 @@ describe("REPL", () => {
       const completer = createCompleter(registry, undefined, scenarioRegistry);
 
       // Partial "sold" — should match soldPets only, not the non-function export
-      const [completions, prefix] = await callCompleter(completer, ".apply sold");
+      const [completions, prefix] = await callCompleter(
+        completer,
+        ".apply sold",
+      );
 
       expect(prefix).toBe("sold");
       expect(completions).toEqual(["soldPets"]);

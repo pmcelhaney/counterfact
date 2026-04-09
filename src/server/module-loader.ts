@@ -156,13 +156,23 @@ export class ModuleLoader extends EventTarget {
     await this.loadScenarios();
   }
 
+  private isLoadableScenarioFile(pathName: string): boolean {
+    return !pathName.endsWith(".d.ts") && !pathName.endsWith(".map");
+  }
+
   private async loadScenarios(): Promise<void> {
     if (!this.scenariosPath || !this.scenarioRegistry) return;
 
     try {
       const fileDiscovery = new FileDiscovery(this.scenariosPath);
       const files = await fileDiscovery.findFiles();
-      await Promise.all(files.map((file) => this.loadScenarioFile(file)));
+      const loadableFiles = files.filter((file) =>
+        this.isLoadableScenarioFile(file),
+      );
+
+      await Promise.all(
+        loadableFiles.map((file) => this.loadScenarioFile(file)),
+      );
     } catch {
       // Scenarios directory does not exist yet — that's fine.
     }
