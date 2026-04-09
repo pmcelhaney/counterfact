@@ -29,10 +29,10 @@ export const POST: HTTP_POST = ($) => {
 };
 ```
 
-TypeScript catches contract violations at compile time:
+TypeScript highlights contract violations in the IDE and in CI:
 
 ```ts
-// This fails to compile if the response shape no longer matches the spec.
+// Your IDE warns here if the response shape no longer matches the spec.
 return $.response[200].json(pet);
 ```
 
@@ -46,10 +46,10 @@ TypeScript immediately surfaces every handler that no longer matches the updated
 
 ## Consequences
 
-- The implementation is a living document: it compiles against the spec and fails loudly when they diverge.
+- The implementation is a living document: it compiles against the spec and TypeScript surfaces divergence in the IDE and in CI.
 - Teams building the production service can read the handlers to understand expected behavior, including validation rules and edge cases, without interpreting prose.
 - The implementation is not a substitute for the production service — it runs in-memory, has no persistence, and is not hardened for production traffic.
-- Keeping the reference implementation accurate requires discipline: handlers that drift from intent without violating the schema will not be caught by TypeScript alone.
+- Type errors do not stop the server from running — temporary mismatches are tolerated during active development. CI should enforce that there are no compile errors before merging.
 
 ## Related Patterns
 

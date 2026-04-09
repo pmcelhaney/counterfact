@@ -34,5 +34,6 @@ Read the generated types in `api/types/` to understand exact request and respons
 ## Related Patterns
 
 - [Mock APIs with Dummy Data](./mock-with-dummy-data.md) — once you've explored the API, customize handlers to return realistic data
+- [AI-Assisted Implementation](./ai-assisted-implementation.md) — use an AI coding agent to replace `random()` with a working implementation
 - [Simulate Failures and Edge Cases](./simulate-failures.md) — explore error paths without triggering them in the real system
 - [Hybrid Proxy](./hybrid-proxy.md) — explore a real backend while mocking the paths that aren't ready

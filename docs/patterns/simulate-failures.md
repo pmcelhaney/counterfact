@@ -46,7 +46,7 @@ Toggle failures from the REPL or from a test without restarting the server:
 { status: 500, body: 'Internal Server Error' }
 ```
 
-To simulate intermittent failures, vary the response based on a counter:
+To simulate intermittent failures, use a counter or a random function:
 
 ```ts
 export const GET: HTTP_GET = ($) => {
@@ -58,9 +58,20 @@ export const GET: HTTP_GET = ($) => {
 };
 ```
 
+Or vary the response probabilistically:
+
+```ts
+export const GET: HTTP_GET = ($) => {
+  if (Math.random() < 0.2) {
+    return $.response[503].text("Flaky error");
+  }
+  return $.response[200].json({ id: $.path.petId });
+};
+```
+
 ## Consequences
 
-- Failures are deterministic and reproducible — valuable for automated tests.
+- Flag-based failures are deterministic and reproducible — valuable for automated tests. Random and counter-based approaches introduce non-determinism intentionally, to simulate flakiness.
 - The same handler serves both happy-path and failure traffic; a flag decides which.
 - The context's in-memory state resets on server restart, so you always start from a clean slate.
 - The pattern does not simulate network-level failures (dropped connections, latency). For those, use a network fault injector in front of Counterfact.

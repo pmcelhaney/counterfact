@@ -1,6 +1,6 @@
 # Agentic Sandbox
 
-You are developing an AI agent that calls third-party APIs. Running the agent against the real service during development is expensive, rate-limited, and produces unpredictable results.
+You are building an AI coding agent that calls third-party APIs. Running the agent against the real service during development is expensive, rate-limited, and produces unpredictable results.
 
 ## Problem
 
@@ -15,45 +15,49 @@ Point the agent at a Counterfact mock instead of the real service. Control exact
 Generate the mock from the target API's OpenAPI spec:
 
 ```sh
-npx counterfact@latest https://api.openai.com/openapi.yaml openai-mock
+npx counterfact@latest https://raw.githubusercontent.com/stripe/openapi/master/openapi/spec3.yaml stripe-mock
 ```
 
-Configure the agent's API base URL to point at the mock:
+Configure the agent to point at the mock instead of the real Stripe API:
 
 ```ts
-const client = new OpenAI({ baseURL: "http://localhost:3100" });
+const stripe = new Stripe("sk_test_fake", { host: "localhost", port: 3100, protocol: "http" });
 ```
 
-Customize the handler to return the responses your agent should practice with:
+Customize the handler to return exactly what your agent needs to see:
 
 ```ts
-// openai-mock/routes/v1/chat/completions.ts
+// stripe-mock/routes/v1/charges.ts
 export const POST: HTTP_POST = ($) => {
   return $.response[200].json({
-    id: "chatcmpl-test",
-    choices: [{ message: { role: "assistant", content: "I can help you with that." }, finish_reason: "stop" }],
+    id: "ch_mock_001",
+    status: "succeeded",
+    amount: $.body.amount,
+    currency: $.body.currency,
   });
 };
 ```
 
-To test how the agent handles a rate limit, edit the handler — or toggle a context flag and steer the agent from the REPL while it runs:
+To test how the agent handles a rate limit, toggle a context flag and steer the agent from the REPL while it runs:
 
 ```ts
-// openai-mock/routes/_.context.ts
+// stripe-mock/routes/_.context.ts
 export class Context {
   simulateRateLimit = false;
 }
 ```
 
 ```ts
-// openai-mock/routes/v1/chat/completions.ts
+// stripe-mock/routes/v1/charges.ts
 export const POST: HTTP_POST = ($) => {
   if ($.context.simulateRateLimit) {
-    return $.response[429].json({ error: { message: "Rate limit exceeded" } });
+    return $.response[429].json({ error: { message: "Too many requests" } });
   }
   return $.response[200].json({
-    id: "chatcmpl-test",
-    choices: [{ message: { role: "assistant", content: "I can help you with that." }, finish_reason: "stop" }],
+    id: "ch_mock_001",
+    status: "succeeded",
+    amount: $.body.amount,
+    currency: $.body.currency,
   });
 };
 ```

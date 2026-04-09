@@ -7,10 +7,11 @@ A pattern is a reusable solution to a recurring problem when building API simula
 | [Explore a New API](./patterns/explore-new-api.md) | You have a spec but no running backend or production access |
 | [Simulate Failures and Edge Cases](./patterns/simulate-failures.md) | You need reproducible, on-demand error conditions for development or testing |
 | [Mock APIs with Dummy Data](./patterns/mock-with-dummy-data.md) | You need realistic-looking responses to build a UI, run a demo, or write assertions |
-| [Agentic Sandbox](./patterns/agentic-sandbox.md) | You are building an AI agent and want to avoid rate limits and costs during development |
+| [AI-Assisted Implementation](./patterns/ai-assisted-implementation.md) | You want an AI agent to replace random responses with working handler logic |
+| [Agentic Sandbox](./patterns/agentic-sandbox.md) | You are building an AI coding agent and want to avoid rate limits and costs during development |
 | [Hybrid Proxy](./patterns/hybrid-proxy.md) | Some endpoints exist in the real backend; others need to be mocked |
 | [Reference Implementation](./patterns/reference-implementation.md) | You want a working, executable implementation that expresses intended API behavior in code |
-| [Executable Spec](./patterns/executable-spec.md) | You want automated conformance tests driven directly by the OpenAPI spec |
+| [Executable Spec](./patterns/executable-spec.md) | You want immediate feedback on how spec changes affect the running server during API design |
 
 ## See also
 

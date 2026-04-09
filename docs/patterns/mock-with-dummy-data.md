@@ -11,9 +11,9 @@ Out-of-the-box random responses conform to the schema but carry meaningless data
 Choose the approach that fits how much control you need:
 
 - **Random schema-valid data** — zero effort, good enough to unblock a frontend.
-- **Named OpenAPI examples** — define realistic values once in the spec; reference them by name in handlers.
+- **Named OpenAPI examples** — define realistic values once in the spec; `random()` selects from them automatically, and you can also reference a specific example by name.
 - **Fixed handler data** — return exactly what your client needs from the handler code.
-- **Stateful CRUD** — use a `_.context.ts` file so POST, GET, PUT, and DELETE work together across requests.
+- **Handler logic** — use a `_.context.ts` file to share in-memory state across routes; handlers can filter, sort, calculate, or call external services, though the latter is generally not advised for a mock.
 
 ## Example
 
@@ -47,7 +47,7 @@ export const GET: HTTP_GET = ($) => {
 };
 ```
 
-### Stateful CRUD
+### Handler logic
 
 Share in-memory state across routes using a `_.context.ts` file:
 
@@ -92,7 +92,7 @@ export const DELETE: HTTP_DELETE = ($) => {
 - The stateful CRUD approach behaves like a real API for the duration of a session; state resets to zero on server restart.
 - Named examples keep realistic values in the spec where they belong, reducing duplication.
 - Fixed handler data is easy to write but must be updated manually when the spec changes.
-- TypeScript enforces that the data returned from any handler matches the spec-derived response schema.
+- TypeScript warns when a handler's return value does not match the spec-derived response schema; the server still executes the handler as written, so the developer's intent is respected even during a temporary mismatch.
 
 ## Related Patterns
 
