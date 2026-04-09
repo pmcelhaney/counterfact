@@ -587,4 +587,127 @@ describe("REPL", () => {
       ]);
     });
   });
+
+  describe(".apply tab completion", () => {
+    function callCompleter(
+      completer: ReturnType<typeof createCompleter>,
+      line: string,
+    ): Promise<[string[], string]> {
+      return new Promise((resolve, reject) => {
+        completer(line, (err, result) => {
+          if (err) reject(err);
+          else resolve(result);
+        });
+      });
+    }
+
+    it("returns function names from scenarios/index.ts when no slash in partial", async () => {
+      await usingTemporaryFiles(async ($) => {
+        await $.add(
+          "scenarios/index.ts",
+          `export function soldPets(ctx) {}
+export function resetAll(ctx) {}
+export const notAScenario = 42;
+`,
+        );
+
+        const registry = new Registry();
+        const completer = createCompleter(
+          registry,
+          undefined,
+          $.path("scenarios"),
+        );
+        const [completions, prefix] = await callCompleter(
+          completer,
+          ".apply sold",
+        );
+
+        expect(prefix).toBe("sold");
+        expect(completions).toEqual(["soldPets"]);
+      });
+    });
+
+    it("returns all exports and file prefixes when partial is empty", async () => {
+      await usingTemporaryFiles(async ($) => {
+        await $.add(
+          "scenarios/index.ts",
+          `export function foo(ctx) {}
+export function bar(ctx) {}
+`,
+        );
+        await $.add("scenarios/myscript.ts", `export function baz(ctx) {}`);
+
+        const registry = new Registry();
+        const completer = createCompleter(
+          registry,
+          undefined,
+          $.path("scenarios"),
+        );
+        const [completions, prefix] = await callCompleter(completer, ".apply ");
+
+        expect(prefix).toBe("");
+        expect(completions).toContain("foo");
+        expect(completions).toContain("bar");
+        expect(completions).toContain("myscript/");
+      });
+    });
+
+    it("returns exports from the named file when partial contains a slash", async () => {
+      await usingTemporaryFiles(async ($) => {
+        await $.add(
+          "scenarios/myscript.ts",
+          `export function soldPets(ctx) {}
+export function resetAll(ctx) {}
+`,
+        );
+
+        const registry = new Registry();
+        const completer = createCompleter(
+          registry,
+          undefined,
+          $.path("scenarios"),
+        );
+        const [completions, prefix] = await callCompleter(
+          completer,
+          ".apply myscript/sol",
+        );
+
+        expect(prefix).toBe("myscript/sol");
+        expect(completions).toEqual(["myscript/soldPets"]);
+      });
+    });
+
+    it("returns all exports from the named file when only the slash is typed", async () => {
+      await usingTemporaryFiles(async ($) => {
+        await $.add(
+          "scenarios/pets.ts",
+          `export function sold(ctx) {}
+export function reset(ctx) {}
+`,
+        );
+
+        const registry = new Registry();
+        const completer = createCompleter(
+          registry,
+          undefined,
+          $.path("scenarios"),
+        );
+        const [completions, prefix] = await callCompleter(
+          completer,
+          ".apply pets/",
+        );
+
+        expect(prefix).toBe("pets/");
+        expect(completions).toEqual(["pets/sold", "pets/reset"]);
+      });
+    });
+
+    it("returns empty completions when scenariosDir is not provided", async () => {
+      const registry = new Registry();
+      const completer = createCompleter(registry);
+      const [completions] = await callCompleter(completer, ".apply sold");
+
+      expect(completions).toEqual([]);
+    });
+  });
 });

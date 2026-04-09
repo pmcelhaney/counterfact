@@ -20,6 +20,90 @@ export type CompleterCallback = (
   result: [string[], string],
 ) => void;
 
+async function getExportedNames(filePath: string): Promise<string[]> {
+  try {
+    const content = await fs.readFile(filePath, "utf8");
+    const names: string[] = [];
+
+    for (const match of content.matchAll(
+      /^export\s+(?:async\s+)?(?:function|const|let|var|class)\s+([a-zA-Z_$][\w$]*)/gmu,
+    )) {
+      if (match[1]) {
+        names.push(match[1]);
+      }
+    }
+
+    return names;
+  } catch {
+    return [];
+  }
+}
+
+async function getScenarioFilePrefixes(
+  scenariosDir: string,
+): Promise<string[]> {
+  try {
+    const entries = await fs.readdir(scenariosDir, { withFileTypes: true });
+    const prefixes: string[] = [];
+
+    for (const entry of entries) {
+      if (
+        entry.isFile() &&
+        /\.(?:ts|js)$/u.test(entry.name) &&
+        !/^index\./u.test(entry.name)
+      ) {
+        prefixes.push(entry.name.replace(/\.(?:ts|js)$/u, "") + "/");
+      } else if (entry.isDirectory()) {
+        prefixes.push(entry.name + "/");
+      }
+    }
+
+    return prefixes;
+  } catch {
+    return [];
+  }
+}
+
+async function getApplyCompletions(
+  scenariosDir: string,
+  partial: string,
+  callback: CompleterCallback,
+): Promise<void> {
+  const slashIdx = partial.lastIndexOf("/");
+
+  if (slashIdx === -1) {
+    // No slash: complete exports from scenarios/index.ts + file/dir name prefixes
+    const [tsExports, jsExports, filePrefixes] = await Promise.all([
+      getExportedNames(nodePath.join(scenariosDir, "index.ts")),
+      getExportedNames(nodePath.join(scenariosDir, "index.js")),
+      getScenarioFilePrefixes(scenariosDir),
+    ]);
+
+    const allOptions = [
+      ...new Set([...tsExports, ...jsExports, ...filePrefixes]),
+    ];
+    const matches = allOptions.filter((c) => c.startsWith(partial));
+
+    callback(null, [matches, partial]);
+  } else {
+    // Has slash: complete exports from scenarios/<filePrefix>.ts|js
+    const filePrefix = partial.slice(0, slashIdx);
+    const funcPartial = partial.slice(slashIdx + 1);
+    const fileSegments = filePrefix.split("/");
+    const [tsExports, jsExports] = await Promise.all([
+      getExportedNames(nodePath.join(scenariosDir, ...fileSegments) + ".ts"),
+      getExportedNames(nodePath.join(scenariosDir, ...fileSegments) + ".js"),
+    ]);
+
+    const allExports = [...new Set([...tsExports, ...jsExports])];
+    const matches = allExports
+      .filter((e) => e.startsWith(funcPartial))
+      .map((e) => `${filePrefix}/${e}`);
+
+    callback(null, [matches, partial]);
+  }
+}
+
 const ROUTE_BUILDER_METHODS = [
   "body(",
   "headers(",
@@ -35,8 +119,26 @@ const ROUTE_BUILDER_METHODS = [
 export function createCompleter(
   registry: Registry,
   fallback?: (line: string, callback: CompleterCallback) => void,
+  scenariosDir?: string,
 ) {
   return (line: string, callback: CompleterCallback): void => {
+    // Check for .apply completion: .apply <partial>
+    const applyMatch = line.match(/^\.apply\s+(?<partial>\S*)$/u);
+
+    if (applyMatch) {
+      if (scenariosDir !== undefined) {
+        const partial = applyMatch.groups?.["partial"] ?? "";
+
+        getApplyCompletions(scenariosDir, partial, callback).catch(() => {
+          callback(null, [[], partial]);
+        });
+      } else {
+        callback(null, [[], line]);
+      }
+
+      return;
+    }
+
     // Check for RouteBuilder method completion: route("..."). or chained calls
     const builderMatch = line.match(/route\(.*\)\.(?<partial>[a-zA-Z]*)$/u);
 
@@ -151,7 +253,11 @@ export function startRepl(
 
   // completer is typed as readonly in @types/node but is writable at runtime
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  (replServer as any).completer = createCompleter(registry, builtinCompleter);
+  (replServer as any).completer = createCompleter(
+    registry,
+    builtinCompleter,
+    nodePath.join(config.basePath, "scenarios"),
+  );
 
   replServer.defineCommand("counterfact", {
     action() {
