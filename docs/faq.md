@@ -166,7 +166,7 @@ Yes, by default. Requests that don't match the schema defined in the spec return
 
 ## Does it validate outgoing responses?
 
-Yes, by default. Response headers are validated against the schema defined in the spec. Any validation errors (missing required headers or type mismatches) are reported as `counterfact-error-N` HTTP response headers (one per error), where `N` is a zero-based index. The response body is still returned normally — the errors are advisory only. Disable this with `--no-validate-response` if you need looser behavior.
+Yes, by default. Response headers are validated against the schema defined in the spec. Any validation errors (missing required headers or type mismatches) are reported as `response-type-error` HTTP response headers — one header per error; multiple headers with the same name are allowed. The response body is still returned normally — the errors are advisory only. Disable this with `--no-validate-response` if you need looser behavior.
 
 ---
 

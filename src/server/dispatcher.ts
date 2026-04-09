@@ -389,17 +389,11 @@ export class Dispatcher {
       const validation = validateResponse(operation, normalizedResponse);
 
       if (!validation.valid) {
-        const errorHeaders: { [key: string]: string } = {};
-
-        for (const [index, error] of validation.errors.entries()) {
-          errorHeaders[`counterfact-error-${index}`] = error;
-        }
-
         return {
           ...normalizedResponse,
           headers: {
             ...normalizedResponse.headers,
-            ...errorHeaders,
+            "response-type-error": validation.errors,
           },
         };
       }

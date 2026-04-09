@@ -1411,7 +1411,7 @@ describe("given a request that contains the differently cased path", () => {
       });
     }
 
-    it("adds counterfact-error-N headers when a required response header is missing", async () => {
+    it("adds response-type-error headers when a required response header is missing", async () => {
       const dispatcher = makeResponseDispatcher(true);
 
       const response = await dispatcher.request({
@@ -1423,12 +1423,13 @@ describe("given a request that contains the differently cased path", () => {
         req: { path: "/widgets" },
       });
 
-      expect(response.headers?.["counterfact-error-0"]).toContain(
-        "x-required-header",
-      );
+      const errors = response.headers?.["response-type-error"];
+      const firstError = Array.isArray(errors) ? errors[0] : errors;
+
+      expect(firstError).toContain("x-required-header");
     });
 
-    it("adds counterfact-error-N headers when a response header has the wrong type", async () => {
+    it("adds response-type-error headers when a response header has the wrong type", async () => {
       const dispatcher = makeResponseDispatcher(true, {
         "x-required-header": "present",
         "x-count": "not-a-number",
@@ -1443,7 +1444,10 @@ describe("given a request that contains the differently cased path", () => {
         req: { path: "/widgets" },
       });
 
-      expect(response.headers?.["counterfact-error-0"]).toContain("x-count");
+      const errors = response.headers?.["response-type-error"];
+      const firstError = Array.isArray(errors) ? errors[0] : errors;
+
+      expect(firstError).toContain("x-count");
     });
 
     it("does not add error headers when all required response headers are present and valid", async () => {
@@ -1461,7 +1465,7 @@ describe("given a request that contains the differently cased path", () => {
         req: { path: "/widgets" },
       });
 
-      expect(response.headers?.["counterfact-error-0"]).toBeUndefined();
+      expect(response.headers?.["response-type-error"]).toBeUndefined();
     });
 
     it("skips response validation when validateResponses is false", async () => {
@@ -1476,7 +1480,7 @@ describe("given a request that contains the differently cased path", () => {
         req: { path: "/widgets" },
       });
 
-      expect(response.headers?.["counterfact-error-0"]).toBeUndefined();
+      expect(response.headers?.["response-type-error"]).toBeUndefined();
     });
   });
 });
