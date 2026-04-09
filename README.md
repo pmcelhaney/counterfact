@@ -162,6 +162,7 @@ See [How it compares](./docs/comparison.md) for a full breakdown.
 | | |
 |---|---|
 | [Getting started](./docs/getting-started.md) | Step-by-step walkthrough from zero to a stateful mock |
+| [Usage patterns](./docs/usage-patterns.md) | Explore an API, simulate failures, hybrid proxy, agentic coding, and more |
 | [Reference](./docs/reference.md) | `$` parameter, response builder, CLI flags, architecture |
 | [FAQ](./docs/faq.md) | Common questions about state, types, regeneration, and more |
 | [How it compares](./docs/comparison.md) | Side-by-side with json-server, WireMock, Prism, Microcks, MSW |
