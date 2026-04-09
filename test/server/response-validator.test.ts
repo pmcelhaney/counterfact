@@ -139,6 +139,25 @@ describe("validateResponse", () => {
     expect(result.errors[0]).toContain("x-required");
   });
 
+  it("uses the default response spec when response status is undefined", () => {
+    const result = validateResponse(
+      {
+        responses: {
+          default: {
+            content: {},
+            headers: {
+              "x-required": { required: true, schema: { type: "string" } },
+            },
+          },
+        },
+      },
+      { body: "ok", headers: {} },
+    );
+
+    expect(result.valid).toBe(false);
+    expect(result.errors[0]).toContain("x-required");
+  });
+
   it("returns multiple errors when multiple headers are invalid", () => {
     const result = validateResponse(
       {

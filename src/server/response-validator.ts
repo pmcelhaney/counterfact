@@ -24,10 +24,12 @@ export function validateResponse(
 
   const errors: string[] = [];
 
-  const statusKey = String(response.status ?? "default");
+  const statusKey =
+    response.status !== undefined ? String(response.status) : undefined;
 
   const responseSpec =
-    operation.responses[statusKey] ?? operation.responses.default;
+    (statusKey !== undefined ? operation.responses[statusKey] : undefined) ??
+    operation.responses.default;
 
   if (!responseSpec) {
     return { errors: [], valid: true };
@@ -86,6 +88,8 @@ function coerceHeaderValue(
   if (type === "boolean") {
     if (value === "true") return true;
     if (value === "false") return false;
+
+    return value;
   }
 
   return value;
