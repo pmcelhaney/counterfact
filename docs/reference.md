@@ -285,6 +285,7 @@ npx counterfact@latest [spec] [output] [options]
 | `--proxy-url <url>` | _(none)_ | Default upstream for the proxy |
 | `--prefix <path>` | _(none)_ | Global path prefix (e.g. `/api/v1`) |
 | `--no-validate-request` | `false` | Skip OpenAPI request validation |
+| `--no-validate-response` | `false` | Skip OpenAPI response header validation |
 | `--generate-types` | `false` | Generate types only |
 | `--generate-routes` | `false` | Generate routes only |
 | `--watch-types` | `false` | Watch and regenerate types only |

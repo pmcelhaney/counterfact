@@ -11,6 +11,7 @@ import type {
 } from "./registry.js";
 import { createResponseBuilder } from "./response-builder.js";
 import { validateRequest } from "./request-validator.js";
+import { validateResponse } from "./response-validator.js";
 import { Tools } from "./tools.js";
 import type {
   OpenApiOperation,
@@ -382,6 +383,26 @@ export class Dispatcher {
         body: JSON.stringify(mediaTypes(headers.accept ?? "*/*")),
         status: 406,
       };
+    }
+
+    if (this.config?.validateResponses !== false) {
+      const validation = validateResponse(operation, normalizedResponse);
+
+      if (!validation.valid) {
+        const errorHeaders: { [key: string]: string } = {};
+
+        for (const [index, error] of validation.errors.entries()) {
+          errorHeaders[`counterfact-error-${index}`] = error;
+        }
+
+        return {
+          ...normalizedResponse,
+          headers: {
+            ...normalizedResponse.headers,
+            ...errorHeaders,
+          },
+        };
+      }
     }
 
     return normalizedResponse;
