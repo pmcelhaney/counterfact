@@ -391,10 +391,13 @@ export class Dispatcher {
       if (!validation.valid) {
         return {
           ...normalizedResponse,
-          headers: {
-            ...normalizedResponse.headers,
-            "response-type-error": validation.errors,
-          },
+          appendedHeaders: [
+            ...(normalizedResponse.appendedHeaders ?? []),
+            ...validation.errors.map((error): [string, string] => [
+              "response-type-error",
+              error,
+            ]),
+          ],
         };
       }
     }

@@ -1423,10 +1423,11 @@ describe("given a request that contains the differently cased path", () => {
         req: { path: "/widgets" },
       });
 
-      const errors = response.headers?.["response-type-error"];
-      const firstError = Array.isArray(errors) ? errors[0] : errors;
+      const errorValues = response.appendedHeaders
+        ?.filter(([key]) => key === "response-type-error")
+        .map(([, value]) => value);
 
-      expect(firstError).toContain("x-required-header");
+      expect(errorValues?.[0]).toContain("x-required-header");
     });
 
     it("adds response-type-error headers when a response header has the wrong type", async () => {
@@ -1444,10 +1445,11 @@ describe("given a request that contains the differently cased path", () => {
         req: { path: "/widgets" },
       });
 
-      const errors = response.headers?.["response-type-error"];
-      const firstError = Array.isArray(errors) ? errors[0] : errors;
+      const errorValues = response.appendedHeaders
+        ?.filter(([key]) => key === "response-type-error")
+        .map(([, value]) => value);
 
-      expect(firstError).toContain("x-count");
+      expect(errorValues?.[0]).toContain("x-count");
     });
 
     it("does not add error headers when all required response headers are present and valid", async () => {
@@ -1465,7 +1467,11 @@ describe("given a request that contains the differently cased path", () => {
         req: { path: "/widgets" },
       });
 
-      expect(response.headers?.["response-type-error"]).toBeUndefined();
+      expect(
+        response.appendedHeaders?.find(
+          ([key]) => key === "response-type-error",
+        ),
+      ).toBeUndefined();
     });
 
     it("skips response validation when validateResponses is false", async () => {
@@ -1480,7 +1486,11 @@ describe("given a request that contains the differently cased path", () => {
         req: { path: "/widgets" },
       });
 
-      expect(response.headers?.["response-type-error"]).toBeUndefined();
+      expect(
+        response.appendedHeaders?.find(
+          ([key]) => key === "response-type-error",
+        ),
+      ).toBeUndefined();
     });
   });
 });
