@@ -17,15 +17,16 @@ jobs:
           PR_BODY: ${{ github.event.pull_request.body }}
           PR_LABELS: ${{ toJson(github.event.pull_request.labels.*.name) }}
         run: |
-          if python3 -c "
-import json, os, sys
-try:
-    labels = json.loads(os.environ.get('PR_LABELS', '[]'))
-    sys.exit(0 if 'design' in labels else 1)
-except Exception as e:
-    print(f'Error parsing PR labels: {e}', file=sys.stderr)
-    sys.exit(1)
-"; then
+          if python3 - <<'PY'
+          import json, os, sys
+          try:
+              labels = json.loads(os.environ.get('PR_LABELS', '[]'))
+              sys.exit(0 if 'design' in labels else 1)
+          except Exception as e:
+              print(f'Error parsing PR labels: {e}', file=sys.stderr)
+              sys.exit(1)
+          PY
+          then
             echo "enforce=false" >> "$GITHUB_OUTPUT"
           elif [[ "$PR_BRANCH" == copilot* ]] || grep -iq "## manual acceptance tests" <<<"$PR_BODY"; then
             echo "enforce=true" >> "$GITHUB_OUTPUT"
