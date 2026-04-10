@@ -206,6 +206,7 @@ Either way, Counterfact only scaffolds route files that don't exist yet. Your ex
 
 ## Next steps
 
+- [Usage patterns](./usage-patterns.md) — explore an API, simulate failures, hybrid proxy, agentic coding, and more
 - [Reference](./reference.md) — `$` parameter, response builder methods, full CLI flags, architecture overview
 - [FAQ](./faq.md) — common questions about state, type safety, regeneration, and programmatic use
 - [How it compares](./comparison.md) — side-by-side with json-server, WireMock, Prism, Microcks, and MSW
