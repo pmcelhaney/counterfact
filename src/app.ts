@@ -2,11 +2,13 @@ import fs, { rm } from "node:fs/promises";
 import nodePath from "node:path";
 
 import { dereference } from "@apidevtools/json-schema-ref-parser";
+import { type FSWatcher, watch as watchFile } from "chokidar";
 import createDebug from "debug";
 import { createHttpTerminator, type HttpTerminator } from "http-terminator";
 
 import { startRepl as startReplServer } from "./repl/repl.js";
 import type { Config } from "./server/config.js";
+import { CHOKIDAR_OPTIONS } from "./server/constants.js";
 import { ContextRegistry } from "./server/context-registry.js";
 import { createKoaApp } from "./server/create-koa-app.js";
 import {
@@ -177,6 +179,33 @@ export async function counterfact(config: Config) {
     }
 
     let httpTerminator: HttpTerminator | undefined;
+    let openApiWatcher: FSWatcher | undefined;
+
+    if (
+      startServer &&
+      config.openApiPath !== "_" &&
+      !config.openApiPath.startsWith("http")
+    ) {
+      openApiWatcher = watchFile(config.openApiPath, CHOKIDAR_OPTIONS).on(
+        "change",
+        () => {
+          void (async () => {
+            try {
+              dispatcher.openApiDocument = await loadOpenApiDocument(
+                config.openApiPath,
+              );
+              debug("reloaded OpenAPI document from %s", config.openApiPath);
+            } catch (error: unknown) {
+              debug(
+                "failed to reload OpenAPI document from %s: %o",
+                config.openApiPath,
+                error,
+              );
+            }
+          })();
+        },
+      );
+    }
 
     if (startServer) {
       if (!nativeTs) {
@@ -203,6 +232,7 @@ export async function counterfact(config: Config) {
         await codeGenerator.stopWatching();
         await transpiler.stopWatching();
         await moduleLoader.stopWatching();
+        await openApiWatcher?.close();
         await httpTerminator?.terminate();
       },
     };
