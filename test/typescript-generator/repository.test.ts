@@ -48,6 +48,22 @@ describe("a Repository", () => {
     });
   });
 
+  it("includes a strongly typed $ constructor argument in the default _.context.ts", async () => {
+    await usingTemporaryFiles(async ({ path, read }) => {
+      const repository = new Repository();
+
+      await repository.writeFiles(path("."), { routes: true, types: true });
+
+      const contents = await read("./routes/_.context.ts");
+
+      expect(contents).toContain("ContextConstructorArgument");
+      expect(contents).toContain("constructor($: ContextConstructorArgument)");
+      expect(contents).toContain(
+        'import type { ContextConstructorArgument } from "../counterfact-types/index.js"',
+      );
+    });
+  });
+
   it("does not create the root _.context.ts file when generate routes is false", async () => {
     await usingTemporaryFiles(async ({ path, read }) => {
       const repository = new Repository();

@@ -158,8 +158,12 @@ export class Repository {
 * 
 * See https://counterfact.dev/docs/usage.html#working-with-state-the-codecontextcode-object-and-codecontexttscode
 */
-export class Context {
+import type { ContextConstructorArgument } from "../counterfact-types/index.js";
 
+export class Context {
+  public constructor($: ContextConstructorArgument) {
+    void $;
+  }
 }
 `,
     );

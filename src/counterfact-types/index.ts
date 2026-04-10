@@ -1,3 +1,4 @@
+export type { ContextConstructorArgument } from "./context-constructor-argument.js";
 export type { CookieOptions } from "./cookie-options.js";
 export type { COUNTERFACT_RESPONSE } from "./counterfact-response.js";
 export type { ExampleNames } from "./example-names.js";

@@ -385,10 +385,12 @@ For large APIs you can nest context objects. Any subdirectory can have its own `
 
 ```ts
 // routes/users/_.context.ts
+import type { ContextConstructorArgument } from "../counterfact-types/index.js";
+
 export class Context {
-  constructor({ loadContext }) {
-    this.rootContext = loadContext("/");
-    this.petsContext = loadContext("/pets");
+  constructor($: ContextConstructorArgument) {
+    this.rootContext = $.loadContext("/");
+    this.petsContext = $.loadContext("/pets");
   }
 }
 ```
@@ -399,11 +401,13 @@ Use the `readJson` function (also passed to the constructor) to load static JSON
 
 ```ts
 // routes/_.context.ts
+import type { ContextConstructorArgument } from "../counterfact-types/index.js";
+
 export class Context {
   private readonly readJson: (path: string) => Promise<unknown>;
 
-  constructor({ readJson }: { readJson: (path: string) => Promise<unknown> }) {
-    this.readJson = readJson;
+  constructor($: ContextConstructorArgument) {
+    this.readJson = $.readJson;
   }
 
   async getSeeds() {
