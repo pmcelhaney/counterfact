@@ -4,6 +4,24 @@ Complete reference for Counterfact's architecture, route handlers, and CLI.
 
 ---
 
+## Contents
+
+- [Architecture overview](#architecture-overview)
+- [Generated file structure](#generated-file-structure)
+- [Route handlers](#route-handlers)
+- [The `$` parameter](#the--parameter)
+- [Response builder methods](#response-builder-methods)
+- [State management](#state-management)
+- [Hot reload](#hot-reload)
+- [Live REPL](#live-repl)
+- [Hybrid proxy](#hybrid-proxy)
+- [Middleware](#middleware)
+- [Type safety](#type-safety)
+- [Programmatic API](#programmatic-api)
+- [CLI reference](#cli-reference)
+
+---
+
 ## Architecture overview
 
 ```
