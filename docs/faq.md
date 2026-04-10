@@ -287,8 +287,7 @@ Wherever you tell it. The second argument to the CLI is the output directory. Us
 ## See also
 
 - [Getting started](./getting-started.md)
-- [Usage patterns](./usage-patterns.md)
+- [Patterns](./patterns/index.md)
 - [Reference](./reference.md)
 - [How it compares](./comparison.md)
-- [Generated code FAQ](./faq-generated-code.md)
-- [Usage guide](./usage.md)
+- [Usage](./usage.md)

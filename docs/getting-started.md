@@ -206,9 +206,9 @@ Either way, Counterfact only scaffolds route files that don't exist yet. Your ex
 
 ## Next steps
 
-- [Usage patterns](./usage-patterns.md) — explore an API, simulate failures, hybrid proxy, agentic coding, and more
+- [Patterns](./patterns/index.md) — explore an API, simulate failures, hybrid proxy, agentic coding, and more
 - [Reference](./reference.md) — `$` parameter, response builder methods, full CLI flags, architecture overview
 - [FAQ](./faq.md) — common questions about state, type safety, regeneration, and programmatic use
 - [How it compares](./comparison.md) — side-by-side with json-server, WireMock, Prism, Microcks, and MSW
 - [Petstore example](https://github.com/counterfact/example-petstore) — a complete worked example of the Swagger Petstore, fully implemented with Counterfact
-- [Usage guide](./usage.md) — complete documentation
+- [Usage](./usage.md) — full feature documentation
