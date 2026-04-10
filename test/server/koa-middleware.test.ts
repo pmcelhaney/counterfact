@@ -31,6 +31,8 @@ const CONFIG: Config = {
   },
   alwaysFakeOptionals: false,
   buildCache: false,
+  validateRequests: true,
+  validateResponses: true,
 };
 
 const mockKoaProxy = (path: string, { target }: IBaseKoaProxiesOptions) =>

@@ -17,6 +17,7 @@ export interface Config {
   startRepl: boolean;
   startServer: boolean;
   validateRequests: boolean;
+  validateResponses: boolean;
   watch: {
     routes: boolean;
     types: boolean;
