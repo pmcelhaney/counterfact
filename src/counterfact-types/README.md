@@ -7,7 +7,8 @@ This directory contains the TypeScript type definitions that are part of Counter
 | File | Description |
 |---|---|
 | `index.ts` | Re-exports all public types from the individual files below |
-| `context-constructor-argument.ts` | `ContextConstructorArgument` — the strongly-typed argument passed to the `Context` class constructor in `_.context.ts` (exposes `loadContext` and `readJson`) |
+| `apply-context.ts` | `ApplyContext` — the `$` argument passed to named functions in `.apply` scripts, providing `context` and `loadContext` |
+| `context-constructor-argument.ts` | `ContextConstructorArgument` — the strongly-typed argument passed to the `Context` class constructor in `_.context.ts` (exposes `loadContext` from `ApplyContext` and `readJson`) |
 | `cookie-options.ts` | `CookieOptions` — options for setting an HTTP cookie (domain, path, maxAge, etc.) |
 | `counterfact-response.ts` | `COUNTERFACT_RESPONSE` — the terminal branded type returned by a completed response builder |
 | `example.ts` | `Example` — a named example entry from an OpenAPI document (summary, description, value) |

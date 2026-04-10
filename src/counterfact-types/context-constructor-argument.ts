@@ -1,3 +1,5 @@
+import type { ApplyContext } from "./apply-context.js";
+
 /**
  * The argument passed to the `Context` class constructor in `_.context.ts`.
  * Use it to type the `$` parameter so you get full IDE support and compile-time
@@ -15,7 +17,9 @@
  * }
  * ```
  */
-export interface ContextConstructorArgument {
-  loadContext: (path: string) => unknown;
+export interface ContextConstructorArgument extends Pick<
+  ApplyContext,
+  "loadContext"
+> {
   readJson: (path: string) => Promise<unknown>;
 }
