@@ -80,6 +80,12 @@ describe("scenario-context type generation", () => {
       expect(content).toContain(
         "export type Scenario = ($: ApplyContext) => Promise<void> | void;",
       );
+      expect(content).toContain(
+        'export type ContextArgs = Pick<ApplyContext, "loadContext"> & {',
+      );
+      expect(content).toContain(
+        "  readJson: (relativePath: string) => Promise<unknown>;",
+      );
     });
   });
 

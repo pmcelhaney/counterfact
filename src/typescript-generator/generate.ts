@@ -256,6 +256,11 @@ function buildApplyContextContent(contextFiles: ContextFileInfo[]): string {
     "/** A scenario function that receives the live REPL environment */",
     "export type Scenario = ($: ApplyContext) => Promise<void> | void;",
     "",
+    "/** Arguments passed to the Context class constructor in _.context.ts files */",
+    'export type ContextArgs = Pick<ApplyContext, "loadContext"> & {',
+    "  readJson: (relativePath: string) => Promise<unknown>;",
+    "};",
+    "",
   ];
 
   return parts.join("\n");
