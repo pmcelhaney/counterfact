@@ -4,6 +4,33 @@ Everything you want to know before you commit to using Counterfact.
 
 ---
 
+## Contents
+
+- [What is Counterfact?](#what-is-counterfact)
+- [Who is it for?](#who-is-it-for)
+- [How do I start?](#how-do-i-start)
+- [What does it generate?](#what-does-it-generate)
+- [Do I have to write TypeScript?](#do-i-have-to-write-typescript)
+- [Should I commit the generated code?](#should-i-commit-the-generated-code)
+- [Can it behave like a real backend?](#can-it-behave-like-a-real-backend)
+- [How does state work?](#how-does-state-work)
+- [What happens when I edit a file?](#what-happens-when-i-edit-a-file)
+- [Can I interact with the server without writing code?](#can-i-interact-with-the-server-without-writing-code)
+- [What if the real API exists but isn't ready for all paths?](#what-if-the-real-api-exists-but-isnt-ready-for-all-paths)
+- [How does type safety work?](#how-does-type-safety-work)
+- [Does it validate incoming requests?](#does-it-validate-incoming-requests)
+- [What OpenAPI versions are supported?](#what-openapi-versions-are-supported)
+- [Can I have more granular control over code generation?](#can-i-have-more-granular-control-over-code-generation)
+- [Will regenerating overwrite my changes?](#will-regenerating-overwrite-my-changes)
+- [Can I use it programmatically (not via the CLI)?](#can-i-use-it-programmatically-not-via-the-cli)
+- [Can I add custom middleware?](#can-i-add-custom-middleware)
+- [What's with these `never` types in the generated code?](#whats-with-these-never-types-in-the-generated-code)
+- [Do I need to restart after changing a routes file?](#do-i-need-to-restart-after-changing-a-routes-file)
+- [When do I need to restart?](#when-do-i-need-to-restart)
+- [Where does the generated code go?](#where-does-the-generated-code-go)
+
+---
+
 ## What is Counterfact?
 
 Counterfact is a tool that turns an OpenAPI spec into a live, editable, stateful mock server — in one command. It generates TypeScript route files (one per endpoint), starts an HTTP server, and lets you customize behavior by editing those files while the server keeps running.

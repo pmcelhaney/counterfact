@@ -177,6 +177,8 @@ In five minutes, you turned a static spec into a working system:
 
 | | |
 |---|---|
+| [Getting started](./docs/getting-started.md) | Detailed walkthrough with state, REPL, and proxy |
+| [Usage guide](./docs/usage.md) | Routes, context, REPL, proxy, middleware, programmatic API |
 | [Usage patterns](./docs/usage-patterns.md) | Failures, latency, AI sandboxes, integration tests |
 | [Reference](./docs/reference.md) | `$` API, CLI flags, architecture |
 | [How it compares](./docs/comparison.md) | json-server, WireMock, Prism, Microcks, MSW |
@@ -185,6 +187,6 @@ In five minutes, you turned a static spec into a working system:
 
 <div align="center" markdown="1">
 
-[Documentation](./docs/usage.md) · [Changelog](./CHANGELOG.md) · [Contributing](./CONTRIBUTING.md)
+[Changelog](./CHANGELOG.md) · [Contributing](./CONTRIBUTING.md)
 
 </div>
