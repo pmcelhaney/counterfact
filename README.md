@@ -66,7 +66,7 @@ export const GET: HTTP_GET = ($) => {
 
 Save the file. The server reloads instantly—no restart, no lost state.
 
-TypeScript enforces the contract. If your response doesn’t match the spec, you’ll know before you make the 
+TypeScript enforces the contract. If your response doesn’t match the spec, you’ll know before you make the request. 
 
 ## Minute 3 — Add state that survives across requests
 
