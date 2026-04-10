@@ -319,7 +319,7 @@ Run `npx counterfact@latest --help` for the full list.
 ## See also
 
 - [Getting started](./getting-started.md)
-- [Usage patterns](./usage-patterns.md)
+- [Patterns](./patterns/index.md)
 - [FAQ](./faq.md)
 - [How it compares](./comparison.md)
-- [Usage guide](./usage.md)
+- [Usage](./usage.md)

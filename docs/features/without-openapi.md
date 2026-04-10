@@ -46,6 +46,6 @@ Not many people love writing documentation. Fewer people still love working on A
 
 ## See also
 
-- [Getting started](./getting-started.md) — start with an OpenAPI spec for type-safe, auto-generated routes
-- [Usage guide](./usage.md) — full documentation for routes, context, REPL, and more
-- [FAQ](./faq.md) — common questions about state, types, and regeneration
+- [Getting started](../getting-started.md) — start with an OpenAPI spec for type-safe, auto-generated routes
+- [Usage](../usage.md) — full documentation for routes, context, REPL, and more
+- [FAQ](../faq.md) — common questions about state, types, and regeneration
