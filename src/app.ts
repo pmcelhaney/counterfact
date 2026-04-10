@@ -13,8 +13,10 @@ import { loadOpenApiDocument } from "./server/load-openapi-document.js";
 import { ModuleLoader } from "./server/module-loader.js";
 import { OpenApiWatcher } from "./server/openapi-watcher.js";
 import { Registry } from "./server/registry.js";
+import { ScenarioRegistry } from "./server/scenario-registry.js";
 import { Transpiler } from "./server/transpiler.js";
 import { CodeGenerator } from "./typescript-generator/code-generator.js";
+import { writeApplyContextType } from "./typescript-generator/generate.js";
 import { runtimeCanExecuteErasableTs } from "./util/runtime-can-execute-erasable-ts.js";
 
 export { loadOpenApiDocument } from "./server/load-openapi-document.js";
@@ -114,6 +116,8 @@ export async function counterfact(config: Config) {
 
   const contextRegistry = new ContextRegistry();
 
+  const scenarioRegistry = new ScenarioRegistry();
+
   const codeGenerator = new CodeGenerator(
     config.openApiPath,
     config.basePath,
@@ -142,7 +146,13 @@ export async function counterfact(config: Config) {
     compiledPathsDirectory,
     registry,
     contextRegistry,
+    nodePath.join(modulesPath, "scenarios").replaceAll("\\", "/"),
+    scenarioRegistry,
   );
+
+  contextRegistry.addEventListener("context-changed", () => {
+    void writeApplyContextType(modulesPath);
+  });
 
   const middleware = koaMiddleware(dispatcher, config);
 
@@ -209,6 +219,7 @@ export async function counterfact(config: Config) {
         config,
         undefined, // use the default print function (stdout)
         openApiDocument,
+        scenarioRegistry,
       ),
   };
 }

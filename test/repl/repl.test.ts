@@ -7,6 +7,7 @@ import type { CompleterCallback } from "../../src/repl/repl.js";
 import type { Config } from "../../src/server/config.js";
 import { ContextRegistry } from "../../src/server/context-registry.js";
 import { Registry } from "../../src/server/registry.js";
+import { ScenarioRegistry } from "../../src/server/scenario-registry.js";
 
 const CONFIG: Config = {
   basePath: "",
@@ -58,14 +59,24 @@ class ReplHarness {
     contextRegistry: ContextRegistry,
     registry: Registry,
     config: Config,
+    scenarioRegistry?: ScenarioRegistry,
   ) {
-    this.server = startRepl(contextRegistry, registry, config, (line) =>
-      this.output.push(line),
+    this.server = startRepl(
+      contextRegistry,
+      registry,
+      config,
+      (line) => this.output.push(line),
+      undefined,
+      scenarioRegistry,
     );
   }
 
   public call(name: string, options: string) {
     this.server.commands[name]?.action.call(this.mock, options);
+  }
+
+  public async callAsync(name: string, options: string): Promise<void> {
+    await this.server.commands[name]?.action.call(this.mock, options);
   }
 
   public isReset() {
@@ -76,14 +87,19 @@ class ReplHarness {
   }
 }
 
-function createHarness() {
+function createHarness(scenarioRegistry?: ScenarioRegistry) {
   const contextRegistry = new ContextRegistry();
   const registry = new Registry();
   const config = { ...CONFIG };
 
   config.proxyPaths = new Map();
 
-  const harness = new ReplHarness(contextRegistry, registry, config);
+  const harness = new ReplHarness(
+    contextRegistry,
+    registry,
+    config,
+    scenarioRegistry,
+  );
 
   return { config, contextRegistry, harness, registry };
 }
@@ -252,6 +268,126 @@ describe("REPL", () => {
       "",
     ]);
     expect(harness.isReset()).toBe(true);
+  });
+
+  describe(".apply command", () => {
+    it("calls the named export from scenarios/index for a single-segment path", async () => {
+      const scenarioRegistry = new ScenarioRegistry();
+
+      scenarioRegistry.add("index", {
+        foo(ctx: { context: Record<string, unknown> }) {
+          ctx.context["applied"] = "foo";
+        },
+      });
+
+      const { harness, contextRegistry } = createHarness(scenarioRegistry);
+
+      await harness.callAsync("apply", "foo");
+
+      expect(harness.output).toContain("Applied foo");
+      expect(contextRegistry.find("/")).toMatchObject({ applied: "foo" });
+      expect(harness.isReset()).toBe(true);
+    });
+
+    it("calls the named export from scenarios/<name> for a two-segment path", async () => {
+      const scenarioRegistry = new ScenarioRegistry();
+
+      scenarioRegistry.add("myscript", {
+        bar(ctx: { context: Record<string, unknown> }) {
+          ctx.context["applied"] = "bar";
+        },
+      });
+
+      const { harness, contextRegistry } = createHarness(scenarioRegistry);
+
+      await harness.callAsync("apply", "myscript/bar");
+
+      expect(harness.output).toContain("Applied myscript/bar");
+      expect(contextRegistry.find("/")).toMatchObject({ applied: "bar" });
+    });
+
+    it("calls the named export from scenarios/<dir>/<name> for a three-segment path", async () => {
+      const scenarioRegistry = new ScenarioRegistry();
+
+      scenarioRegistry.add("foo/bar", {
+        baz(ctx: { context: Record<string, unknown> }) {
+          ctx.context["applied"] = "baz";
+        },
+      });
+
+      const { harness, contextRegistry } = createHarness(scenarioRegistry);
+
+      await harness.callAsync("apply", "foo/bar/baz");
+
+      expect(harness.output).toContain("Applied foo/bar/baz");
+      expect(contextRegistry.find("/")).toMatchObject({ applied: "baz" });
+    });
+
+    it("passes routes and route to the function", async () => {
+      const scenarioRegistry = new ScenarioRegistry();
+
+      scenarioRegistry.add("index", {
+        setup(ctx: { routes: Record<string, unknown> }) {
+          ctx.routes["myRoute"] = { path: "/pets" };
+        },
+      });
+
+      const { harness } = createHarness(scenarioRegistry);
+
+      await harness.callAsync("apply", "setup");
+
+      expect(harness.output).toContain("Applied setup");
+      expect(
+        (harness.server.context["routes"] as Record<string, unknown>)[
+          "myRoute"
+        ],
+      ).toMatchObject({ path: "/pets" });
+    });
+
+    it("shows an error when the scenario file is not in the registry", async () => {
+      const scenarioRegistry = new ScenarioRegistry();
+      const { harness } = createHarness(scenarioRegistry);
+
+      await harness.callAsync("apply", "nonexistent");
+
+      expect(harness.output[0]).toMatch(/Error: Could not find/u);
+      expect(harness.isReset()).toBe(true);
+    });
+
+    it("shows an error when the named export is not a function", async () => {
+      const scenarioRegistry = new ScenarioRegistry();
+
+      scenarioRegistry.add("index", {
+        notAFunction: "I am a string",
+      });
+
+      const { harness } = createHarness(scenarioRegistry);
+
+      await harness.callAsync("apply", "notAFunction");
+
+      expect(harness.output[0]).toMatch(
+        /Error: "notAFunction" is not a function/u,
+      );
+      expect(harness.isReset()).toBe(true);
+    });
+
+    it("shows a usage message when called with no argument", async () => {
+      const { harness } = createHarness();
+
+      await harness.callAsync("apply", "");
+
+      expect(harness.output).toContain("usage: .apply <path>");
+      expect(harness.isReset()).toBe(true);
+    });
+
+    it("rejects path traversal using '..' segments", async () => {
+      const { harness } = createHarness();
+
+      await harness.callAsync("apply", "../secret/foo");
+
+      expect(harness.output[0]).toMatch(/Error: Path must not contain/u);
+      expect(harness.isReset()).toBe(true);
+    });
   });
 
   describe("route autocomplete", () => {
@@ -439,6 +575,109 @@ describe("REPL", () => {
         "ready(",
         "send(",
       ]);
+    });
+  });
+
+  describe(".apply tab completion", () => {
+    function callCompleter(
+      completer: ReturnType<typeof createCompleter>,
+      line: string,
+    ): Promise<[string[], string]> {
+      return new Promise((resolve, reject) => {
+        completer(line, (err, result) => {
+          if (err) reject(err);
+          else resolve(result);
+        });
+      });
+    }
+
+    it("returns function names from the index key when no slash in partial", async () => {
+      const scenarioRegistry = new ScenarioRegistry();
+
+      scenarioRegistry.add("index", {
+        soldPets() {},
+        resetAll() {},
+        notAScenario: 42,
+      });
+
+      const registry = new Registry();
+      const completer = createCompleter(registry, undefined, scenarioRegistry);
+
+      // Partial "sold" — should match soldPets only, not the non-function export
+      const [completions, prefix] = await callCompleter(
+        completer,
+        ".apply sold",
+      );
+
+      expect(prefix).toBe("sold");
+      expect(completions).toEqual(["soldPets"]);
+      expect(completions).not.toContain("resetAll");
+
+      // Partial "reset" — should match resetAll only
+      const [completions2] = await callCompleter(completer, ".apply reset");
+
+      expect(completions2).toEqual(["resetAll"]);
+
+      // Non-function exports should not be suggested
+      const [completions3] = await callCompleter(completer, ".apply not");
+
+      expect(completions3).toEqual([]);
+    });
+
+    it("returns all function names and file prefixes when partial is empty", async () => {
+      const scenarioRegistry = new ScenarioRegistry();
+
+      scenarioRegistry.add("index", { foo() {}, bar() {} });
+      scenarioRegistry.add("myscript", { baz() {} });
+
+      const registry = new Registry();
+      const completer = createCompleter(registry, undefined, scenarioRegistry);
+      const [completions, prefix] = await callCompleter(completer, ".apply ");
+
+      expect(prefix).toBe("");
+      expect(completions).toContain("foo");
+      expect(completions).toContain("bar");
+      expect(completions).toContain("myscript/");
+    });
+
+    it("returns exports from the named file key when partial contains a slash", async () => {
+      const scenarioRegistry = new ScenarioRegistry();
+
+      scenarioRegistry.add("myscript", { soldPets() {}, resetAll() {} });
+
+      const registry = new Registry();
+      const completer = createCompleter(registry, undefined, scenarioRegistry);
+      const [completions, prefix] = await callCompleter(
+        completer,
+        ".apply myscript/sol",
+      );
+
+      expect(prefix).toBe("myscript/sol");
+      expect(completions).toEqual(["myscript/soldPets"]);
+    });
+
+    it("returns all exports from the named file key when only the slash is typed", async () => {
+      const scenarioRegistry = new ScenarioRegistry();
+
+      scenarioRegistry.add("pets", { sold() {}, reset() {} });
+
+      const registry = new Registry();
+      const completer = createCompleter(registry, undefined, scenarioRegistry);
+      const [completions, prefix] = await callCompleter(
+        completer,
+        ".apply pets/",
+      );
+
+      expect(prefix).toBe("pets/");
+      expect(completions).toEqual(["pets/sold", "pets/reset"]);
+    });
+
+    it("returns empty completions when scenarioRegistry is not provided", async () => {
+      const registry = new Registry();
+      const completer = createCompleter(registry);
+      const [completions] = await callCompleter(completer, ".apply sold");
+
+      expect(completions).toEqual([]);
     });
   });
 });
