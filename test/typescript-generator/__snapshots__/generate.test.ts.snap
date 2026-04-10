@@ -343,11 +343,11 @@ export const GET: getPetById = async ($) => {
 };
 
 export const POST: updatePetWithForm = async ($) => {
-  return $.response[405];
+  return $.response[405].empty();
 };
 
 export const DELETE: deletePet = async ($) => {
-  return $.response[400];
+  return $.response[400].empty();
 };
 "
 `;
@@ -743,7 +743,7 @@ export const GET: getOrderById = async ($) => {
 };
 
 export const DELETE: deleteOrder = async ($) => {
-  return $.response[400];
+  return $.response[400].empty();
 };
 "
 `;
@@ -1131,7 +1131,7 @@ exports[`end-to-end test generates the same code for pet store that it did on th
 "routes/user/logout.ts:import type { logoutUser } from "../../types/paths/user/logout.types.js";
 
 export const GET: logoutUser = async ($) => {
-  return $.response[200];
+  return $.response[200].empty();
 };
 "
 `;
@@ -1191,11 +1191,11 @@ export const GET: getUserByName = async ($) => {
 };
 
 export const PUT: updateUser = async ($) => {
-  return $.response[200];
+  return $.response[200].empty();
 };
 
 export const DELETE: deleteUser = async ($) => {
-  return $.response[400];
+  return $.response[400].empty();
 };
 "
 `;

@@ -78,6 +78,12 @@ type HeaderFunction<Response extends OpenApiResponse> = <
  * The inner shape of the generic response builder, listing all methods that
  * are currently available given the remaining response constraints.
  * Methods whose type resolves to `never` are stripped by `OmitValueWhenNever`.
+ *
+ * Note: `[T] extends [never]` (non-distributive tuple wrapping) is used
+ * alongside `[keyof T] extends [never]` to correctly handle both `T = never`
+ * (spec-generated no-body) and `T = {}` (all content types consumed) cases.
+ * TypeScript evaluates `keyof never` as `string | number | symbol`, so a
+ * direct `[keyof never] extends [never]` check would incorrectly return false.
  */
 export type GenericResponseBuilderInner<
   Response extends OpenApiResponse = OpenApiResponse,
@@ -88,9 +94,16 @@ export type GenericResponseBuilderInner<
     value: string,
     options?: CookieOptions,
   ) => GenericResponseBuilder<Response>;
-  header: [keyof Response["headers"]] extends [never]
+  empty: [Response["content"]] extends [never]
+    ? () => COUNTERFACT_RESPONSE
+    : [keyof Response["content"]] extends [never]
+      ? () => COUNTERFACT_RESPONSE
+      : never;
+  header: [Response["headers"]] extends [never]
     ? never
-    : HeaderFunction<Response>;
+    : [keyof Response["headers"]] extends [never]
+      ? never
+      : HeaderFunction<Response>;
   html: MaybeShortcut<["text/html"], Response>;
   json: MaybeShortcut<
     [
@@ -102,10 +115,16 @@ export type GenericResponseBuilderInner<
     ],
     Response
   >;
-  match: [keyof Response["content"]] extends [never]
+  match: [Response["content"]] extends [never]
     ? never
-    : MatchFunction<Response>;
-  random: [keyof Response["content"]] extends [never] ? never : RandomFunction;
+    : [keyof Response["content"]] extends [never]
+      ? never
+      : MatchFunction<Response>;
+  random: [Response["content"]] extends [never]
+    ? never
+    : [keyof Response["content"]] extends [never]
+      ? never
+      : RandomFunction;
   example: [ExampleNames<Response>] extends [never]
     ? never
     : (name: ExampleNames<Response>) => COUNTERFACT_RESPONSE;
@@ -119,11 +138,23 @@ export type GenericResponseBuilderInner<
  * schema: as methods are called, the builder type narrows until all required
  * content and headers have been provided, at which point it resolves to
  * `COUNTERFACT_RESPONSE`.
+ *
+ * When a Response type carries an `examples` key it is a spec-generated
+ * response (either the initial no-body builder or a builder that still has
+ * content/headers to satisfy). Those always go through
+ * `GenericResponseBuilderInner`, which exposes `empty()` when `content` is
+ * `never`.
+ *
+ * When a Response type has no `examples` key it is a narrowed type produced
+ * by a method call (e.g. `.json()` sets the body and returns a type without
+ * `examples`). Those go through the existing collapse logic so that
+ * fully-satisfied responses resolve directly to `COUNTERFACT_RESPONSE`.
  */
 export type GenericResponseBuilder<
   Response extends OpenApiResponse = OpenApiResponse,
-> =
-  object extends OmitValueWhenNever<Omit<Response, "examples">>
+> = "examples" extends keyof Response
+  ? GenericResponseBuilderInner<Response>
+  : object extends OmitValueWhenNever<Omit<Response, "examples">>
     ? COUNTERFACT_RESPONSE
     : keyof OmitValueWhenNever<Omit<Response, "examples">> extends "headers"
       ? {

@@ -185,6 +185,10 @@ export function createResponseBuilder(
         };
       },
 
+      empty(this: ResponseBuilder): ResponseBuilder {
+        return { ...this, content: undefined };
+      },
+
       example(this: ResponseBuilder, name: string) {
         if (operation.produces) {
           return unknownStatusCodeResponse(this.status);

@@ -128,6 +128,7 @@ export const GET: HTTP_GET = ($) => {
 | --- | --- |
 | `.random()` | Random data generated from the OpenAPI schema (uses `examples` where available) |
 | `.example(name)` | A specific named example from the OpenAPI spec |
+| `.empty()` | Explicitly returns a response with no body (use for 204 No Content and similar) |
 | `.json(content)` | JSON body (also converts to XML automatically when the client requests it) |
 | `.text(content)` | Plain-text body |
 | `.html(content)` | HTML body |
