@@ -165,8 +165,11 @@ export async function counterfact(config: Config) {
     contextRegistry,
     nodePath.join(modulesPath, "scenarios").replaceAll("\\", "/"),
     scenarioRegistry,
-    () => writeApplyContextType(modulesPath),
   );
+
+  moduleLoader.addEventListener("context-file-changed", () => {
+    void writeApplyContextType(modulesPath);
+  });
 
   const middleware = koaMiddleware(dispatcher, config);
 

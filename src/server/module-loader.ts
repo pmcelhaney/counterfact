@@ -39,8 +39,6 @@ export class ModuleLoader extends EventTarget {
 
   private readonly scenarioRegistry: ScenarioRegistry | undefined;
 
-  private readonly onContextFileChanged: (() => Promise<void>) | undefined;
-
   private readonly dependencyGraph = new ModuleDependencyGraph();
 
   private readonly fileDiscovery: FileDiscovery;
@@ -56,7 +54,6 @@ export class ModuleLoader extends EventTarget {
     contextRegistry = new ContextRegistry(),
     scenariosPath?: string,
     scenarioRegistry?: ScenarioRegistry,
-    onContextFileChanged?: () => Promise<void>,
   ) {
     super();
     this.basePath = basePath.replaceAll("\\", "/");
@@ -64,7 +61,6 @@ export class ModuleLoader extends EventTarget {
     this.contextRegistry = contextRegistry;
     this.scenariosPath = scenariosPath?.replaceAll("\\", "/");
     this.scenarioRegistry = scenarioRegistry;
-    this.onContextFileChanged = onContextFileChanged;
     this.fileDiscovery = new FileDiscovery(this.basePath);
   }
 
@@ -107,7 +103,7 @@ export class ModuleLoader extends EventTarget {
           this.registry.remove(url);
           this.dispatchEvent(new Event("remove"));
           if (this.isContextFile(pathName)) {
-            void this.onContextFileChanged?.();
+            this.dispatchEvent(new Event("context-file-changed"));
           }
           return;
         }
@@ -120,7 +116,7 @@ export class ModuleLoader extends EventTarget {
           eventName === "add" &&
           this.isContextFile(pathName)
         ) {
-          void this.onContextFileChanged?.();
+          this.dispatchEvent(new Event("context-file-changed"));
         }
 
         for (const dependency of dependencies) {
