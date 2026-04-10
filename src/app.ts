@@ -1,27 +1,23 @@
 import fs, { rm } from "node:fs/promises";
 import nodePath from "node:path";
 
-import { dereference } from "@apidevtools/json-schema-ref-parser";
-import createDebug from "debug";
 import { createHttpTerminator, type HttpTerminator } from "http-terminator";
 
 import { startRepl as startReplServer } from "./repl/repl.js";
 import type { Config } from "./server/config.js";
 import { ContextRegistry } from "./server/context-registry.js";
 import { createKoaApp } from "./server/create-koa-app.js";
-import {
-  Dispatcher,
-  type DispatcherRequest,
-  type OpenApiDocument,
-} from "./server/dispatcher.js";
+import { Dispatcher, type DispatcherRequest } from "./server/dispatcher.js";
 import { koaMiddleware } from "./server/koa-middleware.js";
+import { loadOpenApiDocument } from "./server/load-openapi-document.js";
 import { ModuleLoader } from "./server/module-loader.js";
+import { OpenApiWatcher } from "./server/openapi-watcher.js";
 import { Registry } from "./server/registry.js";
 import { Transpiler } from "./server/transpiler.js";
 import { CodeGenerator } from "./typescript-generator/code-generator.js";
 import { runtimeCanExecuteErasableTs } from "./util/runtime-can-execute-erasable-ts.js";
 
-const debug = createDebug("counterfact:app");
+export { loadOpenApiDocument } from "./server/load-openapi-document.js";
 
 type MswHandlerMap = {
   [key: string]: (request: MockRequest) => Promise<unknown>;
@@ -38,19 +34,6 @@ const allowedMethods = [
 ] as const;
 
 export type MockRequest = DispatcherRequest & { rawPath: string };
-
-export async function loadOpenApiDocument(source: string) {
-  try {
-    return (await dereference(source)) as OpenApiDocument;
-  } catch (error) {
-    debug("could not load OpenAPI document from %s: %o", source, error);
-    const details = error instanceof Error ? error.message : String(error);
-    throw new Error(
-      `Could not load the OpenAPI spec from "${source}".\n${details}`,
-      { cause: error },
-    );
-  }
-}
 
 const mswHandlers: MswHandlerMap = {};
 
@@ -167,6 +150,8 @@ export async function counterfact(config: Config) {
 
   const koaApp = createKoaApp(registry, middleware, config, contextRegistry);
 
+  const openApiWatcher = new OpenApiWatcher(config.openApiPath, dispatcher);
+
   async function start(options: Config) {
     const { generate, startServer, watch, buildCache } = options;
 
@@ -192,6 +177,8 @@ export async function counterfact(config: Config) {
     let httpTerminator: HttpTerminator | undefined;
 
     if (startServer) {
+      await openApiWatcher.watch();
+
       if (!nativeTs) {
         await transpiler.watch();
       }
@@ -216,6 +203,7 @@ export async function counterfact(config: Config) {
         await codeGenerator.stopWatching();
         await transpiler.stopWatching();
         await moduleLoader.stopWatching();
+        await openApiWatcher.stopWatching();
         await httpTerminator?.terminate();
       },
     };

@@ -1220,7 +1220,10 @@ describe("given a request that contains the differently cased path", () => {
       },
     };
 
-    function makeDispatcher(validateRequests: boolean) {
+    function makeDispatcher(
+      validateRequests: boolean,
+      validateResponses = true,
+    ) {
       const registry = new Registry();
 
       registry.add("/widgets", {
@@ -1244,6 +1247,7 @@ describe("given a request that contains the differently cased path", () => {
         startRepl: false,
         startServer: true,
         validateRequests,
+        validateResponses,
         watch: { routes: false, types: false },
       });
     }
@@ -1347,6 +1351,146 @@ describe("given a request that contains the differently cased path", () => {
       });
 
       expect(response.status).toBe(200);
+    });
+  });
+
+  describe("response validation", () => {
+    const openApiDocument: OpenApiDocument = {
+      paths: {
+        "/widgets": {
+          get: {
+            responses: {
+              200: {
+                content: { "text/plain": { schema: { type: "string" } } },
+                headers: {
+                  "x-required-header": {
+                    required: true,
+                    schema: { type: "string" },
+                  },
+                  "x-count": {
+                    required: false,
+                    schema: { type: "integer" },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    };
+
+    function makeResponseDispatcher(
+      validateResponses: boolean,
+      handlerHeaders: Record<string, string> = {},
+    ) {
+      const registry = new Registry();
+
+      registry.add("/widgets", {
+        GET() {
+          return { body: "ok", headers: handlerHeaders, status: 200 };
+        },
+      });
+
+      return new Dispatcher(registry, new ContextRegistry(), openApiDocument, {
+        adminApiToken: "",
+        alwaysFakeOptionals: false,
+        basePath: "/",
+        buildCache: false,
+        generate: { routes: false, types: false },
+        openApiPath: "",
+        port: 3100,
+        proxyPaths: new Map(),
+        proxyUrl: "",
+        routePrefix: "",
+        startAdminApi: false,
+        startRepl: false,
+        startServer: true,
+        validateRequests: false,
+        validateResponses,
+        watch: { routes: false, types: false },
+      });
+    }
+
+    it("adds response-type-error headers when a required response header is missing", async () => {
+      const dispatcher = makeResponseDispatcher(true);
+
+      const response = await dispatcher.request({
+        body: "",
+        headers: {},
+        method: "GET",
+        path: "/widgets",
+        query: {},
+        req: { path: "/widgets" },
+      });
+
+      const errorValues = response.appendedHeaders
+        ?.filter(([key]) => key === "response-type-error")
+        .map(([, value]) => value);
+
+      expect(errorValues?.[0]).toContain("x-required-header");
+    });
+
+    it("adds response-type-error headers when a response header has the wrong type", async () => {
+      const dispatcher = makeResponseDispatcher(true, {
+        "x-required-header": "present",
+        "x-count": "not-a-number",
+      });
+
+      const response = await dispatcher.request({
+        body: "",
+        headers: {},
+        method: "GET",
+        path: "/widgets",
+        query: {},
+        req: { path: "/widgets" },
+      });
+
+      const errorValues = response.appendedHeaders
+        ?.filter(([key]) => key === "response-type-error")
+        .map(([, value]) => value);
+
+      expect(errorValues?.[0]).toContain("x-count");
+    });
+
+    it("does not add error headers when all required response headers are present and valid", async () => {
+      const dispatcher = makeResponseDispatcher(true, {
+        "x-required-header": "present",
+        "x-count": "42",
+      });
+
+      const response = await dispatcher.request({
+        body: "",
+        headers: {},
+        method: "GET",
+        path: "/widgets",
+        query: {},
+        req: { path: "/widgets" },
+      });
+
+      expect(
+        response.appendedHeaders?.find(
+          ([key]) => key === "response-type-error",
+        ),
+      ).toBeUndefined();
+    });
+
+    it("skips response validation when validateResponses is false", async () => {
+      const dispatcher = makeResponseDispatcher(false);
+
+      const response = await dispatcher.request({
+        body: "",
+        headers: {},
+        method: "GET",
+        path: "/widgets",
+        query: {},
+        req: { path: "/widgets" },
+      });
+
+      expect(
+        response.appendedHeaders?.find(
+          ([key]) => key === "response-type-error",
+        ),
+      ).toBeUndefined();
     });
   });
 });

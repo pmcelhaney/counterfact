@@ -156,6 +156,12 @@ export function koaMiddleware(
       }
     }
 
+    if (response.appendedHeaders) {
+      for (const [key, value] of response.appendedHeaders) {
+        ctx.res.appendHeader(key, value);
+      }
+    }
+
     ctx.status = response.status ?? HTTP_STATUS_CODE_OK;
 
     return undefined;

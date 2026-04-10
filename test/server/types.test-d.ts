@@ -6,6 +6,7 @@ import {
 } from "tsd";
 
 import type {
+  COUNTERFACT_RESPONSE,
   ExampleNames,
   GenericResponseBuilderInner,
   HttpStatusCode,
@@ -269,3 +270,51 @@ expectError(binaryBuilder.text);
 // GenericResponseBuilderInner: response without application/octet-stream does not expose `binary`
 declare const noBinaryBuilder: GenericResponseBuilderInner<JsonOnlyResponse>;
 expectError(noBinaryBuilder.binary);
+
+// GenericResponseBuilderInner: response with no content exposes `empty`
+type NoContentResponse = {
+  content: {};
+  headers: {};
+  requiredHeaders: never;
+};
+
+declare const emptyBuilder: GenericResponseBuilderInner<NoContentResponse>;
+expectAssignable<() => unknown>(emptyBuilder.empty);
+
+// GenericResponseBuilderInner: response with content does not expose `empty`
+declare const noEmptyBuilder: GenericResponseBuilderInner<JsonOnlyResponse>;
+expectError(noEmptyBuilder.empty);
+
+// ResponseBuilderFactory: response with no body exposes .empty() which returns COUNTERFACT_RESPONSE.
+// Bare access ($.response[200] without .empty()) is NOT directly COUNTERFACT_RESPONSE.
+type NoBodyResponse = {
+  content: never;
+  headers: never;
+  requiredHeaders: never;
+  examples: {};
+};
+
+declare const noBodyFactory: ResponseBuilderFactory<{
+  200: NoBodyResponse;
+  404: NoBodyResponse;
+}>;
+expectAssignable<COUNTERFACT_RESPONSE>(noBodyFactory[200].empty());
+expectAssignable<COUNTERFACT_RESPONSE>(noBodyFactory[404].empty());
+expectNotAssignable<COUNTERFACT_RESPONSE>(noBodyFactory[200]);
+
+// GenericResponseBuilder: response with only optional headers (no content) exposes .empty()
+// rather than the old ALL_REMAINING_HEADERS_ARE_OPTIONAL shortcut.
+type NoBodyWithOptionalHeadersResponse = {
+  content: never;
+  headers: { "x-request-id": { schema: string } };
+  requiredHeaders: never;
+  examples: {};
+};
+
+declare const optionalHeadersFactory: ResponseBuilderFactory<{
+  200: NoBodyWithOptionalHeadersResponse;
+}>;
+expectAssignable<COUNTERFACT_RESPONSE>(optionalHeadersFactory[200].empty());
+expectAssignable<(header: "x-request-id", value: string) => unknown>(
+  optionalHeadersFactory[200].header,
+);

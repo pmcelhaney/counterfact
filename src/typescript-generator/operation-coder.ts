@@ -48,7 +48,7 @@ export class OperationCoder extends Coder {
       return `async ($) => {
         return $.response[${
           firstStatusCode === "default" ? 200 : firstStatusCode
-        }];
+        }].empty();
       }`;
     }
 

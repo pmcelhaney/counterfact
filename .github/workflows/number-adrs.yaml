@@ -1,0 +1,44 @@
+name: Number ADRs
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'docs/adr/xxx-*.md'
+
+jobs:
+  number-adrs:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Assign sequential numbers to ADR placeholder files
+        run: python3 .github/scripts/number_adrs.py
+
+      - name: Open a PR with the renamed ADR files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/adr/
+          if git diff --cached --quiet; then
+            echo "No ADR files were renamed — nothing to commit."
+            exit 0
+          fi
+          BRANCH="chore/number-adrs-${{ github.run_id }}"
+          git checkout -b "$BRANCH"
+          git commit -m "chore: assign sequential numbers to ADR files"
+          git push origin "$BRANCH"
+          PR_URL=$(gh pr create \
+            --base main \
+            --head "$BRANCH" \
+            --title "chore: assign sequential numbers to ADR files" \
+            --body "Automated PR: assigns sequential numbers to ADR placeholder files (xxx-*.md).")
+          gh pr merge --auto --squash "$PR_URL"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
