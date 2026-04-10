@@ -103,7 +103,7 @@ export class ModuleLoader extends EventTarget {
           this.registry.remove(url);
           this.dispatchEvent(new Event("remove"));
           if (this.isContextFile(pathName)) {
-            this.dispatchEvent(new Event("context-file-changed"));
+            this.contextRegistry.remove(url);
           }
           return;
         }
@@ -111,13 +111,6 @@ export class ModuleLoader extends EventTarget {
         const dependencies = this.dependencyGraph.dependentsOf(pathName);
 
         void this.loadEndpoint(pathName);
-
-        if (
-          eventName === "add" &&
-          this.isContextFile(pathName)
-        ) {
-          this.dispatchEvent(new Event("context-file-changed"));
-        }
 
         for (const dependency of dependencies) {
           void this.loadEndpoint(dependency);

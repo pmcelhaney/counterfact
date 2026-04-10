@@ -40,7 +40,7 @@ function cloneForCache(value: unknown): unknown {
   return clone;
 }
 
-export class ContextRegistry {
+export class ContextRegistry extends EventTarget {
   private readonly entries = new Map<string, Context>();
 
   private readonly cache = new Map<string, Context>();
@@ -48,6 +48,7 @@ export class ContextRegistry {
   private readonly seen = new Set<string>();
 
   public constructor() {
+    super();
     this.add("/", {});
   }
 
@@ -67,6 +68,18 @@ export class ContextRegistry {
     this.entries.set(path, context);
 
     this.cache.set(path, cloneForCache(context) as Context);
+
+    this.dispatchEvent(new Event("context-changed"));
+  }
+
+  public remove(path: string): void {
+    this.entries.delete(path);
+
+    this.cache.delete(path);
+
+    this.seen.delete(path);
+
+    this.dispatchEvent(new Event("context-changed"));
   }
 
   public find(path: string): Context {

@@ -167,7 +167,7 @@ export async function counterfact(config: Config) {
     scenarioRegistry,
   );
 
-  moduleLoader.addEventListener("context-file-changed", () => {
+  contextRegistry.addEventListener("context-changed", () => {
     void writeApplyContextType(modulesPath);
   });
 
