@@ -140,4 +140,31 @@ describe("an OperationCoder", () => {
       ),
     ).resolves.toMatchSnapshot();
   });
+
+  it("generates an operation with no response body using .empty()", async () => {
+    const requirement = new Requirement(
+      {
+        responses: {
+          204: {},
+        },
+      },
+      "#/paths/hello/delete",
+    );
+
+    const coder = new OperationCoder(requirement, "delete");
+
+    await expect(
+      format(
+        coder.write({
+          import() {
+            return "schema";
+          },
+
+          importType() {
+            return "Type";
+          },
+        }),
+      ),
+    ).resolves.toMatchSnapshot();
+  });
 });
