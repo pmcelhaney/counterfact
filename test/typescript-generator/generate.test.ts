@@ -59,8 +59,8 @@ describe("end-to-end test", () => {
   });
 });
 
-describe("apply-context type generation", () => {
-  it("generates a fallback apply-context.ts when no routes directory exists", async () => {
+describe("scenario-context type generation", () => {
+  it("generates a fallback scenario-context.ts when no routes directory exists", async () => {
     await usingTemporaryFiles(async ($) => {
       const basePath = $.path("");
       const repository = new Repository();
@@ -71,12 +71,15 @@ describe("apply-context type generation", () => {
 
       await generate("./petstore.yaml", basePath, { types: true }, repository);
 
-      const content = await $.read("types/apply-context.ts");
+      const content = await $.read("types/scenario-context.ts");
       expect(content).toContain("context: Record<string, unknown>");
       expect(content).toContain(
         "loadContext(path: string): Record<string, unknown>;",
       );
       expect(content).not.toContain("import type");
+      expect(content).toContain(
+        "export type Scenario = ($: ApplyContext) => Promise<void> | void;",
+      );
     });
   });
 
@@ -93,7 +96,7 @@ describe("apply-context type generation", () => {
 
       await generate("./petstore.yaml", basePath, { types: true }, repository);
 
-      const content = await $.read("types/apply-context.ts");
+      const content = await $.read("types/scenario-context.ts");
       expect(content).toContain(
         'import type { Context } from "../routes/_.context";',
       );
@@ -121,7 +124,7 @@ describe("apply-context type generation", () => {
 
       await generate("./petstore.yaml", basePath, { types: true }, repository);
 
-      const content = await $.read("types/apply-context.ts");
+      const content = await $.read("types/scenario-context.ts");
       expect(content).toContain(
         'import type { Context } from "../routes/_.context";',
       );
@@ -158,7 +161,7 @@ describe("apply-context type generation", () => {
 
       await generate("./petstore.yaml", basePath, { types: true }, repository);
 
-      const content = await $.read("types/apply-context.ts");
+      const content = await $.read("types/scenario-context.ts");
       expect(content).toContain(
         'import type { Context as PetsPetIdContext } from "../routes/pets/{petId}/_.context";',
       );

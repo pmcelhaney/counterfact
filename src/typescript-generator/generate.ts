@@ -253,6 +253,9 @@ function buildApplyContextContent(contextFiles: ContextFileInfo[]): string {
     "  route: (path: string) => unknown;",
     "}",
     "",
+    "/** A scenario function that receives the live REPL environment */",
+    "export type Scenario = ($: ApplyContext) => Promise<void> | void;",
+    "",
   ];
 
   return parts.join("\n");
@@ -260,7 +263,7 @@ function buildApplyContextContent(contextFiles: ContextFileInfo[]): string {
 
 async function writeApplyContextType(destination: string): Promise<void> {
   const typesDir = nodePath.join(destination, "types");
-  const filePath = nodePath.join(typesDir, "apply-context.ts");
+  const filePath = nodePath.join(typesDir, "scenario-context.ts");
 
   const contextFiles = await collectContextFiles(destination);
   const content = buildApplyContextContent(contextFiles);
@@ -269,7 +272,7 @@ async function writeApplyContextType(destination: string): Promise<void> {
   await fs.writeFile(filePath, content, "utf8");
 }
 
-const DEFAULT_SCENARIOS_INDEX = `import type { ApplyContext } from "../types/apply-context.js";
+const DEFAULT_SCENARIOS_INDEX = `import type { Scenario } from "../types/scenario-context.js";
 
 /**
  * Scenario scripts are plain TypeScript functions that receive the live REPL
@@ -292,7 +295,7 @@ const DEFAULT_SCENARIOS_INDEX = `import type { ApplyContext } from "../types/app
  * An example scenario. To use it in the REPL, type:
  *   .apply help
  */
-export function help($: ApplyContext) {
+export const help: Scenario = ($) => {
   void $;
 
   console.log(
@@ -307,7 +310,7 @@ export function help($: ApplyContext) {
   console.log(
     "\\nScenarios (including this one) are defined in the ./scenarios directory.",
   );
-}
+};
 `;
 
 async function writeDefaultScenariosIndex(destination: string): Promise<void> {

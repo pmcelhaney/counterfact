@@ -518,29 +518,29 @@ A scenario function receives a single argument with `{ context, loadContext, rou
 
 ```ts
 // scenarios/index.ts
-import type { ApplyContext } from "../types/apply-context.js";
+import type { Scenario } from "../types/scenario-context.js";
 
-export function soldPets(ctx: ApplyContext) {
+export const soldPets: Scenario = ($) => {
   // Mutate context directly — same as typing in the REPL
-  ctx.context.petService.reset();
-  ctx.context.petService.addPet({ id: 1, status: "sold" });
-  ctx.context.petService.addPet({ id: 2, status: "available" });
+  $.context.petService.reset();
+  $.context.petService.addPet({ id: 1, status: "sold" });
+  $.context.petService.addPet({ id: 2, status: "available" });
 
   // Store a pre-configured route builder for later use in the REPL
-  ctx.routes.findSold = ctx
+  $.routes.findSold = $
     .route("/pet/findByStatus")
     .method("get")
     .query({ status: "sold" });
 }
 ```
 
-After the command runs you can immediately use anything stored in `ctx.routes`:
+After the command runs you can immediately use anything stored in `$.routes`:
 
 ```js
 ⬣> routes.findSold.send()
 ```
 
-The `ApplyContext` type is generated automatically into `types/apply-context.ts` when you run Counterfact with type generation enabled.
+The `Scenario` type and `ApplyContext` interface are generated automatically into `types/scenario-context.ts` when you run Counterfact with type generation enabled.
 
 ---
 
