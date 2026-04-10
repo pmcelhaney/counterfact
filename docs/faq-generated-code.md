@@ -46,8 +46,15 @@ npx counterfact@latest my-api.yml --generate-types
 
 You can use the `--watch`, `--watch-types` and `--watch-routes` flags to have Counterfact watch the types and routes files for changes and regenerate the code when they change. Watching will always include generating the code.
 
-## After reading this FAQ and now I have even more questions!
+## After reading this FAQ I have even more questions!
 
 Please reach out by [creating an issue](https://github.com/pmcelhaney/counterfact/issues).
 
 We love feedback, so even if we've answered all your questions, please let us know in a [comment](https://github.com/pmcelhaney/counterfact/pull/796).
+
+## See also
+
+- [FAQ](./faq.md) — broader questions about Counterfact
+- [Getting started](./getting-started.md) — step-by-step walkthrough
+- [Usage guide](./usage.md) — full documentation for routes, context, REPL, and more
+- [Reference](./reference.md) — `$` API, CLI flags, architecture

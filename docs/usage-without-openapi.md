@@ -43,3 +43,9 @@ For more information on the `$` object, see the [usage guide](./usage.md).
 OpenAPI is the de-facto standard for documenting REST APIs. Counterfact is just one of [hundreds of tools](https://openapi.tools/) that use it. And if you pass Counterfact an OpenAPI doc, it will save you a lot of time by automatically generating default type-safe implementations of each API, with powerful context-sensitive autocomplete when you want to make changes.
 
 Not many people love writing documentation. Fewer people still love working on APIs that are not documented. Counterfact makes documentation useful, with immediate ROI, so that so that maintaining the docs is just as rewarding as writing code.
+
+## See also
+
+- [Getting started](./getting-started.md) — start with an OpenAPI spec for type-safe, auto-generated routes
+- [Usage guide](./usage.md) — full documentation for routes, context, REPL, and more
+- [FAQ](./faq.md) — common questions about state, types, and regeneration

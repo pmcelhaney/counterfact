@@ -4,6 +4,24 @@ Complete reference for Counterfact's architecture, route handlers, and CLI.
 
 ---
 
+## Contents
+
+- [Architecture overview](#architecture-overview)
+- [Generated file structure](#generated-file-structure)
+- [Route handlers](#route-handlers)
+- [The `$` parameter](#the--parameter)
+- [Response builder methods](#response-builder-methods)
+- [State management](#state-management)
+- [Hot reload](#hot-reload)
+- [Live REPL](#live-repl)
+- [Hybrid proxy](#hybrid-proxy)
+- [Middleware](#middleware)
+- [Type safety](#type-safety)
+- [Programmatic API](#programmatic-api)
+- [CLI reference](#cli-reference)
+
+---
+
 ## Architecture overview
 
 ```
@@ -110,6 +128,7 @@ export const GET: HTTP_GET = ($) => {
 | --- | --- |
 | `.random()` | Random data generated from the OpenAPI schema (uses `examples` where available) |
 | `.example(name)` | A specific named example from the OpenAPI spec |
+| `.empty()` | Explicitly returns a response with no body (use for 204 No Content and similar) |
 | `.json(content)` | JSON body (also converts to XML automatically when the client requests it) |
 | `.text(content)` | Plain-text body |
 | `.html(content)` | HTML body |
@@ -300,6 +319,7 @@ Run `npx counterfact@latest --help` for the full list.
 ## See also
 
 - [Getting started](./getting-started.md)
+- [Usage patterns](./usage-patterns.md)
 - [FAQ](./faq.md)
 - [How it compares](./comparison.md)
 - [Usage guide](./usage.md)

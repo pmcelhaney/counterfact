@@ -16,6 +16,7 @@ export interface ResponseBuilder {
     value: string,
     options?: CookieOptions,
   ) => ResponseBuilder;
+  empty: () => ResponseBuilder;
   example: (name: string) => ResponseBuilder;
   header: (name: string, value: string) => ResponseBuilder;
   headers: { [name: string]: string | string[] };

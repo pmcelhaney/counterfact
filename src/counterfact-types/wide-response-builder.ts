@@ -9,6 +9,7 @@ import type { MaybePromise } from "./maybe-promise.js";
  */
 export interface WideResponseBuilder {
   binary: (body: Uint8Array | string) => WideResponseBuilder;
+  empty: () => WideResponseBuilder;
   example: (name: string) => WideResponseBuilder;
   cookie: (
     name: string,
