@@ -103,10 +103,9 @@ export class ModuleLoader extends EventTarget {
           this.registry.remove(url);
           this.dispatchEvent(new Event("remove"));
           if (this.isContextFile(pathName)) {
-            const contextPath = unescapePathForWindows(
-              `/${parts.dir}`.replaceAll("\\", "/").replaceAll(/\/+/gu, "/"),
+            this.contextRegistry.remove(
+              unescapePathForWindows(parts.dir).replaceAll("\\", "/") || "/",
             );
-            this.contextRegistry.remove(contextPath || "/");
           }
           return;
         }
