@@ -19,7 +19,7 @@ def wait_for_server(timeout=SERVER_STARTUP_TIMEOUT):
     deadline = time.monotonic() + timeout
     while time.monotonic() < deadline:
         try:
-            response = requests.get(f"{BASE_URL}/counterfact/", timeout=2)
+            response = requests.get(f"{BASE_URL}/counterfact/swagger", timeout=2)
             if response.status_code == 200:
                 return
         except requests.exceptions.RequestException:

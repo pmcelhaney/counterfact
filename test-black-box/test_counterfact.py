@@ -22,8 +22,8 @@ REQUEST_TIMEOUT = 10
 
 
 def test_home_page(server):
-    """The built-in dashboard is served at /counterfact/."""
-    response = requests.get(f"{BASE_URL}/counterfact/", timeout=REQUEST_TIMEOUT)
+    """The Swagger UI is served at /counterfact/swagger."""
+    response = requests.get(f"{BASE_URL}/counterfact/swagger", timeout=REQUEST_TIMEOUT)
     assert response.status_code == 200
 
 
