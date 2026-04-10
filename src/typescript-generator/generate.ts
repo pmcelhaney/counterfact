@@ -271,24 +271,43 @@ async function writeApplyContextType(destination: string): Promise<void> {
 
 const DEFAULT_SCENARIOS_INDEX = `import type { ApplyContext } from "../types/apply-context.js";
 
-// Scenario scripts are plain TypeScript functions that receive the live REPL
-// environment and can read or mutate server state. Run them from the REPL with:
-//   .apply <functionName>
-//
-// Example:
-// export function myScenario(ctx: ApplyContext) {
-//   // Read or mutate the root context (same object routes see as $.context)
-//   // ctx.context.<property> = <value>;
-//
-//   // Load a context for a specific path
-//   // const petsCtx = ctx.loadContext("/pets");
-//
-//   // Store a pre-configured route builder for later use in the REPL
-//   // ctx.routes.myRequest = ctx.route("/pets").method("get");
-// }
-//
-// Then in the REPL:
-//   .apply myScenario
+/**
+ * Scenario scripts are plain TypeScript functions that receive the live REPL
+ * environment and can read or mutate server state. Run them from the REPL with:
+ *   .apply <functionName>
+ */
+
+/**
+ * Read or mutate the root context (same object routes see as $.context):
+ *   $.context.<property> = <value>;
+ *
+ * Load a context for a specific path:
+ *   const petsCtx = $.loadContext("/pets");
+ *
+ * Store a pre-configured route builder for later use in the REPL:
+ *   $.routes.myRequest = $.route("/pets").method("get");
+ */
+
+/**
+ * An example scenario. To use it in the REPL, type:
+ *   .apply help
+ */
+export function help($: ApplyContext) {
+  void $;
+
+  console.log(
+    [
+      "Scenarios are functions that populate the context object",
+      "and / or the REPL environment. They are intended to",
+      "populate your environment with specific data and",
+      "configurations for testing purposes.",
+    ].join("\\n"),
+  );
+
+  console.log(
+    "\\nScenarios (including this one) are defined in the ./scenarios directory.",
+  );
+}
 `;
 
 async function writeDefaultScenariosIndex(destination: string): Promise<void> {
