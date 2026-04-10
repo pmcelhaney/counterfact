@@ -1,105 +1,48 @@
 # Copilot Instructions for Counterfact
 
-## REQUIRED: Pull Request Behavior
+## Manual Acceptance Tests
 
-When creating or updating a pull request, you MUST:
+Every PR description must include a section titled exactly `## Manual acceptance tests` with 3–6 unchecked checkboxes. Each checkbox must describe an observable behavior (not an implementation detail), and must not be pre-checked — they are for the human reviewer.
 
-1. Use the existing PR template.
-2. Replace all placeholder comments (`<!-- ... -->`) with real content.
-3. Ensure the PR description includes a section exactly titled:
+- Cover the main success path, at least one edge case, and one regression check where applicable.
+- Example:
+  - [ ] `GET /hello/{name}` returns 200 with expected response body
+  - [ ] Invalid example name returns 500
+  - [ ] Existing routes without examples behave unchanged
 
-   ## Manual acceptance tests
+**Exception:** When the PR only adds issue proposal files under `.github/issue-proposals/`, the acceptance tests section may be omitted. The CI workflow processes proposal files automatically on merge.
 
-4. Under that section, include 3–6 unchecked checkboxes.
+## File System Operations in Tests
 
-Each item must use this format:
+When tests need to read or write files, use `usingTemporaryFiles()` from the `using-temporary-files` package (already a devDependency). Never import `node:fs`, `fs`, `node:fs/promises`, or `fs/promises` directly in test files.
 
-- [ ] description of behavior
+The `$` helper provides:
+- `$.add(relativePath, contents)` — create or overwrite a file
+- `$.addDirectory(relativePath)` — create a directory
+- `$.read(relativePath)` — read a file's contents (returns `Promise<string>`)
+- `$.remove(relativePath)` — delete a file
+- `$.path(relativePath)` — resolve an absolute path within the temporary directory (use this when passing paths to the code under test)
 
-### Requirements
+```ts
+import { usingTemporaryFiles } from "using-temporary-files";
 
-- Each checkbox must describe an observable behavior (not implementation details)
-- Include:
-  - the main success path
-  - at least one edge case
-  - at least one regression/backward compatibility check if applicable
-- Do NOT check the boxes — they are for the human reviewer
-- Do NOT describe implementation tasks (e.g., "refactored code", "updated types")
+it("example", async () => {
+  await usingTemporaryFiles(async ($) => {
+    await $.add("input.json", JSON.stringify({ key: "value" }));
+    const result = await myFunction($.path("input.json"));
+    const output = await $.read("output.txt");
+    expect(output).toBe("expected content");
+  });
+});
+```
 
-### Example
+## Before Committing
 
-- [ ] `GET /hello/{name}` returns 200 with expected response body
-- [ ] Invalid example name returns 500
-- [ ] Response includes `x-test` header when defined
-- [ ] Existing routes without examples behave unchanged
-
-## Test-driven workflow
-
-When implementing a change, work in a test-first or test-guided way whenever practical.
-
-### Default workflow
-
-1. Understand the requested behavior before changing code.
-2. Identify the smallest observable behavior that proves the change works.
-3. Add or update automated tests for that behavior first.
-4. Run the relevant tests and confirm they fail for the expected reason when feasible.
-5. Implement the smallest code change needed to make the tests pass.
-6. Refactor only after the tests are green.
-7. Run all relevant tests again before finishing.
-
-### Expectations
-
-- Prefer adding tests at the level that best captures user-visible behavior.
-- Do not change tests merely to accommodate broken behavior unless the requested behavior has changed.
-- Do not remove tests without explaining why.
-- Avoid over-mocking. Prefer realistic behavior and real integration boundaries where practical.
-- Keep tests readable. A test should make it obvious what behavior is expected.
-- Cover at least:
-  - the main success path
-  - one meaningful edge case
-  - one regression risk when applicable
-
-### When to add tests
-
-Add or update tests for:
-- bug fixes
-- new features
-- refactors that could change behavior
-- generated code, when generation behavior is being changed
-- any change that affects external contracts, APIs, schemas, or CLI behavior
-
-### When tests are hard to add
-
-If a test is difficult to write:
-1. Do not skip testing silently.
-2. Explain why the code is hard to test.
-3. Improve the design if possible to make testing easier.
-4. If automated coverage is still impractical, provide clear manual verification steps.
-
-### Definition of done
-
-A change is not complete until:
-- the relevant tests exist
-- the relevant tests pass
-- the implementation matches the requested behavior
-- manual verification steps are included when needed
-
-### Decision rule
-
-When choosing between:
-- writing more production code
-- tightening tests
-- simplifying design
-
-prefer the option that improves feedback quality and reduces ambiguity.
-
-## Required PR Checklist
-
-- Every PR must pass CI: lint (ESLint), type check (`tsc --noEmit`), unit tests, black-box tests, and type tests.
-- Run `yarn lint:fix` before each commit to auto-fix linting issues, then `yarn lint` to confirm no remaining errors.
-- Include a changeset (`npx changeset`) for any user-facing change.
-- Keep commits focused; prefer multiple small commits over one large one.
-- Do not commit build artifacts (`dist/`, `out/`, `coverage/`) — they are in `.gitignore`.
+- Run `yarn lint:fix` to auto-fix linting issues, then `yarn lint` to confirm no remaining errors.
+- For any user-facing change, you **must**:
+  - Add a changeset by running `npx changeset`. Choose the appropriate semver bump (patch / minor / major) and write a short description of what changed.
+  - Update the relevant docs under `docs/` (e.g. `docs/usage.md`, `docs/getting-started.md`, or `docs/reference.md`) to reflect the change. If the change introduces a new feature or modifies existing behaviour, document it there.
+- When touching server startup or CLI behaviour, run the black-box tests: `yarn build` then `yarn test:black-box` (requires Python 3 with `pip install -r test-black-box/requirements.txt`).
 
 ## Context
 
@@ -141,8 +84,6 @@ templates/                    # Scaffold templates used during code generation
 | Lint (auto-fix)               | `yarn lint:fix`                  |
 | Run against Petstore          | `yarn go:petstore`               |
 
-Always run `yarn lint:fix` before committing to automatically fix linting issues, then run `yarn test` to verify nothing is broken. Run `yarn lint` before opening a PR to confirm no remaining errors. Black-box tests require a build (`yarn build`) and Python 3 with pytest and requests installed (`pip install -r test-black-box/requirements.txt`); run them when touching server startup or CLI behaviour.
-
 ## Proposing New GitHub Issues
 
 When planning work that requires new GitHub issues, follow the conventions in:
@@ -159,6 +100,6 @@ Key rules:
 - Include `parentIssue` in front matter whenever you know the parent issue number.
 - Write clear issue bodies with a summary, context/motivation, and acceptance criteria.
 
-Proposal files are reviewed in a pull request and converted into real issues automatically on merge.
+Proposal files are merged via a pull request and converted into real issues automatically on merge.
 
 

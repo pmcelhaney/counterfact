@@ -11,6 +11,7 @@ import type {
 } from "./registry.js";
 import { createResponseBuilder } from "./response-builder.js";
 import { validateRequest } from "./request-validator.js";
+import { validateResponse } from "./response-validator.js";
 import { Tools } from "./tools.js";
 import type {
   OpenApiOperation,
@@ -79,6 +80,7 @@ export type DispatcherRequest = {
   query: {
     [key: string]: string;
   };
+  rawBody?: string;
   req: {
     path?: string;
   };
@@ -258,6 +260,7 @@ export class Dispatcher {
     method,
     path,
     query,
+    rawBody,
     req,
   }: DispatcherRequest): Promise<CounterfactResponseObject> {
     debug(`request: ${method} ${path}`);
@@ -327,18 +330,10 @@ export class Dispatcher {
       headers,
 
       proxy: async (url: string) => {
-        if (body !== undefined && headers.contentType !== "application/json") {
-          throw new Error(
-            `$.proxy() is currently limited to application/json requests. You tried to proxy to ${url} with a Content-Type of ${
-              headers.contentType ?? "[unknown]"
-            }. Please open an issue at https://github.com/pmcelhaney/counterfact/issues and prod me to fix this limitation.`,
-          );
-        }
-
         delete headers.host;
 
         const fetchResponse = await this.fetch(`${url}${req.path ?? ""}`, {
-          body: body === undefined ? undefined : JSON.stringify(body),
+          body: body === undefined ? undefined : rawBody,
           headers: new Headers(headers),
           method,
         });
@@ -388,6 +383,23 @@ export class Dispatcher {
         body: JSON.stringify(mediaTypes(headers.accept ?? "*/*")),
         status: 406,
       };
+    }
+
+    if (this.config?.validateResponses !== false) {
+      const validation = validateResponse(operation, normalizedResponse);
+
+      if (!validation.valid) {
+        return {
+          ...normalizedResponse,
+          appendedHeaders: [
+            ...(normalizedResponse.appendedHeaders ?? []),
+            ...validation.errors.map((error): [string, string] => [
+              "response-type-error",
+              error,
+            ]),
+          ],
+        };
+      }
     }
 
     return normalizedResponse;

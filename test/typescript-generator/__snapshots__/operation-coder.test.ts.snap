@@ -13,3 +13,10 @@ exports[`an OperationCoder generates a simple post operation 1`] = `
 };
 "
 `;
+
+exports[`an OperationCoder generates an operation with no response body using .empty() 1`] = `
+"async ($) => {
+  return $.response[204].empty();
+};
+"
+`;

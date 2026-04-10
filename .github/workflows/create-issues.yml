@@ -1,41 +1,42 @@
 name: Create Issues from Proposals
 
 on:
-  push:
-    branches:
-      - main
+  pull_request:
+    types: [closed]
     paths:
       - '.github/issue-proposals/*.md'
 
 jobs:
   create-issues:
     runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
     permissions:
-      contents: write
       issues: write
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
       - name: Install Python dependencies
         run: pip install pyyaml
 
-      - name: Process issue proposals
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
-          GITHUB_SHA: ${{ github.sha }}
-        run: python3 .github/scripts/create_issues.py
-
-      - name: Commit deleted proposal files
+      - name: Get newly added proposal files
+        id: get-files
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add .github/issue-proposals/
-          if git diff --cached --quiet; then
-            echo "No proposal files were deleted — nothing to commit."
-          else
-            git commit -m "chore: remove processed issue proposals"
-            git push
-          fi
+          set -euo pipefail
+          ADDED=$(gh api "repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files" \
+            --jq '[.[] | select(.status == "added") | select(.filename | startswith(".github/issue-proposals/") and endswith(".md")) | .filename] | join("\n")')
+          echo "PROPOSAL_FILES<<EOF" >> "$GITHUB_ENV"
+          echo "$ADDED" >> "$GITHUB_ENV"
+          echo "EOF" >> "$GITHUB_ENV"
+        env:
+          GH_TOKEN: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
+
+      - name: Process issue proposals
+        if: env.PROPOSAL_FILES != ''
+        env:
+          GITHUB_TOKEN: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_REF: refs/heads/${{ github.event.pull_request.head.ref }}
+          PROPOSAL_FILES: ${{ env.PROPOSAL_FILES }}
+        run: python3 .github/scripts/create_issues.py

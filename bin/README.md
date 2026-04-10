@@ -18,11 +18,13 @@ npx counterfact@latest openapi.yaml ./api [options]
 │     counterfact.js         │
 │                            │
 │  1. Parse args (Commander) │
-│  2. Resolve paths          │
-│  3. Build Config object    │
-│  4. Run migrations if      │
+│  2. Load counterfact.yaml  │
+│  3. Merge config + args    │
+│  4. Resolve paths          │
+│  5. Build Config object    │
+│  6. Run migrations if      │
 │     old layout detected    │
-│  5. Call start(config)     │
+│  7. Call start(config)     │
 │     from src/app.ts        │
 └────────────────────────────┘
 ```
@@ -42,5 +44,23 @@ npx counterfact@latest openapi.yaml ./api [options]
 | `--prefix <path>` | Base path prefix for all routes (e.g. `/api/v1`) |
 | `--no-update-check` | Disable the npm update check on startup |
 | `--no-validate-request` | Disable request validation against the OpenAPI spec |
+| `--config <path>` | Path to a `counterfact.yaml` config file (default: `counterfact.yaml` in the current directory) |
 
 Run `npx counterfact@latest --help` to see the full option list.
+
+### Config File
+
+Any CLI option can also be specified in a `counterfact.yaml` file in the current working directory. Command-line options always take precedence.
+
+```yaml
+# counterfact.yaml
+spec: ./openapi.yaml
+port: 8080
+serve: true
+repl: true
+watch: true
+proxy-url: https://api.example.com
+prefix: /api/v1
+```
+
+Use `--config <path>` to load a config file from a non-default location.

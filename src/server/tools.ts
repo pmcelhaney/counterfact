@@ -14,7 +14,9 @@ export class Tools {
   }
 
   public accepts(contentType: string): boolean {
-    const acceptHeader = this.headers.Accept;
+    const acceptHeader = Object.entries(this.headers).find(
+      ([key]) => key.toLowerCase() === "accept",
+    )?.[1];
 
     if (acceptHeader === "" || acceptHeader === undefined) {
       return true;
@@ -23,7 +25,7 @@ export class Tools {
     const acceptTypes = String(acceptHeader).split(",");
 
     return acceptTypes.some((acceptType) => {
-      const [type, subtype] = acceptType.split("/");
+      const [type, subtype] = acceptType.trim().split("/");
 
       return (
         (type === "*" || type === contentType.split("/")[0]) &&

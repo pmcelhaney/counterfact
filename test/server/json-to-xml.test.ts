@@ -55,4 +55,16 @@ describe("JSON to XML", () => {
       "<xml-book><author>string</author><id>0</id><title>string</title></xml-book>",
     );
   });
+
+  it("escapes XML special characters in text content", () => {
+    const xml = jsonToXml('<script>alert("xss")</script>', undefined, "data");
+    expect(xml).toBe(
+      "<data>&lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;</data>",
+    );
+  });
+
+  it("escapes ampersands in primitive values", () => {
+    const xml = jsonToXml("a & b < c > d", undefined, "text");
+    expect(xml).toBe("<text>a &amp; b &lt; c &gt; d</text>");
+  });
 });

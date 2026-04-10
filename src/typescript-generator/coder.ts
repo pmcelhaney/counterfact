@@ -1,3 +1,4 @@
+import { RESERVED_WORDS } from "./reserved-words.js";
 import type { Requirement } from "./requirement.js";
 import type { Script } from "./script.js";
 
@@ -57,7 +58,9 @@ export class Coder {
       .replace(/^\d/u, (digit) => `_${digit}`)
       .replaceAll(/[^\w$]/gu, "_");
 
-    yield name;
+    const baseName = RESERVED_WORDS.has(name) ? `${name}_` : name;
+
+    yield baseName;
 
     let index = 1;
 
@@ -65,7 +68,7 @@ export class Coder {
 
     while (index < MAX_NAMES_TO_GENERATE_BEFORE_GIVING_UP) {
       index += 1;
-      yield name + index;
+      yield baseName + index;
     }
   }
 

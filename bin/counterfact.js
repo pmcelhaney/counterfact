@@ -41,7 +41,9 @@ import { PostHog } from "posthog-node";
 
 const MIN_NODE_VERSION = 17;
 
-if (Number.parseInt(process.versions.node.split("."), 10) < MIN_NODE_VERSION) {
+if (
+  Number.parseInt(process.versions.node.split(".")[0], 10) < MIN_NODE_VERSION
+) {
   process.stdout.write(
     `Counterfact works with Node version ${MIN_NODE_VERSION}+. You are running version ${process.version}`,
   );
@@ -150,6 +152,13 @@ const { updateRouteTypes } = await import(
     nativeTs
       ? "../src/migrate/update-route-types.js"
       : "../dist/migrate/update-route-types.js",
+  )
+);
+const { loadConfigFile } = await import(
+  resolve(
+    nativeTs
+      ? "../src/util/load-config-file.js"
+      : "../dist/util/load-config-file.js",
   )
 );
 
@@ -269,6 +278,31 @@ async function main(source, destination) {
       ? Promise.resolve()
       : checkForUpdates(CURRENT_VERSION);
 
+  // Load the config file (counterfact.yaml by default, or --config <path>).
+  // CLI options always take precedence over config file settings.
+  const configFilePath = nodePath.resolve(options.config ?? "counterfact.yaml");
+  const fileConfig = await loadConfigFile(
+    configFilePath,
+    options.config !== undefined,
+  );
+  debug("fileConfig: %o", fileConfig);
+
+  // Apply config file values for any option that was not explicitly set on the
+  // command line (i.e. its source is "default" or it was never defined).
+  for (const [key, value] of Object.entries(fileConfig)) {
+    const optionSource = program.getOptionValueSource(key);
+
+    if (optionSource !== "cli") {
+      options[key] = value;
+    }
+  }
+
+  // If the config file specifies a destination and none was given on the CLI,
+  // use it (destination has no Commander option — it's a positional argument).
+  if (fileConfig.destination !== undefined && destination === ".") {
+    destination = String(fileConfig.destination);
+  }
+
   // --spec takes precedence over the positional [openapi.yaml] argument.
   // When --spec is provided, the [openapi.yaml] positional slot shifts to
   // become the [destination] argument (so `counterfact --spec api.yaml ./api`
@@ -343,6 +377,7 @@ async function main(source, destination) {
     startServer: options.serve,
     buildCache: options.buildCache || false,
     validateRequests: options.validateRequest !== false,
+    validateResponses: options.validateResponse !== false,
 
     watch: {
       routes: options.watch || options.watchRoutes,
@@ -549,6 +584,14 @@ program
   .option(
     "--no-validate-request",
     "disable request validation against the OpenAPI spec",
+  )
+  .option(
+    "--no-validate-response",
+    "disable response validation against the OpenAPI spec",
+  )
+  .option(
+    "--config <path>",
+    "path to a counterfact.yaml config file (default: counterfact.yaml in the current directory)",
   )
   .action(main)
   .parse(process.argv);

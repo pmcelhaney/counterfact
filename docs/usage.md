@@ -8,6 +8,21 @@ Counterfact is three tools in one:
 
 ---
 
+## Contents
+
+- [Quick Start](#quick-start)
+- [Generated Code](#generated-code)
+- [Routes](#routes)
+- [State: Context Objects](#state-context-objects)
+- [TypeScript Native Mode](#typescript-native-mode)
+- [Hot Reload](#hot-reload-)
+- [REPL](#repl-)
+- [Proxy](#proxy-)
+- [Middleware](#middleware)
+- [Programmatic API](#programmatic-api)
+
+---
+
 ## Quick Start
 
 ```sh
@@ -44,8 +59,37 @@ Options:
   --prefix <string>          base path prefix (e.g. /api/v1)
   --always-fake-optionals    include optional fields in random responses
   -b, --build-cache          pre-compile routes and types without starting the server
+  --config <path>            path to a counterfact.yaml config file
   -h, --help                 display help
 ```
+
+</details>
+
+<details>
+<summary>Using a counterfact.yaml config file</summary>
+
+Any CLI option can also be placed in a `counterfact.yaml` file in the current working directory. Command-line flags always take precedence over values in the file.
+
+```yaml
+# counterfact.yaml
+spec: ./openapi.yaml
+port: 8080
+serve: true
+repl: true
+watch: true
+proxy-url: https://api.example.com
+prefix: /api/v1
+```
+
+Kebab-case keys (e.g. `proxy-url`, `always-fake-optionals`) are accepted and normalised automatically.
+
+Use `--config <path>` to load a config file from a non-default location:
+
+```sh
+npx counterfact@latest --config ./config/counterfact.yaml
+```
+
+If `--config` points to a file that does not exist, Counterfact exits with an error. If no `--config` flag is given and there is no `counterfact.yaml` in the current directory, startup proceeds normally using CLI options and defaults.
 
 </details>
 
@@ -652,6 +696,12 @@ it("prompts for a password change when the password has expired", async () => {
 
 ---
 
-## What's Next
+## See also
 
-Please send feedback to pmcelhaney@gmail.com or [open an issue](https://github.com/pmcelhaney/counterfact/issues/new). [Contributions](../CONTRIBUTING.md) are always welcome.
+- [Getting started](./getting-started.md)
+- [Usage patterns](./usage-patterns.md) — explore an API, simulate failures, hybrid proxy, agentic coding, and more
+- [Reference](./reference.md) — `$` parameter, response builder methods, full CLI flags, architecture overview
+- [FAQ](./faq.md) — common questions about state, type safety, regeneration, and programmatic use
+- [How it compares](./comparison.md) — side-by-side with json-server, WireMock, Prism, Microcks, and MSW
+- [Generated code FAQ](./faq-generated-code.md) — questions about source control, editing, and regeneration
+- [Petstore example](https://github.com/counterfact/example-petstore) — a complete worked example

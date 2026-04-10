@@ -16,6 +16,7 @@ describe("tools", () => {
     ${"text/html"}        | ${"text/*"}
     ${"application/json"} | ${"*/json"}
     ${"text/*"}           | ${"text/*"}
+    ${"application/json"} | ${"text/html, application/json"}
   `(
     "accept('$contentType') returns true when the accept header is $acceptHeader",
     ({ acceptHeader, contentType }) => {
@@ -38,6 +39,12 @@ describe("tools", () => {
       expect(tools.accepts(contentType)).toBe(false);
     },
   );
+
+  it("accepts('application/json') returns false when lowercase 'accept' header is 'text/plain'", () => {
+    const tools = new Tools({ headers: { accept: "text/plain" } });
+
+    expect(tools.accepts("application/json")).toBe(false);
+  });
 
   it("randomFromSchema() returns a value (the implementation is in a third party library)", async () => {
     const tools = new Tools();
