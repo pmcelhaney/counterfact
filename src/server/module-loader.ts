@@ -106,7 +106,7 @@ export class ModuleLoader extends EventTarget {
         if (eventName === "unlink") {
           this.registry.remove(url);
           this.dispatchEvent(new Event("remove"));
-          if (basename(pathName).startsWith("_.context.")) {
+          if (this.isContextFile(pathName)) {
             void this.onContextFileChanged?.();
           }
           return;
@@ -118,7 +118,7 @@ export class ModuleLoader extends EventTarget {
 
         if (
           eventName === "add" &&
-          basename(pathName).startsWith("_.context.")
+          this.isContextFile(pathName)
         ) {
           void this.onContextFileChanged?.();
         }
@@ -162,6 +162,10 @@ export class ModuleLoader extends EventTarget {
   public async stopWatching(): Promise<void> {
     await this.watcher?.close();
     await this.scenariosWatcher?.close();
+  }
+
+  private isContextFile(pathName: string): boolean {
+    return basename(pathName).startsWith("_.context.");
   }
 
   public async load(directory = ""): Promise<void> {
@@ -304,7 +308,7 @@ export class ModuleLoader extends EventTarget {
       this.dispatchEvent(new Event("add"));
 
       if (
-        basename(pathName).startsWith("_.context.") &&
+        this.isContextFile(pathName) &&
         isContextModule(endpoint)
       ) {
         const loadContext = (path: string) => this.contextRegistry.find(path);
