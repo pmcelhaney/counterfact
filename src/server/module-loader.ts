@@ -298,10 +298,7 @@ export class ModuleLoader extends EventTarget {
 
       this.dispatchEvent(new Event("add"));
 
-      if (
-        this.isContextFile(pathName) &&
-        isContextModule(endpoint)
-      ) {
+      if (this.isContextFile(pathName) && isContextModule(endpoint)) {
         const loadContext = (path: string) => this.contextRegistry.find(path);
 
         const contextDir = nodePath.dirname(unescapePathForWindows(pathName));
