@@ -1,0 +1,108 @@
+# REPL ⬣
+
+The REPL is a JavaScript prompt connected directly to the running server — like the browser DevTools console, but for your mock API. After starting Counterfact you'll see:
+
+```
+____ ____ _  _ _ _ ___ ____ ____ ____ ____ ____ ___
+|___ [__] |__| |\|  |  |=== |--< |--- |--| |___  |
+            Storybook for the back-end
+
+| API Base URL  ==> http://localhost:3100
+| Admin Console ==> http://localhost:3100/counterfact/
+
+⬣>
+```
+
+At the prompt you can interact with the live context:
+
+```js
+// add a single pet
+context.addPet({ name: "Fluffy", photoUrls: [] });
+
+// add 100 pets
+for (let i = 0; i < 100; i++)
+  context.addPet({ name: `Pet ${i}`, photoUrls: [] });
+
+// query state
+context.pets.filter((pet) => pet.name.startsWith("F"));
+```
+
+To access context from a subdirectory:
+
+```js
+const petsContext = loadContext("/pets");
+```
+
+The built-in `client` object lets you make HTTP requests from the prompt without leaving the terminal:
+
+```js
+client.get("/users");
+client.post("/users", { name: "bob" });
+client.put("/users/1", { name: "robert" }, { "x-api-version": "2" });
+```
+
+All standard HTTP methods are supported. Arguments are: path, body (where applicable), headers.
+
+The built-in `route()` function creates a fluent request builder that validates required parameters against your OpenAPI document before sending:
+
+```js
+// Build and inspect before sending
+const req = route("/pet/{petId}").method("get").path({ petId: 42 })
+req.ready()    // true / false
+req.missing()  // lists missing required parameters
+req.help()     // prints OpenAPI docs for the operation
+await req.send()
+```
+
+See the [Route Builder guide](./route-builder.md) for full documentation.
+
+## Scenario scripts with `.apply`
+
+For more complex setups you can automate REPL interactions by writing _scenario scripts_ — plain TypeScript files that export named functions. Run them with `.apply`:
+
+```
+⬣> .apply soldPets
+```
+
+**Path resolution:** the argument to `.apply` is a slash-separated path. The last segment is the function name; everything before it is the file path, resolved relative to `<basePath>/scenarios/` (with `index.ts` as the default file).
+
+| Command | File | Function |
+|---|---|---|
+| `.apply foo` | `scenarios/index.ts` | `foo` |
+| `.apply foo/bar` | `scenarios/foo.ts` | `bar` |
+| `.apply foo/bar/baz` | `scenarios/foo/bar.ts` | `baz` |
+
+A scenario function receives a single argument with `{ context, loadContext, routes, route }`:
+
+```ts
+// scenarios/index.ts
+import type { Scenario } from "../types/scenario-context.js";
+
+export const soldPets: Scenario = ($) => {
+  // Mutate context directly — same as typing in the REPL
+  $.context.petService.reset();
+  $.context.petService.addPet({ id: 1, status: "sold" });
+  $.context.petService.addPet({ id: 2, status: "available" });
+
+  // Store a pre-configured route builder for later use in the REPL
+  $.routes.findSold = $
+    .route("/pet/findByStatus")
+    .method("get")
+    .query({ status: "sold" });
+}
+```
+
+After the command runs you can immediately use anything stored in `$.routes`:
+
+```js
+⬣> routes.findSold.send()
+```
+
+The `Scenario` type and `ApplyContext` interface are generated automatically into `types/scenario-context.ts` when you run Counterfact with type generation enabled.
+
+## See also
+
+- [Route Builder](./route-builder.md) — fluent request builder with OpenAPI introspection
+- [State](./state.md) — the context objects you interact with from the REPL
+- [Patterns: Live Server Inspection with the REPL](../patterns/repl-inspection.md)
+- [Usage](../usage.md)

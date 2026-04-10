@@ -39,5 +39,5 @@ A `Persistent State` pattern document would describe:
 - [ ] `--persist-state <path>` CLI flag (or equivalent) is implemented
 - [ ] Context classes can opt in to persistence by implementing a documented interface
 - [ ] `docs/patterns/persistent-state.md` is added following the established pattern format
-- [ ] The new pattern is linked in `docs/usage-patterns.md`
+- [ ] The new pattern is linked in `docs/patterns/index.md`
 - [ ] The reference doc is updated to describe the new CLI flag and context interface
