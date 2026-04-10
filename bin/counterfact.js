@@ -377,6 +377,7 @@ async function main(source, destination) {
     startServer: options.serve,
     buildCache: options.buildCache || false,
     validateRequests: options.validateRequest !== false,
+    validateResponses: options.validateResponse !== false,
 
     watch: {
       routes: options.watch || options.watchRoutes,
@@ -583,6 +584,10 @@ program
   .option(
     "--no-validate-request",
     "disable request validation against the OpenAPI spec",
+  )
+  .option(
+    "--no-validate-response",
+    "disable response validation against the OpenAPI spec",
   )
   .option(
     "--config <path>",
