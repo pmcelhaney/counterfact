@@ -39,6 +39,8 @@ export class ModuleLoader extends EventTarget {
 
   private readonly scenarioRegistry: ScenarioRegistry | undefined;
 
+  private readonly onContextFileChanged: (() => Promise<void>) | undefined;
+
   private readonly dependencyGraph = new ModuleDependencyGraph();
 
   private readonly fileDiscovery: FileDiscovery;
@@ -54,6 +56,7 @@ export class ModuleLoader extends EventTarget {
     contextRegistry = new ContextRegistry(),
     scenariosPath?: string,
     scenarioRegistry?: ScenarioRegistry,
+    onContextFileChanged?: () => Promise<void>,
   ) {
     super();
     this.basePath = basePath.replaceAll("\\", "/");
@@ -61,6 +64,7 @@ export class ModuleLoader extends EventTarget {
     this.contextRegistry = contextRegistry;
     this.scenariosPath = scenariosPath?.replaceAll("\\", "/");
     this.scenarioRegistry = scenarioRegistry;
+    this.onContextFileChanged = onContextFileChanged;
     this.fileDiscovery = new FileDiscovery(this.basePath);
   }
 
@@ -102,12 +106,22 @@ export class ModuleLoader extends EventTarget {
         if (eventName === "unlink") {
           this.registry.remove(url);
           this.dispatchEvent(new Event("remove"));
+          if (basename(pathName).startsWith("_.context.")) {
+            void this.onContextFileChanged?.();
+          }
           return;
         }
 
         const dependencies = this.dependencyGraph.dependentsOf(pathName);
 
         void this.loadEndpoint(pathName);
+
+        if (
+          eventName === "add" &&
+          basename(pathName).startsWith("_.context.")
+        ) {
+          void this.onContextFileChanged?.();
+        }
 
         for (const dependency of dependencies) {
           void this.loadEndpoint(dependency);

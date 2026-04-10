@@ -20,6 +20,7 @@ import { Registry } from "./server/registry.js";
 import { ScenarioRegistry } from "./server/scenario-registry.js";
 import { Transpiler } from "./server/transpiler.js";
 import { CodeGenerator } from "./typescript-generator/code-generator.js";
+import { writeApplyContextType } from "./typescript-generator/generate.js";
 import { runtimeCanExecuteErasableTs } from "./util/runtime-can-execute-erasable-ts.js";
 
 const debug = createDebug("counterfact:app");
@@ -164,6 +165,7 @@ export async function counterfact(config: Config) {
     contextRegistry,
     nodePath.join(modulesPath, "scenarios").replaceAll("\\", "/"),
     scenarioRegistry,
+    () => writeApplyContextType(modulesPath),
   );
 
   const middleware = koaMiddleware(dispatcher, config);

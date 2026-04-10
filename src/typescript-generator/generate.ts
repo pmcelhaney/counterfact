@@ -261,7 +261,9 @@ function buildApplyContextContent(contextFiles: ContextFileInfo[]): string {
   return parts.join("\n");
 }
 
-async function writeApplyContextType(destination: string): Promise<void> {
+export async function writeApplyContextType(
+  destination: string,
+): Promise<void> {
   const typesDir = nodePath.join(destination, "types");
   const filePath = nodePath.join(typesDir, "scenario-context.ts");
 
