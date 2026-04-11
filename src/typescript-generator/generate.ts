@@ -279,7 +279,7 @@ const DEFAULT_SCENARIOS_INDEX = `import type { Scenario } from "../types/scenari
 /**
  * Scenario scripts are plain TypeScript functions that receive the live REPL
  * environment and can read or mutate server state. Run them from the REPL with:
- *   .apply <functionName>
+ *   .scenario <functionName>
  */
 
 /**
@@ -295,7 +295,7 @@ const DEFAULT_SCENARIOS_INDEX = `import type { Scenario } from "../types/scenari
 
 /**
  * An example scenario. To use it in the REPL, type:
- *   .apply help
+ *   .scenario help
  */
 export const help: Scenario = ($) => {
   void $;
