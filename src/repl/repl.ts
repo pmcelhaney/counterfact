@@ -35,7 +35,7 @@ const ROUTE_BUILDER_METHODS = [
  *
  * @param registry - The route registry used to complete path arguments for `route()` and `client.*()` calls.
  * @param fallback - Optional fallback completer (e.g. the Node.js built-in completer) invoked when no custom completion matches.
- * @param scenarioRegistry - When provided, enables tab completion for `.apply` commands by enumerating
+ * @param scenarioRegistry - When provided, enables tab completion for `.scenario` commands by enumerating
  *   exported function names and file-key prefixes from the loaded scenario modules.
  */
 export function createCompleter(
@@ -44,8 +44,8 @@ export function createCompleter(
   scenarioRegistry?: ScenarioRegistry,
 ) {
   return (line: string, callback: CompleterCallback): void => {
-    // Check for .apply completion: .apply <partial>
-    const applyMatch = line.match(/^\.apply\s+(?<partial>\S*)$/u);
+    // Check for .scenario completion: .scenario <partial>
+    const applyMatch = line.match(/^\.scenario\s+(?<partial>\S*)$/u);
 
     if (applyMatch) {
       const partial = applyMatch.groups?.["partial"] ?? "";
@@ -272,12 +272,12 @@ export function startRepl(
 
   replServer.context.routes = {};
 
-  replServer.defineCommand("apply", {
+  replServer.defineCommand("scenario", {
     async action(text: string) {
       const parts = text.trim().split("/").filter(Boolean);
 
       if (parts.length === 0) {
-        print("usage: .apply <path>");
+        print("usage: .scenario <path>");
         this.clearBufferedCommand();
         this.displayPrompt();
         return;
@@ -337,7 +337,7 @@ export function startRepl(
       this.displayPrompt();
     },
 
-    help: 'apply a scenario script (".apply <path>" calls the named export from scenarios/)',
+    help: 'apply a scenario script (".scenario <path>" calls the named export from scenarios/)',
   });
 
   return replServer;
