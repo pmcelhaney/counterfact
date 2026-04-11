@@ -56,21 +56,21 @@ await req.send()
 
 See the [Route Builder guide](./route-builder.md) for full documentation.
 
-## Scenario scripts with `.apply`
+## Scenario scripts with `.scenario`
 
-For more complex setups you can automate REPL interactions by writing _scenario scripts_ — plain TypeScript files that export named functions. Run them with `.apply`:
+For more complex setups you can automate REPL interactions by writing _scenario scripts_ — plain TypeScript files that export named functions. Run them with `.scenario`:
 
 ```
-⬣> .apply soldPets
+⬣> .scenario soldPets
 ```
 
-**Path resolution:** the argument to `.apply` is a slash-separated path. The last segment is the function name; everything before it is the file path, resolved relative to `<basePath>/scenarios/` (with `index.ts` as the default file).
+**Path resolution:** the argument to `.scenario` is a slash-separated path. The last segment is the function name; everything before it is the file path, resolved relative to `<basePath>/scenarios/` (with `index.ts` as the default file).
 
 | Command | File | Function |
 |---|---|---|
-| `.apply foo` | `scenarios/index.ts` | `foo` |
-| `.apply foo/bar` | `scenarios/foo.ts` | `bar` |
-| `.apply foo/bar/baz` | `scenarios/foo/bar.ts` | `baz` |
+| `.scenario foo` | `scenarios/index.ts` | `foo` |
+| `.scenario foo/bar` | `scenarios/foo.ts` | `bar` |
+| `.scenario foo/bar/baz` | `scenarios/foo/bar.ts` | `baz` |
 
 A scenario function receives a single argument with `{ context, loadContext, routes, route }`:
 
