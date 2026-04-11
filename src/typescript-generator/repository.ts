@@ -148,7 +148,7 @@ export class Repository {
 
     await fs.writeFile(
       contextFilePath,
-      `import type { ContextArgs } from "../types/scenario-context.js";
+      `import { BaseContext } from "../types/scenario-context.js";
 
 /**
 * This is the default context for Counterfact.
@@ -160,8 +160,7 @@ export class Repository {
 * 
 * See https://counterfact.dev/docs/usage.html#working-with-state-the-codecontextcode-object-and-codecontexttscode
 */
-export class Context {
-  constructor(_args: ContextArgs) {}
+export class Context extends BaseContext {
 }
 `,
     );
