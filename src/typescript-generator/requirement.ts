@@ -4,6 +4,14 @@ export type RequirementData = Record<string, unknown> & {
   $ref?: string;
 };
 
+/**
+ * A node in the dereferenced OpenAPI spec tree.
+ *
+ * A `Requirement` wraps a raw JSON object (`data`) together with its location
+ * (`url`, a JSON Pointer) and a back-reference to the owning
+ * {@link Specification}.  Navigation methods (`get`, `select`, `find`, …)
+ * transparently follow `$ref` pointers.
+ */
 export class Requirement {
   public data: RequirementData;
   public url: string;
@@ -19,14 +27,27 @@ export class Requirement {
     this.specification = specification;
   }
 
+  /** `true` when this node is a JSON Reference (`$ref`) rather than inline data. */
   public get isReference(): boolean {
     return this.data["$ref"] !== undefined;
   }
 
+  /**
+   * Resolves the `$ref` and returns the target {@link Requirement}.
+   *
+   * @throws When `isReference` is `false` or the specification is not set.
+   */
   public reference(): Requirement {
     return this.specification!.getRequirement(this.data["$ref"] as string);
   }
 
+  /**
+   * Returns `true` when this node has a child property named `item`.
+   *
+   * Transparently follows `$ref` references.
+   *
+   * @param item - The property key to check.
+   */
   public has(item: string): boolean {
     if (this.isReference) {
       return this.reference().has(item);
@@ -35,6 +56,11 @@ export class Requirement {
     return item in this.data;
   }
 
+  /**
+   * Returns the child {@link Requirement} for `item`, or `undefined`.
+   *
+   * @param item - The property key (string) or array index (number).
+   */
   public get(item: string | number): Requirement | undefined {
     if (this.isReference) {
       return this.reference().get(item);
@@ -53,6 +79,16 @@ export class Requirement {
     );
   }
 
+  /**
+   * Navigates to a descendant node using a slash-delimited JSON Pointer path.
+   *
+   * Tilde-escaped characters (`~0` → `~`, `~1` → `/`) and percent-encoded
+   * characters are unescaped during traversal.
+   *
+   * @param path - A slash-delimited path (e.g. `"responses/200/content"`).
+   * @returns The target {@link Requirement}, or `undefined` if the path does
+   *   not exist.
+   */
   public select(path: string): Requirement | undefined {
     const parts = path
       .split("/")
@@ -83,12 +119,23 @@ export class Requirement {
     return result;
   }
 
+  /**
+   * Iterates over all child properties and calls `callback` with each child
+   * requirement and its key.
+   *
+   * @param callback - Called for each child with `(child, key)`.
+   */
   public forEach(callback: (value: Requirement, key: string) => void): void {
     Object.keys(this.data).forEach((key) => {
       callback(this.select(this.escapeJsonPointer(key) as string)!, key);
     });
   }
 
+  /**
+   * Maps over all child properties and returns the collected results.
+   *
+   * @param callback - Transformation function called with `(child, key)`.
+   */
   public map<T>(callback: (value: Requirement, key: string) => T): T[] {
     const result: T[] = [];
 
@@ -97,12 +144,24 @@ export class Requirement {
     return result;
   }
 
+  /**
+   * Maps and flattens over all child properties.
+   *
+   * @param callback - Transformation function that may return a value or an
+   *   array of values.
+   */
   public flatMap<T>(
     callback: (value: Requirement, key: string) => T | T[],
   ): T[] {
     return this.map(callback).flat() as T[];
   }
 
+  /**
+   * Returns the first child for which `callback` returns `true`, or
+   * `undefined` when nothing matches.
+   *
+   * @param callback - Predicate called with `(child, key)`.
+   */
   public find(
     callback: (value: Requirement, key: string) => boolean,
   ): Requirement | undefined {
@@ -117,11 +176,21 @@ export class Requirement {
     return result;
   }
 
+  /**
+   * Escapes a JSON Pointer token: `~` → `~0`, `/` → `~1`.
+   *
+   * @param value - The token to escape.
+   */
   public escapeJsonPointer(value: string | number): string | number {
     if (typeof value !== "string") return value;
     return value.replaceAll("~", "~0").replaceAll("/", "~1");
   }
 
+  /**
+   * Unescapes a JSON Pointer token: `~1` → `/`, `~0` → `~`.
+   *
+   * @param pointer - The token to unescape.
+   */
   public unescapeJsonPointer(pointer: string | number): string | number {
     if (typeof pointer !== "string") return pointer;
     return pointer.replaceAll("~1", "/").replaceAll("~0", "~");

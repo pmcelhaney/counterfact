@@ -1,6 +1,13 @@
 import fs from "node:fs";
 import nodePath from "node:path";
 
+/**
+ * Synchronously ensures that the directory containing `filePath` exists,
+ * creating it (and any missing ancestors) if necessary.
+ *
+ * @param filePath - Path to a file; the *directory* part of this path is
+ *   created, not the file itself.
+ */
 export function ensureDirectoryExists(filePath: string): void {
   const directory = nodePath.dirname(filePath);
 

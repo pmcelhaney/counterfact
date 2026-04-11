@@ -41,6 +41,15 @@ export interface SecurityScheme {
   type?: string;
 }
 
+/**
+ * Generates the TypeScript type for a single OpenAPI operation.
+ *
+ * The emitted type describes the function signature that a Counterfact route
+ * handler must satisfy, including strongly-typed `query`, `path`, `headers`,
+ * `cookie`, `body`, `context`, `response`, and `user` arguments.
+ *
+ * Output is written to `types/paths/<route>.types.ts`.
+ */
 export class OperationTypeCoder extends TypeCoder {
   public requestMethod: string;
   public securitySchemes: SecurityScheme[];
@@ -60,6 +69,10 @@ export class OperationTypeCoder extends TypeCoder {
     this.securitySchemes = securitySchemes;
   }
 
+  /**
+   * Returns the base identifier for this operation, derived from its
+   * `operationId` (sanitised) or falling back to `HTTP_<METHOD>`.
+   */
   public getOperationBaseName(): string {
     const operationId = this.requirement.get("operationId")?.data as
       | string
@@ -78,6 +91,19 @@ export class OperationTypeCoder extends TypeCoder {
     return super.names(this.getOperationBaseName());
   }
 
+  /**
+   * Generates and exports a named parameter type (e.g. `ListPets_Query`) from
+   * `modulePath` and returns the exported type name.
+   *
+   * Returns `"never"` without creating an export when `inlineType` is
+   * `"never"`.
+   *
+   * @param script - The script being assembled.
+   * @param parameterKind - `"query"`, `"path"`, `"headers"`, or `"cookie"`.
+   * @param inlineType - The inline TypeScript type string to export.
+   * @param baseName - The base identifier prefix for the exported type name.
+   * @param modulePath - The repository-relative path of the type file.
+   */
   public exportParameterType(
     script: Script,
     parameterKind: string,
@@ -104,6 +130,11 @@ export class OperationTypeCoder extends TypeCoder {
     return script.export(coder, true);
   }
 
+  /**
+   * Returns the union of all possible response type shapes for this operation.
+   *
+   * @param script - The script being assembled (used to resolve imports).
+   */
   public responseTypes(script: Script): string {
     return this.requirement
       .get("responses")!
@@ -161,6 +192,12 @@ export class OperationTypeCoder extends TypeCoder {
       .replaceAll("\\", "/")}.types.ts`;
   }
 
+  /**
+   * Returns the TypeScript type for the `user` argument.
+   *
+   * When the operation is protected by HTTP Basic auth, the type is
+   * `{username?: string, password?: string}`.  Otherwise it is `"never"`.
+   */
   public userType(): string {
     if (
       this.securitySchemes.some(
