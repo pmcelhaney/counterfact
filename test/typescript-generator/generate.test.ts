@@ -80,12 +80,12 @@ describe("scenario-context type generation", () => {
       expect(content).toContain(
         "export type Scenario = ($: ApplyContext) => Promise<void> | void;",
       );
-      expect(content).toContain("export class BaseContext {");
+      expect(content).toContain("export interface BaseContext {");
       expect(content).toContain(
-        '  protected readonly loadContext!: ApplyContext["loadContext"];',
+        '  readonly loadContext: ApplyContext["loadContext"];',
       );
       expect(content).toContain(
-        "  protected readonly readJson!: (relativePath: string) => Promise<unknown>;",
+        "  readonly readJson: (relativePath: string) => Promise<unknown>;",
       );
     });
   });
