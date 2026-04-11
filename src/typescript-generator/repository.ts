@@ -161,8 +161,8 @@ export class Repository {
 * See https://counterfact.dev/docs/usage.html#working-with-state-the-codecontextcode-object-and-codecontexttscode
 */
 export class Context implements BaseContext {
-  readonly loadContext!: BaseContext["loadContext"];
-  readonly readJson!: BaseContext["readJson"];
+  readonly loadContext: BaseContext["loadContext"];
+  readonly readJson: BaseContext["readJson"];
 
   constructor({ loadContext, readJson }: BaseContext) {
     this.loadContext = loadContext;
