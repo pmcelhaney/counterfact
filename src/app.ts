@@ -11,7 +11,6 @@ import { Dispatcher, type DispatcherRequest } from "./server/dispatcher.js";
 import { koaMiddleware } from "./server/koa-middleware.js";
 import { loadOpenApiDocument } from "./server/load-openapi-document.js";
 import { ModuleLoader } from "./server/module-loader.js";
-import { OpenApiWatcher } from "./server/openapi-watcher.js";
 import { Registry } from "./server/registry.js";
 import { ScenarioRegistry } from "./server/scenario-registry.js";
 import { Transpiler } from "./server/transpiler.js";
@@ -158,8 +157,6 @@ export async function counterfact(config: Config) {
 
   const koaApp = createKoaApp(registry, middleware, config, contextRegistry);
 
-  const openApiWatcher = new OpenApiWatcher(config.openApiPath, dispatcher);
-
   async function start(options: Config) {
     const { generate, startServer, watch, buildCache } = options;
 
@@ -174,7 +171,7 @@ export async function counterfact(config: Config) {
     let httpTerminator: HttpTerminator | undefined;
 
     if (startServer) {
-      await openApiWatcher.watch();
+      await openApiDocument?.watch();
 
       if (!nativeTs) {
         await transpiler.watch();
@@ -200,7 +197,7 @@ export async function counterfact(config: Config) {
         await codeGenerator.stopWatching();
         await transpiler.stopWatching();
         await moduleLoader.stopWatching();
-        await openApiWatcher.stopWatching();
+        await openApiDocument?.stopWatching();
         await httpTerminator?.terminate();
       },
     };
