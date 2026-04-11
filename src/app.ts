@@ -209,8 +209,9 @@ export async function counterfact(config: Config) {
           try {
             await fn(startupContext);
           } catch (error: unknown) {
+            const name = fn.name || "(anonymous)";
             process.stdout.write(
-              `\nError running startup scenario: ${String(error)}\n`,
+              `\nError running startup scenario '${name}': ${String(error)}\n`,
             );
           }
         }

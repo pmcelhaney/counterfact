@@ -302,7 +302,8 @@ import type { Scenario } from "../types/scenario-context.js";
  * Uncomment and customize this example to populate your context automatically.
  */
 // export const seedData = startup<Scenario>(($) => {
-//   // $.context.pets = [{ id: 1, name: "Fluffy", status: "available" }];
+//   // Read or mutate context exactly as you would in the REPL:
+//   // $.context.<property> = <value>;
 // });
 
 /**

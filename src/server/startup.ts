@@ -15,6 +15,10 @@ export const STARTUP_FLAG = "__counterfact_startup__";
  * });
  * ```
  */
+// `any[]` is intentional: using `unknown[]` would break the constraint for
+// typed scenario functions like `Scenario = ($: ApplyContext) => void`
+// because parameter types are contravariant and `unknown` is not assignable
+// to `ApplyContext`. The generic `T` preserves the actual call signature.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function startup<T extends (...args: any[]) => unknown>(fn: T): T {
   (fn as Record<string, unknown>)[STARTUP_FLAG] = true;
