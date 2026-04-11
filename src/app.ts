@@ -4,6 +4,7 @@ import nodePath from "node:path";
 import { createHttpTerminator, type HttpTerminator } from "http-terminator";
 
 import { startRepl as startReplServer } from "./repl/repl.js";
+import { createRouteFunction } from "./repl/route-builder.js";
 import type { Config } from "./server/config.js";
 import { ContextRegistry } from "./server/context-registry.js";
 import { createKoaApp } from "./server/create-koa-app.js";
@@ -20,6 +21,7 @@ import { writeApplyContextType } from "./typescript-generator/generate.js";
 import { runtimeCanExecuteErasableTs } from "./util/runtime-can-execute-erasable-ts.js";
 
 export { loadOpenApiDocument } from "./server/load-openapi-document.js";
+export { startup } from "./server/startup.js";
 
 type MswHandlerMap = {
   [key: string]: (request: MockRequest) => Promise<unknown>;
@@ -189,6 +191,30 @@ export async function counterfact(config: Config) {
       httpTerminator = createHttpTerminator({
         server,
       });
+
+      // Run startup scenarios (functions tagged with startup()) after the
+      // server is listening so they can make HTTP requests if needed.
+      const startupFunctions = scenarioRegistry.getStartupFunctions();
+
+      if (startupFunctions.length > 0) {
+        const startupContext = {
+          context: contextRegistry.find("/") as Record<string, unknown>,
+          loadContext: (path: string) =>
+            contextRegistry.find(path) as Record<string, unknown>,
+          route: createRouteFunction(config.port, "localhost", openApiDocument),
+          routes: {} as Record<string, unknown>,
+        };
+
+        for (const fn of startupFunctions) {
+          try {
+            await fn(startupContext);
+          } catch (error: unknown) {
+            process.stdout.write(
+              `\nError running startup scenario: ${String(error)}\n`,
+            );
+          }
+        }
+      }
     } else if (buildCache) {
       // If we are not starting the server, we still want to transpile and load modules
       await transpiler.watch();

@@ -100,6 +100,29 @@ After the command runs you can immediately use anything stored in `$.routes`:
 
 The `Scenario` type and `ApplyContext` interface are generated automatically into `types/scenario-context.ts` when you run Counterfact with type generation enabled.
 
+## Startup scenarios with `startup()`
+
+Some scenarios should run automatically when the server starts — for example, to seed initial state before the REPL is available. Wrap a scenario function with `startup()` to mark it for automatic execution.
+
+```ts
+// scenarios/index.ts
+import { startup } from "counterfact";
+import type { Scenario } from "../types/scenario-context.js";
+
+export const seedData = startup<Scenario>(($) => {
+  $.context.petService.addPet({ id: 1, name: "Fluffy", status: "available" });
+  $.context.petService.addPet({ id: 2, name: "Rex",    status: "sold" });
+});
+```
+
+Startup scenarios receive the same `$` context object as any other scenario (`context`, `loadContext`, `route`, `routes`). They are called once, in module-load order, after the server is listening and before the REPL prompt appears. Any error thrown by a startup scenario is logged but does not prevent the server from starting.
+
+You can still call a startup scenario manually from the REPL using `.scenario`:
+
+```
+⬣> .scenario seedData
+```
+
 ## See also
 
 - [Route Builder](./route-builder.md) — fluent request builder with OpenAPI introspection

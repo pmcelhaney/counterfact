@@ -1,3 +1,5 @@
+import { isStartupFunction } from "./startup.js";
+
 type ScenarioModule = Record<string, unknown>;
 
 export class ScenarioRegistry {
@@ -33,5 +35,23 @@ export class ScenarioRegistry {
    */
   public getFileKeys(): string[] {
     return [...this.modules.keys()];
+  }
+
+  /**
+   * Returns all scenario functions tagged with `startup()` across all loaded
+   * modules. These are called automatically when the server starts.
+   */
+  public getStartupFunctions(): Array<(...args: unknown[]) => unknown> {
+    const result: Array<(...args: unknown[]) => unknown> = [];
+
+    for (const module of this.modules.values()) {
+      for (const value of Object.values(module)) {
+        if (isStartupFunction(value)) {
+          result.push(value as (...args: unknown[]) => unknown);
+        }
+      }
+    }
+
+    return result;
   }
 }

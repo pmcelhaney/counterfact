@@ -274,12 +274,16 @@ export async function writeApplyContextType(
   await fs.writeFile(filePath, content, "utf8");
 }
 
-const DEFAULT_SCENARIOS_INDEX = `import type { Scenario } from "../types/scenario-context.js";
+const DEFAULT_SCENARIOS_INDEX = `import { startup } from "counterfact";
+import type { Scenario } from "../types/scenario-context.js";
 
 /**
  * Scenario scripts are plain TypeScript functions that receive the live REPL
  * environment and can read or mutate server state. Run them from the REPL with:
  *   .scenario <functionName>
+ *
+ * Tag a scenario with startup() to run it automatically when the server starts:
+ *   export const myScenario = startup<Scenario>(($) => { ... });
  */
 
 /**
@@ -292,6 +296,14 @@ const DEFAULT_SCENARIOS_INDEX = `import type { Scenario } from "../types/scenari
  * Store a pre-configured route builder for later use in the REPL:
  *   $.routes.myRequest = $.route("/pets").method("get");
  */
+
+/**
+ * Seed initial data when the server starts.
+ * Uncomment and customize this example to populate your context automatically.
+ */
+// export const seedData = startup<Scenario>(($) => {
+//   // $.context.pets = [{ id: 1, name: "Fluffy", status: "available" }];
+// });
 
 /**
  * An example scenario. To use it in the REPL, type:

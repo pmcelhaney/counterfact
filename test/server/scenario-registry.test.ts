@@ -1,4 +1,5 @@
 import { ScenarioRegistry } from "../../src/server/scenario-registry.js";
+import { startup } from "../../src/server/startup.js";
 
 describe("ScenarioRegistry", () => {
   it("stores and retrieves a module by key", () => {
@@ -72,5 +73,50 @@ describe("ScenarioRegistry", () => {
 
     expect(names).toContain("bar");
     expect(names).not.toContain("foo");
+  });
+});
+
+describe("ScenarioRegistry.getStartupFunctions", () => {
+  it("returns an empty array when no startup functions are registered", () => {
+    const registry = new ScenarioRegistry();
+
+    registry.add("index", { normal() {} });
+
+    expect(registry.getStartupFunctions()).toHaveLength(0);
+  });
+
+  it("returns functions tagged with startup()", () => {
+    const registry = new ScenarioRegistry();
+    const seedData = startup(function seedData() {});
+
+    registry.add("index", { seedData, normal() {} });
+
+    const fns = registry.getStartupFunctions();
+
+    expect(fns).toHaveLength(1);
+    expect(fns[0]).toBe(seedData);
+  });
+
+  it("collects startup functions across multiple modules", () => {
+    const registry = new ScenarioRegistry();
+    const fn1 = startup(function a() {});
+    const fn2 = startup(function b() {});
+
+    registry.add("index", { fn1 });
+    registry.add("other", { fn2, notStartup() {} });
+
+    const fns = registry.getStartupFunctions();
+
+    expect(fns).toHaveLength(2);
+    expect(fns).toContain(fn1);
+    expect(fns).toContain(fn2);
+  });
+
+  it("does not include non-function values even if they have the startup flag", () => {
+    const registry = new ScenarioRegistry();
+
+    registry.add("index", { notAFn: 42, alsoNotAFn: "startup" });
+
+    expect(registry.getStartupFunctions()).toHaveLength(0);
   });
 });
