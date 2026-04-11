@@ -68,9 +68,9 @@ For more complex setups you can automate REPL interactions by writing _scenario 
 
 | Command | File | Function |
 |---|---|---|
-| `.scenario foo` | `scenarios/index.ts` | `foo` |
-| `.scenario foo/bar` | `scenarios/foo.ts` | `bar` |
-| `.scenario foo/bar/baz` | `scenarios/foo/bar.ts` | `baz` |
+| `.scenario soldPets` | `scenarios/index.ts` | `soldPets` |
+| `.scenario pets/resetAll` | `scenarios/pets.ts` | `resetAll` |
+| `.scenario pets/orders/pending` | `scenarios/pets/orders.ts` | `pending` |
 
 A scenario function receives a single argument with `{ context, loadContext, routes, route }`:
 

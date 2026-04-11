@@ -27,7 +27,7 @@ Three designs were proposed as working documents in `.github/issue-proposals/`:
 
 **Solution 1 (Minimalist Function Injection) is selected.**
 
-An apply script is a TypeScript file with one or more named function exports. When `.scenario <path>` is run, Counterfact splits the argument on `/`, uses the last segment as the function name and the rest as the file path (relative to `<basePath>/repl/`), dynamically imports the module, and calls the named function with a live `ApplyContext` (`$`) object:
+A scenario script is a TypeScript file with one or more named function exports. When `.scenario <path>` is run, Counterfact splits the argument on `/`, uses the last segment as the function name and the rest as the file path (relative to `<basePath>/repl/`), dynamically imports the module, and calls the named function with a live `ApplyContext` (`$`) object:
 
 ```ts
 // repl/sold-pets.ts
