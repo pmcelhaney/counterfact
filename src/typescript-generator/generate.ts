@@ -271,7 +271,7 @@ export async function writeApplyContextType(
   destination: string,
 ): Promise<void> {
   const typesDir = nodePath.join(destination, "types");
-  const filePath = nodePath.join(typesDir, "scenario-context.ts");
+  const filePath = nodePath.join(typesDir, "_.context.ts");
 
   const contextFiles = await collectContextFiles(destination);
   const content = buildApplyContextContent(contextFiles);
@@ -280,7 +280,7 @@ export async function writeApplyContextType(
   await fs.writeFile(filePath, content, "utf8");
 }
 
-const DEFAULT_SCENARIOS_INDEX = `import type { Scenario } from "../types/scenario-context.js";
+const DEFAULT_SCENARIOS_INDEX = `import type { Scenario } from "../types/_.context.js";
 
 /**
  * Scenario scripts are plain TypeScript functions that receive the live REPL

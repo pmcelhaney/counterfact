@@ -59,8 +59,8 @@ describe("end-to-end test", () => {
   });
 });
 
-describe("scenario-context type generation", () => {
-  it("generates a fallback scenario-context.ts when no routes directory exists", async () => {
+describe("_.context type generation", () => {
+  it("generates a fallback _.context.ts when no routes directory exists", async () => {
     await usingTemporaryFiles(async ($) => {
       const basePath = $.path("");
       const repository = new Repository();
@@ -71,7 +71,7 @@ describe("scenario-context type generation", () => {
 
       await generate("./petstore.yaml", basePath, { types: true }, repository);
 
-      const content = await $.read("types/scenario-context.ts");
+      const content = await $.read("types/_.context.ts");
       expect(content).toContain("context: Record<string, unknown>");
       expect(content).toContain(
         "loadContext(path: string): Record<string, unknown>;",
@@ -103,7 +103,7 @@ describe("scenario-context type generation", () => {
 
       await generate("./petstore.yaml", basePath, { types: true }, repository);
 
-      const content = await $.read("types/scenario-context.ts");
+      const content = await $.read("types/_.context.ts");
       expect(content).toContain(
         'import type { Context } from "../routes/_.context";',
       );
@@ -131,7 +131,7 @@ describe("scenario-context type generation", () => {
 
       await generate("./petstore.yaml", basePath, { types: true }, repository);
 
-      const content = await $.read("types/scenario-context.ts");
+      const content = await $.read("types/_.context.ts");
       expect(content).toContain(
         'import type { Context } from "../routes/_.context";',
       );
@@ -168,7 +168,7 @@ describe("scenario-context type generation", () => {
 
       await generate("./petstore.yaml", basePath, { types: true }, repository);
 
-      const content = await $.read("types/scenario-context.ts");
+      const content = await $.read("types/_.context.ts");
       expect(content).toContain(
         'import type { Context as PetsPetIdContext } from "../routes/pets/{petId}/_.context";',
       );
