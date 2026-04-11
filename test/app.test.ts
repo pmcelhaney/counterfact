@@ -196,7 +196,7 @@ describe("runStartupScenario", () => {
     const contextRegistry = new ContextRegistry();
 
     scenarioRegistry.add("index", {
-      startup: "not-a-function",
+      startup: 42,
     });
 
     await expect(
