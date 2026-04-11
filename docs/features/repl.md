@@ -145,5 +145,6 @@ If `startup` is not exported from `scenarios/index.ts`, it is silently skipped �
 
 - [Route Builder](./route-builder.md) — fluent request builder with OpenAPI introspection
 - [State](./state.md) — the context objects you interact with from the REPL
+- [Patterns: Scenario Scripts](../patterns/scenario-scripts.md)
 - [Patterns: Live Server Inspection with the REPL](../patterns/repl-inspection.md)
 - [Usage](../usage.md)
