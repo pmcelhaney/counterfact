@@ -4,6 +4,7 @@ import nodePath from "node:path";
 import { createHttpTerminator, type HttpTerminator } from "http-terminator";
 
 import { startRepl as startReplServer } from "./repl/repl.js";
+import { createRouteFunction } from "./repl/route-builder.js";
 import type { Config } from "./server/config.js";
 import { ContextRegistry } from "./server/context-registry.js";
 import { createKoaApp } from "./server/create-koa-app.js";
@@ -20,6 +21,38 @@ import { writeApplyContextType } from "./typescript-generator/generate.js";
 import { runtimeCanExecuteErasableTs } from "./util/runtime-can-execute-erasable-ts.js";
 
 export { loadOpenApiDocument } from "./server/load-openapi-document.js";
+
+type ApplyContext = {
+  context: Record<string, unknown>;
+  loadContext: (path: string) => Record<string, unknown>;
+  route: (path: string) => unknown;
+  routes: Record<string, unknown>;
+};
+
+export async function runStartupScenario(
+  scenarioRegistry: ScenarioRegistry,
+  contextRegistry: ContextRegistry,
+  config: Config,
+  openApiDocument?: Parameters<typeof createRouteFunction>[2],
+): Promise<void> {
+  const indexModule = scenarioRegistry.getModule("index");
+
+  if (!indexModule || typeof indexModule["startup"] !== "function") {
+    return;
+  }
+
+  const applyContext: ApplyContext = {
+    context: contextRegistry.find("/") as Record<string, unknown>,
+    loadContext: (path: string) =>
+      contextRegistry.find(path) as Record<string, unknown>,
+    route: createRouteFunction(config.port, "localhost", openApiDocument),
+    routes: {},
+  };
+
+  await (indexModule["startup"] as (ctx: ApplyContext) => Promise<void> | void)(
+    applyContext,
+  );
+}
 
 type MswHandlerMap = {
   [key: string]: (request: MockRequest) => Promise<unknown>;
@@ -181,6 +214,13 @@ export async function counterfact(config: Config) {
       }
       await moduleLoader.load();
       await moduleLoader.watch();
+
+      await runStartupScenario(
+        scenarioRegistry,
+        contextRegistry,
+        config,
+        openApiDocument,
+      );
 
       const server = koaApp.listen({
         port: config.port,

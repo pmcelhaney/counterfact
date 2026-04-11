@@ -294,6 +294,21 @@ const DEFAULT_SCENARIOS_INDEX = `import type { Scenario } from "../types/scenari
  */
 
 /**
+ * startup() runs automatically when the server initializes, right before the
+ * REPL starts. Use it to seed dummy data so the server is ready to use
+ * immediately. It receives the same $ argument as all other scenario functions.
+ *
+ * Tip: delegate to other scenario functions and pass $ along so each function
+ * stays focused on a single concern. You can also pass additional arguments to
+ * configure them, e.g. addPets($, 20, "dog").
+ *
+ * If you don't need a startup scenario, delete this function or leave it empty.
+ */
+export const startup: Scenario = ($) => {
+  void $;
+};
+
+/**
  * An example scenario. To use it in the REPL, type:
  *   .scenario help
  */
