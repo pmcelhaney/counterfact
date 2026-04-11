@@ -281,17 +281,16 @@ paths:
           $ref: "#/components/responses/InternalServerError"
 
   /users/{userId}:
-    parameters:
-      - in: path
-        name: userId
-        required: true
-        schema:
-          type: string
-        description: Unique user identifier
-
     get:
       operationId: getUser
       description: Fetch a single user by ID
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
+          description: Unique user identifier
       responses:
         "200":
           description: The requested user
@@ -307,6 +306,13 @@ paths:
     put:
       operationId: replaceUser
       description: Replace a user record entirely (idempotent)
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
+          description: Unique user identifier
       requestBody:
         required: true
         content:
@@ -328,6 +334,13 @@ paths:
     patch:
       operationId: patchUser
       description: Partially update a user record
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
+          description: Unique user identifier
       requestBody:
         required: true
         content:
@@ -349,6 +362,13 @@ paths:
     delete:
       operationId: deleteUser
       description: Delete a user (soft-delete)
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
+          description: Unique user identifier
       responses:
         "204":
           description: User deleted, no content

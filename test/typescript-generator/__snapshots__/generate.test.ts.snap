@@ -2119,17 +2119,10 @@ export type listUsers_Headers = { "x-correlation-id"?: string };
 `;
 
 exports[`end-to-end test generates the same code for the example that it did on the last test run 15`] = `
-"routes/users/{userId}.ts:import type { HTTP_PARAMETERS } from "../../types/paths/users/{userId}.types.js";
-import type { getUser } from "../../types/paths/users/{userId}.types.js";
+"routes/users/{userId}.ts:import type { getUser } from "../../types/paths/users/{userId}.types.js";
 import type { replaceUser } from "../../types/paths/users/{userId}.types.js";
 import type { patchUser } from "../../types/paths/users/{userId}.types.js";
 import type { deleteUser } from "../../types/paths/users/{userId}.types.js";
-
-export const PARAMETERS: HTTP_PARAMETERS = {
-  /* error creating export "PARAMETERS" for routes/users/{userId}.ts: TypeError: Cannot read properties of undefined (reading 'map')
-    at OperationCoder.map [as write] (/home/runner/work/api-simulator/api-simulator/src/typescript-generator/operation-coder.ts:37:41)
-    at write (/home/runner/work/api-simulator/api-simulator/src/typescript-generator/script.ts:90:47) */
-};
 
 export const GET: getUser = async ($) => {
   return $.response[200].random();
@@ -2168,23 +2161,13 @@ import type { CreateUserRequest } from "../../components/schemas/CreateUserReque
 import type { BadRequest } from "../../#/components/responses/BadRequest.js";
 import type { PatchUserRequest } from "../../components/schemas/PatchUserRequest.js";
 
-export type HTTP_PARAMETERS = {
-  /* error creating export "HTTP_PARAMETERS" for types/paths/users/{userId}.types.ts: TypeError: Cannot read properties of undefined (reading 'map')
-    at ResponsesTypeCoder.map [as buildResponseObjectType] (/home/runner/work/api-simulator/api-simulator/src/typescript-generator/responses-type-coder.ts:45:24)
-    at ResponsesTypeCoder.buildResponseObjectType [as writeCode] (/home/runner/work/api-simulator/api-simulator/src/typescript-generator/responses-type-coder.ts:55:49)
-    at ResponsesTypeCoder.writeCode [as write] (/home/runner/work/api-simulator/api-simulator/src/typescript-generator/type-coder.ts:10:17)
-    at OperationTypeCoder.write [as writeCode] (/home/runner/work/api-simulator/api-simulator/src/typescript-generator/operation-type-coder.ts:230:7)
-    at OperationTypeCoder.writeCode [as write] (/home/runner/work/api-simulator/api-simulator/src/typescript-generator/type-coder.ts:10:17)
-    at write (/home/runner/work/api-simulator/api-simulator/src/typescript-generator/script.ts:90:47) */
-};
-
 /**
  * Fetch a single user by ID
  */
 export type getUser = (
   $: OmitValueWhenNever<{
     query: never;
-    path: never;
+    path: getUser_Path;
     headers: never;
     cookie: never;
     body: never;
@@ -2235,7 +2218,7 @@ export type getUser = (
 export type replaceUser = (
   $: OmitValueWhenNever<{
     query: never;
-    path: never;
+    path: replaceUser_Path;
     headers: never;
     cookie: never;
     body: CreateUserRequest;
@@ -2286,7 +2269,7 @@ export type replaceUser = (
 export type patchUser = (
   $: OmitValueWhenNever<{
     query: never;
-    path: never;
+    path: patchUser_Path;
     headers: never;
     cookie: never;
     body: PatchUserRequest;
@@ -2337,7 +2320,7 @@ export type patchUser = (
 export type deleteUser = (
   $: OmitValueWhenNever<{
     query: never;
-    path: never;
+    path: deleteUser_Path;
     headers: never;
     cookie: never;
     body: never;
@@ -2369,6 +2352,34 @@ export type deleteUser = (
   | COUNTERFACT_RESPONSE
   | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
 >;
+
+export type getUser_Path = {
+  /**
+   * Unique user identifier
+   */
+  userId: string;
+};
+
+export type replaceUser_Path = {
+  /**
+   * Unique user identifier
+   */
+  userId: string;
+};
+
+export type patchUser_Path = {
+  /**
+   * Unique user identifier
+   */
+  userId: string;
+};
+
+export type deleteUser_Path = {
+  /**
+   * Unique user identifier
+   */
+  userId: string;
+};
 "
 `;
 
