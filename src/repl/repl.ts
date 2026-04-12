@@ -190,7 +190,7 @@ export function startRepl(
   }
 
   const replServer = repl.start({
-    prompt: "\x1b[38;2;0;113;181m⬣\x1b[0m> ",
+    prompt: "\x1b[38;2;0;113;181m⬣> \x1b[0m",
   });
 
   const builtinCompleter = replServer.completer as (
