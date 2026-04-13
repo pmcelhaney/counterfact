@@ -156,15 +156,15 @@ export async function createMswHandlers(
 
 /**
  * One per-spec bundle of services.  Each spec gets its own Registry,
- * Dispatcher, CodeGenerator, Transpiler, and ModuleLoader so that the classes
- * themselves never need to know about multiple APIs.
+ * Dispatcher, CodeGenerator, and ModuleLoader so that the classes
+ * themselves never need to know about multiple APIs.  A single shared
+ * Transpiler covers all bundles.
  */
 interface SpecBundle {
   base: string;
   registry: Registry;
   dispatcher: Dispatcher;
   codeGenerator: CodeGenerator;
-  transpiler: Transpiler;
   moduleLoader: ModuleLoader;
   openApiDocument: Awaited<ReturnType<typeof loadOpenApiDocument>> | undefined;
   compiledPathsDirectory: string;
@@ -178,6 +178,9 @@ interface SpecBundle {
  *
  * Pass `scenariosPath` and `scenarioRegistry` only for the primary spec so
  * that the startup-scenario and REPL have access to the right modules.
+ *
+ * Note: no `Transpiler` is created here — a single shared instance is built
+ * in `counterfact()` covering all bundles.
  */
 async function createSpecBundle(
   config: Config,
@@ -218,12 +221,6 @@ async function createSpecBundle(
     config.generate,
   );
 
-  const transpiler = new Transpiler(
-    nodePath.join(specDest, "routes").replaceAll("\\", "/"),
-    compiledPathsDirectory,
-    "commonjs",
-  );
-
   const moduleLoader = new ModuleLoader(
     compiledPathsDirectory,
     registry,
@@ -237,7 +234,6 @@ async function createSpecBundle(
     registry,
     dispatcher,
     codeGenerator,
-    transpiler,
     moduleLoader,
     openApiDocument,
     compiledPathsDirectory,
@@ -312,6 +308,11 @@ export async function counterfact(config: Config) {
     }),
   );
 
+  // One shared Transpiler watches the entire basePath.  It picks up any
+  // .ts file that lives under a routes/ subdirectory (one per spec) and
+  // compiles it to the sibling .cache/ directory automatically.
+  const transpiler = new Transpiler(config.basePath, "commonjs");
+
   const primaryRegistry = primaryBundle.registry;
 
   const adminMiddleware = config.startAdminApi
@@ -350,15 +351,14 @@ export async function counterfact(config: Config) {
       await Promise.all(
         specBundles.map(async (bundle) => {
           await bundle.openApiDocument?.watch();
-
-          if (!nativeTs) {
-            await bundle.transpiler.watch();
-          }
-
           await bundle.moduleLoader.load();
           await bundle.moduleLoader.watch();
         }),
       );
+
+      if (!nativeTs) {
+        await transpiler.watch();
+      }
 
       await runStartupScenario(
         scenarioRegistry,
@@ -371,12 +371,8 @@ export async function counterfact(config: Config) {
 
       httpTerminator = createHttpTerminator({ server });
     } else if (buildCache) {
-      await Promise.all(
-        specBundles.map(async (bundle) => {
-          await bundle.transpiler.watch();
-          await bundle.transpiler.stopWatching();
-        }),
-      );
+      await transpiler.watch();
+      await transpiler.stopWatching();
     }
 
     return {
@@ -384,11 +380,11 @@ export async function counterfact(config: Config) {
         await Promise.all(
           specBundles.map(async (bundle) => {
             await bundle.codeGenerator.stopWatching();
-            await bundle.transpiler.stopWatching();
             await bundle.moduleLoader.stopWatching();
             await bundle.openApiDocument?.stopWatching();
           }),
         );
+        await transpiler.stopWatching();
         await httpTerminator?.terminate();
       },
     };

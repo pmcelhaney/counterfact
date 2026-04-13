@@ -5,8 +5,8 @@ import { usingTemporaryFiles } from "using-temporary-files";
 import { Transpiler } from "../../src/server/transpiler.js";
 
 // The Transpiler internally uses string replacement on paths after normalizing
-// chokidar paths to forward slashes, so source/destination paths must also use
-// forward slashes (especially on Windows where nodePath.join uses backslashes).
+// chokidar paths to forward slashes, so root paths must also use forward slashes
+// (especially on Windows where nodePath.join uses backslashes).
 function forwardSlash(p: string): string {
   return p.replaceAll("\\", "/");
 }
@@ -24,7 +24,9 @@ function normalize(fileContents: string) {
 }
 
 describe("a Transpiler", () => {
-  let transpiler: Transpiler = new Transpiler("src", "dist", "");
+  // rootPath is the base directory; the Transpiler watches rootPath/routes/
+  // and compiles to rootPath/.cache/
+  let transpiler: Transpiler = new Transpiler("root", "");
 
   afterEach(async () => {
     await transpiler.stopWatching();
@@ -32,19 +34,15 @@ describe("a Transpiler", () => {
 
   it("finds a file and transpiles it", async () => {
     await usingTemporaryFiles(async ($) => {
-      await $.add("src/found.ts", TYPESCRIPT_SOURCE);
+      await $.add("root/routes/found.ts", TYPESCRIPT_SOURCE);
 
-      transpiler = new Transpiler(
-        forwardSlash($.path("src")),
-        forwardSlash($.path("dist")),
-        "module",
-      );
+      transpiler = new Transpiler(forwardSlash($.path("root")), "module");
 
       await transpiler.watch();
 
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      expect(normalize(await $.read("dist/found.js"))).toBe(
+      expect(normalize(await $.read("root/.cache/found.js"))).toBe(
         normalize(JAVASCRIPT_SOURCE),
       );
 
@@ -56,20 +54,16 @@ describe("a Transpiler", () => {
     // on Linux the watcher doesn't seem to work consistently if there's not a file in the directory to begin with
 
     await usingTemporaryFiles(async ($) => {
-      await $.add("src/starter.ts", TYPESCRIPT_SOURCE);
+      await $.add("root/routes/starter.ts", TYPESCRIPT_SOURCE);
 
-      transpiler = new Transpiler(
-        forwardSlash($.path("src")),
-        forwardSlash($.path("dist")),
-        "module",
-      );
+      transpiler = new Transpiler(forwardSlash($.path("root")), "module");
 
       await transpiler.watch();
 
       const write = once(transpiler, "write");
       const error = once(transpiler, "error");
 
-      await $.add("src/added.ts", TYPESCRIPT_SOURCE);
+      await $.add("root/routes/added.ts", TYPESCRIPT_SOURCE);
 
       if (process.platform === "win32") {
         // Chokidar's add event seems to be unreliable on Windows
@@ -79,7 +73,7 @@ describe("a Transpiler", () => {
 
       await Promise.race([write, error]);
 
-      expect(normalize(await $.read("dist/added.js"))).toBe(
+      expect(normalize(await $.read("root/.cache/added.js"))).toBe(
         normalize(JAVASCRIPT_SOURCE),
       );
 
@@ -89,13 +83,12 @@ describe("a Transpiler", () => {
 
   it("sees an updated file and transpiles it", async () => {
     await usingTemporaryFiles(async ($) => {
-      await $.add("src/update-me.ts", "const x = 'code to be overwritten';\n");
-
-      transpiler = new Transpiler(
-        forwardSlash($.path("src")),
-        forwardSlash($.path("dist")),
-        "module",
+      await $.add(
+        "root/routes/update-me.ts",
+        "const x = 'code to be overwritten';\n",
       );
+
+      transpiler = new Transpiler(forwardSlash($.path("root")), "module");
 
       const initialWrite = once(transpiler, "write");
 
@@ -104,10 +97,10 @@ describe("a Transpiler", () => {
 
       const overwrite = once(transpiler, "write");
 
-      await $.add("src/update-me.ts", TYPESCRIPT_SOURCE);
+      await $.add("root/routes/update-me.ts", TYPESCRIPT_SOURCE);
       await overwrite;
 
-      expect(normalize(await $.read("dist/update-me.js"))).toBe(
+      expect(normalize(await $.read("root/.cache/update-me.js"))).toBe(
         normalize(JAVASCRIPT_SOURCE),
       );
 
@@ -117,19 +110,17 @@ describe("a Transpiler", () => {
 
   it("sees a removed TypeScript file and deletes the JavaScript file", async () => {
     await usingTemporaryFiles(async ($) => {
-      await $.add("src/delete-me.ts", TYPESCRIPT_SOURCE);
+      await $.add("root/routes/delete-me.ts", TYPESCRIPT_SOURCE);
 
-      transpiler = new Transpiler(
-        forwardSlash($.path("src")),
-        forwardSlash($.path("dist")),
-        "module",
-      );
+      transpiler = new Transpiler(forwardSlash($.path("root")), "module");
 
       await transpiler.watch();
-      await $.remove("src/delete-me.ts");
+      await $.remove("root/routes/delete-me.ts");
       await once(transpiler, "delete");
 
-      await expect($.read("dist/delete-me.js")).rejects.toThrow(/ENOENT/u);
+      await expect($.read("root/.cache/delete-me.js")).rejects.toThrow(
+        /ENOENT/u,
+      );
 
       await transpiler.stopWatching();
     });
@@ -137,19 +128,15 @@ describe("a Transpiler", () => {
 
   it("transpiles as CommonJS when specified", async () => {
     await usingTemporaryFiles(async ($) => {
-      await $.add("src/found.ts", TYPESCRIPT_SOURCE);
+      await $.add("root/routes/found.ts", TYPESCRIPT_SOURCE);
 
-      transpiler = new Transpiler(
-        forwardSlash($.path("src")),
-        forwardSlash($.path("dist")),
-        "commonjs",
-      );
+      transpiler = new Transpiler(forwardSlash($.path("root")), "commonjs");
 
       await transpiler.watch();
 
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      expect(normalize(await $.read("dist/found.cjs"))).toBe(
+      expect(normalize(await $.read("root/.cache/found.cjs"))).toBe(
         normalize(JAVASCRIPT_SOURCE_COMMONJS),
       );
 
@@ -160,23 +147,59 @@ describe("a Transpiler", () => {
   it("converts requires of .js files to .cjs", async () => {
     await usingTemporaryFiles(async ($) => {
       await $.add(
-        "src/importer.ts",
+        "root/routes/importer.ts",
         'import local from "./local.js"; local();',
       );
 
-      transpiler = new Transpiler(
-        forwardSlash($.path("src")),
-        forwardSlash($.path("dist")),
-        "commonjs",
-      );
+      transpiler = new Transpiler(forwardSlash($.path("root")), "commonjs");
 
       await transpiler.watch();
 
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      const contents = await $.read("dist/importer.cjs");
+      const contents = await $.read("root/.cache/importer.cjs");
 
       expect(contents.includes('require("./local.cjs")')).toBe(true);
+
+      await transpiler.stopWatching();
+    });
+  });
+
+  it("ignores files outside of a routes/ directory", async () => {
+    await usingTemporaryFiles(async ($) => {
+      await $.add("root/types/ignored.ts", TYPESCRIPT_SOURCE);
+
+      transpiler = new Transpiler(forwardSlash($.path("root")), "commonjs");
+
+      // watch() resolves after the initial scan is complete, so if no
+      // compilation was triggered for files outside routes/ by now, none will be.
+      await transpiler.watch();
+
+      await expect($.read("root/.cache/ignored.cjs")).rejects.toThrow(
+        /ENOENT/u,
+      );
+
+      await transpiler.stopWatching();
+    });
+  });
+
+  it("covers multiple specs under the same root", async () => {
+    await usingTemporaryFiles(async ($) => {
+      await $.add("root/alpha/routes/ping.ts", TYPESCRIPT_SOURCE);
+      await $.add("root/beta/routes/items.ts", TYPESCRIPT_SOURCE);
+
+      transpiler = new Transpiler(forwardSlash($.path("root")), "commonjs");
+
+      await transpiler.watch();
+
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      expect(normalize(await $.read("root/alpha/.cache/ping.cjs"))).toBe(
+        normalize(JAVASCRIPT_SOURCE_COMMONJS),
+      );
+      expect(normalize(await $.read("root/beta/.cache/items.cjs"))).toBe(
+        normalize(JAVASCRIPT_SOURCE_COMMONJS),
+      );
 
       await transpiler.stopWatching();
     });

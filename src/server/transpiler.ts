@@ -2,7 +2,6 @@
 
 import { once } from "node:events";
 import fs from "node:fs/promises";
-import nodePath from "node:path";
 
 import { type FSWatcher, watch as chokidarWatch } from "chokidar";
 import createDebug from "debug";
@@ -15,8 +14,15 @@ import { convertFileExtensionsToCjs } from "./convert-js-extensions-to-cjs.js";
 const debug = createDebug("counterfact:server:transpiler");
 
 /**
- * Watches TypeScript source files in `sourcePath` and compiles them to
- * JavaScript in `destinationPath` using the TypeScript compiler API.
+ * Watches TypeScript source files under `rootPath` and compiles them to
+ * JavaScript using the TypeScript compiler API.
+ *
+ * Any `.ts` file found inside a `routes/` subdirectory of `rootPath` is
+ * compiled; the output is written to the sibling `.cache/` directory so the
+ * Counterfact module loader can require it.  For example:
+ *
+ *   {rootPath}/routes/pets.ts        → {rootPath}/.cache/pets.cjs
+ *   {rootPath}/alpha/routes/pets.ts  → {rootPath}/alpha/.cache/pets.cjs
  *
  * Used when the runtime cannot execute TypeScript natively (i.e. Node.js
  * without the `--experimental-strip-types` flag).  Each file is compiled
@@ -26,22 +32,15 @@ const debug = createDebug("counterfact:server:transpiler");
  * after a source file is removed, and `"error"` on write or compilation errors.
  */
 export class Transpiler extends EventTarget {
-  private readonly sourcePath: string;
-
-  private readonly destinationPath: string;
+  private readonly rootPath: string;
 
   private readonly moduleKind: string;
 
   private watcher: FSWatcher | undefined;
 
-  public constructor(
-    sourcePath: string,
-    destinationPath: string,
-    moduleKind: string,
-  ) {
+  public constructor(rootPath: string, moduleKind: string) {
     super();
-    this.sourcePath = sourcePath;
-    this.destinationPath = destinationPath;
+    this.rootPath = rootPath;
     this.moduleKind = moduleKind;
   }
 
@@ -50,15 +49,30 @@ export class Transpiler extends EventTarget {
   }
 
   /**
-   * Starts the file-system watcher and transpiles all existing files in the
-   * source path.  Resolves once the initial scan and all pending transpiles
-   * are complete.
+   * Derives the compiled output path for a given source path by replacing the
+   * first `routes` path segment with `.cache` and swapping the TypeScript
+   * extension for the target module extension.
+   *
+   * Only the first occurrence of `/routes/` is replaced so that a file at
+   * `root/routes/sub/file.ts` maps to `root/.cache/sub/file.ts` (not
+   * `root/.cache/sub/file.ts` with any inner `routes` segments also changed).
+   */
+  private destinationPath(sourcePath: string): string {
+    return sourcePath
+      .replace("/routes/", "/.cache/")
+      .replace(/\.(ts|mts)$/u, this.extension);
+  }
+
+  /**
+   * Starts the file-system watcher and transpiles all existing files under
+   * `rootPath`.  Only files inside `routes/` subdirectories are compiled.
+   * Resolves once the initial scan and all pending transpiles are complete.
    */
   public async watch(): Promise<void> {
     debug("transpiler: watch");
-    this.watcher = chokidarWatch(this.sourcePath, {
+    this.watcher = chokidarWatch(this.rootPath, {
       ...CHOKIDAR_OPTIONS,
-      ignored: `${this.sourcePath}/js`,
+      ignored: /[/\\]\.cache([/\\]|$)/u,
       ignoreInitial: false,
     });
 
@@ -81,10 +95,9 @@ export class Transpiler extends EventTarget {
 
         const sourcePath = sourcePathOriginal.replaceAll("\\", "/");
 
-        const destinationPath = sourcePath
-          .replace(this.sourcePath, this.destinationPath)
-          .replaceAll("\\", "/")
-          .replace(".ts", this.extension);
+        if (!sourcePath.includes("/routes/")) return;
+
+        const destinationPath = this.destinationPath(sourcePath);
 
         if (["add", "change"].includes(eventName)) {
           transpiles.push(
@@ -152,23 +165,15 @@ export class Transpiler extends EventTarget {
 
     const result: string = transpileOutput.outputText;
 
-    const fullDestination = nodePath
-      .join(
-        sourcePath
-          .replace(this.sourcePath, this.destinationPath)
-          .replace(".ts", this.extension),
-      )
-      .replaceAll("\\", "/");
-
     const resultWithTransformedFileExtensions =
       convertFileExtensionsToCjs(result);
 
     try {
-      await fs.writeFile(fullDestination, resultWithTransformedFileExtensions);
+      await fs.writeFile(destinationPath, resultWithTransformedFileExtensions);
     } catch (error) {
       debug(
         "error writing transpiled output to %s: %o",
-        fullDestination,
+        destinationPath,
         error,
       );
       this.dispatchEvent(new Event("error"));
