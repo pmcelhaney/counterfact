@@ -121,6 +121,25 @@ export function createCompleter(
   };
 }
 
+/**
+ * Launches the interactive Counterfact REPL.
+ *
+ * The REPL is a standard Node.js REPL augmented with:
+ * - `context` / `loadContext(path)` globals wired to the {@link ContextRegistry}.
+ * - `client` — a {@link RawHttpClient} pre-configured for `localhost`.
+ * - `route(path)` — creates a {@link RouteBuilder} for the given path.
+ * - `.counterfact` — help command.
+ * - `.proxy` — proxy configuration command.
+ * - `.scenario` — runs a named scenario function from the scenarios directory.
+ *
+ * @param contextRegistry - The live context registry.
+ * @param registry - The route registry (used for tab completion).
+ * @param config - Server configuration.
+ * @param print - Output function; defaults to writing to `stdout`.
+ * @param openApiDocument - Optional OpenAPI document for tab completion.
+ * @param scenarioRegistry - Optional scenario registry for `.scenario` support.
+ * @returns The configured Node.js REPL server instance.
+ */
 export function startRepl(
   contextRegistry: ContextRegistry,
   registry: Registry,
