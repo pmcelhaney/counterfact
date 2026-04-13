@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // import { describe, it, expect } from "@jest/globals";
 import * as app from "../src/app";
+import { ContextRegistry } from "../src/server/context-registry";
 import { Registry } from "../src/server/registry";
+import { ScenarioRegistry } from "../src/server/scenario-registry";
 
 // Use the same HttpMethods type as in app.ts
 const httpMethod = "get";
@@ -128,5 +130,102 @@ describe("createMswHandlers", () => {
     expect(handlers.length).toBeGreaterThan(0);
     expect(handlers[0]).toHaveProperty("method");
     expect(handlers[0]).toHaveProperty("path");
+  });
+});
+
+describe("runStartupScenario", () => {
+  it("calls startup from the index module if it exists", async () => {
+    const scenarioRegistry = new ScenarioRegistry();
+    const contextRegistry = new ContextRegistry();
+    let startupCalled = false;
+
+    scenarioRegistry.add("index", {
+      startup: () => {
+        startupCalled = true;
+      },
+    });
+
+    await (app as any).runStartupScenario(
+      scenarioRegistry,
+      contextRegistry,
+      mockConfig,
+    );
+
+    expect(startupCalled).toBe(true);
+  });
+
+  it("passes the applyContext ($) to startup", async () => {
+    const scenarioRegistry = new ScenarioRegistry();
+    const contextRegistry = new ContextRegistry();
+    let receivedContext: any;
+
+    scenarioRegistry.add("index", {
+      startup: ($: any) => {
+        receivedContext = $;
+      },
+    });
+
+    await (app as any).runStartupScenario(
+      scenarioRegistry,
+      contextRegistry,
+      mockConfig,
+    );
+
+    expect(receivedContext).toBeDefined();
+    expect(typeof receivedContext.context).toBe("object");
+    expect(typeof receivedContext.loadContext).toBe("function");
+    expect(typeof receivedContext.route).toBe("function");
+    expect(typeof receivedContext.routes).toBe("object");
+  });
+
+  it("does nothing if there is no index module", async () => {
+    const scenarioRegistry = new ScenarioRegistry();
+    const contextRegistry = new ContextRegistry();
+
+    await expect(
+      (app as any).runStartupScenario(
+        scenarioRegistry,
+        contextRegistry,
+        mockConfig,
+      ),
+    ).resolves.toBeUndefined();
+  });
+
+  it("does nothing if startup is not a function in the index module", async () => {
+    const scenarioRegistry = new ScenarioRegistry();
+    const contextRegistry = new ContextRegistry();
+
+    scenarioRegistry.add("index", {
+      startup: 42,
+    });
+
+    await expect(
+      (app as any).runStartupScenario(
+        scenarioRegistry,
+        contextRegistry,
+        mockConfig,
+      ),
+    ).resolves.toBeUndefined();
+  });
+
+  it("awaits an async startup function", async () => {
+    const scenarioRegistry = new ScenarioRegistry();
+    const contextRegistry = new ContextRegistry();
+    let resolved = false;
+
+    scenarioRegistry.add("index", {
+      startup: async () => {
+        await Promise.resolve();
+        resolved = true;
+      },
+    });
+
+    await (app as any).runStartupScenario(
+      scenarioRegistry,
+      contextRegistry,
+      mockConfig,
+    );
+
+    expect(resolved).toBe(true);
   });
 });

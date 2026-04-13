@@ -100,9 +100,51 @@ After the command runs you can immediately use anything stored in `$.routes`:
 
 The `Scenario` type and `Scenario$` interface are generated automatically into `types/_.context.ts` when you run Counterfact with type generation enabled.
 
+## Startup scenario
+
+The `startup` export in `scenarios/index.ts` is special: it runs automatically when the server initializes, right before the REPL prompt appears. Use it to seed dummy data so the server is immediately useful without any manual REPL commands.
+
+```ts
+// scenarios/index.ts
+import type { Scenario } from "../types/_.context.js";
+
+export const startup: Scenario = ($) => {
+  $.context.addPet({ name: "Fluffy", status: "available", photoUrls: [] });
+  $.context.addPet({ name: "Rex", status: "sold", photoUrls: [] });
+};
+```
+
+**Delegating to other scenario functions** keeps `startup` focused and readable. Pass `$` (and any extra arguments) to each helper:
+
+```ts
+// scenarios/index.ts
+import type { Scenario } from "../types/_.context.js";
+import { addPets } from "./pets.js";
+import { addOrders } from "./orders.js";
+
+export const startup: Scenario = ($) => {
+  addPets($, 20, "dog");
+  addOrders($, 5);
+};
+```
+
+```ts
+// scenarios/pets.ts
+import type { Scenario$ } from "../types/_.context.js";
+
+export function addPets($: Scenario$, count: number, species: string) {
+  for (let i = 0; i < count; i++) {
+    $.context.addPet({ name: `${species} ${i + 1}`, status: "available", photoUrls: [] });
+  }
+}
+```
+
+If `startup` is not exported from `scenarios/index.ts`, it is silently skipped — no error is thrown.
+
 ## See also
 
 - [Route Builder](./route-builder.md) — fluent request builder with OpenAPI introspection
 - [State](./state.md) — the context objects you interact with from the REPL
+- [Patterns: Scenario Scripts](../patterns/scenario-scripts.md)
 - [Patterns: Live Server Inspection with the REPL](../patterns/repl-inspection.md)
 - [Usage](../usage.md)
