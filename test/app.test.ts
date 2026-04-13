@@ -84,7 +84,8 @@ describe("counterfact", () => {
     expect(result.contextRegistry).toBeDefined();
     expect(result.registry).toBeDefined();
     expect(result.koaApp).toBeDefined();
-    expect(result.koaMiddleware).toBeDefined();
+    expect(Array.isArray(result.koaMiddleware)).toBe(true);
+    expect(result.koaMiddleware).toHaveLength(1);
     expect(typeof result.start).toBe("function");
   });
 

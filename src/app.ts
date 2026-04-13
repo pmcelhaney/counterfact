@@ -5,6 +5,7 @@ import { createHttpTerminator, type HttpTerminator } from "http-terminator";
 
 import { startRepl as startReplServer } from "./repl/repl.js";
 import { createRouteFunction } from "./repl/route-builder.js";
+import { adminApiMiddleware } from "./server/admin-api-middleware.js";
 import type { Config } from "./server/config.js";
 import { ContextRegistry } from "./server/context-registry.js";
 import { createKoaApp } from "./server/create-koa-app.js";
@@ -313,14 +314,17 @@ export async function counterfact(config: Config) {
 
   const primaryRegistry = primaryBundle.registry;
 
+  const adminMiddleware = config.startAdminApi
+    ? adminApiMiddleware(primaryRegistry, contextRegistry, config)
+    : undefined;
+
   const koaApp = createKoaApp(
-    primaryRegistry,
     specMiddlewares,
     {
       ...config,
       openApiPath: primaryBundle.openApiDocument ? primarySpec.source : "_",
     },
-    contextRegistry,
+    adminMiddleware,
   );
 
   async function start(options: Config) {
