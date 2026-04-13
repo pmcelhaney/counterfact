@@ -14,6 +14,17 @@ import { convertFileExtensionsToCjs } from "./convert-js-extensions-to-cjs.js";
 
 const debug = createDebug("counterfact:server:transpiler");
 
+/**
+ * Watches TypeScript source files in `sourcePath` and compiles them to
+ * JavaScript in `destinationPath` using the TypeScript compiler API.
+ *
+ * Used when the runtime cannot execute TypeScript natively (i.e. Node.js
+ * without the `--experimental-strip-types` flag).  Each file is compiled
+ * independently (no type-checking) for maximum speed.
+ *
+ * Emits DOM-style events: `"write"` after a successful transpile, `"delete"`
+ * after a source file is removed, and `"error"` on write or compilation errors.
+ */
 export class Transpiler extends EventTarget {
   private readonly sourcePath: string;
 
@@ -38,6 +49,11 @@ export class Transpiler extends EventTarget {
     return this.moduleKind.toLowerCase() === "commonjs" ? ".cjs" : ".js";
   }
 
+  /**
+   * Starts the file-system watcher and transpiles all existing files in the
+   * source path.  Resolves once the initial scan and all pending transpiles
+   * are complete.
+   */
   public async watch(): Promise<void> {
     debug("transpiler: watch");
     this.watcher = chokidarWatch(this.sourcePath, {
@@ -98,6 +114,7 @@ export class Transpiler extends EventTarget {
     await Promise.all(transpiles);
   }
 
+  /** Closes the file-system watcher. */
   public async stopWatching(): Promise<void> {
     await this.watcher?.close();
   }

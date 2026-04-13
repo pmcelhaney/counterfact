@@ -24,6 +24,19 @@ const { uncachedRequire } = await import("./uncached-require.cjs");
 
 const debug = createDebug("counterfact:server:module-loader");
 
+/**
+ * Watches the compiled routes directory and dynamically loads/reloads route
+ * modules, context files, and middleware as files are added, changed, or
+ * removed.
+ *
+ * Loaded modules are registered in the {@link Registry} (route handlers) or
+ * the {@link ContextRegistry} (context files).  An optional
+ * {@link ScenarioRegistry} receives scenario modules loaded from a separate
+ * `scenarios/` directory.
+ *
+ * Emits DOM-style events (`"add"`, `"remove"`) so callers can react to module
+ * lifecycle changes.
+ */
 export class ModuleLoader extends EventTarget {
   private readonly basePath: string;
 
@@ -64,6 +77,13 @@ export class ModuleLoader extends EventTarget {
     this.fileDiscovery = new FileDiscovery(this.basePath);
   }
 
+  /**
+   * Starts watching the routes directory (and optionally the scenarios
+   * directory) for file-system changes, loading or reloading modules on
+   * `"add"` and `"change"` events and deregistering them on `"unlink"`.
+   *
+   * Resolves once the initial directory scan is complete.
+   */
   public async watch(): Promise<void> {
     this.watcher = watch(this.basePath, CHOKIDAR_OPTIONS).on(
       "all",
@@ -150,6 +170,7 @@ export class ModuleLoader extends EventTarget {
     }
   }
 
+  /** Closes both file-system watchers (routes and scenarios). */
   public async stopWatching(): Promise<void> {
     await this.watcher?.close();
     await this.scenariosWatcher?.close();
@@ -159,6 +180,12 @@ export class ModuleLoader extends EventTarget {
     return basename(pathName).startsWith("_.context.");
   }
 
+  /**
+   * Performs a one-shot load of all modules found under `directory` (relative
+   * to the configured base path) and all scenario files.
+   *
+   * @param directory - Sub-directory to load, defaults to the root (`""`).
+   */
   public async load(directory = ""): Promise<void> {
     const files = await this.fileDiscovery.findFiles(directory);
     await Promise.all(files.map((file) => this.loadEndpoint(file)));

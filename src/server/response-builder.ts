@@ -92,6 +92,21 @@ function unknownStatusCodeResponse(statusCode: number | undefined) {
   };
 }
 
+/**
+ * Creates the `$.response` builder proxy made available to route handlers.
+ *
+ * The proxy maps HTTP status codes to a fluent builder object.  Example usage
+ * in a route handler:
+ *
+ * ```ts
+ * return $.response[200].json({ id: 1, name: "Fluffy" });
+ * ```
+ *
+ * @param operation - The OpenAPI operation descriptor used for schema-driven
+ *   random generation and example resolution.
+ * @param config - Server configuration (e.g. `alwaysFakeOptionals`).
+ * @returns A {@link ResponseBuilder} proxy keyed by HTTP status code.
+ */
 export function createResponseBuilder(
   operation: OpenApiOperation,
   config?: Config,

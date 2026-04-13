@@ -84,6 +84,23 @@ function getAuthObject(
   return { password, username };
 }
 
+/**
+ * Builds the Koa middleware function that bridges Koa's request context with
+ * the Counterfact {@link Dispatcher}.
+ *
+ * Responsibilities:
+ * - Respects `routePrefix` — requests outside the prefix are passed to `next`.
+ * - Adds CORS headers to every response.
+ * - Handles `OPTIONS` pre-flight requests (200 with CORS headers, no body).
+ * - Proxies the request upstream when proxy is enabled for the path.
+ * - Forwards the request to the dispatcher and maps the response back onto
+ *   the Koa context.
+ *
+ * @param dispatcher - The {@link Dispatcher} instance that handles requests.
+ * @param config - Server configuration (proxy settings, route prefix, etc.).
+ * @param proxy - Proxy factory; injectable for testing.
+ * @returns A Koa middleware function.
+ */
 export function koaMiddleware(
   dispatcher: Dispatcher,
   config: Config,

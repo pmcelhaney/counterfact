@@ -21,6 +21,15 @@ interface WriteFilesOptions {
   types?: boolean;
 }
 
+/**
+ * Collection of {@link Script} objects keyed by their repository-relative
+ * path.
+ *
+ * Coders call {@link get} to obtain (or create) the script where they should
+ * export their generated TypeScript.  After all coders have been registered,
+ * {@link writeFiles} waits for every script to finish and writes the output to
+ * disk.
+ */
 export class Repository {
   public scripts: Map<string, Script>;
 
@@ -28,6 +37,12 @@ export class Repository {
     this.scripts = new Map();
   }
 
+  /**
+   * Returns the {@link Script} for `path`, creating it if it does not yet
+   * exist.
+   *
+   * @param path - Repository-relative path (e.g. `"routes/pets.ts"`).
+   */
   public get(path: string): Script {
     debug("getting script at %s", path);
 
@@ -46,6 +61,7 @@ export class Repository {
     return script;
   }
 
+  /** Waits until all scripts have resolved all of their pending export promises. */
   public async finished(): Promise<void> {
     while (
       Array.from(this.scripts.values()).some((script) => script.isInProgress())
@@ -58,6 +74,15 @@ export class Repository {
     }
   }
 
+  /**
+   * Copies the compiled `counterfact-types` directory from the Counterfact
+   * distribution into the generated output tree.
+   *
+   * Returns `false` when the source directory does not exist (e.g. running
+   * from source without a prior build).
+   *
+   * @param destination - The root of the generated output tree.
+   */
   public async copyCoreFiles(destination: string): Promise<boolean | void> {
     const sourcePath = nodePath.join(
       __dirname,
@@ -72,6 +97,16 @@ export class Repository {
     return fs.cp(sourcePath, destinationPath, { recursive: true });
   }
 
+  /**
+   * Waits for all scripts to finish, then writes each one to disk.
+   *
+   * Route files (`routes/…`) are never overwritten if they already exist on
+   * disk, preserving user edits.  Type files (`types/…`) are always
+   * overwritten.
+   *
+   * @param destination - Absolute path to the output root directory.
+   * @param options - Controls which artefacts are written.
+   */
   public async writeFiles(
     destination: string,
     { routes, types }: WriteFilesOptions,
@@ -133,6 +168,12 @@ export class Repository {
     }
   }
 
+  /**
+   * Creates the default `routes/_.context.ts` file if it does not already
+   * exist.
+   *
+   * @param destination - Absolute path to the output root directory.
+   */
   public async createDefaultContextFile(destination: string): Promise<void> {
     const contextFilePath = nodePath.join(
       destination,
@@ -165,6 +206,13 @@ export class Context {
     );
   }
 
+  /**
+   * Returns the path of the `_.context.ts` file that is nearest to `path` in
+   * the directory hierarchy, relative to the script's output directory.
+   *
+   * @param destination - Output root directory.
+   * @param path - Repository-relative path of the script being generated.
+   */
   public findContextPath(destination: string, path: string): string {
     return nodePath
       .relative(
@@ -174,6 +222,13 @@ export class Context {
       .replaceAll("\\", "/");
   }
 
+  /**
+   * Walks up the directory tree from `path` to find the nearest
+   * `_.context.ts` file, falling back to `routes/_.context.ts` at the root.
+   *
+   * @param destination - Output root directory.
+   * @param path - Repository-relative path to start from.
+   */
   public nearestContextFile(destination: string, path: string): string {
     const directory = nodePath
       .dirname(path)
