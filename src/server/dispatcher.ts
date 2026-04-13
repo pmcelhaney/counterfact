@@ -116,7 +116,7 @@ export class Dispatcher {
 
   public config?: Config; // Add config property
 
-  /** Multiple spec documents for multi-spec routing (prefix → document). */
+  /** Multiple spec documents for multi-spec routing (base → document). */
   public specDocuments: Array<{ base: string; document: OpenApiDocument }>;
 
   public constructor(
@@ -183,7 +183,7 @@ export class Dispatcher {
         continue;
       }
 
-      const specPath = path.slice(base.length + 1) || "/";
+      const specPath = path.slice(("/" + base).length) || "/";
 
       for (const key in document.paths) {
         if (key.toLowerCase() === specPath.toLowerCase()) {
