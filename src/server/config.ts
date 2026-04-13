@@ -1,3 +1,11 @@
+/** A single OpenAPI spec entry for parallel-API mode. */
+export interface SpecEntry {
+  /** Path or URL to the OpenAPI document. */
+  source: string;
+  /** URL base path segment (e.g. `"billing"` mounts routes at `/billing/…`). */
+  base: string;
+}
+
 /** Runtime configuration for a Counterfact server instance. */
 export interface Config {
   /** Optional bearer token that protects the Admin API endpoints. */
@@ -19,6 +27,11 @@ export interface Config {
   };
   /** Path or URL to the OpenAPI document. Use `"_"` to skip spec loading. */
   openApiPath: string;
+  /**
+   * Multiple OpenAPI specs to mount at distinct URL base paths.
+   * When present, takes precedence over {@link openApiPath}.
+   */
+  specs?: SpecEntry[];
   /** TCP port the HTTP server listens on. */
   port: number;
   /**

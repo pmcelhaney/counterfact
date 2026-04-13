@@ -2,6 +2,7 @@ import fs, { rm } from "node:fs/promises";
 import nodePath from "node:path";
 
 import { createHttpTerminator, type HttpTerminator } from "http-terminator";
+import type Koa from "koa";
 
 import { startRepl as startReplServer } from "./repl/repl.js";
 import { createRouteFunction } from "./repl/route-builder.js";
@@ -154,6 +155,117 @@ export async function createMswHandlers(
 }
 
 /**
+ * One per-spec bundle of services created in multi-spec mode.
+ * Each spec gets its own Registry, Dispatcher, CodeGenerator,
+ * Transpiler, and ModuleLoader so that the classes themselves
+ * never need to know about multiple APIs.
+ */
+interface SpecBundle {
+  base: string;
+  registry: Registry;
+  dispatcher: Dispatcher;
+  codeGenerator: CodeGenerator;
+  transpiler: Transpiler;
+  moduleLoader: ModuleLoader;
+  openApiDocument: Awaited<ReturnType<typeof loadOpenApiDocument>> | undefined;
+  compiledPathsDirectory: string;
+}
+
+/**
+ * Creates all per-spec services for one entry in `config.specs`.
+ */
+async function createSpecBundle(
+  config: Config,
+  specSource: string,
+  specBase: string,
+  contextRegistry: ContextRegistry,
+  nativeTs: boolean,
+): Promise<SpecBundle> {
+  const specDest = nodePath
+    .join(config.basePath, specBase)
+    .replaceAll("\\", "/");
+
+  const compiledPathsDirectory = nodePath
+    .join(specDest, nativeTs ? "routes" : ".cache")
+    .replaceAll("\\", "/");
+
+  if (!nativeTs) {
+    await rm(compiledPathsDirectory, { force: true, recursive: true });
+  }
+
+  const registry = new Registry();
+  const openApiDocument = await loadOpenApiDocument(specSource);
+
+  const dispatcher = new Dispatcher(
+    registry,
+    contextRegistry,
+    openApiDocument,
+    config,
+  );
+
+  const codeGenerator = new CodeGenerator(
+    specSource,
+    specDest,
+    config.generate,
+  );
+
+  const transpiler = new Transpiler(
+    nodePath.join(specDest, "routes").replaceAll("\\", "/"),
+    compiledPathsDirectory,
+    "commonjs",
+  );
+
+  const moduleLoader = new ModuleLoader(
+    compiledPathsDirectory,
+    registry,
+    contextRegistry,
+  );
+
+  return {
+    base: specBase,
+    registry,
+    dispatcher,
+    codeGenerator,
+    transpiler,
+    moduleLoader,
+    openApiDocument,
+    compiledPathsDirectory,
+  };
+}
+
+/**
+ * Builds a single Koa middleware that fans requests out to the correct
+ * per-spec {@link Dispatcher} based on the URL base-path prefix.
+ *
+ * Requests that do not match any spec prefix are forwarded to `next`.
+ */
+function buildMultiSpecMiddleware(
+  specBundles: SpecBundle[],
+  config: Config,
+): Koa.Middleware {
+  const specMiddlewares = specBundles.map((bundle) => ({
+    prefix: `/${bundle.base}`,
+    middleware: koaMiddleware(bundle.dispatcher, {
+      ...config,
+      routePrefix: `/${bundle.base}`,
+    }),
+  }));
+
+  return async function multiSpecMiddleware(ctx, next) {
+    for (const { prefix, middleware } of specMiddlewares) {
+      if (ctx.request.path.startsWith(prefix)) {
+        let passedThrough = false;
+        await middleware(ctx, async () => {
+          passedThrough = true;
+        });
+        if (!passedThrough) return;
+      }
+    }
+    await next();
+  };
+}
+
+/**
  * Creates and configures a full Counterfact server instance.
  *
  * Sets up the route registry, context registry, scenario registry, code
@@ -174,6 +286,129 @@ export async function counterfact(config: Config) {
 
   const nativeTs = await runtimeCanExecuteErasableTs();
 
+  const contextRegistry = new ContextRegistry();
+  const scenarioRegistry = new ScenarioRegistry();
+
+  contextRegistry.addEventListener("context-changed", () => {
+    void writeScenarioContextType(modulesPath);
+  });
+
+  // ── Multi-spec mode ────────────────────────────────────────────────────────
+  if (config.specs && config.specs.length > 0) {
+    const specBundles = await Promise.all(
+      config.specs.map((spec) =>
+        createSpecBundle(
+          config,
+          spec.source,
+          spec.base,
+          contextRegistry,
+          nativeTs,
+        ),
+      ),
+    );
+
+    const compositeMiddleware = buildMultiSpecMiddleware(specBundles, config);
+
+    // Use the first spec's registry for the Koa admin/OpenAPI UI (best effort).
+    const primaryRegistry = specBundles[0]!.registry;
+
+    const koaApp = createKoaApp(
+      primaryRegistry,
+      compositeMiddleware,
+      {
+        ...config,
+        openApiPath: specBundles[0]!.openApiDocument
+          ? config.specs[0]!.source
+          : "_",
+      },
+      contextRegistry,
+    );
+
+    async function startMultiSpec(options: Config) {
+      const { generate, startServer, watch, buildCache } = options;
+
+      await Promise.all(
+        specBundles.map(async (bundle) => {
+          if (generate.routes || generate.types) {
+            await bundle.codeGenerator.generate();
+          }
+
+          if (watch.routes || watch.types) {
+            await bundle.codeGenerator.watch();
+          }
+        }),
+      );
+
+      let httpTerminator: HttpTerminator | undefined;
+
+      if (startServer) {
+        await Promise.all(
+          specBundles.map(async (bundle) => {
+            await bundle.openApiDocument?.watch();
+
+            if (!nativeTs) {
+              await bundle.transpiler.watch();
+            }
+
+            await bundle.moduleLoader.load();
+            await bundle.moduleLoader.watch();
+          }),
+        );
+
+        await runStartupScenario(
+          scenarioRegistry,
+          contextRegistry,
+          config,
+          specBundles[0]!.openApiDocument,
+        );
+
+        const server = koaApp.listen({ port: config.port });
+
+        httpTerminator = createHttpTerminator({ server });
+      } else if (buildCache) {
+        await Promise.all(
+          specBundles.map(async (bundle) => {
+            await bundle.transpiler.watch();
+            await bundle.transpiler.stopWatching();
+          }),
+        );
+      }
+
+      return {
+        async stop() {
+          await Promise.all(
+            specBundles.map(async (bundle) => {
+              await bundle.codeGenerator.stopWatching();
+              await bundle.transpiler.stopWatching();
+              await bundle.moduleLoader.stopWatching();
+              await bundle.openApiDocument?.stopWatching();
+            }),
+          );
+          await httpTerminator?.terminate();
+        },
+      };
+    }
+
+    return {
+      contextRegistry,
+      koaApp,
+      koaMiddleware: compositeMiddleware,
+      registry: primaryRegistry,
+      start: startMultiSpec,
+      startRepl: () =>
+        startReplServer(
+          contextRegistry,
+          primaryRegistry,
+          config,
+          undefined,
+          specBundles[0]!.openApiDocument,
+          scenarioRegistry,
+        ),
+    };
+  }
+
+  // ── Single-spec mode (original behaviour) ─────────────────────────────────
+
   const compiledPathsDirectory = nodePath
     .join(modulesPath, nativeTs ? "routes" : ".cache")
     .replaceAll("\\", "/");
@@ -183,10 +418,6 @@ export async function counterfact(config: Config) {
   }
 
   const registry = new Registry();
-
-  const contextRegistry = new ContextRegistry();
-
-  const scenarioRegistry = new ScenarioRegistry();
 
   const codeGenerator = new CodeGenerator(
     config.openApiPath,
@@ -219,10 +450,6 @@ export async function counterfact(config: Config) {
     nodePath.join(modulesPath, "scenarios").replaceAll("\\", "/"),
     scenarioRegistry,
   );
-
-  contextRegistry.addEventListener("context-changed", () => {
-    void writeScenarioContextType(modulesPath);
-  });
 
   const middleware = koaMiddleware(dispatcher, config);
 

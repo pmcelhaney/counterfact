@@ -229,3 +229,60 @@ describe("runStartupScenario", () => {
     expect(resolved).toBe(true);
   });
 });
+
+describe("counterfact multi-spec mode", () => {
+  const multiSpecConfig = {
+    ...mockConfig,
+    openApiPath: "_",
+    specs: [
+      { source: "test/fixtures/openapi-example.yaml", base: "alpha" },
+      { source: "test/fixtures/openapi-example.yaml", base: "beta" },
+    ],
+  };
+
+  it("returns the expected shape when specs is set", async () => {
+    const result = await (app as any).counterfact(multiSpecConfig);
+    expect(result.contextRegistry).toBeDefined();
+    expect(result.registry).toBeDefined();
+    expect(result.koaApp).toBeDefined();
+    expect(result.koaMiddleware).toBeDefined();
+    expect(typeof result.start).toBe("function");
+    expect(typeof result.startRepl).toBe("function");
+  });
+
+  it("routes requests to the correct spec's dispatcher based on URL prefix", async () => {
+    const result = await (app as any).counterfact(multiSpecConfig);
+
+    // Simulate a Koa context for /alpha/...
+    const alphaCtx = {
+      request: { path: "/alpha/hello/world", method: "GET", body: undefined, headers: {}, query: {} },
+      req: {},
+      status: 200,
+      set: () => {},
+      body: undefined,
+    } as any;
+
+    let alphaCalledNext = false;
+    await result.koaMiddleware(alphaCtx, async () => { alphaCalledNext = true; });
+
+    // The request should have been handled (next was NOT called or it was passed through normally)
+    // Since /alpha/hello/world may not exist in the registry, it returns a 404-like response
+    // but the middleware should NOT propagate to next() unless the prefix doesn't match.
+    expect(alphaCalledNext).toBe(false);
+
+    // Simulate a Koa context for an unknown prefix /gamma/...
+    const unknownCtx = {
+      request: { path: "/gamma/something", method: "GET", body: undefined, headers: {}, query: {} },
+      req: {},
+      status: 200,
+      set: () => {},
+      body: undefined,
+    } as any;
+
+    let unknownCalledNext = false;
+    await result.koaMiddleware(unknownCtx, async () => { unknownCalledNext = true; });
+
+    // No spec matches /gamma, so next should be called
+    expect(unknownCalledNext).toBe(true);
+  });
+});

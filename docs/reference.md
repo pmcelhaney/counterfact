@@ -316,6 +316,38 @@ Run `npx counterfact@latest --help` for the full list.
 
 ---
 
+## `counterfact.yaml` config file
+
+Instead of passing every flag on the command line you can create a `counterfact.yaml` file in the directory where you run Counterfact. All CLI options are supported as YAML keys (kebab-case or camelCase):
+
+```yaml
+port: 9000
+watch: true
+proxy-url: https://api.example.com
+```
+
+### Parallel APIs (`specs`)
+
+To mock **multiple OpenAPI documents** from a single server instance, use the `specs` array instead of the top-level `spec` key. Each entry requires a `source` (path or URL to an OpenAPI document) and a `base` (the URL segment the API is mounted under):
+
+```yaml
+specs:
+  - source: ./billing.yaml
+    base: billing
+
+  - source: https://example.com/identity.yaml
+    base: identity
+```
+
+With this config:
+
+- `GET /billing/invoices` is validated against and served by `billing.yaml`.
+- `GET /identity/users` is validated against and served by `identity.yaml`.
+- Each spec gets its own subdirectory under the output directory (e.g. `billing/routes/`, `identity/routes/`).
+- When `specs` is present it takes precedence over a `spec` key or the positional `[openapi.yaml]` argument.
+
+---
+
 ## See also
 
 - [Getting started](./getting-started.md)

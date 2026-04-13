@@ -314,6 +314,13 @@ async function main(source, destination) {
     source = options.spec;
   }
 
+  // `specs` in the config file takes precedence over a single `spec`.
+  // When `specs` is set, no single OpenAPI document is used at the top level.
+  const specs = Array.isArray(options.specs) ? options.specs : undefined;
+  if (specs) {
+    source = "_";
+  }
+
   const destinationPath = nodePath.resolve(destination).replaceAll("\\", "/");
 
   const basePath = nodePath.resolve(destinationPath).replaceAll("\\", "/");
@@ -372,6 +379,7 @@ async function main(source, destination) {
     proxyPaths: new Map([["", Boolean(options.proxyUrl)]]),
     proxyUrl: options.proxyUrl ?? "",
     routePrefix: options.prefix,
+    specs,
     startAdminApi: options.adminApi,
     startRepl: options.repl,
     startServer: options.serve,

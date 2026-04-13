@@ -106,4 +106,28 @@ describe("loadConfigFile", () => {
       });
     });
   });
+
+  it("parses a specs array with multiple entries", async () => {
+    await usingTemporaryFiles(async ($) => {
+      await $.add(
+        "counterfact.yaml",
+        [
+          "specs:",
+          "  - source: ./billing.yaml",
+          "    base: billing",
+          "  - source: https://example.com/identity.yaml",
+          "    base: identity",
+          "port: 9090",
+        ].join("\n"),
+      );
+      const result = await loadConfigFile($.path("counterfact.yaml"));
+      expect(result).toEqual({
+        specs: [
+          { source: "./billing.yaml", base: "billing" },
+          { source: "https://example.com/identity.yaml", base: "identity" },
+        ],
+        port: 9090,
+      });
+    });
+  });
 });
