@@ -19,6 +19,34 @@ debug("dirname is %s", __dirname);
 interface WriteFilesOptions {
   routes?: boolean;
   types?: boolean;
+  /** When false, skips copying the shared `counterfact-types` directory.
+   * Set to `false` in multi-spec mode so the copy runs only once. */
+  copyCoreFiles?: boolean;
+}
+
+/**
+ * Copies the compiled `counterfact-types` directory from the Counterfact
+ * distribution into the generated output tree.
+ *
+ * Returns `false` when the source directory does not exist (e.g. running
+ * from source without a prior build).
+ *
+ * @param destination - The root of the generated output tree.
+ */
+export async function copyCoreFiles(
+  destination: string,
+): Promise<boolean | void> {
+  const sourcePath = nodePath.join(
+    __dirname,
+    "../../dist/server/counterfact-types",
+  );
+  const destinationPath = nodePath.join(destination, "counterfact-types");
+
+  if (!existsSync(sourcePath)) {
+    return false;
+  }
+
+  return fs.cp(sourcePath, destinationPath, { recursive: true });
 }
 
 /**
@@ -82,19 +110,10 @@ export class Repository {
    * from source without a prior build).
    *
    * @param destination - The root of the generated output tree.
+   * @deprecated Use the standalone `copyCoreFiles` function instead.
    */
   public async copyCoreFiles(destination: string): Promise<boolean | void> {
-    const sourcePath = nodePath.join(
-      __dirname,
-      "../../dist/server/counterfact-types",
-    );
-    const destinationPath = nodePath.join(destination, "counterfact-types");
-
-    if (!existsSync(sourcePath)) {
-      return false;
-    }
-
-    return fs.cp(sourcePath, destinationPath, { recursive: true });
+    return copyCoreFiles(destination);
   }
 
   /**
@@ -109,7 +128,11 @@ export class Repository {
    */
   public async writeFiles(
     destination: string,
-    { routes, types }: WriteFilesOptions,
+    {
+      routes,
+      types,
+      copyCoreFiles: shouldCopyCoreFiles = true,
+    }: WriteFilesOptions,
   ): Promise<void> {
     debug(
       "waiting for %i or more scripts to finish before writing files",
@@ -161,7 +184,9 @@ export class Repository {
 
     await Promise.all(writeFiles);
 
-    await this.copyCoreFiles(destination);
+    if (shouldCopyCoreFiles) {
+      await this.copyCoreFiles(destination);
+    }
 
     if (routes) {
       await this.createDefaultContextFile(destination);

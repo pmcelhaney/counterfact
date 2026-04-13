@@ -21,6 +21,7 @@ export class CodeGenerator extends EventTarget {
     routes: boolean;
     types: boolean;
     group?: string;
+    copyCoreFiles?: boolean;
   };
 
   private watcher: FSWatcher | undefined;
@@ -33,6 +34,7 @@ export class CodeGenerator extends EventTarget {
       routes: boolean;
       types: boolean;
       group?: string;
+      copyCoreFiles?: boolean;
     },
   ) {
     super();

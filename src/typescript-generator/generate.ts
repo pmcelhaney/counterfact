@@ -19,6 +19,9 @@ interface GenerateOptions {
   types?: boolean;
   /** Sub-directory under `routes/` and `types/` for this spec's generated files. */
   group?: string;
+  /** When false, skips copying the shared `counterfact-types` directory.
+   * Set to `false` in multi-spec mode so the copy runs only once after all specs. */
+  copyCoreFiles?: boolean;
 }
 
 /**

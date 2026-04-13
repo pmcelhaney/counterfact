@@ -20,6 +20,7 @@ import {
   writeApplyContextType,
   writeDefaultScenariosIndex,
 } from "./typescript-generator/generate.js";
+import { copyCoreFiles } from "./typescript-generator/repository.js";
 import { runtimeCanExecuteErasableTs } from "./util/runtime-can-execute-erasable-ts.js";
 
 export { loadOpenApiDocument } from "./server/load-openapi-document.js";
@@ -173,6 +174,7 @@ export async function counterfact(config: Config) {
         new CodeGenerator(spec.source, config.basePath, {
           ...config.generate,
           group: spec.group,
+          copyCoreFiles: false,
         }),
     );
 
@@ -237,12 +239,12 @@ export async function counterfact(config: Config) {
     const { generate, startServer, watch, buildCache } = options;
 
     if (isMultiSpec) {
-      // Generate code for all specs sequentially to avoid concurrent writes
-      // to the shared counterfact-types directory (copyCoreFiles race condition).
+      // Generate code for all specs; copyCoreFiles is skipped per-spec (copyCoreFiles: false)
+      // so we run all generators in parallel and copy the shared directory once at the end.
       if (generate.routes || generate.types) {
-        for (const gen of codeGenerators) {
-          await gen.generate();
-        }
+        await Promise.all(codeGenerators.map((gen) => gen.generate()));
+        // Copy shared counterfact-types directory exactly once
+        await copyCoreFiles(config.basePath);
         // Write shared context types and scenarios index once after all specs
         if (generate.types) {
           await writeApplyContextType(config.basePath);
