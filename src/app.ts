@@ -154,10 +154,9 @@ export async function createMswHandlers(
 }
 
 /**
- * One per-spec bundle of services created in multi-spec mode.
- * Each spec gets its own Registry, Dispatcher, CodeGenerator,
- * Transpiler, and ModuleLoader so that the classes themselves
- * never need to know about multiple APIs.
+ * One per-spec bundle of services.  Each spec gets its own Registry,
+ * Dispatcher, CodeGenerator, Transpiler, and ModuleLoader so that the classes
+ * themselves never need to know about multiple APIs.
  */
 interface SpecBundle {
   base: string;
@@ -171,7 +170,13 @@ interface SpecBundle {
 }
 
 /**
- * Creates all per-spec services for one entry in `config.specs`.
+ * Creates all per-spec services for one entry in the resolved `specs` list.
+ *
+ * When `specSource` is `"_"` the document is skipped and `openApiDocument`
+ * will be `undefined`; callers must guard code-generation calls accordingly.
+ *
+ * Pass `scenariosPath` and `scenarioRegistry` only for the primary spec so
+ * that the startup-scenario and REPL have access to the right modules.
  */
 async function createSpecBundle(
   config: Config,
@@ -179,6 +184,8 @@ async function createSpecBundle(
   specBase: string,
   contextRegistry: ContextRegistry,
   nativeTs: boolean,
+  scenariosPath?: string,
+  scenarioRegistry?: ScenarioRegistry,
 ): Promise<SpecBundle> {
   const specDest = nodePath
     .join(config.basePath, specBase)
@@ -193,7 +200,9 @@ async function createSpecBundle(
   }
 
   const registry = new Registry();
-  const openApiDocument = await loadOpenApiDocument(specSource);
+
+  const openApiDocument =
+    specSource === "_" ? undefined : await loadOpenApiDocument(specSource);
 
   const dispatcher = new Dispatcher(
     registry,
@@ -218,6 +227,8 @@ async function createSpecBundle(
     compiledPathsDirectory,
     registry,
     contextRegistry,
+    scenariosPath,
+    scenarioRegistry,
   );
 
   return {
@@ -260,226 +271,118 @@ export async function counterfact(config: Config) {
     void writeScenarioContextType(modulesPath);
   });
 
-  // ── Multi-spec mode ────────────────────────────────────────────────────────
-  if (config.specs && config.specs.length > 0) {
-    const specBundles = await Promise.all(
-      config.specs.map((spec) =>
-        createSpecBundle(
-          config,
-          spec.source,
-          spec.base,
-          contextRegistry,
-          nativeTs,
-        ),
-      ),
-    );
+  // Normalise: a plain single-spec config is treated as one-element specs list
+  // so there is no divergence between single-spec and multi-spec code paths.
+  const specs =
+    config.specs && config.specs.length > 0
+      ? config.specs
+      : [{ source: config.openApiPath, base: "" }];
 
-    // Guaranteed non-empty: we checked `config.specs.length > 0` above and
-    // `specBundles` has the same length as `config.specs`.
-    const primaryBundle = specBundles[0] as SpecBundle;
-    const primarySpec = config.specs[0] as (typeof config.specs)[number];
-
-    // Build one per-spec middleware; each knows its own routePrefix and will
-    // call next() for paths that don't start with that prefix.
-    const specMiddlewares = specBundles.map((bundle) =>
-      koaMiddleware(bundle.dispatcher, {
-        ...config,
-        routePrefix: `/${bundle.base}`,
-      }),
-    );
-
-    // Use the first spec's registry for the Koa admin/OpenAPI UI (best effort).
-    const primaryRegistry = primaryBundle.registry;
-
-    const koaApp = createKoaApp(
-      primaryRegistry,
-      specMiddlewares,
-      {
-        ...config,
-        openApiPath: primaryBundle.openApiDocument ? primarySpec.source : "_",
-      },
-      contextRegistry,
-    );
-
-    async function startMultiSpec(options: Config) {
-      const { generate, startServer, watch, buildCache } = options;
-
-      await Promise.all(
-        specBundles.map(async (bundle) => {
-          if (generate.routes || generate.types) {
-            await bundle.codeGenerator.generate();
-          }
-
-          if (watch.routes || watch.types) {
-            await bundle.codeGenerator.watch();
-          }
-        }),
-      );
-
-      let httpTerminator: HttpTerminator | undefined;
-
-      if (startServer) {
-        await Promise.all(
-          specBundles.map(async (bundle) => {
-            await bundle.openApiDocument?.watch();
-
-            if (!nativeTs) {
-              await bundle.transpiler.watch();
-            }
-
-            await bundle.moduleLoader.load();
-            await bundle.moduleLoader.watch();
-          }),
-        );
-
-        await runStartupScenario(
-          scenarioRegistry,
-          contextRegistry,
-          config,
-          primaryBundle.openApiDocument,
-        );
-
-        const server = koaApp.listen({ port: config.port });
-
-        httpTerminator = createHttpTerminator({ server });
-      } else if (buildCache) {
-        await Promise.all(
-          specBundles.map(async (bundle) => {
-            await bundle.transpiler.watch();
-            await bundle.transpiler.stopWatching();
-          }),
-        );
-      }
-
-      return {
-        async stop() {
-          await Promise.all(
-            specBundles.map(async (bundle) => {
-              await bundle.codeGenerator.stopWatching();
-              await bundle.transpiler.stopWatching();
-              await bundle.moduleLoader.stopWatching();
-              await bundle.openApiDocument?.stopWatching();
-            }),
-          );
-          await httpTerminator?.terminate();
-        },
-      };
-    }
-
-    return {
-      contextRegistry,
-      koaApp,
-      koaMiddleware: specMiddlewares,
-      registry: primaryRegistry,
-      start: startMultiSpec,
-      startRepl: () =>
-        startReplServer(
-          contextRegistry,
-          primaryRegistry,
-          config,
-          undefined,
-          primaryBundle.openApiDocument,
-          scenarioRegistry,
-        ),
-    };
-  }
-
-  // ── Single-spec mode (original behaviour) ─────────────────────────────────
-
-  const compiledPathsDirectory = nodePath
-    .join(modulesPath, nativeTs ? "routes" : ".cache")
+  // Scenarios are wired only to the primary (first) spec.
+  const primaryScenariosPath = nodePath
+    .join(modulesPath, "scenarios")
     .replaceAll("\\", "/");
 
-  if (!nativeTs) {
-    await rm(compiledPathsDirectory, { force: true, recursive: true });
-  }
-
-  const registry = new Registry();
-
-  const codeGenerator = new CodeGenerator(
-    config.openApiPath,
-    config.basePath,
-    config.generate,
+  const specBundles = await Promise.all(
+    specs.map((spec, index) =>
+      createSpecBundle(
+        config,
+        spec.source,
+        spec.base,
+        contextRegistry,
+        nativeTs,
+        index === 0 ? primaryScenariosPath : undefined,
+        index === 0 ? scenarioRegistry : undefined,
+      ),
+    ),
   );
 
-  const openApiDocument =
-    config.openApiPath === "_"
-      ? undefined
-      : await loadOpenApiDocument(config.openApiPath);
+  // Guaranteed non-empty: specs always has at least one item after normalisation.
+  const primaryBundle = specBundles[0] as SpecBundle;
+  const primarySpec = specs[0] as (typeof specs)[number];
 
-  const dispatcher = new Dispatcher(
-    registry,
+  // Build one per-spec middleware. For the normalised single-spec entry
+  // (base === "") preserve config.routePrefix so existing behaviour is
+  // unchanged. For named specs use "/" + base.
+  const specMiddlewares = specBundles.map((bundle) =>
+    koaMiddleware(bundle.dispatcher, {
+      ...config,
+      routePrefix: bundle.base === "" ? config.routePrefix : `/${bundle.base}`,
+    }),
+  );
+
+  const primaryRegistry = primaryBundle.registry;
+
+  const koaApp = createKoaApp(
+    primaryRegistry,
+    specMiddlewares,
+    {
+      ...config,
+      openApiPath: primaryBundle.openApiDocument ? primarySpec.source : "_",
+    },
     contextRegistry,
-    openApiDocument,
-    config,
   );
-
-  const transpiler = new Transpiler(
-    nodePath.join(modulesPath, "routes").replaceAll("\\", "/"),
-    compiledPathsDirectory,
-    "commonjs",
-  );
-
-  const moduleLoader = new ModuleLoader(
-    compiledPathsDirectory,
-    registry,
-    contextRegistry,
-    nodePath.join(modulesPath, "scenarios").replaceAll("\\", "/"),
-    scenarioRegistry,
-  );
-
-  const middleware = koaMiddleware(dispatcher, config);
-
-  const koaApp = createKoaApp(registry, middleware, config, contextRegistry);
 
   async function start(options: Config) {
     const { generate, startServer, watch, buildCache } = options;
 
-    if (config.openApiPath !== "_" && (generate.routes || generate.types)) {
-      await codeGenerator.generate();
-    }
+    await Promise.all(
+      specBundles.map(async (bundle) => {
+        if (bundle.openApiDocument && (generate.routes || generate.types)) {
+          await bundle.codeGenerator.generate();
+        }
 
-    if (config.openApiPath !== "_" && (watch.routes || watch.types)) {
-      await codeGenerator.watch();
-    }
+        if (bundle.openApiDocument && (watch.routes || watch.types)) {
+          await bundle.codeGenerator.watch();
+        }
+      }),
+    );
 
     let httpTerminator: HttpTerminator | undefined;
 
     if (startServer) {
-      await openApiDocument?.watch();
+      await Promise.all(
+        specBundles.map(async (bundle) => {
+          await bundle.openApiDocument?.watch();
 
-      if (!nativeTs) {
-        await transpiler.watch();
-      }
-      await moduleLoader.load();
-      await moduleLoader.watch();
+          if (!nativeTs) {
+            await bundle.transpiler.watch();
+          }
+
+          await bundle.moduleLoader.load();
+          await bundle.moduleLoader.watch();
+        }),
+      );
 
       await runStartupScenario(
         scenarioRegistry,
         contextRegistry,
         config,
-        openApiDocument,
+        primaryBundle.openApiDocument,
       );
 
-      const server = koaApp.listen({
-        port: config.port,
-      });
+      const server = koaApp.listen({ port: config.port });
 
-      httpTerminator = createHttpTerminator({
-        server,
-      });
+      httpTerminator = createHttpTerminator({ server });
     } else if (buildCache) {
-      // If we are not starting the server, we still want to transpile and load modules
-      await transpiler.watch();
-      await transpiler.stopWatching();
+      await Promise.all(
+        specBundles.map(async (bundle) => {
+          await bundle.transpiler.watch();
+          await bundle.transpiler.stopWatching();
+        }),
+      );
     }
 
     return {
       async stop() {
-        await codeGenerator.stopWatching();
-        await transpiler.stopWatching();
-        await moduleLoader.stopWatching();
-        await openApiDocument?.stopWatching();
+        await Promise.all(
+          specBundles.map(async (bundle) => {
+            await bundle.codeGenerator.stopWatching();
+            await bundle.transpiler.stopWatching();
+            await bundle.moduleLoader.stopWatching();
+            await bundle.openApiDocument?.stopWatching();
+          }),
+        );
         await httpTerminator?.terminate();
       },
     };
@@ -488,16 +391,16 @@ export async function counterfact(config: Config) {
   return {
     contextRegistry,
     koaApp,
-    koaMiddleware: middleware,
-    registry,
+    koaMiddleware: specMiddlewares,
+    registry: primaryRegistry,
     start,
     startRepl: () =>
       startReplServer(
         contextRegistry,
-        registry,
+        primaryRegistry,
         config,
-        undefined, // use the default print function (stdout)
-        openApiDocument,
+        undefined,
+        primaryBundle.openApiDocument,
         scenarioRegistry,
       ),
   };
