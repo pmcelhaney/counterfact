@@ -189,25 +189,22 @@ export class Repository {
 
     await fs.writeFile(
       contextFilePath,
-      `import type { BaseContext } from "../types/_.context.js";
+      `import type { Context$ } from "../types/_.context.js";
 
 /**
-* This is the default context for Counterfact.
-*
-* It defines the context object in the REPL 
-* and the $.context object in the code.
-*
-* Add properties and methods to suit your needs.
-* 
-* See https://counterfact.dev/docs/usage.html#working-with-state-the-codecontextcode-object-and-codecontexttscode
-*/
-export class Context implements BaseContext {
-  readonly loadContext: BaseContext["loadContext"];
-  readonly readJson: BaseContext["readJson"];
+ * This is the default context for Counterfact.
+ *
+ * It defines the context object in the REPL
+ * and the $.context object in the code.
+ *
+ * Add properties and methods to suit your needs.
+ *
+ * See https://github.com/counterfact/api-simulator/blob/main/docs/features/state.md
+ */
 
-  constructor({ loadContext, readJson }: BaseContext) {
-    this.loadContext = loadContext;
-    this.readJson = readJson;
+export class Context {
+  constructor($: Context$) {
+    void $;
   }
 }
 `,

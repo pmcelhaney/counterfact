@@ -72,7 +72,7 @@ describe("_.context type generation", () => {
       await generate("./petstore.yaml", basePath, { types: true }, repository);
 
       const content = await $.read("types/_.context.ts");
-      expect(content).toContain("context: Record<string, unknown>");
+      expect(content).toContain("readonly context: Record<string, unknown>");
       expect(content).toContain(
         "loadContext(path: string): Record<string, unknown>;",
       );
@@ -80,9 +80,9 @@ describe("_.context type generation", () => {
       expect(content).toContain(
         "export type Scenario = ($: ApplyContext) => Promise<void> | void;",
       );
-      expect(content).toContain("export interface BaseContext {");
+      expect(content).toContain("export interface Context$ {");
       expect(content).toContain(
-        '  readonly loadContext: ApplyContext["loadContext"];',
+        '  readonly loadContext: LoadContextDefinitions["loadContext"];',
       );
       expect(content).toContain(
         "  readonly readJson: (relativePath: string) => Promise<unknown>;",
@@ -107,7 +107,7 @@ describe("_.context type generation", () => {
       expect(content).toContain(
         'import type { Context } from "../routes/_.context";',
       );
-      expect(content).toContain("context: Context;");
+      expect(content).toContain("readonly context: Context;");
       expect(content).toContain(
         'loadContext(path: "/" | `/${string}`): Context;',
       );
