@@ -16,12 +16,12 @@ import { Registry } from "./server/registry.js";
 import { ScenarioRegistry } from "./server/scenario-registry.js";
 import { Transpiler } from "./server/transpiler.js";
 import { CodeGenerator } from "./typescript-generator/code-generator.js";
-import { writeApplyContextType } from "./typescript-generator/generate.js";
+import { writeScenarioContextType } from "./typescript-generator/generate.js";
 import { runtimeCanExecuteErasableTs } from "./util/runtime-can-execute-erasable-ts.js";
 
 export { loadOpenApiDocument } from "./server/load-openapi-document.js";
 
-type ApplyContext = {
+type Scenario$ = {
   context: Record<string, unknown>;
   loadContext: (path: string) => Record<string, unknown>;
   route: (path: string) => unknown;
@@ -40,7 +40,7 @@ export async function runStartupScenario(
     return;
   }
 
-  const applyContext: ApplyContext = {
+  const scenario$: Scenario$ = {
     context: contextRegistry.find("/") as Record<string, unknown>,
     loadContext: (path: string) =>
       contextRegistry.find(path) as Record<string, unknown>,
@@ -48,8 +48,8 @@ export async function runStartupScenario(
     routes: {},
   };
 
-  await (indexModule["startup"] as (ctx: ApplyContext) => Promise<void> | void)(
-    applyContext,
+  await (indexModule["startup"] as (ctx: Scenario$) => Promise<void> | void)(
+    scenario$,
   );
 }
 
@@ -221,7 +221,7 @@ export async function counterfact(config: Config) {
   );
 
   contextRegistry.addEventListener("context-changed", () => {
-    void writeApplyContextType(modulesPath);
+    void writeScenarioContextType(modulesPath);
   });
 
   const middleware = koaMiddleware(dispatcher, config);

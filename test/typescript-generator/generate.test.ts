@@ -78,7 +78,7 @@ describe("scenario-context type generation", () => {
       );
       expect(content).not.toContain("import type");
       expect(content).toContain(
-        "export type Scenario = ($: ApplyContext) => Promise<void> | void;",
+        "export type Scenario = ($: Scenario$) => Promise<void> | void;",
       );
     });
   });

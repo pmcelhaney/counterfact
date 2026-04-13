@@ -98,7 +98,7 @@ After the command runs you can immediately use anything stored in `$.routes`:
 ⬣> routes.findSold.send()
 ```
 
-The `Scenario` type and `ApplyContext` interface are generated automatically into `types/scenario-context.ts` when you run Counterfact with type generation enabled.
+The `Scenario` type and `Scenario$` interface are generated automatically into `types/scenario-context.ts` when you run Counterfact with type generation enabled.
 
 ## Startup scenario
 
@@ -130,9 +130,9 @@ export const startup: Scenario = ($) => {
 
 ```ts
 // scenarios/pets.ts
-import type { ApplyContext } from "../types/scenario-context.js";
+import type { Scenario$ } from "../types/scenario-context.js";
 
-export function addPets($: ApplyContext, count: number, species: string) {
+export function addPets($: Scenario$, count: number, species: string) {
   for (let i = 0; i < count; i++) {
     $.context.addPet({ name: `${species} ${i + 1}`, status: "available", photoUrls: [] });
   }
