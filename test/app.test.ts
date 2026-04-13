@@ -253,7 +253,11 @@ describe("counterfact multi-spec mode", () => {
 
   it("each per-spec middleware handles its own prefix and passes others to next", async () => {
     const result = await (app as any).counterfact(multiSpecConfig);
-    const [alphaMiddleware, betaMiddleware] = result.koaMiddleware;
+    expect(result.koaMiddleware).toHaveLength(2);
+    const [alphaMiddleware, betaMiddleware] = result.koaMiddleware as [
+      (ctx: any, next: () => Promise<void>) => Promise<void>,
+      (ctx: any, next: () => Promise<void>) => Promise<void>,
+    ];
 
     // Simulate a Koa context for /alpha/...
     const alphaCtx = {
