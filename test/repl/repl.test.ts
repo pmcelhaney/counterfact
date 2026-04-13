@@ -1,6 +1,6 @@
 import type { REPLServer } from "node:repl";
 
-import { jest } from "@jest/globals";
+import { afterEach, jest } from "@jest/globals";
 
 import { createCompleter, startRepl } from "../../src/repl/repl.js";
 import type { CompleterCallback } from "../../src/repl/repl.js";
@@ -101,8 +101,20 @@ function createHarness(scenarioRegistry?: ScenarioRegistry) {
     scenarioRegistry,
   );
 
+  openServers.push(harness.server);
+
   return { config, contextRegistry, harness, registry };
 }
+
+const openServers: REPLServer[] = [];
+
+afterEach(() => {
+  for (const server of openServers) {
+    server.close();
+  }
+
+  openServers.length = 0;
+});
 
 describe("REPL", () => {
   it("turns on the proxy globally", () => {
