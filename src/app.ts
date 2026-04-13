@@ -173,7 +173,7 @@ export async function counterfact(config: Config) {
       (spec) =>
         new CodeGenerator(spec.source, config.basePath, {
           ...config.generate,
-          group: spec.group,
+          group: spec.prefix.replace(/^\//, ""),
           copyCoreFiles: false,
         }),
     );

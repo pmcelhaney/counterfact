@@ -4,8 +4,8 @@ export interface SpecEntry {
   source: string;
   /** URL prefix under which this API is mounted (e.g. `"/billing"`). */
   prefix: string;
-  /** Sub-directory name for generated routes/types (e.g. `"billing"`). */
-  group: string;
+  /** Reserved for future use. */
+  group?: string;
 }
 
 /** Runtime configuration for a Counterfact server instance. */
@@ -43,8 +43,9 @@ export interface Config {
   /**
    * Multiple API specs to serve simultaneously.  When present, `specs` takes
    * precedence over `openApiPath`.  Each entry specifies its own OpenAPI
-   * document (`source`), URL mount point (`prefix`), and generated-code
-   * sub-directory (`group`).
+   * document (`source`) and URL mount point (`prefix`); `prefix` also
+   * determines the generated-code sub-directory (e.g. `/billing` →
+   * `routes/billing/`).
    */
   specs?: SpecEntry[];
   /** When `true`, mount the Admin API at `/_counterfact/api/`. */
