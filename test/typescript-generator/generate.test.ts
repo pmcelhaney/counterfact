@@ -41,7 +41,7 @@ describe("end-to-end test", () => {
       };
 
       await generate(
-        "./openapi-example.yaml",
+        "./test/fixtures/openapi-example.yaml",
         basePath,
         { routes: true, types: true },
         repository,

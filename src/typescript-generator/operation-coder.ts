@@ -8,6 +8,16 @@ import {
 import type { Requirement } from "./requirement.js";
 import type { Script } from "./script.js";
 
+/**
+ * Generates the default route handler stub for a single OpenAPI operation.
+ *
+ * The generated stub calls `$.response[statusCode].random()` (or `.empty()`)
+ * for the first response defined in the spec.  It is only written when no
+ * handler file exists yet — users are expected to replace it with real logic.
+ *
+ * The corresponding TypeScript type is emitted by {@link OperationTypeCoder}
+ * into the `types/paths/…` tree.
+ */
 export class OperationCoder extends Coder {
   public requestMethod: string;
   public securitySchemes: SecurityScheme[];

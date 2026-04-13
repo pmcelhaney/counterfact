@@ -35,7 +35,7 @@ const ROUTE_BUILDER_METHODS = [
  *
  * @param registry - The route registry used to complete path arguments for `route()` and `client.*()` calls.
  * @param fallback - Optional fallback completer (e.g. the Node.js built-in completer) invoked when no custom completion matches.
- * @param scenarioRegistry - When provided, enables tab completion for `.apply` commands by enumerating
+ * @param scenarioRegistry - When provided, enables tab completion for `.scenario` commands by enumerating
  *   exported function names and file-key prefixes from the loaded scenario modules.
  */
 export function createCompleter(
@@ -44,8 +44,8 @@ export function createCompleter(
   scenarioRegistry?: ScenarioRegistry,
 ) {
   return (line: string, callback: CompleterCallback): void => {
-    // Check for .apply completion: .apply <partial>
-    const applyMatch = line.match(/^\.apply\s+(?<partial>\S*)$/u);
+    // Check for .scenario completion: .scenario <partial>
+    const applyMatch = line.match(/^\.scenario\s+(?<partial>\S*)$/u);
 
     if (applyMatch) {
       const partial = applyMatch.groups?.["partial"] ?? "";
@@ -121,6 +121,25 @@ export function createCompleter(
   };
 }
 
+/**
+ * Launches the interactive Counterfact REPL.
+ *
+ * The REPL is a standard Node.js REPL augmented with:
+ * - `context` / `loadContext(path)` globals wired to the {@link ContextRegistry}.
+ * - `client` — a {@link RawHttpClient} pre-configured for `localhost`.
+ * - `route(path)` — creates a {@link RouteBuilder} for the given path.
+ * - `.counterfact` — help command.
+ * - `.proxy` — proxy configuration command.
+ * - `.scenario` — runs a named scenario function from the scenarios directory.
+ *
+ * @param contextRegistry - The live context registry.
+ * @param registry - The route registry (used for tab completion).
+ * @param config - Server configuration.
+ * @param print - Output function; defaults to writing to `stdout`.
+ * @param openApiDocument - Optional OpenAPI document for tab completion.
+ * @param scenarioRegistry - Optional scenario registry for `.scenario` support.
+ * @returns The configured Node.js REPL server instance.
+ */
 export function startRepl(
   contextRegistry: ContextRegistry,
   registry: Registry,
@@ -190,7 +209,7 @@ export function startRepl(
   }
 
   const replServer = repl.start({
-    prompt: "⬣> ",
+    prompt: "\x1b[38;2;0;113;181m⬣> \x1b[0m",
   });
 
   const builtinCompleter = replServer.completer as (
@@ -272,12 +291,12 @@ export function startRepl(
 
   replServer.context.routes = {};
 
-  replServer.defineCommand("apply", {
+  replServer.defineCommand("scenario", {
     async action(text: string) {
       const parts = text.trim().split("/").filter(Boolean);
 
       if (parts.length === 0) {
-        print("usage: .apply <path>");
+        print("usage: .scenario <path>");
         this.clearBufferedCommand();
         this.displayPrompt();
         return;
@@ -337,7 +356,7 @@ export function startRepl(
       this.displayPrompt();
     },
 
-    help: 'apply a scenario script (".apply <path>" calls the named export from scenarios/)',
+    help: 'apply a scenario script (".scenario <path>" calls the named export from scenarios/)',
   });
 
   return replServer;

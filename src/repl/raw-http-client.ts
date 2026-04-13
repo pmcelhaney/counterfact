@@ -62,6 +62,16 @@ function stringifyBody(body: string | object) {
   return JSON.stringify(body);
 }
 
+/**
+ * A minimal HTTP/1.1 client that communicates over a raw TCP socket.
+ *
+ * Used in the Counterfact REPL (`client.*`) to send requests to the local mock
+ * server and pretty-print the request and response to `stdout` with ANSI
+ * colours.
+ *
+ * Unlike `fetch` or Axios, `RawHttpClient` does not buffer or parse the
+ * response — the raw HTTP response string is returned from every method.
+ */
 export class RawHttpClient {
   host: string;
   port: number;
@@ -72,38 +82,47 @@ export class RawHttpClient {
     this.port = port;
   }
 
+  /** Sends a `GET` request and returns the raw HTTP response string. */
   get(path: string, headers = {}) {
     return this.#send("GET", path, "", headers);
   }
 
+  /** Sends a `HEAD` request and returns the raw HTTP response string. */
   head(path: string, headers = {}) {
     return this.#send("HEAD", path, "", headers);
   }
 
+  /** Sends a `POST` request with `body` and returns the raw HTTP response string. */
   post(path: string, body: string | object = "", headers = {}) {
     return this.#send("POST", path, body, headers);
   }
 
+  /** Sends a `PUT` request with `body` and returns the raw HTTP response string. */
   put(path: string, body: string | object = "", headers = {}) {
     return this.#send("PUT", path, body, headers);
   }
 
+  /** Sends a `DELETE` request and returns the raw HTTP response string. */
   delete(path: string, headers = {}) {
     return this.#send("DELETE", path, "", headers);
   }
 
+  /** Sends a `CONNECT` request and returns the raw HTTP response string. */
   connect(path: string, headers = {}) {
     return this.#send("CONNECT", path, "", headers);
   }
 
+  /** Sends an `OPTIONS` request and returns the raw HTTP response string. */
   options(path: string, headers = {}) {
     return this.#send("OPTIONS", path, "", headers);
   }
 
+  /** Sends a `TRACE` request and returns the raw HTTP response string. */
   trace(path: string, headers = {}) {
     return this.#send("TRACE", path, "", headers);
   }
 
+  /** Sends a `PATCH` request with `body` and returns the raw HTTP response string. */
   patch(path: string, body: string | object = "", headers = {}) {
     return this.#send("PATCH", path, body, headers);
   }

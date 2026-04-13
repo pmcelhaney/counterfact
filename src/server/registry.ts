@@ -93,6 +93,16 @@ type MiddlewareFunction = (
   respondTo: RespondTo,
 ) => Promise<CounterfactResponseObject>;
 
+/**
+ * Casts a string URL/header/query parameter value to the type declared in the
+ * OpenAPI spec.
+ *
+ * @param value - The raw parameter value (may already be the correct type when
+ *   the HTTP framework has pre-parsed it).
+ * @param type - The OpenAPI primitive type string (`"integer"`, `"number"`,
+ *   `"boolean"`, or anything else to leave as a string).
+ * @returns The value coerced to the appropriate JavaScript type.
+ */
 function castParameter(value: string | number | boolean, type: string) {
   if (typeof value !== "string") {
     return value;
@@ -113,6 +123,13 @@ function castParameter(value: string | number | boolean, type: string) {
   return value;
 }
 
+/**
+ * Applies {@link castParameter} to every value in a parameters map.
+ *
+ * @param parameters - Key/value map of raw parameter values.
+ * @param parameterTypes - Map from parameter name to its OpenAPI type string.
+ * @returns A new object with the same keys and cast values.
+ */
 function castParameters(
   parameters: { [key: string]: string | number | boolean } = {},
   parameterTypes: Map<string, string> = new Map(),
@@ -126,6 +143,13 @@ function castParameters(
   return copy;
 }
 
+/**
+ * Central route registry that maps URL patterns to route-handler modules.
+ *
+ * Routes are stored in a {@link ModuleTree} that supports wildcard path
+ * segments (e.g. `{petId}`). The registry also maintains an ordered chain of
+ * middleware functions that wrap every route handler execution.
+ */
 export class Registry {
   private readonly moduleTree = new ModuleTree();
 
@@ -135,26 +159,62 @@ export class Registry {
     this.middlewares.set("", ($, respondTo) => respondTo($));
   }
 
+  /** Returns all registered routes as a flat array of `{ path, methods }` objects. */
   public get routes() {
     return this.moduleTree.routes;
   }
 
+  /**
+   * Registers (or replaces) the module for a URL pattern.
+   *
+   * @param url - The URL pattern (e.g. `/pets/{petId}`).
+   * @param module - The route-handler module exposing HTTP-method functions.
+   */
   public add(url: string, module: Module) {
     this.moduleTree.add(url, module);
   }
 
+  /**
+   * Registers a middleware function that wraps every handler under `url`.
+   *
+   * Middleware receives `($, respondTo)` where `respondTo` is the next handler
+   * in the chain. Setting `url` to `"/"` makes the middleware global.
+   *
+   * @param url - The path prefix at which this middleware applies.
+   * @param callback - The middleware function.
+   */
   public addMiddleware(url: string, callback: MiddlewareFunction): void {
     this.middlewares.set(url === "/" ? "" : url, callback);
   }
 
+  /**
+   * Removes the module registered at `url`.
+   *
+   * @param url - The URL pattern to deregister.
+   */
   public remove(url: string) {
     this.moduleTree.remove(url);
   }
 
+  /**
+   * Returns `true` when a handler for `method` is registered at `url`.
+   *
+   * @param method - HTTP method (e.g. `"GET"`).
+   * @param url - The request URL.
+   */
   public exists(method: HttpMethods, url: string) {
     return Boolean(this.handler(url, method).module?.[method]);
   }
 
+  /**
+   * Finds the best-matching module and extracts path-variable bindings for a
+   * given URL and HTTP method.
+   *
+   * @param url - The incoming request URL.
+   * @param method - The HTTP method.
+   * @returns An object with `module`, `path` (variable bindings),
+   *   `matchedPath`, and `ambiguous` flag.
+   */
   public handler(url: string, method: string) {
     const match = this.moduleTree.match(url, method);
 
@@ -166,6 +226,15 @@ export class Registry {
     };
   }
 
+  /**
+   * Returns `true` when the URL matches a registered module for at least one
+   * HTTP method other than `excludeMethod`.
+   *
+   * Used to decide whether to respond with 405 Method Not Allowed.
+   *
+   * @param url - The request URL.
+   * @param excludeMethod - The method to exclude from the check.
+   */
   public pathExistsWithAnyMethod(
     url: string,
     excludeMethod: HttpMethods,
@@ -175,12 +244,32 @@ export class Registry {
     );
   }
 
+  /**
+   * Returns a comma-separated list of HTTP methods that have a registered
+   * handler at `url`.  Used to populate the `Allow` response header for 405
+   * responses.
+   *
+   * @param url - The request URL.
+   */
   public allowedMethods(url: string): string {
     return ALL_HTTP_METHODS.filter((method) =>
       Boolean(this.moduleTree.match(url, method)?.module?.[method]),
     ).join(", ");
   }
 
+  /**
+   * Returns an async function that executes the registered handler for
+   * `httpRequestMethod` at `url`, wrapped by all applicable middleware.
+   *
+   * Path, query, and header parameter values are cast to their declared types
+   * before being forwarded to the handler.  The returned function always
+   * resolves to a {@link CounterfactResponseObject}.
+   *
+   * @param httpRequestMethod - The HTTP method to look up.
+   * @param url - The incoming request URL (before path-variable substitution).
+   * @param parameterTypes - Optional maps from parameter name to OpenAPI type
+   *   for each of `header`, `path`, and `query`.
+   */
   public endpoint(
     httpRequestMethod: HttpMethods,
     url: string,

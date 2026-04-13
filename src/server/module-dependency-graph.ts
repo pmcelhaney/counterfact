@@ -5,6 +5,14 @@ import precinct from "precinct";
 
 const debug = createDebug("counterfact:server:module-dependency-graph");
 
+/**
+ * Tracks which route files depend on shared modules so that when a shared
+ * module changes, all dependent route files can be reloaded.
+ *
+ * Dependency edges are extracted using [precinct](https://npm.im/precinct)'s
+ * static analysis and are stored as a reverse map (`dependency → Set<dependent
+ * files>`).
+ */
 export class ModuleDependencyGraph {
   private readonly dependents = new Map<string, Set<string>>();
 
@@ -23,6 +31,14 @@ export class ModuleDependencyGraph {
     });
   }
 
+  /**
+   * (Re-)indexes the dependency edges for `path`, replacing any previously
+   * recorded edges.
+   *
+   * Only relative imports are tracked; node_modules dependencies are ignored.
+   *
+   * @param path - Absolute path of the file to analyse.
+   */
   public load(path: string) {
     this.clearDependents(path);
 
@@ -41,6 +57,15 @@ export class ModuleDependencyGraph {
     }
   }
 
+  /**
+   * Returns the transitive set of files that (directly or indirectly) import
+   * `path`.
+   *
+   * Uses a BFS traversal so each dependent is returned exactly once.
+   *
+   * @param path - Absolute path of the changed dependency.
+   * @returns A `Set` of absolute paths of all dependent files.
+   */
   public dependentsOf(path: string) {
     const marked = new Set<string>();
     const dependents = new Set<string>();
