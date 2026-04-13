@@ -74,7 +74,10 @@ describe("OpenApiDocument", () => {
       await doc.load();
       await doc.watch();
 
-      const changed = { ...OPENAPI, info: { title: "Updated", version: "2.0.0" } };
+      const changed = {
+        ...OPENAPI,
+        info: { title: "Updated", version: "2.0.0" },
+      };
       await $.add("openapi.json", JSON.stringify(changed));
 
       await waitForEvent(doc, "reload");
