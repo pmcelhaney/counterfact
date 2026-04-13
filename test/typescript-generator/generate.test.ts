@@ -59,6 +59,50 @@ describe("end-to-end test", () => {
   });
 });
 
+describe("path item non-HTTP-verb fields", () => {
+  it("ignores summary and description at the path item level without throwing", async () => {
+    await usingTemporaryFiles(async ($) => {
+      const spec = {
+        openapi: "3.1.0",
+        info: { title: "Test", version: "1.0.0" },
+        paths: {
+          "/test": {
+            summary: "Test Summary",
+            description: "Test Description",
+            get: {
+              operationId: "getTest",
+              responses: { "200": { description: "OK" } },
+            },
+          },
+        },
+      };
+
+      await $.add("openapi.json", JSON.stringify(spec));
+
+      const basePath = $.path("");
+      const repository = new Repository();
+
+      repository.writeFiles = async () => {
+        await Promise.resolve(undefined);
+      };
+
+      await expect(
+        generate(
+          $.path("openapi.json"),
+          basePath,
+          { routes: true, types: true },
+          repository,
+        ),
+      ).resolves.toBeUndefined();
+
+      await repository.finished();
+
+      const scripts = [...repository.scripts.keys()];
+      expect(scripts.some((s) => s.includes("routes/test.ts"))).toBe(true);
+    });
+  });
+});
+
 describe("_.context type generation", () => {
   it("generates a fallback _.context.ts when no routes directory exists", async () => {
     await usingTemporaryFiles(async ($) => {
