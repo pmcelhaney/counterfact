@@ -53,11 +53,13 @@ export interface SecurityScheme {
 export class OperationTypeCoder extends TypeCoder {
   public requestMethod: string;
   public securitySchemes: SecurityScheme[];
+  public group: string | undefined;
 
   public constructor(
     requirement: Requirement,
     requestMethod: string,
     securitySchemes: SecurityScheme[] = [],
+    group?: string,
   ) {
     super(requirement);
 
@@ -67,6 +69,7 @@ export class OperationTypeCoder extends TypeCoder {
 
     this.requestMethod = requestMethod;
     this.securitySchemes = securitySchemes;
+    this.group = group;
   }
 
   /**
@@ -187,8 +190,10 @@ export class OperationTypeCoder extends TypeCoder {
       .at(-2)!
       .replaceAll("~1", "/");
 
+    const typeBase = this.group ? `types/${this.group}/paths` : "types/paths";
+
     return `${nodePath
-      .join("types/paths", pathString === "/" ? "/index" : pathString)
+      .join(typeBase, pathString === "/" ? "/index" : pathString)
       .replaceAll("\\", "/")}.types.ts`;
   }
 

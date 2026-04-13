@@ -1494,3 +1494,125 @@ describe("given a request that contains the differently cased path", () => {
     });
   });
 });
+
+describe("multi-spec dispatcher", () => {
+  it("finds operations in spec documents by stripping the prefix from the request path", () => {
+    const registry = new Registry();
+    const billingDocument: OpenApiDocument = {
+      paths: {
+        "/invoices": {
+          get: {
+            operationId: "listInvoices",
+            parameters: [],
+            responses: { "200": {} },
+          },
+        },
+      },
+    };
+
+    const dispatcher = new Dispatcher(
+      registry,
+      new ContextRegistry(),
+      undefined,
+      undefined,
+      [{ prefix: "/billing", document: billingDocument }],
+    );
+
+    const operation = dispatcher.operationForPathAndMethod(
+      "/billing/invoices",
+      "GET",
+    );
+
+    expect(operation?.operationId).toBe("listInvoices");
+  });
+
+  it("returns undefined for a path that does not match any spec prefix", () => {
+    const registry = new Registry();
+    const billingDocument: OpenApiDocument = {
+      paths: {
+        "/invoices": {
+          get: {
+            operationId: "listInvoices",
+            parameters: [],
+            responses: { "200": {} },
+          },
+        },
+      },
+    };
+
+    const dispatcher = new Dispatcher(
+      registry,
+      new ContextRegistry(),
+      undefined,
+      undefined,
+      [{ prefix: "/billing", document: billingDocument }],
+    );
+
+    const operation = dispatcher.operationForPathAndMethod(
+      "/identity/users",
+      "GET",
+    );
+
+    expect(operation).toBeUndefined();
+  });
+
+  it("routes requests to handlers registered under a group prefix", async () => {
+    const registry = new Registry();
+
+    registry.add("/billing/invoices", {
+      GET() {
+        return { body: "invoice list" };
+      },
+    });
+
+    const dispatcher = new Dispatcher(
+      registry,
+      new ContextRegistry(),
+      undefined,
+      undefined,
+      [],
+    );
+
+    const response = await dispatcher.request({
+      body: "",
+      headers: {},
+      method: "GET",
+      path: "/billing/invoices",
+      query: {},
+      req: { path: "/billing/invoices" },
+    });
+
+    expect(response.body).toBe("invoice list");
+  });
+
+  it("merges top-level produces from the matching spec document", () => {
+    const registry = new Registry();
+    const billingDocument: OpenApiDocument = {
+      paths: {
+        "/invoices": {
+          get: {
+            operationId: "listInvoices",
+            parameters: [],
+            responses: { "200": { schema: { type: "object" } } },
+          },
+        },
+      },
+      produces: ["application/xml"],
+    };
+
+    const dispatcher = new Dispatcher(
+      registry,
+      new ContextRegistry(),
+      undefined,
+      undefined,
+      [{ prefix: "/billing", document: billingDocument }],
+    );
+
+    const operation = dispatcher.operationForPathAndMethod(
+      "/billing/invoices",
+      "GET",
+    );
+
+    expect(operation?.produces).toStrictEqual(["application/xml"]);
+  });
+});

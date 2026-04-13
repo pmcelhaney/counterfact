@@ -1,3 +1,13 @@
+/** A single API spec entry in the `specs` array of `counterfact.yaml`. */
+export interface SpecEntry {
+  /** Path or URL to the OpenAPI document for this spec. */
+  source: string;
+  /** URL prefix under which this API is mounted (e.g. `"/billing"`). */
+  prefix: string;
+  /** Sub-directory name for generated routes/types (e.g. `"billing"`). */
+  group: string;
+}
+
 /** Runtime configuration for a Counterfact server instance. */
 export interface Config {
   /** Optional bearer token that protects the Admin API endpoints. */
@@ -30,6 +40,13 @@ export interface Config {
   proxyUrl: string;
   /** URL prefix that Counterfact intercepts (default `""`). */
   routePrefix: string;
+  /**
+   * Multiple API specs to serve simultaneously.  When present, `specs` takes
+   * precedence over `openApiPath`.  Each entry specifies its own OpenAPI
+   * document (`source`), URL mount point (`prefix`), and generated-code
+   * sub-directory (`group`).
+   */
+  specs?: SpecEntry[];
   /** When `true`, mount the Admin API at `/_counterfact/api/`. */
   startAdminApi: boolean;
   /** When `true`, launch the interactive REPL after the server starts. */

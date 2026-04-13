@@ -17,6 +17,8 @@ interface GenerateOptions {
   prune?: boolean;
   routes?: boolean;
   types?: boolean;
+  /** Sub-directory under `routes/` and `types/` for this spec's generated files. */
+  group?: string;
 }
 
 /**
@@ -128,14 +130,19 @@ export async function generate(
     (securityRequirement?.data as Record<string, unknown>) ?? {},
   ) as SecurityScheme[];
 
+  const group = generateOptions.group;
+  const routesBase = group ? `routes/${group}` : "routes";
+
   paths.forEach((pathDefinition, key: string) => {
     debug("processing path %s", key);
 
     const path = key === "/" ? "/index" : key;
     pathDefinition.forEach((operation, requestMethod: string) => {
       repository
-        .get(`routes${path}.ts`)
-        .export(new OperationCoder(operation, requestMethod, securitySchemes));
+        .get(`${routesBase}${path}.ts`)
+        .export(
+          new OperationCoder(operation, requestMethod, securitySchemes, group),
+        );
     });
   });
 
@@ -367,7 +374,9 @@ export const help: Scenario = ($) => {
 };
 `;
 
-async function writeDefaultScenariosIndex(destination: string): Promise<void> {
+export async function writeDefaultScenariosIndex(
+  destination: string,
+): Promise<void> {
   const scenariosDir = nodePath.join(destination, "scenarios");
   const filePath = nodePath.join(scenariosDir, "index.ts");
 

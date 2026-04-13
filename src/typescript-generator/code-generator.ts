@@ -20,6 +20,7 @@ export class CodeGenerator extends EventTarget {
     prune?: boolean;
     routes: boolean;
     types: boolean;
+    group?: string;
   };
 
   private watcher: FSWatcher | undefined;
@@ -27,7 +28,12 @@ export class CodeGenerator extends EventTarget {
   public constructor(
     openApiPath: string,
     destination: string,
-    generateOptions: { prune?: boolean; routes: boolean; types: boolean },
+    generateOptions: {
+      prune?: boolean;
+      routes: boolean;
+      types: boolean;
+      group?: string;
+    },
   ) {
     super();
     this.openapiPath = openApiPath;

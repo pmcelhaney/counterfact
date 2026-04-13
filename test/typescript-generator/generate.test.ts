@@ -59,6 +59,126 @@ describe("end-to-end test", () => {
   });
 });
 
+describe("group (multi-spec) generation", () => {
+  it("generates routes under routes/<group>/ when a group is specified", async () => {
+    await usingTemporaryFiles(async ($) => {
+      const basePath = $.path("");
+      const repository = new Repository();
+
+      repository.writeFiles = async () => {
+        await Promise.resolve(undefined);
+      };
+
+      await generate(
+        "./petstore.yaml",
+        basePath,
+        { routes: true, types: true, group: "billing" },
+        repository,
+      );
+      await repository.finished();
+
+      const scriptPaths = Array.from(repository.scripts.keys());
+
+      // Route files should be under routes/billing/
+      const routeScripts = scriptPaths.filter((p) => p.startsWith("routes/"));
+      expect(routeScripts.length).toBeGreaterThan(0);
+      routeScripts.forEach((scriptPath) => {
+        expect(scriptPath).toMatch(/^routes\/billing\//);
+      });
+    });
+  });
+
+  it("generates type files under types/<group>/paths/ when a group is specified", async () => {
+    await usingTemporaryFiles(async ($) => {
+      const basePath = $.path("");
+      const repository = new Repository();
+
+      repository.writeFiles = async () => {
+        await Promise.resolve(undefined);
+      };
+
+      await generate(
+        "./petstore.yaml",
+        basePath,
+        { routes: true, types: true, group: "billing" },
+        repository,
+      );
+      await repository.finished();
+
+      const scriptPaths = Array.from(repository.scripts.keys());
+
+      // Type files should be under types/billing/paths/
+      const typeScripts = scriptPaths.filter(
+        (p) => p.startsWith("types/") && p.endsWith(".types.ts"),
+      );
+      expect(typeScripts.length).toBeGreaterThan(0);
+      typeScripts.forEach((scriptPath) => {
+        expect(scriptPath).toMatch(/^types\/billing\/paths\//);
+      });
+    });
+  });
+
+  it("generates route files importing types from types/<group>/paths/", async () => {
+    await usingTemporaryFiles(async ($) => {
+      const basePath = $.path("");
+      const repository = new Repository();
+
+      repository.writeFiles = async () => {
+        await Promise.resolve(undefined);
+      };
+
+      await generate(
+        "./petstore.yaml",
+        basePath,
+        { routes: true, types: true, group: "billing" },
+        repository,
+      );
+      await repository.finished();
+
+      const scriptPaths = Array.from(repository.scripts.keys());
+      const routeScripts = scriptPaths.filter((p) =>
+        p.startsWith("routes/billing/"),
+      );
+
+      await Promise.all(
+        routeScripts.map(async (scriptPath) => {
+          const script = repository.scripts.get(scriptPath)!;
+          const contents = await script.contents();
+          // The type import should reference types/billing/paths/
+          expect(contents).toMatch(/types\/billing\/paths/);
+        }),
+      );
+    });
+  });
+
+  it("does not generate routes without group prefix when group is specified", async () => {
+    await usingTemporaryFiles(async ($) => {
+      const basePath = $.path("");
+      const repository = new Repository();
+
+      repository.writeFiles = async () => {
+        await Promise.resolve(undefined);
+      };
+
+      await generate(
+        "./petstore.yaml",
+        basePath,
+        { routes: true, types: true, group: "billing" },
+        repository,
+      );
+      await repository.finished();
+
+      const scriptPaths = Array.from(repository.scripts.keys());
+
+      // Should have no routes/pet.ts, only routes/billing/pet.ts
+      const ungroupedRoutes = scriptPaths.filter(
+        (p) => p.startsWith("routes/") && !p.startsWith("routes/billing/"),
+      );
+      expect(ungroupedRoutes).toHaveLength(0);
+    });
+  });
+});
+
 describe("_.context type generation", () => {
   it("generates a fallback _.context.ts when no routes directory exists", async () => {
     await usingTemporaryFiles(async ($) => {

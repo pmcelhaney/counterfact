@@ -314,6 +314,22 @@ async function main(source, destination) {
     source = options.spec;
   }
 
+  // specs (from counterfact.yaml) takes precedence over spec when present.
+  // Resolve all relative source paths within specs against the config file directory.
+  let specs;
+  if (Array.isArray(options.specs) && options.specs.length > 0) {
+    const configDir = nodePath.dirname(configFilePath);
+    specs = options.specs.map((entry) => ({
+      source: entry.source.startsWith("http")
+        ? entry.source
+        : nodePath.resolve(configDir, entry.source),
+      prefix: entry.prefix ?? "",
+      group: entry.group ?? "",
+    }));
+    // When specs is used, the single openApiPath is not needed
+    source = "_";
+  }
+
   const destinationPath = nodePath.resolve(destination).replaceAll("\\", "/");
 
   const basePath = nodePath.resolve(destinationPath).replaceAll("\\", "/");
@@ -372,6 +388,7 @@ async function main(source, destination) {
     proxyPaths: new Map([["", Boolean(options.proxyUrl)]]),
     proxyUrl: options.proxyUrl ?? "",
     routePrefix: options.prefix,
+    specs,
     startAdminApi: options.adminApi,
     startRepl: options.repl,
     startServer: options.serve,
@@ -456,7 +473,13 @@ async function main(source, destination) {
     "",
     `   Version       ${CURRENT_VERSION}`,
     `   API Base URL  ${url}`,
-    source === "_" ? undefined : `   Swagger UI    ${swaggerUrl}`,
+    specs
+      ? specs
+          .map((s) => `   API Spec       ${s.source} → ${url}${s.prefix}`)
+          .join("\n")
+      : source === "_"
+        ? undefined
+        : `   Swagger UI    ${swaggerUrl}`,
     "",
     "   Instructions  https://counterfact.dev/docs/usage.html",
     "   Help/feedback https://github.com/pmcelhaney/counterfact/issues",

@@ -10,12 +10,16 @@ import { createKoaApp } from "./server/create-koa-app.js";
 import { Dispatcher, type DispatcherRequest } from "./server/dispatcher.js";
 import { koaMiddleware } from "./server/koa-middleware.js";
 import { loadOpenApiDocument } from "./server/load-openapi-document.js";
+import { OpenApiDocument } from "./server/openapi-document.js";
 import { ModuleLoader } from "./server/module-loader.js";
 import { Registry } from "./server/registry.js";
 import { ScenarioRegistry } from "./server/scenario-registry.js";
 import { Transpiler } from "./server/transpiler.js";
 import { CodeGenerator } from "./typescript-generator/code-generator.js";
-import { writeApplyContextType } from "./typescript-generator/generate.js";
+import {
+  writeApplyContextType,
+  writeDefaultScenariosIndex,
+} from "./typescript-generator/generate.js";
 import { runtimeCanExecuteErasableTs } from "./util/runtime-can-execute-erasable-ts.js";
 
 export { loadOpenApiDocument } from "./server/load-openapi-document.js";
@@ -155,22 +159,55 @@ export async function counterfact(config: Config) {
 
   const scenarioRegistry = new ScenarioRegistry();
 
-  const codeGenerator = new CodeGenerator(
-    config.openApiPath,
-    config.basePath,
-    config.generate,
-  );
+  const isMultiSpec = Array.isArray(config.specs) && config.specs.length > 0;
 
-  const openApiDocument =
-    config.openApiPath === "_"
-      ? undefined
-      : await loadOpenApiDocument(config.openApiPath);
+  // Build code generators and load OpenAPI documents for all specs
+  let codeGenerators: CodeGenerator[];
+  let specDocuments: Array<{ prefix: string; document: OpenApiDocument }> = [];
+  let singleOpenApiDocument: OpenApiDocument | undefined;
+
+  if (isMultiSpec) {
+    codeGenerators = config.specs!.map(
+      (spec) =>
+        new CodeGenerator(spec.source, config.basePath, {
+          ...config.generate,
+          group: spec.group,
+        }),
+    );
+
+    const loadedDocs = await Promise.all(
+      config.specs!.map(async (spec) => {
+        if (spec.source === "_") return null;
+        const document = await loadOpenApiDocument(spec.source);
+        return { prefix: spec.prefix, document };
+      }),
+    );
+
+    specDocuments = loadedDocs.filter(
+      (entry): entry is NonNullable<(typeof loadedDocs)[number]> =>
+        entry !== null,
+    );
+
+    singleOpenApiDocument = undefined;
+  } else {
+    codeGenerators = [
+      new CodeGenerator(config.openApiPath, config.basePath, config.generate),
+    ];
+
+    singleOpenApiDocument =
+      config.openApiPath === "_"
+        ? undefined
+        : await loadOpenApiDocument(config.openApiPath);
+  }
+
+  const openApiDocument = singleOpenApiDocument;
 
   const dispatcher = new Dispatcher(
     registry,
     contextRegistry,
     openApiDocument,
     config,
+    specDocuments,
   );
 
   const transpiler = new Transpiler(
@@ -198,12 +235,28 @@ export async function counterfact(config: Config) {
   async function start(options: Config) {
     const { generate, startServer, watch, buildCache } = options;
 
-    if (config.openApiPath !== "_" && (generate.routes || generate.types)) {
-      await codeGenerator.generate();
-    }
+    if (isMultiSpec) {
+      // Generate code for all specs
+      if (generate.routes || generate.types) {
+        await Promise.all(codeGenerators.map((gen) => gen.generate()));
+        // Write shared context types and scenarios index once after all specs
+        if (generate.types) {
+          await writeApplyContextType(config.basePath);
+          await writeDefaultScenariosIndex(config.basePath);
+        }
+      }
 
-    if (config.openApiPath !== "_" && (watch.routes || watch.types)) {
-      await codeGenerator.watch();
+      if (watch.routes || watch.types) {
+        await Promise.all(codeGenerators.map((gen) => gen.watch()));
+      }
+    } else {
+      if (config.openApiPath !== "_" && (generate.routes || generate.types)) {
+        await codeGenerators[0]!.generate();
+      }
+
+      if (config.openApiPath !== "_" && (watch.routes || watch.types)) {
+        await codeGenerators[0]!.watch();
+      }
     }
 
     let httpTerminator: HttpTerminator | undefined;
@@ -232,7 +285,7 @@ export async function counterfact(config: Config) {
 
     return {
       async stop() {
-        await codeGenerator.stopWatching();
+        await Promise.all(codeGenerators.map((gen) => gen.stopWatching()));
         await transpiler.stopWatching();
         await moduleLoader.stopWatching();
         await openApiDocument?.stopWatching();
