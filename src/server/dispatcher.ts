@@ -21,6 +21,16 @@ import type { Config } from "./config.js";
 
 const debug = createDebugger("counterfact:server:dispatcher");
 
+export interface OpenApiDocument {
+  basePath?: string;
+  paths: {
+    [key: string]: {
+      [key in Lowercase<HttpMethods>]?: OpenApiOperation;
+    };
+  };
+  produces?: string[];
+}
+
 /**
  * Parses the `Cookie` request header into a key/value map.
  *
@@ -63,16 +73,6 @@ interface ParameterTypes {
   header: Map<string, string>;
   path: Map<string, string>;
   query: Map<string, string>;
-}
-
-export interface OpenApiDocument {
-  basePath?: string;
-  paths: {
-    [key: string]: {
-      [key in Lowercase<HttpMethods>]?: OpenApiOperation;
-    };
-  };
-  produces?: string[];
 }
 
 export type DispatcherRequest = {
