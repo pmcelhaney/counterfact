@@ -21,17 +21,20 @@ const debug = createDebug("counterfact:server:create-koa-app");
  * 4. Redirect `/counterfact` → `/counterfact/swagger`
  * 5. Body parser
  * 6. JSON serialisation of object bodies
- * 7. Route-dispatching middleware
+ * 7. Route-dispatching middlewares (one per spec; each is `use()`d in order)
  *
  * @param registry - The route registry used by the admin API and dispatcher.
- * @param koaMiddleware - The pre-built route-dispatching middleware.
+ * @param koaMiddlewares - One or more pre-built route-dispatching middlewares.
+ *   Each middleware is registered via `app.use()` in the order provided.
+ *   In multi-spec mode, pass one middleware per spec; each already knows its
+ *   own `routePrefix` and will call `next()` for paths outside that prefix.
  * @param config - Server configuration.
  * @param contextRegistry - The context registry used by the admin API.
  * @returns A configured Koa application (not yet listening).
  */
 export function createKoaApp(
   registry: Registry,
-  koaMiddleware: Koa.Middleware,
+  koaMiddlewares: Koa.Middleware | Koa.Middleware[],
   config: Config,
   contextRegistry: ContextRegistry,
 ) {
@@ -87,7 +90,13 @@ export function createKoaApp(
     }
   });
 
-  app.use(koaMiddleware);
+  const middlewareList = Array.isArray(koaMiddlewares)
+    ? koaMiddlewares
+    : [koaMiddlewares];
+
+  for (const middleware of middlewareList) {
+    app.use(middleware);
+  }
 
   return app;
 }

@@ -245,13 +245,15 @@ describe("counterfact multi-spec mode", () => {
     expect(result.contextRegistry).toBeDefined();
     expect(result.registry).toBeDefined();
     expect(result.koaApp).toBeDefined();
-    expect(result.koaMiddleware).toBeDefined();
+    expect(Array.isArray(result.koaMiddleware)).toBe(true);
+    expect(result.koaMiddleware).toHaveLength(2);
     expect(typeof result.start).toBe("function");
     expect(typeof result.startRepl).toBe("function");
   });
 
-  it("routes requests to the correct spec's dispatcher based on URL prefix", async () => {
+  it("each per-spec middleware handles its own prefix and passes others to next", async () => {
     const result = await (app as any).counterfact(multiSpecConfig);
+    const [alphaMiddleware, betaMiddleware] = result.koaMiddleware;
 
     // Simulate a Koa context for /alpha/...
     const alphaCtx = {
@@ -268,15 +270,19 @@ describe("counterfact multi-spec mode", () => {
       body: undefined,
     } as any;
 
-    let alphaCalledNext = false;
-    await result.koaMiddleware(alphaCtx, async () => {
-      alphaCalledNext = true;
+    // Alpha middleware handles /alpha paths and does NOT call next
+    let alphaHandledByAlpha = false;
+    await alphaMiddleware(alphaCtx, async () => {
+      alphaHandledByAlpha = true;
     });
+    expect(alphaHandledByAlpha).toBe(false);
 
-    // /alpha matches the "alpha" spec prefix. The per-spec middleware handles
-    // any request under that prefix (even if the route doesn't exist) and does
-    // NOT call next(), so alphaCalledNext should remain false.
-    expect(alphaCalledNext).toBe(false);
+    // Beta middleware passes /alpha paths through to next
+    let alphaPassedByBeta = false;
+    await betaMiddleware(alphaCtx, async () => {
+      alphaPassedByBeta = true;
+    });
+    expect(alphaPassedByBeta).toBe(true);
 
     // Simulate a Koa context for an unknown prefix /gamma/...
     const unknownCtx = {
@@ -293,12 +299,17 @@ describe("counterfact multi-spec mode", () => {
       body: undefined,
     } as any;
 
-    let unknownCalledNext = false;
-    await result.koaMiddleware(unknownCtx, async () => {
-      unknownCalledNext = true;
+    // Both middlewares pass /gamma paths through to next
+    let alphaPassedUnknown = false;
+    await alphaMiddleware(unknownCtx, async () => {
+      alphaPassedUnknown = true;
     });
+    expect(alphaPassedUnknown).toBe(true);
 
-    // No spec matches /gamma, so next should be called
-    expect(unknownCalledNext).toBe(true);
+    let betaPassedUnknown = false;
+    await betaMiddleware(unknownCtx, async () => {
+      betaPassedUnknown = true;
+    });
+    expect(betaPassedUnknown).toBe(true);
   });
 });

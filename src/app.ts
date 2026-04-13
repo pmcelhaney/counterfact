@@ -2,7 +2,6 @@ import fs, { rm } from "node:fs/promises";
 import nodePath from "node:path";
 
 import { createHttpTerminator, type HttpTerminator } from "http-terminator";
-import type Koa from "koa";
 
 import { startRepl as startReplServer } from "./repl/repl.js";
 import { createRouteFunction } from "./repl/route-builder.js";
@@ -234,42 +233,6 @@ async function createSpecBundle(
 }
 
 /**
- * Builds a single Koa middleware that fans requests out to the correct
- * per-spec {@link Dispatcher} based on the URL base-path prefix.
- *
- * Requests that do not match any spec prefix are forwarded to `next`.
- */
-function buildMultiSpecMiddleware(
-  specBundles: SpecBundle[],
-  config: Config,
-): Koa.Middleware {
-  const specMiddlewares = specBundles.map((bundle) => ({
-    prefix: `/${bundle.base}`,
-    middleware: koaMiddleware(bundle.dispatcher, {
-      ...config,
-      routePrefix: `/${bundle.base}`,
-    }),
-  }));
-
-  return async function multiSpecMiddleware(ctx, next) {
-    for (const { prefix, middleware } of specMiddlewares) {
-      if (ctx.request.path.startsWith(prefix)) {
-        // The per-spec koaMiddleware calls `next` only when the path does NOT
-        // match its routePrefix, which means we should move on to the next spec.
-        // When it handles the request it does NOT call next, so `calledNext`
-        // stays false and we return immediately.
-        let calledNext = false;
-        await middleware(ctx, async () => {
-          calledNext = true;
-        });
-        if (!calledNext) return;
-      }
-    }
-    await next();
-  };
-}
-
-/**
  * Creates and configures a full Counterfact server instance.
  *
  * Sets up the route registry, context registry, scenario registry, code
@@ -316,14 +279,21 @@ export async function counterfact(config: Config) {
     const primaryBundle = specBundles[0] as SpecBundle;
     const primarySpec = config.specs[0] as (typeof config.specs)[number];
 
-    const compositeMiddleware = buildMultiSpecMiddleware(specBundles, config);
+    // Build one per-spec middleware; each knows its own routePrefix and will
+    // call next() for paths that don't start with that prefix.
+    const specMiddlewares = specBundles.map((bundle) =>
+      koaMiddleware(bundle.dispatcher, {
+        ...config,
+        routePrefix: `/${bundle.base}`,
+      }),
+    );
 
     // Use the first spec's registry for the Koa admin/OpenAPI UI (best effort).
     const primaryRegistry = primaryBundle.registry;
 
     const koaApp = createKoaApp(
       primaryRegistry,
-      compositeMiddleware,
+      specMiddlewares,
       {
         ...config,
         openApiPath: primaryBundle.openApiDocument ? primarySpec.source : "_",
@@ -399,7 +369,7 @@ export async function counterfact(config: Config) {
     return {
       contextRegistry,
       koaApp,
-      koaMiddleware: compositeMiddleware,
+      koaMiddleware: specMiddlewares,
       registry: primaryRegistry,
       start: startMultiSpec,
       startRepl: () =>
