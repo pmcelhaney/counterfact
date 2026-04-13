@@ -41,7 +41,7 @@ describe("an OperationCoder", () => {
       "get",
     );
 
-    expect(coder.modulePath()).toBe("routes/hello/world.types.ts");
+    expect(coder.modulePath()).toBe("routes/hello/world.ts");
   });
 
   it("generates a complex get operation", async () => {

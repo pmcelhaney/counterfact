@@ -94,8 +94,6 @@ export class OperationCoder extends Coder {
 
     const routesBase = this.group ? `routes/${this.group}` : "routes";
 
-    return `${nodePath
-      .join(routesBase, pathString)
-      .replaceAll("\\", "/")}.types.ts`;
+    return `${nodePath.join(routesBase, pathString).replaceAll("\\", "/")}.ts`;
   }
 }
