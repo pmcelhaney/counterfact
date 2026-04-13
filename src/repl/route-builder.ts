@@ -85,10 +85,10 @@ export class RouteBuilder {
     const method = this._method.toLowerCase();
     const normalizedPath = this.routePath.toLowerCase();
 
-    for (const key of Object.keys(this._openApiDocument.paths)) {
+    for (const key of Object.keys(this._openApiDocument.paths ?? {})) {
       if (key.toLowerCase() === normalizedPath) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        return (this._openApiDocument.paths[key] as any)[
+        return (this._openApiDocument.paths?.[key] as any)[
           method
         ] as OpenApiOperationExtended;
       }
