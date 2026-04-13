@@ -1,10 +1,10 @@
 <div align="center" markdown="1">
 
-<img src="./counterfact.svg" alt="Counterfact" border=0>
+<img src="../../counterfact.svg" alt="Counterfact" border=0>
 
 <br>
 
-![MIT License](https://img.shields.io/badge/license-MIT-blue) [![TypeScript](./typescript-badge.png)](https://github.com/ellerbrock/typescript-badges/) [![Coverage Status](https://coveralls.io/repos/github/pmcelhaney/counterfact/badge.svg)](https://coveralls.io/github/pmcelhaney/counterfact)
+![MIT License](https://img.shields.io/badge/license-MIT-blue) [![TypeScript](../../typescript-badge.png)](https://github.com/ellerbrock/typescript-badges/) [![Coverage Status](https://coveralls.io/repos/github/pmcelhaney/counterfact/badge.svg)](https://coveralls.io/github/pmcelhaney/counterfact)
 
 </div>
 
@@ -22,16 +22,16 @@ npx counterfact@latest https://petstore3.swagger.io/api/v3/openapi.json api
 
 | | |
 |---|---|
-| [Getting started](./docs/getting-started.md) | Detailed walkthrough with state, REPL, and proxy |
-| [Usage](./docs/usage.md) | Feature index: routes, context, REPL, proxy, middleware, and more |
-| [Patterns](./docs/patterns/index.md) | Failures, latency, AI sandboxes, integration tests |
-| [Reference](./docs/reference.md) | `$` API, CLI flags, architecture |
-| [How it compares](./docs/comparison.md) | json-server, WireMock, Prism, Microcks, MSW |
-| [FAQ](./docs/faq.md) | State, types, regeneration |
+| [Getting started](../getting-started.md) | Detailed walkthrough with state, REPL, and proxy |
+| [Usage](../usage.md) | Feature index: routes, context, REPL, proxy, middleware, and more |
+| [Patterns](../patterns/index.md) | Failures, latency, AI sandboxes, integration tests |
+| [Reference](../reference.md) | `$` API, CLI flags, architecture |
+| [How it compares](../comparison.md) | json-server, WireMock, Prism, Microcks, MSW |
+| [FAQ](../faq.md) | State, types, regeneration |
 | [Petstore example](https://github.com/counterfact/example-petstore) | Full working example |
 
 <div align="center" markdown="1">
 
-[Changelog](./CHANGELOG.md) · [Contributing](./CONTRIBUTING.md)
+[Changelog](../../CHANGELOG.md) · [Contributing](../../CONTRIBUTING.md)
 
 </div>
