@@ -322,23 +322,21 @@ Most options can also be set in a `counterfact.yaml` file placed next to the gen
 # Single spec (equivalent to the positional [spec] argument)
 spec: ./openapi.yaml
 
-# --- OR --- multiple specs at different URL prefixes
+# --- OR --- multiple specs at different URL base paths
 specs:
   - source: ./billing.yaml   # local path or URL to an OpenAPI document
-    prefix: /billing          # URL mount point
-    group: billing            # sub-directory for generated files
+    base: billing             # URL base path and generated-files subdirectory (no leading /)
 
   - source: https://example.com/identity.yaml
-    prefix: /identity
-    group: identity
+    base: identity
 ```
 
 When `specs` is present it **takes precedence** over `spec`.
 
 With multiple specs:
-- Routes for the `billing` group land in `routes/billing/` and types in `types/billing/paths/`.
-- The shared `_.context.ts` stays at `routes/_.context.ts` — no per-group context file is created.
-- All APIs share one server; each is accessible under its `prefix` (e.g. `GET /billing/invoices`).
+- Routes for the `billing` spec land in `routes/billing/` and types in `types/billing/paths/`.
+- The shared `_.context.ts` stays at `routes/_.context.ts` — no per-spec context file is created.
+- All APIs share one server; each is accessible under its `base` path (e.g. `GET /billing/invoices`).
 
 ---
 

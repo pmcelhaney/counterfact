@@ -2,8 +2,8 @@
 export interface SpecEntry {
   /** Path or URL to the OpenAPI document for this spec. */
   source: string;
-  /** URL prefix under which this API is mounted (e.g. `"/billing"`). */
-  prefix: string;
+  /** Base path under which this API is mounted (e.g. `"billing"`, no leading `/`). */
+  base: string;
   /** Reserved for future use. */
   group?: string;
 }
@@ -43,9 +43,8 @@ export interface Config {
   /**
    * Multiple API specs to serve simultaneously.  When present, `specs` takes
    * precedence over `openApiPath`.  Each entry specifies its own OpenAPI
-   * document (`source`) and URL mount point (`prefix`); `prefix` also
-   * determines the generated-code sub-directory (e.g. `/billing` →
-   * `routes/billing/`).
+   * document (`source`) and base path (`base`); `base` also determines the
+   * generated-code sub-directory (e.g. `"billing"` → `routes/billing/`).
    */
   specs?: SpecEntry[];
   /** When `true`, mount the Admin API at `/_counterfact/api/`. */

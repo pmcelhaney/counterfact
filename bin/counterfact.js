@@ -323,7 +323,7 @@ async function main(source, destination) {
       source: entry.source.startsWith("http")
         ? entry.source
         : nodePath.resolve(configDir, entry.source),
-      prefix: entry.prefix ?? "",
+      base: entry.base ?? "",
       group: entry.group ?? "",
     }));
     // When specs is used, the single openApiPath is not needed
@@ -475,7 +475,7 @@ async function main(source, destination) {
     `   API Base URL  ${url}`,
     specs
       ? specs
-          .map((s) => `   API Spec       ${s.source} → ${url}${s.prefix}`)
+          .map((s) => `   API Spec       ${s.source} → ${url}/${s.base}`)
           .join("\n")
       : source === "_"
         ? undefined

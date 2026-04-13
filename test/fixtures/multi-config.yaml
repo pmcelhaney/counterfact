@@ -2,9 +2,7 @@ destination: "../../out"
 
 specs:
   - source: ./openapi-example.yaml
-    prefix: /billing
-    group: example
+    base: billing
 
   - source: https://petstore3.swagger.io/api/v3/openapi.json
-    prefix: /petstore
-    group: petstore
+    base: petstore

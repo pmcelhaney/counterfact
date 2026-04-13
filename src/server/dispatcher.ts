@@ -117,14 +117,14 @@ export class Dispatcher {
   public config?: Config; // Add config property
 
   /** Multiple spec documents for multi-spec routing (prefix → document). */
-  public specDocuments: Array<{ prefix: string; document: OpenApiDocument }>;
+  public specDocuments: Array<{ base: string; document: OpenApiDocument }>;
 
   public constructor(
     registry: Registry,
     contextRegistry: ContextRegistry,
     openApiDocument?: OpenApiDocument,
     config?: Config,
-    specDocuments: Array<{ prefix: string; document: OpenApiDocument }> = [],
+    specDocuments: Array<{ base: string; document: OpenApiDocument }> = [],
   ) {
     this.registry = registry;
     this.contextRegistry = contextRegistry;
@@ -178,12 +178,12 @@ export class Dispatcher {
       }
     }
 
-    for (const { prefix, document } of this.specDocuments) {
-      if (!path.toLowerCase().startsWith(prefix.toLowerCase())) {
+    for (const { base, document } of this.specDocuments) {
+      if (!path.toLowerCase().startsWith(("/" + base).toLowerCase())) {
         continue;
       }
 
-      const specPath = path.slice(prefix.length) || "/";
+      const specPath = path.slice(base.length + 1) || "/";
 
       for (const key in document.paths) {
         if (key.toLowerCase() === specPath.toLowerCase()) {
@@ -224,9 +224,9 @@ export class Dispatcher {
     }
 
     // Merge top-level `produces` from matching multi-spec document
-    for (const { prefix, document } of this.specDocuments) {
+    for (const { base, document } of this.specDocuments) {
       if (
-        path.toLowerCase().startsWith(prefix.toLowerCase()) &&
+        path.toLowerCase().startsWith(("/" + base).toLowerCase()) &&
         document.produces
       ) {
         return {

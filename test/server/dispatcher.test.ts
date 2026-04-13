@@ -1515,7 +1515,7 @@ describe("multi-spec dispatcher", () => {
       new ContextRegistry(),
       undefined,
       undefined,
-      [{ prefix: "/billing", document: billingDocument }],
+      [{ base: "billing", document: billingDocument }],
     );
 
     const operation = dispatcher.operationForPathAndMethod(
@@ -1545,7 +1545,7 @@ describe("multi-spec dispatcher", () => {
       new ContextRegistry(),
       undefined,
       undefined,
-      [{ prefix: "/billing", document: billingDocument }],
+      [{ base: "billing", document: billingDocument }],
     );
 
     const operation = dispatcher.operationForPathAndMethod(
@@ -1605,7 +1605,7 @@ describe("multi-spec dispatcher", () => {
       new ContextRegistry(),
       undefined,
       undefined,
-      [{ prefix: "/billing", document: billingDocument }],
+      [{ base: "billing", document: billingDocument }],
     );
 
     const operation = dispatcher.operationForPathAndMethod(

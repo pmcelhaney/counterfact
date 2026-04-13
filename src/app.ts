@@ -165,7 +165,7 @@ export async function counterfact(config: Config) {
 
   // Build code generators and load OpenAPI documents for all specs
   let codeGenerators: CodeGenerator[];
-  let specDocuments: Array<{ prefix: string; document: OpenApiDocument }> = [];
+  let specDocuments: Array<{ base: string; document: OpenApiDocument }> = [];
   let singleOpenApiDocument: OpenApiDocument | undefined;
 
   if (isMultiSpec) {
@@ -173,7 +173,7 @@ export async function counterfact(config: Config) {
       (spec) =>
         new CodeGenerator(spec.source, config.basePath, {
           ...config.generate,
-          group: spec.prefix.replace(/^\//, ""),
+          group: spec.base,
           copyCoreFiles: false,
         }),
     );
@@ -182,7 +182,7 @@ export async function counterfact(config: Config) {
       multiSpecs.map(async (spec) => {
         if (spec.source === "_") return null;
         const document = await loadOpenApiDocument(spec.source);
-        return { prefix: spec.prefix, document };
+        return { base: spec.base, document };
       }),
     );
 
