@@ -1,0 +1,37 @@
+openapi: 3.0.3
+info:
+  version: 1.0.0
+  title: Beta API
+paths:
+  /ping:
+    get:
+      operationId: betaPing
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: string
+              examples:
+                pong:
+                  value: beta-pong
+
+  /items:
+    get:
+      operationId: betaItems
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                items:
+                  value:
+                    - one
+                    - two
+                    - three

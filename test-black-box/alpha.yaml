@@ -1,0 +1,32 @@
+openapi: 3.0.3
+info:
+  version: 1.0.0
+  title: Alpha API
+paths:
+  /ping:
+    get:
+      operationId: alphaPing
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: string
+              examples:
+                pong:
+                  value: alpha-pong
+
+  /status:
+    get:
+      operationId: alphaStatus
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: string
+              examples:
+                status:
+                  value: alpha-ok
