@@ -11,10 +11,11 @@ import { Dispatcher, type DispatcherRequest } from "./server/dispatcher.js";
 import { koaMiddleware } from "./server/koa-middleware.js";
 import { loadOpenApiDocument } from "./server/load-openapi-document.js";
 import { ModuleLoader } from "./server/module-loader.js";
-import { OpenApiWatcher } from "./server/openapi-watcher.js";
 import { Registry } from "./server/registry.js";
+import { ScenarioRegistry } from "./server/scenario-registry.js";
 import { Transpiler } from "./server/transpiler.js";
 import { CodeGenerator } from "./typescript-generator/code-generator.js";
+import { writeApplyContextType } from "./typescript-generator/generate.js";
 import { runtimeCanExecuteErasableTs } from "./util/runtime-can-execute-erasable-ts.js";
 
 export { loadOpenApiDocument } from "./server/load-openapi-document.js";
@@ -37,6 +38,16 @@ export type MockRequest = DispatcherRequest & { rawPath: string };
 
 const mswHandlers: MswHandlerMap = {};
 
+/**
+ * Dispatches a single MSW (Mock Service Worker) intercepted request to the
+ * matching Counterfact route handler registered via {@link createMswHandlers}.
+ *
+ * @param request - The intercepted request, including the HTTP method, path,
+ *   headers, query, body, and a `rawPath` that preserves the original URL
+ *   before base-path stripping.
+ * @returns The response produced by the matching handler, or a 404 object when
+ *   no handler has been registered for the given method and path.
+ */
 export async function handleMswRequest(request: MockRequest) {
   const { method, rawPath } = request;
   const handler = mswHandlers[`${method}:${rawPath}`];
@@ -47,6 +58,18 @@ export async function handleMswRequest(request: MockRequest) {
   return { error: `No handler found for ${method} ${rawPath}`, status: 404 };
 }
 
+/**
+ * Loads an OpenAPI document, registers all routes from it as MSW handlers, and
+ * returns the list of registered routes so callers (e.g. Vitest Browser mode)
+ * can mount them on their own request-interception layer.
+ *
+ * @param config - Counterfact configuration; `openApiPath` and `basePath` are
+ *   the most important fields for this function.
+ * @param ModuleLoaderClass - Injectable module-loader constructor, primarily
+ *   used in tests to substitute a test-friendly implementation.
+ * @returns An array of `{ method, path }` objects describing every registered
+ *   MSW handler.
+ */
 export async function createMswHandlers(
   config: Config,
   ModuleLoaderClass = ModuleLoader,
@@ -72,6 +95,8 @@ export async function createMswHandlers(
     compiledPathsDirectory,
     registry,
     contextRegistry,
+    undefined,
+    undefined,
     openApiDocument,
   );
   await moduleLoader.load();
@@ -98,6 +123,22 @@ export async function createMswHandlers(
   return handlers;
 }
 
+/**
+ * Creates and configures a full Counterfact server instance.
+ *
+ * Sets up the route registry, context registry, scenario registry, code
+ * generator, transpiler, module loader, Koa application, and OpenAPI watcher.
+ * The returned object exposes handles for starting the server, stopping it, and
+ * launching the interactive REPL.
+ *
+ * @param config - Runtime configuration (port, paths, feature flags, etc.).
+ * @returns An object containing the configured sub-systems and two entry-point
+ *   functions:
+ *   - `start(options)` — generates/watches code and optionally starts the HTTP
+ *     server; returns a `stop()` handle.
+ *   - `startRepl()` — launches the interactive Node.js REPL connected to the
+ *     live server state.
+ */
 export async function counterfact(config: Config) {
   const modulesPath = config.basePath;
 
@@ -114,6 +155,8 @@ export async function counterfact(config: Config) {
   const registry = new Registry();
 
   const contextRegistry = new ContextRegistry();
+
+  const scenarioRegistry = new ScenarioRegistry();
 
   const codeGenerator = new CodeGenerator(
     config.openApiPath,
@@ -143,14 +186,18 @@ export async function counterfact(config: Config) {
     compiledPathsDirectory,
     registry,
     contextRegistry,
+    nodePath.join(modulesPath, "scenarios").replaceAll("\\", "/"),
+    scenarioRegistry,
     openApiDocument,
   );
+
+  contextRegistry.addEventListener("context-changed", () => {
+    void writeApplyContextType(modulesPath);
+  });
 
   const middleware = koaMiddleware(dispatcher, config);
 
   const koaApp = createKoaApp(registry, middleware, config, contextRegistry);
-
-  const openApiWatcher = new OpenApiWatcher(config.openApiPath, dispatcher);
 
   async function start(options: Config) {
     const { generate, startServer, watch, buildCache } = options;
@@ -161,23 +208,12 @@ export async function counterfact(config: Config) {
 
     if (config.openApiPath !== "_" && (watch.routes || watch.types)) {
       await codeGenerator.watch();
-
-      codeGenerator.addEventListener("generate", () => {
-        void (async () => {
-          const newDoc = await loadOpenApiDocument(config.openApiPath);
-
-          if (newDoc !== undefined) {
-            moduleLoader.setOpenApiDocument(newDoc);
-            dispatcher.openApiDocument = newDoc;
-          }
-        })();
-      });
     }
 
     let httpTerminator: HttpTerminator | undefined;
 
     if (startServer) {
-      await openApiWatcher.watch();
+      await openApiDocument?.watch();
 
       if (!nativeTs) {
         await transpiler.watch();
@@ -203,7 +239,7 @@ export async function counterfact(config: Config) {
         await codeGenerator.stopWatching();
         await transpiler.stopWatching();
         await moduleLoader.stopWatching();
-        await openApiWatcher.stopWatching();
+        await openApiDocument?.stopWatching();
         await httpTerminator?.terminate();
       },
     };
@@ -222,6 +258,7 @@ export async function counterfact(config: Config) {
         config,
         undefined, // use the default print function (stdout)
         openApiDocument,
+        scenarioRegistry,
       ),
   };
 }

@@ -33,6 +33,19 @@ export interface MissingParams {
   query?: MissingParam[];
 }
 
+/**
+ * Immutable fluent builder for constructing and sending HTTP requests from the
+ * Counterfact REPL.
+ *
+ * Each builder method returns a **new** `RouteBuilder` instance with the
+ * updated field — the original is never mutated.  When all required parameters
+ * are set, call {@link send} to execute the request.
+ *
+ * ```ts
+ * // Inside the REPL:
+ * route("/pets/{petId}").method("get").path({ petId: 1 }).send();
+ * ```
+ */
 export class RouteBuilder {
   public readonly routePath: string;
 
@@ -115,22 +128,47 @@ export class RouteBuilder {
     });
   }
 
+  /**
+   * Returns a new builder with the HTTP method set.
+   *
+   * @param method - HTTP method name (case-insensitive, e.g. `"get"`, `"POST"`).
+   */
   public method(method: string): RouteBuilder {
     return this.clone({ method: method.toUpperCase() });
   }
 
+  /**
+   * Returns a new builder with additional path parameters merged in.
+   *
+   * @param params - Key/value map of path variable names to values.
+   */
   public path(params: Params): RouteBuilder {
     return this.clone({ pathParams: { ...this._pathParams, ...params } });
   }
 
+  /**
+   * Returns a new builder with additional query parameters merged in.
+   *
+   * @param params - Key/value map of query parameter names to values.
+   */
   public query(params: Params): RouteBuilder {
     return this.clone({ queryParams: { ...this._queryParams, ...params } });
   }
 
+  /**
+   * Returns a new builder with additional request headers merged in.
+   *
+   * @param params - Key/value map of header names to values.
+   */
   public headers(params: Params): RouteBuilder {
     return this.clone({ headerParams: { ...this._headerParams, ...params } });
   }
 
+  /**
+   * Returns a new builder with the request body set.
+   *
+   * @param body - The request body (will be serialised to JSON or sent as-is).
+   */
   public body(body: unknown): RouteBuilder {
     return this.clone({ body });
   }
@@ -139,12 +177,21 @@ export class RouteBuilder {
     return this._operation;
   }
 
+  /**
+   * Returns `true` when a method is set and no required parameters are
+   * missing.
+   */
   public ready(): boolean {
     if (!this._method) return false;
 
     return this.missing() === undefined;
   }
 
+  /**
+   * Returns a {@link MissingParams} object describing all required parameters
+   * that have not yet been set, or `undefined` when nothing is missing (or
+   * when the operation has no parameters).
+   */
   public missing(): MissingParams | undefined {
     const operation = this.getOperation();
 
@@ -176,6 +223,10 @@ export class RouteBuilder {
     return missingParams;
   }
 
+  /**
+   * Returns a human-readable help string describing the operation, its
+   * parameters, and the expected responses.
+   */
   public help(): string {
     const method = this._method ?? "[no method set]";
     const operation = this.getOperation();
@@ -259,6 +310,13 @@ export class RouteBuilder {
     return lines.join("\n");
   }
 
+  /**
+   * Executes the HTTP request and returns the parsed response body.
+   *
+   * @throws When no HTTP method has been set.
+   * @throws When required parameters are missing.
+   * @throws When an unsupported HTTP method is used.
+   */
   public async send(): Promise<unknown> {
     if (!this._method) {
       throw new Error(
@@ -388,6 +446,16 @@ export class RouteBuilder {
   }
 }
 
+/**
+ * Creates a factory function that constructs a {@link RouteBuilder} for a
+ * given route path, pre-configured with the server's host, port, and OpenAPI
+ * document.
+ *
+ * @param port - The port the Counterfact server is listening on.
+ * @param host - The server hostname (default `"localhost"`).
+ * @param openApiDocument - Optional OpenAPI document for parameter introspection.
+ * @returns A function `(routePath: string) => RouteBuilder`.
+ */
 export function createRouteFunction(
   port: number,
   host?: string,

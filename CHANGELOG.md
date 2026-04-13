@@ -1,5 +1,39 @@
 # counterfact
 
+## 2.7.0
+
+### Minor Changes
+
+- 0043b20: Add support for a `counterfact.yaml` config file. All CLI options can now be specified in a `counterfact.yaml` file in the current working directory. Command-line options always take precedence over config file settings. Use `--config <path>` to load a config file from a non-default location.
+- 2cbd0d5: Add .empty() method to response builder for responses with no body
+- 965dc4e: Add `.apply` REPL dot-command (Approach 1: Minimalist Function Injection).
+
+  The `.apply` command lets you run scenario scripts from the REPL prompt without leaving the terminal. A scenario is a plain TypeScript (or JavaScript) file that exports named functions. Each function receives an `ApplyContext` object with `{ context, loadContext, routes, route }` and can freely read or mutate state.
+
+  **Path resolution:**
+
+  | Command              | File                   | Function |
+  | -------------------- | ---------------------- | -------- |
+  | `.apply foo`         | `scenarios/index.ts`   | `foo`    |
+  | `.apply foo/bar`     | `scenarios/foo.ts`     | `bar`    |
+  | `.apply foo/bar/baz` | `scenarios/foo/bar.ts` | `baz`    |
+
+  The `ApplyContext` type is written to `types/apply-context.ts` during code generation.
+
+- a356bdf: Validate response headers at runtime and report type errors as `response-type-error` HTTP headers (one per error, multiple headers with the same name). Use --no-validate-response to disable.
+
+### Patch Changes
+
+- 54b866c: add docs/usage-patterns.md documenting seven usage patterns: explore a new API, simulate failures and edge cases, mock APIs with dummy data, fast sandbox for agentic coding, hybrid proxy, API reference implementation, and executable spec
+- 6e0655b: fix type error when returning a response with no body (e.g. `$.response[200]` or `$.response[404]` in routes where the spec defines no response body)
+- 754dbbd: add two new usage pattern docs: Automated Integration Tests (programmatic API in test suites) and Custom Middleware (\_.middleware.ts for cross-cutting concerns); propose three future patterns as GitHub issues: Record and Replay, Webhook Simulation, and Persistent State
+- f9a9790: Refactor `src/counterfact-types/` so that each type lives in its own file with a JSDoc comment explaining its purpose. The `index.ts` now re-exports all types from the individual files. This is an internal refactor with no change to the public API.
+- 6d50ae6: Updated dependency `ajv` to `8.18.0`.
+- fa25ec3: Updated dependency `@swc/core` to `1.15.24`.
+- cbab929: Updated dependency `eslint` to `10.2.0`.
+- 9c5fc1d: Replace deprecated `unescape()` with `decodeURIComponent()` wrapped in a try/catch in `requirement.ts`. This avoids use of the deprecated global function while preserving the behavior of returning invalid percent-encoded sequences unchanged.
+- 323cf1c: Revised documentation for coherence: added table of contents to usage, reference, and FAQ pages; added "See also" sections to pages that were missing them; moved the usage guide link from the README footer into the "Go deeper" table.
+
 ## 2.6.0
 
 ### Minor Changes

@@ -8,7 +8,7 @@ import createDebug from "debug";
 import { CHOKIDAR_OPTIONS } from "./constants.js";
 import { ContextRegistry } from "./context-registry.js";
 import { determineModuleKind } from "./determine-module-kind.js";
-import type { OpenApiDocument } from "./dispatcher.js";
+import type { OpenApiDocument } from "./openapi-document.js";
 import { FileDiscovery } from "./file-discovery.js";
 import {
   type ContextModule,
@@ -17,6 +17,7 @@ import {
 } from "./middleware-detector.js";
 import { ModuleDependencyGraph } from "./module-dependency-graph.js";
 import type { Module, Registry } from "./registry.js";
+import { ScenarioRegistry } from "./scenario-registry.js";
 import { uncachedImport } from "./uncached-import.js";
 import { unescapePathForWindows } from "../util/windows-escape.js";
 
@@ -24,6 +25,19 @@ const { uncachedRequire } = await import("./uncached-require.cjs");
 
 const debug = createDebug("counterfact:server:module-loader");
 
+/**
+ * Watches the compiled routes directory and dynamically loads/reloads route
+ * modules, context files, and middleware as files are added, changed, or
+ * removed.
+ *
+ * Loaded modules are registered in the {@link Registry} (route handlers) or
+ * the {@link ContextRegistry} (context files).  An optional
+ * {@link ScenarioRegistry} receives scenario modules loaded from a separate
+ * `scenarios/` directory.
+ *
+ * Emits DOM-style events (`"add"`, `"remove"`) so callers can react to module
+ * lifecycle changes.
+ */
 export class ModuleLoader extends EventTarget {
   private readonly basePath: string;
 
@@ -31,11 +45,15 @@ export class ModuleLoader extends EventTarget {
 
   private watcher: FSWatcher | undefined;
 
+  private scenariosWatcher: FSWatcher | undefined;
+
   private readonly contextRegistry: ContextRegistry;
 
-  private openApiDocumentRef: OpenApiDocument;
+  private readonly scenariosPath: string | undefined;
 
-  private readonly openApiDocumentProxy: OpenApiDocument;
+  private readonly scenarioRegistry: ScenarioRegistry | undefined;
+
+  private readonly openApiDocumentProxy: OpenApiDocument | object;
 
   private readonly dependencyGraph = new ModuleDependencyGraph();
 
@@ -50,49 +68,37 @@ export class ModuleLoader extends EventTarget {
     basePath: string,
     registry: Registry,
     contextRegistry = new ContextRegistry(),
-    openApiDocument: OpenApiDocument = {},
+    scenariosPath?: string,
+    scenarioRegistry?: ScenarioRegistry,
+    openApiDocument?: OpenApiDocument,
   ) {
     super();
     this.basePath = basePath.replaceAll("\\", "/");
     this.registry = registry;
     this.contextRegistry = contextRegistry;
-    this.openApiDocumentRef = openApiDocument;
-
-    // eslint-disable-next-line @typescript-eslint/no-this-alias
-    const self = this;
-
-    this.openApiDocumentProxy = new Proxy({} as OpenApiDocument, {
-      deleteProperty() {
-        return false;
-      },
-
-      get(_target, prop) {
-        return Reflect.get(self.openApiDocumentRef as object, prop);
-      },
-
-      getOwnPropertyDescriptor(_target, prop) {
-        return Reflect.getOwnPropertyDescriptor(self.openApiDocumentRef, prop);
-      },
-
-      has(_target, prop) {
-        return Reflect.has(self.openApiDocumentRef, prop);
-      },
-
-      ownKeys() {
-        return Reflect.ownKeys(self.openApiDocumentRef);
-      },
-
-      set() {
-        return false;
-      },
-    });
+    this.scenariosPath = scenariosPath?.replaceAll("\\", "/");
+    this.scenarioRegistry = scenarioRegistry;
+    this.openApiDocumentProxy =
+      openApiDocument !== undefined
+        ? new Proxy(openApiDocument, {
+            deleteProperty() {
+              return false;
+            },
+            set() {
+              return false;
+            },
+          })
+        : {};
     this.fileDiscovery = new FileDiscovery(this.basePath);
   }
 
-  public setOpenApiDocument(newDoc: OpenApiDocument): void {
-    this.openApiDocumentRef = newDoc;
-  }
-
+  /**
+   * Starts watching the routes directory (and optionally the scenarios
+   * directory) for file-system changes, loading or reloading modules on
+   * `"add"` and `"change"` events and deregistering them on `"unlink"`.
+   *
+   * Resolves once the initial directory scan is complete.
+   */
   public async watch(): Promise<void> {
     this.watcher = watch(this.basePath, CHOKIDAR_OPTIONS).on(
       "all",
@@ -111,7 +117,7 @@ export class ModuleLoader extends EventTarget {
 
         if (pathName.includes("$.context") && eventName === "add") {
           process.stdout.write(
-            `\n\n!!! The file at ${pathName} needs a minor update.\n    See https://github.com/pmcelhaney/counterfact/blob/main/docs/context-change.md\n\n\n`,
+            `\n\n!!! The file at ${pathName} needs a minor update.\n    See https://github.com/pmcelhaney/counterfact/blob/main/docs/faq.md\n\n\n`,
           );
 
           return;
@@ -131,6 +137,11 @@ export class ModuleLoader extends EventTarget {
         if (eventName === "unlink") {
           this.registry.remove(url);
           this.dispatchEvent(new Event("remove"));
+          if (this.isContextFile(pathName)) {
+            this.contextRegistry.remove(
+              unescapePathForWindows(parts.dir).replaceAll("\\", "/") || "/",
+            );
+          }
           return;
         }
 
@@ -144,15 +155,119 @@ export class ModuleLoader extends EventTarget {
       },
     );
     await once(this.watcher, "ready");
+
+    if (this.scenariosPath && this.scenarioRegistry) {
+      const JS_EXTENSIONS = ["js", "mjs", "cjs", "ts", "mts", "cts"];
+      const scenariosPath = this.scenariosPath;
+
+      this.scenariosWatcher = watch(scenariosPath, CHOKIDAR_OPTIONS).on(
+        "all",
+        (eventName: string, pathNameOriginal: string) => {
+          if (
+            !JS_EXTENSIONS.some((ext) => pathNameOriginal.endsWith(`.${ext}`))
+          )
+            return;
+
+          if (!["add", "change", "unlink"].includes(eventName)) return;
+
+          const pathName = pathNameOriginal.replaceAll("\\", "/");
+
+          if (eventName === "unlink") {
+            const fileKey = this.scenarioFileKey(pathName);
+            this.scenarioRegistry?.remove(fileKey);
+            return;
+          }
+
+          void this.loadScenarioFile(pathName);
+        },
+      );
+      await once(this.scenariosWatcher, "ready");
+    }
   }
 
+  /** Closes both file-system watchers (routes and scenarios). */
   public async stopWatching(): Promise<void> {
     await this.watcher?.close();
+    await this.scenariosWatcher?.close();
   }
 
+  private isContextFile(pathName: string): boolean {
+    return basename(pathName).startsWith("_.context.");
+  }
+
+  /**
+   * Performs a one-shot load of all modules found under `directory` (relative
+   * to the configured base path) and all scenario files.
+   *
+   * @param directory - Sub-directory to load, defaults to the root (`""`).
+   */
   public async load(directory = ""): Promise<void> {
     const files = await this.fileDiscovery.findFiles(directory);
     await Promise.all(files.map((file) => this.loadEndpoint(file)));
+    await this.loadScenarios();
+  }
+
+  private shouldLoadScenarioFile(pathName: string): boolean {
+    return !pathName.endsWith(".d.ts") && !pathName.endsWith(".map");
+  }
+
+  private async loadScenarios(): Promise<void> {
+    if (!this.scenariosPath || !this.scenarioRegistry) return;
+
+    try {
+      const fileDiscovery = new FileDiscovery(this.scenariosPath);
+      const files = await fileDiscovery.findFiles();
+      const loadableFiles = files.filter((file) =>
+        this.shouldLoadScenarioFile(file),
+      );
+
+      await Promise.all(
+        loadableFiles.map((file) => this.loadScenarioFile(file)),
+      );
+    } catch {
+      // Scenarios directory does not exist yet — that's fine.
+    }
+  }
+
+  private scenarioFileKey(pathName: string): string {
+    const normalizedScenariosPath = (this.scenariosPath ?? "").replaceAll(
+      "\\",
+      "/",
+    );
+    const directory = dirname(
+      pathName.slice(normalizedScenariosPath.length),
+    ).replaceAll("\\", "/");
+    const name = nodePath.parse(basename(pathName)).name;
+    const url = unescapePathForWindows(
+      `/${nodePath.join(directory, name)}`
+        .replaceAll("\\", "/")
+        .replaceAll(/\/+/gu, "/"),
+    );
+
+    return url.slice(1); // strip leading "/"
+  }
+
+  private async loadScenarioFile(pathName: string): Promise<void> {
+    if (!this.scenariosPath || !this.scenarioRegistry) return;
+
+    const fileKey = this.scenarioFileKey(pathName);
+
+    try {
+      const doImport =
+        (await determineModuleKind(pathName)) === "commonjs"
+          ? uncachedRequire
+          : uncachedImport;
+
+      const module = await doImport(pathName);
+
+      if (module) {
+        this.scenarioRegistry.add(fileKey, module as Record<string, unknown>);
+      }
+    } catch (error: unknown) {
+      process.stdout.write(
+        `\nError loading scenario ${pathName}:\n${String(error)}\n`,
+      );
+    }
   }
 
   private async loadEndpoint(pathName: string) {
@@ -225,10 +340,7 @@ export class ModuleLoader extends EventTarget {
 
       this.dispatchEvent(new Event("add"));
 
-      if (
-        basename(pathName).startsWith("_.context.") &&
-        isContextModule(endpoint)
-      ) {
+      if (this.isContextFile(pathName) && isContextModule(endpoint)) {
         const loadContext = (path: string) => this.contextRegistry.find(path);
 
         const contextDir = nodePath.dirname(unescapePathForWindows(pathName));

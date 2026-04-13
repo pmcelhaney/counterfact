@@ -4,6 +4,7 @@ import type { Config } from "../server/config.js";
 import type { ContextRegistry } from "../server/context-registry.js";
 import type { OpenApiDocument } from "../server/dispatcher.js";
 import type { Registry } from "../server/registry.js";
+import type { ScenarioRegistry } from "../server/scenario-registry.js";
 
 import { RawHttpClient } from "./raw-http-client.js";
 import { createRouteFunction } from "./route-builder.js";
@@ -29,11 +30,61 @@ const ROUTE_BUILDER_METHODS = [
   "send(",
 ];
 
+/**
+ * Creates a tab-completion function for the REPL.
+ *
+ * @param registry - The route registry used to complete path arguments for `route()` and `client.*()` calls.
+ * @param fallback - Optional fallback completer (e.g. the Node.js built-in completer) invoked when no custom completion matches.
+ * @param scenarioRegistry - When provided, enables tab completion for `.scenario` commands by enumerating
+ *   exported function names and file-key prefixes from the loaded scenario modules.
+ */
 export function createCompleter(
   registry: Registry,
   fallback?: (line: string, callback: CompleterCallback) => void,
+  scenarioRegistry?: ScenarioRegistry,
 ) {
   return (line: string, callback: CompleterCallback): void => {
+    // Check for .scenario completion: .scenario <partial>
+    const applyMatch = line.match(/^\.scenario\s+(?<partial>\S*)$/u);
+
+    if (applyMatch) {
+      const partial = applyMatch.groups?.["partial"] ?? "";
+
+      if (scenarioRegistry !== undefined) {
+        const slashIdx = partial.lastIndexOf("/");
+
+        if (slashIdx === -1) {
+          // No slash: complete exports from "index" key + top-level file prefixes
+          const indexFunctions =
+            scenarioRegistry.getExportedFunctionNames("index");
+          const fileKeys = scenarioRegistry
+            .getFileKeys()
+            .filter((k) => k !== "index");
+          const topLevelPrefixes = [
+            ...new Set(fileKeys.map((k) => k.split("/")[0] + "/")),
+          ];
+          const allOptions = [...indexFunctions, ...topLevelPrefixes];
+          const matches = allOptions.filter((c) => c.startsWith(partial));
+
+          callback(null, [matches, partial]);
+        } else {
+          // Has slash: complete exports from the named file key
+          const fileKey = partial.slice(0, slashIdx);
+          const funcPartial = partial.slice(slashIdx + 1);
+          const functions = scenarioRegistry.getExportedFunctionNames(fileKey);
+          const matches = functions
+            .filter((e) => e.startsWith(funcPartial))
+            .map((e) => `${fileKey}/${e}`);
+
+          callback(null, [matches, partial]);
+        }
+      } else {
+        callback(null, [[], partial]);
+      }
+
+      return;
+    }
+
     // Check for RouteBuilder method completion: route("..."). or chained calls
     const builderMatch = line.match(/route\(.*\)\.(?<partial>[a-zA-Z]*)$/u);
 
@@ -70,12 +121,32 @@ export function createCompleter(
   };
 }
 
+/**
+ * Launches the interactive Counterfact REPL.
+ *
+ * The REPL is a standard Node.js REPL augmented with:
+ * - `context` / `loadContext(path)` globals wired to the {@link ContextRegistry}.
+ * - `client` — a {@link RawHttpClient} pre-configured for `localhost`.
+ * - `route(path)` — creates a {@link RouteBuilder} for the given path.
+ * - `.counterfact` — help command.
+ * - `.proxy` — proxy configuration command.
+ * - `.scenario` — runs a named scenario function from the scenarios directory.
+ *
+ * @param contextRegistry - The live context registry.
+ * @param registry - The route registry (used for tab completion).
+ * @param config - Server configuration.
+ * @param print - Output function; defaults to writing to `stdout`.
+ * @param openApiDocument - Optional OpenAPI document for tab completion.
+ * @param scenarioRegistry - Optional scenario registry for `.scenario` support.
+ * @returns The configured Node.js REPL server instance.
+ */
 export function startRepl(
   contextRegistry: ContextRegistry,
   registry: Registry,
   config: Config,
   print = printToStdout,
   openApiDocument?: OpenApiDocument,
+  scenarioRegistry?: ScenarioRegistry,
 ) {
   function printProxyStatus() {
     if (config.proxyUrl === "") {
@@ -138,7 +209,7 @@ export function startRepl(
   }
 
   const replServer = repl.start({
-    prompt: "⬣> ",
+    prompt: "\x1b[38;2;0;113;181m⬣> \x1b[0m",
   });
 
   const builtinCompleter = replServer.completer as (
@@ -148,7 +219,11 @@ export function startRepl(
 
   // completer is typed as readonly in @types/node but is writable at runtime
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  (replServer as any).completer = createCompleter(registry, builtinCompleter);
+  (replServer as any).completer = createCompleter(
+    registry,
+    builtinCompleter,
+    scenarioRegistry,
+  );
 
   replServer.defineCommand("counterfact", {
     action() {
@@ -213,6 +288,76 @@ export function startRepl(
     "localhost",
     openApiDocument,
   );
+
+  replServer.context.routes = {};
+
+  replServer.defineCommand("scenario", {
+    async action(text: string) {
+      const parts = text.trim().split("/").filter(Boolean);
+
+      if (parts.length === 0) {
+        print("usage: .scenario <path>");
+        this.clearBufferedCommand();
+        this.displayPrompt();
+        return;
+      }
+
+      if (parts.some((part) => part === ".." || part === ".")) {
+        print("Error: Path must not contain '.' or '..' segments");
+        this.clearBufferedCommand();
+        this.displayPrompt();
+        return;
+      }
+
+      const functionName = parts[parts.length - 1] ?? "";
+      const fileKey =
+        parts.length === 1 ? "index" : parts.slice(0, -1).join("/");
+
+      const module = scenarioRegistry?.getModule(fileKey);
+
+      if (module === undefined) {
+        print(`Error: Could not find scenario file "${fileKey}"`);
+        this.clearBufferedCommand();
+        this.displayPrompt();
+        return;
+      }
+
+      const fn = module[functionName];
+
+      if (typeof fn !== "function") {
+        print(
+          `Error: "${functionName}" is not a function exported from "${fileKey}"`,
+        );
+        this.clearBufferedCommand();
+        this.displayPrompt();
+        return;
+      }
+
+      try {
+        const applyContext = {
+          context: replServer.context["context"] as Record<string, unknown>,
+          loadContext: replServer.context["loadContext"] as (
+            path: string,
+          ) => Record<string, unknown>,
+          route: replServer.context["route"] as (path: string) => unknown,
+          routes: replServer.context["routes"] as Record<string, unknown>,
+        };
+
+        await (fn as (ctx: typeof applyContext) => Promise<void> | void)(
+          applyContext,
+        );
+
+        print(`Applied ${text.trim()}`);
+      } catch (error) {
+        print(`Error: ${String(error)}`);
+      }
+
+      this.clearBufferedCommand();
+      this.displayPrompt();
+    },
+
+    help: 'apply a scenario script (".scenario <path>" calls the named export from scenarios/)',
+  });
 
   return replServer;
 }

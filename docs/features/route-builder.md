@@ -159,5 +159,5 @@ Use `client` for quick one-off requests. Use `route()` when you want to inspect,
 
 ## See also
 
-- [REPL documentation](./usage.md#repl-)
-- [Usage guide](./usage.md)
+- [REPL](./repl.md)
+- [Usage](../usage.md)

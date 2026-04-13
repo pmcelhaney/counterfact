@@ -2,6 +2,17 @@ import { RESERVED_WORDS } from "./reserved-words.js";
 import type { Requirement } from "./requirement.js";
 import type { Script } from "./script.js";
 
+/**
+ * Base class for all code-generation helpers in the TypeScript generator.
+ *
+ * A `Coder` wraps a single {@link Requirement} node from the OpenAPI spec and
+ * knows how to emit TypeScript code for it.  Subclasses override
+ * {@link writeCode} to produce the actual source text.
+ *
+ * Coders are used by {@link Script} and {@link Repository} to lazily generate
+ * exports and imports, resolving `$ref` references through the
+ * {@link Specification} before writing.
+ */
 export class Coder {
   public requirement: Requirement;
 
@@ -9,6 +20,10 @@ export class Coder {
     this.requirement = requirement;
   }
 
+  /**
+   * A stable cache key for this coder, composed of the constructor name and
+   * either the `$ref` value (for references) or the requirement URL.
+   */
   public get id(): string {
     if (this.requirement.isReference) {
       return `${this.constructor.name}@${this.requirement.data["$ref"] as string}`;
@@ -17,14 +32,38 @@ export class Coder {
     return `${this.constructor.name}@${this.requirement.url}`;
   }
 
+  /**
+   * Optional preamble emitted before the `export` keyword.
+   *
+   * Subclasses can return a string (e.g. a type alias) that must appear in the
+   * output before this coder's export statement.
+   *
+   * @param _path - The path of the script being written (unused in base class).
+   */
   public beforeExport(_path?: string): string {
     return "";
   }
 
+  /**
+   * Returns a JSDoc comment block to be placed immediately before the export.
+   *
+   * Returns `""` by default; subclasses override this to surface OpenAPI
+   * metadata (description, summary, examples, etc.).
+   */
   public jsdoc(): string {
     return "";
   }
 
+  /**
+   * Writes this coder's contribution to `script`.
+   *
+   * When the requirement is a `$ref`, delegates to {@link Script.import} so
+   * the reference target is exported from its own module.  Otherwise calls
+   * {@link writeCode}.
+   *
+   * @param script - The script being assembled.
+   * @returns The TypeScript source text for this coder's export value.
+   */
   public write(script: Script): string {
     if (this.requirement.isReference) {
       return script.import(this);
@@ -33,12 +72,27 @@ export class Coder {
     return this.writeCode(script);
   }
 
+  /**
+   * Generates the TypeScript source text for this coder's value.
+   *
+   * This method is abstract — subclasses **must** override it.
+   *
+   * @param _script - The script being assembled.
+   * @throws Always — callers should never reach the base implementation.
+   */
   public writeCode(_script: Script): string {
     throw new Error(
       "write() is abstract and should be overwritten by a subclass",
     );
   }
 
+  /**
+   * Resolves `$ref` references by returning the target coder.
+   *
+   * When this coder's requirement is not a reference, returns `this`.
+   * Otherwise loads the referenced requirement and wraps it in an instance of
+   * the same concrete coder class.
+   */
   public async delegate(): Promise<Coder> {
     if (!this.requirement.isReference) {
       return this;
@@ -51,6 +105,15 @@ export class Coder {
     );
   }
 
+  /**
+   * Generator that yields candidate export names for this coder.
+   *
+   * The first name is derived from the last path segment of the requirement
+   * URL, sanitised to be a valid TypeScript identifier.  Subsequent names have
+   * an incrementing numeric suffix to resolve collisions.
+   *
+   * @param rawName - Override the starting name (used by subclasses).
+   */
   public *names(
     rawName = this.requirement.url.split("/").at(-1)!,
   ): Generator<string> {
@@ -72,6 +135,12 @@ export class Coder {
     }
   }
 
+  /**
+   * Returns an optional TypeScript type annotation string to be placed between
+   * the export name and its value (`export const name: <type> = value`).
+   *
+   * Returns `""` by default.
+   */
   public typeDeclaration(
     _namespace?: Map<string, ExportStatement>,
     _script?: Script,
@@ -79,6 +148,13 @@ export class Coder {
     return "";
   }
 
+  /**
+   * Returns the repository-relative path of the script where this coder's
+   * export should live when imported by another script.
+   *
+   * Subclasses override this to place type exports in `types/paths/…` and
+   * route exports in `routes/…`.
+   */
   public modulePath(): string {
     return "did-not-override-coder-modulePath.ts";
   }

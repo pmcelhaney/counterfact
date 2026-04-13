@@ -1,6 +1,6 @@
 {
   "name": "counterfact",
-  "version": "2.6.0",
+  "version": "2.7.0",
   "description": "Generate a TypeScript-based mock server from an OpenAPI spec in seconds — with stateful routes, hot reload, and REPL support.",
   "type": "module",
   "main": "./dist/app.js",
@@ -21,9 +21,9 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/pmcelhaney/counterfact.git"
+    "url": "git+https://github.com/counterfact/api-simulator.git"
   },
-  "bugs": "https://github.com/pmcelhaney/counterfact/issues",
+  "bugs": "https://github.com/counterfact/api-simulator/issues",
   "homepage": "https://counterfact.dev",
   "funding": {
     "type": "github",
@@ -56,7 +56,7 @@
     "node": ">=22"
   },
   "bin": {
-    "counterfact": "./bin/counterfact.js"
+    "counterfact": "bin/counterfact.js"
   },
   "files": [
     "bin",
@@ -67,7 +67,7 @@
     "test": "yarn node --experimental-vm-modules ./node_modules/jest-cli/bin/jest --testPathIgnorePatterns=black-box",
     "test:black-box": "rimraf dist && yarn build && python3 -m pytest test-black-box/ -v",
     "test:tsd": "tsd --typings ./dist/server/counterfact-types/index.ts --files ./test/**/*.test-d.ts",
-    "build": "rm -rf dist && tsc && copyfiles -f \"src/client/**\" dist/client && copyfiles -f \"src/counterfact-types/*.ts\" dist/server/counterfact-types && copyfiles -f \"src/server/*.cjs\" dist/server",
+    "build": "rm -rf dist && tsc && copyfiles -f \"src/counterfact-types/*.ts\" dist/server/counterfact-types && copyfiles -f \"src/server/*.cjs\" dist/server",
     "prepack": "yarn build",
     "release": "npx changeset publish",
     "prepare": "husky install",
@@ -76,7 +76,7 @@
     "lint:quickfix": "eslint --fix . eslint --fix demo-ts --rule=\"import/namespace: 0,etc/no-deprecated:0,import/no-cycle:0,no-explicit-type-exports/no-explicit-type-exports:0,import/no-deprecated:0,import/no-self-import:0,import/default:0,import/no-named-as-default:0\" --ignore-pattern dist --ignore-pattern out",
     "go:petstore": "yarn build && yarn counterfact https://petstore3.swagger.io/api/v3/openapi.json out",
     "go:petstore2": "yarn build && yarn counterfact  https://petstore.swagger.io/v2/swagger.json out",
-    "go:example": "yarn build && node ./bin/counterfact.js ./openapi-example.yaml out",
+    "go:example": "yarn build && node ./bin/counterfact.js ./test/fixtures/openapi-example.yaml out",
     "counterfact": "./bin/counterfact.js",
     "postinstall": "patch-package"
   },
@@ -131,7 +131,6 @@
     "commander": "14.0.3",
     "debug": "4.4.3",
     "fs-extra": "11.3.4",
-    "handlebars": "4.7.9",
     "http-terminator": "3.2.0",
     "js-yaml": "4.1.1",
     "json-schema-faker": "0.6.0",

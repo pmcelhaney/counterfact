@@ -41,7 +41,7 @@ describe("end-to-end test", () => {
       };
 
       await generate(
-        "./openapi-example.yaml",
+        "./test/fixtures/openapi-example.yaml",
         basePath,
         { routes: true, types: true },
         repository,
@@ -55,6 +55,119 @@ describe("end-to-end test", () => {
       expect(await $.read(".gitignore")).toMatchSnapshot();
 
       expect(await $.read(".cache/README.md")).toMatchSnapshot();
+    });
+  });
+});
+
+describe("scenario-context type generation", () => {
+  it("generates a fallback scenario-context.ts when no routes directory exists", async () => {
+    await usingTemporaryFiles(async ($) => {
+      const basePath = $.path("");
+      const repository = new Repository();
+
+      repository.writeFiles = async () => {
+        await Promise.resolve(undefined);
+      };
+
+      await generate("./petstore.yaml", basePath, { types: true }, repository);
+
+      const content = await $.read("types/scenario-context.ts");
+      expect(content).toContain("context: Record<string, unknown>");
+      expect(content).toContain(
+        "loadContext(path: string): Record<string, unknown>;",
+      );
+      expect(content).not.toContain("import type");
+      expect(content).toContain(
+        "export type Scenario = ($: ApplyContext) => Promise<void> | void;",
+      );
+    });
+  });
+
+  it("generates typed loadContext overloads for a root context file", async () => {
+    await usingTemporaryFiles(async ($) => {
+      const basePath = $.path("");
+      const repository = new Repository();
+
+      repository.writeFiles = async () => {
+        await Promise.resolve(undefined);
+      };
+
+      await $.add("routes/_.context.ts", "export class Context {}");
+
+      await generate("./petstore.yaml", basePath, { types: true }, repository);
+
+      const content = await $.read("types/scenario-context.ts");
+      expect(content).toContain(
+        'import type { Context } from "../routes/_.context";',
+      );
+      expect(content).toContain("context: Context;");
+      expect(content).toContain(
+        'loadContext(path: "/" | `/${string}`): Context;',
+      );
+      expect(content).toContain(
+        "loadContext(path: string): Record<string, unknown>;",
+      );
+    });
+  });
+
+  it("generates narrowed overloads for root + subdirectory context files", async () => {
+    await usingTemporaryFiles(async ($) => {
+      const basePath = $.path("");
+      const repository = new Repository();
+
+      repository.writeFiles = async () => {
+        await Promise.resolve(undefined);
+      };
+
+      await $.add("routes/_.context.ts", "export class Context {}");
+      await $.add("routes/pets/_.context.ts", "export class Context {}");
+
+      await generate("./petstore.yaml", basePath, { types: true }, repository);
+
+      const content = await $.read("types/scenario-context.ts");
+      expect(content).toContain(
+        'import type { Context } from "../routes/_.context";',
+      );
+      expect(content).toContain(
+        'import type { Context as PetsContext } from "../routes/pets/_.context";',
+      );
+      expect(content).toContain(
+        'loadContext(path: "/pets" | `/pets/${string}`): PetsContext;',
+      );
+      expect(content).toContain(
+        'loadContext(path: "/" | `/${string}`): Context;',
+      );
+      // Subdirectory overload must appear before root overload for correct resolution
+      expect(content.indexOf("PetsContext")).toBeLessThan(
+        content.indexOf('"/" |'),
+      );
+    });
+  });
+
+  it("generates overloads for parameterized path context files", async () => {
+    await usingTemporaryFiles(async ($) => {
+      const basePath = $.path("");
+      const repository = new Repository();
+
+      repository.writeFiles = async () => {
+        await Promise.resolve(undefined);
+      };
+
+      await $.add("routes/_.context.ts", "export class Context {}");
+      await $.add(
+        "routes/pets/{petId}/_.context.ts",
+        "export class Context {}",
+      );
+
+      await generate("./petstore.yaml", basePath, { types: true }, repository);
+
+      const content = await $.read("types/scenario-context.ts");
+      expect(content).toContain(
+        'import type { Context as PetsPetIdContext } from "../routes/pets/{petId}/_.context";',
+      );
+      expect(content).toContain(
+        "loadContext(path: `/pets/${string}`): PetsPetIdContext;",
+      );
     });
   });
 });

@@ -21,6 +21,25 @@ import type { Config } from "./config.js";
 
 const debug = createDebugger("counterfact:server:dispatcher");
 
+export interface OpenApiDocument {
+  basePath?: string;
+  paths: {
+    [key: string]: {
+      [key in Lowercase<HttpMethods>]?: OpenApiOperation;
+    };
+  };
+  produces?: string[];
+}
+
+/**
+ * Parses the `Cookie` request header into a key/value map.
+ *
+ * Duplicate keys are silently dropped (first occurrence wins) and values are
+ * percent-decoded where possible.
+ *
+ * @param cookieHeader - The raw `Cookie` header string.
+ * @returns A record mapping cookie name to decoded value.
+ */
 function parseCookies(cookieHeader: string): Record<string, string> {
   const cookies: Record<string, string> = {};
 
@@ -56,16 +75,6 @@ interface ParameterTypes {
   query: Map<string, string>;
 }
 
-export interface OpenApiDocument {
-  basePath?: string;
-  paths?: {
-    [key: string]: {
-      [key in Lowercase<HttpMethods>]?: OpenApiOperation;
-    };
-  };
-  produces?: string[];
-}
-
 export type DispatcherRequest = {
   auth?: {
     password?: string;
@@ -86,6 +95,16 @@ export type DispatcherRequest = {
   };
 };
 
+/**
+ * Core HTTP request dispatcher.
+ *
+ * Receives incoming requests from the Koa middleware layer, matches them
+ * against the {@link Registry}, optionally validates the request and response
+ * against the OpenAPI spec, and invokes the matching route-handler function.
+ *
+ * Content-negotiation (Accept header handling) is performed before returning
+ * the response so the caller always receives the most appropriate content type.
+ */
 export class Dispatcher {
   public registry: Registry;
 
@@ -157,6 +176,14 @@ export class Dispatcher {
     return undefined;
   }
 
+  /**
+   * Resolves the OpenAPI operation for `path` and `method`, merging any
+   * top-level `produces` array from the document root into the operation.
+   *
+   * @param path - The matched route path (e.g. `"/pets/{petId}"`).
+   * @param method - The HTTP method.
+   * @returns The {@link OpenApiOperation} if found, or `undefined`.
+   */
   public operationForPathAndMethod(
     path: string,
     method: HttpMethods,
@@ -214,6 +241,16 @@ export class Dispatcher {
     };
   }
 
+  /**
+   * Picks the best matching content entry from a multi-type response using the
+   * request's `Accept` header preferences.
+   *
+   * @param acceptHeader - The value of the `Accept` request header.
+   * @param content - Array of `{ type, body }` objects representing all
+   *   available content-type variants.
+   * @returns The first entry whose MIME type satisfies the accept preferences,
+   *   or `undefined` when none match.
+   */
   public selectContent(
     acceptHeader: string,
     content: { body: unknown; type: string }[],
@@ -253,6 +290,15 @@ export class Dispatcher {
     return false;
   }
 
+  /**
+   * Main request handler.
+   *
+   * Orchestrates base-path stripping, route matching, request validation,
+   * handler invocation, content negotiation, and response validation.
+   *
+   * @param request - The incoming request descriptor.
+   * @returns A promise that resolves to a {@link CounterfactResponseObject}.
+   */
   public async request({
     auth,
     body,

@@ -379,6 +379,8 @@ describe("a module loader", () => {
         $.path("."),
         registry,
         contextRegistry,
+        undefined,
+        undefined,
         openApiDocument,
       );
 
@@ -416,7 +418,7 @@ describe("a module loader", () => {
     });
   });
 
-  it("setOpenApiDocument works even when no initial document was provided", async () => {
+  it("reflects in-place document updates through the proxy", async () => {
     await usingTemporaryFiles(async ($) => {
       await $.add(
         "_.context.js",
@@ -426,11 +428,17 @@ describe("a module loader", () => {
 
       const registry: Registry = new Registry();
       const contextRegistry: ContextRegistry = new ContextRegistry();
+      const openApiDocument: { paths: Record<string, unknown> } = {
+        paths: {},
+      };
 
       const loader: ModuleLoader = new ModuleLoader(
         $.path("."),
         registry,
         contextRegistry,
+        undefined,
+        undefined,
+        openApiDocument,
       );
 
       await loader.load();
@@ -438,14 +446,16 @@ describe("a module loader", () => {
       const rootContext = contextRegistry.find("/") as any;
       const capturedReference = rootContext?.openApiDocument;
 
-      loader.setOpenApiDocument({ paths: { "/added": {} } });
+      // Simulate what OpenApiDocument.load() does on reload: mutate the
+      // underlying object in-place, bypassing the read-only proxy
+      openApiDocument.paths = { "/added": {} };
 
       expect(rootContext?.openApiDocument).toBe(capturedReference);
       expect(rootContext?.openApiDocument.paths).toEqual({ "/added": {} });
     });
   });
 
-  it("updates the openApiDocument reference in-place when setOpenApiDocument is called", async () => {
+  it("proxy reflects mutated document properties", async () => {
     await usingTemporaryFiles(async ($) => {
       await $.add(
         "_.context.js",
@@ -455,12 +465,16 @@ describe("a module loader", () => {
 
       const registry: Registry = new Registry();
       const contextRegistry: ContextRegistry = new ContextRegistry();
-      const openApiDocument = { paths: { "/hello": {} } };
+      const openApiDocument: { paths: Record<string, unknown> } = {
+        paths: { "/hello": {} },
+      };
 
       const loader: ModuleLoader = new ModuleLoader(
         $.path("."),
         registry,
         contextRegistry,
+        undefined,
+        undefined,
         openApiDocument,
       );
 
@@ -471,12 +485,12 @@ describe("a module loader", () => {
       // Capture the proxy reference — it should remain stable
       const capturedReference = rootContext?.openApiDocument;
 
-      const updatedDocument = { paths: { "/goodbye": {} } };
-      loader.setOpenApiDocument(updatedDocument);
+      // Simulate what OpenApiDocument.load() does on reload: mutate in-place
+      openApiDocument.paths = { "/goodbye": {} };
 
       // The proxy reference is stable
       expect(rootContext?.openApiDocument).toBe(capturedReference);
-      // But the data it reads reflects the new document
+      // But the data it reads reflects the mutated document
       expect(rootContext?.openApiDocument.paths).toEqual({ "/goodbye": {} });
       expect(rootContext?.openApiDocument.paths["/hello"]).toBeUndefined();
     });
@@ -550,6 +564,92 @@ describe("a module loader", () => {
       expect(response?.status).toBe(500);
       expect(response?.body).toContain("bad-syntax.cjs");
       expect(response?.body).toContain("syntax error");
+    });
+  });
+});
+
+describe("ModuleLoader scenario loading", () => {
+  it("loads scenario files into the ScenarioRegistry on load()", async () => {
+    const { ScenarioRegistry } =
+      await import("../../src/server/scenario-registry.js");
+
+    await usingTemporaryFiles(async ($) => {
+      await $.add("routes/package.json", '{ "type": "module" }');
+      await $.add(
+        "scenarios/index.js",
+        `export function soldPets() {}
+export function resetAll() {}
+export const notAFunction = 42;`,
+      );
+      await $.add("scenarios/package.json", '{ "type": "module" }');
+
+      const registry = new Registry();
+      const scenarioRegistry = new ScenarioRegistry();
+      const loader = new ModuleLoader(
+        $.path("routes"),
+        registry,
+        undefined,
+        $.path("scenarios"),
+        scenarioRegistry,
+      );
+
+      await loader.load();
+
+      const names = scenarioRegistry.getExportedFunctionNames("index");
+
+      expect(names).toContain("soldPets");
+      expect(names).toContain("resetAll");
+      // Non-functions are still stored but getExportedFunctionNames filters them
+      expect(names).not.toContain("notAFunction");
+    });
+  });
+
+  it("stores a nested scenario file under a slash-delimited key", async () => {
+    const { ScenarioRegistry } =
+      await import("../../src/server/scenario-registry.js");
+
+    await usingTemporaryFiles(async ($) => {
+      await $.add("routes/package.json", '{ "type": "module" }');
+      await $.add("scenarios/pets/index.js", `export function sold() {}`);
+      await $.add("scenarios/pets/package.json", '{ "type": "module" }');
+
+      const registry = new Registry();
+      const scenarioRegistry = new ScenarioRegistry();
+      const loader = new ModuleLoader(
+        $.path("routes"),
+        registry,
+        undefined,
+        $.path("scenarios"),
+        scenarioRegistry,
+      );
+
+      await loader.load();
+
+      const names = scenarioRegistry.getExportedFunctionNames("pets/index");
+
+      expect(names).toContain("sold");
+    });
+  });
+
+  it("does not throw when the scenarios directory does not exist", async () => {
+    const { ScenarioRegistry } =
+      await import("../../src/server/scenario-registry.js");
+
+    await usingTemporaryFiles(async ($) => {
+      await $.add("routes/package.json", '{ "type": "module" }');
+
+      const registry = new Registry();
+      const scenarioRegistry = new ScenarioRegistry();
+      const loader = new ModuleLoader(
+        $.path("routes"),
+        registry,
+        undefined,
+        $.path("scenarios"), // does not exist
+        scenarioRegistry,
+      );
+
+      await expect(loader.load()).resolves.toBeUndefined();
+      expect(scenarioRegistry.getFileKeys()).toHaveLength(0);
     });
   });
 });

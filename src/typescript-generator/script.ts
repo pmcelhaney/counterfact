@@ -22,6 +22,16 @@ interface ExternalImportEntry {
   modulePath: string;
 }
 
+/**
+ * Represents a single TypeScript file being assembled by the code generator.
+ *
+ * A `Script` accumulates exports, imports, and external imports contributed by
+ * {@link Coder} instances.  Once all coders have resolved, {@link contents}
+ * formats the result with Prettier and returns the final source text.
+ *
+ * Scripts are created and retrieved through a {@link Repository} so that the
+ * same module path always maps to the same `Script` instance.
+ */
 export class Script {
   public repository: Repository;
   public comments: string[];
@@ -43,6 +53,10 @@ export class Script {
     this.path = path;
   }
 
+  /**
+   * A `"../"` path fragment that points from this script's directory back to
+   * the repository root, used to resolve relative import paths.
+   */
   public get relativePathToBase(): string {
     return this.path
       .split("/")
@@ -51,6 +65,13 @@ export class Script {
       .join("/");
   }
 
+  /**
+   * Picks the first name from `coder.names()` that is not already used as an
+   * import in this script, ensuring export/import name uniqueness.
+   *
+   * @param coder - The coder needing a name.
+   * @throws When all 100 candidate names are already taken.
+   */
   public firstUniqueName(coder: Coder): string {
     for (const name of coder.names()) {
       if (!this.imports.has(name)) {
@@ -61,6 +82,17 @@ export class Script {
     throw new Error(`could not find a unique name for ${coder.id}`);
   }
 
+  /**
+   * Registers an export for `coder` in this script and returns the export name.
+   *
+   * If the same coder has already been exported (cache hit), the previously
+   * assigned name is returned without creating a duplicate.
+   *
+   * @param coder - The coder to export.
+   * @param isType - Emit `export type` instead of `export const`.
+   * @param isDefault - Emit `export default` instead of a named export.
+   * @returns The name under which the coder is exported.
+   */
   public export(coder: Coder, isType = false, isDefault = false): string {
     const cacheKey = isDefault ? "default" : `${coder.id}:${isType}`;
 
@@ -112,6 +144,16 @@ export class Script {
     this.export(coder, isType, true);
   }
 
+  /**
+   * Registers an import of `coder` from its owning module and returns the
+   * local alias used in this script.
+   *
+   * The coder is also exported from its home module as a side effect.
+   *
+   * @param coder - The coder to import.
+   * @param isType - Use a `import type` declaration.
+   * @param isDefault - Import the default export rather than a named export.
+   */
   public import(coder: Coder, isType = false, isDefault = false): string {
     debug("import coder: %s", coder.id);
 
@@ -159,6 +201,15 @@ export class Script {
     return this.import(coder, isType, true);
   }
 
+  /**
+   * Registers an import from an external npm package or absolute module path
+   * (not managed by the repository).
+   *
+   * @param name - The local binding name.
+   * @param modulePath - The module specifier (e.g. `"counterfact-types/index"`).
+   * @param isType - Use a `import type` declaration.
+   * @returns `name` (for convenience in method chaining).
+   */
   public importExternal(
     name: string,
     modulePath: string,
@@ -169,10 +220,19 @@ export class Script {
     return name;
   }
 
+  /**
+   * Convenience wrapper that calls {@link importExternal} with `isType = true`.
+   */
   public importExternalType(name: string, modulePath: string): string {
     return this.importExternal(name, modulePath, true);
   }
 
+  /**
+   * Imports a type from the shared `counterfact-types/index.ts` module,
+   * resolving the path relative to this script's location in the repository.
+   *
+   * @param name - The type name to import (e.g. `"WideOperationArgument"`).
+   */
   public importSharedType(name: string): string {
     return this.importExternal(
       name,
@@ -187,12 +247,14 @@ export class Script {
     return this.export(coder, true);
   }
 
+  /** `true` while at least one export promise is still pending. */
   public isInProgress(): boolean {
     return Array.from(this.exports.values()).some(
       (exportStatement) => !exportStatement.done,
     );
   }
 
+  /** Returns a promise that resolves when all pending export promises settle. */
   public finished(): Promise<(Coder | undefined)[]> {
     return Promise.all(
       Array.from(this.exports.values(), (value) => value.promise!),
@@ -257,6 +319,11 @@ export class Script {
     );
   }
 
+  /**
+   * Formats the fully assembled script source with Prettier and returns it.
+   *
+   * All pending export promises are awaited before formatting.
+   */
   public contents(): Promise<string> {
     return format(
       [

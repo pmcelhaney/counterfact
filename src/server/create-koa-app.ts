@@ -1,5 +1,3 @@
-import { pathToFileURL } from "node:url";
-
 import createDebug from "debug";
 import Koa from "koa";
 import bodyParser from "koa-bodyparser";
@@ -9,11 +7,28 @@ import { adminApiMiddleware } from "./admin-api-middleware.js";
 import type { Config } from "./config.js";
 import type { ContextRegistry } from "./context-registry.js";
 import { openapiMiddleware } from "./openapi-middleware.js";
-import { pageMiddleware } from "./page-middleware.js";
 import type { Registry } from "./registry.js";
 
 const debug = createDebug("counterfact:server:create-koa-app");
 
+/**
+ * Builds and configures the Koa application with all built-in middleware.
+ *
+ * The middleware stack (in order) is:
+ * 1. OpenAPI document serving at `/counterfact/openapi`
+ * 2. Swagger UI at `/counterfact/swagger`
+ * 3. Admin API (when enabled) at `/_counterfact/api/`
+ * 4. Redirect `/counterfact` → `/counterfact/swagger`
+ * 5. Body parser
+ * 6. JSON serialisation of object bodies
+ * 7. Route-dispatching middleware
+ *
+ * @param registry - The route registry used by the admin API and dispatcher.
+ * @param koaMiddleware - The pre-built route-dispatching middleware.
+ * @param config - Server configuration.
+ * @param contextRegistry - The context registry used by the admin API.
+ * @returns A configured Koa application (not yet listening).
+ */
 export function createKoaApp(
   registry: Registry,
   koaMiddleware: Koa.Middleware,
@@ -46,42 +61,15 @@ export function createKoaApp(
   debug("basePath: %s", config.basePath);
   debug("routes", registry.routes);
 
-  app.use(
-    pageMiddleware("/counterfact/", "index", {
-      basePath: config.basePath,
-      methods: ["get", "post", "put", "delete", "patch"],
-
-      openApiHref: config.openApiPath.includes("://")
-        ? config.openApiPath
-        : pathToFileURL(config.openApiPath).href,
-
-      openApiPath: config.openApiPath,
-
-      get routes() {
-        return registry.routes;
-      },
-    }),
-  );
-
   app.use(async (ctx, next) => {
     if (ctx.URL.pathname === "/counterfact") {
-      ctx.redirect("/counterfact/");
+      ctx.redirect("/counterfact/swagger");
 
       return;
     }
 
     await next();
   });
-
-  app.use(
-    pageMiddleware("/counterfact/rapidoc", "rapi-doc", {
-      basePath: config.basePath,
-
-      get routes() {
-        return registry.routes;
-      },
-    }),
-  );
 
   app.use(bodyParser());
 

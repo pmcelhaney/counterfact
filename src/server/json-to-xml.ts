@@ -63,6 +63,16 @@ function objectToXml(
   return `<${name}${attributes.join("")}>${String(xml.join(""))}</${name}>`;
 }
 
+/**
+ * Converts a JSON value to an XML string using optional OpenAPI `xml` schema
+ * hints (element names, attributes, wrapping).
+ *
+ * @param json - The value to serialise.
+ * @param schema - Optional JSON Schema with an `xml` hint block.
+ * @param keyName - Fallback XML element name when the schema does not provide
+ *   one.  Defaults to `"root"`.
+ * @returns A well-formed XML string.
+ */
 export function jsonToXml(
   json: unknown,
   schema: Schema | undefined,

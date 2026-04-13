@@ -1,0 +1,891 @@
+openapi: 3.0.3
+info:
+  version: 1.0.0
+  title: Sample API
+  description: A sample API to illustrate OpenAPI concepts and edge cases
+
+# Global security: endpoints can override or opt out
+security:
+  - basicAuth: []
+
+paths:
+  # -----------------------------------------------------------------------
+  # Root (plain text, default response, no parameters)
+  # -----------------------------------------------------------------------
+  /:
+    get:
+      operationId: getRoot
+      description: the root
+      security: [] # opt out of global security
+      responses:
+        default:
+          description: root
+          content:
+            text/plain:
+              schema:
+                type: string
+              examples:
+                root:
+                  value: This is the root.
+
+  # -----------------------------------------------------------------------
+  # Stateful counter (no examples – handler must supply the value)
+  # -----------------------------------------------------------------------
+  /count:
+    get:
+      operationId: getCount
+      description: outputs the number of times each URL was visited
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: integer
+                description: Total number of visits
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+  # -----------------------------------------------------------------------
+  # Static path that returns HTML embedded in JSON
+  # -----------------------------------------------------------------------
+  /hello/kitty:
+    get:
+      operationId: helloKitty
+      description: HTML with a hello kitty image
+      responses:
+        default:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: string
+              examples:
+                hello kitty:
+                  value: >-
+                    <img
+                    src="https://upload.wikimedia.org/wikipedia/en/0/05/Hello_kitty_character_portrait.png">
+
+  # -----------------------------------------------------------------------
+  # Path parameter + multiple named examples + response header
+  # -----------------------------------------------------------------------
+  /hello/{name}:
+    get:
+      operationId: sayHello
+      description: says hello to someone
+      parameters:
+        - in: path
+          name: name
+          required: true
+          schema:
+            type: string
+          description: the name to greet
+        - in: query
+          name: language
+          required: false
+          schema:
+            type: string
+            enum: [en, es, fr, de, ja]
+            default: en
+          description: language for the greeting
+        - in: header
+          name: x-request-id
+          required: false
+          schema:
+            type: string
+            format: uuid
+          description: idempotency key
+      responses:
+        "200":
+          description: Successful response
+          headers:
+            x-test:
+              schema:
+                type: string
+            x-rate-limit-remaining:
+              schema:
+                type: integer
+                description: Remaining requests in the current window
+          content:
+            application/json:
+              schema:
+                type: string
+                example: an example string
+              examples:
+                hello-example1:
+                  value: Hello, example1
+                hello-example2:
+                  value: Hello, example2
+        "400":
+          $ref: "#/components/responses/BadRequest"
+
+  # -----------------------------------------------------------------------
+  # Recursive schema + $ref response
+  # -----------------------------------------------------------------------
+  /path-one:
+    get:
+      operationId: getPathOne
+      responses:
+        "200":
+          description: test
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Recursive"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+
+  # -----------------------------------------------------------------------
+  # Colon in path (edge case for routers)
+  # -----------------------------------------------------------------------
+  "/weird/path/with:colon":
+    get:
+      operationId: weirdColonPath
+      responses:
+        "200":
+          description: this path has a colon in it
+          content:
+            application/json:
+              schema:
+                type: string
+
+  # -----------------------------------------------------------------------
+  # CRUD resource: full set of HTTP methods, request body, 201/204
+  # -----------------------------------------------------------------------
+  /users:
+    get:
+      operationId: listUsers
+      description: List all users with optional filtering and pagination
+      parameters:
+        - in: query
+          name: page
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - in: query
+          name: pageSize
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+        - in: query
+          name: active
+          required: false
+          schema:
+            type: boolean
+        - in: query
+          name: role
+          required: false
+          schema:
+            type: string
+            enum: [admin, editor, viewer]
+        - in: header
+          name: x-correlation-id
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Paginated list of users
+          headers:
+            x-total-count:
+              schema:
+                type: integer
+            x-next-page:
+              schema:
+                type: string
+                nullable: true
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserList"
+              examples:
+                empty:
+                  value:
+                    items: []
+                    total: 0
+                    page: 1
+                    pageSize: 20
+                withUsers:
+                  value:
+                    items:
+                      - id: "u-001"
+                        name: Alice
+                        email: alice@example.com
+                        role: admin
+                        active: true
+                        createdAt: "2024-01-15T09:00:00Z"
+                      - id: "u-002"
+                        name: Bob
+                        email: bob@example.com
+                        role: viewer
+                        active: false
+                        createdAt: "2024-03-22T14:30:00Z"
+                    total: 2
+                    page: 1
+                    pageSize: 20
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+    post:
+      operationId: createUser
+      description: Create a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateUserRequest"
+            examples:
+              minimal:
+                value:
+                  name: Charlie
+                  email: charlie@example.com
+              full:
+                value:
+                  name: Dana
+                  email: dana@example.com
+                  role: editor
+                  metadata:
+                    department: Engineering
+                    startDate: "2025-06-01"
+      responses:
+        "201":
+          description: User created
+          headers:
+            location:
+              schema:
+                type: string
+                format: uri
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "409":
+          description: A user with that email already exists
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+  /users/{userId}:
+    get:
+      operationId: getUser
+      description: Fetch a single user by ID
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
+          description: Unique user identifier
+      responses:
+        "200":
+          description: The requested user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+    put:
+      operationId: replaceUser
+      description: Replace a user record entirely (idempotent)
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
+          description: Unique user identifier
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateUserRequest"
+      responses:
+        "200":
+          description: User replaced
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+    patch:
+      operationId: patchUser
+      description: Partially update a user record
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
+          description: Unique user identifier
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PatchUserRequest"
+      responses:
+        "200":
+          description: User updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+    delete:
+      operationId: deleteUser
+      description: Delete a user (soft-delete)
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
+          description: Unique user identifier
+      responses:
+        "204":
+          description: User deleted, no content
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  # -----------------------------------------------------------------------
+  # allOf / oneOf / anyOf schema composition
+  # -----------------------------------------------------------------------
+  /events:
+    post:
+      operationId: createEvent
+      description: >
+        Accept a polymorphic event. The request body may be any one of the
+        known event subtypes (oneOf), demonstrating discriminator support.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: "#/components/schemas/ClickEvent"
+                - $ref: "#/components/schemas/PurchaseEvent"
+                - $ref: "#/components/schemas/SignUpEvent"
+              discriminator:
+                propertyName: type
+                mapping:
+                  click: "#/components/schemas/ClickEvent"
+                  purchase: "#/components/schemas/PurchaseEvent"
+                  signup: "#/components/schemas/SignUpEvent"
+      responses:
+        "202":
+          description: Event accepted
+        "400":
+          $ref: "#/components/responses/BadRequest"
+
+  # -----------------------------------------------------------------------
+  # Nullable fields, enum, and integer formats
+  # -----------------------------------------------------------------------
+  /products/{productId}:
+    get:
+      operationId: getProduct
+      parameters:
+        - in: path
+          name: productId
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: A product
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  # -----------------------------------------------------------------------
+  # File upload (multipart/form-data)
+  # -----------------------------------------------------------------------
+  /uploads:
+    post:
+      operationId: uploadFile
+      description: Upload a binary file with metadata
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [file]
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: The file to upload
+                label:
+                  type: string
+                  description: Human-readable label for the file
+                tags:
+                  type: array
+                  items:
+                    type: string
+      responses:
+        "201":
+          description: File uploaded
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  url:
+                    type: string
+                    format: uri
+        "413":
+          description: File too large
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  # -----------------------------------------------------------------------
+  # Cookie parameter + deprecated endpoint
+  # -----------------------------------------------------------------------
+  /legacy/items:
+    get:
+      operationId: listItemsLegacy
+      deprecated: true
+      description: Deprecated – use /users instead
+      parameters:
+        - in: cookie
+          name: session_id
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Items (legacy format)
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+
+  # -----------------------------------------------------------------------
+  # Multiple response content types
+  # -----------------------------------------------------------------------
+  /reports/{reportId}:
+    get:
+      operationId: getReport
+      description: Download a report in the requested format
+      parameters:
+        - in: path
+          name: reportId
+          required: true
+          schema:
+            type: string
+        - in: header
+          name: Accept
+          required: false
+          schema:
+            type: string
+            enum:
+              - application/json
+              - text/csv
+              - application/pdf
+      responses:
+        "200":
+          description: Report content
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  rows:
+                    type: array
+                    items:
+                      type: object
+                      additionalProperties: true
+            text/csv:
+              schema:
+                type: string
+                description: CSV-formatted report
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  # -----------------------------------------------------------------------
+  # Empty (204) response only
+  # -----------------------------------------------------------------------
+  /ping:
+    get:
+      operationId: ping
+      description: Health-check – returns 204 with no body
+      security: []
+      responses:
+        "204":
+          description: Service is alive
+
+  # -----------------------------------------------------------------------
+  # Additional properties (free-form object)
+  # -----------------------------------------------------------------------
+  /metadata:
+    put:
+      operationId: setMetadata
+      description: Replace the free-form metadata store
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+      responses:
+        "200":
+          description: Metadata saved
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+
+components:
+  # -----------------------------------------------------------------------
+  # Reusable responses
+  # -----------------------------------------------------------------------
+  responses:
+    BadRequest:
+      description: The request is malformed and so cannot be processed
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    Unauthorized:
+      description: Authentication credentials are missing or invalid
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    NotFound:
+      description: The requested resource does not exist
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    InternalServerError:
+      description: An unexpected error occurred on the server
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+
+  # -----------------------------------------------------------------------
+  # Schemas
+  # -----------------------------------------------------------------------
+  schemas:
+    # Generic error envelope
+    Error:
+      title: Error
+      description: A generic error message suitable for 4xx and 5xx responses
+      type: object
+      properties:
+        code:
+          type: string
+          description: A machine-readable error code
+        message:
+          type: string
+          description: A human-readable description of the error
+        details:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+              issue:
+                type: string
+          description: Field-level validation errors
+      required:
+        - message
+
+    # Recursive / self-referential schema
+    Recursive:
+      oneOf:
+        - $ref: "#/components/schemas/Recursive"
+
+    # User domain
+    User:
+      title: User
+      type: object
+      required: [id, name, email, role, active, createdAt]
+      properties:
+        id:
+          type: string
+          description: Opaque unique identifier
+        name:
+          type: string
+          minLength: 1
+          maxLength: 200
+        email:
+          type: string
+          format: email
+        role:
+          type: string
+          enum: [admin, editor, viewer]
+          default: viewer
+        active:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+          nullable: true
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: Arbitrary key/value pairs attached to the user
+
+    CreateUserRequest:
+      title: CreateUserRequest
+      type: object
+      required: [name, email]
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 200
+        email:
+          type: string
+          format: email
+        role:
+          type: string
+          enum: [admin, editor, viewer]
+          default: viewer
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+
+    PatchUserRequest:
+      title: PatchUserRequest
+      description: >
+        All fields are optional; only provided fields are updated (JSON Merge Patch
+        semantics). Setting a nullable field to null clears it.
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 200
+          nullable: true
+        email:
+          type: string
+          format: email
+          nullable: true
+        role:
+          type: string
+          enum: [admin, editor, viewer]
+          nullable: true
+        active:
+          type: boolean
+          nullable: true
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+
+    UserList:
+      title: UserList
+      type: object
+      required: [items, total, page, pageSize]
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/User"
+        total:
+          type: integer
+          minimum: 0
+        page:
+          type: integer
+          minimum: 1
+        pageSize:
+          type: integer
+          minimum: 1
+          maximum: 100
+
+    # Product domain (enum + nullable + integer format)
+    Product:
+      title: Product
+      type: object
+      required: [id, name, status, price]
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        status:
+          type: string
+          enum: [available, out_of_stock, discontinued]
+        price:
+          type: number
+          format: double
+          minimum: 0
+        discountedPrice:
+          type: number
+          format: double
+          minimum: 0
+          nullable: true
+        tags:
+          type: array
+          items:
+            type: string
+          default: []
+        relatedIds:
+          type: array
+          items:
+            type: integer
+            format: int64
+          description: IDs of related products
+        attributes:
+          description: >
+            Demonstrates anyOf: each attribute value is either a string,
+            a number, or a boolean.
+          type: object
+          additionalProperties:
+            anyOf:
+              - type: string
+              - type: number
+              - type: boolean
+
+    # Event domain (oneOf / discriminator)
+    BaseEvent:
+      title: BaseEvent
+      type: object
+      required: [type, occurredAt]
+      properties:
+        type:
+          type: string
+          description: Discriminator field
+        occurredAt:
+          type: string
+          format: date-time
+        sessionId:
+          type: string
+          nullable: true
+
+    ClickEvent:
+      title: ClickEvent
+      allOf:
+        - $ref: "#/components/schemas/BaseEvent"
+        - type: object
+          required: [targetUrl, elementId]
+          properties:
+            targetUrl:
+              type: string
+              format: uri
+            elementId:
+              type: string
+
+    PurchaseEvent:
+      title: PurchaseEvent
+      allOf:
+        - $ref: "#/components/schemas/BaseEvent"
+        - type: object
+          required: [orderId, totalAmount, currency]
+          properties:
+            orderId:
+              type: string
+            totalAmount:
+              type: number
+              format: double
+              minimum: 0
+            currency:
+              type: string
+              minLength: 3
+              maxLength: 3
+              description: ISO 4217 currency code
+            items:
+              type: array
+              items:
+                type: object
+                required: [productId, quantity]
+                properties:
+                  productId:
+                    type: integer
+                    format: int64
+                  quantity:
+                    type: integer
+                    minimum: 1
+
+    SignUpEvent:
+      title: SignUpEvent
+      allOf:
+        - $ref: "#/components/schemas/BaseEvent"
+        - type: object
+          required: [userId, email]
+          properties:
+            userId:
+              type: string
+            email:
+              type: string
+              format: email
+            referralCode:
+              type: string
+              nullable: true
+
+  # -----------------------------------------------------------------------
+  # Security schemes
+  # -----------------------------------------------------------------------
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    apiKey:
+      type: apiKey
+      in: header
+      name: x-api-key
