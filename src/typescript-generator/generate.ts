@@ -128,11 +128,26 @@ export async function generate(
     (securityRequirement?.data as Record<string, unknown>) ?? {},
   ) as SecurityScheme[];
 
+  const HTTP_VERBS = new Set([
+    "get",
+    "put",
+    "post",
+    "delete",
+    "options",
+    "head",
+    "patch",
+    "trace",
+  ]);
+
   paths.forEach((pathDefinition, key: string) => {
     debug("processing path %s", key);
 
     const path = key === "/" ? "/index" : key;
     pathDefinition.forEach((operation, requestMethod: string) => {
+      if (!HTTP_VERBS.has(requestMethod)) {
+        return;
+      }
+
       repository
         .get(`routes${path}.ts`)
         .export(new OperationCoder(operation, requestMethod, securitySchemes));
