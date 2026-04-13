@@ -1,9 +1,22 @@
+/**
+ * A context object that lives at a specific route path and is shared across
+ * all requests to that path (and its descendants).
+ *
+ * Route handlers receive this object as `$.context` and may freely add or
+ * modify properties to maintain state between requests.
+ */
 export class Context {
   public constructor() {}
 
   [key: string]: unknown;
 }
 
+/**
+ * Returns the parent path of a route path by stripping the last segment.
+ *
+ * @param path - A route path such as `"/pets/1"`.
+ * @returns The parent path (e.g. `"/pets"`), or `"/"` for top-level paths.
+ */
 export function parentPath(path: string): string {
   return String(path.split("/").slice(0, -1).join("/")) || "/";
 }
@@ -40,6 +53,19 @@ function cloneForCache(value: unknown): unknown {
   return clone;
 }
 
+/**
+ * Registry of per-path {@link Context} objects that persist state across
+ * requests.
+ *
+ * The registry is case-insensitive for path lookups and uses a write-through
+ * cache to detect which context properties have changed between hot-reloads.
+ * It extends {@link EventTarget} so that listeners can react to structural
+ * changes (e.g. to regenerate type files):
+ *
+ * ```ts
+ * contextRegistry.addEventListener("context-changed", () => { ... });
+ * ```
+ */
 export class ContextRegistry extends EventTarget {
   private readonly entries = new Map<string, Context>();
 
@@ -64,6 +90,13 @@ export class ContextRegistry extends EventTarget {
     return undefined;
   }
 
+  /**
+   * Registers a new context for `path`, replacing any existing one, and
+   * dispatches a `"context-changed"` event so listeners can react.
+   *
+   * @param path - The route path (e.g. `"/pets"`).
+   * @param context - The context object to store.
+   */
   public add(path: string, context: Context): void {
     this.entries.set(path, context);
 
@@ -90,6 +123,13 @@ export class ContextRegistry extends EventTarget {
     this.dispatchEvent(new Event("context-changed"));
   }
 
+  /**
+   * Finds the context for `path`, walking up the path hierarchy until a
+   * context is found.  Falls back to `"/"` which always has a context.
+   *
+   * @param path - The route path to look up.
+   * @returns The nearest ancestor context (or the root context).
+   */
   public find(path: string): Context {
     return (
       this.getContextIgnoreCase(this.entries, path) ??
@@ -97,6 +137,17 @@ export class ContextRegistry extends EventTarget {
     );
   }
 
+  /**
+   * Merges `updatedContext` into the existing context for `path`.
+   *
+   * On the first call for a path the context is added directly.  On subsequent
+   * calls only properties whose values differ from the cached snapshot are
+   * applied, preserving live mutations made by route handlers between reloads.
+   *
+   * @param path - The route path (e.g. `"/pets"`).
+   * @param updatedContext - The new context instance (typically freshly
+   *   constructed from the reloaded `_.context.ts` file).
+   */
   public update(path: string, updatedContext?: Context): void {
     if (updatedContext === undefined) {
       return;
@@ -122,10 +173,12 @@ export class ContextRegistry extends EventTarget {
     this.cache.set(path, cloneForCache(updatedContext) as Context);
   }
 
+  /** Returns all registered route paths as an array. */
   public getAllPaths(): string[] {
     return Array.from(this.entries.keys());
   }
 
+  /** Returns a plain object mapping every registered path to its context. */
   public getAllContexts(): Record<string, Context> {
     const result: Record<string, Context> = {};
 

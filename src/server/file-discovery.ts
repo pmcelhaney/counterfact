@@ -6,6 +6,13 @@ import { escapePathForWindows } from "../util/windows-escape.js";
 
 const JS_EXTENSIONS = new Set(["cjs", "cts", "js", "mjs", "mts", "ts"]);
 
+/**
+ * Recursively discovers JavaScript/TypeScript source files under a base
+ * directory.
+ *
+ * Only files with one of the following extensions are returned:
+ * `js`, `mjs`, `cjs`, `ts`, `mts`, `cts`.
+ */
 export class FileDiscovery {
   private readonly basePath: string;
 
@@ -13,6 +20,14 @@ export class FileDiscovery {
     this.basePath = basePath.replaceAll("\\", "/");
   }
 
+  /**
+   * Returns an array of absolute file paths for all JS/TS files found
+   * recursively under `basePath/directory`.
+   *
+   * @param directory - Sub-directory relative to `basePath` to start from.
+   *   Defaults to `""` (the base path itself).
+   * @throws When `basePath/directory` does not exist.
+   */
   public async findFiles(directory = ""): Promise<string[]> {
     const fullDir = nodePath
       .join(this.basePath, directory)

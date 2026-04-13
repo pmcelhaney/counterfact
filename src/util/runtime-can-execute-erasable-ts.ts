@@ -3,6 +3,17 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 
+/**
+ * Probes the current Node.js runtime to determine whether it can execute
+ * TypeScript source files directly (via `--experimental-strip-types` or
+ * equivalent).
+ *
+ * The check works by writing a tiny TypeScript module to a temporary directory
+ * and attempting to import it.  If the import succeeds and returns the
+ * expected value, the runtime supports native TypeScript execution.
+ *
+ * @returns `true` when the runtime can execute `.ts` files natively.
+ */
 export async function runtimeCanExecuteErasableTs(): Promise<boolean> {
   const dir = mkdtempSync(join(tmpdir(), "ts-probe-"));
 

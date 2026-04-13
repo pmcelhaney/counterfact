@@ -1520,9 +1520,9 @@ exports[`end-to-end test generates the same code for pet store that it did on th
 `;
 
 exports[`end-to-end test generates the same code for the example that it did on the last test run 1`] = `
-"routes/index.ts:import type { HTTP_GET } from "../types/paths/index.types.js";
+"routes/index.ts:import type { getRoot } from "../types/paths/index.types.js";
 
-export const GET: HTTP_GET = async ($) => {
+export const GET: getRoot = async ($) => {
   return $.response[200].random();
 };
 "
@@ -1544,7 +1544,7 @@ import type { HttpStatusCode } from "../../counterfact-types/index.ts";
 /**
  * the root
  */
-export type HTTP_GET = (
+export type getRoot = (
   $: OmitValueWhenNever<{
     query: never;
     path: never;
@@ -1585,9 +1585,9 @@ export type HTTP_GET = (
 `;
 
 exports[`end-to-end test generates the same code for the example that it did on the last test run 3`] = `
-"routes/count.ts:import type { HTTP_GET } from "../types/paths/count.types.js";
+"routes/count.ts:import type { getCount } from "../types/paths/count.types.js";
 
-export const GET: HTTP_GET = async ($) => {
+export const GET: getCount = async ($) => {
   return $.response[200].random();
 };
 "
@@ -1604,12 +1604,13 @@ import type { MaybePromise } from "../../counterfact-types/index.ts";
 import type { COUNTERFACT_RESPONSE } from "../../counterfact-types/index.ts";
 import type { Context } from "@@CONTEXT_FILE_TOKEN@@";
 import type { ResponseBuilderFactory } from "../../counterfact-types/index.ts";
-import type { HttpStatusCode } from "../../counterfact-types/index.ts";
+import type { InternalServerError } from "../#/components/responses/InternalServerError.js";
+import type { Error } from "../components/schemas/Error.js";
 
 /**
- * outputs the number of time each URL was visited
+ * outputs the number of times each URL was visited
  */
-export type HTTP_GET = (
+export type getCount = (
   $: OmitValueWhenNever<{
     query: never;
     path: never;
@@ -1618,18 +1619,17 @@ export type HTTP_GET = (
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
-      [statusCode in HttpStatusCode]: {
+      200: {
         headers: never;
         requiredHeaders: never;
         content: {
           "application/json": {
-            schema: string;
+            schema: number;
           };
         };
-        examples: {
-          "no visits": unknown;
-        };
+        examples: {};
       };
+      500: InternalServerError;
     }>;
     x: WideOperationArgument;
     proxy: (url: string) => COUNTERFACT_RESPONSE;
@@ -1638,9 +1638,14 @@ export type HTTP_GET = (
   }>,
 ) => MaybePromise<
   | {
-      status: number | undefined;
+      status: 200;
       contentType?: "application/json";
-      body?: string;
+      body?: number;
+    }
+  | {
+      status: 500;
+      contentType?: "application/json";
+      body?: Error;
     }
   | { status: 415; contentType: "text/plain"; body: string }
   | COUNTERFACT_RESPONSE
@@ -1715,9 +1720,9 @@ export type helloKitty = (
 `;
 
 exports[`end-to-end test generates the same code for the example that it did on the last test run 7`] = `
-"routes/hello/{name}.ts:import type { HTTP_GET } from "../../types/paths/hello/{name}.types.js";
+"routes/hello/{name}.ts:import type { sayHello } from "../../types/paths/hello/{name}.types.js";
 
-export const GET: HTTP_GET = async ($) => {
+export const GET: sayHello = async ($) => {
   return $.response[200].random();
 };
 "
@@ -1734,23 +1739,25 @@ import type { MaybePromise } from "../../../counterfact-types/index.ts";
 import type { COUNTERFACT_RESPONSE } from "../../../counterfact-types/index.ts";
 import type { Context } from "@@CONTEXT_FILE_TOKEN@@";
 import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts";
-import type { HttpStatusCode } from "../../../counterfact-types/index.ts";
+import type { BadRequest } from "../../#/components/responses/BadRequest.js";
+import type { Error } from "../../components/schemas/Error.js";
 
 /**
  * says hello to someone
  */
-export type HTTP_GET = (
+export type sayHello = (
   $: OmitValueWhenNever<{
-    query: never;
-    path: HTTP_GET_Path;
-    headers: never;
+    query: sayHello_Query;
+    path: sayHello_Path;
+    headers: sayHello_Headers;
     cookie: never;
     body: never;
     context: Context;
     response: ResponseBuilderFactory<{
-      [statusCode in HttpStatusCode]: {
+      200: {
         headers: {
           "x-test": { schema: string };
+          "x-rate-limit-remaining": { schema: number };
         };
         requiredHeaders: never;
         content: {
@@ -1763,6 +1770,7 @@ export type HTTP_GET = (
           "hello-example2": unknown;
         };
       };
+      400: BadRequest;
     }>;
     x: WideOperationArgument;
     proxy: (url: string) => COUNTERFACT_RESPONSE;
@@ -1771,28 +1779,47 @@ export type HTTP_GET = (
   }>,
 ) => MaybePromise<
   | {
-      status: number | undefined;
+      status: 200;
       contentType?: "application/json";
       body?: string;
+    }
+  | {
+      status: 400;
+      contentType?: "application/json";
+      body?: Error;
     }
   | { status: 415; contentType: "text/plain"; body: string }
   | COUNTERFACT_RESPONSE
   | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
 >;
 
-export type HTTP_GET_Path = {
+export type sayHello_Query = {
   /**
-   * says hello to the name
+   * language for the greeting
+   */
+  language?: "en" | "es" | "fr" | "de" | "ja";
+};
+
+export type sayHello_Path = {
+  /**
+   * the name to greet
    */
   name: string;
+};
+
+export type sayHello_Headers = {
+  /**
+   * idempotency key
+   */
+  "x-request-id"?: string;
 };
 "
 `;
 
 exports[`end-to-end test generates the same code for the example that it did on the last test run 9`] = `
-"routes/path-one.ts:import type { HTTP_GET } from "../types/paths/path-one.types.js";
+"routes/path-one.ts:import type { getPathOne } from "../types/paths/path-one.types.js";
 
-export const GET: HTTP_GET = async ($) => {
+export const GET: getPathOne = async ($) => {
   return $.response[200].random();
 };
 "
@@ -1813,7 +1840,7 @@ import type { Recursive } from "../components/schemas/Recursive.js";
 import type { BadRequest } from "../#/components/responses/BadRequest.js";
 import type { Error } from "../components/schemas/Error.js";
 
-export type HTTP_GET = (
+export type getPathOne = (
   $: OmitValueWhenNever<{
     query: never;
     path: never;
@@ -1858,9 +1885,9 @@ export type HTTP_GET = (
 `;
 
 exports[`end-to-end test generates the same code for the example that it did on the last test run 11`] = `
-"routes/weird/path/with:colon.ts:import type { HTTP_GET } from "../../../types/paths/weird/path/with∶colon.types.js";
+"routes/weird/path/with:colon.ts:import type { weirdColonPath } from "../../../types/paths/weird/path/with∶colon.types.js";
 
-export const GET: HTTP_GET = async ($) => {
+export const GET: weirdColonPath = async ($) => {
   return $.response[200].random();
 };
 "
@@ -1878,7 +1905,7 @@ import type { COUNTERFACT_RESPONSE } from "../../../../counterfact-types/index.t
 import type { Context } from "@@CONTEXT_FILE_TOKEN@@";
 import type { ResponseBuilderFactory } from "../../../../counterfact-types/index.ts";
 
-export type HTTP_GET = (
+export type weirdColonPath = (
   $: OmitValueWhenNever<{
     query: never;
     path: never;
@@ -1917,13 +1944,986 @@ export type HTTP_GET = (
 `;
 
 exports[`end-to-end test generates the same code for the example that it did on the last test run 13`] = `
-"types/components/schemas/Recursive.ts:import type { Recursive } from "./Recursive.js";
+"routes/users.ts:import type { listUsers } from "../types/paths/users.types.js";
+import type { createUser } from "../types/paths/users.types.js";
 
-export type Recursive = Recursive;
+export const GET: listUsers = async ($) => {
+  return $.response[200].random();
+};
+
+export const POST: createUser = async ($) => {
+  return $.response[201].random();
+};
 "
 `;
 
 exports[`end-to-end test generates the same code for the example that it did on the last test run 14`] = `
+"types/paths/users.types.ts:// This code was automatically generated from an OpenAPI description.
+// Do not edit this file. Edit the OpenAPI file instead.
+// For more information, see https://github.com/pmcelhaney/counterfact/blob/main/docs/faq.md
+
+import type { WideOperationArgument } from "../../counterfact-types/index.ts";
+import type { OmitValueWhenNever } from "../../counterfact-types/index.ts";
+import type { MaybePromise } from "../../counterfact-types/index.ts";
+import type { COUNTERFACT_RESPONSE } from "../../counterfact-types/index.ts";
+import type { Context } from "@@CONTEXT_FILE_TOKEN@@";
+import type { ResponseBuilderFactory } from "../../counterfact-types/index.ts";
+import type { UserList } from "../components/schemas/UserList.js";
+import type { BadRequest } from "../#/components/responses/BadRequest.js";
+import type { Unauthorized } from "../#/components/responses/Unauthorized.js";
+import type { InternalServerError } from "../#/components/responses/InternalServerError.js";
+import type { Error } from "../components/schemas/Error.js";
+import type { CreateUserRequest } from "../components/schemas/CreateUserRequest.js";
+import type { User } from "../components/schemas/User.js";
+
+/**
+ * List all users with optional filtering and pagination
+ */
+export type listUsers = (
+  $: OmitValueWhenNever<{
+    query: listUsers_Query;
+    path: never;
+    headers: listUsers_Headers;
+    cookie: never;
+    body: never;
+    context: Context;
+    response: ResponseBuilderFactory<{
+      200: {
+        headers: {
+          "x-total-count": { schema: number };
+          "x-next-page": { schema: string };
+        };
+        requiredHeaders: never;
+        content: {
+          "application/json": {
+            schema: UserList;
+          };
+        };
+        examples: {
+          empty: unknown;
+          withUsers: unknown;
+        };
+      };
+      400: BadRequest;
+      401: Unauthorized;
+      500: InternalServerError;
+    }>;
+    x: WideOperationArgument;
+    proxy: (url: string) => COUNTERFACT_RESPONSE;
+    user: { username?: string; password?: string };
+    delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+  }>,
+) => MaybePromise<
+  | {
+      status: 200;
+      contentType?: "application/json";
+      body?: UserList;
+    }
+  | {
+      status: 400;
+      contentType?: "application/json";
+      body?: Error;
+    }
+  | {
+      status: 401;
+      contentType?: "application/json";
+      body?: Error;
+    }
+  | {
+      status: 500;
+      contentType?: "application/json";
+      body?: Error;
+    }
+  | { status: 415; contentType: "text/plain"; body: string }
+  | COUNTERFACT_RESPONSE
+  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
+>;
+
+/**
+ * Create a new user
+ */
+export type createUser = (
+  $: OmitValueWhenNever<{
+    query: never;
+    path: never;
+    headers: never;
+    cookie: never;
+    body: CreateUserRequest;
+    context: Context;
+    response: ResponseBuilderFactory<{
+      201: {
+        headers: {
+          location: { schema: string };
+        };
+        requiredHeaders: never;
+        content: {
+          "application/json": {
+            schema: User;
+          };
+        };
+        examples: {};
+      };
+      400: BadRequest;
+      409: {
+        headers: never;
+        requiredHeaders: never;
+        content: {
+          "application/json": {
+            schema: Error;
+          };
+        };
+        examples: {};
+      };
+      500: InternalServerError;
+    }>;
+    x: WideOperationArgument;
+    proxy: (url: string) => COUNTERFACT_RESPONSE;
+    user: { username?: string; password?: string };
+    delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+  }>,
+) => MaybePromise<
+  | {
+      status: 201;
+      contentType?: "application/json";
+      body?: User;
+    }
+  | {
+      status: 400;
+      contentType?: "application/json";
+      body?: Error;
+    }
+  | {
+      status: 409;
+      contentType?: "application/json";
+      body?: Error;
+    }
+  | {
+      status: 500;
+      contentType?: "application/json";
+      body?: Error;
+    }
+  | { status: 415; contentType: "text/plain"; body: string }
+  | COUNTERFACT_RESPONSE
+  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
+>;
+
+export type listUsers_Query = {
+  page?: number;
+  pageSize?: number;
+  active?: boolean;
+  role?: "admin" | "editor" | "viewer";
+};
+
+export type listUsers_Headers = { "x-correlation-id"?: string };
+"
+`;
+
+exports[`end-to-end test generates the same code for the example that it did on the last test run 15`] = `
+"routes/users/{userId}.ts:import type { getUser } from "../../types/paths/users/{userId}.types.js";
+import type { replaceUser } from "../../types/paths/users/{userId}.types.js";
+import type { patchUser } from "../../types/paths/users/{userId}.types.js";
+import type { deleteUser } from "../../types/paths/users/{userId}.types.js";
+
+export const GET: getUser = async ($) => {
+  return $.response[200].random();
+};
+
+export const PUT: replaceUser = async ($) => {
+  return $.response[200].random();
+};
+
+export const PATCH: patchUser = async ($) => {
+  return $.response[200].random();
+};
+
+export const DELETE: deleteUser = async ($) => {
+  return $.response[204].empty();
+};
+"
+`;
+
+exports[`end-to-end test generates the same code for the example that it did on the last test run 16`] = `
+"types/paths/users/{userId}.types.ts:// This code was automatically generated from an OpenAPI description.
+// Do not edit this file. Edit the OpenAPI file instead.
+// For more information, see https://github.com/pmcelhaney/counterfact/blob/main/docs/faq.md
+
+import type { WideOperationArgument } from "../../../counterfact-types/index.ts";
+import type { OmitValueWhenNever } from "../../../counterfact-types/index.ts";
+import type { MaybePromise } from "../../../counterfact-types/index.ts";
+import type { COUNTERFACT_RESPONSE } from "../../../counterfact-types/index.ts";
+import type { Context } from "@@CONTEXT_FILE_TOKEN@@";
+import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts";
+import type { User } from "../../components/schemas/User.js";
+import type { NotFound } from "../../#/components/responses/NotFound.js";
+import type { InternalServerError } from "../../#/components/responses/InternalServerError.js";
+import type { Error } from "../../components/schemas/Error.js";
+import type { CreateUserRequest } from "../../components/schemas/CreateUserRequest.js";
+import type { BadRequest } from "../../#/components/responses/BadRequest.js";
+import type { PatchUserRequest } from "../../components/schemas/PatchUserRequest.js";
+
+/**
+ * Fetch a single user by ID
+ */
+export type getUser = (
+  $: OmitValueWhenNever<{
+    query: never;
+    path: getUser_Path;
+    headers: never;
+    cookie: never;
+    body: never;
+    context: Context;
+    response: ResponseBuilderFactory<{
+      200: {
+        headers: never;
+        requiredHeaders: never;
+        content: {
+          "application/json": {
+            schema: User;
+          };
+        };
+        examples: {};
+      };
+      404: NotFound;
+      500: InternalServerError;
+    }>;
+    x: WideOperationArgument;
+    proxy: (url: string) => COUNTERFACT_RESPONSE;
+    user: { username?: string; password?: string };
+    delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+  }>,
+) => MaybePromise<
+  | {
+      status: 200;
+      contentType?: "application/json";
+      body?: User;
+    }
+  | {
+      status: 404;
+      contentType?: "application/json";
+      body?: Error;
+    }
+  | {
+      status: 500;
+      contentType?: "application/json";
+      body?: Error;
+    }
+  | { status: 415; contentType: "text/plain"; body: string }
+  | COUNTERFACT_RESPONSE
+  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
+>;
+
+/**
+ * Replace a user record entirely (idempotent)
+ */
+export type replaceUser = (
+  $: OmitValueWhenNever<{
+    query: never;
+    path: replaceUser_Path;
+    headers: never;
+    cookie: never;
+    body: CreateUserRequest;
+    context: Context;
+    response: ResponseBuilderFactory<{
+      200: {
+        headers: never;
+        requiredHeaders: never;
+        content: {
+          "application/json": {
+            schema: User;
+          };
+        };
+        examples: {};
+      };
+      400: BadRequest;
+      404: NotFound;
+    }>;
+    x: WideOperationArgument;
+    proxy: (url: string) => COUNTERFACT_RESPONSE;
+    user: { username?: string; password?: string };
+    delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+  }>,
+) => MaybePromise<
+  | {
+      status: 200;
+      contentType?: "application/json";
+      body?: User;
+    }
+  | {
+      status: 400;
+      contentType?: "application/json";
+      body?: Error;
+    }
+  | {
+      status: 404;
+      contentType?: "application/json";
+      body?: Error;
+    }
+  | { status: 415; contentType: "text/plain"; body: string }
+  | COUNTERFACT_RESPONSE
+  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
+>;
+
+/**
+ * Partially update a user record
+ */
+export type patchUser = (
+  $: OmitValueWhenNever<{
+    query: never;
+    path: patchUser_Path;
+    headers: never;
+    cookie: never;
+    body: PatchUserRequest;
+    context: Context;
+    response: ResponseBuilderFactory<{
+      200: {
+        headers: never;
+        requiredHeaders: never;
+        content: {
+          "application/json": {
+            schema: User;
+          };
+        };
+        examples: {};
+      };
+      400: BadRequest;
+      404: NotFound;
+    }>;
+    x: WideOperationArgument;
+    proxy: (url: string) => COUNTERFACT_RESPONSE;
+    user: { username?: string; password?: string };
+    delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+  }>,
+) => MaybePromise<
+  | {
+      status: 200;
+      contentType?: "application/json";
+      body?: User;
+    }
+  | {
+      status: 400;
+      contentType?: "application/json";
+      body?: Error;
+    }
+  | {
+      status: 404;
+      contentType?: "application/json";
+      body?: Error;
+    }
+  | { status: 415; contentType: "text/plain"; body: string }
+  | COUNTERFACT_RESPONSE
+  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
+>;
+
+/**
+ * Delete a user (soft-delete)
+ */
+export type deleteUser = (
+  $: OmitValueWhenNever<{
+    query: never;
+    path: deleteUser_Path;
+    headers: never;
+    cookie: never;
+    body: never;
+    context: Context;
+    response: ResponseBuilderFactory<{
+      204: {
+        headers: never;
+        requiredHeaders: never;
+        content: never;
+        examples: {};
+      };
+      404: NotFound;
+    }>;
+    x: WideOperationArgument;
+    proxy: (url: string) => COUNTERFACT_RESPONSE;
+    user: { username?: string; password?: string };
+    delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+  }>,
+) => MaybePromise<
+  | {
+      status: 204;
+    }
+  | {
+      status: 404;
+      contentType?: "application/json";
+      body?: Error;
+    }
+  | { status: 415; contentType: "text/plain"; body: string }
+  | COUNTERFACT_RESPONSE
+  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
+>;
+
+export type getUser_Path = {
+  /**
+   * Unique user identifier
+   */
+  userId: string;
+};
+
+export type replaceUser_Path = {
+  /**
+   * Unique user identifier
+   */
+  userId: string;
+};
+
+export type patchUser_Path = {
+  /**
+   * Unique user identifier
+   */
+  userId: string;
+};
+
+export type deleteUser_Path = {
+  /**
+   * Unique user identifier
+   */
+  userId: string;
+};
+"
+`;
+
+exports[`end-to-end test generates the same code for the example that it did on the last test run 17`] = `
+"routes/events.ts:import type { createEvent } from "../types/paths/events.types.js";
+
+export const POST: createEvent = async ($) => {
+  return $.response[202].empty();
+};
+"
+`;
+
+exports[`end-to-end test generates the same code for the example that it did on the last test run 18`] = `
+"types/paths/events.types.ts:// This code was automatically generated from an OpenAPI description.
+// Do not edit this file. Edit the OpenAPI file instead.
+// For more information, see https://github.com/pmcelhaney/counterfact/blob/main/docs/faq.md
+
+import type { WideOperationArgument } from "../../counterfact-types/index.ts";
+import type { OmitValueWhenNever } from "../../counterfact-types/index.ts";
+import type { MaybePromise } from "../../counterfact-types/index.ts";
+import type { COUNTERFACT_RESPONSE } from "../../counterfact-types/index.ts";
+import type { Context } from "@@CONTEXT_FILE_TOKEN@@";
+import type { ResponseBuilderFactory } from "../../counterfact-types/index.ts";
+import type { ClickEvent } from "../components/schemas/ClickEvent.js";
+import type { PurchaseEvent } from "../components/schemas/PurchaseEvent.js";
+import type { SignUpEvent } from "../components/schemas/SignUpEvent.js";
+import type { BadRequest } from "../#/components/responses/BadRequest.js";
+import type { Error } from "../components/schemas/Error.js";
+
+/**
+ * Accept a polymorphic event. The request body may be any one of the known event subtypes (oneOf), demonstrating discriminator support.
+ *
+ */
+export type createEvent = (
+  $: OmitValueWhenNever<{
+    query: never;
+    path: never;
+    headers: never;
+    cookie: never;
+    body: ClickEvent | PurchaseEvent | SignUpEvent;
+    context: Context;
+    response: ResponseBuilderFactory<{
+      202: {
+        headers: never;
+        requiredHeaders: never;
+        content: never;
+        examples: {};
+      };
+      400: BadRequest;
+    }>;
+    x: WideOperationArgument;
+    proxy: (url: string) => COUNTERFACT_RESPONSE;
+    user: { username?: string; password?: string };
+    delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+  }>,
+) => MaybePromise<
+  | {
+      status: 202;
+    }
+  | {
+      status: 400;
+      contentType?: "application/json";
+      body?: Error;
+    }
+  | { status: 415; contentType: "text/plain"; body: string }
+  | COUNTERFACT_RESPONSE
+  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
+>;
+"
+`;
+
+exports[`end-to-end test generates the same code for the example that it did on the last test run 19`] = `
+"routes/products/{productId}.ts:import type { getProduct } from "../../types/paths/products/{productId}.types.js";
+
+export const GET: getProduct = async ($) => {
+  return $.response[200].random();
+};
+"
+`;
+
+exports[`end-to-end test generates the same code for the example that it did on the last test run 20`] = `
+"types/paths/products/{productId}.types.ts:// This code was automatically generated from an OpenAPI description.
+// Do not edit this file. Edit the OpenAPI file instead.
+// For more information, see https://github.com/pmcelhaney/counterfact/blob/main/docs/faq.md
+
+import type { WideOperationArgument } from "../../../counterfact-types/index.ts";
+import type { OmitValueWhenNever } from "../../../counterfact-types/index.ts";
+import type { MaybePromise } from "../../../counterfact-types/index.ts";
+import type { COUNTERFACT_RESPONSE } from "../../../counterfact-types/index.ts";
+import type { Context } from "@@CONTEXT_FILE_TOKEN@@";
+import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts";
+import type { Product } from "../../components/schemas/Product.js";
+import type { NotFound } from "../../#/components/responses/NotFound.js";
+import type { Error } from "../../components/schemas/Error.js";
+
+export type getProduct = (
+  $: OmitValueWhenNever<{
+    query: never;
+    path: getProduct_Path;
+    headers: never;
+    cookie: never;
+    body: never;
+    context: Context;
+    response: ResponseBuilderFactory<{
+      200: {
+        headers: never;
+        requiredHeaders: never;
+        content: {
+          "application/json": {
+            schema: Product;
+          };
+        };
+        examples: {};
+      };
+      404: NotFound;
+    }>;
+    x: WideOperationArgument;
+    proxy: (url: string) => COUNTERFACT_RESPONSE;
+    user: { username?: string; password?: string };
+    delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+  }>,
+) => MaybePromise<
+  | {
+      status: 200;
+      contentType?: "application/json";
+      body?: Product;
+    }
+  | {
+      status: 404;
+      contentType?: "application/json";
+      body?: Error;
+    }
+  | { status: 415; contentType: "text/plain"; body: string }
+  | COUNTERFACT_RESPONSE
+  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
+>;
+
+export type getProduct_Path = { productId: number };
+"
+`;
+
+exports[`end-to-end test generates the same code for the example that it did on the last test run 21`] = `
+"routes/uploads.ts:import type { uploadFile } from "../types/paths/uploads.types.js";
+
+export const POST: uploadFile = async ($) => {
+  return $.response[201].random();
+};
+"
+`;
+
+exports[`end-to-end test generates the same code for the example that it did on the last test run 22`] = `
+"types/paths/uploads.types.ts:// This code was automatically generated from an OpenAPI description.
+// Do not edit this file. Edit the OpenAPI file instead.
+// For more information, see https://github.com/pmcelhaney/counterfact/blob/main/docs/faq.md
+
+import type { WideOperationArgument } from "../../counterfact-types/index.ts";
+import type { OmitValueWhenNever } from "../../counterfact-types/index.ts";
+import type { MaybePromise } from "../../counterfact-types/index.ts";
+import type { COUNTERFACT_RESPONSE } from "../../counterfact-types/index.ts";
+import type { Context } from "@@CONTEXT_FILE_TOKEN@@";
+import type { ResponseBuilderFactory } from "../../counterfact-types/index.ts";
+import type { Error } from "../components/schemas/Error.js";
+
+/**
+ * Upload a binary file with metadata
+ */
+export type uploadFile = (
+  $: OmitValueWhenNever<{
+    query: never;
+    path: never;
+    headers: never;
+    cookie: never;
+    body: never;
+    context: Context;
+    response: ResponseBuilderFactory<{
+      201: {
+        headers: never;
+        requiredHeaders: never;
+        content: {
+          "application/json": {
+            schema: {
+              id?: string;
+              /**
+               * @format uri
+               */
+              url?: string;
+            };
+          };
+        };
+        examples: {};
+      };
+      413: {
+        headers: never;
+        requiredHeaders: never;
+        content: {
+          "application/json": {
+            schema: Error;
+          };
+        };
+        examples: {};
+      };
+    }>;
+    x: WideOperationArgument;
+    proxy: (url: string) => COUNTERFACT_RESPONSE;
+    user: { username?: string; password?: string };
+    delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+  }>,
+) => MaybePromise<
+  | {
+      status: 201;
+      contentType?: "application/json";
+      body?: {
+        id?: string;
+        /**
+         * @format uri
+         */
+        url?: string;
+      };
+    }
+  | {
+      status: 413;
+      contentType?: "application/json";
+      body?: Error;
+    }
+  | { status: 415; contentType: "text/plain"; body: string }
+  | COUNTERFACT_RESPONSE
+  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
+>;
+"
+`;
+
+exports[`end-to-end test generates the same code for the example that it did on the last test run 23`] = `
+"routes/legacy/items.ts:import type { listItemsLegacy } from "../../types/paths/legacy/items.types.js";
+
+export const GET: listItemsLegacy = async ($) => {
+  return $.response[200].random();
+};
+"
+`;
+
+exports[`end-to-end test generates the same code for the example that it did on the last test run 24`] = `
+"types/paths/legacy/items.types.ts:// This code was automatically generated from an OpenAPI description.
+// Do not edit this file. Edit the OpenAPI file instead.
+// For more information, see https://github.com/pmcelhaney/counterfact/blob/main/docs/faq.md
+
+import type { WideOperationArgument } from "../../../counterfact-types/index.ts";
+import type { OmitValueWhenNever } from "../../../counterfact-types/index.ts";
+import type { MaybePromise } from "../../../counterfact-types/index.ts";
+import type { COUNTERFACT_RESPONSE } from "../../../counterfact-types/index.ts";
+import type { Context } from "@@CONTEXT_FILE_TOKEN@@";
+import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts";
+
+/**
+ * Deprecated – use /users instead
+ * @deprecated
+ */
+export type listItemsLegacy = (
+  $: OmitValueWhenNever<{
+    query: never;
+    path: never;
+    headers: never;
+    cookie: listItemsLegacy_Cookie;
+    body: never;
+    context: Context;
+    response: ResponseBuilderFactory<{
+      200: {
+        headers: never;
+        requiredHeaders: never;
+        content: {
+          "application/json": {
+            schema: Array<string>;
+          };
+        };
+        examples: {};
+      };
+    }>;
+    x: WideOperationArgument;
+    proxy: (url: string) => COUNTERFACT_RESPONSE;
+    user: { username?: string; password?: string };
+    delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+  }>,
+) => MaybePromise<
+  | {
+      status: 200;
+      contentType?: "application/json";
+      body?: Array<string>;
+    }
+  | { status: 415; contentType: "text/plain"; body: string }
+  | COUNTERFACT_RESPONSE
+  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
+>;
+
+export type listItemsLegacy_Cookie = { session_id?: string };
+"
+`;
+
+exports[`end-to-end test generates the same code for the example that it did on the last test run 25`] = `
+"routes/reports/{reportId}.ts:import type { getReport } from "../../types/paths/reports/{reportId}.types.js";
+
+export const GET: getReport = async ($) => {
+  return $.response[200].random();
+};
+"
+`;
+
+exports[`end-to-end test generates the same code for the example that it did on the last test run 26`] = `
+"types/paths/reports/{reportId}.types.ts:// This code was automatically generated from an OpenAPI description.
+// Do not edit this file. Edit the OpenAPI file instead.
+// For more information, see https://github.com/pmcelhaney/counterfact/blob/main/docs/faq.md
+
+import type { WideOperationArgument } from "../../../counterfact-types/index.ts";
+import type { OmitValueWhenNever } from "../../../counterfact-types/index.ts";
+import type { MaybePromise } from "../../../counterfact-types/index.ts";
+import type { COUNTERFACT_RESPONSE } from "../../../counterfact-types/index.ts";
+import type { Context } from "@@CONTEXT_FILE_TOKEN@@";
+import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts";
+import type { NotFound } from "../../#/components/responses/NotFound.js";
+import type { Error } from "../../components/schemas/Error.js";
+
+/**
+ * Download a report in the requested format
+ */
+export type getReport = (
+  $: OmitValueWhenNever<{
+    query: never;
+    path: getReport_Path;
+    headers: getReport_Headers;
+    cookie: never;
+    body: never;
+    context: Context;
+    response: ResponseBuilderFactory<{
+      200: {
+        headers: never;
+        requiredHeaders: never;
+        content: {
+          "application/json": {
+            schema: { rows?: Array<{ [key: string]: unknown }> };
+          };
+          "text/csv": {
+            schema: string;
+          };
+          "application/pdf": {
+            schema: Uint8Array | string;
+          };
+        };
+        examples: {};
+      };
+      404: NotFound;
+    }>;
+    x: WideOperationArgument;
+    proxy: (url: string) => COUNTERFACT_RESPONSE;
+    user: { username?: string; password?: string };
+    delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+  }>,
+) => MaybePromise<
+  | {
+      status: 200;
+      contentType?: "application/json";
+      body?: { rows?: Array<{ [key: string]: unknown }> };
+    }
+  | {
+      status: 200;
+      contentType?: "text/csv";
+      body?: string;
+    }
+  | {
+      status: 200;
+      contentType?: "application/pdf";
+      body?: Uint8Array | string;
+    }
+  | {
+      status: 404;
+      contentType?: "application/json";
+      body?: Error;
+    }
+  | { status: 415; contentType: "text/plain"; body: string }
+  | COUNTERFACT_RESPONSE
+  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
+>;
+
+export type getReport_Path = { reportId: string };
+
+export type getReport_Headers = {
+  Accept?: "application/json" | "text/csv" | "application/pdf";
+};
+"
+`;
+
+exports[`end-to-end test generates the same code for the example that it did on the last test run 27`] = `
+"routes/ping.ts:import type { ping } from "../types/paths/ping.types.js";
+
+export const GET: ping = async ($) => {
+  return $.response[204].empty();
+};
+"
+`;
+
+exports[`end-to-end test generates the same code for the example that it did on the last test run 28`] = `
+"types/paths/ping.types.ts:// This code was automatically generated from an OpenAPI description.
+// Do not edit this file. Edit the OpenAPI file instead.
+// For more information, see https://github.com/pmcelhaney/counterfact/blob/main/docs/faq.md
+
+import type { WideOperationArgument } from "../../counterfact-types/index.ts";
+import type { OmitValueWhenNever } from "../../counterfact-types/index.ts";
+import type { MaybePromise } from "../../counterfact-types/index.ts";
+import type { COUNTERFACT_RESPONSE } from "../../counterfact-types/index.ts";
+import type { Context } from "@@CONTEXT_FILE_TOKEN@@";
+import type { ResponseBuilderFactory } from "../../counterfact-types/index.ts";
+
+/**
+ * Health-check – returns 204 with no body
+ */
+export type ping = (
+  $: OmitValueWhenNever<{
+    query: never;
+    path: never;
+    headers: never;
+    cookie: never;
+    body: never;
+    context: Context;
+    response: ResponseBuilderFactory<{
+      204: {
+        headers: never;
+        requiredHeaders: never;
+        content: never;
+        examples: {};
+      };
+    }>;
+    x: WideOperationArgument;
+    proxy: (url: string) => COUNTERFACT_RESPONSE;
+    user: { username?: string; password?: string };
+    delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+  }>,
+) => MaybePromise<
+  | {
+      status: 204;
+    }
+  | { status: 415; contentType: "text/plain"; body: string }
+  | COUNTERFACT_RESPONSE
+  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
+>;
+"
+`;
+
+exports[`end-to-end test generates the same code for the example that it did on the last test run 29`] = `
+"routes/metadata.ts:import type { setMetadata } from "../types/paths/metadata.types.js";
+
+export const PUT: setMetadata = async ($) => {
+  return $.response[200].random();
+};
+"
+`;
+
+exports[`end-to-end test generates the same code for the example that it did on the last test run 30`] = `
+"types/paths/metadata.types.ts:// This code was automatically generated from an OpenAPI description.
+// Do not edit this file. Edit the OpenAPI file instead.
+// For more information, see https://github.com/pmcelhaney/counterfact/blob/main/docs/faq.md
+
+import type { WideOperationArgument } from "../../counterfact-types/index.ts";
+import type { OmitValueWhenNever } from "../../counterfact-types/index.ts";
+import type { MaybePromise } from "../../counterfact-types/index.ts";
+import type { COUNTERFACT_RESPONSE } from "../../counterfact-types/index.ts";
+import type { Context } from "@@CONTEXT_FILE_TOKEN@@";
+import type { ResponseBuilderFactory } from "../../counterfact-types/index.ts";
+
+/**
+ * Replace the free-form metadata store
+ */
+export type setMetadata = (
+  $: OmitValueWhenNever<{
+    query: never;
+    path: never;
+    headers: never;
+    cookie: never;
+    body: { [key: string]: unknown };
+    context: Context;
+    response: ResponseBuilderFactory<{
+      200: {
+        headers: never;
+        requiredHeaders: never;
+        content: {
+          "application/json": {
+            schema: { [key: string]: unknown };
+          };
+        };
+        examples: {};
+      };
+    }>;
+    x: WideOperationArgument;
+    proxy: (url: string) => COUNTERFACT_RESPONSE;
+    user: { username?: string; password?: string };
+    delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+  }>,
+) => MaybePromise<
+  | {
+      status: 200;
+      contentType?: "application/json";
+      body?: { [key: string]: unknown };
+    }
+  | { status: 415; contentType: "text/plain"; body: string }
+  | COUNTERFACT_RESPONSE
+  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
+>;
+"
+`;
+
+exports[`end-to-end test generates the same code for the example that it did on the last test run 31`] = `
+"types/#/components/responses/InternalServerError.ts:import type { Error } from "../../../components/schemas/Error.js";
+
+export type InternalServerError = {
+  headers: never;
+  requiredHeaders: never;
+  content: {
+    "application/json": {
+      schema: Error;
+    };
+  };
+  examples: {};
+};
+"
+`;
+
+exports[`end-to-end test generates the same code for the example that it did on the last test run 32`] = `
+"types/components/schemas/Error.ts:/**
+ * A generic error message suitable for 4xx and 5xx responses
+ */
+export type Error = {
+  /**
+   * A machine-readable error code
+   */
+  code?: string;
+  /**
+   * A human-readable description of the error
+   */
+  message: string;
+  /**
+   * Field-level validation errors
+   */
+  details?: Array<{ field?: string; issue?: string }>;
+};
+"
+`;
+
+exports[`end-to-end test generates the same code for the example that it did on the last test run 33`] = `
 "types/#/components/responses/BadRequest.ts:import type { Error } from "../../../components/schemas/Error.js";
 
 export type BadRequest = {
@@ -1939,29 +2939,229 @@ export type BadRequest = {
 "
 `;
 
-exports[`end-to-end test generates the same code for the example that it did on the last test run 15`] = `
-"types/components/schemas/Error.ts:/**
- * A generic error message suitable for 4xx and 5xx responses
- */
-export type Error = {
-  /**
-   * A machine readable error code
-   */
-  code?: string;
-  /**
-   * A detailed description of the error
-   */
-  message: string;
+exports[`end-to-end test generates the same code for the example that it did on the last test run 34`] = `
+"types/components/schemas/Recursive.ts:import type { Recursive } from "./Recursive.js";
+
+export type Recursive = Recursive;
+"
+`;
+
+exports[`end-to-end test generates the same code for the example that it did on the last test run 35`] = `
+"types/components/schemas/UserList.ts:import type { User } from "./User.js";
+
+export type UserList = {
+  items: Array<User>;
+  total: number;
+  page: number;
+  pageSize: number;
 };
 "
 `;
 
-exports[`end-to-end test generates the same code for the example that it did on the last test run 16`] = `
+exports[`end-to-end test generates the same code for the example that it did on the last test run 36`] = `
+"types/#/components/responses/Unauthorized.ts:import type { Error } from "../../../components/schemas/Error.js";
+
+export type Unauthorized = {
+  headers: never;
+  requiredHeaders: never;
+  content: {
+    "application/json": {
+      schema: Error;
+    };
+  };
+  examples: {};
+};
+"
+`;
+
+exports[`end-to-end test generates the same code for the example that it did on the last test run 37`] = `
+"types/components/schemas/CreateUserRequest.ts:export type CreateUserRequest = {
+  name: string;
+  /**
+   * @format email
+   */
+  email: string;
+  /**
+   * @default "viewer"
+   */
+  role?: "admin" | "editor" | "viewer";
+  metadata?: { [key: string]: string };
+};
+"
+`;
+
+exports[`end-to-end test generates the same code for the example that it did on the last test run 38`] = `
+"types/components/schemas/User.ts:export type User = {
+  /**
+   * Opaque unique identifier
+   */
+  id: string;
+  name: string;
+  /**
+   * @format email
+   */
+  email: string;
+  /**
+   * @default "viewer"
+   */
+  role: "admin" | "editor" | "viewer";
+  active: boolean;
+  /**
+   * @format date-time
+   */
+  createdAt: string;
+  /**
+   * @format date-time
+   */
+  updatedAt?: string;
+  /**
+   * Arbitrary key/value pairs attached to the user
+   */
+  metadata?: { [key: string]: string };
+};
+"
+`;
+
+exports[`end-to-end test generates the same code for the example that it did on the last test run 39`] = `
+"types/#/components/responses/NotFound.ts:import type { Error } from "../../../components/schemas/Error.js";
+
+export type NotFound = {
+  headers: never;
+  requiredHeaders: never;
+  content: {
+    "application/json": {
+      schema: Error;
+    };
+  };
+  examples: {};
+};
+"
+`;
+
+exports[`end-to-end test generates the same code for the example that it did on the last test run 40`] = `
+"types/components/schemas/PatchUserRequest.ts:/**
+ * All fields are optional; only provided fields are updated (JSON Merge Patch semantics). Setting a nullable field to null clears it.
+ *
+ */
+export type PatchUserRequest = {
+  name?: string;
+  /**
+   * @format email
+   */
+  email?: string;
+  role?: "admin" | "editor" | "viewer";
+  active?: boolean;
+  metadata?: { [key: string]: string };
+};
+"
+`;
+
+exports[`end-to-end test generates the same code for the example that it did on the last test run 41`] = `
+"types/components/schemas/ClickEvent.ts:import type { BaseEvent } from "./BaseEvent.js";
+
+export type ClickEvent = BaseEvent & {
+  /**
+   * @format uri
+   */
+  targetUrl: string;
+  elementId: string;
+};
+"
+`;
+
+exports[`end-to-end test generates the same code for the example that it did on the last test run 42`] = `
+"types/components/schemas/PurchaseEvent.ts:import type { BaseEvent } from "./BaseEvent.js";
+
+export type PurchaseEvent = BaseEvent & {
+  orderId: string;
+  /**
+   * @format double
+   */
+  totalAmount: number;
+  /**
+   * ISO 4217 currency code
+   */
+  currency: string;
+  items?: Array<{
+    /**
+     * @format int64
+     */
+    productId: number;
+    quantity: number;
+  }>;
+};
+"
+`;
+
+exports[`end-to-end test generates the same code for the example that it did on the last test run 43`] = `
+"types/components/schemas/SignUpEvent.ts:import type { BaseEvent } from "./BaseEvent.js";
+
+export type SignUpEvent = BaseEvent & {
+  userId: string;
+  /**
+   * @format email
+   */
+  email: string;
+  referralCode?: string;
+};
+"
+`;
+
+exports[`end-to-end test generates the same code for the example that it did on the last test run 44`] = `
+"types/components/schemas/Product.ts:export type Product = {
+  /**
+   * @format int64
+   */
+  id: number;
+  name: string;
+  description?: string;
+  status: "available" | "out_of_stock" | "discontinued";
+  /**
+   * @format double
+   */
+  price: number;
+  /**
+   * @format double
+   */
+  discountedPrice?: number;
+  /**
+   * @default []
+   */
+  tags?: Array<string>;
+  /**
+   * IDs of related products
+   */
+  relatedIds?: Array<number>;
+  /**
+   * Demonstrates anyOf: each attribute value is either a string, a number, or a boolean.
+   *
+   */
+  attributes?: { [key: string]: unknown };
+};
+"
+`;
+
+exports[`end-to-end test generates the same code for the example that it did on the last test run 45`] = `
+"types/components/schemas/BaseEvent.ts:export type BaseEvent = {
+  /**
+   * Discriminator field
+   */
+  type: string;
+  /**
+   * @format date-time
+   */
+  occurredAt: string;
+  sessionId?: string;
+};
+"
+`;
+
+exports[`end-to-end test generates the same code for the example that it did on the last test run 46`] = `
 ".cache
 "
 `;
 
-exports[`end-to-end test generates the same code for the example that it did on the last test run 17`] = `
+exports[`end-to-end test generates the same code for the example that it did on the last test run 47`] = `
 "This directory contains compiled JS files from the paths directory. Do not edit these files directly.
 "
 `;

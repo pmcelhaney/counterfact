@@ -19,6 +19,14 @@ interface GenerateOptions {
   types?: boolean;
 }
 
+/**
+ * Initialises the `.cache` directory that holds compiled JS output.
+ *
+ * Creates a `.gitignore` file that excludes the `.cache` sub-directory and a
+ * `README.md` inside `.cache` that explains its purpose.
+ *
+ * @param destination - The root output directory.
+ */
 async function buildCacheDirectory(destination: string): Promise<void> {
   const gitignorePath = nodePath.join(destination, ".gitignore");
   const cacheReadmePath = nodePath.join(destination, ".cache", "README.md");
@@ -43,6 +51,14 @@ async function buildCacheDirectory(destination: string): Promise<void> {
   );
 }
 
+/**
+ * Reads and returns the `#/paths` requirement from `specification`.
+ *
+ * Writes a diagnostic message to stderr and returns an empty set when the
+ * `paths` key is missing or cannot be read.
+ *
+ * @param specification - The loaded OpenAPI specification.
+ */
 async function getPathsFromSpecification(
   specification: Specification,
 ): Promise<ReturnType<Specification["getRequirement"]>> {
@@ -57,6 +73,20 @@ async function getPathsFromSpecification(
   }
 }
 
+/**
+ * Main code-generation entry point.
+ *
+ * Loads the OpenAPI spec from `source`, optionally prunes defunct route files,
+ * registers all path operations as {@link OperationCoder} exports, and writes
+ * the resulting TypeScript files to `destination`.
+ *
+ * @param source - Path or URL to the OpenAPI document.
+ * @param destination - Root directory to write generated files into.
+ * @param generateOptions - Controls which artefacts are written (routes, types,
+ *   prune).
+ * @param repository - Injectable repository instance; defaults to a fresh one
+ *   (primarily useful in tests).
+ */
 export async function generate(
   source: string,
   destination: string,
@@ -267,6 +297,16 @@ function buildApplyContextContent(contextFiles: ContextFileInfo[]): string {
   return parts.join("\n");
 }
 
+/**
+ * Writes the `types/scenario-context.ts` file, which exports the
+ * `ApplyContext` interface used to type scenario functions.
+ *
+ * The interface is generated from all `_.context.ts` files found under the
+ * `routes/` directory, providing strongly typed `loadContext()` overloads for
+ * every route path that has a context file.
+ *
+ * @param destination - Root output directory.
+ */
 export async function writeApplyContextType(
   destination: string,
 ): Promise<void> {
@@ -285,7 +325,7 @@ const DEFAULT_SCENARIOS_INDEX = `import type { Scenario } from "../types/_.conte
 /**
  * Scenario scripts are plain TypeScript functions that receive the live REPL
  * environment and can read or mutate server state. Run them from the REPL with:
- *   .apply <functionName>
+ *   .scenario <functionName>
  */
 
 /**
@@ -301,7 +341,7 @@ const DEFAULT_SCENARIOS_INDEX = `import type { Scenario } from "../types/_.conte
 
 /**
  * An example scenario. To use it in the REPL, type:
- *   .apply help
+ *   .scenario help
  */
 export const help: Scenario = ($) => {
   void $;

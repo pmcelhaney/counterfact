@@ -8,6 +8,19 @@ interface PackageJsonWithType {
   type?: string;
 }
 
+/**
+ * Determines whether a module file should be treated as CommonJS or ESM.
+ *
+ * Resolution order (matches Node.js conventions):
+ * 1. `.cjs` extension → `"commonjs"`.
+ * 2. `.mjs` or `.ts` extension → `"module"`.
+ * 3. Walk up the directory tree looking for a `package.json` with a `"type"`
+ *    field.
+ * 4. Falls back to `"commonjs"` at the filesystem root.
+ *
+ * @param modulePath - Absolute or relative path to the module file.
+ * @returns `"commonjs"` or `"module"`.
+ */
 export async function determineModuleKind(modulePath: string) {
   if (modulePath.endsWith(".cjs")) {
     return "commonjs";

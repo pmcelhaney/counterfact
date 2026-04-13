@@ -270,7 +270,7 @@ describe("REPL", () => {
     expect(harness.isReset()).toBe(true);
   });
 
-  describe(".apply command", () => {
+  describe(".scenario command", () => {
     it("calls the named export from scenarios/index for a single-segment path", async () => {
       const scenarioRegistry = new ScenarioRegistry();
 
@@ -282,7 +282,7 @@ describe("REPL", () => {
 
       const { harness, contextRegistry } = createHarness(scenarioRegistry);
 
-      await harness.callAsync("apply", "foo");
+      await harness.callAsync("scenario", "foo");
 
       expect(harness.output).toContain("Applied foo");
       expect(contextRegistry.find("/")).toMatchObject({ applied: "foo" });
@@ -300,7 +300,7 @@ describe("REPL", () => {
 
       const { harness, contextRegistry } = createHarness(scenarioRegistry);
 
-      await harness.callAsync("apply", "myscript/bar");
+      await harness.callAsync("scenario", "myscript/bar");
 
       expect(harness.output).toContain("Applied myscript/bar");
       expect(contextRegistry.find("/")).toMatchObject({ applied: "bar" });
@@ -317,7 +317,7 @@ describe("REPL", () => {
 
       const { harness, contextRegistry } = createHarness(scenarioRegistry);
 
-      await harness.callAsync("apply", "foo/bar/baz");
+      await harness.callAsync("scenario", "foo/bar/baz");
 
       expect(harness.output).toContain("Applied foo/bar/baz");
       expect(contextRegistry.find("/")).toMatchObject({ applied: "baz" });
@@ -334,7 +334,7 @@ describe("REPL", () => {
 
       const { harness } = createHarness(scenarioRegistry);
 
-      await harness.callAsync("apply", "setup");
+      await harness.callAsync("scenario", "setup");
 
       expect(harness.output).toContain("Applied setup");
       expect(
@@ -348,7 +348,7 @@ describe("REPL", () => {
       const scenarioRegistry = new ScenarioRegistry();
       const { harness } = createHarness(scenarioRegistry);
 
-      await harness.callAsync("apply", "nonexistent");
+      await harness.callAsync("scenario", "nonexistent");
 
       expect(harness.output[0]).toMatch(/Error: Could not find/u);
       expect(harness.isReset()).toBe(true);
@@ -363,7 +363,7 @@ describe("REPL", () => {
 
       const { harness } = createHarness(scenarioRegistry);
 
-      await harness.callAsync("apply", "notAFunction");
+      await harness.callAsync("scenario", "notAFunction");
 
       expect(harness.output[0]).toMatch(
         /Error: "notAFunction" is not a function/u,
@@ -374,16 +374,16 @@ describe("REPL", () => {
     it("shows a usage message when called with no argument", async () => {
       const { harness } = createHarness();
 
-      await harness.callAsync("apply", "");
+      await harness.callAsync("scenario", "");
 
-      expect(harness.output).toContain("usage: .apply <path>");
+      expect(harness.output).toContain("usage: .scenario <path>");
       expect(harness.isReset()).toBe(true);
     });
 
     it("rejects path traversal using '..' segments", async () => {
       const { harness } = createHarness();
 
-      await harness.callAsync("apply", "../secret/foo");
+      await harness.callAsync("scenario", "../secret/foo");
 
       expect(harness.output[0]).toMatch(/Error: Path must not contain/u);
       expect(harness.isReset()).toBe(true);
@@ -578,7 +578,7 @@ describe("REPL", () => {
     });
   });
 
-  describe(".apply tab completion", () => {
+  describe(".scenario tab completion", () => {
     function callCompleter(
       completer: ReturnType<typeof createCompleter>,
       line: string,
@@ -606,7 +606,7 @@ describe("REPL", () => {
       // Partial "sold" — should match soldPets only, not the non-function export
       const [completions, prefix] = await callCompleter(
         completer,
-        ".apply sold",
+        ".scenario sold",
       );
 
       expect(prefix).toBe("sold");
@@ -614,12 +614,12 @@ describe("REPL", () => {
       expect(completions).not.toContain("resetAll");
 
       // Partial "reset" — should match resetAll only
-      const [completions2] = await callCompleter(completer, ".apply reset");
+      const [completions2] = await callCompleter(completer, ".scenario reset");
 
       expect(completions2).toEqual(["resetAll"]);
 
       // Non-function exports should not be suggested
-      const [completions3] = await callCompleter(completer, ".apply not");
+      const [completions3] = await callCompleter(completer, ".scenario not");
 
       expect(completions3).toEqual([]);
     });
@@ -632,7 +632,10 @@ describe("REPL", () => {
 
       const registry = new Registry();
       const completer = createCompleter(registry, undefined, scenarioRegistry);
-      const [completions, prefix] = await callCompleter(completer, ".apply ");
+      const [completions, prefix] = await callCompleter(
+        completer,
+        ".scenario ",
+      );
 
       expect(prefix).toBe("");
       expect(completions).toContain("foo");
@@ -649,7 +652,7 @@ describe("REPL", () => {
       const completer = createCompleter(registry, undefined, scenarioRegistry);
       const [completions, prefix] = await callCompleter(
         completer,
-        ".apply myscript/sol",
+        ".scenario myscript/sol",
       );
 
       expect(prefix).toBe("myscript/sol");
@@ -665,7 +668,7 @@ describe("REPL", () => {
       const completer = createCompleter(registry, undefined, scenarioRegistry);
       const [completions, prefix] = await callCompleter(
         completer,
-        ".apply pets/",
+        ".scenario pets/",
       );
 
       expect(prefix).toBe("pets/");
@@ -675,7 +678,7 @@ describe("REPL", () => {
     it("returns empty completions when scenarioRegistry is not provided", async () => {
       const registry = new Registry();
       const completer = createCompleter(registry);
-      const [completions] = await callCompleter(completer, ".apply sold");
+      const [completions] = await callCompleter(completer, ".scenario sold");
 
       expect(completions).toEqual([]);
     });
