@@ -77,6 +77,7 @@
     "go:petstore": "yarn build && yarn counterfact https://petstore3.swagger.io/api/v3/openapi.json out",
     "go:petstore2": "yarn build && yarn counterfact  https://petstore.swagger.io/v2/swagger.json out",
     "go:example": "yarn build && node ./bin/counterfact.js ./test/fixtures/openapi-example.yaml out",
+    "go:multi": "yarn build && node ./bin/counterfact.js --config ./test/fixtures/multi-config.yaml",
     "counterfact": "./bin/counterfact.js",
     "postinstall": "patch-package"
   },
