@@ -237,9 +237,12 @@ export async function counterfact(config: Config) {
     const { generate, startServer, watch, buildCache } = options;
 
     if (isMultiSpec) {
-      // Generate code for all specs
+      // Generate code for all specs sequentially to avoid concurrent writes
+      // to the shared counterfact-types directory (copyCoreFiles race condition).
       if (generate.routes || generate.types) {
-        await Promise.all(codeGenerators.map((gen) => gen.generate()));
+        for (const gen of codeGenerators) {
+          await gen.generate();
+        }
         // Write shared context types and scenarios index once after all specs
         if (generate.types) {
           await writeApplyContextType(config.basePath);
