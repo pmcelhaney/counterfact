@@ -16,7 +16,7 @@ Scenario functions are typed with the generated `Scenario` type:
 
 ```ts
 // scenarios/index.ts
-import type { Scenario } from "../types/scenario-context.js";
+import type { Scenario } from "../types/_.context.js";
 
 export const soldPets: Scenario = ($) => {
   // Mutate context directly — the same object route handlers see as $.context
@@ -59,7 +59,7 @@ Export a function named `startup` from `scenarios/index.ts` and Counterfact call
 
 ```ts
 // scenarios/index.ts
-import type { Scenario } from "../types/scenario-context.js";
+import type { Scenario } from "../types/_.context.js";
 
 export const startup: Scenario = ($) => {
   $.context.addPet({ name: "Fluffy", status: "available", photoUrls: [] });
@@ -75,7 +75,7 @@ Split large scenarios into focused helper functions in separate files and pass `
 
 ```ts
 // scenarios/index.ts
-import type { Scenario } from "../types/scenario-context.js";
+import type { Scenario } from "../types/_.context.js";
 import { addPets } from "./pets.js";
 import { addOrders } from "./orders.js";
 
@@ -87,7 +87,7 @@ export const startup: Scenario = ($) => {
 
 ```ts
 // scenarios/pets.ts
-import type { Scenario$ } from "../types/scenario-context.js";
+import type { Scenario$ } from "../types/_.context.js";
 
 export function addPets($: Scenario$, count: number, species: string) {
   for (let i = 0; i < count; i++) {
@@ -102,7 +102,7 @@ export function addPets($: Scenario$, count: number, species: string) {
 
 ```ts
 // scenarios/orders.ts
-import type { Scenario$ } from "../types/scenario-context.js";
+import type { Scenario$ } from "../types/_.context.js";
 
 export function addOrders($: Scenario$, count: number) {
   for (let i = 0; i < count; i++) {

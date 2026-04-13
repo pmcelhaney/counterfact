@@ -76,7 +76,7 @@ A scenario function receives a single argument with `{ context, loadContext, rou
 
 ```ts
 // scenarios/index.ts
-import type { Scenario } from "../types/scenario-context.js";
+import type { Scenario } from "../types/_.context.js";
 
 export const soldPets: Scenario = ($) => {
   // Mutate context directly — same as typing in the REPL
@@ -98,7 +98,7 @@ After the command runs you can immediately use anything stored in `$.routes`:
 ⬣> routes.findSold.send()
 ```
 
-The `Scenario` type and `Scenario$` interface are generated automatically into `types/scenario-context.ts` when you run Counterfact with type generation enabled.
+The `Scenario` type and `Scenario$` interface are generated automatically into `types/_.context.ts` when you run Counterfact with type generation enabled.
 
 ## Startup scenario
 
@@ -106,7 +106,7 @@ The `startup` export in `scenarios/index.ts` is special: it runs automatically w
 
 ```ts
 // scenarios/index.ts
-import type { Scenario } from "../types/scenario-context.js";
+import type { Scenario } from "../types/_.context.js";
 
 export const startup: Scenario = ($) => {
   $.context.addPet({ name: "Fluffy", status: "available", photoUrls: [] });
@@ -118,7 +118,7 @@ export const startup: Scenario = ($) => {
 
 ```ts
 // scenarios/index.ts
-import type { Scenario } from "../types/scenario-context.js";
+import type { Scenario } from "../types/_.context.js";
 import { addPets } from "./pets.js";
 import { addOrders } from "./orders.js";
 
@@ -130,7 +130,7 @@ export const startup: Scenario = ($) => {
 
 ```ts
 // scenarios/pets.ts
-import type { Scenario$ } from "../types/scenario-context.js";
+import type { Scenario$ } from "../types/_.context.js";
 
 export function addPets($: Scenario$, count: number, species: string) {
   for (let i = 0; i < count; i++) {

@@ -107,7 +107,7 @@ export class ContextRegistry extends EventTarget {
 
   /**
    * Removes the context entry for the given path and dispatches a
-   * "context-changed" event so that listeners (e.g. the scenario-context type
+   * "context-changed" event so that listeners (e.g. the _.context type
    * generator) can regenerate type files in response to the removal.
    *
    * @param path - The route path whose context entry should be deleted

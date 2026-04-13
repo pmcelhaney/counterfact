@@ -31,7 +31,7 @@ A scenario script is a TypeScript file with one or more named function exports. 
 
 ```ts
 // repl/sold-pets.ts
-import type { Scenario$ } from "../types/scenario-context.js";
+import type { Scenario$ } from "../types/_.context.js";
 
 export function soldPets($: Scenario$) {
   $.context.petService.reset();
