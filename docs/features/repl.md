@@ -98,7 +98,7 @@ After the command runs you can immediately use anything stored in `$.routes`:
 ⬣> routes.findSold.send()
 ```
 
-The `Scenario` type and `ApplyContext` interface are generated automatically into `types/_.context.ts` when you run Counterfact with type generation enabled.
+The `Scenario` type and `Scenario$` interface are generated automatically into `types/_.context.ts` when you run Counterfact with type generation enabled.
 
 ## See also
 

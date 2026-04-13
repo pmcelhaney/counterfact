@@ -277,7 +277,7 @@ function buildApplyContextContent(contextFiles: ContextFileInfo[]): string {
     "  loadContext(path: string): Record<string, unknown>;",
     "}",
     "",
-    "export interface ApplyContext {",
+    "export interface Scenario$ {",
     '  /** Root context, same as loadContext("/") */',
     `  readonly context: ${contextType};`,
     '  readonly loadContext: LoadContextDefinitions["loadContext"];',
@@ -288,7 +288,7 @@ function buildApplyContextContent(contextFiles: ContextFileInfo[]): string {
     "}",
     "",
     "/** A scenario function that receives the live REPL environment */",
-    "export type Scenario = ($: ApplyContext) => Promise<void> | void;",
+    "export type Scenario = ($: Scenario$) => Promise<void> | void;",
     "",
     "/** Interface for Context objects defined in _.context.ts files */",
     "export interface Context$ {",
@@ -304,8 +304,8 @@ function buildApplyContextContent(contextFiles: ContextFileInfo[]): string {
 }
 
 /**
- * Writes the `types/scenario-context.ts` file, which exports the
- * `ApplyContext` interface used to type scenario functions.
+ * Writes the `types/_.context.ts` file, which exports the
+ * `Scenario$` interface used to type scenario functions.
  *
  * The interface is generated from all `_.context.ts` files found under the
  * `routes/` directory, providing strongly typed `loadContext()` overloads for
