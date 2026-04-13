@@ -20,7 +20,7 @@ export class CodeGenerator extends EventTarget {
     prune?: boolean;
     routes: boolean;
     types: boolean;
-    group?: string;
+    base?: string;
     copyCoreFiles?: boolean;
   };
 
@@ -33,7 +33,7 @@ export class CodeGenerator extends EventTarget {
       prune?: boolean;
       routes: boolean;
       types: boolean;
-      group?: string;
+      base?: string;
       copyCoreFiles?: boolean;
     },
   ) {

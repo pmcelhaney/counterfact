@@ -324,7 +324,6 @@ async function main(source, destination) {
         ? entry.source
         : nodePath.resolve(configDir, entry.source),
       base: entry.base ?? "",
-      group: entry.group ?? "",
     }));
     // When specs is used, the single openApiPath is not needed
     source = "_";

@@ -21,13 +21,13 @@ import type { Script } from "./script.js";
 export class OperationCoder extends Coder {
   public requestMethod: string;
   public securitySchemes: SecurityScheme[];
-  public group: string | undefined;
+  public base: string | undefined;
 
   public constructor(
     requirement: Requirement,
     requestMethod: string,
     securitySchemes: SecurityScheme[] = [],
-    group?: string,
+    base?: string,
   ) {
     super(requirement);
 
@@ -37,7 +37,7 @@ export class OperationCoder extends Coder {
 
     this.requestMethod = requestMethod;
     this.securitySchemes = securitySchemes;
-    this.group = group;
+    this.base = base;
   }
 
   public override names(): Generator<string> {
@@ -80,7 +80,7 @@ export class OperationCoder extends Coder {
       this.requirement,
       this.requestMethod,
       this.securitySchemes,
-      this.group,
+      this.base,
     );
 
     return script.importType(operationTypeCoder);
@@ -92,7 +92,7 @@ export class OperationCoder extends Coder {
       .at(-2)!
       .replaceAll("~1", "/");
 
-    const routesBase = this.group ? `routes/${this.group}` : "routes";
+    const routesBase = this.base ? `routes/${this.base}` : "routes";
 
     return `${nodePath.join(routesBase, pathString).replaceAll("\\", "/")}.ts`;
   }

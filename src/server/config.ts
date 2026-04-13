@@ -4,8 +4,6 @@ export interface SpecEntry {
   source: string;
   /** Base path under which this API is mounted (e.g. `"billing"`, no leading `/`). */
   base: string;
-  /** Reserved for future use. */
-  group?: string;
 }
 
 /** Runtime configuration for a Counterfact server instance. */

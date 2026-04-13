@@ -59,8 +59,8 @@ describe("end-to-end test", () => {
   });
 });
 
-describe("group (multi-spec) generation", () => {
-  it("generates routes under routes/<group>/ when a group is specified", async () => {
+describe("base (multi-spec) generation", () => {
+  it("generates routes under routes/<base>/ when a base is specified", async () => {
     await usingTemporaryFiles(async ($) => {
       const basePath = $.path("");
       const repository = new Repository();
@@ -72,7 +72,7 @@ describe("group (multi-spec) generation", () => {
       await generate(
         "./petstore.yaml",
         basePath,
-        { routes: true, types: true, group: "billing" },
+        { routes: true, types: true, base: "billing" },
         repository,
       );
       await repository.finished();
@@ -88,7 +88,7 @@ describe("group (multi-spec) generation", () => {
     });
   });
 
-  it("generates type files under types/<group>/paths/ when a group is specified", async () => {
+  it("generates type files under types/<base>/paths/ when a base is specified", async () => {
     await usingTemporaryFiles(async ($) => {
       const basePath = $.path("");
       const repository = new Repository();
@@ -100,7 +100,7 @@ describe("group (multi-spec) generation", () => {
       await generate(
         "./petstore.yaml",
         basePath,
-        { routes: true, types: true, group: "billing" },
+        { routes: true, types: true, base: "billing" },
         repository,
       );
       await repository.finished();
@@ -118,7 +118,7 @@ describe("group (multi-spec) generation", () => {
     });
   });
 
-  it("generates route files importing types from types/<group>/paths/", async () => {
+  it("generates route files importing types from types/<base>/paths/", async () => {
     await usingTemporaryFiles(async ($) => {
       const basePath = $.path("");
       const repository = new Repository();
@@ -130,7 +130,7 @@ describe("group (multi-spec) generation", () => {
       await generate(
         "./petstore.yaml",
         basePath,
-        { routes: true, types: true, group: "billing" },
+        { routes: true, types: true, base: "billing" },
         repository,
       );
       await repository.finished();
@@ -151,7 +151,7 @@ describe("group (multi-spec) generation", () => {
     });
   });
 
-  it("does not generate routes without group prefix when group is specified", async () => {
+  it("does not generate routes without base prefix when base is specified", async () => {
     await usingTemporaryFiles(async ($) => {
       const basePath = $.path("");
       const repository = new Repository();
@@ -163,7 +163,7 @@ describe("group (multi-spec) generation", () => {
       await generate(
         "./petstore.yaml",
         basePath,
-        { routes: true, types: true, group: "billing" },
+        { routes: true, types: true, base: "billing" },
         repository,
       );
       await repository.finished();

@@ -202,7 +202,7 @@ describe("an OperationTypeCoder", () => {
     expect(coder.modulePath()).toBe("types/paths/index.types.ts");
   });
 
-  it("returns the module path under types/<group>/paths when group is specified", () => {
+  it("returns the module path under types/<base>/paths when base is specified", () => {
     const coder = new OperationTypeCoder(
       new Requirement({}, "#/paths/hello~1world/get"),
       "get",
@@ -213,7 +213,7 @@ describe("an OperationTypeCoder", () => {
     expect(coder.modulePath()).toBe("types/billing/paths/hello/world.types.ts");
   });
 
-  it("returns the module path for / under types/<group>/paths when group is specified", () => {
+  it("returns the module path for / under types/<base>/paths when base is specified", () => {
     const coder = new OperationTypeCoder(
       new Requirement({}, "#/paths/~1/get"),
       "get",

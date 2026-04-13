@@ -1556,7 +1556,7 @@ describe("multi-spec dispatcher", () => {
     expect(operation).toBeUndefined();
   });
 
-  it("routes requests to handlers registered under a group prefix", async () => {
+  it("routes requests to handlers registered under a base prefix", async () => {
     const registry = new Registry();
 
     registry.add("/billing/invoices", {

@@ -18,7 +18,7 @@ interface GenerateOptions {
   routes?: boolean;
   types?: boolean;
   /** Sub-directory under `routes/` and `types/` for this spec's generated files. */
-  group?: string;
+  base?: string;
   /** When false, skips copying the shared `counterfact-types` directory.
    * Set to `false` in multi-spec mode so the copy runs only once after all specs. */
   copyCoreFiles?: boolean;
@@ -133,8 +133,8 @@ export async function generate(
     (securityRequirement?.data as Record<string, unknown>) ?? {},
   ) as SecurityScheme[];
 
-  const group = generateOptions.group;
-  const routesBase = group ? `routes/${group}` : "routes";
+  const base = generateOptions.base;
+  const routesBase = base ? `routes/${base}` : "routes";
 
   paths.forEach((pathDefinition, key: string) => {
     debug("processing path %s", key);
@@ -144,7 +144,7 @@ export async function generate(
       repository
         .get(`${routesBase}${path}.ts`)
         .export(
-          new OperationCoder(operation, requestMethod, securitySchemes, group),
+          new OperationCoder(operation, requestMethod, securitySchemes, base),
         );
     });
   });
