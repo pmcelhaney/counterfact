@@ -156,7 +156,7 @@ export async function generate(
   debug("finished writing the files");
 
   if (generateOptions.types) {
-    await writeApplyContextType(destination);
+    await writeScenarioContextType(destination);
     await writeDefaultScenariosIndex(destination);
   }
 }
@@ -261,7 +261,7 @@ function buildLoadContextOverload(routePath: string, alias: string): string {
   return `  loadContext(path: \`${templatePath}\`): ${alias};`;
 }
 
-function buildApplyContextContent(contextFiles: ContextFileInfo[]): string {
+function buildScenarioContextContent(contextFiles: ContextFileInfo[]): string {
   const rootContext = contextFiles.find((f) => f.routePath === "/");
   const contextType = rootContext
     ? rootContext.alias
@@ -323,14 +323,14 @@ function buildApplyContextContent(contextFiles: ContextFileInfo[]): string {
  *
  * @param destination - Root output directory.
  */
-export async function writeApplyContextType(
+export async function writeScenarioContextType(
   destination: string,
 ): Promise<void> {
   const typesDir = nodePath.join(destination, "types");
   const filePath = nodePath.join(typesDir, "_.context.ts");
 
   const contextFiles = await collectContextFiles(destination);
-  const content = buildApplyContextContent(contextFiles);
+  const content = buildScenarioContextContent(contextFiles);
 
   await fs.mkdir(typesDir, { recursive: true });
   await fs.writeFile(filePath, content, "utf8");
@@ -354,6 +354,21 @@ const DEFAULT_SCENARIOS_INDEX = `import type { Scenario } from "../types/_.conte
  * Store a pre-configured route builder for later use in the REPL:
  *   $.routes.myRequest = $.route("/pets").method("get");
  */
+
+/**
+ * startup() runs automatically when the server initializes, right before the
+ * REPL starts. Use it to seed dummy data so the server is ready to use
+ * immediately. It receives the same $ argument as all other scenario functions.
+ *
+ * Tip: delegate to other scenario functions and pass $ along so each function
+ * stays focused on a single concern. You can also pass additional arguments to
+ * configure them, e.g. addPets($, 20, "dog").
+ *
+ * If you don't need a startup scenario, delete this function or leave it empty.
+ */
+export const startup: Scenario = ($) => {
+  void $;
+};
 
 /**
  * An example scenario. To use it in the REPL, type:

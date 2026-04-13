@@ -4,6 +4,7 @@ import nodePath from "node:path";
 import { createHttpTerminator, type HttpTerminator } from "http-terminator";
 
 import { startRepl as startReplServer } from "./repl/repl.js";
+import { createRouteFunction } from "./repl/route-builder.js";
 import type { Config } from "./server/config.js";
 import { ContextRegistry } from "./server/context-registry.js";
 import { createKoaApp } from "./server/create-koa-app.js";
@@ -17,13 +18,45 @@ import { ScenarioRegistry } from "./server/scenario-registry.js";
 import { Transpiler } from "./server/transpiler.js";
 import { CodeGenerator } from "./typescript-generator/code-generator.js";
 import {
-  writeApplyContextType,
   writeDefaultScenariosIndex,
+  writeScenarioContextType,
 } from "./typescript-generator/generate.js";
 import { copyCoreFiles } from "./typescript-generator/repository.js";
 import { runtimeCanExecuteErasableTs } from "./util/runtime-can-execute-erasable-ts.js";
 
 export { loadOpenApiDocument } from "./server/load-openapi-document.js";
+
+type Scenario$ = {
+  context: Record<string, unknown>;
+  loadContext: (path: string) => Record<string, unknown>;
+  route: (path: string) => unknown;
+  routes: Record<string, unknown>;
+};
+
+export async function runStartupScenario(
+  scenarioRegistry: ScenarioRegistry,
+  contextRegistry: ContextRegistry,
+  config: Config,
+  openApiDocument?: Parameters<typeof createRouteFunction>[2],
+): Promise<void> {
+  const indexModule = scenarioRegistry.getModule("index");
+
+  if (!indexModule || typeof indexModule["startup"] !== "function") {
+    return;
+  }
+
+  const scenario$: Scenario$ = {
+    context: contextRegistry.find("/") as Record<string, unknown>,
+    loadContext: (path: string) =>
+      contextRegistry.find(path) as Record<string, unknown>,
+    route: createRouteFunction(config.port, "localhost", openApiDocument),
+    routes: {},
+  };
+
+  await (indexModule["startup"] as (ctx: Scenario$) => Promise<void> | void)(
+    scenario$,
+  );
+}
 
 type MswHandlerMap = {
   [key: string]: (request: MockRequest) => Promise<unknown>;
@@ -228,7 +261,7 @@ export async function counterfact(config: Config) {
   );
 
   contextRegistry.addEventListener("context-changed", () => {
-    void writeApplyContextType(modulesPath);
+    void writeScenarioContextType(modulesPath);
   });
 
   const middleware = koaMiddleware(dispatcher, config);
@@ -247,7 +280,7 @@ export async function counterfact(config: Config) {
         await copyCoreFiles(config.basePath);
         // Write shared context types and scenarios index once after all specs
         if (generate.types) {
-          await writeApplyContextType(config.basePath);
+          await writeScenarioContextType(config.basePath);
           await writeDefaultScenariosIndex(config.basePath);
         }
       }
@@ -275,6 +308,13 @@ export async function counterfact(config: Config) {
       }
       await moduleLoader.load();
       await moduleLoader.watch();
+
+      await runStartupScenario(
+        scenarioRegistry,
+        contextRegistry,
+        config,
+        openApiDocument,
+      );
 
       const server = koaApp.listen({
         port: config.port,

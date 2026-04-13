@@ -27,13 +27,13 @@ Three designs were proposed as working documents in `.github/issue-proposals/`:
 
 **Solution 1 (Minimalist Function Injection) is selected.**
 
-A scenario script is a TypeScript file with one or more named function exports. When `.scenario <path>` is run, Counterfact splits the argument on `/`, uses the last segment as the function name and the rest as the file path (relative to `<basePath>/repl/`), dynamically imports the module, and calls the named function with a live `ApplyContext` (`$`) object:
+A scenario script is a TypeScript file with one or more named function exports. When `.scenario <path>` is run, Counterfact splits the argument on `/`, uses the last segment as the function name and the rest as the file path (relative to `<basePath>/repl/`), dynamically imports the module, and calls the named function with a live `Scenario$` (`$`) object:
 
 ```ts
 // repl/sold-pets.ts
-import type { ApplyContext } from "counterfact";
+import type { Scenario$ } from "../types/_.context.js";
 
-export function soldPets($: ApplyContext) {
+export function soldPets($: Scenario$) {
   $.context.petService.reset();
   $.context.petService.addPet({ id: 1, status: "sold" });
 
@@ -41,7 +41,7 @@ export function soldPets($: ApplyContext) {
 }
 ```
 
-`ApplyContext` exposes `{ context, loadContext, routes, route }`. After the function returns, Counterfact diffs the `routes` object and prints a summary of what was added or removed.
+`Scenario$` exposes `{ context, loadContext, routes, route }`. After the function returns, Counterfact diffs the `routes` object and prints a summary of what was added or removed.
 
 Solution 1 was chosen because it introduces the smallest possible API surface, imposes no structural requirements on script authors, and integrates naturally with TypeScript `import` for composability. It is the right foundation to build on before adding lifecycle or tracking features.
 
@@ -49,7 +49,7 @@ Solution 1 was chosen because it introduces the smallest possible API surface, i
 
 ### Solution 1: Minimalist Function Injection (selected)
 
-Scripts export named functions that receive `$: ApplyContext`. Counterfact resolves the file/function from the path argument and calls the function directly. Route changes are diffed and reported; context changes are not automatically tracked.
+Scripts export named functions that receive `$: Scenario$`. Counterfact resolves the file/function from the path argument and calls the function directly. Route changes are diffed and reported; context changes are not automatically tracked.
 
 **Why chosen:** Maximum simplicity. No new abstractions, no required boilerplate. Easy to implement, test, and understand. Composability via normal `import`.
 
@@ -89,7 +89,7 @@ Identical surface syntax to Solution 1, but Counterfact wraps `context` and `rou
 
 - Evaluate whether `teardown` support (from Solution 2) is needed and, if so, define a clean extension point.
 - Explore adding proxy-based context diffing (from Solution 3) as an opt-in enhancement once the core command is stable.
-- Define `ApplyContext` as a public exported type in `counterfact-types/`.
+- Define `Scenario$` as a public exported type in `counterfact-types/`.
 
 ## Advice
 
