@@ -279,7 +279,7 @@ export async function counterfact(config: Config) {
       : [{ source: config.openApiPath, base: "" }];
 
   // Scenarios are wired only to the primary (first) spec.
-  const primaryScenariosPath = nodePath
+  const primarySpecScenariosPath = nodePath
     .join(modulesPath, "scenarios")
     .replaceAll("\\", "/");
 
@@ -291,7 +291,7 @@ export async function counterfact(config: Config) {
         spec.base,
         contextRegistry,
         nativeTs,
-        index === 0 ? primaryScenariosPath : undefined,
+        index === 0 ? primarySpecScenariosPath : undefined,
         index === 0 ? scenarioRegistry : undefined,
       ),
     ),
@@ -328,12 +328,14 @@ export async function counterfact(config: Config) {
 
     await Promise.all(
       specBundles.map(async (bundle) => {
-        if (bundle.openApiDocument && (generate.routes || generate.types)) {
-          await bundle.codeGenerator.generate();
-        }
+        if (bundle.openApiDocument) {
+          if (generate.routes || generate.types) {
+            await bundle.codeGenerator.generate();
+          }
 
-        if (bundle.openApiDocument && (watch.routes || watch.types)) {
-          await bundle.codeGenerator.watch();
+          if (watch.routes || watch.types) {
+            await bundle.codeGenerator.watch();
+          }
         }
       }),
     );
