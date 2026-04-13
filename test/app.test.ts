@@ -255,7 +255,13 @@ describe("counterfact multi-spec mode", () => {
 
     // Simulate a Koa context for /alpha/...
     const alphaCtx = {
-      request: { path: "/alpha/hello/world", method: "GET", body: undefined, headers: {}, query: {} },
+      request: {
+        path: "/alpha/hello/world",
+        method: "GET",
+        body: undefined,
+        headers: {},
+        query: {},
+      },
       req: {},
       status: 200,
       set: () => {},
@@ -263,16 +269,24 @@ describe("counterfact multi-spec mode", () => {
     } as any;
 
     let alphaCalledNext = false;
-    await result.koaMiddleware(alphaCtx, async () => { alphaCalledNext = true; });
+    await result.koaMiddleware(alphaCtx, async () => {
+      alphaCalledNext = true;
+    });
 
-    // The request should have been handled (next was NOT called or it was passed through normally)
-    // Since /alpha/hello/world may not exist in the registry, it returns a 404-like response
-    // but the middleware should NOT propagate to next() unless the prefix doesn't match.
+    // /alpha matches the "alpha" spec prefix. The per-spec middleware handles
+    // any request under that prefix (even if the route doesn't exist) and does
+    // NOT call next(), so alphaCalledNext should remain false.
     expect(alphaCalledNext).toBe(false);
 
     // Simulate a Koa context for an unknown prefix /gamma/...
     const unknownCtx = {
-      request: { path: "/gamma/something", method: "GET", body: undefined, headers: {}, query: {} },
+      request: {
+        path: "/gamma/something",
+        method: "GET",
+        body: undefined,
+        headers: {},
+        query: {},
+      },
       req: {},
       status: 200,
       set: () => {},
@@ -280,7 +294,9 @@ describe("counterfact multi-spec mode", () => {
     } as any;
 
     let unknownCalledNext = false;
-    await result.koaMiddleware(unknownCtx, async () => { unknownCalledNext = true; });
+    await result.koaMiddleware(unknownCtx, async () => {
+      unknownCalledNext = true;
+    });
 
     // No spec matches /gamma, so next should be called
     expect(unknownCalledNext).toBe(true);

@@ -254,11 +254,15 @@ function buildMultiSpecMiddleware(
   return async function multiSpecMiddleware(ctx, next) {
     for (const { prefix, middleware } of specMiddlewares) {
       if (ctx.request.path.startsWith(prefix)) {
-        let passedThrough = false;
+        // The per-spec koaMiddleware calls `next` only when the path does NOT
+        // match its routePrefix, which means we should move on to the next spec.
+        // When it handles the request it does NOT call next, so `calledNext`
+        // stays false and we return immediately.
+        let calledNext = false;
         await middleware(ctx, async () => {
-          passedThrough = true;
+          calledNext = true;
         });
-        if (!passedThrough) return;
+        if (!calledNext) return;
       }
     }
     await next();
@@ -307,19 +311,22 @@ export async function counterfact(config: Config) {
       ),
     );
 
+    // Guaranteed non-empty: we checked `config.specs.length > 0` above and
+    // `specBundles` has the same length as `config.specs`.
+    const primaryBundle = specBundles[0] as SpecBundle;
+    const primarySpec = config.specs[0] as (typeof config.specs)[number];
+
     const compositeMiddleware = buildMultiSpecMiddleware(specBundles, config);
 
     // Use the first spec's registry for the Koa admin/OpenAPI UI (best effort).
-    const primaryRegistry = specBundles[0]!.registry;
+    const primaryRegistry = primaryBundle.registry;
 
     const koaApp = createKoaApp(
       primaryRegistry,
       compositeMiddleware,
       {
         ...config,
-        openApiPath: specBundles[0]!.openApiDocument
-          ? config.specs[0]!.source
-          : "_",
+        openApiPath: primaryBundle.openApiDocument ? primarySpec.source : "_",
       },
       contextRegistry,
     );
@@ -359,7 +366,7 @@ export async function counterfact(config: Config) {
           scenarioRegistry,
           contextRegistry,
           config,
-          specBundles[0]!.openApiDocument,
+          primaryBundle.openApiDocument,
         );
 
         const server = koaApp.listen({ port: config.port });
@@ -401,7 +408,7 @@ export async function counterfact(config: Config) {
           primaryRegistry,
           config,
           undefined,
-          specBundles[0]!.openApiDocument,
+          primaryBundle.openApiDocument,
           scenarioRegistry,
         ),
     };
