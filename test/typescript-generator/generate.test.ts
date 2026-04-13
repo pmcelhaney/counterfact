@@ -93,7 +93,7 @@ describe("path item non-HTTP-verb fields", () => {
           { routes: true, types: true },
           repository,
         ),
-      ).resolves.not.toThrow();
+      ).resolves.toBeUndefined();
 
       await repository.finished();
 
