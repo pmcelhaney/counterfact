@@ -2,6 +2,7 @@ import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
 import nodePath from "node:path";
 
+import { toForwardSlashPath } from "../util/forward-slash-path.js";
 import { escapePathForWindows } from "../util/windows-escape.js";
 
 const JS_EXTENSIONS = new Set(["cjs", "cts", "js", "mjs", "mts", "ts"]);
@@ -17,7 +18,7 @@ export class FileDiscovery {
   private readonly basePath: string;
 
   public constructor(basePath: string) {
-    this.basePath = basePath.replaceAll("\\", "/");
+    this.basePath = toForwardSlashPath(basePath);
   }
 
   /**
@@ -29,9 +30,7 @@ export class FileDiscovery {
    * @throws When `basePath/directory` does not exist.
    */
   public async findFiles(directory = ""): Promise<string[]> {
-    const fullDir = nodePath
-      .join(this.basePath, directory)
-      .replaceAll("\\", "/");
+    const fullDir = toForwardSlashPath(nodePath.join(this.basePath, directory));
 
     if (!existsSync(fullDir)) {
       throw new Error(`Directory does not exist ${fullDir}`);
@@ -43,7 +42,7 @@ export class FileDiscovery {
       entries.map(async (entry) => {
         if (entry.isDirectory()) {
           return this.findFiles(
-            nodePath.join(directory, entry.name).replaceAll("\\", "/"),
+            toForwardSlashPath(nodePath.join(directory, entry.name)),
           );
         }
 
@@ -53,9 +52,9 @@ export class FileDiscovery {
           return [];
         }
 
-        const fullPath = nodePath
-          .join(this.basePath, directory, entry.name)
-          .replaceAll("\\", "/");
+        const fullPath = toForwardSlashPath(
+          nodePath.join(this.basePath, directory, entry.name),
+        );
 
         return [escapePathForWindows(fullPath)];
       }),

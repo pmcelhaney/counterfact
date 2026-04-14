@@ -6,13 +6,14 @@ import { fileURLToPath } from "node:url";
 import createDebug from "debug";
 
 import { ensureDirectoryExists } from "../util/ensure-directory-exists.js";
+import { toForwardSlashPath } from "../util/forward-slash-path.js";
 import { CONTEXT_FILE_TOKEN } from "./context-file-token.js";
 import { Script } from "./script.js";
 import { escapePathForWindows } from "../util/windows-escape.js";
 
 const debug = createDebug("counterfact:server:repository");
 
-const __dirname = dirname(fileURLToPath(import.meta.url)).replaceAll("\\", "/");
+const __dirname = toForwardSlashPath(dirname(fileURLToPath(import.meta.url)));
 
 debug("dirname is %s", __dirname);
 
@@ -125,7 +126,7 @@ export class Repository {
         const contents = await script.contents();
 
         const fullPath = escapePathForWindows(
-          nodePath.join(destination, path).replaceAll("\\", "/"),
+          toForwardSlashPath(nodePath.join(destination, path)),
         );
 
         await ensureDirectoryExists(fullPath);
@@ -219,12 +220,12 @@ export class Context {
    * @param path - Repository-relative path of the script being generated.
    */
   public findContextPath(destination: string, path: string): string {
-    return nodePath
-      .relative(
+    return toForwardSlashPath(
+      nodePath.relative(
         nodePath.join(destination, nodePath.dirname(path)),
         this.nearestContextFile(destination, path),
-      )
-      .replaceAll("\\", "/");
+      ),
+    );
   }
 
   /**
@@ -235,10 +236,10 @@ export class Context {
    * @param path - Repository-relative path to start from.
    */
   public nearestContextFile(destination: string, path: string): string {
-    const directory = nodePath
-      .dirname(path)
-      .replaceAll("\\", "/")
-      .replace("types/paths", "routes");
+    const directory = toForwardSlashPath(nodePath.dirname(path)).replace(
+      "types/paths",
+      "routes",
+    );
 
     const candidate = nodePath.join(destination, directory, "_.context.ts");
 

@@ -5,6 +5,7 @@ import nodePath from "node:path";
 import createDebug from "debug";
 
 import { ensureDirectoryExists } from "../util/ensure-directory-exists.js";
+import { toForwardSlashPath } from "../util/forward-slash-path.js";
 import { OperationCoder } from "./operation-coder.js";
 import { type SecurityScheme } from "./operation-type-coder.js";
 import { pruneRoutes } from "./prune.js";
@@ -210,9 +211,9 @@ async function walkForContextFiles(
         results,
       );
     } else if (entry.name === "_.context.ts") {
-      const relDir = nodePath
-        .relative(routesDir, currentDir)
-        .replaceAll("\\", "/");
+      const relDir = toForwardSlashPath(
+        nodePath.relative(routesDir, currentDir),
+      );
       const routePath = relDir === "" ? "/" : `/${relDir}`;
       const depth = relDir === "" ? 0 : relDir.split("/").length;
       const importPath =

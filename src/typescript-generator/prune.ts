@@ -3,6 +3,8 @@ import nodePath from "node:path";
 
 import createDebug from "debug";
 
+import { toForwardSlashPath } from "../util/forward-slash-path.js";
+
 const debug = createDebug("counterfact:typescript-generator:prune");
 
 /**
@@ -117,7 +119,7 @@ export async function pruneRoutes(
   let prunedCount = 0;
 
   for (const file of actualFiles) {
-    const normalizedFile = file.replaceAll("\\", "/");
+    const normalizedFile = toForwardSlashPath(file);
 
     if (!expectedFiles.has(normalizedFile)) {
       const fullPath = nodePath.join(routesDir, file);

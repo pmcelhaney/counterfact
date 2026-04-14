@@ -1,5 +1,6 @@
 import nodePath from "node:path";
 
+import { toForwardSlashPath } from "../util/forward-slash-path.js";
 import { Coder } from "./coder.js";
 import {
   OperationTypeCoder,
@@ -88,8 +89,6 @@ export class OperationCoder extends Coder {
       .at(-2)!
       .replaceAll("~1", "/");
 
-    return `${nodePath
-      .join("routes", pathString)
-      .replaceAll("\\", "/")}.types.ts`;
+    return `${toForwardSlashPath(nodePath.join("routes", pathString))}.types.ts`;
   }
 }

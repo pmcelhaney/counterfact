@@ -4,6 +4,7 @@ import createDebugger from "debug";
 import { format } from "prettier";
 
 import { escapePathForWindows } from "../util/windows-escape.js";
+import { toForwardSlashPath } from "../util/forward-slash-path.js";
 import type { Coder, ExportStatement } from "./coder.js";
 import type { Repository } from "./repository.js";
 
@@ -236,9 +237,9 @@ export class Script {
   public importSharedType(name: string): string {
     return this.importExternal(
       name,
-      nodePath
-        .join(this.relativePathToBase, "counterfact-types/index.ts")
-        .replaceAll("\\", "/"),
+      toForwardSlashPath(
+        nodePath.join(this.relativePathToBase, "counterfact-types/index.ts"),
+      ),
       true,
     );
   }
@@ -274,12 +275,12 @@ export class Script {
   public importStatements(): string[] {
     return Array.from(this.imports, ([name, { isDefault, isType, script }]) => {
       const resolvedPath = escapePathForWindows(
-        nodePath
-          .relative(
-            nodePath.dirname(this.path).replaceAll("\\", "/"),
+        toForwardSlashPath(
+          nodePath.relative(
+            toForwardSlashPath(nodePath.dirname(this.path)),
             script.path.replace(/\.ts$/u, ".js"),
-          )
-          .replaceAll("\\", "/"),
+          ),
+        ),
       );
 
       return `import${isType ? " type" : ""} ${

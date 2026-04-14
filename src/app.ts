@@ -19,6 +19,7 @@ import { Transpiler } from "./server/transpiler.js";
 import { CodeGenerator } from "./typescript-generator/code-generator.js";
 import { writeScenarioContextType } from "./typescript-generator/generate.js";
 import { runtimeCanExecuteErasableTs } from "./util/runtime-can-execute-erasable-ts.js";
+import { toForwardSlashPath } from "./util/forward-slash-path.js";
 
 export { loadOpenApiDocument } from "./server/load-openapi-document.js";
 
@@ -113,9 +114,9 @@ export async function createMswHandlers(
   await fs.readFile(config.openApiPath);
   const openApiDocument = await loadOpenApiDocument(config.openApiPath);
   const modulesPath = config.basePath;
-  const compiledPathsDirectory = nodePath
-    .join(modulesPath, ".cache")
-    .replaceAll("\\", "/");
+  const compiledPathsDirectory = toForwardSlashPath(
+    nodePath.join(modulesPath, ".cache"),
+  );
 
   const registry = new Registry();
   const contextRegistry = new ContextRegistry();
@@ -175,9 +176,9 @@ export async function counterfact(config: Config) {
 
   const nativeTs = await runtimeCanExecuteErasableTs();
 
-  const compiledPathsDirectory = nodePath
-    .join(modulesPath, nativeTs ? "routes" : ".cache")
-    .replaceAll("\\", "/");
+  const compiledPathsDirectory = toForwardSlashPath(
+    nodePath.join(modulesPath, nativeTs ? "routes" : ".cache"),
+  );
 
   if (!nativeTs) {
     await rm(compiledPathsDirectory, { force: true, recursive: true });
@@ -208,7 +209,7 @@ export async function counterfact(config: Config) {
   );
 
   const transpiler = new Transpiler(
-    nodePath.join(modulesPath, "routes").replaceAll("\\", "/"),
+    toForwardSlashPath(nodePath.join(modulesPath, "routes")),
     compiledPathsDirectory,
     "commonjs",
   );
@@ -217,7 +218,7 @@ export async function counterfact(config: Config) {
     compiledPathsDirectory,
     registry,
     contextRegistry,
-    nodePath.join(modulesPath, "scenarios").replaceAll("\\", "/"),
+    toForwardSlashPath(nodePath.join(modulesPath, "scenarios")),
     scenarioRegistry,
   );
 
