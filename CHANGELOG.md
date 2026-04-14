@@ -1,5 +1,11 @@
 # counterfact
 
+## 2.8.1
+
+### Patch Changes
+
+- 0b32088: Use `Pick<Config, ...>` in function signatures to declare only the config keys each function actually uses. This improves readability and makes each function's dependencies explicit.
+
 ## 2.8.0
 
 ### Minor Changes
