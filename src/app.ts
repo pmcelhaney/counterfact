@@ -174,10 +174,21 @@ export async function counterfact(config: Config) {
   const runner = await ApiRunner.create(config);
 
   const koaApp = createKoaApp({
-    config,
-    contextRegistry: runner.contextRegistry,
-    dispatcher: runner.dispatcher,
-    registry: runner.registry,
+    runner,
+    adminApiToken: config.adminApiToken,
+    alwaysFakeOptionals: config.alwaysFakeOptionals,
+    basePath: config.basePath,
+    buildCache: config.buildCache,
+    generate: config.generate,
+    port: config.port,
+    proxyPaths: config.proxyPaths,
+    proxyUrl: config.proxyUrl,
+    startAdminApi: config.startAdminApi,
+    startRepl: config.startRepl,
+    startServer: config.startServer,
+    validateRequests: config.validateRequests,
+    validateResponses: config.validateResponses,
+    watch: config.watch,
   });
 
   async function start(
