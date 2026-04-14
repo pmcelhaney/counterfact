@@ -5,7 +5,6 @@ import { koaSwagger } from "koa2-swagger-ui";
 
 import type { Config } from "./config.js";
 import { openapiMiddleware } from "./openapi-middleware.js";
-import type { Registry } from "./registry.js";
 
 const debug = createDebug("counterfact:server:create-koa-app");
 
@@ -21,7 +20,6 @@ const debug = createDebug("counterfact:server:create-koa-app");
  * 6. JSON serialisation of object bodies
  * 7. Route-dispatching middleware
  *
- * @param registry - The route registry used for debug logging.
  * @param routesMiddleware - The pre-built route-dispatching middleware.
  * @param config - Server configuration.
  * @param adminApiMiddleware - Optional pre-built admin API middleware; when
@@ -29,7 +27,6 @@ const debug = createDebug("counterfact:server:create-koa-app");
  * @returns A configured Koa application (not yet listening).
  */
 export function createKoaApp(
-  registry: Registry,
   routesMiddleware: Koa.Middleware,
   config: Config,
   adminApiMiddleware?: Koa.Middleware,
@@ -58,7 +55,6 @@ export function createKoaApp(
   }
 
   debug("basePath: %s", config.basePath);
-  debug("routes", registry.routes);
 
   app.use(async (ctx, next) => {
     if (ctx.URL.pathname === "/counterfact") {

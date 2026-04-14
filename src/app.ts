@@ -231,7 +231,7 @@ export async function counterfact(config: Config) {
     ? adminApiMiddleware(registry, contextRegistry, config)
     : undefined;
 
-  const koaApp = createKoaApp(registry, middleware, config, adminMiddleware);
+  const koaApp = createKoaApp(middleware, config, adminMiddleware);
 
   async function start(options: Config) {
     const { generate, startServer, watch, buildCache } = options;
