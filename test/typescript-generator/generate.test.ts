@@ -1,6 +1,6 @@
 import { usingTemporaryFiles } from "using-temporary-files";
 
-import { generate } from "../../src/typescript-generator/generate.js";
+import { CodeGenerator } from "../../src/typescript-generator/code-generator.js";
 import { ScenarioFileGenerator } from "../../src/typescript-generator/scenario-file-generator.js";
 import { Repository } from "../../src/typescript-generator/repository.js";
 
@@ -14,12 +14,12 @@ describe("end-to-end test", () => {
         await Promise.resolve(undefined);
       };
 
-      await generate(
-        "./petstore.yaml",
-        basePath,
-        { routes: true, types: true },
-        repository,
-      );
+      const codeGenerator = new CodeGenerator("./petstore.yaml", basePath, {
+        routes: true,
+        types: true,
+      });
+
+      await codeGenerator.generate(repository);
       await repository.finished();
 
       for (const [scriptPath, script] of repository.scripts.entries()) {
@@ -41,12 +41,13 @@ describe("end-to-end test", () => {
         await Promise.resolve(undefined);
       };
 
-      await generate(
+      const codeGenerator = new CodeGenerator(
         "./test/fixtures/openapi-example.yaml",
         basePath,
         { routes: true, types: true },
-        repository,
       );
+
+      await codeGenerator.generate(repository);
       await repository.finished();
 
       for (const [scriptPath, script] of repository.scripts.entries()) {
@@ -87,14 +88,16 @@ describe("path item non-HTTP-verb fields", () => {
         await Promise.resolve(undefined);
       };
 
-      await expect(
-        generate(
-          $.path("openapi.json"),
-          basePath,
-          { routes: true, types: true },
-          repository,
-        ),
-      ).resolves.toBeUndefined();
+      const codeGenerator = new CodeGenerator(
+        $.path("openapi.json"),
+        basePath,
+        {
+          routes: true,
+          types: true,
+        },
+      );
+
+      await expect(codeGenerator.generate(repository)).resolves.toBeUndefined();
 
       await repository.finished();
 
@@ -114,7 +117,12 @@ describe("_.context type generation", () => {
         await Promise.resolve(undefined);
       };
 
-      await generate("./petstore.yaml", basePath, { types: true }, repository);
+      const codeGenerator = new CodeGenerator("./petstore.yaml", basePath, {
+        routes: false,
+        types: true,
+      });
+
+      await codeGenerator.generate(repository);
       await new ScenarioFileGenerator(basePath).generate();
 
       const content = await $.read("types/_.context.ts");
@@ -147,7 +155,12 @@ describe("_.context type generation", () => {
 
       await $.add("routes/_.context.ts", "export class Context {}");
 
-      await generate("./petstore.yaml", basePath, { types: true }, repository);
+      const codeGenerator = new CodeGenerator("./petstore.yaml", basePath, {
+        routes: false,
+        types: true,
+      });
+
+      await codeGenerator.generate(repository);
       await new ScenarioFileGenerator(basePath).generate();
 
       const content = await $.read("types/_.context.ts");
@@ -176,7 +189,12 @@ describe("_.context type generation", () => {
       await $.add("routes/_.context.ts", "export class Context {}");
       await $.add("routes/pets/_.context.ts", "export class Context {}");
 
-      await generate("./petstore.yaml", basePath, { types: true }, repository);
+      const codeGenerator = new CodeGenerator("./petstore.yaml", basePath, {
+        routes: false,
+        types: true,
+      });
+
+      await codeGenerator.generate(repository);
       await new ScenarioFileGenerator(basePath).generate();
 
       const content = await $.read("types/_.context.ts");
@@ -214,7 +232,12 @@ describe("_.context type generation", () => {
         "export class Context {}",
       );
 
-      await generate("./petstore.yaml", basePath, { types: true }, repository);
+      const codeGenerator = new CodeGenerator("./petstore.yaml", basePath, {
+        routes: false,
+        types: true,
+      });
+
+      await codeGenerator.generate(repository);
       await new ScenarioFileGenerator(basePath).generate();
 
       const content = await $.read("types/_.context.ts");
