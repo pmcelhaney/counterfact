@@ -4,12 +4,10 @@ import { createHttpTerminator, type HttpTerminator } from "http-terminator";
 
 import { startRepl as startReplServer } from "./repl/repl.js";
 import { createRouteFunction } from "./repl/route-builder.js";
-import { adminApiMiddleware } from "./server/admin-api-middleware.js";
 import type { Config } from "./server/config.js";
 import { ContextRegistry } from "./server/context-registry.js";
 import { createKoaApp } from "./server/create-koa-app.js";
 import { Dispatcher, type DispatcherRequest } from "./server/dispatcher.js";
-import { routesMiddleware } from "./server/koa-middleware.js";
 import { loadOpenApiDocument } from "./server/load-openapi-document.js";
 import { ModuleLoader } from "./server/module-loader.js";
 import { Registry } from "./server/registry.js";
@@ -222,13 +220,12 @@ export async function counterfact(config: Config) {
     scenarioRegistry,
   );
 
-  const middleware = routesMiddleware(dispatcher, config);
-
-  const adminMiddleware = config.startAdminApi
-    ? adminApiMiddleware(registry, contextRegistry, config)
-    : undefined;
-
-  const koaApp = createKoaApp(middleware, config, adminMiddleware);
+  const koaApp = createKoaApp({
+    config,
+    contextRegistry,
+    dispatcher,
+    registry,
+  });
 
   async function start(options: Config) {
     const { generate, startServer, watch, buildCache } = options;
@@ -295,7 +292,6 @@ export async function counterfact(config: Config) {
   return {
     contextRegistry,
     koaApp,
-    routesMiddleware: middleware,
     registry,
     start,
     startRepl: () =>
