@@ -1,0 +1,224 @@
+import { rm } from "node:fs/promises";
+
+import type { Config } from "./server/config.js";
+import { ContextRegistry } from "./server/context-registry.js";
+import { Dispatcher } from "./server/dispatcher.js";
+import { loadOpenApiDocument } from "./server/load-openapi-document.js";
+import { ModuleLoader } from "./server/module-loader.js";
+import type { OpenApiDocument } from "./server/openapi-document.js";
+import { Registry } from "./server/registry.js";
+import { ScenarioRegistry } from "./server/scenario-registry.js";
+import { Transpiler } from "./server/transpiler.js";
+import { CodeGenerator } from "./typescript-generator/code-generator.js";
+import { ScenarioFileGenerator } from "./typescript-generator/scenario-file-generator.js";
+import { pathJoin } from "./util/forward-slash-path.js";
+import { runtimeCanExecuteErasableTs } from "./util/runtime-can-execute-erasable-ts.js";
+
+/**
+ * Encapsulates the creation and lifecycle management of all Counterfact
+ * sub-systems for a single API specification.
+ *
+ * Use the static {@link ApiRunner.create} factory method to construct an
+ * instance — the constructor requires async initialisation (loading the
+ * OpenAPI document and probing for native TypeScript support) that cannot
+ * be done in a synchronous constructor.
+ *
+ * Each sub-system is exposed as a public property so callers can interact
+ * with individual components directly when needed. The composite methods
+ * {@link generate}, {@link load}, {@link watch}, and {@link stopWatching}
+ * coordinate across multiple sub-systems and encapsulate the conditional
+ * logic driven by the configuration.
+ */
+export class ApiRunner {
+  /** Stores loaded route handlers, keyed by path. */
+  public readonly registry: Registry;
+
+  /** Stores context objects per route path and dispatches change events. */
+  public readonly contextRegistry: ContextRegistry;
+
+  /** Registry of loaded scenario modules (used by the REPL). */
+  public readonly scenarioRegistry: ScenarioRegistry;
+
+  /** Generates `types/_.context.ts` and the default `scenarios/index.ts`. */
+  public readonly scenarioFileGenerator: ScenarioFileGenerator;
+
+  /** Reads the OpenAPI spec and writes TypeScript route/type stub files. */
+  public readonly codeGenerator: CodeGenerator;
+
+  /** Routes incoming HTTP requests to the matching handler in `registry`. */
+  public readonly dispatcher: Dispatcher;
+
+  /**
+   * Compiles TypeScript route files to JavaScript when the runtime cannot
+   * execute TypeScript natively.
+   */
+  public readonly transpiler: Transpiler;
+
+  /**
+   * Imports compiled route/context/scenario modules and hot-reloads them on
+   * file-system changes.
+   */
+  public readonly moduleLoader: ModuleLoader;
+
+  /**
+   * The loaded OpenAPI document, or `undefined` when `config.openApiPath`
+   * is `"_"` (spec-less mode).
+   */
+  public readonly openApiDocument: OpenApiDocument | undefined;
+
+  /** `true` when the current Node.js runtime can execute TypeScript natively. */
+  public readonly nativeTs: boolean;
+
+  private readonly config: Config;
+
+  private constructor(
+    config: Config,
+    nativeTs: boolean,
+    openApiDocument: OpenApiDocument | undefined,
+  ) {
+    const modulesPath = config.basePath;
+    const compiledPathsDirectory = pathJoin(
+      modulesPath,
+      nativeTs ? "routes" : ".cache",
+    );
+
+    this.config = config;
+    this.nativeTs = nativeTs;
+    this.openApiDocument = openApiDocument;
+
+    this.registry = new Registry();
+    this.contextRegistry = new ContextRegistry();
+    this.scenarioRegistry = new ScenarioRegistry();
+
+    this.scenarioFileGenerator = new ScenarioFileGenerator(modulesPath);
+
+    this.codeGenerator = new CodeGenerator(
+      config.openApiPath,
+      config.basePath,
+      config.generate,
+    );
+
+    this.dispatcher = new Dispatcher(
+      this.registry,
+      this.contextRegistry,
+      openApiDocument,
+      config,
+    );
+
+    this.transpiler = new Transpiler(
+      pathJoin(modulesPath, "routes"),
+      compiledPathsDirectory,
+      "commonjs",
+    );
+
+    this.moduleLoader = new ModuleLoader(
+      compiledPathsDirectory,
+      this.registry,
+      this.contextRegistry,
+      pathJoin(modulesPath, "scenarios"),
+      this.scenarioRegistry,
+    );
+  }
+
+  /**
+   * Creates and returns a fully initialised `ApiRunner`.
+   *
+   * Probes for native TypeScript support, optionally cleans the compiled
+   * output directory, and loads the OpenAPI document before constructing
+   * the runner.
+   *
+   * @param config - Runtime configuration for this runner instance.
+   */
+  public static async create(config: Config): Promise<ApiRunner> {
+    const nativeTs = await runtimeCanExecuteErasableTs();
+
+    const compiledPathsDirectory = pathJoin(
+      config.basePath,
+      nativeTs ? "routes" : ".cache",
+    );
+
+    if (!nativeTs) {
+      await rm(compiledPathsDirectory, { force: true, recursive: true });
+    }
+
+    const openApiDocument =
+      config.openApiPath === "_"
+        ? undefined
+        : await loadOpenApiDocument(config.openApiPath);
+
+    return new ApiRunner(config, nativeTs, openApiDocument);
+  }
+
+  /**
+   * Generates TypeScript route stubs and type files from the OpenAPI spec.
+   *
+   * Respects the `config.generate.routes` and `config.generate.types` flags:
+   * - Routes and types are only generated when `config.openApiPath` is not `"_"`.
+   * - The scenario context type file is always generated when
+   *   `config.generate.types` is `true`, even without a spec.
+   */
+  public async generate(): Promise<void> {
+    if (
+      this.config.openApiPath !== "_" &&
+      (this.config.generate.routes || this.config.generate.types)
+    ) {
+      await this.codeGenerator.generate();
+    }
+
+    if (this.config.generate.types) {
+      await this.scenarioFileGenerator.generate();
+    }
+  }
+
+  /**
+   * Loads all compiled route, context, and scenario modules into the
+   * appropriate registries.
+   */
+  public async load(): Promise<void> {
+    await this.moduleLoader.load();
+  }
+
+  /**
+   * Starts watching all relevant file-system locations for changes.
+   *
+   * - Watches the OpenAPI spec and re-generates code on change (when
+   *   `config.watch.routes` or `config.watch.types` is `true`).
+   * - Watches `_.context.ts` files and regenerates the scenario context
+   *   type (when `config.watch.types` is `true`).
+   * - Watches the OpenAPI document file itself for live reloads.
+   * - Watches TypeScript route files and transpiles them (when the runtime
+   *   does not support native TypeScript execution).
+   * - Watches compiled modules and hot-reloads them.
+   */
+  public async watch(): Promise<void> {
+    if (
+      this.config.openApiPath !== "_" &&
+      (this.config.watch.routes || this.config.watch.types)
+    ) {
+      await this.codeGenerator.watch();
+    }
+
+    if (this.config.watch.types) {
+      await this.scenarioFileGenerator.watch();
+    }
+
+    await this.openApiDocument?.watch();
+
+    if (!this.nativeTs) {
+      await this.transpiler.watch();
+    }
+
+    await this.moduleLoader.watch();
+  }
+
+  /**
+   * Stops all active file-system watchers across every sub-system.
+   */
+  public async stopWatching(): Promise<void> {
+    await this.codeGenerator.stopWatching();
+    await this.scenarioFileGenerator.stopWatching();
+    await this.transpiler.stopWatching();
+    await this.moduleLoader.stopWatching();
+    await this.openApiDocument?.stopWatching();
+  }
+}

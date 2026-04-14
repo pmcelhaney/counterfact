@@ -1,7 +1,8 @@
-import fs, { rm } from "node:fs/promises";
+import fs from "node:fs/promises";
 
 import { createHttpTerminator, type HttpTerminator } from "http-terminator";
 
+import { ApiRunner } from "./api-runner.js";
 import { startRepl as startReplServer } from "./repl/repl.js";
 import { createRouteFunction } from "./repl/route-builder.js";
 import type { Config } from "./server/config.js";
@@ -12,10 +13,6 @@ import { loadOpenApiDocument } from "./server/load-openapi-document.js";
 import { ModuleLoader } from "./server/module-loader.js";
 import { Registry } from "./server/registry.js";
 import { ScenarioRegistry } from "./server/scenario-registry.js";
-import { Transpiler } from "./server/transpiler.js";
-import { CodeGenerator } from "./typescript-generator/code-generator.js";
-import { ScenarioFileGenerator } from "./typescript-generator/scenario-file-generator.js";
-import { runtimeCanExecuteErasableTs } from "./util/runtime-can-execute-erasable-ts.js";
 import { pathJoin } from "./util/forward-slash-path.js";
 
 export { loadOpenApiDocument } from "./server/load-openapi-document.js";
@@ -174,64 +171,13 @@ export async function createMswHandlers(
  *     live server state.
  */
 export async function counterfact(config: Config) {
-  const modulesPath = config.basePath;
-
-  const nativeTs = await runtimeCanExecuteErasableTs();
-
-  const compiledPathsDirectory = pathJoin(
-    modulesPath,
-    nativeTs ? "routes" : ".cache",
-  );
-
-  if (!nativeTs) {
-    await rm(compiledPathsDirectory, { force: true, recursive: true });
-  }
-
-  const registry = new Registry();
-
-  const contextRegistry = new ContextRegistry();
-
-  const scenarioRegistry = new ScenarioRegistry();
-
-  const scenarioFileGenerator = new ScenarioFileGenerator(modulesPath);
-
-  const codeGenerator = new CodeGenerator(
-    config.openApiPath,
-    config.basePath,
-    config.generate,
-  );
-
-  const openApiDocument =
-    config.openApiPath === "_"
-      ? undefined
-      : await loadOpenApiDocument(config.openApiPath);
-
-  const dispatcher = new Dispatcher(
-    registry,
-    contextRegistry,
-    openApiDocument,
-    config,
-  );
-
-  const transpiler = new Transpiler(
-    pathJoin(modulesPath, "routes"),
-    compiledPathsDirectory,
-    "commonjs",
-  );
-
-  const moduleLoader = new ModuleLoader(
-    compiledPathsDirectory,
-    registry,
-    contextRegistry,
-    pathJoin(modulesPath, "scenarios"),
-    scenarioRegistry,
-  );
+  const runner = await ApiRunner.create(config);
 
   const koaApp = createKoaApp({
     config,
-    contextRegistry,
-    dispatcher,
-    registry,
+    contextRegistry: runner.contextRegistry,
+    dispatcher: runner.dispatcher,
+    registry: runner.registry,
   });
 
   async function start(
@@ -240,37 +186,37 @@ export async function counterfact(config: Config) {
     const { generate, startServer, watch, buildCache } = options;
 
     if (config.openApiPath !== "_" && (generate.routes || generate.types)) {
-      await codeGenerator.generate();
+      await runner.codeGenerator.generate();
     }
 
     if (generate.types) {
-      await scenarioFileGenerator.generate();
+      await runner.scenarioFileGenerator.generate();
     }
 
     if (config.openApiPath !== "_" && (watch.routes || watch.types)) {
-      await codeGenerator.watch();
+      await runner.codeGenerator.watch();
     }
 
     if (watch.types) {
-      await scenarioFileGenerator.watch();
+      await runner.scenarioFileGenerator.watch();
     }
 
     let httpTerminator: HttpTerminator | undefined;
 
     if (startServer) {
-      await openApiDocument?.watch();
+      await runner.openApiDocument?.watch();
 
-      if (!nativeTs) {
-        await transpiler.watch();
+      if (!runner.nativeTs) {
+        await runner.transpiler.watch();
       }
-      await moduleLoader.load();
-      await moduleLoader.watch();
+      await runner.load();
+      await runner.moduleLoader.watch();
 
       await runStartupScenario(
-        scenarioRegistry,
-        contextRegistry,
+        runner.scenarioRegistry,
+        runner.contextRegistry,
         config,
-        openApiDocument,
+        runner.openApiDocument,
       );
 
       const server = koaApp.listen({
@@ -282,35 +228,31 @@ export async function counterfact(config: Config) {
       });
     } else if (buildCache) {
       // If we are not starting the server, we still want to transpile and load modules
-      await transpiler.watch();
-      await transpiler.stopWatching();
+      await runner.transpiler.watch();
+      await runner.transpiler.stopWatching();
     }
 
     return {
       async stop() {
-        await codeGenerator.stopWatching();
-        await scenarioFileGenerator.stopWatching();
-        await transpiler.stopWatching();
-        await moduleLoader.stopWatching();
-        await openApiDocument?.stopWatching();
+        await runner.stopWatching();
         await httpTerminator?.terminate();
       },
     };
   }
 
   return {
-    contextRegistry,
+    contextRegistry: runner.contextRegistry,
     koaApp,
-    registry,
+    registry: runner.registry,
     start,
     startRepl: () =>
       startReplServer(
-        contextRegistry,
-        registry,
+        runner.contextRegistry,
+        runner.registry,
         config,
         undefined, // use the default print function (stdout)
-        openApiDocument,
-        scenarioRegistry,
+        runner.openApiDocument,
+        runner.scenarioRegistry,
       ),
   };
 }
