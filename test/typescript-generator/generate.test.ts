@@ -118,7 +118,6 @@ describe("_.context type generation", () => {
       };
 
       const codeGenerator = new CodeGenerator("./petstore.yaml", basePath, {
-        routes: false,
         types: true,
       });
 
@@ -156,7 +155,6 @@ describe("_.context type generation", () => {
       await $.add("routes/_.context.ts", "export class Context {}");
 
       const codeGenerator = new CodeGenerator("./petstore.yaml", basePath, {
-        routes: false,
         types: true,
       });
 
@@ -190,7 +188,6 @@ describe("_.context type generation", () => {
       await $.add("routes/pets/_.context.ts", "export class Context {}");
 
       const codeGenerator = new CodeGenerator("./petstore.yaml", basePath, {
-        routes: false,
         types: true,
       });
 
@@ -233,7 +230,6 @@ describe("_.context type generation", () => {
       );
 
       const codeGenerator = new CodeGenerator("./petstore.yaml", basePath, {
-        routes: false,
         types: true,
       });
 

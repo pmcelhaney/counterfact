@@ -30,8 +30,8 @@ export class CodeGenerator extends EventTarget {
 
   private readonly generateOptions: {
     prune?: boolean;
-    routes: boolean;
-    types: boolean;
+    routes?: boolean;
+    types?: boolean;
   };
 
   private watcher: FSWatcher | undefined;
@@ -39,7 +39,7 @@ export class CodeGenerator extends EventTarget {
   public constructor(
     openApiPath: string,
     destination: string,
-    generateOptions: { prune?: boolean; routes: boolean; types: boolean },
+    generateOptions: { prune?: boolean; routes?: boolean; types?: boolean },
   ) {
     super();
     this.openapiPath = openApiPath;
@@ -173,7 +173,9 @@ export class CodeGenerator extends EventTarget {
 
         repository
           .get(`routes${path}.ts`)
-          .export(new OperationCoder(operation, requestMethod, securitySchemes));
+          .export(
+            new OperationCoder(operation, requestMethod, securitySchemes),
+          );
       });
     });
 
