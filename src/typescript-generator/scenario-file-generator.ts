@@ -44,9 +44,14 @@ export class ScenarioFileGenerator {
   public async watch(): Promise<void> {
     const routesDir = nodePath.join(this.destination, "routes");
 
-    this.watcher = watch(routesDir, CHOKIDAR_OPTIONS).on("all", () => {
-      void writeScenarioContextType(this.destination);
-    });
+    this.watcher = watch(routesDir, CHOKIDAR_OPTIONS).on(
+      "all",
+      (_event, filePath: string) => {
+        if (filePath.endsWith("_.context.ts")) {
+          void writeScenarioContextType(this.destination);
+        }
+      },
+    );
 
     await waitForEvent(this.watcher, "ready");
   }
