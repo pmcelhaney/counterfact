@@ -101,7 +101,7 @@ function getAuthObject(
  * @param proxy - Proxy factory; injectable for testing.
  * @returns A Koa middleware function.
  */
-export function koaMiddleware(
+export function routesMiddleware(
   dispatcher: Dispatcher,
   config: Config,
   proxy = koaProxy,
