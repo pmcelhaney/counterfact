@@ -1,5 +1,39 @@
 # counterfact
 
+## 2.8.0
+
+### Minor Changes
+
+- c6e0625: Add startup scenario: export a function named `startup` from `scenarios/index.ts` and it will run automatically when the server initializes, right before the REPL starts. Use it to seed dummy data so the server is immediately useful without any manual REPL commands. If `startup` is not exported, the server starts normally with no error.
+- a0cbfcc: `createKoaApp()` now accepts named parameters via destructuring (`{ config, dispatcher, registry, contextRegistry }`) and creates `routesMiddleware` and `adminApiMiddleware` internally. `counterfact()` no longer returns `routesMiddleware`.
+- ae11a87: Refactor `OpenApiDocument` from a plain interface into a class.
+
+  `OpenApiDocument` now extends `EventTarget` and manages its own lifecycle:
+  - `new OpenApiDocument(source)` — create an instance pointing at a local path or URL
+  - `await document.load()` — read and parse the file, populating `paths`, `basePath`, and `produces`
+  - `await document.watch()` — start watching the source file; dispatches a `"reload"` event whenever the file changes on disk
+  - `await document.stopWatching()` — stop the file watcher
+
+  The separate `OpenApiWatcher` class has been removed; its behaviour is now built into `OpenApiDocument`.
+
+- 687f8fc: Remove the built-in GUI client (dashboard and RapiDoc pages) from src/client and the Handlebars dependency. The Swagger UI at /counterfact/swagger remains available. Navigating to /counterfact now redirects to /counterfact/swagger.
+- 55ee5e2: Export `ContextArgs` type from generated `types/_.context.ts` so that `_.context.ts` files can strongly type the `loadContext` and `readJson` parameters received in the Context constructor. The default `_.context.ts` template now imports and uses `ContextArgs`.
+
+### Patch Changes
+
+- 145c7f4: Add `toForwardSlashPath` utility function and `ForwardSlashPath` branded type. All path normalization that previously used inline `.replaceAll("\\", "/")` now goes through this single, centralized function, making Windows path handling easier to find and reason about.
+- e0414c7: Add JSDoc comments throughout the codebase, covering all major classes, functions, and interfaces in `src/server/`, `src/typescript-generator/`, `src/repl/`, and `src/util/`.
+- ea5b3e9: Make the hexagon in the REPL prompt the same shade of blue as the logo (#0071b5).
+- c047a4d: Refactor: extract a `ScenarioFileGenerator` class that encapsulates `writeScenarioContextType` and `writeDefaultScenariosIndex`, complete with its own file-system watcher for the `routes/` directory. `app.ts` now calls `ScenarioFileGenerator` directly instead of hooking into `contextRegistry` events.
+- 919fd3c: Fix Jest worker process failing to exit gracefully by closing REPL servers after each test in the repl test suite.
+- 688fb84: Fix TypeError when an OpenAPI Path Item Object contains non-HTTP-verb fields such as `summary`, `description`, `servers`, or `parameters`. These fields are now correctly ignored during code generation instead of being treated as operations.
+- ca38a27: Moved `openapi-example.yaml` from the repository root into `test/fixtures/openapi-example.yaml` and expanded it with many OpenAPI edge cases: CRUD operations on `/users` and `/users/{userId}`, polymorphic events via `oneOf`/`allOf`/`discriminator`, nullable fields, enum types, integer formats, file upload via `multipart/form-data`, cookie parameters, deprecated endpoints, multiple response content types, a no-body `204` health-check endpoint, and free-form `additionalProperties` objects.
+- 8834b1d: Refactor `createKoaApp()` to accept `adminApiMiddleware` as a parameter instead of constructing it internally. Rename the `koaMiddleware` parameter and export to `routesMiddleware`.
+- 51e3cb1: Refactor docs information architecture: `docs/usage.md` is now a central hub page linking to individual feature pages under `docs/features/`, and pattern pages are consolidated under `docs/patterns/index.md`.
+- f97e8a7: Refactor `openapiMiddleware` to accept an array of `{ path, baseUrl, id }` document descriptors. When the array contains a single entry the document is still served at `/counterfact/openapi` (backward-compatible). When multiple entries are provided each document is served at `/counterfact/openapi/{id}`.
+- b26617e: Replaced the five-minute walkthrough README with a concise, confident two-paragraph introduction. Added ten README variants under `docs/readme-variants/` for the team to review and choose from.
+- e4e8757: Rename the `.apply` REPL command to `.scenario`. Update all references in code, tests, and documentation.
+
 ## 2.7.0
 
 ### Minor Changes
