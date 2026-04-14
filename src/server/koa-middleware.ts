@@ -103,7 +103,7 @@ function getAuthObject(
  */
 export function routesMiddleware(
   dispatcher: Dispatcher,
-  config: Config,
+  config: Pick<Config, "proxyUrl" | "routePrefix" | "proxyPaths">,
   proxy = koaProxy,
 ): Koa.Middleware {
   return async function middleware(ctx, next) {
