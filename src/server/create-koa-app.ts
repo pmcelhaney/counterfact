@@ -57,7 +57,9 @@ export function createKoaApp({
   );
 
   if (config.startAdminApi) {
-    app.use(adminApiMiddleware(runner.registry, runner.contextRegistry, config));
+    app.use(
+      adminApiMiddleware(runner.registry, runner.contextRegistry, config),
+    );
   }
 
   debug("basePath: %s", config.basePath);
