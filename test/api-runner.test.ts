@@ -122,7 +122,7 @@ describe("ApiRunner", () => {
       });
     });
 
-    it("sets openApiDocument to undefined when openApiPath is '_'", async () => {
+    it("sets openApiDocument to undefined in spec-less mode", async () => {
       await usingTemporaryFiles(async ($) => {
         const runner = await ApiRunner.create({
           ...baseConfig,
@@ -164,17 +164,36 @@ describe("ApiRunner", () => {
         await expect(runner.generate()).resolves.toBeUndefined();
       });
     });
+
+    it("generates type files when config.generate.types is true", async () => {
+      await usingTemporaryFiles(async ($) => {
+        const runner = await ApiRunner.create({
+          ...baseConfig,
+          basePath: $.path("."),
+          generate: { routes: false, types: true },
+        });
+        await runner.generate();
+        // ScenarioFileGenerator writes types/_.context.ts
+        const content = await $.read("types/_.context.ts");
+        expect(content).toContain("Scenario$");
+      });
+    });
   });
 
   describe("load()", () => {
-    it("resolves without throwing when routes directory exists", async () => {
+    it("loads modules into the registry from the routes directory", async () => {
       await usingTemporaryFiles(async ($) => {
-        await $.addDirectory("routes");
+        await $.add(
+          "routes/hello.js",
+          `export function GET() { return { body: "hello" }; }`,
+        );
         const runner = await ApiRunner.create({
           ...baseConfig,
           basePath: $.path("."),
         });
-        await expect(runner.load()).resolves.toBeUndefined();
+        await runner.load();
+        const routes = runner.registry.routes;
+        expect(routes.some((r) => r.path === "/hello")).toBe(true);
       });
     });
   });
@@ -186,6 +205,19 @@ describe("ApiRunner", () => {
           ...baseConfig,
           basePath: $.path("."),
         });
+        await expect(runner.stopWatching()).resolves.toBeUndefined();
+      });
+    });
+
+    it("stops watchers that were started by load() and watch()", async () => {
+      await usingTemporaryFiles(async ($) => {
+        await $.addDirectory("routes");
+        const runner = await ApiRunner.create({
+          ...baseConfig,
+          basePath: $.path("."),
+        });
+        await runner.load();
+        await runner.moduleLoader.watch();
         await expect(runner.stopWatching()).resolves.toBeUndefined();
       });
     });
