@@ -3,8 +3,13 @@ import Koa from "koa";
 import bodyParser from "koa-bodyparser";
 import { koaSwagger } from "koa2-swagger-ui";
 
+import { adminApiMiddleware } from "./admin-api-middleware.js";
 import type { Config } from "./config.js";
+import type { ContextRegistry } from "./context-registry.js";
+import type { Dispatcher } from "./dispatcher.js";
+import { routesMiddleware } from "./koa-middleware.js";
 import { openapiMiddleware } from "./openapi-middleware.js";
+import type { Registry } from "./registry.js";
 
 const debug = createDebug("counterfact:server:create-koa-app");
 
@@ -14,23 +19,29 @@ const debug = createDebug("counterfact:server:create-koa-app");
  * The middleware stack (in order) is:
  * 1. OpenAPI document serving at `/counterfact/openapi`
  * 2. Swagger UI at `/counterfact/swagger`
- * 3. Admin API (when provided) at `/_counterfact/api/`
+ * 3. Admin API (when `config.startAdminApi` is `true`) at `/_counterfact/api/`
  * 4. Redirect `/counterfact` → `/counterfact/swagger`
  * 5. Body parser
  * 6. JSON serialisation of object bodies
  * 7. Route-dispatching middleware
  *
- * @param routesMiddleware - The pre-built route-dispatching middleware.
  * @param config - Server configuration.
- * @param adminApiMiddleware - Optional pre-built admin API middleware; when
- *   provided it is mounted at `/_counterfact/api/`.
+ * @param dispatcher - The Dispatcher used to build the route-dispatching middleware.
+ * @param registry - The route Registry used to build the admin API middleware.
+ * @param contextRegistry - The ContextRegistry used to build the admin API middleware.
  * @returns A configured Koa application (not yet listening).
  */
-export function createKoaApp(
-  routesMiddleware: Koa.Middleware,
-  config: Config,
-  adminApiMiddleware?: Koa.Middleware,
-) {
+export function createKoaApp({
+  config,
+  contextRegistry,
+  dispatcher,
+  registry,
+}: {
+  config: Config;
+  contextRegistry: ContextRegistry;
+  dispatcher: Dispatcher;
+  registry: Registry;
+}) {
   const app = new Koa();
 
   app.use(
@@ -52,8 +63,8 @@ export function createKoaApp(
     }),
   );
 
-  if (adminApiMiddleware) {
-    app.use(adminApiMiddleware);
+  if (config.startAdminApi) {
+    app.use(adminApiMiddleware(registry, contextRegistry, config));
   }
 
   debug("basePath: %s", config.basePath);
@@ -84,7 +95,7 @@ export function createKoaApp(
     }
   });
 
-  app.use(routesMiddleware);
+  app.use(routesMiddleware(dispatcher, config));
 
   return app;
 }

@@ -94,7 +94,6 @@ it("prompts for a password change when the password has expired", async () => {
 | `contextRegistry` | `ContextRegistry`              | Registry of all context objects keyed by path. Call `.find(path)` to get the context for a given route prefix.               |
 | `registry`        | `Registry`                     | Registry of all loaded route modules.                                                                                        |
 | `koaApp`          | `Koa`                          | The underlying Koa application.                                                                                              |
-| `routesMiddleware` | `Koa.Middleware`               | The Counterfact request-dispatch middleware.                                                                                 |
 | `start(config)`   | `async (config) => { stop() }` | Starts the server (and optionally the file watcher and code generator). Returns a `stop()` function to gracefully shut down. |
 | `startRepl()`     | `() => REPLServer`             | Starts the interactive REPL. Returns the REPL server instance.                                                               |
 
