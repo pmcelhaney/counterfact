@@ -3,9 +3,9 @@ import Koa from "koa";
 import bodyParser from "koa-bodyparser";
 import { koaSwagger } from "koa2-swagger-ui";
 
-import type { ApiRunner } from "../api-runner.js";
+import type { ApiRunner } from "../../api-runner.js";
 import { adminApiMiddleware } from "./admin-api-middleware.js";
-import type { Config } from "./config.js";
+import type { Config } from "../config.js";
 import { routesMiddleware } from "./koa-middleware.js";
 import { openapiMiddleware } from "./openapi-middleware.js";
 
@@ -17,11 +17,11 @@ const debug = createDebug("counterfact:server:create-koa-app");
  * The middleware stack (in order) is:
  * 1. OpenAPI document serving at `/counterfact/openapi`
  * 2. Swagger UI at `/counterfact/swagger`
- * 3. Admin API (when `config.startAdminApi` is `true`) at `/_counterfact/api/`
+ * 3. Admin API (when `config.startAdminApi` is `true`) at `/_counterfact/api`
  * 4. Redirect `/counterfact` → `/counterfact/swagger`
  * 5. Body parser
  * 6. JSON serialisation of object bodies
- * 7. Route-dispatching middleware
+ * 7. Route-dispatching middleware at `config.routePrefix`
  *
  * @param runner - The ApiRunner instance providing the dispatcher, registry,
  *   context registry, OpenAPI path, and route prefix.
@@ -38,12 +38,10 @@ export function createKoaApp({
   const app = new Koa();
 
   app.use(
-    openapiMiddleware([
-      {
-        path: runner.openApiPath,
-        baseUrl: `//localhost:${config.port}${runner.routePrefix}`,
-      },
-    ]),
+    openapiMiddleware("/counterfact/openapi", {
+      path: runner.openApiPath,
+      baseUrl: `//localhost:${config.port}${runner.routePrefix}`,
+    }),
   );
 
   app.use(
@@ -58,7 +56,12 @@ export function createKoaApp({
 
   if (config.startAdminApi) {
     app.use(
-      adminApiMiddleware(runner.registry, runner.contextRegistry, config),
+      adminApiMiddleware(
+        "/_counterfact/api",
+        runner.registry,
+        runner.contextRegistry,
+        config,
+      ),
     );
   }
 
@@ -90,7 +93,7 @@ export function createKoaApp({
     }
   });
 
-  app.use(routesMiddleware(runner.dispatcher, config));
+  app.use(routesMiddleware(config.routePrefix, runner.dispatcher, config));
 
   return app;
 }
