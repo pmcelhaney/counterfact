@@ -1,6 +1,6 @@
 import { once } from "node:events";
 import fs from "node:fs/promises";
-import nodePath, { basename, dirname } from "node:path";
+import nodePath, { basename } from "node:path";
 
 import { type FSWatcher, watch } from "chokidar";
 import createDebug from "debug";
@@ -18,7 +18,11 @@ import { ModuleDependencyGraph } from "./module-dependency-graph.js";
 import type { Module, Registry } from "./registry.js";
 import { ScenarioRegistry } from "./scenario-registry.js";
 import { uncachedImport } from "./uncached-import.js";
-import { toForwardSlashPath } from "../util/forward-slash-path.js";
+import {
+  toForwardSlashPath,
+  pathDirname,
+  pathRelative,
+} from "../util/forward-slash-path.js";
 import { unescapePathForWindows } from "../util/windows-escape.js";
 
 const { uncachedRequire } = await import("./uncached-require.cjs");
@@ -223,8 +227,8 @@ export class ModuleLoader extends EventTarget {
     const normalizedScenariosPath = toForwardSlashPath(
       this.scenariosPath ?? "",
     );
-    const directory = toForwardSlashPath(
-      dirname(pathName.slice(normalizedScenariosPath.length)),
+    const directory = pathDirname(
+      pathName.slice(normalizedScenariosPath.length),
     );
     const name = nodePath.parse(basename(pathName)).name;
     const url = unescapePathForWindows(
@@ -263,9 +267,7 @@ export class ModuleLoader extends EventTarget {
   private async loadEndpoint(pathName: string) {
     debug("importing module: %s", pathName);
 
-    const directory = toForwardSlashPath(
-      dirname(pathName.slice(this.basePath.length)),
-    );
+    const directory = pathDirname(pathName.slice(this.basePath.length));
 
     const url = unescapePathForWindows(
       toForwardSlashPath(
@@ -294,8 +296,9 @@ export class ModuleLoader extends EventTarget {
           importError instanceof SyntaxError ||
           String(importError).startsWith("SyntaxError:");
 
-        const displayPath = toForwardSlashPath(
-          nodePath.relative(process.cwd(), unescapePathForWindows(pathName)),
+        const displayPath = pathRelative(
+          process.cwd(),
+          unescapePathForWindows(pathName),
         );
 
         const message = isSyntaxError

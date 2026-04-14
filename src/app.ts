@@ -1,5 +1,4 @@
 import fs, { rm } from "node:fs/promises";
-import nodePath from "node:path";
 
 import { createHttpTerminator, type HttpTerminator } from "http-terminator";
 
@@ -19,7 +18,7 @@ import { Transpiler } from "./server/transpiler.js";
 import { CodeGenerator } from "./typescript-generator/code-generator.js";
 import { writeScenarioContextType } from "./typescript-generator/generate.js";
 import { runtimeCanExecuteErasableTs } from "./util/runtime-can-execute-erasable-ts.js";
-import { toForwardSlashPath } from "./util/forward-slash-path.js";
+import { pathJoin } from "./util/forward-slash-path.js";
 
 export { loadOpenApiDocument } from "./server/load-openapi-document.js";
 
@@ -114,9 +113,7 @@ export async function createMswHandlers(
   await fs.readFile(config.openApiPath);
   const openApiDocument = await loadOpenApiDocument(config.openApiPath);
   const modulesPath = config.basePath;
-  const compiledPathsDirectory = toForwardSlashPath(
-    nodePath.join(modulesPath, ".cache"),
-  );
+  const compiledPathsDirectory = pathJoin(modulesPath, ".cache");
 
   const registry = new Registry();
   const contextRegistry = new ContextRegistry();
@@ -176,8 +173,9 @@ export async function counterfact(config: Config) {
 
   const nativeTs = await runtimeCanExecuteErasableTs();
 
-  const compiledPathsDirectory = toForwardSlashPath(
-    nodePath.join(modulesPath, nativeTs ? "routes" : ".cache"),
+  const compiledPathsDirectory = pathJoin(
+    modulesPath,
+    nativeTs ? "routes" : ".cache",
   );
 
   if (!nativeTs) {
@@ -209,7 +207,7 @@ export async function counterfact(config: Config) {
   );
 
   const transpiler = new Transpiler(
-    toForwardSlashPath(nodePath.join(modulesPath, "routes")),
+    pathJoin(modulesPath, "routes"),
     compiledPathsDirectory,
     "commonjs",
   );
@@ -218,7 +216,7 @@ export async function counterfact(config: Config) {
     compiledPathsDirectory,
     registry,
     contextRegistry,
-    toForwardSlashPath(nodePath.join(modulesPath, "scenarios")),
+    pathJoin(modulesPath, "scenarios"),
     scenarioRegistry,
   );
 

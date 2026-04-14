@@ -162,7 +162,7 @@ const { loadConfigFile } = await import(
   )
 );
 
-const { toForwardSlashPath } = await import(
+const { pathResolve } = await import(
   resolve(
     nativeTs
       ? "../src/util/forward-slash-path.js"
@@ -322,9 +322,9 @@ async function main(source, destination) {
     source = options.spec;
   }
 
-  const destinationPath = toForwardSlashPath(nodePath.resolve(destination));
+  const destinationPath = pathResolve(destination);
 
-  const basePath = toForwardSlashPath(nodePath.resolve(destinationPath));
+  const basePath = pathResolve(destinationPath);
 
   // If no action-related option is provided, default to all options
 

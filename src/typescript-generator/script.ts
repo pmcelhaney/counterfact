@@ -1,10 +1,12 @@
-import nodePath from "node:path";
-
 import createDebugger from "debug";
 import { format } from "prettier";
 
 import { escapePathForWindows } from "../util/windows-escape.js";
-import { toForwardSlashPath } from "../util/forward-slash-path.js";
+import {
+  pathJoin,
+  pathRelative,
+  pathDirname,
+} from "../util/forward-slash-path.js";
 import type { Coder, ExportStatement } from "./coder.js";
 import type { Repository } from "./repository.js";
 
@@ -237,9 +239,7 @@ export class Script {
   public importSharedType(name: string): string {
     return this.importExternal(
       name,
-      toForwardSlashPath(
-        nodePath.join(this.relativePathToBase, "counterfact-types/index.ts"),
-      ),
+      pathJoin(this.relativePathToBase, "counterfact-types/index.ts"),
       true,
     );
   }
@@ -275,11 +275,9 @@ export class Script {
   public importStatements(): string[] {
     return Array.from(this.imports, ([name, { isDefault, isType, script }]) => {
       const resolvedPath = escapePathForWindows(
-        toForwardSlashPath(
-          nodePath.relative(
-            toForwardSlashPath(nodePath.dirname(this.path)),
-            script.path.replace(/\.ts$/u, ".js"),
-          ),
+        pathRelative(
+          pathDirname(this.path),
+          script.path.replace(/\.ts$/u, ".js"),
         ),
       );
 

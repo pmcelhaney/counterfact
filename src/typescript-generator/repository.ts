@@ -6,7 +6,12 @@ import { fileURLToPath } from "node:url";
 import createDebug from "debug";
 
 import { ensureDirectoryExists } from "../util/ensure-directory-exists.js";
-import { toForwardSlashPath } from "../util/forward-slash-path.js";
+import {
+  toForwardSlashPath,
+  pathJoin,
+  pathRelative,
+  pathDirname,
+} from "../util/forward-slash-path.js";
 import { CONTEXT_FILE_TOKEN } from "./context-file-token.js";
 import { Script } from "./script.js";
 import { escapePathForWindows } from "../util/windows-escape.js";
@@ -125,9 +130,7 @@ export class Repository {
       async ([path, script]) => {
         const contents = await script.contents();
 
-        const fullPath = escapePathForWindows(
-          toForwardSlashPath(nodePath.join(destination, path)),
-        );
+        const fullPath = escapePathForWindows(pathJoin(destination, path));
 
         await ensureDirectoryExists(fullPath);
 
@@ -220,11 +223,9 @@ export class Context {
    * @param path - Repository-relative path of the script being generated.
    */
   public findContextPath(destination: string, path: string): string {
-    return toForwardSlashPath(
-      nodePath.relative(
-        nodePath.join(destination, nodePath.dirname(path)),
-        this.nearestContextFile(destination, path),
-      ),
+    return pathRelative(
+      nodePath.join(destination, nodePath.dirname(path)),
+      this.nearestContextFile(destination, path),
     );
   }
 
@@ -236,10 +237,7 @@ export class Context {
    * @param path - Repository-relative path to start from.
    */
   public nearestContextFile(destination: string, path: string): string {
-    const directory = toForwardSlashPath(nodePath.dirname(path)).replace(
-      "types/paths",
-      "routes",
-    );
+    const directory = pathDirname(path).replace("types/paths", "routes");
 
     const candidate = nodePath.join(destination, directory, "_.context.ts");
 

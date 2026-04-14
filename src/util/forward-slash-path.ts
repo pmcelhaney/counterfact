@@ -1,3 +1,5 @@
+import nodePath from "node:path";
+
 declare const __forwardSlashPath: unique symbol;
 
 /**
@@ -26,4 +28,54 @@ export type ForwardSlashPath = string & {
  */
 export function toForwardSlashPath(path: string): ForwardSlashPath {
   return path.replaceAll("\\", "/") as ForwardSlashPath;
+}
+
+/**
+ * Joins path segments and returns a {@link ForwardSlashPath} with forward
+ * slashes regardless of the host operating system.
+ *
+ * Equivalent to `toForwardSlashPath(nodePath.join(...paths))`.
+ *
+ * @param paths - Path segments to join.
+ * @returns The joined path normalised to forward slashes.
+ */
+export function pathJoin(...paths: string[]): ForwardSlashPath {
+  return toForwardSlashPath(nodePath.join(...paths));
+}
+
+/**
+ * Returns the relative path from `from` to `to` using forward slashes.
+ *
+ * Equivalent to `toForwardSlashPath(nodePath.relative(from, to))`.
+ *
+ * @param from - The starting path.
+ * @param to - The destination path.
+ * @returns The relative path normalised to forward slashes.
+ */
+export function pathRelative(from: string, to: string): ForwardSlashPath {
+  return toForwardSlashPath(nodePath.relative(from, to));
+}
+
+/**
+ * Returns the directory portion of a path using forward slashes.
+ *
+ * Equivalent to `toForwardSlashPath(nodePath.dirname(path))`.
+ *
+ * @param path - The file path.
+ * @returns The directory portion normalised to forward slashes.
+ */
+export function pathDirname(path: string): ForwardSlashPath {
+  return toForwardSlashPath(nodePath.dirname(path));
+}
+
+/**
+ * Resolves a sequence of paths into an absolute path using forward slashes.
+ *
+ * Equivalent to `toForwardSlashPath(nodePath.resolve(...paths))`.
+ *
+ * @param paths - Path segments to resolve.
+ * @returns The resolved absolute path normalised to forward slashes.
+ */
+export function pathResolve(...paths: string[]): ForwardSlashPath {
+  return toForwardSlashPath(nodePath.resolve(...paths));
 }
