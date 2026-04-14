@@ -160,11 +160,6 @@ export async function generate(
   await repository.writeFiles(destination, generateOptions);
 
   debug("finished writing the files");
-
-  if (generateOptions.types) {
-    await writeScenarioContextType(destination);
-    await writeDefaultScenariosIndex(destination);
-  }
 }
 
 interface ContextFileInfo {
@@ -396,7 +391,9 @@ export const help: Scenario = ($) => {
 };
 `;
 
-async function writeDefaultScenariosIndex(destination: string): Promise<void> {
+export async function writeDefaultScenariosIndex(
+  destination: string,
+): Promise<void> {
   const scenariosDir = nodePath.join(destination, "scenarios");
   const filePath = nodePath.join(scenariosDir, "index.ts");
 

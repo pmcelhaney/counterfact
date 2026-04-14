@@ -1,6 +1,7 @@
 import { usingTemporaryFiles } from "using-temporary-files";
 
 import { generate } from "../../src/typescript-generator/generate.js";
+import { ScenarioFileGenerator } from "../../src/typescript-generator/scenario-file-generator.js";
 import { Repository } from "../../src/typescript-generator/repository.js";
 
 describe("end-to-end test", () => {
@@ -114,6 +115,7 @@ describe("_.context type generation", () => {
       };
 
       await generate("./petstore.yaml", basePath, { types: true }, repository);
+      await new ScenarioFileGenerator(basePath).generate();
 
       const content = await $.read("types/_.context.ts");
       expect(content).toContain("readonly context: Record<string, unknown>");
@@ -146,6 +148,7 @@ describe("_.context type generation", () => {
       await $.add("routes/_.context.ts", "export class Context {}");
 
       await generate("./petstore.yaml", basePath, { types: true }, repository);
+      await new ScenarioFileGenerator(basePath).generate();
 
       const content = await $.read("types/_.context.ts");
       expect(content).toContain(
@@ -174,6 +177,7 @@ describe("_.context type generation", () => {
       await $.add("routes/pets/_.context.ts", "export class Context {}");
 
       await generate("./petstore.yaml", basePath, { types: true }, repository);
+      await new ScenarioFileGenerator(basePath).generate();
 
       const content = await $.read("types/_.context.ts");
       expect(content).toContain(
@@ -211,6 +215,7 @@ describe("_.context type generation", () => {
       );
 
       await generate("./petstore.yaml", basePath, { types: true }, repository);
+      await new ScenarioFileGenerator(basePath).generate();
 
       const content = await $.read("types/_.context.ts");
       expect(content).toContain(
