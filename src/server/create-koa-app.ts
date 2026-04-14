@@ -3,13 +3,11 @@ import Koa from "koa";
 import bodyParser from "koa-bodyparser";
 import { koaSwagger } from "koa2-swagger-ui";
 
+import type { ApiRunner } from "../api-runner.js";
 import { adminApiMiddleware } from "./admin-api-middleware.js";
 import type { Config } from "./config.js";
-import type { ContextRegistry } from "./context-registry.js";
-import type { Dispatcher } from "./dispatcher.js";
 import { routesMiddleware } from "./koa-middleware.js";
 import { openapiMiddleware } from "./openapi-middleware.js";
-import type { Registry } from "./registry.js";
 
 const debug = createDebug("counterfact:server:create-koa-app");
 
@@ -25,30 +23,25 @@ const debug = createDebug("counterfact:server:create-koa-app");
  * 6. JSON serialisation of object bodies
  * 7. Route-dispatching middleware
  *
+ * @param runner - The ApiRunner instance providing the dispatcher, registry,
+ *   context registry, OpenAPI path, and route prefix.
  * @param config - Server configuration.
- * @param dispatcher - The Dispatcher used to build the route-dispatching middleware.
- * @param registry - The route Registry used to build the admin API middleware.
- * @param contextRegistry - The ContextRegistry used to build the admin API middleware.
  * @returns A configured Koa application (not yet listening).
  */
 export function createKoaApp({
+  runner,
   config,
-  contextRegistry,
-  dispatcher,
-  registry,
 }: {
+  runner: ApiRunner;
   config: Config;
-  contextRegistry: ContextRegistry;
-  dispatcher: Dispatcher;
-  registry: Registry;
 }) {
   const app = new Koa();
 
   app.use(
     openapiMiddleware([
       {
-        path: config.openApiPath,
-        baseUrl: `//localhost:${config.port}${config.routePrefix}`,
+        path: runner.openApiPath,
+        baseUrl: `//localhost:${config.port}${runner.routePrefix}`,
       },
     ]),
   );
@@ -64,7 +57,9 @@ export function createKoaApp({
   );
 
   if (config.startAdminApi) {
-    app.use(adminApiMiddleware(registry, contextRegistry, config));
+    app.use(
+      adminApiMiddleware(runner.registry, runner.contextRegistry, config),
+    );
   }
 
   debug("basePath: %s", config.basePath);
@@ -95,7 +90,7 @@ export function createKoaApp({
     }
   });
 
-  app.use(routesMiddleware(dispatcher, config));
+  app.use(routesMiddleware(runner.dispatcher, config));
 
   return app;
 }

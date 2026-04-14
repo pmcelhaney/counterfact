@@ -69,6 +69,12 @@ export class ApiRunner {
   /** `true` when the current Node.js runtime can execute TypeScript natively. */
   public readonly nativeTs: boolean;
 
+  /** Path or URL to the OpenAPI document for this runner. */
+  public readonly openApiPath: string;
+
+  /** URL prefix that this runner intercepts (default `""`). */
+  public readonly routePrefix: string;
+
   private readonly config: Config;
 
   private constructor(
@@ -85,6 +91,8 @@ export class ApiRunner {
     this.config = config;
     this.nativeTs = nativeTs;
     this.openApiDocument = openApiDocument;
+    this.openApiPath = config.openApiPath;
+    this.routePrefix = config.routePrefix;
 
     this.registry = new Registry();
     this.contextRegistry = new ContextRegistry();

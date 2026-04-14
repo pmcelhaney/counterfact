@@ -142,6 +142,28 @@ describe("ApiRunner", () => {
       });
     });
 
+    it("exposes openApiPath as a public property matching config", async () => {
+      await usingTemporaryFiles(async ($) => {
+        const runner = await ApiRunner.create({
+          ...baseConfig,
+          basePath: $.path("."),
+          openApiPath: "test/fixtures/openapi-example.yaml",
+        });
+        expect(runner.openApiPath).toBe("test/fixtures/openapi-example.yaml");
+      });
+    });
+
+    it("exposes routePrefix as a public property matching config", async () => {
+      await usingTemporaryFiles(async ($) => {
+        const runner = await ApiRunner.create({
+          ...baseConfig,
+          basePath: $.path("."),
+          routePrefix: "/api/v1",
+        });
+        expect(runner.routePrefix).toBe("/api/v1");
+      });
+    });
+
     it("loads openApiDocument when openApiPath is set", async () => {
       await usingTemporaryFiles(async ($) => {
         const runner = await ApiRunner.create({
