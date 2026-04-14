@@ -30,7 +30,7 @@ type Scenario$ = {
 export async function runStartupScenario(
   scenarioRegistry: ScenarioRegistry,
   contextRegistry: ContextRegistry,
-  config: Config,
+  config: Pick<Config, "port">,
   openApiDocument?: Parameters<typeof createRouteFunction>[2],
 ): Promise<void> {
   const indexModule = scenarioRegistry.getModule("index");
@@ -103,7 +103,14 @@ export async function handleMswRequest(request: MockRequest) {
  *   MSW handler.
  */
 export async function createMswHandlers(
-  config: Config,
+  config: Pick<
+    Config,
+    | "openApiPath"
+    | "basePath"
+    | "validateRequests"
+    | "validateResponses"
+    | "alwaysFakeOptionals"
+  >,
   ModuleLoaderClass = ModuleLoader,
 ) {
   // TODO: For some reason the Vitest Custom Commands needed by Vitest Browser mode fail on fs.readFile when they are called from the nested loadOpenApiDocument function.
@@ -227,7 +234,9 @@ export async function counterfact(config: Config) {
     registry,
   });
 
-  async function start(options: Config) {
+  async function start(
+    options: Pick<Config, "generate" | "startServer" | "watch" | "buildCache">,
+  ) {
     const { generate, startServer, watch, buildCache } = options;
 
     if (config.openApiPath !== "_" && (generate.routes || generate.types)) {

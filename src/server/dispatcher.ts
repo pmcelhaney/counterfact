@@ -114,13 +114,19 @@ export class Dispatcher {
 
   public fetch: typeof fetch;
 
-  public config?: Config; // Add config property
+  public config?: Pick<
+    Config,
+    "validateRequests" | "validateResponses" | "alwaysFakeOptionals"
+  >; // Add config property
 
   public constructor(
     registry: Registry,
     contextRegistry: ContextRegistry,
     openApiDocument?: OpenApiDocument,
-    config?: Config,
+    config?: Pick<
+      Config,
+      "validateRequests" | "validateResponses" | "alwaysFakeOptionals"
+    >,
   ) {
     this.registry = registry;
     this.contextRegistry = contextRegistry;

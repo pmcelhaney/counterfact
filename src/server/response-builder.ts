@@ -109,7 +109,7 @@ function unknownStatusCodeResponse(statusCode: number | undefined) {
  */
 export function createResponseBuilder(
   operation: OpenApiOperation,
-  config?: Config,
+  config?: Pick<Config, "alwaysFakeOptionals">,
 ): ResponseBuilder {
   return new Proxy({} as ResponseBuilder, {
     get: (target, statusCode: string) => ({

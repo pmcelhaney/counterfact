@@ -143,7 +143,7 @@ export function createCompleter(
 export function startRepl(
   contextRegistry: ContextRegistry,
   registry: Registry,
-  config: Config,
+  config: Pick<Config, "port" | "proxyUrl" | "proxyPaths">,
   print = printToStdout,
   openApiDocument?: OpenApiDocument,
   scenarioRegistry?: ScenarioRegistry,
