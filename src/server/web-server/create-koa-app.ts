@@ -4,8 +4,8 @@ import bodyParser from "koa-bodyparser";
 import { koaSwagger } from "koa2-swagger-ui";
 
 import type { ApiRunner } from "../../api-runner.js";
-import { adminApiMiddleware } from "./admin-api-middleware.js";
 import type { Config } from "../config.js";
+import { adminApiMiddleware } from "./admin-api-middleware.js";
 import { routesMiddleware } from "./koa-middleware.js";
 import { openapiMiddleware } from "./openapi-middleware.js";
 

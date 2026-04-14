@@ -62,8 +62,8 @@ export function adminApiMiddleware(
   return async (ctx: Koa.ExtendableContext, next: Koa.Next) => {
     const { pathname } = ctx.URL;
 
-    // Only handle admin API routes (paths that start with the prefix followed by /)
-    if (!pathname.startsWith(`${pathPrefix}/`)) {
+    // Only handle admin API routes (exact prefix or paths beneath it)
+    if (pathname !== pathPrefix && !pathname.startsWith(`${pathPrefix}/`)) {
       return await next();
     }
 
