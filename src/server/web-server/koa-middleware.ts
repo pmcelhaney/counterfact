@@ -4,10 +4,10 @@ import createDebug from "debug";
 import type Koa from "koa";
 import koaProxy from "koa-proxies";
 
-import type { Config } from "./config.js";
-import type { Dispatcher } from "./dispatcher.js";
-import { isProxyEnabledForPath } from "./is-proxy-enabled-for-path.js";
-import type { HttpMethods } from "./registry.js";
+import type { Config } from "../config.js";
+import type { Dispatcher } from "../dispatcher.js";
+import { isProxyEnabledForPath } from "../is-proxy-enabled-for-path.js";
+import type { HttpMethods } from "../registry.js";
 
 declare module "koa" {
   interface Request {
@@ -96,18 +96,22 @@ function getAuthObject(
  * - Forwards the request to the dispatcher and maps the response back onto
  *   the Koa context.
  *
+ * @param routePrefix - The URL path prefix that this middleware handles, e.g.
+ *   `"/api/v1"`. Requests to paths that do not start with this prefix fall
+ *   through to the next middleware.
  * @param dispatcher - The {@link Dispatcher} instance that handles requests.
- * @param config - Server configuration (proxy settings, route prefix, etc.).
+ * @param config - Server configuration (proxy settings, etc.).
  * @param proxy - Proxy factory; injectable for testing.
  * @returns A Koa middleware function.
  */
 export function routesMiddleware(
+  routePrefix: string,
   dispatcher: Dispatcher,
-  config: Pick<Config, "proxyUrl" | "routePrefix" | "proxyPaths">,
+  config: Pick<Config, "proxyUrl" | "proxyPaths">,
   proxy = koaProxy,
 ): Koa.Middleware {
   return async function middleware(ctx, next) {
-    const { proxyUrl, routePrefix } = config;
+    const { proxyUrl } = config;
 
     debug("middleware running for path: %s", ctx.request.path);
     debug("routePrefix: %s", routePrefix);

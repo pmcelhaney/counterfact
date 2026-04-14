@@ -2,11 +2,11 @@ import { jest } from "@jest/globals";
 import type { ParameterizedContext } from "koa";
 import type { IBaseKoaProxiesOptions } from "koa-proxies";
 
-import type { Config } from "../../src/server/config.js";
-import { ContextRegistry } from "../../src/server/context-registry.js";
-import { Dispatcher } from "../../src/server/dispatcher.js";
-import { routesMiddleware } from "../../src/server/koa-middleware.js";
-import { Registry } from "../../src/server/registry.js";
+import type { Config } from "../../../src/server/config.js";
+import { ContextRegistry } from "../../../src/server/context-registry.js";
+import { Dispatcher } from "../../../src/server/dispatcher.js";
+import { routesMiddleware } from "../../../src/server/web-server/koa-middleware.js";
+import { Registry } from "../../../src/server/registry.js";
 
 const CONFIG: Config = {
   basePath: "",
@@ -54,7 +54,7 @@ describe("koa middleware", () => {
     });
 
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
-    const middleware = routesMiddleware(dispatcher, CONFIG);
+    const middleware = routesMiddleware(CONFIG.routePrefix, dispatcher, CONFIG);
 
     const ctx = {
       req: {
@@ -91,7 +91,7 @@ describe("koa middleware", () => {
     });
 
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
-    const middleware = routesMiddleware(dispatcher, CONFIG);
+    const middleware = routesMiddleware(CONFIG.routePrefix, dispatcher, CONFIG);
     const ctx = {
       request: { headers: {}, method: "GET", path: "/not-modified" },
 
@@ -118,6 +118,7 @@ describe("koa middleware", () => {
 
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
     const middleware = routesMiddleware(
+      CONFIG.routePrefix,
       dispatcher,
       {
         ...CONFIG,
@@ -157,7 +158,7 @@ describe("koa middleware", () => {
     });
 
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
-    const middleware = routesMiddleware(dispatcher, CONFIG);
+    const middleware = routesMiddleware(CONFIG.routePrefix, dispatcher, CONFIG);
     const ctx = {
       body: undefined,
 
@@ -205,7 +206,7 @@ describe("koa middleware", () => {
     });
 
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
-    const middleware = routesMiddleware(dispatcher, CONFIG);
+    const middleware = routesMiddleware(CONFIG.routePrefix, dispatcher, CONFIG);
     const ctx = {
       body: undefined,
 
@@ -269,7 +270,7 @@ describe("koa middleware", () => {
     });
 
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
-    const middleware = routesMiddleware(dispatcher, CONFIG);
+    const middleware = routesMiddleware(CONFIG.routePrefix, dispatcher, CONFIG);
     const ctx = {
       body: undefined,
 
@@ -313,10 +314,7 @@ describe("koa middleware", () => {
     });
 
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
-    const middleware = routesMiddleware(dispatcher, {
-      ...CONFIG,
-      routePrefix: "/api/v1",
-    });
+    const middleware = routesMiddleware("/api/v1", dispatcher, CONFIG);
 
     const ctx = {
       req: {
@@ -353,10 +351,7 @@ describe("koa middleware", () => {
     });
 
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
-    const middleware = routesMiddleware(dispatcher, {
-      ...CONFIG,
-      routePrefix: "/api/v1",
-    });
+    const middleware = routesMiddleware("/api/v1", dispatcher, CONFIG);
 
     const ctx = {
       req: {
@@ -393,7 +388,7 @@ describe("koa middleware", () => {
     });
 
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
-    const middleware = routesMiddleware(dispatcher, CONFIG);
+    const middleware = routesMiddleware(CONFIG.routePrefix, dispatcher, CONFIG);
 
     const ctx = {
       req: {
@@ -435,7 +430,7 @@ describe("koa middleware", () => {
     });
 
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
-    const middleware = routesMiddleware(dispatcher, CONFIG);
+    const middleware = routesMiddleware(CONFIG.routePrefix, dispatcher, CONFIG);
 
     const ctx = {
       body: undefined,

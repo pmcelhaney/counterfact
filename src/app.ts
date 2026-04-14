@@ -7,7 +7,7 @@ import { startRepl as startReplServer } from "./repl/repl.js";
 import { createRouteFunction } from "./repl/route-builder.js";
 import type { Config } from "./server/config.js";
 import { ContextRegistry } from "./server/context-registry.js";
-import { createKoaApp } from "./server/create-koa-app.js";
+import { createKoaApp } from "./server/web-server/create-koa-app.js";
 import { Dispatcher, type DispatcherRequest } from "./server/dispatcher.js";
 import { loadOpenApiDocument } from "./server/load-openapi-document.js";
 import { ModuleLoader } from "./server/module-loader.js";

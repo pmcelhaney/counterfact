@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { adminApiMiddleware } from "../../src/server/admin-api-middleware.js";
-import type { Config } from "../../src/server/config.js";
-import { ContextRegistry } from "../../src/server/context-registry.js";
-import { Registry } from "../../src/server/registry.js";
+import { adminApiMiddleware } from "../../../src/server/web-server/admin-api-middleware.js";
+import type { Config } from "../../../src/server/config.js";
+import { ContextRegistry } from "../../../src/server/context-registry.js";
+import { Registry } from "../../../src/server/registry.js";
 
 const createConfig = (): Config => ({
   adminApiToken: "",
@@ -91,6 +91,8 @@ const createMockContext = (
   },
 });
 
+const PATH_PREFIX = "/_counterfact/api";
+
 describe("adminApiMiddleware", () => {
   let registry: Registry;
   let contextRegistry: ContextRegistry;
@@ -104,7 +106,12 @@ describe("adminApiMiddleware", () => {
 
   describe("Admin API Access Guard", () => {
     it("returns 403 for non-loopback requests when no token is configured", async () => {
-      const middleware = adminApiMiddleware(registry, contextRegistry, config);
+      const middleware = adminApiMiddleware(
+        PATH_PREFIX,
+        registry,
+        contextRegistry,
+        config,
+      );
       const ctx = createMockContext(
         "GET",
         "/_counterfact/api/health",
@@ -129,7 +136,12 @@ describe("adminApiMiddleware", () => {
 
     it("returns 401 when token is configured but missing or invalid", async () => {
       config.adminApiToken = "secret-token";
-      const middleware = adminApiMiddleware(registry, contextRegistry, config);
+      const middleware = adminApiMiddleware(
+        PATH_PREFIX,
+        registry,
+        contextRegistry,
+        config,
+      );
       const ctx = createMockContext(
         "GET",
         "/_counterfact/api/health",
@@ -154,7 +166,12 @@ describe("adminApiMiddleware", () => {
 
     it("allows requests with a valid bearer token", async () => {
       config.adminApiToken = "secret-token";
-      const middleware = adminApiMiddleware(registry, contextRegistry, config);
+      const middleware = adminApiMiddleware(
+        PATH_PREFIX,
+        registry,
+        contextRegistry,
+        config,
+      );
       const ctx = createMockContext(
         "GET",
         "/_counterfact/api/health",
@@ -182,7 +199,12 @@ describe("adminApiMiddleware", () => {
 
   describe("Health Check", () => {
     it("returns server status on GET /_counterfact/api/health", async () => {
-      const middleware = adminApiMiddleware(registry, contextRegistry, config);
+      const middleware = adminApiMiddleware(
+        PATH_PREFIX,
+        registry,
+        contextRegistry,
+        config,
+      );
       const ctx = createMockContext("GET", "/_counterfact/api/health");
       const next = async () => {
         await Promise.resolve(undefined);
@@ -206,7 +228,12 @@ describe("adminApiMiddleware", () => {
       contextRegistry.add("/pets", { pets: [] });
       contextRegistry.add("/users", { users: [] });
 
-      const middleware = adminApiMiddleware(registry, contextRegistry, config);
+      const middleware = adminApiMiddleware(
+        PATH_PREFIX,
+        registry,
+        contextRegistry,
+        config,
+      );
       const ctx = createMockContext("GET", "/_counterfact/api/contexts");
       const next = async () => {
         await Promise.resolve(undefined);
@@ -234,7 +261,12 @@ describe("adminApiMiddleware", () => {
     it("returns specific context on GET /_counterfact/api/contexts/{path}", async () => {
       contextRegistry.add("/pets", { pets: [{ id: 1, name: "Fido" }] });
 
-      const middleware = adminApiMiddleware(registry, contextRegistry, config);
+      const middleware = adminApiMiddleware(
+        PATH_PREFIX,
+        registry,
+        contextRegistry,
+        config,
+      );
       const ctx = createMockContext("GET", "/_counterfact/api/contexts/pets");
       const next = async () => {
         await Promise.resolve(undefined);
@@ -257,7 +289,12 @@ describe("adminApiMiddleware", () => {
       contextRegistry.add("/api", { apiData: "api" });
       contextRegistry.add("/api/users", { users: [] });
 
-      const middleware = adminApiMiddleware(registry, contextRegistry, config);
+      const middleware = adminApiMiddleware(
+        PATH_PREFIX,
+        registry,
+        contextRegistry,
+        config,
+      );
       const ctx = createMockContext(
         "GET",
         "/_counterfact/api/contexts/api/users/123",
@@ -284,7 +321,12 @@ describe("adminApiMiddleware", () => {
     it("updates context on POST /_counterfact/api/contexts/{path}", async () => {
       contextRegistry.add("/pets", { pets: [] });
 
-      const middleware = adminApiMiddleware(registry, contextRegistry, config);
+      const middleware = adminApiMiddleware(
+        PATH_PREFIX,
+        registry,
+        contextRegistry,
+        config,
+      );
       const newData = {
         pets: [
           { id: 1, name: "Fido" },
@@ -321,7 +363,12 @@ describe("adminApiMiddleware", () => {
     });
 
     it("returns 400 for invalid JSON body on context update", async () => {
-      const middleware = adminApiMiddleware(registry, contextRegistry, config);
+      const middleware = adminApiMiddleware(
+        PATH_PREFIX,
+        registry,
+        contextRegistry,
+        config,
+      );
       const ctx = createMockContext("POST", "/_counterfact/api/contexts/pets");
 
       ctx.request.body = "invalid";
@@ -345,7 +392,12 @@ describe("adminApiMiddleware", () => {
         updateMe: "old",
       });
 
-      const middleware = adminApiMiddleware(registry, contextRegistry, config);
+      const middleware = adminApiMiddleware(
+        PATH_PREFIX,
+        registry,
+        contextRegistry,
+        config,
+      );
       const ctx = createMockContext("POST", "/_counterfact/api/contexts/data", {
         updateMe: "new",
       });
@@ -368,7 +420,12 @@ describe("adminApiMiddleware", () => {
       config.proxyPaths.set("/api", true);
       config.proxyUrl = "https://example.com";
 
-      const middleware = adminApiMiddleware(registry, contextRegistry, config);
+      const middleware = adminApiMiddleware(
+        PATH_PREFIX,
+        registry,
+        contextRegistry,
+        config,
+      );
       const ctx = createMockContext("GET", "/_counterfact/api/config");
       const next = async () => {
         await Promise.resolve(undefined);
@@ -414,7 +471,12 @@ describe("adminApiMiddleware", () => {
       config.proxyPaths.set("/users", true);
       config.proxyPaths.set("/posts", false);
 
-      const middleware = adminApiMiddleware(registry, contextRegistry, config);
+      const middleware = adminApiMiddleware(
+        PATH_PREFIX,
+        registry,
+        contextRegistry,
+        config,
+      );
       const ctx = createMockContext("GET", "/_counterfact/api/config/proxy");
       const next = async () => {
         await Promise.resolve(undefined);
@@ -437,7 +499,12 @@ describe("adminApiMiddleware", () => {
     });
 
     it("updates proxy URL on PATCH /_counterfact/api/config/proxy", async () => {
-      const middleware = adminApiMiddleware(registry, contextRegistry, config);
+      const middleware = adminApiMiddleware(
+        PATH_PREFIX,
+        registry,
+        contextRegistry,
+        config,
+      );
       const ctx = createMockContext("PATCH", "/_counterfact/api/config/proxy", {
         proxyUrl: "https://new-api.example.com",
       });
@@ -461,7 +528,12 @@ describe("adminApiMiddleware", () => {
     });
 
     it("updates proxy paths on PATCH /_counterfact/api/config/proxy", async () => {
-      const middleware = adminApiMiddleware(registry, contextRegistry, config);
+      const middleware = adminApiMiddleware(
+        PATH_PREFIX,
+        registry,
+        contextRegistry,
+        config,
+      );
       const ctx = createMockContext("PATCH", "/_counterfact/api/config/proxy", {
         proxyPaths: [
           ["/api/users", true],
@@ -480,7 +552,12 @@ describe("adminApiMiddleware", () => {
     });
 
     it("updates both proxy URL and paths together", async () => {
-      const middleware = adminApiMiddleware(registry, contextRegistry, config);
+      const middleware = adminApiMiddleware(
+        PATH_PREFIX,
+        registry,
+        contextRegistry,
+        config,
+      );
       const ctx = createMockContext("PATCH", "/_counterfact/api/config/proxy", {
         proxyPaths: [["/api", true]],
         proxyUrl: "https://api.example.com",
@@ -497,7 +574,12 @@ describe("adminApiMiddleware", () => {
     });
 
     it("returns 400 for invalid proxy config body", async () => {
-      const middleware = adminApiMiddleware(registry, contextRegistry, config);
+      const middleware = adminApiMiddleware(
+        PATH_PREFIX,
+        registry,
+        contextRegistry,
+        config,
+      );
       const ctx = createMockContext("PATCH", "/_counterfact/api/config/proxy");
 
       ctx.request.body = "invalid";
@@ -534,7 +616,12 @@ describe("adminApiMiddleware", () => {
         },
       });
 
-      const middleware = adminApiMiddleware(registry, contextRegistry, config);
+      const middleware = adminApiMiddleware(
+        PATH_PREFIX,
+        registry,
+        contextRegistry,
+        config,
+      );
       const ctx = createMockContext("GET", "/_counterfact/api/routes");
       const next = async () => {
         await Promise.resolve(undefined);
@@ -568,7 +655,12 @@ describe("adminApiMiddleware", () => {
 
   describe("Non-Admin Routes", () => {
     it("passes through to next middleware for non-admin routes", async () => {
-      const middleware = adminApiMiddleware(registry, contextRegistry, config);
+      const middleware = adminApiMiddleware(
+        PATH_PREFIX,
+        registry,
+        contextRegistry,
+        config,
+      );
       const ctx = createMockContext("GET", "/regular/api/path");
       const next = async () => {
         await Promise.resolve(undefined);
@@ -583,7 +675,12 @@ describe("adminApiMiddleware", () => {
 
   describe("404 Handling", () => {
     it("returns 404 for unknown admin API endpoints", async () => {
-      const middleware = adminApiMiddleware(registry, contextRegistry, config);
+      const middleware = adminApiMiddleware(
+        PATH_PREFIX,
+        registry,
+        contextRegistry,
+        config,
+      );
       const ctx = createMockContext("GET", "/_counterfact/api/unknown");
       const next = async () => {
         await Promise.resolve(undefined);
@@ -614,6 +711,7 @@ describe("adminApiMiddleware", () => {
       } as any;
 
       const middleware = adminApiMiddleware(
+        PATH_PREFIX,
         registry,
         brokenContextRegistry,
         config,

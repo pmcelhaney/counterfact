@@ -1,9 +1,9 @@
 import type Koa from "koa";
 import createDebug from "debug";
 
-import type { Config } from "./config.js";
-import type { Context, ContextRegistry } from "./context-registry.js";
-import type { Registry } from "./registry.js";
+import type { Config } from "../config.js";
+import type { Context, ContextRegistry } from "../context-registry.js";
+import type { Registry } from "../registry.js";
 
 const debug = createDebug("counterfact:server:admin-api-middleware");
 
@@ -39,12 +39,22 @@ function isLoopbackIp(ip?: string): boolean {
 /**
  * Admin API middleware for programmatic access to Counterfact internals.
  * Exposes context management, proxy configuration, and route discovery
- * through HTTP endpoints at /_counterfact/api/*
+ * through HTTP endpoints at the given path prefix.
  *
  * This enables AI agents and external tools to interact with the mock server
  * in the same way the REPL does, but via HTTP requests.
+ *
+ * @param pathPrefix - The URL path prefix at which the admin API is mounted,
+ *   e.g. `"/_counterfact/api"`. Requests to paths that do not start with this
+ *   prefix fall through to the next middleware.
+ * @param registry - The route registry used to list available routes.
+ * @param contextRegistry - The context registry used to read and update
+ *   per-path context objects.
+ * @param config - Server configuration (proxy settings, port, etc.).
+ * @returns A Koa middleware function.
  */
 export function adminApiMiddleware(
+  pathPrefix: string,
   registry: Registry,
   contextRegistry: ContextRegistry,
   config: Config,
@@ -52,8 +62,8 @@ export function adminApiMiddleware(
   return async (ctx: Koa.ExtendableContext, next: Koa.Next) => {
     const { pathname } = ctx.URL;
 
-    // Only handle admin API routes
-    if (!pathname.startsWith("/_counterfact/api/")) {
+    // Only handle admin API routes (exact prefix or paths beneath it)
+    if (pathname !== pathPrefix && !pathname.startsWith(`${pathPrefix}/`)) {
       return await next();
     }
 
@@ -105,9 +115,10 @@ export function adminApiMiddleware(
 
     debug("Admin API request: %s %s", ctx.method, pathname);
 
-    // Extract route components: ["_counterfact", "api", "resource", ...rest]
-    const parts = pathname.split("/").filter(Boolean);
-    const [, , resource, ...rest] = parts;
+    // Extract the resource path after the prefix
+    const subPath = pathname.slice(pathPrefix.length);
+    const parts = subPath.split("/").filter(Boolean);
+    const [resource, ...rest] = parts;
 
     try {
       // ===== Health Check =====
