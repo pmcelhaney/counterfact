@@ -16,7 +16,7 @@ import { Registry } from "./server/registry.js";
 import { ScenarioRegistry } from "./server/scenario-registry.js";
 import { Transpiler } from "./server/transpiler.js";
 import { CodeGenerator } from "./typescript-generator/code-generator.js";
-import { writeScenarioContextType } from "./typescript-generator/generate.js";
+import { ScenarioFileGenerator } from "./typescript-generator/scenario-file-generator.js";
 import { runtimeCanExecuteErasableTs } from "./util/runtime-can-execute-erasable-ts.js";
 import { pathJoin } from "./util/forward-slash-path.js";
 
@@ -188,6 +188,8 @@ export async function counterfact(config: Config) {
 
   const scenarioRegistry = new ScenarioRegistry();
 
+  const scenarioFileGenerator = new ScenarioFileGenerator(modulesPath);
+
   const codeGenerator = new CodeGenerator(
     config.openApiPath,
     config.basePath,
@@ -220,10 +222,6 @@ export async function counterfact(config: Config) {
     scenarioRegistry,
   );
 
-  contextRegistry.addEventListener("context-changed", () => {
-    void writeScenarioContextType(modulesPath);
-  });
-
   const middleware = routesMiddleware(dispatcher, config);
 
   const adminMiddleware = config.startAdminApi
@@ -239,8 +237,16 @@ export async function counterfact(config: Config) {
       await codeGenerator.generate();
     }
 
+    if (generate.types) {
+      await scenarioFileGenerator.generate();
+    }
+
     if (config.openApiPath !== "_" && (watch.routes || watch.types)) {
       await codeGenerator.watch();
+    }
+
+    if (watch.types) {
+      await scenarioFileGenerator.watch();
     }
 
     let httpTerminator: HttpTerminator | undefined;
@@ -277,6 +283,7 @@ export async function counterfact(config: Config) {
     return {
       async stop() {
         await codeGenerator.stopWatching();
+        await scenarioFileGenerator.stopWatching();
         await transpiler.stopWatching();
         await moduleLoader.stopWatching();
         await openApiDocument?.stopWatching();
