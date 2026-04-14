@@ -34,10 +34,12 @@ export function createKoaApp(
   const app = new Koa();
 
   app.use(
-    openapiMiddleware(
-      config.openApiPath,
-      `//localhost:${config.port}${config.routePrefix}`,
-    ),
+    openapiMiddleware([
+      {
+        path: config.openApiPath,
+        baseUrl: `//localhost:${config.port}${config.routePrefix}`,
+      },
+    ]),
   );
 
   app.use(
