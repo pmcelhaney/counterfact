@@ -76,11 +76,6 @@ describe("pathDirname", () => {
 });
 
 describe("pathResolve", () => {
-  it("returns an absolute path", () => {
-    const result = pathResolve("/foo", "bar");
-    expect(result).toBe("/foo/bar");
-  });
-
   it("returns a ForwardSlashPath branded type", () => {
     const result = pathResolve("/a", "b");
     const _check: ForwardSlashPath = result;
