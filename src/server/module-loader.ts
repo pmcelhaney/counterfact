@@ -1,6 +1,6 @@
 import { once } from "node:events";
 import fs from "node:fs/promises";
-import nodePath, { basename, dirname } from "node:path";
+import nodePath, { basename } from "node:path";
 
 import { type FSWatcher, watch } from "chokidar";
 import createDebug from "debug";
@@ -18,6 +18,11 @@ import { ModuleDependencyGraph } from "./module-dependency-graph.js";
 import type { Module, Registry } from "./registry.js";
 import { ScenarioRegistry } from "./scenario-registry.js";
 import { uncachedImport } from "./uncached-import.js";
+import {
+  toForwardSlashPath,
+  pathDirname,
+  pathRelative,
+} from "../util/forward-slash-path.js";
 import { unescapePathForWindows } from "../util/windows-escape.js";
 
 const { uncachedRequire } = await import("./uncached-require.cjs");
@@ -69,10 +74,13 @@ export class ModuleLoader extends EventTarget {
     scenarioRegistry?: ScenarioRegistry,
   ) {
     super();
-    this.basePath = basePath.replaceAll("\\", "/");
+    this.basePath = toForwardSlashPath(basePath);
     this.registry = registry;
     this.contextRegistry = contextRegistry;
-    this.scenariosPath = scenariosPath?.replaceAll("\\", "/");
+    this.scenariosPath =
+      scenariosPath === undefined
+        ? undefined
+        : toForwardSlashPath(scenariosPath);
     this.scenarioRegistry = scenarioRegistry;
     this.fileDiscovery = new FileDiscovery(this.basePath);
   }
@@ -98,7 +106,7 @@ export class ModuleLoader extends EventTarget {
         )
           return;
 
-        const pathName = pathNameOriginal.replaceAll("\\", "/");
+        const pathName = toForwardSlashPath(pathNameOriginal);
 
         if (pathName.includes("$.context") && eventName === "add") {
           process.stdout.write(
@@ -114,9 +122,10 @@ export class ModuleLoader extends EventTarget {
 
         const parts = nodePath.parse(pathName.replace(this.basePath, ""));
         const url = unescapePathForWindows(
-          `/${parts.dir}/${parts.name}`
-            .replaceAll("\\", "/")
-            .replaceAll(/\/+/gu, "/"),
+          toForwardSlashPath(`/${parts.dir}/${parts.name}`).replaceAll(
+            /\/+/gu,
+            "/",
+          ),
         );
 
         if (eventName === "unlink") {
@@ -124,7 +133,7 @@ export class ModuleLoader extends EventTarget {
           this.dispatchEvent(new Event("remove"));
           if (this.isContextFile(pathName)) {
             this.contextRegistry.remove(
-              unescapePathForWindows(parts.dir).replaceAll("\\", "/") || "/",
+              unescapePathForWindows(toForwardSlashPath(parts.dir)) || "/",
             );
           }
           return;
@@ -155,7 +164,7 @@ export class ModuleLoader extends EventTarget {
 
           if (!["add", "change", "unlink"].includes(eventName)) return;
 
-          const pathName = pathNameOriginal.replaceAll("\\", "/");
+          const pathName = toForwardSlashPath(pathNameOriginal);
 
           if (eventName === "unlink") {
             const fileKey = this.scenarioFileKey(pathName);
@@ -215,18 +224,18 @@ export class ModuleLoader extends EventTarget {
   }
 
   private scenarioFileKey(pathName: string): string {
-    const normalizedScenariosPath = (this.scenariosPath ?? "").replaceAll(
-      "\\",
-      "/",
+    const normalizedScenariosPath = toForwardSlashPath(
+      this.scenariosPath ?? "",
     );
-    const directory = dirname(
+    const directory = pathDirname(
       pathName.slice(normalizedScenariosPath.length),
-    ).replaceAll("\\", "/");
+    );
     const name = nodePath.parse(basename(pathName)).name;
     const url = unescapePathForWindows(
-      `/${nodePath.join(directory, name)}`
-        .replaceAll("\\", "/")
-        .replaceAll(/\/+/gu, "/"),
+      toForwardSlashPath(`/${nodePath.join(directory, name)}`).replaceAll(
+        /\/+/gu,
+        "/",
+      ),
     );
 
     return url.slice(1); // strip leading "/"
@@ -258,15 +267,12 @@ export class ModuleLoader extends EventTarget {
   private async loadEndpoint(pathName: string) {
     debug("importing module: %s", pathName);
 
-    const directory = dirname(pathName.slice(this.basePath.length)).replaceAll(
-      "\\",
-      "/",
-    );
+    const directory = pathDirname(pathName.slice(this.basePath.length));
 
     const url = unescapePathForWindows(
-      `/${nodePath.join(directory, nodePath.parse(basename(pathName)).name)}`
-        .replaceAll("\\", "/")
-        .replaceAll(/\/+/gu, "/"),
+      toForwardSlashPath(
+        `/${nodePath.join(directory, nodePath.parse(basename(pathName)).name)}`,
+      ).replaceAll(/\/+/gu, "/"),
     );
 
     debug(`loading pathName from dependencyGraph: ${pathName}`);
@@ -290,9 +296,10 @@ export class ModuleLoader extends EventTarget {
           importError instanceof SyntaxError ||
           String(importError).startsWith("SyntaxError:");
 
-        const displayPath = nodePath
-          .relative(process.cwd(), unescapePathForWindows(pathName))
-          .replaceAll("\\", "/");
+        const displayPath = pathRelative(
+          process.cwd(),
+          unescapePathForWindows(pathName),
+        );
 
         const message = isSyntaxError
           ? `There is a syntax error in the route file: ${displayPath}`

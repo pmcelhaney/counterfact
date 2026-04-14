@@ -1,5 +1,4 @@
-import nodePath from "node:path";
-
+import { pathJoin } from "../util/forward-slash-path.js";
 import { buildJsDoc } from "./jsdoc.js";
 import { SchemaTypeCoder } from "./schema-type-coder.js";
 import { TypeCoder } from "./type-coder.js";
@@ -61,8 +60,6 @@ export class ParametersTypeCoder extends TypeCoder {
       .at(-2)!
       .replaceAll("~1", "/");
 
-    return `${nodePath
-      .join("parameters", pathString)
-      .replaceAll("\\", "/")}.types.ts`;
+    return `${pathJoin("parameters", pathString)}.types.ts`;
   }
 }

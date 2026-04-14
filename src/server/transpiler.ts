@@ -2,13 +2,13 @@
 
 import { once } from "node:events";
 import fs from "node:fs/promises";
-import nodePath from "node:path";
 
 import { type FSWatcher, watch as chokidarWatch } from "chokidar";
 import createDebug from "debug";
 import ts from "typescript";
 
 import { ensureDirectoryExists } from "../util/ensure-directory-exists.js";
+import { toForwardSlashPath, pathJoin } from "../util/forward-slash-path.js";
 import { CHOKIDAR_OPTIONS } from "./constants.js";
 import { convertFileExtensionsToCjs } from "./convert-js-extensions-to-cjs.js";
 
@@ -79,12 +79,13 @@ export class Transpiler extends EventTarget {
         )
           return;
 
-        const sourcePath = sourcePathOriginal.replaceAll("\\", "/");
+        const sourcePath = toForwardSlashPath(sourcePathOriginal);
 
-        const destinationPath = sourcePath
-          .replace(this.sourcePath, this.destinationPath)
-          .replaceAll("\\", "/")
-          .replace(".ts", this.extension);
+        const destinationPath = toForwardSlashPath(
+          sourcePath
+            .replace(this.sourcePath, this.destinationPath)
+            .replace(".ts", this.extension),
+        );
 
         if (["add", "change"].includes(eventName)) {
           transpiles.push(
@@ -152,13 +153,11 @@ export class Transpiler extends EventTarget {
 
     const result: string = transpileOutput.outputText;
 
-    const fullDestination = nodePath
-      .join(
-        sourcePath
-          .replace(this.sourcePath, this.destinationPath)
-          .replace(".ts", this.extension),
-      )
-      .replaceAll("\\", "/");
+    const fullDestination = pathJoin(
+      sourcePath
+        .replace(this.sourcePath, this.destinationPath)
+        .replace(".ts", this.extension),
+    );
 
     const resultWithTransformedFileExtensions =
       convertFileExtensionsToCjs(result);

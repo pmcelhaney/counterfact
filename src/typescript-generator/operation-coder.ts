@@ -1,5 +1,4 @@
-import nodePath from "node:path";
-
+import { pathJoin } from "../util/forward-slash-path.js";
 import { Coder } from "./coder.js";
 import {
   OperationTypeCoder,
@@ -88,8 +87,6 @@ export class OperationCoder extends Coder {
       .at(-2)!
       .replaceAll("~1", "/");
 
-    return `${nodePath
-      .join("routes", pathString)
-      .replaceAll("\\", "/")}.types.ts`;
+    return `${pathJoin("routes", pathString)}.types.ts`;
   }
 }

@@ -3,6 +3,7 @@ import path from "node:path";
 
 import createDebug from "debug";
 
+import { toForwardSlashPath } from "../util/forward-slash-path.js";
 import {
   OperationTypeCoder,
   type SecurityScheme,
@@ -271,9 +272,7 @@ async function processRouteDirectory(
         );
       } else if (entry.name.endsWith(".ts") && entry.name !== "_.context.ts") {
         // Process TypeScript route files (skip context files)
-        const routePath = relativePath
-          .replace(/\.ts$/, "")
-          .replaceAll("\\", "/");
+        const routePath = toForwardSlashPath(relativePath.replace(/\.ts$/, ""));
         const methodMap = mapping.get(routePath);
 
         if (methodMap) {

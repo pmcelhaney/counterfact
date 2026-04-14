@@ -162,6 +162,14 @@ const { loadConfigFile } = await import(
   )
 );
 
+const { pathResolve } = await import(
+  resolve(
+    nativeTs
+      ? "../src/util/forward-slash-path.js"
+      : "../dist/util/forward-slash-path.js",
+  )
+);
+
 const DEFAULT_PORT = 3100;
 
 const debug = createDebug("counterfact:bin:counterfact");
@@ -314,9 +322,9 @@ async function main(source, destination) {
     source = options.spec;
   }
 
-  const destinationPath = nodePath.resolve(destination).replaceAll("\\", "/");
+  const destinationPath = pathResolve(destination);
 
-  const basePath = nodePath.resolve(destinationPath).replaceAll("\\", "/");
+  const basePath = pathResolve(destinationPath);
 
   // If no action-related option is provided, default to all options
 

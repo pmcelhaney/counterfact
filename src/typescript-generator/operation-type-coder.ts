@@ -1,5 +1,4 @@
-import nodePath from "node:path";
-
+import { pathJoin } from "../util/forward-slash-path.js";
 import { CONTEXT_FILE_TOKEN } from "./context-file-token.js";
 import { buildJsDoc } from "./jsdoc.js";
 import { ParameterExportTypeCoder } from "./parameter-export-type-coder.js";
@@ -187,9 +186,10 @@ export class OperationTypeCoder extends TypeCoder {
       .at(-2)!
       .replaceAll("~1", "/");
 
-    return `${nodePath
-      .join("types/paths", pathString === "/" ? "/index" : pathString)
-      .replaceAll("\\", "/")}.types.ts`;
+    return `${pathJoin(
+      "types/paths",
+      pathString === "/" ? "/index" : pathString,
+    )}.types.ts`;
   }
 
   /**
