@@ -183,35 +183,13 @@ export async function counterfact(config: Config) {
   async function start(
     options: Pick<Config, "generate" | "startServer" | "watch" | "buildCache">,
   ) {
-    const { generate, startServer, watch, buildCache } = options;
-
-    if (config.openApiPath !== "_" && (generate.routes || generate.types)) {
-      await runner.codeGenerator.generate();
-    }
-
-    if (generate.types) {
-      await runner.scenarioFileGenerator.generate();
-    }
-
-    if (config.openApiPath !== "_" && (watch.routes || watch.types)) {
-      await runner.codeGenerator.watch();
-    }
-
-    if (watch.types) {
-      await runner.scenarioFileGenerator.watch();
-    }
+    await runner.generate();
+    await runner.watch();
+    await runner.start(options);
 
     let httpTerminator: HttpTerminator | undefined;
 
-    if (startServer) {
-      await runner.openApiDocument?.watch();
-
-      if (!runner.nativeTs) {
-        await runner.transpiler.watch();
-      }
-      await runner.load();
-      await runner.moduleLoader.watch();
-
+    if (options.startServer) {
       await runStartupScenario(
         runner.scenarioRegistry,
         runner.contextRegistry,
@@ -226,10 +204,6 @@ export async function counterfact(config: Config) {
       httpTerminator = createHttpTerminator({
         server,
       });
-    } else if (buildCache) {
-      // If we are not starting the server, we still want to transpile and load modules
-      await runner.transpiler.watch();
-      await runner.transpiler.stopWatching();
     }
 
     return {

@@ -179,16 +179,13 @@ export class ApiRunner {
   }
 
   /**
-   * Starts watching all relevant file-system locations for changes.
+   * Starts watching the OpenAPI spec and scenario context files for changes
+   * and re-generates the corresponding TypeScript files on each change.
    *
-   * - Watches the OpenAPI spec and re-generates code on change (when
+   * - Re-generates route stubs when the spec changes (when
    *   `config.watch.routes` or `config.watch.types` is `true`).
-   * - Watches `_.context.ts` files and regenerates the scenario context
-   *   type (when `config.watch.types` is `true`).
-   * - Watches the OpenAPI document file itself for live reloads.
-   * - Watches TypeScript route files and transpiles them (when the runtime
-   *   does not support native TypeScript execution).
-   * - Watches compiled modules and hot-reloads them.
+   * - Re-generates `types/_.context.ts` when a `_.context.ts` file changes
+   *   (when `config.watch.types` is `true`).
    */
   public async watch(): Promise<void> {
     if (
@@ -201,14 +198,42 @@ export class ApiRunner {
     if (this.config.watch.types) {
       await this.scenarioFileGenerator.watch();
     }
+  }
 
-    await this.openApiDocument?.watch();
+  /**
+   * Starts the server-related sub-systems based on the supplied options.
+   *
+   * When `startServer` is `true`:
+   * - Watches the OpenAPI document for live reloads.
+   * - Transpiles TypeScript route files (when the runtime does not support
+   *   native TypeScript execution).
+   * - Loads all compiled modules into their registries.
+   * - Watches compiled modules for hot-reload.
+   *
+   * When `buildCache` is `true` (and `startServer` is `false`):
+   * - Runs the transpiler once to build the compiled-output cache, then stops.
+   *
+   * @param options - Subset of the runtime config that governs startup behaviour.
+   */
+  public async start(
+    options: Pick<Config, "startServer" | "buildCache">,
+  ): Promise<void> {
+    const { startServer, buildCache } = options;
 
-    if (!this.nativeTs) {
+    if (startServer) {
+      await this.openApiDocument?.watch();
+
+      if (!this.nativeTs) {
+        await this.transpiler.watch();
+      }
+
+      await this.moduleLoader.load();
+      await this.moduleLoader.watch();
+    } else if (buildCache) {
+      // Transpile once to populate the cache, then immediately stop watching.
       await this.transpiler.watch();
+      await this.transpiler.stopWatching();
     }
-
-    await this.moduleLoader.watch();
   }
 
   /**

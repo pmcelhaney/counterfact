@@ -209,16 +209,46 @@ describe("ApiRunner", () => {
       });
     });
 
-    it("stops watchers that were started by load() and watch()", async () => {
+    it("stops watchers that were started by start()", async () => {
       await usingTemporaryFiles(async ($) => {
         await $.addDirectory("routes");
         const runner = await ApiRunner.create({
           ...baseConfig,
           basePath: $.path("."),
         });
-        await runner.load();
-        await runner.moduleLoader.watch();
+        await runner.start({ startServer: false, buildCache: false });
         await expect(runner.stopWatching()).resolves.toBeUndefined();
+      });
+    });
+  });
+
+  describe("start()", () => {
+    it("does not throw when startServer and buildCache are both false", async () => {
+      await usingTemporaryFiles(async ($) => {
+        const runner = await ApiRunner.create({
+          ...baseConfig,
+          basePath: $.path("."),
+        });
+        await expect(
+          runner.start({ startServer: false, buildCache: false }),
+        ).resolves.toBeUndefined();
+      });
+    });
+
+    it("loads modules into the registry when startServer is true", async () => {
+      await usingTemporaryFiles(async ($) => {
+        await $.add(
+          "routes/hello.js",
+          `export function GET() { return { body: "hello" }; }`,
+        );
+        const runner = await ApiRunner.create({
+          ...baseConfig,
+          basePath: $.path("."),
+        });
+        await runner.start({ startServer: true, buildCache: false });
+        const routes = runner.registry.routes;
+        expect(routes.some((r) => r.path === "/hello")).toBe(true);
+        await runner.stopWatching();
       });
     });
   });
