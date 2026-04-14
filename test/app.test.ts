@@ -79,12 +79,12 @@ describe("counterfact", () => {
     expect(typeof result.startRepl).toBe("function");
   });
 
-  it("returns contextRegistry, registry, koaApp, koaMiddleware, and start", async () => {
+  it("returns contextRegistry, registry, koaApp, routesMiddleware, and start", async () => {
     const result = await (app as any).counterfact(mockConfig);
     expect(result.contextRegistry).toBeDefined();
     expect(result.registry).toBeDefined();
     expect(result.koaApp).toBeDefined();
-    expect(result.koaMiddleware).toBeDefined();
+    expect(result.routesMiddleware).toBeDefined();
     expect(typeof result.start).toBe("function");
   });
 

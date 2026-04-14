@@ -3,11 +3,8 @@ import Koa from "koa";
 import bodyParser from "koa-bodyparser";
 import { koaSwagger } from "koa2-swagger-ui";
 
-import { adminApiMiddleware } from "./admin-api-middleware.js";
 import type { Config } from "./config.js";
-import type { ContextRegistry } from "./context-registry.js";
 import { openapiMiddleware } from "./openapi-middleware.js";
-import type { Registry } from "./registry.js";
 
 const debug = createDebug("counterfact:server:create-koa-app");
 
@@ -17,23 +14,22 @@ const debug = createDebug("counterfact:server:create-koa-app");
  * The middleware stack (in order) is:
  * 1. OpenAPI document serving at `/counterfact/openapi`
  * 2. Swagger UI at `/counterfact/swagger`
- * 3. Admin API (when enabled) at `/_counterfact/api/`
+ * 3. Admin API (when provided) at `/_counterfact/api/`
  * 4. Redirect `/counterfact` → `/counterfact/swagger`
  * 5. Body parser
  * 6. JSON serialisation of object bodies
  * 7. Route-dispatching middleware
  *
- * @param registry - The route registry used by the admin API and dispatcher.
- * @param koaMiddleware - The pre-built route-dispatching middleware.
+ * @param routesMiddleware - The pre-built route-dispatching middleware.
  * @param config - Server configuration.
- * @param contextRegistry - The context registry used by the admin API.
+ * @param adminApiMiddleware - Optional pre-built admin API middleware; when
+ *   provided it is mounted at `/_counterfact/api/`.
  * @returns A configured Koa application (not yet listening).
  */
 export function createKoaApp(
-  registry: Registry,
-  koaMiddleware: Koa.Middleware,
+  routesMiddleware: Koa.Middleware,
   config: Config,
-  contextRegistry: ContextRegistry,
+  adminApiMiddleware?: Koa.Middleware,
 ) {
   const app = new Koa();
 
@@ -56,12 +52,11 @@ export function createKoaApp(
     }),
   );
 
-  if (config.startAdminApi) {
-    app.use(adminApiMiddleware(registry, contextRegistry, config));
+  if (adminApiMiddleware) {
+    app.use(adminApiMiddleware);
   }
 
   debug("basePath: %s", config.basePath);
-  debug("routes", registry.routes);
 
   app.use(async (ctx, next) => {
     if (ctx.URL.pathname === "/counterfact") {
@@ -89,7 +84,7 @@ export function createKoaApp(
     }
   });
 
-  app.use(koaMiddleware);
+  app.use(routesMiddleware);
 
   return app;
 }
