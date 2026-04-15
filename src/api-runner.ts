@@ -73,7 +73,7 @@ export class ApiRunner {
   public readonly openApiPath: string;
 
   /** URL prefix that this runner intercepts (default `""`). */
-  public readonly routePrefix: string;
+  public readonly prefix: string;
 
   private readonly config: Config;
 
@@ -92,7 +92,7 @@ export class ApiRunner {
     this.nativeTs = nativeTs;
     this.openApiDocument = openApiDocument;
     this.openApiPath = config.openApiPath;
-    this.routePrefix = config.routePrefix;
+    this.prefix = config.prefix;
 
     this.registry = new Registry();
     this.contextRegistry = new ContextRegistry();
@@ -101,7 +101,7 @@ export class ApiRunner {
     this.scenarioFileGenerator = new ScenarioFileGenerator(modulesPath);
 
     this.codeGenerator = new CodeGenerator(
-      config.openApiPath,
+      this.openApiPath,
       config.basePath,
       config.generate,
     );

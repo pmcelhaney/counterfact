@@ -21,7 +21,7 @@ const CONFIG: Config = {
   port: 9999,
   proxyPaths: new Map([]),
   proxyUrl: "https://example.com/test",
-  routePrefix: "",
+  prefix: "",
   startAdminApi: false,
   startRepl: false,
   startServer: true,

@@ -6,7 +6,7 @@ import { koaSwagger } from "koa2-swagger-ui";
 import type { ApiRunner } from "../../api-runner.js";
 import type { Config } from "../config.js";
 import { adminApiMiddleware } from "./admin-api-middleware.js";
-import { routesMiddleware } from "./koa-middleware.js";
+import { routesMiddleware } from "./routes-middleware.js";
 import { openapiMiddleware } from "./openapi-middleware.js";
 
 const debug = createDebug("counterfact:server:create-koa-app");
@@ -21,7 +21,7 @@ const debug = createDebug("counterfact:server:create-koa-app");
  * 4. Redirect `/counterfact` → `/counterfact/swagger`
  * 5. Body parser
  * 6. JSON serialisation of object bodies
- * 7. Route-dispatching middleware at `config.routePrefix`
+ * 7. Route-dispatching middleware at `config.prefix`
  *
  * @param runner - The ApiRunner instance providing the dispatcher, registry,
  *   context registry, OpenAPI path, and route prefix.
@@ -40,7 +40,7 @@ export function createKoaApp({
   app.use(
     openapiMiddleware("/counterfact/openapi", {
       path: runner.openApiPath,
-      baseUrl: `//localhost:${config.port}${runner.routePrefix}`,
+      baseUrl: `//localhost:${config.port}${runner.prefix}`,
     }),
   );
 
@@ -93,7 +93,7 @@ export function createKoaApp({
     }
   });
 
-  app.use(routesMiddleware(config.routePrefix, runner.dispatcher, config));
+  app.use(routesMiddleware(config.prefix, runner.dispatcher, config));
 
   return app;
 }

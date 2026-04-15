@@ -96,7 +96,7 @@ GET /_counterfact/api/health
   "port": 3100,
   "uptime": 123.45,
   "basePath": "/path/to/routes",
-  "routePrefix": ""
+  "prefix": ""
 }
 ```
 
@@ -236,7 +236,7 @@ GET /_counterfact/api/config
     "openApiPath": "/path/to/openapi.yaml",
     "port": 3100,
     "proxyUrl": "",
-    "routePrefix": "",
+    "prefix": "",
     "startRepl": true,
     "startServer": true,
     "watch": { "routes": true, "types": true },
@@ -590,6 +590,7 @@ After setting proxy:
   - Environment variable: `COUNTERFACT_ADMIN_API_TOKEN=<TOKEN_VALUE>`
 - When a token is configured, clients must send:
   - HTTP header: `Authorization: Bearer <TOKEN_VALUE>`
+
 ---
 
 ## Integration with OpenAPI

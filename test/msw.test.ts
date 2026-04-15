@@ -15,7 +15,7 @@ const mockConfig = {
   startRepl: false,
   startServer: false,
   watch: { routes: false, types: false },
-  routePrefix: "",
+  prefix: "",
 };
 
 // Minimal valid mock MockRequest

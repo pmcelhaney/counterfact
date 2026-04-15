@@ -20,7 +20,7 @@ const createConfig = (): Config => ({
   port: 3100,
   proxyPaths: new Map(),
   proxyUrl: "",
-  routePrefix: "",
+  prefix: "",
   startAdminApi: true,
   startRepl: true,
   startServer: true,
@@ -190,7 +190,7 @@ describe("adminApiMiddleware", () => {
       expect(ctx.body).toEqual({
         basePath: "/test/path",
         port: 3100,
-        routePrefix: "",
+        prefix: "",
         status: "ok",
         uptime: expect.any(Number),
       });
@@ -215,7 +215,7 @@ describe("adminApiMiddleware", () => {
       expect(ctx.body).toEqual({
         basePath: "/test/path",
         port: 3100,
-        routePrefix: "",
+        prefix: "",
         status: "ok",
         uptime: expect.any(Number),
       });
@@ -449,7 +449,7 @@ describe("adminApiMiddleware", () => {
           port: 3100,
           proxyPaths: [["/api", true]],
           proxyUrl: "https://example.com",
-          routePrefix: "",
+          prefix: "",
           startAdminApi: true,
           startRepl: true,
           startServer: true,
