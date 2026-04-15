@@ -274,7 +274,7 @@ def test_multiple_api_config_generates_grouped_route_files():
             timeout=30,
             check=False,
         )
-        assert result.returncode in (0, None), (
+        assert result.returncode == 0, (
             f"Process exited with unexpected code {result.returncode}"
         )
 
