@@ -6,7 +6,19 @@ This directory contains the executable script that is run when a developer invok
 
 | File | Description |
 |---|---|
-| `counterfact.js` | Parses command-line arguments with [Commander](https://github.com/tj/commander.js), validates inputs, and calls `counterfact()` from `src/app.ts` to start the server, code generator, file watcher, and/or REPL |
+| `counterfact.js` | Thin bootstrap: enforces minimum Node version, probes for native TypeScript execution, then delegates to `src/cli/run.ts` (or `dist/cli/run.js`) |
+| `taglines.txt` | One-per-line list of random taglines shown in the startup banner |
+
+## Architecture
+
+Most of the CLI logic lives in **`src/cli/`** as TypeScript:
+
+| Module | Description |
+|---|---|
+| `src/cli/run.ts` | Commander program setup, `main()` action handler, and the `runCli()` entry point |
+| `src/cli/banner.ts` | Startup banner utilities: `padTagLine`, `createWatchMessage`, `createIntroduction` |
+| `src/cli/check-for-updates.ts` | npm update check: `isOutdated`, `checkForUpdates` |
+| `src/cli/telemetry.ts` | PostHog telemetry: `isTelemetryEnabled`, `sendTelemetry` |
 
 ## How It Works
 
@@ -14,19 +26,32 @@ This directory contains the executable script that is run when a developer invok
 npx counterfact@latest openapi.yaml ./api [options]
         │
         ▼
-┌────────────────────────────┐
-│     counterfact.js         │
-│                            │
-│  1. Parse args (Commander) │
-│  2. Load counterfact.yaml  │
-│  3. Merge config + args    │
-│  4. Resolve paths          │
-│  5. Build Config object    │
-│  6. Run migrations if      │
-│     old layout detected    │
-│  7. Call start(config)     │
-│     from src/app.ts        │
-└────────────────────────────┘
+┌────────────────────────────────────────────────┐
+│  bin/counterfact.js  (thin bootstrap)          │
+│                                                │
+│  1. Enforce minimum Node.js version            │
+│  2. Probe native TypeScript execution          │
+│  3. Import runCli() from src/cli/run.ts        │
+│     (or dist/cli/run.js when compiled)         │
+│  4. Call runCli(process.argv)                  │
+└────────────────────────────────────────────────┘
+        │
+        ▼
+┌────────────────────────────────────────────────┐
+│  src/cli/run.ts  (all CLI logic)               │
+│                                                │
+│  1. Read version from package.json             │
+│  2. Read taglines from bin/taglines.txt        │
+│  3. Fire telemetry (if enabled)                │
+│  4. Parse args (Commander)                     │
+│  5. Load counterfact.yaml                      │
+│  6. Merge config + args                        │
+│  7. Resolve paths                              │
+│  8. Build Config object                        │
+│  9. Run migrations if old layout detected      │
+│ 10. Print startup banner                       │
+│ 11. Call start(config) from src/app.ts         │
+└────────────────────────────────────────────────┘
 ```
 
 ### Key CLI Options
