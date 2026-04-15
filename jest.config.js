@@ -5,6 +5,8 @@ export default {
     "src/**/*.{js,jsx,ts,tsx}",
     "!**/node_modules/**",
     "!**/*.d.ts",
+    "!src/counterfact-types/**",
+    "!src/server/config.ts",
   ],
 
   coverageProvider: "v8",
