@@ -7,7 +7,10 @@ import {
   padTagLine,
 } from "../../src/cli/banner.js";
 
-const baseConfig: Pick<Config, "generate" | "startRepl" | "startServer" | "watch"> = {
+const baseConfig: Pick<
+  Config,
+  "generate" | "startRepl" | "startServer" | "watch"
+> = {
   generate: { routes: false, types: false },
   startRepl: false,
   startServer: false,

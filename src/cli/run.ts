@@ -390,11 +390,16 @@ export async function runCli(argv: string[]): Promise<void> {
   // levels below the project root, so "../bin/taglines.txt" (or the equivalent
   // from the root) resolves correctly.  We go up two levels to the root and
   // then into bin/.
-  const taglinesFile = await readFile(
-    resolve(__dirname, "../../bin/taglines.txt"),
-    "utf8",
-  );
-  const taglines = taglinesFile.split("\n").slice(0, -1);
+  let taglines: string[];
+  try {
+    const taglinesFile = await readFile(
+      resolve(__dirname, "../../bin/taglines.txt"),
+      "utf8",
+    );
+    taglines = taglinesFile.split("\n").slice(0, -1);
+  } catch {
+    taglines = ["counterfact — mock API server"];
+  }
 
   // Fire telemetry once on startup — fire-and-forget, never blocks.
   if (isTelemetryEnabled()) {
