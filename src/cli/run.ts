@@ -7,7 +7,7 @@ import { Command } from "commander";
 import createDebug from "debug";
 import open from "open";
 
-import { counterfact } from "../app.js";
+import { counterfact, type SpecConfig } from "../app.js";
 import { pathsToRoutes } from "../migrate/paths-to-routes.js";
 import { updateRouteTypes } from "../migrate/update-route-types.js";
 import { pathResolve } from "../util/forward-slash-path.js";
@@ -51,7 +51,10 @@ function buildProgram(version: string, taglines: string[]): Command {
       proxyUrl?: string;
       repl?: boolean;
       serve?: boolean;
-      spec?: string;
+      spec?:
+        | string
+        | { source: string; prefix?: string; group?: string }
+        | Array<{ source: string; prefix?: string; group?: string }>;
       updateCheck: boolean;
       validateRequest: boolean;
       validateResponse: boolean;
@@ -91,10 +94,37 @@ function buildProgram(version: string, taglines: string[]): Command {
     }
 
     // --spec takes precedence over the positional [openapi.yaml] argument.
-    // When --spec is provided, the [openapi.yaml] positional slot shifts to
-    // become the [destination] argument (so `counterfact --spec api.yaml ./api`
-    // works the same as `counterfact api.yaml ./api`).
-    if (options.spec) {
+    // When --spec is provided as a string, the [openapi.yaml] positional slot
+    // shifts to become the [destination] argument (so `counterfact --spec
+    // api.yaml ./api` works the same as `counterfact api.yaml ./api`).
+    //
+    // When --spec / the config file's `spec` key is an object or array of
+    // objects ({source, prefix, group}), it describes multiple API specs and
+    // is passed directly to counterfact() as the `specs` argument.
+    let specs: SpecConfig[] | undefined;
+
+    if (Array.isArray(options.spec)) {
+      // Config file: spec is an array of spec-entry objects.
+      specs = options.spec.map((entry) => ({
+        source: entry.source,
+        prefix: entry.prefix ?? "",
+        group: entry.group ?? "",
+      }));
+    } else if (
+      typeof options.spec === "object" &&
+      options.spec !== null &&
+      "source" in options.spec
+    ) {
+      // Config file: spec is a single spec-entry object.
+      specs = [
+        {
+          source: options.spec.source,
+          prefix: options.spec.prefix ?? "",
+          group: options.spec.group ?? "",
+        },
+      ];
+    } else if (typeof options.spec === "string") {
+      // CLI --spec flag: a string path to a single OpenAPI document.
       if (source !== "_") {
         destination = source;
       }
@@ -203,7 +233,7 @@ function buildProgram(version: string, taglines: string[]): Command {
 
     const { start, startRepl } = await (async () => {
       try {
-        return await counterfact(config);
+        return await counterfact(config, specs);
       } catch (error) {
         process.stderr.write(
           `\n❌ ${error instanceof Error ? error.message : String(error)}\n\n`,

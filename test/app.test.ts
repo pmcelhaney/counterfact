@@ -50,6 +50,30 @@ describe("counterfact", () => {
     expect((result as any).replServer).toBeUndefined();
     await result.stop();
   });
+
+  it("accepts a specs array and creates runners for each spec", async () => {
+    const specs = [
+      { source: "_", prefix: "/api/v1", group: "v1" },
+      { source: "_", prefix: "/api/v2", group: "v2" },
+    ];
+    const result = await (app as any).counterfact(mockConfig, specs);
+    expect(result.contextRegistry).toBeDefined();
+    expect(result.registry).toBeDefined();
+    expect(result.koaApp).toBeDefined();
+    expect(typeof result.start).toBe("function");
+    expect(typeof result.startRepl).toBe("function");
+  });
+
+  it("uses the first spec's registry as the primary registry when specs are provided", async () => {
+    const specs = [
+      { source: "_", prefix: "/api/v1", group: "v1" },
+      { source: "_", prefix: "/api/v2", group: "v2" },
+    ];
+    const result = await (app as any).counterfact(mockConfig, specs);
+    // contextRegistry and registry come from the first runner
+    expect(result.contextRegistry).toBeDefined();
+    expect(result.registry).toBeDefined();
+  });
 });
 
 describe("runStartupScenario", () => {

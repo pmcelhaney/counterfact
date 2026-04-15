@@ -15,6 +15,22 @@ export {
   type MockRequest,
 } from "./msw.js";
 
+/**
+ * Describes one API specification entry.
+ *
+ * When `counterfact()` is called with a `specs` array, one {@link ApiRunner}
+ * is created per entry. When called without `specs`, a single entry is derived
+ * from `config.openApiPath`, `config.prefix`, and `group = ""`.
+ */
+export interface SpecConfig {
+  /** Path or URL to the OpenAPI document for this spec. */
+  source: string;
+  /** URL prefix that this spec's runner intercepts. */
+  prefix: string;
+  /** Name of the subdirectory under `config.basePath` where code is generated. */
+  group: string;
+}
+
 type Scenario$ = {
   context: Record<string, unknown>;
   loadContext: (path: string) => Record<string, unknown>;
@@ -48,14 +64,34 @@ export async function runStartupScenario(
 }
 
 /**
+ * Normalises the spec configuration to an array.
+ *
+ * When `specs` is provided it is returned as-is. When it is omitted, a
+ * single-entry array is constructed from `config.openApiPath`,
+ * `config.prefix`, and `group = ""` so that the rest of the code never
+ * needs to branch on single-vs-multiple specs.
+ */
+function normalizeSpecs(config: Config, specs?: SpecConfig[]): SpecConfig[] {
+  if (specs !== undefined) {
+    return specs;
+  }
+
+  return [{ source: config.openApiPath, prefix: config.prefix, group: "" }];
+}
+
+/**
  * Creates and configures a full Counterfact server instance.
  *
- * Sets up the route registry, context registry, scenario registry, code
- * generator, transpiler, module loader, Koa application, and OpenAPI watcher.
- * The returned object exposes handles for starting the server, stopping it, and
- * launching the interactive REPL.
+ * Supports one or more API specifications. Each spec produces its own
+ * {@link ApiRunner}. When `specs` is omitted a single runner is created from
+ * `config.openApiPath` and `config.prefix`.
+ *
+ * The returned object exposes handles for starting the server, stopping it,
+ * and launching the interactive REPL.
  *
  * @param config - Runtime configuration (port, paths, feature flags, etc.).
+ * @param specs - Optional array of spec entries. Omit to use a single spec
+ *   derived from `config.openApiPath` and `config.prefix`.
  * @returns An object containing the configured sub-systems and two entry-point
  *   functions:
  *   - `start(options)` — generates/watches code and optionally starts the HTTP
@@ -63,29 +99,41 @@ export async function runStartupScenario(
  *   - `startRepl()` — launches the interactive Node.js REPL connected to the
  *     live server state.
  */
-export async function counterfact(config: Config) {
-  const runner = await ApiRunner.create(config);
+export async function counterfact(config: Config, specs?: SpecConfig[]) {
+  const normalizedSpecs = normalizeSpecs(config, specs);
+
+  const runners = await Promise.all(
+    normalizedSpecs.map((spec) =>
+      ApiRunner.create(
+        { ...config, openApiPath: spec.source, prefix: spec.prefix },
+        spec.group,
+      ),
+    ),
+  );
 
   const koaApp = createKoaApp({
-    runner,
+    runners,
     config,
   });
+
+  // The REPL is configured using the first runner.
+  const primaryRunner = runners[0]!;
 
   async function start(
     options: Pick<Config, "generate" | "startServer" | "watch" | "buildCache">,
   ) {
-    await runner.generate();
-    await runner.watch();
-    await runner.start(options);
+    await Promise.all(runners.map((runner) => runner.generate()));
+    await Promise.all(runners.map((runner) => runner.watch()));
+    await Promise.all(runners.map((runner) => runner.start(options)));
 
     let httpTerminator: HttpTerminator | undefined;
 
     if (options.startServer) {
       await runStartupScenario(
-        runner.scenarioRegistry,
-        runner.contextRegistry,
+        primaryRunner.scenarioRegistry,
+        primaryRunner.contextRegistry,
         config,
-        runner.openApiDocument,
+        primaryRunner.openApiDocument,
       );
 
       const server = koaApp.listen({
@@ -99,25 +147,25 @@ export async function counterfact(config: Config) {
 
     return {
       async stop() {
-        await runner.stopWatching();
+        await Promise.all(runners.map((runner) => runner.stopWatching()));
         await httpTerminator?.terminate();
       },
     };
   }
 
   return {
-    contextRegistry: runner.contextRegistry,
+    contextRegistry: primaryRunner.contextRegistry,
     koaApp,
-    registry: runner.registry,
+    registry: primaryRunner.registry,
     start,
     startRepl: () =>
       startReplServer(
-        runner.contextRegistry,
-        runner.registry,
+        primaryRunner.contextRegistry,
+        primaryRunner.registry,
         config,
         undefined, // use the default print function (stdout)
-        runner.openApiDocument,
-        runner.scenarioRegistry,
+        primaryRunner.openApiDocument,
+        primaryRunner.scenarioRegistry,
       ),
   };
 }

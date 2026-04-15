@@ -164,6 +164,46 @@ describe("ApiRunner", () => {
       });
     });
 
+    it("exposes group as empty string by default", async () => {
+      await usingTemporaryFiles(async ($) => {
+        const runner = await ApiRunner.create({
+          ...baseConfig,
+          basePath: $.path("."),
+        });
+        expect(runner.group).toBe("");
+      });
+    });
+
+    it("exposes group as the value passed to create()", async () => {
+      await usingTemporaryFiles(async ($) => {
+        const runner = await ApiRunner.create(
+          { ...baseConfig, basePath: $.path(".") },
+          "v2",
+        );
+        expect(runner.group).toBe("v2");
+      });
+    });
+
+    it("subdirectory is empty string when group is empty", async () => {
+      await usingTemporaryFiles(async ($) => {
+        const runner = await ApiRunner.create({
+          ...baseConfig,
+          basePath: $.path("."),
+        });
+        expect(runner.subdirectory).toBe("");
+      });
+    });
+
+    it("subdirectory is /group when group is set", async () => {
+      await usingTemporaryFiles(async ($) => {
+        const runner = await ApiRunner.create(
+          { ...baseConfig, basePath: $.path(".") },
+          "pets",
+        );
+        expect(runner.subdirectory).toBe("/pets");
+      });
+    });
+
     it("loads openApiDocument when openApiPath is set", async () => {
       await usingTemporaryFiles(async ($) => {
         const runner = await ApiRunner.create({
