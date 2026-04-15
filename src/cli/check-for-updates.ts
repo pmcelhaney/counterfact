@@ -7,8 +7,8 @@ const debug = createDebug("counterfact:cli:check-for-updates");
  * `current`.
  */
 export function isOutdated(current: string, latest: string): boolean {
-  const [cMajor, cMinor, cPatch] = current.split(".").map(Number);
-  const [lMajor, lMinor, lPatch] = latest.split(".").map(Number);
+  const [cMajor = 0, cMinor = 0, cPatch = 0] = current.split(".").map(Number);
+  const [lMajor = 0, lMinor = 0, lPatch = 0] = latest.split(".").map(Number);
 
   if (lMajor > cMajor) return true;
   if (lMajor === cMajor && lMinor > cMinor) return true;

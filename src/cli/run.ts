@@ -201,16 +201,16 @@ function buildProgram(version: string, taglines: string[]): Command {
       didMigrate = true;
     }
 
-    let start: Awaited<ReturnType<typeof counterfact>>["start"];
-    let startRepl: Awaited<ReturnType<typeof counterfact>>["startRepl"];
-    try {
-      ({ start, startRepl } = await counterfact(config));
-    } catch (error) {
-      process.stderr.write(
-        `\n❌ ${error instanceof Error ? error.message : String(error)}\n\n`,
-      );
-      process.exit(1);
-    }
+    const { start, startRepl } = await (async () => {
+      try {
+        return await counterfact(config);
+      } catch (error) {
+        process.stderr.write(
+          `\n❌ ${error instanceof Error ? error.message : String(error)}\n\n`,
+        );
+        process.exit(1);
+      }
+    })();
 
     debug("loaded counterfact", configForLogging);
 
@@ -314,7 +314,12 @@ function buildProgram(version: string, taglines: string[]): Command {
       "_",
     )
     .argument("[destination]", "path to generated code", ".")
-    .option("-p, --port <number>", "server port number", DEFAULT_PORT)
+    .option(
+      "-p, --port <number>",
+      "server port number",
+      (v) => Number(v),
+      DEFAULT_PORT,
+    )
     .option("-o, --open", "open a browser")
     .option("-g, --generate", "generate all code for both routes and types")
     .option("--generate-types", "generate types")

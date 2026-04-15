@@ -47,7 +47,7 @@ export function sendTelemetry(version: string): void {
       },
     });
 
-    posthog.shutdownAsync().catch(() => {
+    posthog.flush().catch(() => {
       // ignore errors — telemetry is best-effort
     });
   } catch {
