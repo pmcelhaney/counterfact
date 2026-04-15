@@ -38,6 +38,7 @@ it("example", async () => {
 
 ## Before Committing
 
+- Before running any other `yarn` command, run `yarn install` first (use `yarn install --frozen-lockfile` in CI-like environments).
 - Run `yarn lint:fix` to auto-fix linting issues, then `yarn lint` to confirm no remaining errors.
 - For any user-facing change, you **must**:
   - Add a changeset by running `npx changeset`. Choose the appropriate semver bump (patch / minor / major) and write a short description of what changed.
@@ -101,5 +102,4 @@ Key rules:
 - Write clear issue bodies with a summary, context/motivation, and acceptance criteria.
 
 Proposal files are merged via a pull request and converted into real issues automatically on merge.
-
 
