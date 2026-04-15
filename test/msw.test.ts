@@ -57,7 +57,7 @@ describe("handleMswRequest", () => {
     await (msw as any).createMswHandlers(
       {
         ...mockConfig,
-        openApiPath: "test/fixtures/openapi-example.yaml",
+        openApiPath: "test/fixtures/openapi/example.yaml",
       },
       MockModuleLoader,
     );
@@ -84,7 +84,7 @@ describe("createMswHandlers", () => {
     const handlers = await (msw as any).createMswHandlers(
       {
         ...mockConfig,
-        openApiPath: "test/fixtures/openapi-example.yaml",
+        openApiPath: "test/fixtures/openapi/example.yaml",
       },
       MockModuleLoader,
     );

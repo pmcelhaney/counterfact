@@ -147,9 +147,9 @@ describe("ApiRunner", () => {
         const runner = await ApiRunner.create({
           ...baseConfig,
           basePath: $.path("."),
-          openApiPath: "test/fixtures/openapi-example.yaml",
+          openApiPath: "test/fixtures/openapi/example.yaml",
         });
-        expect(runner.openApiPath).toBe("test/fixtures/openapi-example.yaml");
+        expect(runner.openApiPath).toBe("test/fixtures/openapi/example.yaml");
       });
     });
 
@@ -209,7 +209,7 @@ describe("ApiRunner", () => {
         const runner = await ApiRunner.create({
           ...baseConfig,
           basePath: $.path("."),
-          openApiPath: "test/fixtures/openapi-example.yaml",
+          openApiPath: "test/fixtures/openapi/example.yaml",
         });
         expect(runner.openApiDocument).toBeDefined();
       });
