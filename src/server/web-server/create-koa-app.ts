@@ -15,54 +15,55 @@ const debug = createDebug("counterfact:server:create-koa-app");
  * Builds and configures the Koa application with all built-in middleware.
  *
  * The middleware stack (in order) is:
- * 1. OpenAPI document serving at `/counterfact/openapi`
- * 2. Swagger UI at `/counterfact/swagger`
- * 3. Admin API (when `config.startAdminApi` is `true`) at `/_counterfact/api`
+ * 1. Per runner: OpenAPI document serving at `/counterfact/openapi${runner.subdirectory}`
+ * 2. Per runner: Swagger UI at `/counterfact/swagger${runner.subdirectory}`
+ * 3. Per runner: Admin API (when `config.startAdminApi` is `true`) at `/_counterfact/api${runner.subdirectory}`
  * 4. Redirect `/counterfact` → `/counterfact/swagger`
  * 5. Body parser
  * 6. JSON serialisation of object bodies
- * 7. Route-dispatching middleware at `config.prefix`
+ * 7. Per runner: Route-dispatching middleware at `runner.prefix`
  *
- * @param runner - The ApiRunner instance providing the dispatcher, registry,
- *   context registry, OpenAPI path, and route prefix.
+ * @param runners - The ApiRunner instances, one per API spec.
  * @param config - Server configuration.
  * @returns A configured Koa application (not yet listening).
  */
 export function createKoaApp({
-  runner,
+  runners,
   config,
 }: {
-  runner: ApiRunner;
+  runners: ApiRunner[];
   config: Config;
 }) {
   const app = new Koa();
 
-  app.use(
-    openapiMiddleware("/counterfact/openapi", {
-      path: runner.openApiPath,
-      baseUrl: `//localhost:${config.port}${runner.prefix}`,
-    }),
-  );
-
-  app.use(
-    koaSwagger({
-      routePrefix: "/counterfact/swagger",
-
-      swaggerOptions: {
-        url: "/counterfact/openapi",
-      },
-    }),
-  );
-
-  if (config.startAdminApi) {
+  for (const runner of runners) {
     app.use(
-      adminApiMiddleware(
-        "/_counterfact/api",
-        runner.registry,
-        runner.contextRegistry,
-        config,
-      ),
+      openapiMiddleware(`/counterfact/openapi${runner.subdirectory}`, {
+        path: runner.openApiPath,
+        baseUrl: `//localhost:${config.port}${runner.prefix}`,
+      }),
     );
+
+    app.use(
+      koaSwagger({
+        routePrefix: `/counterfact/swagger${runner.subdirectory}`,
+
+        swaggerOptions: {
+          url: `/counterfact/openapi${runner.subdirectory}`,
+        },
+      }),
+    );
+
+    if (config.startAdminApi) {
+      app.use(
+        adminApiMiddleware(
+          `/_counterfact/api${runner.subdirectory}`,
+          runner.registry,
+          runner.contextRegistry,
+          config,
+        ),
+      );
+    }
   }
 
   debug("basePath: %s", config.basePath);
@@ -93,7 +94,9 @@ export function createKoaApp({
     }
   });
 
-  app.use(routesMiddleware(config.prefix, runner.dispatcher, config));
+  for (const runner of runners) {
+    app.use(routesMiddleware(runner.prefix, runner.dispatcher, config));
+  }
 
   return app;
 }

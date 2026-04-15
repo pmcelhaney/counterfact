@@ -1,6 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // import { describe, it, expect } from "@jest/globals";
+import { jest } from "@jest/globals";
+import request from "supertest";
+import { usingTemporaryFiles } from "using-temporary-files";
+
 import * as app from "../src/app";
+import { ApiRunner } from "../src/api-runner";
 import { ContextRegistry } from "../src/server/context-registry";
 import { ScenarioRegistry } from "../src/server/scenario-registry";
 
@@ -49,6 +54,92 @@ describe("counterfact", () => {
     expect(typeof result.stop).toBe("function");
     expect((result as any).replServer).toBeUndefined();
     await result.stop();
+  });
+
+  it("accepts a specs array and creates runners for each spec", async () => {
+    const spy = jest.spyOn(ApiRunner, "create");
+
+    const specs = [
+      { source: "_", prefix: "/api/v1", group: "v1" },
+      { source: "_", prefix: "/api/v2", group: "v2" },
+    ];
+
+    await (app as any).counterfact(mockConfig, specs);
+
+    expect(spy).toHaveBeenCalledTimes(2);
+    expect(spy).toHaveBeenCalledWith(
+      expect.objectContaining({ openApiPath: "_", prefix: "/api/v1" }),
+      "v1",
+    );
+    expect(spy).toHaveBeenCalledWith(
+      expect.objectContaining({ openApiPath: "_", prefix: "/api/v2" }),
+      "v2",
+    );
+
+    spy.mockRestore();
+  });
+
+  it("uses the first spec's runner as primary (contextRegistry, registry) when specs are provided", async () => {
+    const realCreate = ApiRunner.create;
+    const capturedRunners: ApiRunner[] = [];
+
+    const createSpy = jest.spyOn(ApiRunner, "create");
+    createSpy.mockImplementation(async (...args) => {
+      const runner = await realCreate.apply(ApiRunner, args);
+      capturedRunners.push(runner);
+      return runner;
+    });
+
+    const specs = [
+      { source: "_", prefix: "/api/v1", group: "v1" },
+      { source: "_", prefix: "/api/v2", group: "v2" },
+    ];
+
+    const result = await (app as any).counterfact(mockConfig, specs);
+
+    expect(capturedRunners).toHaveLength(2);
+    expect(result.contextRegistry).toBe(capturedRunners[0]!.contextRegistry);
+    expect(result.registry).toBe(capturedRunners[0]!.registry);
+
+    createSpy.mockRestore();
+  });
+
+  it("routes requests to the correct runner based on prefix when specs are provided", async () => {
+    await usingTemporaryFiles(async ($) => {
+      await $.add(
+        "v1/routes/hello.js",
+        `export function GET() { return { body: "hello from v1" }; }`,
+      );
+      await $.add(
+        "v2/routes/hello.js",
+        `export function GET() { return { body: "hello from v2" }; }`,
+      );
+
+      const specs = [
+        { source: "_", prefix: "/api/v1", group: "v1" },
+        { source: "_", prefix: "/api/v2", group: "v2" },
+      ];
+
+      const { koaApp, start } = await (app as any).counterfact(
+        { ...mockConfig, basePath: $.path(".") },
+        specs,
+      );
+
+      const { stop } = await start({
+        startServer: true,
+        buildCache: false,
+        generate: { routes: false, types: false },
+        watch: { routes: false, types: false },
+      });
+
+      const v1Response = await request(koaApp.callback()).get("/api/v1/hello");
+      const v2Response = await request(koaApp.callback()).get("/api/v2/hello");
+
+      expect(v1Response.text).toContain("hello from v1");
+      expect(v2Response.text).toContain("hello from v2");
+
+      await stop();
+    });
   });
 });
 

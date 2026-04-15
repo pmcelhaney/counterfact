@@ -7,7 +7,7 @@ import { Command } from "commander";
 import createDebug from "debug";
 import open from "open";
 
-import { counterfact } from "../app.js";
+import { counterfact, type SpecConfig } from "../app.js";
 import { pathsToRoutes } from "../migrate/paths-to-routes.js";
 import { updateRouteTypes } from "../migrate/update-route-types.js";
 import { pathResolve } from "../util/forward-slash-path.js";
@@ -21,6 +21,48 @@ const debug = createDebug("counterfact:cli:run");
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const DEFAULT_PORT = 3100;
+
+type SpecOptionEntry = { source: string; prefix?: string; group?: string };
+type SpecOption = string | SpecOptionEntry | SpecOptionEntry[] | undefined;
+
+/**
+ * Normalises the `spec` option (as read from a config file or the `--spec`
+ * CLI flag) into an array of {@link SpecConfig} objects, or `undefined` when
+ * the option is a plain string (single OpenAPI document path).
+ *
+ * - **Array**: each entry is mapped to `{source, prefix, group}` with defaults.
+ * - **Object**: wrapped in a single-element array.
+ * - **String / undefined**: returns `undefined` — caller handles the string
+ *   case (it shifts the positional argument) and the `undefined` case
+ *   (single spec derived from config).
+ */
+export function normalizeSpecOption(
+  specOption: SpecOption,
+): SpecConfig[] | undefined {
+  if (Array.isArray(specOption)) {
+    return specOption.map((entry) => ({
+      source: entry.source,
+      prefix: entry.prefix ?? "",
+      group: entry.group ?? "",
+    }));
+  }
+
+  if (
+    typeof specOption === "object" &&
+    specOption !== null &&
+    "source" in specOption
+  ) {
+    return [
+      {
+        source: specOption.source,
+        prefix: specOption.prefix ?? "",
+        group: specOption.group ?? "",
+      },
+    ];
+  }
+
+  return undefined;
+}
 
 /**
  * Builds the Commander program with all CLI options and the action handler.
@@ -51,7 +93,7 @@ function buildProgram(version: string, taglines: string[]): Command {
       proxyUrl?: string;
       repl?: boolean;
       serve?: boolean;
-      spec?: string;
+      spec?: SpecOption;
       updateCheck: boolean;
       validateRequest: boolean;
       validateResponse: boolean;
@@ -91,10 +133,20 @@ function buildProgram(version: string, taglines: string[]): Command {
     }
 
     // --spec takes precedence over the positional [openapi.yaml] argument.
-    // When --spec is provided, the [openapi.yaml] positional slot shifts to
-    // become the [destination] argument (so `counterfact --spec api.yaml ./api`
-    // works the same as `counterfact api.yaml ./api`).
-    if (options.spec) {
+    // When --spec is provided as a string, the [openapi.yaml] positional slot
+    // shifts to become the [destination] argument (so `counterfact --spec
+    // api.yaml ./api` works the same as `counterfact api.yaml ./api`).
+    //
+    // When --spec / the config file's `spec` key is an object or array of
+    // objects ({source, prefix, group}), it describes multiple API specs and
+    // is passed directly to counterfact() as the `specs` argument.
+
+    console.log("options", options);
+
+    const specs = normalizeSpecOption(options.spec);
+
+    if (specs === undefined && typeof options.spec === "string") {
+      // CLI --spec flag: a string path to a single OpenAPI document.
       if (source !== "_") {
         destination = source;
       }
@@ -203,7 +255,8 @@ function buildProgram(version: string, taglines: string[]): Command {
 
     const { start, startRepl } = await (async () => {
       try {
-        return await counterfact(config);
+        console.log("specs = ", specs);
+        return await counterfact(config, specs);
       } catch (error) {
         process.stderr.write(
           `\n❌ ${error instanceof Error ? error.message : String(error)}\n\n`,

@@ -75,14 +75,33 @@ export class ApiRunner {
   /** URL prefix that this runner intercepts (default `""`). */
   public readonly prefix: string;
 
+  /**
+   * Optional group name that places generated code in a subdirectory.
+   * Defaults to `""` (no subdirectory).
+   */
+  public readonly group: string;
+
+  /**
+   * The subdirectory path segment derived from {@link group}.
+   * Returns `""` when `group` is empty, otherwise `"/${group}"`.
+   */
+  public get subdirectory(): string {
+    return this.group ? `/${this.group}` : "";
+  }
+
   private readonly config: Config;
 
   private constructor(
     config: Config,
     nativeTs: boolean,
     openApiDocument: OpenApiDocument | undefined,
+    group: string,
   ) {
-    const modulesPath = config.basePath;
+    this.group = group;
+
+    const modulesPath = this.group
+      ? pathJoin(config.basePath, this.group)
+      : config.basePath;
     const compiledPathsDirectory = pathJoin(
       modulesPath,
       nativeTs ? "routes" : ".cache",
@@ -102,7 +121,7 @@ export class ApiRunner {
 
     this.codeGenerator = new CodeGenerator(
       this.openApiPath,
-      config.basePath,
+      config.basePath + this.subdirectory,
       config.generate,
     );
 
@@ -136,12 +155,16 @@ export class ApiRunner {
    * the runner.
    *
    * @param config - Runtime configuration for this runner instance.
+   * @param group - Optional group name placing generated code in a subdirectory (default `""`).
    */
-  public static async create(config: Config): Promise<ApiRunner> {
+  public static async create(config: Config, group = ""): Promise<ApiRunner> {
     const nativeTs = await runtimeCanExecuteErasableTs();
 
+    const modulesPath = group
+      ? pathJoin(config.basePath, group)
+      : config.basePath;
     const compiledPathsDirectory = pathJoin(
-      config.basePath,
+      modulesPath,
       nativeTs ? "routes" : ".cache",
     );
 
@@ -154,7 +177,7 @@ export class ApiRunner {
         ? undefined
         : await loadOpenApiDocument(config.openApiPath);
 
-    return new ApiRunner(config, nativeTs, openApiDocument);
+    return new ApiRunner(config, nativeTs, openApiDocument, group);
   }
 
   /**

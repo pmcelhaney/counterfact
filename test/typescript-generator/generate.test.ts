@@ -42,7 +42,7 @@ describe("end-to-end test", () => {
       };
 
       const codeGenerator = new CodeGenerator(
-        "./test/fixtures/openapi-example.yaml",
+        "./test/fixtures/openapi/example.yaml",
         basePath,
         { routes: true, types: true },
       );
