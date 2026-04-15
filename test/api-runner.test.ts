@@ -23,7 +23,7 @@ const baseConfig = {
   startServer: false,
   buildCache: false,
   watch: { routes: false, types: false },
-  routePrefix: "",
+  prefix: "",
   validateRequests: false,
   validateResponses: false,
 };
@@ -153,14 +153,14 @@ describe("ApiRunner", () => {
       });
     });
 
-    it("exposes routePrefix as a public property matching config", async () => {
+    it("exposes prefix as a public property matching config", async () => {
       await usingTemporaryFiles(async ($) => {
         const runner = await ApiRunner.create({
           ...baseConfig,
           basePath: $.path("."),
-          routePrefix: "/api/v1",
+          prefix: "/api/v1",
         });
-        expect(runner.routePrefix).toBe("/api/v1");
+        expect(runner.prefix).toBe("/api/v1");
       });
     });
 

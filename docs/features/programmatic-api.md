@@ -13,7 +13,7 @@ const config = {
   generate: { routes: false, types: false },
   proxyPaths: new Map(),
   proxyUrl: "",
-  routePrefix: "",
+  prefix: "",
   startAdminApi: false,
   startRepl: false, // do not auto-start the REPL
   startServer: true,

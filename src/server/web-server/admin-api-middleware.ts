@@ -128,7 +128,7 @@ export function adminApiMiddleware(
           port: config.port,
           uptime: process.uptime(),
           basePath: config.basePath,
-          routePrefix: config.routePrefix,
+          prefix: config.prefix,
         } as AdminApiResponse;
         return;
       }
@@ -213,7 +213,7 @@ export function adminApiMiddleware(
             openApiPath: config.openApiPath,
             port: config.port,
             proxyUrl: config.proxyUrl,
-            routePrefix: config.routePrefix,
+            prefix: config.prefix,
             startAdminApi: config.startAdminApi,
             startRepl: config.startRepl,
             startServer: config.startServer,

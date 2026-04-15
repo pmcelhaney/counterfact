@@ -121,7 +121,7 @@ function buildProgram(version: string, taglines: string[]): Command {
     debug("destination: %s", destination);
 
     const openBrowser = options.open;
-    const url = `http://localhost:${options.port}`;
+    const url = `http://localhost:${options.port}${options.prefix}`;
     const guiUrl = `${url}/counterfact/`;
     const swaggerUrl = `${url}/counterfact/swagger/`;
 
@@ -155,7 +155,7 @@ function buildProgram(version: string, taglines: string[]): Command {
       port: options.port,
       proxyPaths: new Map([["", Boolean(options.proxyUrl)]]),
       proxyUrl: options.proxyUrl ?? "",
-      routePrefix: options.prefix,
+      prefix: options.prefix,
       startAdminApi: options.adminApi,
       startRepl: Boolean(options.repl),
       startServer: Boolean(options.serve),

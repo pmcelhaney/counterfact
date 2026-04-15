@@ -5,7 +5,7 @@ import type { IBaseKoaProxiesOptions } from "koa-proxies";
 import type { Config } from "../../../src/server/config.js";
 import { ContextRegistry } from "../../../src/server/context-registry.js";
 import { Dispatcher } from "../../../src/server/dispatcher.js";
-import { routesMiddleware } from "../../../src/server/web-server/koa-middleware.js";
+import { routesMiddleware } from "../../../src/server/web-server/routes-middleware.js";
 import { Registry } from "../../../src/server/registry.js";
 
 const CONFIG: Config = {
@@ -20,7 +20,7 @@ const CONFIG: Config = {
   port: 9999,
   proxyPaths: new Map([]),
   proxyUrl: "",
-  routePrefix: "",
+  prefix: "",
   startAdminApi: false,
   startRepl: false,
   startServer: true,
@@ -54,7 +54,7 @@ describe("koa middleware", () => {
     });
 
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
-    const middleware = routesMiddleware(CONFIG.routePrefix, dispatcher, CONFIG);
+    const middleware = routesMiddleware(CONFIG.prefix, dispatcher, CONFIG);
 
     const ctx = {
       req: {
@@ -91,7 +91,7 @@ describe("koa middleware", () => {
     });
 
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
-    const middleware = routesMiddleware(CONFIG.routePrefix, dispatcher, CONFIG);
+    const middleware = routesMiddleware(CONFIG.prefix, dispatcher, CONFIG);
     const ctx = {
       request: { headers: {}, method: "GET", path: "/not-modified" },
 
@@ -118,7 +118,7 @@ describe("koa middleware", () => {
 
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
     const middleware = routesMiddleware(
-      CONFIG.routePrefix,
+      CONFIG.prefix,
       dispatcher,
       {
         ...CONFIG,
@@ -158,7 +158,7 @@ describe("koa middleware", () => {
     });
 
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
-    const middleware = routesMiddleware(CONFIG.routePrefix, dispatcher, CONFIG);
+    const middleware = routesMiddleware(CONFIG.prefix, dispatcher, CONFIG);
     const ctx = {
       body: undefined,
 
@@ -206,7 +206,7 @@ describe("koa middleware", () => {
     });
 
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
-    const middleware = routesMiddleware(CONFIG.routePrefix, dispatcher, CONFIG);
+    const middleware = routesMiddleware(CONFIG.prefix, dispatcher, CONFIG);
     const ctx = {
       body: undefined,
 
@@ -270,7 +270,7 @@ describe("koa middleware", () => {
     });
 
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
-    const middleware = routesMiddleware(CONFIG.routePrefix, dispatcher, CONFIG);
+    const middleware = routesMiddleware(CONFIG.prefix, dispatcher, CONFIG);
     const ctx = {
       body: undefined,
 
@@ -301,7 +301,7 @@ describe("koa middleware", () => {
     expect(ctx.set).toHaveBeenCalledWith("X-Custom-Header", "custom value");
   });
 
-  it("strips routePrefix from the request path before dispatching", async () => {
+  it("strips prefix from the request path before dispatching", async () => {
     const registry = new Registry();
 
     registry.add("/hello", {
@@ -388,7 +388,7 @@ describe("koa middleware", () => {
     });
 
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
-    const middleware = routesMiddleware(CONFIG.routePrefix, dispatcher, CONFIG);
+    const middleware = routesMiddleware(CONFIG.prefix, dispatcher, CONFIG);
 
     const ctx = {
       req: {
@@ -430,7 +430,7 @@ describe("koa middleware", () => {
     });
 
     const dispatcher = new Dispatcher(registry, new ContextRegistry());
-    const middleware = routesMiddleware(CONFIG.routePrefix, dispatcher, CONFIG);
+    const middleware = routesMiddleware(CONFIG.prefix, dispatcher, CONFIG);
 
     const ctx = {
       body: undefined,

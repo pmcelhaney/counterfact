@@ -89,14 +89,14 @@ function getAuthObject(
  * the Counterfact {@link Dispatcher}.
  *
  * Responsibilities:
- * - Respects `routePrefix` — requests outside the prefix are passed to `next`.
+ * - Respects `prefix` — requests outside the prefix are passed to `next`.
  * - Adds CORS headers to every response.
  * - Handles `OPTIONS` pre-flight requests (200 with CORS headers, no body).
  * - Proxies the request upstream when proxy is enabled for the path.
  * - Forwards the request to the dispatcher and maps the response back onto
  *   the Koa context.
  *
- * @param routePrefix - The URL path prefix that this middleware handles, e.g.
+ * @param prefix - The URL path prefix that this middleware handles, e.g.
  *   `"/api/v1"`. Requests to paths that do not start with this prefix fall
  *   through to the next middleware.
  * @param dispatcher - The {@link Dispatcher} instance that handles requests.
@@ -105,7 +105,7 @@ function getAuthObject(
  * @returns A Koa middleware function.
  */
 export function routesMiddleware(
-  routePrefix: string,
+  prefix: string,
   dispatcher: Dispatcher,
   config: Pick<Config, "proxyUrl" | "proxyPaths">,
   proxy = koaProxy,
@@ -114,9 +114,9 @@ export function routesMiddleware(
     const { proxyUrl } = config;
 
     debug("middleware running for path: %s", ctx.request.path);
-    debug("routePrefix: %s", routePrefix);
+    debug("prefix: %s", prefix);
 
-    if (!ctx.request.path.startsWith(routePrefix)) {
+    if (!ctx.request.path.startsWith(prefix)) {
       return await next();
     }
 
@@ -124,7 +124,7 @@ export function routesMiddleware(
 
     const { body, headers, query, rawBody } = ctx.request;
 
-    const path = ctx.request.path.slice(routePrefix.length);
+    const path = ctx.request.path.slice(prefix.length);
 
     const method = ctx.request.method as HttpMethods;
 

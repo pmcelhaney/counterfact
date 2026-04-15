@@ -50,12 +50,12 @@ describe("loadConfigFile", () => {
     await usingTemporaryFiles(async ($) => {
       await $.add(
         "counterfact.yaml",
-        "proxyUrl: https://example.com\nroutePrefix: /api/v1\n",
+        "proxyUrl: https://example.com\nprefix: /api/v1\n",
       );
       const result = await loadConfigFile($.path("counterfact.yaml"));
       expect(result).toEqual({
         proxyUrl: "https://example.com",
-        routePrefix: "/api/v1",
+        prefix: "/api/v1",
       });
     });
   });

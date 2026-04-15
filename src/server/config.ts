@@ -29,7 +29,7 @@ export interface Config {
   /** Base URL of the upstream server used when proxying is enabled. */
   proxyUrl: string;
   /** URL prefix that Counterfact intercepts (default `""`). */
-  routePrefix: string;
+  prefix: string;
   /** When `true`, mount the Admin API at `/_counterfact/api/`. */
   startAdminApi: boolean;
   /** When `true`, launch the interactive REPL after the server starts. */
