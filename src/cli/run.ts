@@ -22,6 +22,48 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const DEFAULT_PORT = 3100;
 
+type SpecOptionEntry = { source: string; prefix?: string; group?: string };
+type SpecOption = string | SpecOptionEntry | SpecOptionEntry[] | undefined;
+
+/**
+ * Normalises the `spec` option (as read from a config file or the `--spec`
+ * CLI flag) into an array of {@link SpecConfig} objects, or `undefined` when
+ * the option is a plain string (single OpenAPI document path).
+ *
+ * - **Array**: each entry is mapped to `{source, prefix, group}` with defaults.
+ * - **Object**: wrapped in a single-element array.
+ * - **String / undefined**: returns `undefined` — caller handles the string
+ *   case (it shifts the positional argument) and the `undefined` case
+ *   (single spec derived from config).
+ */
+export function normalizeSpecOption(
+  specOption: SpecOption,
+): SpecConfig[] | undefined {
+  if (Array.isArray(specOption)) {
+    return specOption.map((entry) => ({
+      source: entry.source,
+      prefix: entry.prefix ?? "",
+      group: entry.group ?? "",
+    }));
+  }
+
+  if (
+    typeof specOption === "object" &&
+    specOption !== null &&
+    "source" in specOption
+  ) {
+    return [
+      {
+        source: specOption.source,
+        prefix: specOption.prefix ?? "",
+        group: specOption.group ?? "",
+      },
+    ];
+  }
+
+  return undefined;
+}
+
 /**
  * Builds the Commander program with all CLI options and the action handler.
  * Factored out of `runCli` so it is easy to test or extend.
@@ -51,10 +93,7 @@ function buildProgram(version: string, taglines: string[]): Command {
       proxyUrl?: string;
       repl?: boolean;
       serve?: boolean;
-      spec?:
-        | string
-        | { source: string; prefix?: string; group?: string }
-        | Array<{ source: string; prefix?: string; group?: string }>;
+      spec?: SpecOption;
       updateCheck: boolean;
       validateRequest: boolean;
       validateResponse: boolean;
@@ -101,29 +140,9 @@ function buildProgram(version: string, taglines: string[]): Command {
     // When --spec / the config file's `spec` key is an object or array of
     // objects ({source, prefix, group}), it describes multiple API specs and
     // is passed directly to counterfact() as the `specs` argument.
-    let specs: SpecConfig[] | undefined;
+    const specs = normalizeSpecOption(options.spec);
 
-    if (Array.isArray(options.spec)) {
-      // Config file: spec is an array of spec-entry objects.
-      specs = options.spec.map((entry) => ({
-        source: entry.source,
-        prefix: entry.prefix ?? "",
-        group: entry.group ?? "",
-      }));
-    } else if (
-      typeof options.spec === "object" &&
-      options.spec !== null &&
-      "source" in options.spec
-    ) {
-      // Config file: spec is a single spec-entry object.
-      specs = [
-        {
-          source: options.spec.source,
-          prefix: options.spec.prefix ?? "",
-          group: options.spec.group ?? "",
-        },
-      ];
-    } else if (typeof options.spec === "string") {
+    if (specs === undefined && typeof options.spec === "string") {
       // CLI --spec flag: a string path to a single OpenAPI document.
       if (source !== "_") {
         destination = source;
