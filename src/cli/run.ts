@@ -140,6 +140,9 @@ function buildProgram(version: string, taglines: string[]): Command {
     // When --spec / the config file's `spec` key is an object or array of
     // objects ({source, prefix, group}), it describes multiple API specs and
     // is passed directly to counterfact() as the `specs` argument.
+
+    console.log("options", options);
+
     const specs = normalizeSpecOption(options.spec);
 
     if (specs === undefined && typeof options.spec === "string") {
@@ -252,6 +255,7 @@ function buildProgram(version: string, taglines: string[]): Command {
 
     const { start, startRepl } = await (async () => {
       try {
+        console.log("specs = ", specs);
         return await counterfact(config, specs);
       } catch (error) {
         process.stderr.write(
