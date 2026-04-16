@@ -1,6 +1,15 @@
 import fs from "node:fs/promises";
+import nodePath from "node:path";
 
 import nodeFetch from "node-fetch";
+
+function normalizeLocalPath(path: string): string {
+  if (path.includes("\0")) {
+    throw new Error("File path cannot contain NUL bytes.");
+  }
+
+  return nodePath.resolve(path);
+}
 
 /**
  * Reads the content of a file or URL and returns it as a UTF-8 string.
@@ -21,8 +30,19 @@ export async function readFile(urlOrPath: string) {
   }
 
   if (urlOrPath.startsWith("file")) {
-    return await fs.readFile(new URL(urlOrPath), "utf8");
+    const fileUrl = new URL(urlOrPath);
+
+    if (fileUrl.protocol !== "file:") {
+      throw new Error(
+        `Unsupported URL protocol for file read: ${fileUrl.protocol}`,
+      );
+    }
+
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- file URL is parsed and protocol-validated immediately above.
+    return await fs.readFile(fileUrl, "utf8");
   }
 
-  return await fs.readFile(urlOrPath, "utf8");
+  const normalizedPath = normalizeLocalPath(urlOrPath);
+  // eslint-disable-next-line security/detect-non-literal-fs-filename -- path is normalized and NUL-byte validated before filesystem access.
+  return await fs.readFile(normalizedPath, "utf8");
 }

@@ -1,5 +1,6 @@
 import fs from "node:fs/promises";
 import nodePath from "node:path";
+/* eslint-disable security/detect-non-literal-fs-filename -- pruning only traverses and removes files under destination/routes. */
 
 import createDebug from "debug";
 

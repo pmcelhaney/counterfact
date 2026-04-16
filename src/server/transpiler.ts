@@ -2,6 +2,7 @@
 
 import { once } from "node:events";
 import fs from "node:fs/promises";
+/* eslint-disable security/detect-non-literal-fs-filename -- transpiler consumes watched source files and writes paired outputs under configured directories. */
 
 import { type FSWatcher, watch as chokidarWatch } from "chokidar";
 import createDebug from "debug";

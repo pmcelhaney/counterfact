@@ -1,5 +1,6 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
+/* eslint-disable security/detect-non-literal-fs-filename -- migration reads/writes discovered route files under the configured basePath/routes tree. */
 
 import createDebug from "debug";
 

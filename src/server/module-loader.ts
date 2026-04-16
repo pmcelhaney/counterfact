@@ -1,6 +1,7 @@
 import { once } from "node:events";
 import fs from "node:fs/promises";
 import nodePath, { basename } from "node:path";
+/* eslint-disable security/detect-non-literal-fs-filename -- readJson resolves paths against the current context directory before file access. */
 
 import { type FSWatcher, watch } from "chokidar";
 import createDebug from "debug";

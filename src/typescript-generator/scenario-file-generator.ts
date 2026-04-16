@@ -1,6 +1,7 @@
 import { existsSync, type Dirent } from "node:fs";
 import fs from "node:fs/promises";
 import nodePath from "node:path";
+/* eslint-disable security/detect-non-literal-fs-filename -- scenario files are discovered and generated under the configured destination tree. */
 
 import { type FSWatcher, watch } from "chokidar";
 
