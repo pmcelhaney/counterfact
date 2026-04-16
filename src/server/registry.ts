@@ -134,13 +134,47 @@ function castParameters(
   parameters: { [key: string]: string | number | boolean } = {},
   parameterTypes: Map<string, string> = new Map(),
 ) {
-  const copy: { [key: string]: boolean | number | string } = {};
+  return Object.fromEntries(
+    Object.entries(parameters).map(([key, value]) => [
+      key,
+      castParameter(value, parameterTypes.get(key) ?? "string"),
+    ]),
+  ) as { [key: string]: boolean | number | string };
+}
 
-  Object.entries(parameters).forEach(([key, value]) => {
-    copy[key] = castParameter(value, parameterTypes.get(key) ?? "string");
-  });
+function getMethodHandler(
+  module: Module | undefined,
+  method: string,
+): ((requestData: RequestData) => UserDefinedResponse) | undefined {
+  if (!module) {
+    return undefined;
+  }
 
-  return copy;
+  const dynamicModule = module as Record<
+    string,
+    ((requestData: RequestData) => UserDefinedResponse) | undefined
+  >;
+
+  switch (method.toUpperCase()) {
+    case "DELETE":
+      return module.DELETE ?? dynamicModule.delete;
+    case "GET":
+      return module.GET ?? dynamicModule.get;
+    case "HEAD":
+      return module.HEAD ?? dynamicModule.head;
+    case "OPTIONS":
+      return module.OPTIONS ?? dynamicModule.options;
+    case "PATCH":
+      return module.PATCH ?? dynamicModule.patch;
+    case "POST":
+      return module.POST ?? dynamicModule.post;
+    case "PUT":
+      return module.PUT ?? dynamicModule.put;
+    case "TRACE":
+      return module.TRACE ?? dynamicModule.trace;
+    default:
+      return undefined;
+  }
 }
 
 /**
@@ -203,7 +237,7 @@ export class Registry {
    * @param url - The request URL.
    */
   public exists(method: HttpMethods, url: string) {
-    return Boolean(this.handler(url, method).module?.[method]);
+    return Boolean(getMethodHandler(this.handler(url, method).module, method));
   }
 
   /**
@@ -253,7 +287,9 @@ export class Registry {
    */
   public allowedMethods(url: string): string {
     return ALL_HTTP_METHODS.filter((method) =>
-      Boolean(this.moduleTree.match(url, method)?.module?.[method]),
+      Boolean(
+        getMethodHandler(this.moduleTree.match(url, method)?.module, method),
+      ),
     ).join(", ");
   }
 
@@ -292,7 +328,7 @@ export class Registry {
       });
     }
 
-    const execute = handler.module?.[httpRequestMethod];
+    const execute = getMethodHandler(handler.module, httpRequestMethod);
 
     if (!execute) {
       debug(`Could not find a ${httpRequestMethod} method matching ${url}\n`);

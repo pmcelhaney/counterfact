@@ -21,6 +21,36 @@ interface OpenApiOperationExtended {
   summary?: string;
 }
 
+function operationForMethod(
+  pathItem: OpenApiDocument["paths"][string] | undefined,
+  method: string,
+): OpenApiOperationExtended | undefined {
+  if (!pathItem) {
+    return undefined;
+  }
+
+  switch (method) {
+    case "delete":
+      return pathItem.delete as OpenApiOperationExtended | undefined;
+    case "get":
+      return pathItem.get as OpenApiOperationExtended | undefined;
+    case "head":
+      return pathItem.head as OpenApiOperationExtended | undefined;
+    case "options":
+      return pathItem.options as OpenApiOperationExtended | undefined;
+    case "patch":
+      return pathItem.patch as OpenApiOperationExtended | undefined;
+    case "post":
+      return pathItem.post as OpenApiOperationExtended | undefined;
+    case "put":
+      return pathItem.put as OpenApiOperationExtended | undefined;
+    case "trace":
+      return pathItem.trace as OpenApiOperationExtended | undefined;
+    default:
+      return undefined;
+  }
+}
+
 interface MissingParam {
   description?: string;
   name: string;
@@ -98,12 +128,11 @@ export class RouteBuilder {
     const method = this._method.toLowerCase();
     const normalizedPath = this.routePath.toLowerCase();
 
-    for (const key of Object.keys(this._openApiDocument.paths)) {
-      if (key.toLowerCase() === normalizedPath) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        return (this._openApiDocument.paths[key] as any)[
-          method
-        ] as OpenApiOperationExtended;
+    for (const [path, pathItem] of Object.entries(
+      this._openApiDocument.paths,
+    )) {
+      if (path.toLowerCase() === normalizedPath) {
+        return operationForMethod(pathItem, method);
       }
     }
 

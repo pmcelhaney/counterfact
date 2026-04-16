@@ -771,6 +771,49 @@ describe("a dispatcher", () => {
     expect(operation?.produces).toStrictEqual(["text/plain"]);
   });
 
+  it("ignores parameters with unknown `in` values without throwing", async () => {
+    const registry = new Registry();
+
+    registry.add("/a/{id}", {
+      // @ts-expect-error - test intentionally uses malformed OpenAPI data
+      GET({ path }) {
+        return { body: path.id };
+      },
+    });
+
+    const openApiDocument: OpenApiDocument = {
+      paths: {
+        "/a/{id}": {
+          get: {
+            parameters: [
+              { in: "path", name: "id", type: "string" },
+              // @ts-expect-error - runtime guard should ignore unknown locations
+              { in: "__proto__", name: "ignored", type: "string" },
+            ],
+            responses: { 200: {} },
+          },
+        },
+      },
+    };
+
+    const dispatcher = new Dispatcher(
+      registry,
+      new ContextRegistry(),
+      openApiDocument,
+    );
+
+    const response = await dispatcher.request({
+      body: "",
+      headers: {},
+      method: "GET",
+      path: "/a/value",
+      query: {},
+      req: { path: "/a/value" },
+    });
+
+    expect(response.body).toBe("value");
+  });
+
   it("provides a cookie proxy that reads a single cookie", async () => {
     const registry = new Registry();
 

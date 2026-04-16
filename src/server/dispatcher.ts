@@ -41,7 +41,7 @@ export interface OpenApiDocument {
  * @returns A record mapping cookie name to decoded value.
  */
 function parseCookies(cookieHeader: string): Record<string, string> {
-  const cookies: Record<string, string> = {};
+  const cookies = new Map<string, string>();
 
   for (const part of cookieHeader.split(";")) {
     const eqIndex = part.indexOf("=");
@@ -53,17 +53,17 @@ function parseCookies(cookieHeader: string): Record<string, string> {
     const key = part.slice(0, eqIndex).trim();
     const value = part.slice(eqIndex + 1).trim();
 
-    if (key && !(key in cookies)) {
+    if (key && !cookies.has(key)) {
       try {
-        cookies[key] = decodeURIComponent(value);
+        cookies.set(key, decodeURIComponent(value));
       } catch (error) {
         debug("could not decode cookie value for key %s: %o", key, error);
-        cookies[key] = value;
+        cookies.set(key, value);
       }
     }
   }
 
-  return cookies;
+  return Object.fromEntries(cookies.entries());
 }
 
 interface ParameterTypes {
@@ -73,6 +73,38 @@ interface ParameterTypes {
   header: Map<string, string>;
   path: Map<string, string>;
   query: Map<string, string>;
+}
+
+function getOperationByMethod(
+  pathItem:
+    | {
+        [key in Lowercase<HttpMethods>]?: OpenApiOperation;
+      }
+    | undefined,
+  method: HttpMethods,
+): OpenApiOperation | undefined {
+  if (!pathItem) {
+    return undefined;
+  }
+
+  switch (method) {
+    case "DELETE":
+      return pathItem.delete;
+    case "GET":
+      return pathItem.get;
+    case "HEAD":
+      return pathItem.head;
+    case "OPTIONS":
+      return pathItem.options;
+    case "PATCH":
+      return pathItem.patch;
+    case "POST":
+      return pathItem.post;
+    case "PUT":
+      return pathItem.put;
+    case "TRACE":
+      return pathItem.trace;
+  }
 }
 
 export type DispatcherRequest = {
@@ -151,14 +183,24 @@ export class Dispatcher {
       return types;
     }
 
+    const mapsByLocation = new Map<
+      string,
+      ParameterTypes[keyof ParameterTypes]
+    >([
+      ["body", types.body],
+      ["cookie", types.cookie],
+      ["formData", types.formData],
+      ["header", types.header],
+      ["path", types.path],
+      ["query", types.query],
+    ]);
+
     for (const parameter of parameters) {
       const type = parameter?.type;
+      const locationMap = mapsByLocation.get(parameter.in);
 
-      if (type !== undefined) {
-        types[parameter.in].set(
-          parameter.name,
-          type === "integer" ? "number" : type,
-        );
+      if (type !== undefined && locationMap !== undefined) {
+        locationMap.set(parameter.name, type === "integer" ? "number" : type);
       }
     }
 
@@ -170,11 +212,11 @@ export class Dispatcher {
     method: HttpMethods,
   ): OpenApiOperation | undefined {
     if (this.openApiDocument) {
-      for (const key in this.openApiDocument.paths) {
-        if (key.toLowerCase() === path.toLowerCase()) {
-          return this.openApiDocument.paths[key]?.[
-            method.toLowerCase() as Lowercase<HttpMethods>
-          ];
+      for (const [routePath, pathItem] of Object.entries(
+        this.openApiDocument.paths,
+      )) {
+        if (routePath.toLowerCase() === path.toLowerCase()) {
+          return getOperationByMethod(pathItem, method);
         }
       }
     }

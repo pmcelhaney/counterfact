@@ -9,6 +9,17 @@ const ajv = new Ajv({
   coerceTypes: false,
 });
 
+function getOwnRecordValue<T>(
+  record: Record<string, T>,
+  key: string,
+): T | undefined {
+  if (!Object.hasOwn(record, key)) {
+    return undefined;
+  }
+
+  return record[key];
+}
+
 export interface ResponseValidationResult {
   errors: string[];
   valid: boolean;
@@ -28,8 +39,9 @@ export function validateResponse(
     response.status !== undefined ? String(response.status) : undefined;
 
   const responseSpec =
-    (statusKey !== undefined ? operation.responses[statusKey] : undefined) ??
-    operation.responses.default;
+    (statusKey !== undefined
+      ? getOwnRecordValue(operation.responses, statusKey)
+      : undefined) ?? operation.responses.default;
 
   if (!responseSpec) {
     return { errors: [], valid: true };
@@ -40,7 +52,8 @@ export function validateResponse(
 
   for (const [name, headerSpec] of Object.entries(specHeaders)) {
     const actualValue =
-      actualHeaders[name] ?? actualHeaders[name.toLowerCase()];
+      getOwnRecordValue(actualHeaders, name) ??
+      getOwnRecordValue(actualHeaders, name.toLowerCase());
 
     if (headerSpec.required === true && actualValue === undefined) {
       errors.push(`response header '${name}' is required`);
