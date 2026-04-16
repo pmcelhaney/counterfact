@@ -424,11 +424,12 @@ describe("a response builder", () => {
       const response = await createResponseBuilder(
         operationWithInvalidSchema,
       )[200]?.random();
+      const jsonBody = response?.content?.[0]?.body;
 
       expect(response?.status).toBe(200);
       expect(response?.content?.[0]?.type).toBe("application/json");
       // json-schema-faker returns null or undefined for invalid schema types
-      expect(response?.content?.[0]?.body ?? null).toBeNull();
+      expect([null, undefined]).toContain(jsonBody);
       expect(response?.content?.[1]).toStrictEqual({
         body: "example text response",
         type: "text/plain",

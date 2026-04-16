@@ -65,9 +65,8 @@ describe("a Transpiler", () => {
 
       await $.add("src/added.ts", TYPESCRIPT_SOURCE);
 
+      // eslint-disable-next-line jest/no-conditional-in-test -- Chokidar's add event is unreliable on Windows CI runners.
       if (process.platform === "win32") {
-        // Chokidar's add event seems to be unreliable on Windows
-        // Not sure what to do about it, so just skip this test
         return;
       }
 
