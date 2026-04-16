@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import nodePath from "node:path";
+/* eslint-disable security/detect-non-literal-fs-filename -- helper creates parent directories for caller-provided output file paths. */
 
 /**
  * Synchronously ensures that the directory containing `filePath` exists,

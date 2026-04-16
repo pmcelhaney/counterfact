@@ -1,5 +1,6 @@
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
+/* eslint-disable security/detect-non-literal-fs-filename -- discovery walks directories rooted at basePath and uses Dirent-provided names. */
 
 import { toForwardSlashPath, pathJoin } from "../util/forward-slash-path.js";
 import { escapePathForWindows } from "../util/windows-escape.js";

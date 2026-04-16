@@ -1,6 +1,7 @@
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
 import path from "node:path";
+/* eslint-disable security/detect-non-literal-fs-filename -- module kind detection only probes package.json while walking parent directories. */
 
 const DEFAULT_MODULE_KIND = "commonjs";
 

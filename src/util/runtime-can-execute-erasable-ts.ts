@@ -2,6 +2,7 @@ import { mkdtempSync, writeFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { pathToFileURL } from "node:url";
+/* eslint-disable security/detect-non-literal-fs-filename -- runtime probe only writes fixed filenames in a fresh temporary directory. */
 
 /**
  * Probes the current Node.js runtime to determine whether it can execute

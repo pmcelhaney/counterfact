@@ -1,6 +1,7 @@
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
 import nodePath from "node:path";
+/* eslint-disable security/detect-non-literal-fs-filename -- generated files are written under the caller-provided destination tree. */
 
 import { type FSWatcher, watch } from "chokidar";
 import createDebug from "debug";

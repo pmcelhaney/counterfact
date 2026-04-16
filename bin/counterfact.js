@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+/* eslint-disable security/detect-non-literal-fs-filename -- this bootstrap writes only fixed probe files under a fresh mkdtemp directory it just created. */
 
 /**
  * bin/counterfact.js — Minimal bootstrap for the `counterfact` CLI.
