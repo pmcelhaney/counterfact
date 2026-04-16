@@ -71,7 +71,10 @@ export async function runStartupScenario(
  * `config.prefix`, and `group = ""` so that the rest of the code never
  * needs to branch on single-vs-multiple specs.
  */
-function normalizeSpecs(config: Config, specs?: SpecConfig[]): SpecConfig[] {
+function normalizeSpecs(
+  config: Pick<Config, "openApiPath" | "prefix">,
+  specs?: SpecConfig[],
+): SpecConfig[] {
   if (specs !== undefined) {
     return specs;
   }
@@ -100,7 +103,10 @@ function normalizeSpecs(config: Config, specs?: SpecConfig[]): SpecConfig[] {
  *     live server state.
  */
 export async function counterfact(config: Config, specs?: SpecConfig[]) {
-  const normalizedSpecs = normalizeSpecs(config, specs);
+  const normalizedSpecs = normalizeSpecs(
+    { openApiPath: config.openApiPath, prefix: config.prefix },
+    specs,
+  );
 
   const runners = await Promise.all(
     normalizedSpecs.map((spec) =>
@@ -132,7 +138,7 @@ export async function counterfact(config: Config, specs?: SpecConfig[]) {
       await runStartupScenario(
         primaryRunner.scenarioRegistry,
         primaryRunner.contextRegistry,
-        config,
+        { port: config.port },
         primaryRunner.openApiDocument,
       );
 
@@ -162,7 +168,11 @@ export async function counterfact(config: Config, specs?: SpecConfig[]) {
       startReplServer(
         primaryRunner.contextRegistry,
         primaryRunner.registry,
-        config,
+        {
+          port: config.port,
+          proxyPaths: config.proxyPaths,
+          proxyUrl: config.proxyUrl,
+        },
         undefined, // use the default print function (stdout)
         primaryRunner.openApiDocument,
         primaryRunner.scenarioRegistry,

@@ -95,7 +95,12 @@ export function createKoaApp({
   });
 
   for (const runner of runners) {
-    app.use(routesMiddleware(runner.prefix, runner.dispatcher, config));
+    app.use(
+      routesMiddleware(runner.prefix, runner.dispatcher, {
+        proxyPaths: config.proxyPaths,
+        proxyUrl: config.proxyUrl,
+      }),
+    );
   }
 
   return app;
