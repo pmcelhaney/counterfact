@@ -84,6 +84,12 @@ For more complex setups you can automate REPL interactions by writing _scenario 
 ⬣> .scenario soldPets
 ```
 
+When running multiple APIs in one process, qualify the command with the API group:
+
+```bash
+⬣> .scenario billing soldPets
+```
+
 **Path resolution:** the argument to `.scenario` is a slash-separated path. The last segment is the function name; everything before it is the file path, resolved relative to `<basePath>/scenarios/` (with `index.ts` as the default file).
 
 | Command | File | Function |

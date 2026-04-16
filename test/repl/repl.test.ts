@@ -455,6 +455,136 @@ describe("REPL", () => {
       ).toMatchObject({ path: "/pets" });
     });
 
+    it("supports `.scenario <group> <path>` in multi-API mode and binds that group's context", async () => {
+      const billingRegistry = new ScenarioRegistry();
+      const inventoryRegistry = new ScenarioRegistry();
+      const billingContextRegistry = new ContextRegistry();
+      const inventoryContextRegistry = new ContextRegistry();
+
+      billingRegistry.add("index", {
+        setup(ctx: {
+          context: Record<string, unknown>;
+          loadContext: (path: string) => Record<string, unknown>;
+          routes: Record<string, unknown>;
+        }) {
+          ctx.context["applied"] = "billing";
+          ctx.context["loaded"] = ctx.loadContext("/")["from"];
+          ctx.routes["routeFromScenario"] = "billing";
+        },
+      });
+      inventoryRegistry.add("index", {
+        setup(ctx: { context: Record<string, unknown> }) {
+          ctx.context["applied"] = "inventory";
+        },
+      });
+      billingContextRegistry.add("/", { from: "billing-root" });
+      inventoryContextRegistry.add("/", { from: "inventory-root" });
+
+      const { harness } = createHarness(undefined, [
+        {
+          contextRegistry: billingContextRegistry,
+          group: "billing",
+          registry: new Registry(),
+          scenarioRegistry: billingRegistry,
+        },
+        {
+          contextRegistry: inventoryContextRegistry,
+          group: "inventory",
+          registry: new Registry(),
+          scenarioRegistry: inventoryRegistry,
+        },
+      ]);
+
+      await harness.callAsync("scenario", "billing setup");
+
+      expect(harness.output).toContain("Applied billing setup");
+      expect(billingContextRegistry.find("/")).toMatchObject({
+        applied: "billing",
+        from: "billing-root",
+        loaded: "billing-root",
+      });
+      expect(inventoryContextRegistry.find("/")).toMatchObject({
+        from: "inventory-root",
+      });
+      expect(
+        (
+          harness.server.context["routes"] as Record<
+            string,
+            Record<string, unknown>
+          >
+        )["billing"],
+      ).toMatchObject({ routeFromScenario: "billing" });
+      expect(
+        (
+          harness.server.context["routes"] as Record<
+            string,
+            Record<string, unknown>
+          >
+        )["inventory"],
+      ).toEqual({});
+    });
+
+    it("keeps group contexts isolated when applying a scenario to another group", async () => {
+      const billingRegistry = new ScenarioRegistry();
+      const inventoryRegistry = new ScenarioRegistry();
+      const billingContextRegistry = new ContextRegistry();
+      const inventoryContextRegistry = new ContextRegistry();
+
+      billingRegistry.add("index", {
+        setup(ctx: { context: Record<string, unknown> }) {
+          ctx.context["applied"] = "billing";
+        },
+      });
+      inventoryRegistry.add("index", {
+        setup(ctx: {
+          context: Record<string, unknown>;
+          routes: Record<string, unknown>;
+        }) {
+          ctx.context["applied"] = "inventory";
+          ctx.routes["inventoryRoute"] = true;
+        },
+      });
+
+      const { harness } = createHarness(undefined, [
+        {
+          contextRegistry: billingContextRegistry,
+          group: "billing",
+          registry: new Registry(),
+          scenarioRegistry: billingRegistry,
+        },
+        {
+          contextRegistry: inventoryContextRegistry,
+          group: "inventory",
+          registry: new Registry(),
+          scenarioRegistry: inventoryRegistry,
+        },
+      ]);
+
+      await harness.callAsync("scenario", "inventory setup");
+
+      expect(harness.output).toContain("Applied inventory setup");
+      expect(billingContextRegistry.find("/")).toEqual({});
+      expect(inventoryContextRegistry.find("/")).toMatchObject({
+        applied: "inventory",
+      });
+      expect(
+        (
+          harness.server.context["routes"] as Record<
+            string,
+            Record<string, unknown>
+          >
+        )["billing"],
+      ).toEqual({});
+      expect(
+        (
+          harness.server.context["routes"] as Record<
+            string,
+            Record<string, unknown>
+          >
+        )["inventory"],
+      ).toMatchObject({ inventoryRoute: true });
+    });
+
     it("shows an error when the scenario file is not in the registry", async () => {
       const scenarioRegistry = new ScenarioRegistry();
       const { harness } = createHarness(scenarioRegistry);
@@ -488,6 +618,58 @@ describe("REPL", () => {
       await harness.callAsync("scenario", "");
 
       expect(harness.output).toContain("usage: .scenario <path>");
+      expect(harness.isReset()).toBe(true);
+    });
+
+    it("shows an error with available groups for unknown group names in multi-api mode", async () => {
+      const { harness } = createHarness(undefined, [
+        {
+          contextRegistry: new ContextRegistry(),
+          group: "billing",
+          registry: new Registry(),
+          scenarioRegistry: new ScenarioRegistry(),
+        },
+        {
+          contextRegistry: new ContextRegistry(),
+          group: "inventory",
+          registry: new Registry(),
+          scenarioRegistry: new ScenarioRegistry(),
+        },
+      ]);
+
+      await harness.callAsync("scenario", "payments setup");
+
+      expect(harness.output[0]).toBe(
+        'Error: Unknown API group "payments". Available groups: billing, inventory',
+      );
+      expect(harness.isReset()).toBe(true);
+    });
+
+    it("shows multi-runner usage for missing or invalid arguments", async () => {
+      const { harness } = createHarness(undefined, [
+        {
+          contextRegistry: new ContextRegistry(),
+          group: "billing",
+          registry: new Registry(),
+          scenarioRegistry: new ScenarioRegistry(),
+        },
+        {
+          contextRegistry: new ContextRegistry(),
+          group: "inventory",
+          registry: new Registry(),
+          scenarioRegistry: new ScenarioRegistry(),
+        },
+      ]);
+
+      await harness.callAsync("scenario", "");
+      await harness.callAsync("scenario", "billing");
+      await harness.callAsync("scenario", "billing setup extra");
+
+      expect(harness.output).toEqual([
+        "usage: .scenario <group> <path>",
+        "usage: .scenario <group> <path>",
+        "usage: .scenario <group> <path>",
+      ]);
       expect(harness.isReset()).toBe(true);
     });
 

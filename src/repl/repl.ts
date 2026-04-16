@@ -423,10 +423,57 @@ export function startRepl(
 
   replServer.defineCommand("scenario", {
     async action(text: string) {
-      const parts = text.trim().split("/").filter(Boolean);
+      const trimmedText = text.trim();
+      const parsedArgs = trimmedText.split(/\s+/u).filter(Boolean);
+      const usage = isMultiApi
+        ? "usage: .scenario <group> <path>"
+        : "usage: .scenario <path>";
+      const { selectedBinding, scenarioPath } = (() => {
+        if (!isMultiApi) {
+          if (trimmedText === "") {
+            return { scenarioPath: undefined, selectedBinding: undefined };
+          }
+
+          return { scenarioPath: trimmedText, selectedBinding: rootBinding };
+        }
+
+        if (parsedArgs.length !== 2) {
+          return { scenarioPath: undefined, selectedBinding: undefined };
+        }
+
+        return {
+          scenarioPath: parsedArgs[1],
+          selectedBinding: groupedBindings.find(
+            (binding) => binding.key === parsedArgs[0],
+          ),
+        };
+      })();
+
+      if (selectedBinding === undefined || scenarioPath === undefined) {
+        if (
+          isMultiApi &&
+          scenarioPath !== undefined &&
+          selectedBinding === undefined
+        ) {
+          const groupName = parsedArgs[0] ?? "";
+          const availableGroups = groupedBindings.map((binding) => binding.key);
+
+          print(
+            `Error: Unknown API group "${groupName}". Available groups: ${availableGroups.join(", ")}`,
+          );
+        } else {
+          print(usage);
+        }
+
+        this.clearBufferedCommand();
+        this.displayPrompt();
+        return;
+      }
+
+      const parts = scenarioPath.split("/").filter(Boolean);
 
       if (parts.length === 0) {
-        print("usage: .scenario <path>");
+        print(usage);
         this.clearBufferedCommand();
         this.displayPrompt();
         return;
@@ -443,7 +490,7 @@ export function startRepl(
       const fileKey =
         parts.length === 1 ? "index" : parts.slice(0, -1).join("/");
 
-      const module = rootBinding.scenarioRegistry?.getModule(fileKey);
+      const module = selectedBinding.scenarioRegistry?.getModule(fileKey);
 
       if (module === undefined) {
         print(`Error: Could not find scenario file "${fileKey}"`);
@@ -464,13 +511,35 @@ export function startRepl(
       }
 
       try {
+        const selectedRoutes = isMultiApi
+          ? (
+              replServer.context["routes"] as Record<
+                string,
+                Record<string, unknown>
+              >
+            )[selectedBinding.key]
+          : (replServer.context["routes"] as Record<string, unknown>);
+
+        if (isMultiApi && selectedRoutes === undefined) {
+          print(
+            `Error: Could not resolve routes for API group "${selectedBinding.key}"`,
+          );
+          this.clearBufferedCommand();
+          this.displayPrompt();
+          return;
+        }
+
         const applyContext = {
-          context: replServer.context["context"] as Record<string, unknown>,
-          loadContext: replServer.context["loadContext"] as (
+          context: selectedBinding.contextRegistry.find("/") as Record<
+            string,
+            unknown
+          >,
+          loadContext: ((path: string) =>
+            selectedBinding.contextRegistry.find(path)) as (
             path: string,
           ) => Record<string, unknown>,
-          route: replServer.context["route"] as (path: string) => unknown,
-          routes: replServer.context["routes"] as Record<string, unknown>,
+          route: groupedRoute[selectedBinding.key] as (path: string) => unknown,
+          routes: selectedRoutes,
         };
 
         await (fn as (ctx: typeof applyContext) => Promise<void> | void)(
@@ -486,7 +555,9 @@ export function startRepl(
       this.displayPrompt();
     },
 
-    help: 'apply a scenario script (".scenario <path>" calls the named export from scenarios/)',
+    help: isMultiApi
+      ? 'apply a scenario script (".scenario <group> <path>" calls the named export from that group\'s scenarios/)'
+      : 'apply a scenario script (".scenario <path>" calls the named export from scenarios/)',
   });
 
   return replServer;
