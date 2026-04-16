@@ -186,7 +186,11 @@ export function startRepl(
     };
   });
 
-  const rootBinding = groupedBindings[0]!;
+  const rootBinding = groupedBindings[0];
+
+  if (rootBinding === undefined) {
+    throw new Error("startRepl requires at least one API binding");
+  }
   const groupedLoadContext = Object.fromEntries(
     groupedBindings.map((binding) => [
       binding.key,
