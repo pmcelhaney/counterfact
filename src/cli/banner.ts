@@ -71,7 +71,10 @@ export function createIntroduction(params: {
     version,
   } = params;
 
-  const watchMessage = createWatchMessage(config);
+  const watchMessage = createWatchMessage({
+    generate: config.generate,
+    watch: config.watch,
+  });
 
   const telemetryWarning = isTelemetryDisabled
     ? []
