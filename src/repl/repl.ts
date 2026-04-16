@@ -192,7 +192,9 @@ export function startRepl(
   const defaultApi = apis.get("firstApi");
 
   if (defaultApi === undefined) {
-    throw new Error('Expected an API qualifier named "firstApi"');
+    throw new Error(
+      'REPL requires an API qualifier named "firstApi". Ensure the API map includes that key.',
+    );
   }
 
   const contextByApi = new Map<string, Record<string, unknown>>();

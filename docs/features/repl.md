@@ -64,7 +64,7 @@ For more complex setups you can automate REPL interactions by writing _scenario 
 ⬣> .scenario firstApi soldPets
 ```
 
-**Path resolution:** `.scenario` now takes two arguments: `<api>` and a slash-separated scenario path. The last segment is the function name; everything before it is the file path, resolved relative to that API's `<basePath>/scenarios/` (with `index.ts` as the default file).
+**Path resolution:** `.scenario` now takes two arguments: `<api>` and a slash-separated scenario path. The last segment is the function name; everything before it is the file path, resolved relative to that API's `<basePath>/scenarios/` (with `index.ts` as the default file). If you previously used `.scenario <path>`, update those commands to include a qualifier (for example, `firstApi`).
 
 | Command | File | Function |
 |---|---|---|
