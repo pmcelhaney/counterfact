@@ -773,10 +773,12 @@ describe("a dispatcher", () => {
 
   it("ignores parameters with unknown `in` values without throwing", async () => {
     const registry = new Registry();
+    let seenPathParams: Record<string, unknown> | undefined;
 
     registry.add("/a/{id}", {
       // @ts-expect-error - test intentionally uses malformed OpenAPI data
       GET({ path }) {
+        seenPathParams = path;
         return { body: path.id };
       },
     });
@@ -812,6 +814,9 @@ describe("a dispatcher", () => {
     });
 
     expect(response.body).toBe("value");
+    expect(seenPathParams).toStrictEqual({ id: "value" });
+    expect(Object.hasOwn(seenPathParams as object, "ignored")).toBe(false);
+    expect(Object.hasOwn(seenPathParams as object, "__proto__")).toBe(false);
   });
 
   it("provides a cookie proxy that reads a single cookie", async () => {

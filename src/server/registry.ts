@@ -142,6 +142,16 @@ function castParameters(
   ) as { [key: string]: boolean | number | string };
 }
 
+/**
+ * Resolves a route handler function for an HTTP method from a loaded module.
+ *
+ * Uses explicit method branching (no dynamic method indexing) and preserves
+ * compatibility with lowercase method keys used in MSW-focused tests.
+ *
+ * @param module - The loaded route module.
+ * @param method - HTTP method name (case-insensitive).
+ * @returns The matched handler function, or `undefined` when absent.
+ */
 function getMethodHandler(
   module: Module | undefined,
   method: string,

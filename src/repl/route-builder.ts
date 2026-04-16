@@ -21,6 +21,13 @@ interface OpenApiOperationExtended {
   summary?: string;
 }
 
+/**
+ * Resolves a method operation from a path item using explicit method branches.
+ *
+ * @param pathItem - OpenAPI path item object for a single route.
+ * @param method - Lowercase HTTP method string.
+ * @returns The matching operation metadata, or `undefined` if unsupported.
+ */
 function operationForMethod(
   pathItem: OpenApiDocument["paths"][string] | undefined,
   method: string,

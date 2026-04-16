@@ -75,6 +75,14 @@ interface ParameterTypes {
   query: Map<string, string>;
 }
 
+/**
+ * Selects an operation object from a path item using an explicit HTTP method
+ * switch (instead of dynamic indexing).
+ *
+ * @param pathItem - OpenAPI path item containing method operations.
+ * @param method - HTTP method to resolve.
+ * @returns The matching OpenAPI operation, or `undefined` when not present.
+ */
 function getOperationByMethod(
   pathItem:
     | {
@@ -104,6 +112,36 @@ function getOperationByMethod(
       return pathItem.put;
     case "TRACE":
       return pathItem.trace;
+  }
+}
+
+/**
+ * Returns the parameter-type map for a supported OpenAPI parameter location.
+ *
+ * @param types - The grouped parameter-type maps being built for an operation.
+ * @param location - OpenAPI parameter location (`path`, `query`, etc.).
+ * @returns The matching map when the location is supported, otherwise
+ *   `undefined`.
+ */
+function getParameterTypeMap(
+  types: ParameterTypes,
+  location: string,
+): Map<string, string> | undefined {
+  switch (location) {
+    case "body":
+      return types.body;
+    case "cookie":
+      return types.cookie;
+    case "formData":
+      return types.formData;
+    case "header":
+      return types.header;
+    case "path":
+      return types.path;
+    case "query":
+      return types.query;
+    default:
+      return undefined;
   }
 }
 
@@ -183,21 +221,9 @@ export class Dispatcher {
       return types;
     }
 
-    const mapsByLocation = new Map<
-      string,
-      ParameterTypes[keyof ParameterTypes]
-    >([
-      ["body", types.body],
-      ["cookie", types.cookie],
-      ["formData", types.formData],
-      ["header", types.header],
-      ["path", types.path],
-      ["query", types.query],
-    ]);
-
     for (const parameter of parameters) {
       const type = parameter?.type;
-      const locationMap = mapsByLocation.get(parameter.in);
+      const locationMap = getParameterTypeMap(types, parameter.in);
 
       if (type !== undefined && locationMap !== undefined) {
         locationMap.set(parameter.name, type === "integer" ? "number" : type);

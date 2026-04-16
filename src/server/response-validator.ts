@@ -9,6 +9,17 @@ const ajv = new Ajv({
   coerceTypes: false,
 });
 
+/**
+ * Safely reads a string-keyed record value only when the key exists directly on
+ * the object itself.
+ *
+ * This avoids traversing the prototype chain when looking up untrusted keys
+ * (for example status/header names parsed from external input).
+ *
+ * @param record - The record to read from.
+ * @param key - Key to check and retrieve.
+ * @returns The own-property value for `key`, or `undefined` when absent.
+ */
 function getOwnRecordValue<T>(
   record: Record<string, T>,
   key: string,
@@ -51,9 +62,11 @@ export function validateResponse(
   const actualHeaders = response.headers ?? {};
 
   for (const [name, headerSpec] of Object.entries(specHeaders)) {
+    const headerValue = getOwnRecordValue(actualHeaders, name);
     const actualValue =
-      getOwnRecordValue(actualHeaders, name) ??
-      getOwnRecordValue(actualHeaders, name.toLowerCase());
+      headerValue === undefined
+        ? getOwnRecordValue(actualHeaders, name.toLowerCase())
+        : headerValue;
 
     if (headerSpec.required === true && actualValue === undefined) {
       errors.push(`response header '${name}' is required`);
