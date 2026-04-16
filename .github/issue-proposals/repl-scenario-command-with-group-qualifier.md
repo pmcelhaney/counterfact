@@ -1,5 +1,6 @@
 ---
 title: "repl: add group-qualified .scenario command for multi-API"
+parentIssue: 1893
 labels:
   - enhancement
   - repl

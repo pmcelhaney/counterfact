@@ -1,5 +1,6 @@
 ---
 title: "repl: update tab completion for group-qualified .scenario"
+parentIssue: 1893
 labels:
   - enhancement
   - repl
