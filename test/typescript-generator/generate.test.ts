@@ -245,4 +245,35 @@ describe("_.context type generation", () => {
       );
     });
   });
+
+  it("normalizes parameter names with separators in generated aliases", async () => {
+    await usingTemporaryFiles(async ($) => {
+      const basePath = $.path("");
+      const repository = new Repository();
+
+      repository.writeFiles = async () => {
+        await Promise.resolve(undefined);
+      };
+
+      await $.add(
+        "routes/orders/{order-id}/_.context.ts",
+        "export class Context {}",
+      );
+
+      const codeGenerator = new CodeGenerator("./petstore.yaml", basePath, {
+        types: true,
+      });
+
+      await codeGenerator.generate(repository);
+      await new ScenarioFileGenerator(basePath).generate();
+
+      const content = await $.read("types/_.context.ts");
+      expect(content).toContain(
+        'import type { Context as OrdersOrderIdContext } from "../routes/orders/{order-id}/_.context";',
+      );
+      expect(content).toContain(
+        "loadContext(path: `/orders/${string}`): OrdersOrderIdContext;",
+      );
+    });
+  });
 });

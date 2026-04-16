@@ -3,7 +3,9 @@ import { readFile } from "node:fs/promises";
 import { load as loadYaml } from "js-yaml";
 
 function kebabToCamel(str: string): string {
-  return str.replace(/-([a-z])/g, (_, letter: string) => letter.toUpperCase());
+  return str.replace(/-(?<letter>[a-z])/g, (_, letter: string) =>
+    letter.toUpperCase(),
+  );
 }
 
 function normalizeKeys(obj: Record<string, unknown>): Record<string, unknown> {
