@@ -40,6 +40,10 @@ const mockKoaProxy = (path: string, { target }: IBaseKoaProxiesOptions) =>
     context.mockProxyTarget = target;
   };
 
+function fallbackAuth(value: string | undefined): string {
+  return value ?? "";
+}
+
 describe("koa middleware", () => {
   it("passes the request to the dispatcher and returns the response", async () => {
     const registry = new Registry();
@@ -381,8 +385,11 @@ describe("koa middleware", () => {
 
     registry.add("/hello", {
       GET({ auth }: { auth?: { password?: string; username?: string } }) {
+        const username = fallbackAuth(auth?.username);
+        const password = fallbackAuth(auth?.password);
+
         return {
-          body: `${auth?.username ?? ""} / ${auth?.password ?? ""}`,
+          body: `${username} / ${password}`,
         };
       },
     });

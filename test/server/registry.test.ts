@@ -5,6 +5,10 @@ import {
   type RequestDataWithBody,
 } from "../../src/server/registry.js";
 
+function fallbackPathSegment(value: unknown): string {
+  return value == null ? "???" : String(value);
+}
+
 describe("a registry", () => {
   it("knows if a handler exists for a request method at a path", () => {
     const registry = new Registry();
@@ -226,9 +230,7 @@ describe("a registry", () => {
     registry.add("/{organization}/users/{username}/friends/{page}", {
       async GET({ path }) {
         return {
-          body: `page ${path?.page ?? "???"} of ${
-            path?.username ?? "???"
-          }'s friends in ${path?.organization ?? "???"}`,
+          body: `page ${fallbackPathSegment(path?.page)} of ${fallbackPathSegment(path?.username)}'s friends in ${fallbackPathSegment(path?.organization)}`,
         };
       },
     });

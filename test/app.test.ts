@@ -81,12 +81,15 @@ describe("counterfact", () => {
 
   it("uses the first spec's runner as primary (contextRegistry, registry) when specs are provided", async () => {
     const realCreate = ApiRunner.create;
-    const capturedRunners: ApiRunner[] = [];
+    const capturedRunnersByGroup = new Map<string, ApiRunner>();
 
     const createSpy = jest.spyOn(ApiRunner, "create");
     createSpy.mockImplementation(async (...args) => {
       const runner = await realCreate.apply(ApiRunner, args);
-      capturedRunners.push(runner);
+      const group = args[1];
+      if (group) {
+        capturedRunnersByGroup.set(group, runner);
+      }
       return runner;
     });
 
@@ -96,10 +99,12 @@ describe("counterfact", () => {
     ];
 
     const result = await (app as any).counterfact(mockConfig, specs);
+    const firstRunner = capturedRunnersByGroup.get("v1");
 
-    expect(capturedRunners).toHaveLength(2);
-    expect(result.contextRegistry).toBe(capturedRunners[0]!.contextRegistry);
-    expect(result.registry).toBe(capturedRunners[0]!.registry);
+    expect(capturedRunnersByGroup.size).toBe(2);
+    expect(firstRunner).toBeDefined();
+    expect(result.contextRegistry).toBe(firstRunner!.contextRegistry);
+    expect(result.registry).toBe(firstRunner!.registry);
 
     createSpy.mockRestore();
   });

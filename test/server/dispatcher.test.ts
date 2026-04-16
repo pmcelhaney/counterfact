@@ -8,6 +8,14 @@ import {
 } from "../../src/server/dispatcher.js";
 import { Registry } from "../../src/server/registry.js";
 
+function fallbackCookie(value: string | undefined, fallback: string): string {
+  return value ?? fallback;
+}
+
+function acceptsBody(acceptsHtml: boolean): string {
+  return acceptsHtml ? "acceptable" : "unacceptable";
+}
+
 describe("a dispatcher", () => {
   it("dispatches a get request to a server and returns the response", async () => {
     const registry = new Registry();
@@ -268,12 +276,10 @@ describe("a dispatcher", () => {
       req: { path: "/a" },
     });
 
-    if (!("headers" in response)) {
-      // TypeScript thinks the response object might not have a headers property. Can't figure out why.
-      throw new Error("response.headers not defined");
-    }
-
-    expect(response.headers).toStrictEqual(authHeader);
+    expect(response).toHaveProperty("headers");
+    expect(
+      (response as typeof response & { headers: typeof authHeader }).headers,
+    ).toStrictEqual(authHeader);
   });
 
   it("passes the query params", async () => {
@@ -312,7 +318,7 @@ describe("a dispatcher", () => {
     registry.add("/a", {
       GET({ tools }) {
         return {
-          body: tools.accepts("text/html") ? "acceptable" : "unacceptable",
+          body: acceptsBody(tools.accepts("text/html")),
         };
       },
     });
@@ -776,8 +782,10 @@ describe("a dispatcher", () => {
 
     registry.add("/a", {
       GET($) {
+        const { session } = $.cookie;
+
         return {
-          body: $.cookie.session ?? "missing",
+          body: fallbackCookie(session, "missing"),
         };
       },
     });
@@ -800,8 +808,10 @@ describe("a dispatcher", () => {
 
     registry.add("/a", {
       GET($) {
+        const { theme } = $.cookie;
+
         return {
-          body: $.cookie.theme ?? "missing",
+          body: fallbackCookie(theme, "missing"),
         };
       },
     });
@@ -824,8 +834,10 @@ describe("a dispatcher", () => {
 
     registry.add("/a", {
       GET($) {
+        const { missing } = $.cookie;
+
         return {
-          body: $.cookie.missing ?? "not-found",
+          body: fallbackCookie(missing, "not-found"),
         };
       },
     });
@@ -848,8 +860,10 @@ describe("a dispatcher", () => {
 
     registry.add("/a", {
       GET($) {
+        const { session } = $.cookie;
+
         return {
-          body: $.cookie.session ?? "no-cookie",
+          body: fallbackCookie(session, "no-cookie"),
         };
       },
     });
@@ -872,8 +886,10 @@ describe("a dispatcher", () => {
 
     registry.add("/a", {
       GET($) {
+        const { key } = $.cookie;
+
         return {
-          body: $.cookie.key ?? "missing",
+          body: fallbackCookie(key, "missing"),
         };
       },
     });
@@ -896,8 +912,10 @@ describe("a dispatcher", () => {
 
     registry.add("/a", {
       GET($) {
+        const { data } = $.cookie;
+
         return {
-          body: $.cookie.data ?? "missing",
+          body: fallbackCookie(data, "missing"),
         };
       },
     });
@@ -920,8 +938,10 @@ describe("a dispatcher", () => {
 
     registry.add("/a", {
       GET($) {
+        const { ok } = $.cookie;
+
         return {
-          body: $.cookie.ok ?? "safe",
+          body: fallbackCookie(ok, "safe"),
         };
       },
     });
@@ -944,8 +964,10 @@ describe("a dispatcher", () => {
 
     registry.add("/a", {
       GET($) {
+        const { id } = $.cookie;
+
         return {
-          body: $.cookie.id ?? "missing",
+          body: fallbackCookie(id, "missing"),
         };
       },
     });
