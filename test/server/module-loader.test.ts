@@ -142,43 +142,6 @@ describe("a module loader", () => {
     });
   });
 
-  // This should work but I can't figure out how to break the
-  // module cache when running through Jest (which uses the
-  // experimental module API).
-
-  it.skip("updates the registry when a file is changed", async () => {
-    await usingTemporaryFiles(async ($) => {
-      const registry: Registry = new Registry();
-      const loader: ModuleLoader = new ModuleLoader($.path("."), registry);
-
-      await $.add(
-        "change.js",
-        'export function GET(): { body } { return { body: "before change" }; }',
-      );
-      await $.add("package.json", '{ "type": "module" }');
-
-      await loader.watch();
-      await $.add(
-        "change.js",
-        'export function GET() { return { body: "after change" }; }',
-      );
-      await once(loader, "change");
-
-      const response = registry.endpoint(
-        "GET",
-        "/change",
-
-        // @ts-expect-error - not going to create a whole context object for a test
-      )({ headers: {}, matchedPath: "", path: {}, query: {} });
-
-      // @ts-expect-error - TypeScript doesn't know that the response will have a body property
-      expect(response.body).toBe("after change");
-      expect(registry.exists("GET", "/late/addition")).toBe(true);
-
-      await loader.stopWatching();
-    });
-  });
-
   it("finds a context and adds it to the context registry", async () => {
     await usingTemporaryFiles(async ($) => {
       await $.add("_.context.js", 'export class Context { name = "main"};');
@@ -360,37 +323,6 @@ describe("a module loader", () => {
       const data = await subContext.readJson("../shared/data.json");
 
       expect(data).toEqual({ shared: true });
-    });
-  });
-
-  // can't test because I can't get Jest to refresh modules
-  it.skip("updates the registry when a dependency is updated", async () => {
-    await usingTemporaryFiles(async ($) => {
-      await $.add("package.json", '{ "type": "module" }');
-
-      await $.add("x.js", 'export const x = "original";');
-
-      await $.add(
-        "main.js",
-        'import { x } from "./x.js"; export function GET() { return x; }',
-      );
-
-      const registry: Registry = new Registry();
-      const loader: ModuleLoader = new ModuleLoader($.path("."), registry);
-
-      await loader.load();
-      await loader.watch();
-
-      // @ts-expect-error - not going to create a whole request object for a test
-      const response = await registry.endpoint("GET", "/main")({});
-
-      await $.add("x.js", 'export const x = "changed";');
-
-      await once(loader, "add");
-
-      expect(response).toEqual("changed");
-
-      await loader.stopWatching();
     });
   });
 
