@@ -3,7 +3,7 @@ import type { REPLServer } from "node:repl";
 import { afterEach, jest } from "@jest/globals";
 
 import { createCompleter, startRepl } from "../../src/repl/repl.js";
-import type { CompleterCallback } from "../../src/repl/repl.js";
+import type { CompleterCallback, ReplApiBinding } from "../../src/repl/repl.js";
 import type { Config } from "../../src/server/config.js";
 import { ContextRegistry } from "../../src/server/context-registry.js";
 import { Registry } from "../../src/server/registry.js";
@@ -30,6 +30,14 @@ const CONFIG: Config = {
     routes: true,
     types: true,
   },
+};
+
+type GroupedLoadContext = Record<
+  string,
+  (path: string) => Record<string, unknown>
+>;
+type RouteBuilderLike = {
+  path: (arguments_: Record<string, unknown>) => unknown;
 };
 
 class MockRepl {
@@ -60,6 +68,7 @@ class ReplHarness {
     registry: Registry,
     config: Config,
     scenarioRegistry?: ScenarioRegistry,
+    apiBindings?: ReplApiBinding[],
   ) {
     this.server = startRepl(
       contextRegistry,
@@ -68,6 +77,7 @@ class ReplHarness {
       (line) => this.output.push(line),
       undefined,
       scenarioRegistry,
+      apiBindings,
     );
   }
 
@@ -87,7 +97,10 @@ class ReplHarness {
   }
 }
 
-function createHarness(scenarioRegistry?: ScenarioRegistry) {
+function createHarness(
+  scenarioRegistry?: ScenarioRegistry,
+  apiBindings?: ReplApiBinding[],
+) {
   const contextRegistry = new ContextRegistry();
   const registry = new Registry();
   const config = { ...CONFIG };
@@ -99,6 +112,7 @@ function createHarness(scenarioRegistry?: ScenarioRegistry) {
     registry,
     config,
     scenarioRegistry,
+    apiBindings,
   );
 
   openServers.push(harness.server);
@@ -280,6 +294,91 @@ describe("REPL", () => {
       "",
     ]);
     expect(harness.isReset()).toBe(true);
+  });
+
+  it("keeps single-runner context and route unqualified", () => {
+    const { harness, contextRegistry } = createHarness();
+    contextRegistry.add("/pets", { count: 2 });
+
+    expect(typeof harness.server.context["loadContext"]).toBe("function");
+    expect(typeof harness.server.context["route"]).toBe("function");
+    expect(harness.server.context["context"]).toEqual({});
+    expect(harness.server.context["routes"]).toEqual({});
+    expect(
+      (
+        harness.server.context["loadContext"] as (
+          path: string,
+        ) => Record<string, unknown>
+      )("/pets"),
+    ).toMatchObject({ count: 2 });
+    expect(
+      (harness.server.context["route"] as (path: string) => RouteBuilderLike)(
+        "/pets/{petId}",
+      ).path({ petId: 1 }),
+    ).toBeDefined();
+  });
+
+  it("exposes grouped context/route/routes for multi-runner mode", () => {
+    const billingContextRegistry = new ContextRegistry();
+    const inventoryContextRegistry = new ContextRegistry();
+    const billingRegistry = new Registry();
+    const inventoryRegistry = new Registry();
+    const scenarioRegistry = new ScenarioRegistry();
+
+    billingContextRegistry.add("/", {
+      billingOnly: true,
+    });
+    inventoryContextRegistry.add("/", {
+      inventoryOnly: true,
+    });
+    scenarioRegistry.add("index", {});
+
+    const { harness } = createHarness(undefined, [
+      {
+        contextRegistry: billingContextRegistry,
+        group: "billing",
+        registry: billingRegistry,
+        scenarioRegistry,
+      },
+      {
+        contextRegistry: inventoryContextRegistry,
+        group: "inventory",
+        registry: inventoryRegistry,
+      },
+    ]);
+
+    expect(typeof harness.server.context["loadContext"]).toBe("object");
+    expect(typeof harness.server.context["route"]).toBe("object");
+    expect(harness.server.context["context"]).toMatchObject({
+      billing: { billingOnly: true },
+      inventory: { inventoryOnly: true },
+    });
+    expect(harness.server.context["routes"]).toEqual({
+      billing: {},
+      inventory: {},
+    });
+    expect(
+      (harness.server.context["loadContext"] as GroupedLoadContext)[
+        "inventory"
+      ]?.("/"),
+    ).toMatchObject({ inventoryOnly: true });
+  });
+
+  it("throws when multi-api bindings contain duplicate groups", () => {
+    expect(() =>
+      createHarness(undefined, [
+        {
+          contextRegistry: new ContextRegistry(),
+          group: "billing",
+          registry: new Registry(),
+        },
+        {
+          contextRegistry: new ContextRegistry(),
+          group: "billing",
+          registry: new Registry(),
+        },
+      ]),
+    ).toThrow("Duplicate API groups are not allowed");
   });
 
   describe(".scenario command", () => {
