@@ -33,6 +33,8 @@ jobs:
             exit 0
           fi
 
+          git fetch --no-tags --depth=1 origin "${{ github.event.pull_request.base.ref }}"
+
           changed_files=$(git diff --name-only "${{ github.event.pull_request.base.sha }}" "${{ github.event.pull_request.head.sha }}")
 
           if [[ -z "$changed_files" ]]; then
