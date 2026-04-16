@@ -87,20 +87,17 @@ function validateSpecGroups(specs: SpecConfig[]): void {
     return;
   }
 
-  const invalidSpecs = specs
-    .map((spec, index) => ({ index, spec }))
-    .filter(({ spec }) => spec.group.trim() === "");
+  const invalidIndexes = specs
+    .map((spec, index) => ({ group: spec.group.trim(), index }))
+    .filter(({ group }) => group === "")
+    .map(({ index }) => String(index + 1));
 
-  if (invalidSpecs.length === 0) {
+  if (invalidIndexes.length === 0) {
     return;
   }
 
-  const invalidIndexes = invalidSpecs
-    .map(({ index }) => String(index + 1))
-    .join(", ");
-
   throw new Error(
-    `Each spec must define a non-empty group when multiple APIs are configured (invalid spec entries: ${invalidIndexes}).`,
+    `Each spec must define a non-empty group when multiple APIs are configured (invalid spec entries: ${invalidIndexes.join(", ")}).`,
   );
 }
 
