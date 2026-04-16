@@ -13,11 +13,7 @@ function fallbackCookie(value: string | undefined, fallback: string): string {
 }
 
 function acceptsBody(acceptsHtml: boolean): string {
-  if (acceptsHtml) {
-    return "acceptable";
-  }
-
-  return "unacceptable";
+  return acceptsHtml ? "acceptable" : "unacceptable";
 }
 
 describe("a dispatcher", () => {
