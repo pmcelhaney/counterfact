@@ -49,7 +49,7 @@ loadContext.billing("/pets")
 route.inventory("/stock/{sku}")
 ```
 
-When configuring multiple APIs, each API must define a non-empty group name.
+When configuring multiple APIs, each API must define a non-empty, unique group name.
 
 The built-in `client` object lets you make HTTP requests from the prompt without leaving the terminal:
 

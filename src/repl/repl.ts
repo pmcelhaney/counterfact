@@ -170,21 +170,38 @@ export function startRepl(
         ]
       : apiBindings;
   const isMultiApi = bindings.length > 1;
-  const usedKeys = new Map<string, number>();
-  const groupedBindings = bindings.map((binding, index) => {
-    // Keep key derivation deterministic:
-    // - empty group => api{index}
-    // - duplicate group => <group>_2, <group>_3, ...
-    const baseKey =
-      binding.group.trim() === "" ? `api${index + 1}` : binding.group.trim();
-    const duplicateCount = usedKeys.get(baseKey) ?? 0;
-    usedKeys.set(baseKey, duplicateCount + 1);
+  const groupedBindings = bindings.map((binding) => ({
+    ...binding,
+    key: binding.group.trim(),
+  }));
 
-    return {
-      ...binding,
-      key: duplicateCount === 0 ? baseKey : `${baseKey}_${duplicateCount + 1}`,
-    };
-  });
+  if (isMultiApi) {
+    const invalidBindings = groupedBindings.filter(
+      (binding) => binding.key === "",
+    );
+
+    if (invalidBindings.length > 0) {
+      throw new Error(
+        "Each API binding must define a non-empty group when multiple APIs are configured.",
+      );
+    }
+
+    const seenGroups = new Set<string>();
+    const duplicateGroups = new Set<string>();
+
+    for (const binding of groupedBindings) {
+      if (seenGroups.has(binding.key)) {
+        duplicateGroups.add(binding.key);
+      }
+      seenGroups.add(binding.key);
+    }
+
+    if (duplicateGroups.size > 0) {
+      throw new Error(
+        `Duplicate API groups are not allowed when multiple APIs are configured (duplicate groups: ${[...duplicateGroups].join(", ")}).`,
+      );
+    }
+  }
 
   const rootBinding = groupedBindings[0];
 

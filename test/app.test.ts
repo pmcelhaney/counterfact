@@ -101,6 +101,17 @@ describe("counterfact", () => {
     );
   });
 
+  it("throws when multiple specs include duplicate groups", async () => {
+    const specs = [
+      { source: "_", prefix: "/api/v1", group: "billing" },
+      { source: "_", prefix: "/api/v2", group: "billing" },
+    ];
+
+    await expect((app as any).counterfact(mockConfig, specs)).rejects.toThrow(
+      "Each spec must define a unique group when multiple APIs are configured",
+    );
+  });
+
   it("uses the first spec's runner as primary (contextRegistry, registry) when specs are provided", async () => {
     const realCreate = ApiRunner.create;
     const capturedRunners: ApiRunner[] = [];

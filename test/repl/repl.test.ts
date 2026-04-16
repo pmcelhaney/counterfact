@@ -364,43 +364,21 @@ describe("REPL", () => {
     ).toMatchObject({ inventoryOnly: true });
   });
 
-  it("uses deterministic keys when groups are empty or duplicated", () => {
-    const emptyGroupContextRegistry = new ContextRegistry();
-    const firstBillingContextRegistry = new ContextRegistry();
-    const secondBillingContextRegistry = new ContextRegistry();
-
-    emptyGroupContextRegistry.add("/", { name: "empty" });
-    firstBillingContextRegistry.add("/", { name: "billing-first" });
-    secondBillingContextRegistry.add("/", { name: "billing-second" });
-
-    const { harness } = createHarness(undefined, [
-      {
-        contextRegistry: emptyGroupContextRegistry,
-        group: "",
-        registry: new Registry(),
-      },
-      {
-        contextRegistry: firstBillingContextRegistry,
-        group: "billing",
-        registry: new Registry(),
-      },
-      {
-        contextRegistry: secondBillingContextRegistry,
-        group: "billing",
-        registry: new Registry(),
-      },
-    ]);
-
-    expect(harness.server.context["context"]).toMatchObject({
-      api1: { name: "empty" },
-      billing: { name: "billing-first" },
-      billing_2: { name: "billing-second" },
-    });
-    expect(harness.server.context["routes"]).toEqual({
-      api1: {},
-      billing: {},
-      billing_2: {},
-    });
+  it("throws when multi-api bindings contain duplicate groups", () => {
+    expect(() =>
+      createHarness(undefined, [
+        {
+          contextRegistry: new ContextRegistry(),
+          group: "billing",
+          registry: new Registry(),
+        },
+        {
+          contextRegistry: new ContextRegistry(),
+          group: "billing",
+          registry: new Registry(),
+        },
+      ]),
+    ).toThrow("Duplicate API groups are not allowed");
   });
 
   describe(".scenario command", () => {

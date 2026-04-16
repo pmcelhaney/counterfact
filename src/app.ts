@@ -93,7 +93,27 @@ function validateSpecGroups(specs: SpecConfig[]): void {
     .map(({ index }) => String(index + 1));
 
   if (invalidSpecNumbers.length === 0) {
-    return;
+    const seenGroups = new Set<string>();
+    const duplicateGroupNames = new Set<string>();
+
+    for (const spec of specs) {
+      const group = spec.group.trim();
+
+      if (seenGroups.has(group)) {
+        duplicateGroupNames.add(group);
+        continue;
+      }
+
+      seenGroups.add(group);
+    }
+
+    if (duplicateGroupNames.size === 0) {
+      return;
+    }
+
+    throw new Error(
+      `Each spec must define a unique group when multiple APIs are configured (duplicate groups: ${[...duplicateGroupNames].join(", ")}).`,
+    );
   }
 
   throw new Error(
