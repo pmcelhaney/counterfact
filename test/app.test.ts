@@ -79,6 +79,39 @@ describe("counterfact", () => {
     spy.mockRestore();
   });
 
+  it("throws when multiple specs include an empty group", async () => {
+    const specs = [
+      { source: "_", prefix: "/api/v1", group: "billing" },
+      { source: "_", prefix: "/api/v2", group: "" },
+    ];
+
+    await expect((app as any).counterfact(mockConfig, specs)).rejects.toThrow(
+      "Each spec must define a non-empty group when multiple APIs are configured",
+    );
+  });
+
+  it("allows a single spec with an empty group", async () => {
+    const specs = [{ source: "_", prefix: "/api/v1", group: "" }];
+
+    await expect((app as any).counterfact(mockConfig, specs)).resolves.toEqual(
+      expect.objectContaining({
+        start: expect.any(Function),
+        startRepl: expect.any(Function),
+      }),
+    );
+  });
+
+  it("throws when multiple specs include duplicate groups", async () => {
+    const specs = [
+      { source: "_", prefix: "/api/v1", group: "billing" },
+      { source: "_", prefix: "/api/v2", group: "billing" },
+    ];
+
+    await expect((app as any).counterfact(mockConfig, specs)).rejects.toThrow(
+      "Each spec must define a unique group when multiple APIs are configured",
+    );
+  });
+
   it("uses the first spec's runner as primary (contextRegistry, registry) when specs are provided", async () => {
     const realCreate = ApiRunner.create;
     const capturedRunnersByGroup = new Map<string, ApiRunner>();
@@ -107,6 +140,35 @@ describe("counterfact", () => {
     expect(result.registry).toBe(firstRunner!.registry);
 
     createSpy.mockRestore();
+  });
+
+  it("wires all runners into REPL grouped context when specs are provided", async () => {
+    await usingTemporaryFiles(async ($) => {
+      const specs = [
+        { source: "_", prefix: "/api/v1", group: "billing" },
+        { source: "_", prefix: "/api/v2", group: "inventory" },
+      ];
+
+      const result = await (app as any).counterfact(
+        { ...mockConfig, basePath: $.path(".") },
+        specs,
+      );
+
+      result.contextRegistry.add("/", { from: "primary" });
+
+      const replServer = result.startRepl();
+
+      expect(replServer.context["context"]).toMatchObject({
+        billing: { from: "primary" },
+        inventory: {},
+      });
+      expect(replServer.context["routes"]).toEqual({
+        billing: {},
+        inventory: {},
+      });
+
+      replServer.close();
+    });
   });
 
   it("routes requests to the correct runner based on prefix when specs are provided", async () => {

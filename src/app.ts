@@ -82,6 +82,45 @@ function normalizeSpecs(
   return [{ source: config.openApiPath, prefix: config.prefix, group: "" }];
 }
 
+function validateSpecGroups(specs: SpecConfig[]): void {
+  if (specs.length <= 1) {
+    return;
+  }
+
+  const invalidSpecNumbers = specs
+    .map((spec, index) => ({ group: spec.group.trim(), index }))
+    .filter(({ group }) => group === "")
+    .map(({ index }) => String(index + 1));
+
+  if (invalidSpecNumbers.length === 0) {
+    const seenGroups = new Set<string>();
+    const duplicateGroupNames = new Set<string>();
+
+    for (const spec of specs) {
+      const group = spec.group.trim();
+
+      if (seenGroups.has(group)) {
+        duplicateGroupNames.add(group);
+        continue;
+      }
+
+      seenGroups.add(group);
+    }
+
+    if (duplicateGroupNames.size === 0) {
+      return;
+    }
+
+    throw new Error(
+      `Each spec must define a unique group when multiple APIs are configured (duplicate groups: ${[...duplicateGroupNames].join(", ")}).`,
+    );
+  }
+
+  throw new Error(
+    `Each spec must define a non-empty group when multiple APIs are configured (invalid spec entries: ${invalidSpecNumbers.join(", ")}).`,
+  );
+}
+
 /**
  * Creates and configures a full Counterfact server instance.
  *
@@ -107,6 +146,7 @@ export async function counterfact(config: Config, specs?: SpecConfig[]) {
     { openApiPath: config.openApiPath, prefix: config.prefix },
     specs,
   );
+  validateSpecGroups(normalizedSpecs);
 
   const runners = await Promise.all(
     normalizedSpecs.map((spec) =>
@@ -176,6 +216,13 @@ export async function counterfact(config: Config, specs?: SpecConfig[]) {
         undefined, // use the default print function (stdout)
         primaryRunner.openApiDocument,
         primaryRunner.scenarioRegistry,
+        runners.map((runner) => ({
+          contextRegistry: runner.contextRegistry,
+          group: runner.group,
+          openApiDocument: runner.openApiDocument,
+          registry: runner.registry,
+          scenarioRegistry: runner.scenarioRegistry,
+        })),
       ),
   };
 }

@@ -18,6 +18,14 @@ export type CompleterCallback = (
   result: [string[], string],
 ) => void;
 
+export interface ReplApiBinding {
+  contextRegistry: ContextRegistry;
+  group: string;
+  openApiDocument?: OpenApiDocument;
+  registry: Registry;
+  scenarioRegistry?: ScenarioRegistry;
+}
+
 const ROUTE_BUILDER_METHODS = [
   "body(",
   "headers(",
@@ -194,7 +202,72 @@ export function startRepl(
   print = printToStdout,
   openApiDocument?: OpenApiDocument,
   scenarioRegistry?: ScenarioRegistry,
+  apiBindings?: ReplApiBinding[],
 ) {
+  const bindings =
+    apiBindings === undefined || apiBindings.length === 0
+      ? [
+          {
+            contextRegistry,
+            group: "",
+            openApiDocument,
+            registry,
+            scenarioRegistry,
+          },
+        ]
+      : apiBindings;
+  const isMultiApi = bindings.length > 1;
+  const groupedBindings = bindings.map((binding) => ({
+    ...binding,
+    key: binding.group.trim(),
+  }));
+
+  if (isMultiApi) {
+    const invalidBindings = groupedBindings.filter(
+      (binding) => binding.key === "",
+    );
+
+    if (invalidBindings.length > 0) {
+      throw new Error(
+        "Each API binding must define a non-empty group when multiple APIs are configured.",
+      );
+    }
+
+    const seenGroups = new Set<string>();
+    const duplicateGroups = new Set<string>();
+
+    for (const binding of groupedBindings) {
+      if (seenGroups.has(binding.key)) {
+        duplicateGroups.add(binding.key);
+      }
+      seenGroups.add(binding.key);
+    }
+
+    if (duplicateGroups.size > 0) {
+      throw new Error(
+        `Duplicate API groups are not allowed when multiple APIs are configured (duplicate groups: ${[...duplicateGroups].join(", ")}).`,
+      );
+    }
+  }
+
+  const rootBinding = groupedBindings[0];
+
+  if (rootBinding === undefined) {
+    throw new Error("startRepl requires at least one API binding");
+  }
+  const groupedLoadContext = Object.fromEntries(
+    groupedBindings.map((binding) => [
+      binding.key,
+      (path: string) => binding.contextRegistry.find(path),
+    ]),
+  ) as Record<string, (path: string) => Record<string, unknown>>;
+  const groupedRoute = Object.fromEntries(
+    groupedBindings.map((binding) => [
+      binding.key,
+      createRouteFunction(config.port, "localhost", binding.openApiDocument),
+    ]),
+  ) as Record<string, (path: string) => unknown>;
+
   function printProxyStatus() {
     if (config.proxyUrl === "") {
       print("The proxy URL is not set.");
@@ -267,10 +340,10 @@ export function startRepl(
   // completer is typed as readonly in @types/node but is writable at runtime
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (replServer as any).completer = createCompleter(
-    registry,
+    rootBinding.registry,
     builtinCompleter,
-    openApiDocument,
-    scenarioRegistry,
+    rootBinding.openApiDocument,
+    rootBinding.scenarioRegistry,
   );
 
   replServer.defineCommand("counterfact", {
@@ -324,20 +397,29 @@ export function startRepl(
     help: 'proxy configuration (".proxy help" for details)',
   });
 
-  replServer.context.loadContext = (path: string) => contextRegistry.find(path);
+  replServer.context.loadContext = isMultiApi
+    ? groupedLoadContext
+    : groupedLoadContext[rootBinding.key];
 
-  replServer.context.context = replServer.context.loadContext("/");
+  replServer.context.context = isMultiApi
+    ? Object.fromEntries(
+        groupedBindings.map((binding) => [
+          binding.key,
+          binding.contextRegistry.find("/"),
+        ]),
+      )
+    : rootBinding.contextRegistry.find("/");
 
   replServer.context.client = new RawHttpClient("localhost", config.port);
   replServer.context.RawHttpClient = RawHttpClient;
 
-  replServer.context.route = createRouteFunction(
-    config.port,
-    "localhost",
-    openApiDocument,
-  );
+  replServer.context.route = isMultiApi
+    ? groupedRoute
+    : groupedRoute[rootBinding.key];
 
-  replServer.context.routes = {};
+  replServer.context.routes = isMultiApi
+    ? Object.fromEntries(groupedBindings.map((binding) => [binding.key, {}]))
+    : {};
 
   replServer.defineCommand("scenario", {
     async action(text: string) {
@@ -361,7 +443,7 @@ export function startRepl(
       const fileKey =
         parts.length === 1 ? "index" : parts.slice(0, -1).join("/");
 
-      const module = scenarioRegistry?.getModule(fileKey);
+      const module = rootBinding.scenarioRegistry?.getModule(fileKey);
 
       if (module === undefined) {
         print(`Error: Could not find scenario file "${fileKey}"`);

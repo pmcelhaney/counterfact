@@ -33,6 +33,24 @@ To access context from a subdirectory:
 const petsContext = loadContext("/pets");
 ```
 
+When running multiple APIs in one process, REPL state is grouped by API key:
+
+```js
+context.billing
+context.inventory
+routes.billing
+routes.inventory
+```
+
+In this mode, `loadContext` and `route` are also grouped by API key:
+
+```js
+loadContext.billing("/pets")
+route.inventory("/stock/{sku}")
+```
+
+When configuring multiple APIs, each API must define a non-empty, unique group name.
+
 The built-in `client` object lets you make HTTP requests from the prompt without leaving the terminal:
 
 ```js
