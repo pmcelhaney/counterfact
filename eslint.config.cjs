@@ -14,6 +14,28 @@ const regexpPlugin = require("eslint-plugin-regexp");
 const securityPlugin = require("eslint-plugin-security");
 const espreeParser = require("espree");
 
+function isKebabCase(name) {
+  if (name.length === 0) return false;
+
+  let previousWasDash = true;
+  for (const character of name) {
+    if (character === "-") {
+      if (previousWasDash) return false;
+      previousWasDash = true;
+      continue;
+    }
+
+    const charCode = character.charCodeAt(0);
+    const isDigit = charCode >= 48 && charCode <= 57;
+    const isLowercaseLetter = charCode >= 97 && charCode <= 122;
+
+    if (!isDigit && !isLowercaseLetter) return false;
+    previousWasDash = false;
+  }
+
+  return !previousWasDash;
+}
+
 const jestRecommended = jestPlugin.configs["flat/recommended"];
 const typescriptFiles = ["**/*.ts", "**/*.tsx", "**/*.mts", "**/*.cts"];
 const typescriptRecommended = typescriptPlugin.configs["flat/recommended"].map(
@@ -266,7 +288,7 @@ module.exports = [
                     .basename(filename)
                     .replace(/\..*$/u, "");
 
-                  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/u.test(basename)) {
+                  if (!isKebabCase(basename)) {
                     context.report({
                       loc: { line: 1, column: 0 },
                       message: `Filename '${basename}' must be kebab-case.`,

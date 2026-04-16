@@ -36,6 +36,7 @@ function highlightJson(text: string) {
   const pretty = JSON.stringify(obj, null, 2);
 
   return pretty.replace(
+    // eslint-disable-next-line security/detect-unsafe-regex -- This alternation is linear: the quoted-string branch consumes either an escaped pair (`\\.`) or one non-quote/non-backslash char per iteration, so it cannot catastrophically backtrack.
     /(?<str>"(?:\\.|[^"\\])*")(?<colon>\s*:)?|\b(?<boolOrNull>true|false|null)\b|-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?/g,
     (match, str, colon, boolOrNull) => {
       if (str) {
