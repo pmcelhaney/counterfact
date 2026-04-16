@@ -90,6 +90,8 @@ When running multiple APIs in one process, qualify the command with the API grou
 ⬣> .scenario billing soldPets
 ```
 
+Tab completion supports both modes: in single-API sessions, `.scenario <Tab>` suggests scenario paths/functions; in multi-API sessions, `.scenario <Tab>` suggests API groups first, then `.scenario <group> <Tab>` suggests scenario paths/functions for that group.
+
 **Path resolution:** the argument to `.scenario` is a slash-separated path. The last segment is the function name; everything before it is the file path, resolved relative to `<basePath>/scenarios/` (with `index.ts` as the default file).
 
 | Command | File | Function |

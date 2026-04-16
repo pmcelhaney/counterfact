@@ -1032,7 +1032,10 @@ describe("REPL", () => {
         },
       );
 
-      const [completions, prefix] = await callCompleter(completer, ".scenario ");
+      const [completions, prefix] = await callCompleter(
+        completer,
+        ".scenario ",
+      );
 
       expect(prefix).toBe("");
       expect(completions).toEqual(["billing", "inventory"]);

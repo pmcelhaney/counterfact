@@ -76,9 +76,7 @@ function getScenarioCompletions(
   }
 
   if (groupedScenarioRegistries !== undefined) {
-    const scenarioMatch = line.match(/^\.scenario(?:\s+.*)?$/u);
-
-    if (!scenarioMatch) {
+    if (!/^\.scenario(?:\s|$)/u.test(line)) {
       return undefined;
     }
 
@@ -97,21 +95,13 @@ function getScenarioCompletions(
       return [matches, groupPartial];
     }
 
-    const selectedGroup = args[0];
-
-    if (selectedGroup === undefined) {
-      return [[], ""];
-    }
-
+    const selectedGroup = args[0] ?? "";
     const selectedRegistry = groupedScenarioRegistries[selectedGroup];
 
     if (selectedRegistry === undefined) {
-      const scenarioPartial =
-        args.length >= 2
-          ? (args[args.length - 1] ?? "")
-          : hasTrailingWhitespace
-            ? ""
-            : (args[0] ?? "");
+      const scenarioPartial = hasTrailingWhitespace
+        ? ""
+        : (args[args.length - 1] ?? "");
 
       return [[], scenarioPartial];
     }
@@ -121,9 +111,17 @@ function getScenarioCompletions(
     }
 
     if (args.length === 2 && !hasTrailingWhitespace) {
-      return getPathCompletions(args[1] ?? "", selectedRegistry);
+      const scenarioPartial = args[1];
+
+      if (scenarioPartial === undefined) {
+        return [[], ""];
+      }
+
+      return getPathCompletions(scenarioPartial, selectedRegistry);
     }
 
+    // More than two args (or trailing whitespace after the second arg) means
+    // no additional `.scenario` arguments are valid in multi-API mode.
     return [[], args[args.length - 1] ?? ""];
   }
 
@@ -408,7 +406,10 @@ export function startRepl(
     rootBinding.scenarioRegistry,
     isMultiApi
       ? Object.fromEntries(
-          groupedBindings.map((binding) => [binding.key, binding.scenarioRegistry]),
+          groupedBindings.map((binding) => [
+            binding.key,
+            binding.scenarioRegistry,
+          ]),
         )
       : undefined,
   );
