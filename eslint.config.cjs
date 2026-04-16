@@ -14,6 +14,37 @@ const regexpPlugin = require("eslint-plugin-regexp");
 const securityPlugin = require("eslint-plugin-security");
 const espreeParser = require("espree");
 
+const DASH_CHAR_CODE = 45;
+const DIGIT_START_CHAR_CODE = 48;
+const DIGIT_END_CHAR_CODE = 57;
+const LOWERCASE_A_CHAR_CODE = 97;
+const LOWERCASE_Z_CHAR_CODE = 122;
+
+function isKebabCase(name) {
+  if (name.length === 0) return false;
+
+  let previousCharacterWasDash = false;
+  for (let index = 0; index < name.length; index += 1) {
+    const charCode = name.charCodeAt(index);
+
+    if (charCode === DASH_CHAR_CODE) {
+      if (index === 0 || previousCharacterWasDash) return false;
+      previousCharacterWasDash = true;
+      continue;
+    }
+
+    const isDigit =
+      charCode >= DIGIT_START_CHAR_CODE && charCode <= DIGIT_END_CHAR_CODE;
+    const isLowercaseLetter =
+      charCode >= LOWERCASE_A_CHAR_CODE && charCode <= LOWERCASE_Z_CHAR_CODE;
+
+    if (!isDigit && !isLowercaseLetter) return false;
+    previousCharacterWasDash = false;
+  }
+
+  return !previousCharacterWasDash;
+}
+
 const jestRecommended = jestPlugin.configs["flat/recommended"];
 const typescriptFiles = ["**/*.ts", "**/*.tsx", "**/*.mts", "**/*.cts"];
 const typescriptRecommended = typescriptPlugin.configs["flat/recommended"].map(
@@ -266,7 +297,7 @@ module.exports = [
                     .basename(filename)
                     .replace(/\..*$/u, "");
 
-                  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/u.test(basename)) {
+                  if (!isKebabCase(basename)) {
                     context.report({
                       loc: { line: 1, column: 0 },
                       message: `Filename '${basename}' must be kebab-case.`,
