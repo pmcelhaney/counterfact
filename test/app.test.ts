@@ -79,6 +79,28 @@ describe("counterfact", () => {
     spy.mockRestore();
   });
 
+  it("throws when multiple specs include an empty group", async () => {
+    const specs = [
+      { source: "_", prefix: "/api/v1", group: "billing" },
+      { source: "_", prefix: "/api/v2", group: "" },
+    ];
+
+    await expect((app as any).counterfact(mockConfig, specs)).rejects.toThrow(
+      "Each spec must define a non-empty group when multiple APIs are configured",
+    );
+  });
+
+  it("allows a single spec with an empty group", async () => {
+    const specs = [{ source: "_", prefix: "/api/v1", group: "" }];
+
+    await expect((app as any).counterfact(mockConfig, specs)).resolves.toEqual(
+      expect.objectContaining({
+        start: expect.any(Function),
+        startRepl: expect.any(Function),
+      }),
+    );
+  });
+
   it("uses the first spec's runner as primary (contextRegistry, registry) when specs are provided", async () => {
     const realCreate = ApiRunner.create;
     const capturedRunners: ApiRunner[] = [];

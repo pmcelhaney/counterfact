@@ -49,7 +49,7 @@ loadContext.billing("/pets")
 route.inventory("/stock/{sku}")
 ```
 
-If a group name is missing, Counterfact uses `api1`, `api2`, etc. Duplicate group names get deterministic suffixes (`billing`, `billing_2`, ...).
+When configuring multiple APIs, each API must define a non-empty group name.
 
 The built-in `client` object lets you make HTTP requests from the prompt without leaving the terminal:
 

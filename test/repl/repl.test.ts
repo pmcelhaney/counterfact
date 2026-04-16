@@ -32,7 +32,10 @@ const CONFIG: Config = {
   },
 };
 
-type GroupedLoadContext = Record<string, (path: string) => Record<string, unknown>>;
+type GroupedLoadContext = Record<
+  string,
+  (path: string) => Record<string, unknown>
+>;
 type RouteBuilderLike = {
   path: (arguments_: Record<string, unknown>) => unknown;
 };
@@ -355,9 +358,9 @@ describe("REPL", () => {
       inventory: {},
     });
     expect(
-      (
-        harness.server.context["loadContext"] as GroupedLoadContext
-      )["inventory"]?.("/"),
+      (harness.server.context["loadContext"] as GroupedLoadContext)[
+        "inventory"
+      ]?.("/"),
     ).toMatchObject({ inventoryOnly: true });
   });
 

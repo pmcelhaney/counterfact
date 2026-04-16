@@ -82,6 +82,28 @@ function normalizeSpecs(
   return [{ source: config.openApiPath, prefix: config.prefix, group: "" }];
 }
 
+function validateSpecGroups(specs: SpecConfig[]): void {
+  if (specs.length <= 1) {
+    return;
+  }
+
+  const invalidSpecs = specs
+    .map((spec, index) => ({ index, spec }))
+    .filter(({ spec }) => spec.group.trim() === "");
+
+  if (invalidSpecs.length === 0) {
+    return;
+  }
+
+  const invalidIndexes = invalidSpecs
+    .map(({ index }) => String(index + 1))
+    .join(", ");
+
+  throw new Error(
+    `Each spec must define a non-empty group when multiple APIs are configured (invalid spec entries: ${invalidIndexes}).`,
+  );
+}
+
 /**
  * Creates and configures a full Counterfact server instance.
  *
@@ -107,6 +129,7 @@ export async function counterfact(config: Config, specs?: SpecConfig[]) {
     { openApiPath: config.openApiPath, prefix: config.prefix },
     specs,
   );
+  validateSpecGroups(normalizedSpecs);
 
   const runners = await Promise.all(
     normalizedSpecs.map((spec) =>
