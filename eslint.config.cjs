@@ -17,23 +17,24 @@ const espreeParser = require("espree");
 function isKebabCase(name) {
   if (name.length === 0) return false;
 
-  let previousWasDash = true;
-  for (const character of name) {
-    if (character === "-") {
-      if (previousWasDash) return false;
-      previousWasDash = true;
+  let previousCharacterWasDash = false;
+  for (let index = 0; index < name.length; index += 1) {
+    const charCode = name.charCodeAt(index);
+
+    if (charCode === 45) {
+      if (index === 0 || previousCharacterWasDash) return false;
+      previousCharacterWasDash = true;
       continue;
     }
 
-    const charCode = character.charCodeAt(0);
     const isDigit = charCode >= 48 && charCode <= 57;
     const isLowercaseLetter = charCode >= 97 && charCode <= 122;
 
     if (!isDigit && !isLowercaseLetter) return false;
-    previousWasDash = false;
+    previousCharacterWasDash = false;
   }
 
-  return !previousWasDash;
+  return !previousCharacterWasDash;
 }
 
 const jestRecommended = jestPlugin.configs["flat/recommended"];
