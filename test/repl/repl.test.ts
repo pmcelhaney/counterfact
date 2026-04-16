@@ -289,12 +289,27 @@ describe("REPL", () => {
   });
 
   it("keeps single-runner context and route unqualified", () => {
-    const { harness } = createHarness();
+    const { harness, contextRegistry } = createHarness();
+    contextRegistry.add("/pets", { count: 2 });
 
     expect(typeof harness.server.context["loadContext"]).toBe("function");
     expect(typeof harness.server.context["route"]).toBe("function");
     expect(harness.server.context["context"]).toEqual({});
     expect(harness.server.context["routes"]).toEqual({});
+    expect(
+      (
+        harness.server.context["loadContext"] as (
+          path: string,
+        ) => Record<string, unknown>
+      )("/pets"),
+    ).toMatchObject({ count: 2 });
+    expect(
+      (
+        harness.server.context["route"] as (path: string) => {
+          path: (arguments_: Record<string, unknown>) => unknown;
+        }
+      )("/pets/{petId}").path({ petId: 1 }),
+    ).toBeDefined();
   });
 
   it("exposes grouped context/route/routes for multi-runner mode", () => {
