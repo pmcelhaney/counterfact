@@ -53,9 +53,7 @@ jobs:
             exit 0
           fi
 
-          git fetch --no-tags origin "${{ github.event.pull_request.base.ref }}"
-
-          changed_files=$(git diff --name-only "${{ github.event.pull_request.base.sha }}" "${{ github.event.pull_request.head.sha }}")
+          changed_files=$(git diff --name-only HEAD^1 HEAD^2)
 
           if [[ -z "$changed_files" ]]; then
             echo "docs_only=false" >> "$GITHUB_OUTPUT"
