@@ -38,6 +38,8 @@ export class Context {
 
 > [!IMPORTANT]
 > Keep context in memory. Counterfact is a development tool — starting fresh each time is a feature, not a bug. In-memory state also makes the server very fast.
+>
+> If a `_.context.ts` file has a syntax/import error, Counterfact prints a warning and skips loading that context file so the app keeps running.
 
 ## Nested contexts
 
