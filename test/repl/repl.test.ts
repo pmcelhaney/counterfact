@@ -32,6 +32,11 @@ const CONFIG: Config = {
   },
 };
 
+type GroupedLoadContext = Record<string, (path: string) => Record<string, unknown>>;
+type RouteBuilderLike = {
+  path: (arguments_: Record<string, unknown>) => unknown;
+};
+
 class MockRepl {
   public isBufferCleared = false;
 
@@ -304,11 +309,9 @@ describe("REPL", () => {
       )("/pets"),
     ).toMatchObject({ count: 2 });
     expect(
-      (
-        harness.server.context["route"] as (path: string) => {
-          path: (arguments_: Record<string, unknown>) => unknown;
-        }
-      )("/pets/{petId}").path({ petId: 1 }),
+      (harness.server.context["route"] as (path: string) => RouteBuilderLike)(
+        "/pets/{petId}",
+      ).path({ petId: 1 }),
     ).toBeDefined();
   });
 
@@ -353,10 +356,7 @@ describe("REPL", () => {
     });
     expect(
       (
-        harness.server.context["loadContext"] as Record<
-          string,
-          (path: string) => Record<string, unknown>
-        >
+        harness.server.context["loadContext"] as GroupedLoadContext
       )["inventory"]?.("/"),
     ).toMatchObject({ inventoryOnly: true });
   });
