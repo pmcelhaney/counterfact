@@ -423,33 +423,44 @@ export function startRepl(
 
   replServer.defineCommand("scenario", {
     async action(text: string) {
-      const args = text.trim().split(/\s+/u).filter(Boolean);
+      const trimmedText = text.trim();
       const usage = isMultiApi
         ? "usage: .scenario <group> <path>"
         : "usage: .scenario <path>";
-      const selectedBinding = (() => {
-        if (isMultiApi) {
-          if (args.length !== 2) {
-            return undefined;
+      const { selectedBinding, scenarioPath } = (() => {
+        if (!isMultiApi) {
+          if (trimmedText === "") {
+            return { scenarioPath: undefined, selectedBinding: undefined };
           }
 
-          return groupedBindings.find((binding) => binding.key === args[0]);
+          return { scenarioPath: trimmedText, selectedBinding: rootBinding };
         }
 
-        if (args.length !== 1) {
-          return undefined;
+        const args = trimmedText.split(/\s+/u).filter(Boolean);
+
+        if (args.length !== 2) {
+          return { scenarioPath: undefined, selectedBinding: undefined };
         }
 
-        return rootBinding;
+        return {
+          scenarioPath: args[1],
+          selectedBinding: groupedBindings.find(
+            (binding) => binding.key === args[0],
+          ),
+        };
       })();
-      const scenarioPath = isMultiApi ? args[1] : args[0];
 
       if (selectedBinding === undefined || scenarioPath === undefined) {
-        if (isMultiApi && args.length === 2) {
+        if (
+          isMultiApi &&
+          scenarioPath !== undefined &&
+          selectedBinding === undefined
+        ) {
+          const groupName = trimmedText.split(/\s+/u).filter(Boolean)[0] ?? "";
           const availableGroups = groupedBindings.map((binding) => binding.key);
 
           print(
-            `Error: Unknown API group "${args[0]}". Available groups: ${availableGroups.join(", ")}`,
+            `Error: Unknown API group "${groupName}". Available groups: ${availableGroups.join(", ")}`,
           );
         } else {
           print(usage);
