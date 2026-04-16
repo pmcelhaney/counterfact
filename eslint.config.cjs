@@ -14,6 +14,12 @@ const regexpPlugin = require("eslint-plugin-regexp");
 const securityPlugin = require("eslint-plugin-security");
 const espreeParser = require("espree");
 
+const DASH_CHAR_CODE = 45;
+const DIGIT_START_CHAR_CODE = 48;
+const DIGIT_END_CHAR_CODE = 57;
+const LOWERCASE_A_CHAR_CODE = 97;
+const LOWERCASE_Z_CHAR_CODE = 122;
+
 function isKebabCase(name) {
   if (name.length === 0) return false;
 
@@ -21,14 +27,16 @@ function isKebabCase(name) {
   for (let index = 0; index < name.length; index += 1) {
     const charCode = name.charCodeAt(index);
 
-    if (charCode === 45) {
+    if (charCode === DASH_CHAR_CODE) {
       if (index === 0 || previousCharacterWasDash) return false;
       previousCharacterWasDash = true;
       continue;
     }
 
-    const isDigit = charCode >= 48 && charCode <= 57;
-    const isLowercaseLetter = charCode >= 97 && charCode <= 122;
+    const isDigit =
+      charCode >= DIGIT_START_CHAR_CODE && charCode <= DIGIT_END_CHAR_CODE;
+    const isLowercaseLetter =
+      charCode >= LOWERCASE_A_CHAR_CODE && charCode <= LOWERCASE_Z_CHAR_CODE;
 
     if (!isDigit && !isLowercaseLetter) return false;
     previousCharacterWasDash = false;
