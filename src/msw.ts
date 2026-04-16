@@ -1,4 +1,5 @@
 import fs from "node:fs/promises";
+/* eslint-disable security/detect-non-literal-fs-filename -- openApiPath comes from startup config and is only used to read the selected OpenAPI document. */
 
 import type { Config } from "./server/config.js";
 import { ContextRegistry } from "./server/context-registry.js";

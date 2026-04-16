@@ -2,6 +2,7 @@ import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
 import nodePath, { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+/* eslint-disable security/detect-non-literal-fs-filename -- repository writes and stats generated files only inside destination output directories. */
 
 import createDebug from "debug";
 

@@ -21,4 +21,10 @@ describe("readFile", () => {
       expect(content).toBe("hello from file url");
     });
   });
+
+  it("rejects local paths containing NUL bytes", async () => {
+    await expect(readFile("bad\0path.txt")).rejects.toThrow(
+      "File path cannot contain NUL bytes.",
+    );
+  });
 });

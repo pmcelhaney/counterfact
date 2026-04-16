@@ -1,5 +1,6 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
+/* eslint-disable security/detect-non-literal-fs-filename -- migration paths are derived from a selected project root and walked via fs Dirent entries. */
 
 async function copyAndModifyFiles(
   sourceDirectory: string,
