@@ -138,6 +138,7 @@ module.exports = [
       "@typescript-eslint/no-shadow": "off",
       "id-length": "off",
       "import/no-extraneous-dependencies": "off",
+      "import/no-named-as-default-member": "off",
       "import/unambiguous": "off",
       "jest/no-conditional-in-test": "warn",
       "jest/prefer-expect-assertions": "off",
