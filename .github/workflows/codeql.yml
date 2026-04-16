@@ -42,9 +42,40 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Detect docs-only pull request
+        id: docs-only
+        uses: actions/github-script@v8
+        with:
+          script: |
+            if (context.eventName !== "pull_request") {
+              core.setOutput("docs_only", "false");
+              return;
+            }
+
+            const files = await github.paginate(github.rest.pulls.listFiles, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number,
+              per_page: 100,
+            });
+
+            if (files.length === 0) {
+              core.setOutput("docs_only", "false");
+              return;
+            }
+
+            const docsOnly = files.every((file) => file.filename.toLowerCase().endsWith(".md"));
+            core.setOutput("docs_only", docsOnly ? "true" : "false");
+
+      - name: Skip CodeQL for docs-only changes
+        if: steps.docs-only.outputs.docs_only == 'true'
+        run: echo "Markdown-only pull request detected. Skipping CodeQL analysis while keeping required checks green."
 
       # Initializes the CodeQL tools for scanning.
       - name: Initialize CodeQL
+        if: steps.docs-only.outputs.docs_only != 'true'
         uses: github/codeql-action/init@v4
         with:
           languages: ${{ matrix.language }}
@@ -59,6 +90,7 @@ jobs:
       # Autobuild attempts to build any compiled languages  (C/C++, C#, Go, or Java).
       # If this step fails, then you should remove it and run the build manually (see below)
       - name: Autobuild
+        if: steps.docs-only.outputs.docs_only != 'true'
         uses: github/codeql-action/autobuild@v4
 
       # ℹ️ Command-line programs to run using the OS shell.
@@ -72,6 +104,7 @@ jobs:
       #     ./location_of_script_within_repo/buildscript.sh
 
       - name: Perform CodeQL Analysis
+        if: steps.docs-only.outputs.docs_only != 'true'
         uses: github/codeql-action/analyze@v4
         with:
           category: "/language:${{matrix.language}}"
