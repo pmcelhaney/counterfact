@@ -629,6 +629,27 @@ describe("REPL", () => {
       expect(completions).toEqual(["/pets", "/users"]);
     });
 
+    it("prefers OpenAPI paths for route completion when available", async () => {
+      const registry = new Registry();
+
+      registry.add("/hello/name", { GET() {} });
+
+      const completer = createCompleter(registry, undefined, {
+        paths: {
+          "/example/hello/{name}": {
+            get: {},
+          },
+        },
+      });
+      const [completions, prefix] = await callCompleter(
+        completer,
+        'client.get("/example/h',
+      );
+
+      expect(prefix).toBe("/example/h");
+      expect(completions).toEqual(["/example/hello/{name}"]);
+    });
+
     it('suggests all RouteBuilder methods after route("/path").', async () => {
       const registry = new Registry();
       const completer = createCompleter(registry);
@@ -712,7 +733,12 @@ describe("REPL", () => {
       });
 
       const registry = new Registry();
-      const completer = createCompleter(registry, undefined, scenarioRegistry);
+      const completer = createCompleter(
+        registry,
+        undefined,
+        undefined,
+        scenarioRegistry,
+      );
 
       // Partial "sold" — should match soldPets only, not the non-function export
       const [completions, prefix] = await callCompleter(
@@ -742,7 +768,12 @@ describe("REPL", () => {
       scenarioRegistry.add("myscript", { baz() {} });
 
       const registry = new Registry();
-      const completer = createCompleter(registry, undefined, scenarioRegistry);
+      const completer = createCompleter(
+        registry,
+        undefined,
+        undefined,
+        scenarioRegistry,
+      );
       const [completions, prefix] = await callCompleter(
         completer,
         ".scenario ",
@@ -760,7 +791,12 @@ describe("REPL", () => {
       scenarioRegistry.add("myscript", { soldPets() {}, resetAll() {} });
 
       const registry = new Registry();
-      const completer = createCompleter(registry, undefined, scenarioRegistry);
+      const completer = createCompleter(
+        registry,
+        undefined,
+        undefined,
+        scenarioRegistry,
+      );
       const [completions, prefix] = await callCompleter(
         completer,
         ".scenario myscript/sol",
@@ -776,7 +812,12 @@ describe("REPL", () => {
       scenarioRegistry.add("pets", { sold() {}, reset() {} });
 
       const registry = new Registry();
-      const completer = createCompleter(registry, undefined, scenarioRegistry);
+      const completer = createCompleter(
+        registry,
+        undefined,
+        undefined,
+        scenarioRegistry,
+      );
       const [completions, prefix] = await callCompleter(
         completer,
         ".scenario pets/",

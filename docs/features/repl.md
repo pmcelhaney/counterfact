@@ -61,6 +61,8 @@ client.put("/users/1", { name: "robert" }, { "x-api-version": "2" });
 
 All standard HTTP methods are supported. Arguments are: path, body (where applicable), headers.
 
+When an OpenAPI document is loaded, pressing Tab while typing `client.get("...` or `route("...` autocompletes using OpenAPI path templates (for example, `/example/hello/{name}`).
+
 The built-in `route()` function creates a fluent request builder that validates required parameters against your OpenAPI document before sending:
 
 ```js

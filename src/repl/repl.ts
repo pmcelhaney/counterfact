@@ -38,80 +38,131 @@ const ROUTE_BUILDER_METHODS = [
   "send(",
 ];
 
+function getScenarioCompletions(
+  line: string,
+  scenarioRegistry: ScenarioRegistry | undefined,
+): [string[], string] | undefined {
+  const applyMatch = line.match(/^\.scenario\s+(?<partial>\S*)$/u);
+
+  if (!applyMatch) {
+    return undefined;
+  }
+
+  const partial = applyMatch.groups?.["partial"] ?? "";
+
+  if (scenarioRegistry === undefined) {
+    return [[], partial];
+  }
+
+  const slashIdx = partial.lastIndexOf("/");
+
+  if (slashIdx === -1) {
+    const indexFunctions = scenarioRegistry.getExportedFunctionNames("index");
+    const fileKeys = scenarioRegistry
+      .getFileKeys()
+      .filter((k) => k !== "index");
+    const topLevelPrefixes = [
+      ...new Set(fileKeys.map((k) => k.split("/")[0] + "/")),
+    ];
+    const allOptions = [...indexFunctions, ...topLevelPrefixes];
+    const matches = allOptions.filter((c) => c.startsWith(partial));
+
+    return [matches, partial];
+  }
+
+  const fileKey = partial.slice(0, slashIdx);
+  const funcPartial = partial.slice(slashIdx + 1);
+  const functions = scenarioRegistry.getExportedFunctionNames(fileKey);
+  const matches = functions
+    .filter((e) => e.startsWith(funcPartial))
+    .map((e) => `${fileKey}/${e}`);
+
+  return [matches, partial];
+}
+
+function getRouteBuilderMethodCompletions(
+  line: string,
+): [string[], string] | undefined {
+  const builderMatch = line.match(/route\(.*\)\.(?<partial>[a-zA-Z]*)$/u);
+
+  if (!builderMatch) {
+    return undefined;
+  }
+
+  const partial = builderMatch.groups?.["partial"] ?? "";
+  const matches = ROUTE_BUILDER_METHODS.filter((m) => m.startsWith(partial));
+
+  return [matches, partial];
+}
+
+function getRoutesForCompletion(
+  registry: Registry,
+  openApiDocument?: OpenApiDocument,
+) {
+  const openApiPaths = openApiDocument
+    ? Object.keys(openApiDocument.paths)
+    : [];
+
+  if (openApiPaths.length > 0) {
+    return openApiPaths;
+  }
+
+  return registry.routes.map((route) => route.path);
+}
+
+function getRouteCompletions(
+  line: string,
+  routes: string[],
+): [string[], string] | undefined {
+  const routeMatch = line.match(
+    /(?:client\.(?:get|post|put|patch|delete)|route)\("(?<partial>[^"]*)$/u,
+  );
+
+  if (!routeMatch) {
+    return undefined;
+  }
+
+  const partial = routeMatch.groups?.["partial"] ?? "";
+  const matches = routes.filter((route) => route.startsWith(partial));
+
+  return [matches, partial];
+}
+
 /**
  * Creates a tab-completion function for the REPL.
  *
  * @param registry - The route registry used to complete path arguments for `route()` and `client.*()` calls.
  * @param fallback - Optional fallback completer (e.g. the Node.js built-in completer) invoked when no custom completion matches.
+ * @param openApiDocument - Optional OpenAPI document used as the source of route completions when available.
  * @param scenarioRegistry - When provided, enables tab completion for `.scenario` commands by enumerating
  *   exported function names and file-key prefixes from the loaded scenario modules.
  */
 export function createCompleter(
   registry: Registry,
   fallback?: (line: string, callback: CompleterCallback) => void,
+  openApiDocument?: OpenApiDocument,
   scenarioRegistry?: ScenarioRegistry,
 ) {
+  const routes = getRoutesForCompletion(registry, openApiDocument);
+
   return (line: string, callback: CompleterCallback): void => {
-    // Check for .scenario completion: .scenario <partial>
-    const applyMatch = line.match(/^\.scenario\s+(?<partial>\S*)$/u);
+    const scenarioCompletions = getScenarioCompletions(line, scenarioRegistry);
 
-    if (applyMatch) {
-      const partial = applyMatch.groups?.["partial"] ?? "";
-
-      if (scenarioRegistry !== undefined) {
-        const slashIdx = partial.lastIndexOf("/");
-
-        if (slashIdx === -1) {
-          // No slash: complete exports from "index" key + top-level file prefixes
-          const indexFunctions =
-            scenarioRegistry.getExportedFunctionNames("index");
-          const fileKeys = scenarioRegistry
-            .getFileKeys()
-            .filter((k) => k !== "index");
-          const topLevelPrefixes = [
-            ...new Set(fileKeys.map((k) => k.split("/")[0] + "/")),
-          ];
-          const allOptions = [...indexFunctions, ...topLevelPrefixes];
-          const matches = allOptions.filter((c) => c.startsWith(partial));
-
-          callback(null, [matches, partial]);
-        } else {
-          // Has slash: complete exports from the named file key
-          const fileKey = partial.slice(0, slashIdx);
-          const funcPartial = partial.slice(slashIdx + 1);
-          const functions = scenarioRegistry.getExportedFunctionNames(fileKey);
-          const matches = functions
-            .filter((e) => e.startsWith(funcPartial))
-            .map((e) => `${fileKey}/${e}`);
-
-          callback(null, [matches, partial]);
-        }
-      } else {
-        callback(null, [[], partial]);
-      }
-
+    if (scenarioCompletions !== undefined) {
+      callback(null, scenarioCompletions);
       return;
     }
 
-    // Check for RouteBuilder method completion: route("..."). or chained calls
-    const builderMatch = line.match(/route\(.*\)\.(?<partial>[a-zA-Z]*)$/u);
+    const routeBuilderCompletions = getRouteBuilderMethodCompletions(line);
 
-    if (builderMatch) {
-      const partial = builderMatch.groups?.["partial"] ?? "";
-      const matches = ROUTE_BUILDER_METHODS.filter((m) =>
-        m.startsWith(partial),
-      );
-
-      callback(null, [matches, partial]);
-
+    if (routeBuilderCompletions !== undefined) {
+      callback(null, routeBuilderCompletions);
       return;
     }
 
-    const match = line.match(
-      /(?:client\.(?:get|post|put|patch|delete)|route)\("(?<partial>[^"]*)$/u,
-    );
+    const routeCompletions = getRouteCompletions(line, routes);
 
-    if (!match) {
+    if (routeCompletions === undefined) {
       if (fallback) {
         fallback(line, callback);
       } else {
@@ -121,11 +172,7 @@ export function createCompleter(
       return;
     }
 
-    const partial = match.groups?.["partial"] ?? "";
-    const routes = registry.routes.map((route) => route.path);
-    const matches = routes.filter((route) => route.startsWith(partial));
-
-    callback(null, [matches, partial]);
+    callback(null, routeCompletions);
   };
 }
 
@@ -295,6 +342,7 @@ export function startRepl(
   (replServer as any).completer = createCompleter(
     rootBinding.registry,
     builtinCompleter,
+    rootBinding.openApiDocument,
     rootBinding.scenarioRegistry,
   );
 
