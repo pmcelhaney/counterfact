@@ -424,6 +424,7 @@ export function startRepl(
   replServer.defineCommand("scenario", {
     async action(text: string) {
       const trimmedText = text.trim();
+      const parsedArgs = trimmedText.split(/\s+/u).filter(Boolean);
       const usage = isMultiApi
         ? "usage: .scenario <group> <path>"
         : "usage: .scenario <path>";
@@ -436,16 +437,14 @@ export function startRepl(
           return { scenarioPath: trimmedText, selectedBinding: rootBinding };
         }
 
-        const args = trimmedText.split(/\s+/u).filter(Boolean);
-
-        if (args.length !== 2) {
+        if (parsedArgs.length !== 2) {
           return { scenarioPath: undefined, selectedBinding: undefined };
         }
 
         return {
-          scenarioPath: args[1],
+          scenarioPath: parsedArgs[1],
           selectedBinding: groupedBindings.find(
-            (binding) => binding.key === args[0],
+            (binding) => binding.key === parsedArgs[0],
           ),
         };
       })();
@@ -456,7 +455,7 @@ export function startRepl(
           scenarioPath !== undefined &&
           selectedBinding === undefined
         ) {
-          const groupName = trimmedText.split(/\s+/u).filter(Boolean)[0] ?? "";
+          const groupName = parsedArgs[0] ?? "";
           const availableGroups = groupedBindings.map((binding) => binding.key);
 
           print(
@@ -520,6 +519,16 @@ export function startRepl(
               >
             )[selectedBinding.key]
           : (replServer.context["routes"] as Record<string, unknown>);
+
+        if (isMultiApi && selectedRoutes === undefined) {
+          print(
+            `Error: Could not resolve routes for API group "${selectedBinding.key}"`,
+          );
+          this.clearBufferedCommand();
+          this.displayPrompt();
+          return;
+        }
+
         const applyContext = {
           context: selectedBinding.contextRegistry.find("/") as Record<
             string,
@@ -530,7 +539,7 @@ export function startRepl(
             path: string,
           ) => Record<string, unknown>,
           route: groupedRoute[selectedBinding.key] as (path: string) => unknown,
-          routes: selectedRoutes ?? {},
+          routes: selectedRoutes,
         };
 
         await (fn as (ctx: typeof applyContext) => Promise<void> | void)(
