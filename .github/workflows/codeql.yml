@@ -46,25 +46,28 @@ jobs:
           fetch-depth: 0
       - name: Detect docs-only pull request
         id: docs-only
-        shell: bash
-        run: |
-          if [[ "${{ github.event_name }}" != "pull_request" ]]; then
-            echo "docs_only=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
+        uses: actions/github-script@v8
+        with:
+          script: |
+            if (context.eventName !== "pull_request") {
+              core.setOutput("docs_only", "false");
+              return;
+            }
 
-          changed_files=$(git diff --name-only HEAD^1 HEAD^2)
+            const files = await github.paginate(github.rest.pulls.listFiles, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number,
+              per_page: 100,
+            });
 
-          if [[ -z "$changed_files" ]]; then
-            echo "docs_only=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
+            if (files.length === 0) {
+              core.setOutput("docs_only", "false");
+              return;
+            }
 
-          if printf '%s\n' "$changed_files" | grep -vqE '\.md$'; then
-            echo "docs_only=false" >> "$GITHUB_OUTPUT"
-          else
-            echo "docs_only=true" >> "$GITHUB_OUTPUT"
-          fi
+            const docsOnly = files.every((file) => file.filename.toLowerCase().endsWith(".md"));
+            core.setOutput("docs_only", docsOnly ? "true" : "false");
 
       - name: Skip CodeQL for docs-only changes
         if: steps.docs-only.outputs.docs_only == 'true'
