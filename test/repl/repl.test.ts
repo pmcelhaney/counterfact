@@ -1016,5 +1016,103 @@ describe("REPL", () => {
 
       expect(completions).toEqual([]);
     });
+
+    it("suggests API groups after `.scenario ` in multi-runner mode", async () => {
+      const billingRegistry = new ScenarioRegistry();
+      const inventoryRegistry = new ScenarioRegistry();
+      const registry = new Registry();
+      const completer = createCompleter(
+        registry,
+        undefined,
+        undefined,
+        undefined,
+        {
+          billing: billingRegistry,
+          inventory: inventoryRegistry,
+        },
+      );
+
+      const [completions, prefix] = await callCompleter(completer, ".scenario ");
+
+      expect(prefix).toBe("");
+      expect(completions).toEqual(["billing", "inventory"]);
+
+      const [filteredCompletions, filteredPrefix] = await callCompleter(
+        completer,
+        ".scenario bil",
+      );
+
+      expect(filteredPrefix).toBe("bil");
+      expect(filteredCompletions).toEqual(["billing"]);
+    });
+
+    it("suggests scenarios scoped to the selected API group in multi-runner mode", async () => {
+      const billingRegistry = new ScenarioRegistry();
+      const inventoryRegistry = new ScenarioRegistry();
+      const registry = new Registry();
+
+      billingRegistry.add("index", { setup() {}, reset() {} });
+      billingRegistry.add("pets/orders", { pending() {}, complete() {} });
+      inventoryRegistry.add("index", { seed() {} });
+
+      const completer = createCompleter(
+        registry,
+        undefined,
+        undefined,
+        undefined,
+        {
+          billing: billingRegistry,
+          inventory: inventoryRegistry,
+        },
+      );
+
+      const [groupCompletions, groupPrefix] = await callCompleter(
+        completer,
+        ".scenario billing ",
+      );
+
+      expect(groupPrefix).toBe("");
+      expect(groupCompletions).toContain("setup");
+      expect(groupCompletions).toContain("reset");
+      expect(groupCompletions).toContain("pets/");
+      expect(groupCompletions).not.toContain("seed");
+
+      const [nestedCompletions, nestedPrefix] = await callCompleter(
+        completer,
+        ".scenario billing pets/orders/p",
+      );
+
+      expect(nestedPrefix).toBe("pets/orders/p");
+      expect(nestedCompletions).toEqual(["pets/orders/pending"]);
+    });
+
+    it("returns empty completions for unknown groups in multi-runner mode", async () => {
+      const completer = createCompleter(
+        new Registry(),
+        undefined,
+        undefined,
+        undefined,
+        {
+          billing: new ScenarioRegistry(),
+          inventory: new ScenarioRegistry(),
+        },
+      );
+
+      const [completionsWithSpace, prefixWithSpace] = await callCompleter(
+        completer,
+        ".scenario payments ",
+      );
+
+      expect(prefixWithSpace).toBe("");
+      expect(completionsWithSpace).toEqual([]);
+
+      const [completions, prefix] = await callCompleter(
+        completer,
+        ".scenario payments set",
+      );
+
+      expect(prefix).toBe("set");
+      expect(completions).toEqual([]);
+    });
   });
 });
