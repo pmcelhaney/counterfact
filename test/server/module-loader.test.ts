@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { once } from "node:events";
 
+import { jest } from "@jest/globals";
 import { usingTemporaryFiles } from "using-temporary-files";
 
 import { ContextRegistry } from "../../src/server/context-registry.js";
@@ -363,6 +364,45 @@ describe("a module loader", () => {
       expect(response?.status).toBe(500);
       expect(response?.body).toContain("bad-syntax.cjs");
       expect(response?.body).toContain("syntax error");
+    });
+  });
+
+  it("prints a warning and skips loading a context file with a syntax error", async () => {
+    await usingTemporaryFiles(async ($) => {
+      await $.add("_.context.js", "this is not valid javascript @@@");
+      await $.add(
+        "hello.js",
+        'export function GET() { return { body: "hello" }; }',
+      );
+      await $.add("package.json", '{ "type": "module" }');
+
+      const registry: Registry = new Registry();
+      const contextRegistry: ContextRegistry = new ContextRegistry();
+      const loader: ModuleLoader = new ModuleLoader(
+        $.path(""),
+        registry,
+        contextRegistry,
+      );
+
+      const stdoutSpy = jest
+        .spyOn(process.stdout, "write")
+        .mockImplementation((() => true) as any);
+
+      await expect(loader.load()).resolves.toBeUndefined();
+
+      expect(registry.exists("GET", "/hello")).toBe(true);
+      expect(contextRegistry.getAllPaths()).toEqual(["/"]);
+      expect(stdoutSpy).toHaveBeenCalledWith(
+        expect.stringContaining(
+          "Warning: There was an error loading the context file:",
+        ),
+      );
+      expect(stdoutSpy).toHaveBeenCalledWith(
+        expect.stringContaining("_.context.js"),
+      );
+      expect(stdoutSpy).toHaveBeenCalledTimes(1);
+
+      stdoutSpy.mockRestore();
     });
   });
 });

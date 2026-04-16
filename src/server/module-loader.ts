@@ -302,6 +302,16 @@ export class ModuleLoader extends EventTarget {
           unescapePathForWindows(pathName),
         );
 
+        if (this.isContextFile(pathName)) {
+          const warning = isSyntaxError
+            ? `Warning: There is a syntax error in the context file: ${displayPath}`
+            : `Warning: There was an error loading the context file: ${displayPath}`;
+
+          process.stdout.write(`\n${warning}\n`);
+
+          return;
+        }
+
         const message = isSyntaxError
           ? `There is a syntax error in the route file: ${displayPath}`
           : `There was an error loading the route file: ${displayPath}`;
