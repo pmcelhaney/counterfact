@@ -14,4 +14,3 @@ This is low-risk cleanup with small warning count. The update should improve rea
 - [ ] All current warning sites are updated to named or non-capturing capture groups
 - [ ] Existing behavior is preserved by tests
 - [ ] `regexp/prefer-named-capture-group` warnings are eliminated
-

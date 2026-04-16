@@ -15,4 +15,3 @@ Many warnings come from map-like structures and route/context registries where d
 - [ ] Risky dynamic lookups are refactored (for example, validated key guards or `Map` usage)
 - [ ] Remaining suppressions include clear justification for why access is safe
 - [ ] Net warning count for this rule is reduced
-

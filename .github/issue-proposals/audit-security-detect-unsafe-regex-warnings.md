@@ -15,4 +15,3 @@ Even with a small count, unsafe-regex findings can have high impact. Each patter
 - [ ] Any vulnerable or questionable regex is rewritten to avoid catastrophic backtracking
 - [ ] Any suppression includes a proof-oriented safety note
 - [ ] Rule warnings are reduced or eliminated without changing intended behavior
-

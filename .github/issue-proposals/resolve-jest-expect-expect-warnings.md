@@ -15,4 +15,3 @@ Some tests rely on side-effect or thrown-error pathways that are not always dete
 - [ ] Tests that can include direct assertions are updated
 - [ ] Legitimate helper patterns are configured or suppressed in a narrow, documented way
 - [ ] Net warning count for this rule is reduced
-

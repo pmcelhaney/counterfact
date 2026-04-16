@@ -15,4 +15,3 @@ The rule catches conditional logic that can hide assertion paths. Some current u
 - [ ] Refactorable tests are rewritten to avoid in-test branching
 - [ ] Any remaining exceptions are narrowly suppressed with rationale
 - [ ] Net warning count for this rule is reduced
-
