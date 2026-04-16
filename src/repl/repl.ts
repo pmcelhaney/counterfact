@@ -18,6 +18,54 @@ export type CompleterCallback = (
   result: [string[], string],
 ) => void;
 
+export type ScenarioRegistryByApi = ReadonlyMap<string, ScenarioRegistry>;
+
+type ScenarioRegistryInput = ScenarioRegistry | ScenarioRegistryByApi;
+
+function getScenarioRegistryByApi(
+  scenarioRegistryInput?: ScenarioRegistryInput,
+): ScenarioRegistryByApi {
+  if (scenarioRegistryInput === undefined) {
+    return new Map();
+  }
+
+  if (scenarioRegistryInput instanceof Map) {
+    return scenarioRegistryInput;
+  }
+
+  return new Map<string, ScenarioRegistry>([
+    ["firstApi", scenarioRegistryInput as ScenarioRegistry],
+  ]);
+}
+
+function completeScenarioPath(
+  scenarioRegistry: ScenarioRegistry,
+  partial: string,
+): string[] {
+  const slashIdx = partial.lastIndexOf("/");
+
+  if (slashIdx === -1) {
+    const indexFunctions = scenarioRegistry.getExportedFunctionNames("index");
+    const fileKeys = scenarioRegistry
+      .getFileKeys()
+      .filter((k) => k !== "index");
+    const topLevelPrefixes = [
+      ...new Set(fileKeys.map((k) => k.split("/")[0] + "/")),
+    ];
+    const allOptions = [...indexFunctions, ...topLevelPrefixes];
+
+    return allOptions.filter((c) => c.startsWith(partial));
+  }
+
+  const fileKey = partial.slice(0, slashIdx);
+  const funcPartial = partial.slice(slashIdx + 1);
+  const functions = scenarioRegistry.getExportedFunctionNames(fileKey);
+
+  return functions
+    .filter((e) => e.startsWith(funcPartial))
+    .map((e) => `${fileKey}/${e}`);
+}
+
 const ROUTE_BUILDER_METHODS = [
   "body(",
   "headers(",
@@ -35,53 +83,44 @@ const ROUTE_BUILDER_METHODS = [
  *
  * @param registry - The route registry used to complete path arguments for `route()` and `client.*()` calls.
  * @param fallback - Optional fallback completer (e.g. the Node.js built-in completer) invoked when no custom completion matches.
- * @param scenarioRegistry - When provided, enables tab completion for `.scenario` commands by enumerating
- *   exported function names and file-key prefixes from the loaded scenario modules.
+ * @param scenarioRegistryInput - When provided, enables tab completion for `.scenario` commands by enumerating
+ *   exported function names and file-key prefixes from loaded scenario modules keyed by API qualifier.
  */
 export function createCompleter(
   registry: Registry,
   fallback?: (line: string, callback: CompleterCallback) => void,
-  scenarioRegistry?: ScenarioRegistry,
+  scenarioRegistryInput?: ScenarioRegistryInput,
 ) {
+  const scenarioRegistryByApi = getScenarioRegistryByApi(scenarioRegistryInput);
+  const qualifiers = [...scenarioRegistryByApi.keys()].sort();
+
   return (line: string, callback: CompleterCallback): void => {
-    // Check for .scenario completion: .scenario <partial>
-    const applyMatch = line.match(/^\.scenario\s+(?<partial>\S*)$/u);
+    if (line === ".scenario" || line.startsWith(".scenario ")) {
+      const afterCommand = line.slice(".scenario".length);
+      const hasTrailingSpace = /\s$/u.test(line);
+      const args = afterCommand.trim().split(/\s+/u).filter(Boolean);
 
-    if (applyMatch) {
-      const partial = applyMatch.groups?.["partial"] ?? "";
-
-      if (scenarioRegistry !== undefined) {
-        const slashIdx = partial.lastIndexOf("/");
-
-        if (slashIdx === -1) {
-          // No slash: complete exports from "index" key + top-level file prefixes
-          const indexFunctions =
-            scenarioRegistry.getExportedFunctionNames("index");
-          const fileKeys = scenarioRegistry
-            .getFileKeys()
-            .filter((k) => k !== "index");
-          const topLevelPrefixes = [
-            ...new Set(fileKeys.map((k) => k.split("/")[0] + "/")),
-          ];
-          const allOptions = [...indexFunctions, ...topLevelPrefixes];
-          const matches = allOptions.filter((c) => c.startsWith(partial));
-
-          callback(null, [matches, partial]);
-        } else {
-          // Has slash: complete exports from the named file key
-          const fileKey = partial.slice(0, slashIdx);
-          const funcPartial = partial.slice(slashIdx + 1);
-          const functions = scenarioRegistry.getExportedFunctionNames(fileKey);
-          const matches = functions
-            .filter((e) => e.startsWith(funcPartial))
-            .map((e) => `${fileKey}/${e}`);
-
-          callback(null, [matches, partial]);
-        }
-      } else {
-        callback(null, [[], partial]);
+      if (args.length === 0) {
+        callback(null, [qualifiers, ""]);
+        return;
       }
 
+      const qualifier = args[0] ?? "";
+
+      if (args.length === 1 && !hasTrailingSpace) {
+        const matches = qualifiers.filter((c) => c.startsWith(qualifier));
+        callback(null, [matches, qualifier]);
+        return;
+      }
+
+      const partial = args.length === 1 ? "" : (args[1] ?? "");
+      const scenarioRegistry = scenarioRegistryByApi.get(qualifier);
+      const matches =
+        scenarioRegistry === undefined
+          ? []
+          : completeScenarioPath(scenarioRegistry, partial);
+
+      callback(null, [matches, partial]);
       return;
     }
 
@@ -125,29 +164,63 @@ export function createCompleter(
  * Launches the interactive Counterfact REPL.
  *
  * The REPL is a standard Node.js REPL augmented with:
- * - `context` / `loadContext(path)` globals wired to the {@link ContextRegistry}.
+ * - `context.<api>` / `loadContexts.<api>(path)` globals wired to each API's {@link ContextRegistry}.
  * - `client` — a {@link RawHttpClient} pre-configured for `localhost`.
  * - `route(path)` — creates a {@link RouteBuilder} for the given path.
  * - `.counterfact` — help command.
  * - `.proxy` — proxy configuration command.
  * - `.scenario` — runs a named scenario function from the scenarios directory.
  *
- * @param contextRegistry - The live context registry.
- * @param registry - The route registry (used for tab completion).
+ * @param apis - API bindings keyed by qualifier (e.g. `"firstApi"`).
  * @param config - Server configuration.
  * @param print - Output function; defaults to writing to `stdout`.
- * @param openApiDocument - Optional OpenAPI document for tab completion.
- * @param scenarioRegistry - Optional scenario registry for `.scenario` support.
  * @returns The configured Node.js REPL server instance.
  */
 export function startRepl(
-  contextRegistry: ContextRegistry,
-  registry: Registry,
+  apis: ReadonlyMap<
+    string,
+    {
+      contextRegistry: ContextRegistry;
+      openApiDocument?: OpenApiDocument;
+      registry: Registry;
+      scenarioRegistry?: ScenarioRegistry;
+    }
+  >,
   config: Pick<Config, "port" | "proxyUrl" | "proxyPaths">,
   print = printToStdout,
-  openApiDocument?: OpenApiDocument,
-  scenarioRegistry?: ScenarioRegistry,
 ) {
+  const defaultApi = apis.get("firstApi");
+
+  if (defaultApi === undefined) {
+    throw new Error('Expected an API qualifier named "firstApi"');
+  }
+
+  const contextByApi = new Map<string, Record<string, unknown>>();
+  const loadContextByApi = new Map<
+    string,
+    (path: string) => Record<string, unknown>
+  >();
+  const routeByApi = new Map<string, (path: string) => unknown>();
+  const routesByApi = new Map<string, Record<string, unknown>>();
+  const scenarioRegistryByApi = new Map<string, ScenarioRegistry>();
+
+  for (const [qualifier, api] of apis.entries()) {
+    const loadContext = (path: string) =>
+      api.contextRegistry.find(path) as Record<string, unknown>;
+
+    contextByApi.set(qualifier, loadContext("/"));
+    loadContextByApi.set(qualifier, loadContext);
+    routeByApi.set(
+      qualifier,
+      createRouteFunction(config.port, "localhost", api.openApiDocument),
+    );
+    routesByApi.set(qualifier, {});
+
+    if (api.scenarioRegistry !== undefined) {
+      scenarioRegistryByApi.set(qualifier, api.scenarioRegistry);
+    }
+  }
+
   function printProxyStatus() {
     if (config.proxyUrl === "") {
       print("The proxy URL is not set.");
@@ -220,9 +293,9 @@ export function startRepl(
   // completer is typed as readonly in @types/node but is writable at runtime
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (replServer as any).completer = createCompleter(
-    registry,
+    defaultApi.registry,
     builtinCompleter,
-    scenarioRegistry,
+    scenarioRegistryByApi,
   );
 
   replServer.defineCommand("counterfact", {
@@ -235,9 +308,11 @@ export function startRepl(
       );
       print("");
       print(
-        "- loadContext('/some/path'): to access the context object for a given path",
+        "- loadContexts.firstApi('/some/path'): to access the context object for a given path",
       );
-      print("- context: the root context ( same as loadContext('/') )");
+      print(
+        "- context.firstApi: the root context object for the first API (same as loadContexts.firstApi('/'))",
+      );
       print(
         "- route('/some/path'): create a request builder for the given path",
       );
@@ -276,27 +351,49 @@ export function startRepl(
     help: 'proxy configuration (".proxy help" for details)',
   });
 
-  replServer.context.loadContext = (path: string) => contextRegistry.find(path);
-
-  replServer.context.context = replServer.context.loadContext("/");
+  replServer.context.loadContext =
+    loadContextByApi.get("firstApi") ??
+    ((path: string) => defaultApi.contextRegistry.find(path));
+  replServer.context.loadContexts = Object.fromEntries(
+    loadContextByApi.entries(),
+  );
+  replServer.context.context = Object.fromEntries(contextByApi.entries());
 
   replServer.context.client = new RawHttpClient("localhost", config.port);
   replServer.context.RawHttpClient = RawHttpClient;
 
-  replServer.context.route = createRouteFunction(
-    config.port,
-    "localhost",
-    openApiDocument,
-  );
-
-  replServer.context.routes = {};
+  replServer.context.route =
+    routeByApi.get("firstApi") ??
+    createRouteFunction(config.port, "localhost", defaultApi.openApiDocument);
+  replServer.context.routes = Object.fromEntries(routesByApi.entries());
 
   replServer.defineCommand("scenario", {
     async action(text: string) {
-      const parts = text.trim().split("/").filter(Boolean);
+      const tokens = text.trim().split(/\s+/u).filter(Boolean);
+
+      const apiQualifier = tokens[0] ?? "";
+      const scenarioPath = tokens[1] ?? "";
+
+      if (tokens.length !== 2 || apiQualifier === "" || scenarioPath === "") {
+        print("usage: .scenario <api> <path>");
+        this.clearBufferedCommand();
+        this.displayPrompt();
+        return;
+      }
+
+      const scenarioRegistry = scenarioRegistryByApi.get(apiQualifier);
+
+      if (scenarioRegistry === undefined) {
+        print(`Error: Unknown API qualifier "${apiQualifier}"`);
+        this.clearBufferedCommand();
+        this.displayPrompt();
+        return;
+      }
+
+      const parts = scenarioPath.split("/").filter(Boolean);
 
       if (parts.length === 0) {
-        print("usage: .scenario <path>");
+        print("usage: .scenario <api> <path>");
         this.clearBufferedCommand();
         this.displayPrompt();
         return;
@@ -313,7 +410,7 @@ export function startRepl(
       const fileKey =
         parts.length === 1 ? "index" : parts.slice(0, -1).join("/");
 
-      const module = scenarioRegistry?.getModule(fileKey);
+      const module = scenarioRegistry.getModule(fileKey);
 
       if (module === undefined) {
         print(`Error: Could not find scenario file "${fileKey}"`);
@@ -335,19 +432,19 @@ export function startRepl(
 
       try {
         const applyContext = {
-          context: replServer.context["context"] as Record<string, unknown>,
-          loadContext: replServer.context["loadContext"] as (
+          context: contextByApi.get(apiQualifier) as Record<string, unknown>,
+          loadContext: loadContextByApi.get(apiQualifier) as (
             path: string,
           ) => Record<string, unknown>,
-          route: replServer.context["route"] as (path: string) => unknown,
-          routes: replServer.context["routes"] as Record<string, unknown>,
+          route: routeByApi.get(apiQualifier) as (path: string) => unknown,
+          routes: routesByApi.get(apiQualifier) as Record<string, unknown>,
         };
 
         await (fn as (ctx: typeof applyContext) => Promise<void> | void)(
           applyContext,
         );
 
-        print(`Applied ${text.trim()}`);
+        print(`Applied ${apiQualifier} ${scenarioPath}`);
       } catch (error) {
         print(`Error: ${String(error)}`);
       }
@@ -356,7 +453,7 @@ export function startRepl(
       this.displayPrompt();
     },
 
-    help: 'apply a scenario script (".scenario <path>" calls the named export from scenarios/)',
+    help: 'apply a scenario script (".scenario <api> <path>" calls the named export from scenarios/)',
   });
 
   return replServer;

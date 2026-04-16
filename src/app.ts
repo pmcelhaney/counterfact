@@ -38,6 +38,13 @@ type Scenario$ = {
   routes: Record<string, unknown>;
 };
 
+function getApiQualifier(index: number): string {
+  const names = ["first", "second", "third", "fourth", "fifth"];
+  const name = names[index];
+
+  return name === undefined ? `api${index + 1}` : `${name}Api`;
+}
+
 export async function runStartupScenario(
   scenarioRegistry: ScenarioRegistry,
   contextRegistry: ContextRegistry,
@@ -124,6 +131,17 @@ export async function counterfact(config: Config, specs?: SpecConfig[]) {
 
   // The REPL is configured using the first runner.
   const primaryRunner = runners[0]!;
+  const apis = new Map(
+    runners.map((runner, index) => [
+      getApiQualifier(index),
+      {
+        contextRegistry: runner.contextRegistry,
+        openApiDocument: runner.openApiDocument,
+        registry: runner.registry,
+        scenarioRegistry: runner.scenarioRegistry,
+      },
+    ]),
+  );
 
   async function start(
     options: Pick<Config, "generate" | "startServer" | "watch" | "buildCache">,
@@ -166,16 +184,13 @@ export async function counterfact(config: Config, specs?: SpecConfig[]) {
     start,
     startRepl: () =>
       startReplServer(
-        primaryRunner.contextRegistry,
-        primaryRunner.registry,
+        apis,
         {
           port: config.port,
           proxyPaths: config.proxyPaths,
           proxyUrl: config.proxyUrl,
         },
         undefined, // use the default print function (stdout)
-        primaryRunner.openApiDocument,
-        primaryRunner.scenarioRegistry,
       ),
   };
 }

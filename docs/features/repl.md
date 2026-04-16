@@ -17,20 +17,20 @@ At the prompt you can interact with the live context:
 
 ```js
 // add a single pet
-context.addPet({ name: "Fluffy", photoUrls: [] });
+context.firstApi.addPet({ name: "Fluffy", photoUrls: [] });
 
 // add 100 pets
 for (let i = 0; i < 100; i++)
-  context.addPet({ name: `Pet ${i}`, photoUrls: [] });
+  context.firstApi.addPet({ name: `Pet ${i}`, photoUrls: [] });
 
 // query state
-context.pets.filter((pet) => pet.name.startsWith("F"));
+context.firstApi.pets.filter((pet) => pet.name.startsWith("F"));
 ```
 
 To access context from a subdirectory:
 
 ```js
-const petsContext = loadContext("/pets");
+const petsContext = loadContexts.firstApi("/pets");
 ```
 
 The built-in `client` object lets you make HTTP requests from the prompt without leaving the terminal:
@@ -61,16 +61,16 @@ See the [Route Builder guide](./route-builder.md) for full documentation.
 For more complex setups you can automate REPL interactions by writing _scenario scripts_ — plain TypeScript files that export named functions. Run them with `.scenario`:
 
 ```
-⬣> .scenario soldPets
+⬣> .scenario firstApi soldPets
 ```
 
-**Path resolution:** the argument to `.scenario` is a slash-separated path. The last segment is the function name; everything before it is the file path, resolved relative to `<basePath>/scenarios/` (with `index.ts` as the default file).
+**Path resolution:** `.scenario` now takes two arguments: `<api>` and a slash-separated scenario path. The last segment is the function name; everything before it is the file path, resolved relative to that API's `<basePath>/scenarios/` (with `index.ts` as the default file).
 
 | Command | File | Function |
 |---|---|---|
-| `.scenario soldPets` | `scenarios/index.ts` | `soldPets` |
-| `.scenario pets/resetAll` | `scenarios/pets.ts` | `resetAll` |
-| `.scenario pets/orders/pending` | `scenarios/pets/orders.ts` | `pending` |
+| `.scenario firstApi soldPets` | `scenarios/index.ts` | `soldPets` |
+| `.scenario firstApi pets/resetAll` | `scenarios/pets.ts` | `resetAll` |
+| `.scenario firstApi pets/orders/pending` | `scenarios/pets/orders.ts` | `pending` |
 
 A scenario function receives a single argument with `{ context, loadContext, routes, route }`:
 
@@ -95,7 +95,7 @@ export const soldPets: Scenario = ($) => {
 After the command runs you can immediately use anything stored in `$.routes`:
 
 ```js
-⬣> routes.findSold.send()
+⬣> routes.firstApi.findSold.send()
 ```
 
 The `Scenario` type and `Scenario$` interface are generated automatically into `types/_.context.ts` when you run Counterfact with type generation enabled.

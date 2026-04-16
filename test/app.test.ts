@@ -104,6 +104,25 @@ describe("counterfact", () => {
     createSpy.mockRestore();
   });
 
+  it("wires all API runners into REPL context when specs are provided", async () => {
+    const specs = [
+      { source: "_", prefix: "/api/v1", group: "v1" },
+      { source: "_", prefix: "/api/v2", group: "v2" },
+    ];
+
+    const { startRepl } = await (app as any).counterfact(mockConfig, specs);
+    const replServer = startRepl();
+    const context = replServer.context["context"] as Record<string, unknown>;
+    const routes = replServer.context["routes"] as Record<string, unknown>;
+
+    expect(context["firstApi"]).toBeDefined();
+    expect(context["secondApi"]).toBeDefined();
+    expect(routes["firstApi"]).toEqual({});
+    expect(routes["secondApi"]).toEqual({});
+
+    replServer.close();
+  });
+
   it("routes requests to the correct runner based on prefix when specs are provided", async () => {
     await usingTemporaryFiles(async ($) => {
       await $.add(

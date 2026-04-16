@@ -61,14 +61,18 @@ class ReplHarness {
     config: Config,
     scenarioRegistry?: ScenarioRegistry,
   ) {
-    this.server = startRepl(
-      contextRegistry,
-      registry,
-      config,
-      (line) => this.output.push(line),
-      undefined,
-      scenarioRegistry,
-    );
+    const apis = new Map([
+      [
+        "firstApi",
+        {
+          contextRegistry,
+          registry,
+          scenarioRegistry,
+        },
+      ],
+    ]);
+
+    this.server = startRepl(apis, config, (line) => this.output.push(line));
   }
 
   public call(name: string, options: string) {
@@ -272,14 +276,29 @@ describe("REPL", () => {
       "This is a read-eval-print loop (REPL), the same as the one you get when you run node with no arguments.",
       "Except that it's connected to the running server, which you can access with the following globals:",
       "",
-      "- loadContext('/some/path'): to access the context object for a given path",
-      "- context: the root context ( same as loadContext('/') )",
+      "- loadContexts.firstApi('/some/path'): to access the context object for a given path",
+      "- context.firstApi: the root context object for the first API (same as loadContexts.firstApi('/'))",
       "- route('/some/path'): create a request builder for the given path",
       "",
       "For more information, see https://counterfact.dev/docs/usage.html",
       "",
     ]);
     expect(harness.isReset()).toBe(true);
+  });
+
+  it("exposes context and routes as maps keyed by API qualifier", () => {
+    const { harness } = createHarness();
+    const context = harness.server.context["context"] as Record<
+      string,
+      Record<string, unknown>
+    >;
+    const routes = harness.server.context["routes"] as Record<
+      string,
+      Record<string, unknown>
+    >;
+
+    expect(context["firstApi"]).toBeDefined();
+    expect(routes["firstApi"]).toEqual({});
   });
 
   describe(".scenario command", () => {
@@ -294,9 +313,9 @@ describe("REPL", () => {
 
       const { harness, contextRegistry } = createHarness(scenarioRegistry);
 
-      await harness.callAsync("scenario", "foo");
+      await harness.callAsync("scenario", "firstApi foo");
 
-      expect(harness.output).toContain("Applied foo");
+      expect(harness.output).toContain("Applied firstApi foo");
       expect(contextRegistry.find("/")).toMatchObject({ applied: "foo" });
       expect(harness.isReset()).toBe(true);
     });
@@ -312,9 +331,9 @@ describe("REPL", () => {
 
       const { harness, contextRegistry } = createHarness(scenarioRegistry);
 
-      await harness.callAsync("scenario", "myscript/bar");
+      await harness.callAsync("scenario", "firstApi myscript/bar");
 
-      expect(harness.output).toContain("Applied myscript/bar");
+      expect(harness.output).toContain("Applied firstApi myscript/bar");
       expect(contextRegistry.find("/")).toMatchObject({ applied: "bar" });
     });
 
@@ -329,9 +348,9 @@ describe("REPL", () => {
 
       const { harness, contextRegistry } = createHarness(scenarioRegistry);
 
-      await harness.callAsync("scenario", "foo/bar/baz");
+      await harness.callAsync("scenario", "firstApi foo/bar/baz");
 
-      expect(harness.output).toContain("Applied foo/bar/baz");
+      expect(harness.output).toContain("Applied firstApi foo/bar/baz");
       expect(contextRegistry.find("/")).toMatchObject({ applied: "baz" });
     });
 
@@ -346,13 +365,16 @@ describe("REPL", () => {
 
       const { harness } = createHarness(scenarioRegistry);
 
-      await harness.callAsync("scenario", "setup");
+      await harness.callAsync("scenario", "firstApi setup");
 
-      expect(harness.output).toContain("Applied setup");
+      expect(harness.output).toContain("Applied firstApi setup");
       expect(
-        (harness.server.context["routes"] as Record<string, unknown>)[
-          "myRoute"
-        ],
+        ((
+          harness.server.context["routes"] as Record<
+            string,
+            Record<string, unknown>
+          >
+        )["firstApi"] ?? {})["myRoute"],
       ).toMatchObject({ path: "/pets" });
     });
 
@@ -360,7 +382,7 @@ describe("REPL", () => {
       const scenarioRegistry = new ScenarioRegistry();
       const { harness } = createHarness(scenarioRegistry);
 
-      await harness.callAsync("scenario", "nonexistent");
+      await harness.callAsync("scenario", "firstApi nonexistent");
 
       expect(harness.output[0]).toMatch(/Error: Could not find/u);
       expect(harness.isReset()).toBe(true);
@@ -375,7 +397,7 @@ describe("REPL", () => {
 
       const { harness } = createHarness(scenarioRegistry);
 
-      await harness.callAsync("scenario", "notAFunction");
+      await harness.callAsync("scenario", "firstApi notAFunction");
 
       expect(harness.output[0]).toMatch(
         /Error: "notAFunction" is not a function/u,
@@ -388,16 +410,25 @@ describe("REPL", () => {
 
       await harness.callAsync("scenario", "");
 
-      expect(harness.output).toContain("usage: .scenario <path>");
+      expect(harness.output).toContain("usage: .scenario <api> <path>");
       expect(harness.isReset()).toBe(true);
     });
 
     it("rejects path traversal using '..' segments", async () => {
-      const { harness } = createHarness();
+      const { harness } = createHarness(new ScenarioRegistry());
 
-      await harness.callAsync("scenario", "../secret/foo");
+      await harness.callAsync("scenario", "firstApi ../secret/foo");
 
       expect(harness.output[0]).toMatch(/Error: Path must not contain/u);
+      expect(harness.isReset()).toBe(true);
+    });
+
+    it("shows an error when the API qualifier is unknown", async () => {
+      const { harness } = createHarness();
+
+      await harness.callAsync("scenario", "unknownApi setup");
+
+      expect(harness.output[0]).toMatch(/Error: Unknown API qualifier/u);
       expect(harness.isReset()).toBe(true);
     });
   });
@@ -603,7 +634,25 @@ describe("REPL", () => {
       });
     }
 
-    it("returns function names from the index key when no slash in partial", async () => {
+    it("returns API qualifiers when completing the first argument", async () => {
+      const scenarioRegistry = new ScenarioRegistry();
+      const registry = new Registry();
+      const completer = createCompleter(
+        registry,
+        undefined,
+        new Map([["firstApi", scenarioRegistry]]),
+      );
+
+      const [completions, prefix] = await callCompleter(
+        completer,
+        ".scenario fir",
+      );
+
+      expect(prefix).toBe("fir");
+      expect(completions).toEqual(["firstApi"]);
+    });
+
+    it("returns function names from the index key for a qualified command", async () => {
       const scenarioRegistry = new ScenarioRegistry();
 
       scenarioRegistry.add("index", {
@@ -613,12 +662,16 @@ describe("REPL", () => {
       });
 
       const registry = new Registry();
-      const completer = createCompleter(registry, undefined, scenarioRegistry);
+      const completer = createCompleter(
+        registry,
+        undefined,
+        new Map([["firstApi", scenarioRegistry]]),
+      );
 
       // Partial "sold" — should match soldPets only, not the non-function export
       const [completions, prefix] = await callCompleter(
         completer,
-        ".scenario sold",
+        ".scenario firstApi sold",
       );
 
       expect(prefix).toBe("sold");
@@ -626,12 +679,18 @@ describe("REPL", () => {
       expect(completions).not.toContain("resetAll");
 
       // Partial "reset" — should match resetAll only
-      const [completions2] = await callCompleter(completer, ".scenario reset");
+      const [completions2] = await callCompleter(
+        completer,
+        ".scenario firstApi reset",
+      );
 
       expect(completions2).toEqual(["resetAll"]);
 
       // Non-function exports should not be suggested
-      const [completions3] = await callCompleter(completer, ".scenario not");
+      const [completions3] = await callCompleter(
+        completer,
+        ".scenario firstApi not",
+      );
 
       expect(completions3).toEqual([]);
     });
@@ -643,10 +702,14 @@ describe("REPL", () => {
       scenarioRegistry.add("myscript", { baz() {} });
 
       const registry = new Registry();
-      const completer = createCompleter(registry, undefined, scenarioRegistry);
+      const completer = createCompleter(
+        registry,
+        undefined,
+        new Map([["firstApi", scenarioRegistry]]),
+      );
       const [completions, prefix] = await callCompleter(
         completer,
-        ".scenario ",
+        ".scenario firstApi ",
       );
 
       expect(prefix).toBe("");
@@ -661,10 +724,14 @@ describe("REPL", () => {
       scenarioRegistry.add("myscript", { soldPets() {}, resetAll() {} });
 
       const registry = new Registry();
-      const completer = createCompleter(registry, undefined, scenarioRegistry);
+      const completer = createCompleter(
+        registry,
+        undefined,
+        new Map([["firstApi", scenarioRegistry]]),
+      );
       const [completions, prefix] = await callCompleter(
         completer,
-        ".scenario myscript/sol",
+        ".scenario firstApi myscript/sol",
       );
 
       expect(prefix).toBe("myscript/sol");
@@ -677,10 +744,14 @@ describe("REPL", () => {
       scenarioRegistry.add("pets", { sold() {}, reset() {} });
 
       const registry = new Registry();
-      const completer = createCompleter(registry, undefined, scenarioRegistry);
+      const completer = createCompleter(
+        registry,
+        undefined,
+        new Map([["firstApi", scenarioRegistry]]),
+      );
       const [completions, prefix] = await callCompleter(
         completer,
-        ".scenario pets/",
+        ".scenario firstApi pets/",
       );
 
       expect(prefix).toBe("pets/");
