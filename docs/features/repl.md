@@ -33,6 +33,24 @@ To access context from a subdirectory:
 const petsContext = loadContext("/pets");
 ```
 
+When running multiple APIs in one process, REPL state is grouped by API key:
+
+```js
+context.billing
+context.inventory
+routes.billing
+routes.inventory
+```
+
+In this mode, `loadContext` and `route` are also grouped by API key:
+
+```js
+loadContext.billing("/pets")
+route.inventory("/stock/{sku}")
+```
+
+If a group name is missing, Counterfact uses `api1`, `api2`, etc. Duplicate group names get deterministic suffixes (`billing`, `billing_2`, ...).
+
 The built-in `client` object lets you make HTTP requests from the prompt without leaving the terminal:
 
 ```js

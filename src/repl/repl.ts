@@ -18,6 +18,14 @@ export type CompleterCallback = (
   result: [string[], string],
 ) => void;
 
+export interface ReplApiBinding {
+  contextRegistry: ContextRegistry;
+  group: string;
+  openApiDocument?: OpenApiDocument;
+  registry: Registry;
+  scenarioRegistry?: ScenarioRegistry;
+}
+
 const ROUTE_BUILDER_METHODS = [
   "body(",
   "headers(",
@@ -147,7 +155,51 @@ export function startRepl(
   print = printToStdout,
   openApiDocument?: OpenApiDocument,
   scenarioRegistry?: ScenarioRegistry,
+  apiBindings?: ReplApiBinding[],
 ) {
+  const bindings =
+    apiBindings === undefined || apiBindings.length === 0
+      ? [
+          {
+            contextRegistry,
+            group: "",
+            openApiDocument,
+            registry,
+            scenarioRegistry,
+          },
+        ]
+      : apiBindings;
+  const isMultiApi = bindings.length > 1;
+  const usedKeys = new Map<string, number>();
+  const groupedBindings = bindings.map((binding, index) => {
+    // Keep key derivation deterministic:
+    // - empty group => api{index}
+    // - duplicate group => <group>_2, <group>_3, ...
+    const baseKey =
+      binding.group.trim() === "" ? `api${index + 1}` : binding.group.trim();
+    const duplicateCount = usedKeys.get(baseKey) ?? 0;
+    usedKeys.set(baseKey, duplicateCount + 1);
+
+    return {
+      ...binding,
+      key: duplicateCount === 0 ? baseKey : `${baseKey}_${duplicateCount + 1}`,
+    };
+  });
+
+  const rootBinding = groupedBindings[0]!;
+  const groupedLoadContext = Object.fromEntries(
+    groupedBindings.map((binding) => [
+      binding.key,
+      (path: string) => binding.contextRegistry.find(path),
+    ]),
+  ) as Record<string, (path: string) => Record<string, unknown>>;
+  const groupedRoute = Object.fromEntries(
+    groupedBindings.map((binding) => [
+      binding.key,
+      createRouteFunction(config.port, "localhost", binding.openApiDocument),
+    ]),
+  ) as Record<string, (path: string) => unknown>;
+
   function printProxyStatus() {
     if (config.proxyUrl === "") {
       print("The proxy URL is not set.");
@@ -220,9 +272,9 @@ export function startRepl(
   // completer is typed as readonly in @types/node but is writable at runtime
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (replServer as any).completer = createCompleter(
-    registry,
+    rootBinding.registry,
     builtinCompleter,
-    scenarioRegistry,
+    rootBinding.scenarioRegistry,
   );
 
   replServer.defineCommand("counterfact", {
@@ -276,20 +328,29 @@ export function startRepl(
     help: 'proxy configuration (".proxy help" for details)',
   });
 
-  replServer.context.loadContext = (path: string) => contextRegistry.find(path);
+  replServer.context.loadContext = isMultiApi
+    ? groupedLoadContext
+    : groupedLoadContext[rootBinding.key];
 
-  replServer.context.context = replServer.context.loadContext("/");
+  replServer.context.context = isMultiApi
+    ? Object.fromEntries(
+        groupedBindings.map((binding) => [
+          binding.key,
+          binding.contextRegistry.find("/"),
+        ]),
+      )
+    : rootBinding.contextRegistry.find("/");
 
   replServer.context.client = new RawHttpClient("localhost", config.port);
   replServer.context.RawHttpClient = RawHttpClient;
 
-  replServer.context.route = createRouteFunction(
-    config.port,
-    "localhost",
-    openApiDocument,
-  );
+  replServer.context.route = isMultiApi
+    ? groupedRoute
+    : groupedRoute[rootBinding.key];
 
-  replServer.context.routes = {};
+  replServer.context.routes = isMultiApi
+    ? Object.fromEntries(groupedBindings.map((binding) => [binding.key, {}]))
+    : {};
 
   replServer.defineCommand("scenario", {
     async action(text: string) {
@@ -313,7 +374,7 @@ export function startRepl(
       const fileKey =
         parts.length === 1 ? "index" : parts.slice(0, -1).join("/");
 
-      const module = scenarioRegistry?.getModule(fileKey);
+      const module = rootBinding.scenarioRegistry?.getModule(fileKey);
 
       if (module === undefined) {
         print(`Error: Could not find scenario file "${fileKey}"`);

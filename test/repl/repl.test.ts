@@ -3,7 +3,7 @@ import type { REPLServer } from "node:repl";
 import { afterEach, jest } from "@jest/globals";
 
 import { createCompleter, startRepl } from "../../src/repl/repl.js";
-import type { CompleterCallback } from "../../src/repl/repl.js";
+import type { CompleterCallback, ReplApiBinding } from "../../src/repl/repl.js";
 import type { Config } from "../../src/server/config.js";
 import { ContextRegistry } from "../../src/server/context-registry.js";
 import { Registry } from "../../src/server/registry.js";
@@ -60,6 +60,7 @@ class ReplHarness {
     registry: Registry,
     config: Config,
     scenarioRegistry?: ScenarioRegistry,
+    apiBindings?: ReplApiBinding[],
   ) {
     this.server = startRepl(
       contextRegistry,
@@ -68,6 +69,7 @@ class ReplHarness {
       (line) => this.output.push(line),
       undefined,
       scenarioRegistry,
+      apiBindings,
     );
   }
 
@@ -87,7 +89,10 @@ class ReplHarness {
   }
 }
 
-function createHarness(scenarioRegistry?: ScenarioRegistry) {
+function createHarness(
+  scenarioRegistry?: ScenarioRegistry,
+  apiBindings?: ReplApiBinding[],
+) {
   const contextRegistry = new ContextRegistry();
   const registry = new Registry();
   const config = { ...CONFIG };
@@ -99,6 +104,7 @@ function createHarness(scenarioRegistry?: ScenarioRegistry) {
     registry,
     config,
     scenarioRegistry,
+    apiBindings,
   );
 
   openServers.push(harness.server);
@@ -280,6 +286,103 @@ describe("REPL", () => {
       "",
     ]);
     expect(harness.isReset()).toBe(true);
+  });
+
+  it("keeps single-runner context and route unqualified", () => {
+    const { harness } = createHarness();
+
+    expect(typeof harness.server.context["loadContext"]).toBe("function");
+    expect(typeof harness.server.context["route"]).toBe("function");
+    expect(harness.server.context["context"]).toEqual({});
+    expect(harness.server.context["routes"]).toEqual({});
+  });
+
+  it("exposes grouped context/route/routes for multi-runner mode", () => {
+    const billingContextRegistry = new ContextRegistry();
+    const inventoryContextRegistry = new ContextRegistry();
+    const billingRegistry = new Registry();
+    const inventoryRegistry = new Registry();
+    const scenarioRegistry = new ScenarioRegistry();
+
+    billingContextRegistry.add("/", {
+      billingOnly: true,
+    });
+    inventoryContextRegistry.add("/", {
+      inventoryOnly: true,
+    });
+    scenarioRegistry.add("index", {});
+
+    const { harness } = createHarness(undefined, [
+      {
+        contextRegistry: billingContextRegistry,
+        group: "billing",
+        registry: billingRegistry,
+        scenarioRegistry,
+      },
+      {
+        contextRegistry: inventoryContextRegistry,
+        group: "inventory",
+        registry: inventoryRegistry,
+      },
+    ]);
+
+    expect(typeof harness.server.context["loadContext"]).toBe("object");
+    expect(typeof harness.server.context["route"]).toBe("object");
+    expect(harness.server.context["context"]).toMatchObject({
+      billing: { billingOnly: true },
+      inventory: { inventoryOnly: true },
+    });
+    expect(harness.server.context["routes"]).toEqual({
+      billing: {},
+      inventory: {},
+    });
+    expect(
+      (
+        harness.server.context["loadContext"] as Record<
+          string,
+          (path: string) => Record<string, unknown>
+        >
+      )["inventory"]?.("/"),
+    ).toMatchObject({ inventoryOnly: true });
+  });
+
+  it("uses deterministic keys when groups are empty or duplicated", () => {
+    const emptyGroupContextRegistry = new ContextRegistry();
+    const firstBillingContextRegistry = new ContextRegistry();
+    const secondBillingContextRegistry = new ContextRegistry();
+
+    emptyGroupContextRegistry.add("/", { name: "empty" });
+    firstBillingContextRegistry.add("/", { name: "billing-first" });
+    secondBillingContextRegistry.add("/", { name: "billing-second" });
+
+    const { harness } = createHarness(undefined, [
+      {
+        contextRegistry: emptyGroupContextRegistry,
+        group: "",
+        registry: new Registry(),
+      },
+      {
+        contextRegistry: firstBillingContextRegistry,
+        group: "billing",
+        registry: new Registry(),
+      },
+      {
+        contextRegistry: secondBillingContextRegistry,
+        group: "billing",
+        registry: new Registry(),
+      },
+    ]);
+
+    expect(harness.server.context["context"]).toMatchObject({
+      api1: { name: "empty" },
+      billing: { name: "billing-first" },
+      billing_2: { name: "billing-second" },
+    });
+    expect(harness.server.context["routes"]).toEqual({
+      api1: {},
+      billing: {},
+      billing_2: {},
+    });
   });
 
   describe(".scenario command", () => {

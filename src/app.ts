@@ -176,6 +176,13 @@ export async function counterfact(config: Config, specs?: SpecConfig[]) {
         undefined, // use the default print function (stdout)
         primaryRunner.openApiDocument,
         primaryRunner.scenarioRegistry,
+        runners.map((runner) => ({
+          contextRegistry: runner.contextRegistry,
+          group: runner.group,
+          openApiDocument: runner.openApiDocument,
+          registry: runner.registry,
+          scenarioRegistry: runner.scenarioRegistry,
+        })),
       ),
   };
 }
