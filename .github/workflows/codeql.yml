@@ -17,8 +17,6 @@ on:
   pull_request:
     # The branches below must be a subset of the branches above
     branches: [main]
-    paths-ignore:
-      - "**/*.md"
   schedule:
     - cron: "43 18 * * 1"
 
@@ -44,9 +42,35 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
+      - name: Detect docs-only pull request
+        id: docs-only
+        shell: bash
+        run: |
+          if [[ "${{ github.event_name }}" != "pull_request" ]]; then
+            echo "docs_only=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          changed_files=$(git diff --name-only "${{ github.event.pull_request.base.sha }}" "${{ github.event.pull_request.head.sha }}")
+
+          if [[ -z "$changed_files" ]]; then
+            echo "docs_only=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          if printf '%s\n' "$changed_files" | grep -vqE '\.md$'; then
+            echo "docs_only=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "docs_only=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Skip CodeQL for docs-only changes
+        if: steps.docs-only.outputs.docs_only == 'true'
+        run: echo "Markdown-only pull request detected. Skipping CodeQL analysis while keeping required checks green."
 
       # Initializes the CodeQL tools for scanning.
       - name: Initialize CodeQL
+        if: steps.docs-only.outputs.docs_only != 'true'
         uses: github/codeql-action/init@v4
         with:
           languages: ${{ matrix.language }}
@@ -61,6 +85,7 @@ jobs:
       # Autobuild attempts to build any compiled languages  (C/C++, C#, Go, or Java).
       # If this step fails, then you should remove it and run the build manually (see below)
       - name: Autobuild
+        if: steps.docs-only.outputs.docs_only != 'true'
         uses: github/codeql-action/autobuild@v4
 
       # ℹ️ Command-line programs to run using the OS shell.
@@ -74,6 +99,7 @@ jobs:
       #     ./location_of_script_within_repo/buildscript.sh
 
       - name: Perform CodeQL Analysis
+        if: steps.docs-only.outputs.docs_only != 'true'
         uses: github/codeql-action/analyze@v4
         with:
           category: "/language:${{matrix.language}}"
