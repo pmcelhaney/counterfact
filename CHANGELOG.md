@@ -1,5 +1,38 @@
 # counterfact
 
+## 2.9.0
+
+### Minor Changes
+
+- ffc7d53: Add `ApiRunner` class in `src/api-runner.ts` that encapsulates the creation and lifecycle management of all Counterfact sub-systems (Registry, ContextRegistry, ScenarioRegistry, ScenarioFileGenerator, CodeGenerator, Dispatcher, Transpiler, ModuleLoader, and OpenApiDocument) for a single API specification.
+
+  Each sub-system is exposed as a public property. The class provides four composite methods — `generate()`, `load()`, `watch()`, and `stopWatching()` — that coordinate across multiple sub-systems based on the supplied configuration. Use the static async `ApiRunner.create(config)` factory method to construct an instance.
+
+  `counterfact()` in `app.ts` now uses `ApiRunner` internally.
+
+- a6bb5bc: Add support for multiple API specifications via `ApiRunner`.
+  - `ApiRunner.create(config, group?)` now accepts an optional `group` string (default `""`) that places generated code in a subdirectory of `config.basePath`.
+  - `ApiRunner` exposes `group` as a public readonly property and `subdirectory` as a computed getter (returns `""` when group is empty, or `"/${group}"`).
+  - `CodeGenerator` receives `config.basePath + runner.subdirectory` so each spec's generated files land in the right subdirectory.
+  - `createKoaApp` now accepts `runners: ApiRunner[]` (an array) instead of a single `runner`. It loops over all runners to mount per-spec OpenAPI document, Swagger UI, Admin API, and route-dispatching middleware.
+  - `counterfact()` accepts an optional `specs: SpecConfig[]` second argument (each entry has `source`, `prefix`, and `group`). When omitted, a single spec is derived from `config.openApiPath` and `config.prefix` for full backward compatibility. The REPL is configured using the first spec's runner.
+  - The `spec` key in `counterfact.yaml` can now be a single `{source, prefix, group}` object or an array of such objects to configure multiple APIs from the config file.
+
+- 26e00eb: Add `openApiPath` and `prefix` as public readonly properties on `ApiRunner`.
+
+  Refactor `createKoaApp` to accept `runner: ApiRunner` (providing the dispatcher, registry, context registry, OpenAPI path, and route prefix) instead of a `config: Config` monolith plus separate sub-system refs. All other config fields used by `createKoaApp` are now explicit named arguments, laying the groundwork for passing multiple runners to `createKoaApp` in the future.
+
+### Patch Changes
+
+- aa23b79: Support `.scenario <group> <path>` in multi-API REPL sessions while preserving single-runner syntax.
+- d0dff90: Warn and skip loading context modules when they fail to import, including syntax errors in \_.context files.
+- 75938e3: Prefer OpenAPI route paths for REPL tab completion and refactor completer lookups into focused helpers.
+- 7a8c0b6: Move MSW (Mock Service Worker) code out of `app.ts` into a dedicated `src/msw.ts` module. The `MockRequest` type, `handleMswRequest`, and `createMswHandlers` are still re-exported from `app.ts` for backward compatibility. Tests for these functions have been moved to `test/msw.test.ts`.
+- 4894f18: Organized Koa middleware into a dedicated `src/server/web-server/` directory. Each middleware constructor now takes its path prefix as the first argument, making `createKoaApp` easier to read at a glance. `openapiMiddleware` simplified to handle a single path only.
+- 3aa8416: Expose grouped REPL context and routes for multi-API runners, and require non-empty unique group names when configuring multiple APIs.
+- b270516: Move CLI logic from bin/counterfact.js into src/cli/ as TypeScript modules
+- a3d16ab: Update REPL `.scenario` tab completion to suggest groups first in multi-API mode and group-scoped scenarios after selection.
+
 ## 2.8.1
 
 ### Patch Changes
