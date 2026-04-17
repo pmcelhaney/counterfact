@@ -14,7 +14,7 @@
 
 Static responses aren’t enough. There’s no shared state. You can’t inject failures. You can’t test real workflows.<br>
 Mock servers make it easy to get started, but hard to keep going.<br>
-Counterfact is a mock server without those limitats. 
+Counterfact is a mock server without those limits. 
 
 Point it at an [OpenAPI](https://www.openapis.org) document and get a live, stateful API in seconds. 
 - Type-safe TypeScript handlers for every endpoint  
