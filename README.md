@@ -1,34 +1,57 @@
 <div align="center" markdown="1">
 
-<img src="./counterfact.svg" alt="Counterfact" border=0>
+<h1><img src="./counterfact.svg" alt="Counterfact" border=0></h1>
 
 <br>
 
-![MIT License](https://img.shields.io/badge/license-MIT-blue) [![TypeScript](./typescript-badge.png)](https://github.com/ellerbrock/typescript-badges/) [![Coverage Status](https://coveralls.io/repos/github/counterfact/api-simulator/badge.svg)](https://coveralls.io/github/pmcelhaney/counterfact)
+![MIT License](https://img.shields.io/badge/license-MIT-blue) [![Coverage Status](https://coveralls.io/repos/github/counterfact/api-simulator/badge.svg)](https://coveralls.io/github/pmcelhaney/counterfact) ![friction 0%](https://img.shields.io/badge/friction-0%25-brightgreen)
 
 </div>
 
-You've used mock servers. You know where they stop being useful: static responses, no shared state, no way to inject a failure mid-run, no control without restarting. Counterfact picks up where they leave off.
+<div align="center" markdown="1">
+<h2>Mock servers work—until you need state, failures, or control mid-run.</h2>
+</div
 
-Point it at an OpenAPI spec and it generates TypeScript handlers for every endpoint—type-safe, hot-reloading, sharing state across routes. A built-in REPL gives you a live control surface: seed data, trigger error conditions, proxy individual routes to a real backend, all on a running server. Whether you're a frontend developer waiting on a backend, a test engineer who needs clean reproducible state, or an AI agent that needs a stable API to work against, Counterfact is the simulator that doesn't plateau.
+Static responses aren’t enough. There’s no shared state. You can’t inject failures. You can’t test real workflows.<br>
+Mock servers make it easy to get started, but hard to keep going.<br>
+Counterfact is a mock server without those limitats. 
+
+Point it at an [OpenAPI](https://www.openapis.org) document and get a live, stateful API in seconds. 
+- Type-safe TypeScript handlers for every endpoint  
+- Hot reloading as you edit  
+- Shared state across routes  
+- **A built-in REPL to control behavior at runtime**  
+- Optional proxying to real backends
+
+Flexbile for humans. Stable for [AI agents](https://github.com/counterfact/api-simulator/blob/main/docs/patterns/ai-assisted-implementation.md).
+
+You’re in control—without restarting.
+
+For a *frontend developer* waiting on a backend,<br>
+a *test engineer* who needs clean, reproducible state,<br>
+or an *AI agent* that needs a stable API
+
+Real enough to be useful. Fake enough to be usable.
+
+
+## Try it now 
 
 ```sh
 npx counterfact@latest https://petstore3.swagger.io/api/v3/openapi.json api
 ```
 
+> Starts a local server with a live REPL to inspect and control API behavior  
 > Requires Node ≥ 22.0.0
 
 ## Go deeper
 
-| | |
-|---|---|
-| [Getting started](./docs/getting-started.md) | Detailed walkthrough with state, REPL, and proxy |
-| [Usage](./docs/usage.md) | Feature index: routes, context, REPL, proxy, middleware, and more |
-| [Patterns](./docs/patterns/index.md) | Failures, latency, AI sandboxes, integration tests |
-| [Reference](./docs/reference.md) | `$` API, CLI flags, architecture |
-| [How it compares](./docs/comparison.md) | json-server, WireMock, Prism, Microcks, MSW |
-| [FAQ](./docs/faq.md) | State, types, regeneration |
-| [Petstore example](https://github.com/counterfact/example-petstore) | Full working example |
+- [Getting started](./docs/getting-started.md) – Detailed walkthrough with state, REPL, and proxy  
+- [Patterns](./docs/patterns/index.md) – How Counterfact transforms your workflow  
+- [Example repo](https://github.com/counterfact/example-petstore) – Using Counterfact to implement the Swagger Petstore  
+- [How it compares](./docs/comparison.md) – json-server, WireMock, Prism, Microcks, MSW  
+- [Usage](./docs/usage.md) – Explore features and how to use them  
+- [Reference](./docs/reference.md) – `$` API, CLI flags, architecture  
+- [FAQ](./docs/faq.md) – State, types, regeneration  
 
 <div align="center" markdown="1">
 
