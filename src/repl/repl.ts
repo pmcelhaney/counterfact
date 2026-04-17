@@ -41,7 +41,90 @@ const ROUTE_BUILDER_METHODS = [
 function getScenarioCompletions(
   line: string,
   scenarioRegistry: ScenarioRegistry | undefined,
+  groupedScenarioRegistries?: Record<string, ScenarioRegistry | undefined>,
 ): [string[], string] | undefined {
+  function getPathCompletions(
+    partial: string,
+    registry: ScenarioRegistry | undefined,
+  ): [string[], string] {
+    if (registry === undefined) {
+      return [[], partial];
+    }
+
+    const slashIdx = partial.lastIndexOf("/");
+
+    if (slashIdx === -1) {
+      const indexFunctions = registry.getExportedFunctionNames("index");
+      const fileKeys = registry.getFileKeys().filter((k) => k !== "index");
+      const topLevelPrefixes = [
+        ...new Set(fileKeys.map((k) => k.split("/")[0] + "/")),
+      ];
+      const allOptions = [...indexFunctions, ...topLevelPrefixes];
+      const matches = allOptions.filter((c) => c.startsWith(partial));
+
+      return [matches, partial];
+    }
+
+    const fileKey = partial.slice(0, slashIdx);
+    const funcPartial = partial.slice(slashIdx + 1);
+    const functions = registry.getExportedFunctionNames(fileKey);
+    const matches = functions
+      .filter((e) => e.startsWith(funcPartial))
+      .map((e) => `${fileKey}/${e}`);
+
+    return [matches, partial];
+  }
+
+  if (groupedScenarioRegistries !== undefined) {
+    if (!/^\.scenario(?:\s|$)/u.test(line)) {
+      return undefined;
+    }
+
+    const hasTrailingWhitespace = /\s$/u.test(line);
+    const args = line.trim().split(/\s+/u).slice(1);
+    const groupKeys = Object.keys(groupedScenarioRegistries);
+
+    if (args.length === 0) {
+      return [groupKeys, ""];
+    }
+
+    if (args.length === 1 && !hasTrailingWhitespace) {
+      const groupPartial = args[0] ?? "";
+      const matches = groupKeys.filter((key) => key.startsWith(groupPartial));
+
+      return [matches, groupPartial];
+    }
+
+    const selectedGroup = args[0] ?? "";
+    const selectedRegistry = groupedScenarioRegistries[selectedGroup];
+
+    if (selectedRegistry === undefined) {
+      const scenarioPartial = hasTrailingWhitespace
+        ? ""
+        : (args[args.length - 1] ?? "");
+
+      return [[], scenarioPartial];
+    }
+
+    if (args.length === 1 && hasTrailingWhitespace) {
+      return getPathCompletions("", selectedRegistry);
+    }
+
+    if (args.length === 2 && !hasTrailingWhitespace) {
+      const scenarioPartial = args[1];
+
+      if (scenarioPartial === undefined) {
+        return [[], ""];
+      }
+
+      return getPathCompletions(scenarioPartial, selectedRegistry);
+    }
+
+    // More than two args (or trailing whitespace after the second arg) means
+    // no additional `.scenario` arguments are valid in multi-API mode.
+    return [[], args[args.length - 1] ?? ""];
+  }
+
   const applyMatch = line.match(/^\.scenario\s+(?<partial>\S*)$/u);
 
   if (!applyMatch) {
@@ -49,35 +132,7 @@ function getScenarioCompletions(
   }
 
   const partial = applyMatch.groups?.["partial"] ?? "";
-
-  if (scenarioRegistry === undefined) {
-    return [[], partial];
-  }
-
-  const slashIdx = partial.lastIndexOf("/");
-
-  if (slashIdx === -1) {
-    const indexFunctions = scenarioRegistry.getExportedFunctionNames("index");
-    const fileKeys = scenarioRegistry
-      .getFileKeys()
-      .filter((k) => k !== "index");
-    const topLevelPrefixes = [
-      ...new Set(fileKeys.map((k) => k.split("/")[0] + "/")),
-    ];
-    const allOptions = [...indexFunctions, ...topLevelPrefixes];
-    const matches = allOptions.filter((c) => c.startsWith(partial));
-
-    return [matches, partial];
-  }
-
-  const fileKey = partial.slice(0, slashIdx);
-  const funcPartial = partial.slice(slashIdx + 1);
-  const functions = scenarioRegistry.getExportedFunctionNames(fileKey);
-  const matches = functions
-    .filter((e) => e.startsWith(funcPartial))
-    .map((e) => `${fileKey}/${e}`);
-
-  return [matches, partial];
+  return getPathCompletions(partial, scenarioRegistry);
 }
 
 function getRouteBuilderMethodCompletions(
@@ -142,11 +197,16 @@ export function createCompleter(
   fallback?: (line: string, callback: CompleterCallback) => void,
   openApiDocument?: OpenApiDocument,
   scenarioRegistry?: ScenarioRegistry,
+  groupedScenarioRegistries?: Record<string, ScenarioRegistry | undefined>,
 ) {
   const routes = getRoutesForCompletion(registry, openApiDocument);
 
   return (line: string, callback: CompleterCallback): void => {
-    const scenarioCompletions = getScenarioCompletions(line, scenarioRegistry);
+    const scenarioCompletions = getScenarioCompletions(
+      line,
+      scenarioRegistry,
+      groupedScenarioRegistries,
+    );
 
     if (scenarioCompletions !== undefined) {
       callback(null, scenarioCompletions);
@@ -344,6 +404,14 @@ export function startRepl(
     builtinCompleter,
     rootBinding.openApiDocument,
     rootBinding.scenarioRegistry,
+    isMultiApi
+      ? Object.fromEntries(
+          groupedBindings.map((binding) => [
+            binding.key,
+            binding.scenarioRegistry,
+          ]),
+        )
+      : undefined,
   );
 
   replServer.defineCommand("counterfact", {
