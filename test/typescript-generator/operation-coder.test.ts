@@ -38,9 +38,9 @@ describe("an OperationCoder", () => {
   it("passes version through to nested coders", () => {
     const coder = new OperationCoder(
       new Requirement({}, "#/paths/hello/get"),
+      "v1",
       "get",
       [],
-      "v1",
     );
     let nestedCoderVersion = "";
 

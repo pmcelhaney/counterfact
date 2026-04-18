@@ -8,14 +8,34 @@ import type { Script } from "./script.js";
 export class ParametersTypeCoder extends TypeCoder {
   public placement: string;
 
+  /** Preferred constructor shape: (requirement, version, placement). */
   public constructor(
     requirement: Requirement,
+    version: string,
     placement: string,
-    version = "",
+  );
+  public constructor(
+    requirement: Requirement,
+    versionOrLegacyPlacement = "",
+    placement?: string,
   ) {
+    const legacyPlacements = new Set(["query", "path", "header", "cookie", ""]);
+    const isLegacySignature =
+      placement === undefined &&
+      arguments.length <= 2 &&
+      legacyPlacements.has(versionOrLegacyPlacement);
+
+    let version = versionOrLegacyPlacement;
+    let resolvedPlacement = placement ?? "";
+
+    if (isLegacySignature) {
+      version = "";
+      resolvedPlacement = versionOrLegacyPlacement;
+    }
+
     super(requirement, version);
 
-    this.placement = placement;
+    this.placement = resolvedPlacement;
   }
 
   public override names(): Generator<string> {

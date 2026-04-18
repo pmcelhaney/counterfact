@@ -9,10 +9,10 @@ export class ParameterExportTypeCoder extends TypeCoder {
 
   public constructor(
     requirement: Requirement,
+    version: string,
     typeName: string,
     typeCode: string,
     parameterKind: string,
-    version = "",
   ) {
     super(requirement, version);
     this._typeName = typeName;

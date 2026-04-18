@@ -53,20 +53,51 @@ export class OperationTypeCoder extends TypeCoder {
   public requestMethod: string;
   public securitySchemes: SecurityScheme[];
 
+  /** Preferred constructor shape: (requirement, version, requestMethod, securitySchemes?). */
+  public constructor(
+    requirement: Requirement,
+    version: string,
+    requestMethod: string,
+    securitySchemes?: SecurityScheme[],
+  );
   public constructor(
     requirement: Requirement,
     requestMethod: string,
-    securitySchemes: SecurityScheme[] = [],
-    version = "",
+    securitySchemes?: SecurityScheme[],
+    version?: string,
+  );
+  public constructor(
+    requirement: Requirement,
+    versionOrLegacyRequestMethod: string,
+    requestMethodOrLegacySecuritySchemes?: string | SecurityScheme[],
+    securitySchemesOrLegacyVersion?: SecurityScheme[] | string,
   ) {
+    let version = "";
+    let resolvedRequestMethod: string;
+    let resolvedSecuritySchemes: SecurityScheme[];
+
+    if (typeof requestMethodOrLegacySecuritySchemes === "string") {
+      version = versionOrLegacyRequestMethod;
+      resolvedRequestMethod = requestMethodOrLegacySecuritySchemes;
+      resolvedSecuritySchemes =
+        (securitySchemesOrLegacyVersion as SecurityScheme[] | undefined) ?? [];
+    } else {
+      if (typeof securitySchemesOrLegacyVersion === "string") {
+        version = securitySchemesOrLegacyVersion;
+      }
+
+      resolvedRequestMethod = versionOrLegacyRequestMethod;
+      resolvedSecuritySchemes = requestMethodOrLegacySecuritySchemes ?? [];
+    }
+
     super(requirement, version);
 
-    if (requestMethod === undefined) {
+    if (resolvedRequestMethod === undefined) {
       throw new Error("requestMethod is required");
     }
 
-    this.requestMethod = requestMethod;
-    this.securitySchemes = securitySchemes;
+    this.requestMethod = resolvedRequestMethod;
+    this.securitySchemes = resolvedSecuritySchemes;
   }
 
   /**
@@ -121,10 +152,10 @@ export class OperationTypeCoder extends TypeCoder {
 
     const coder = new ParameterExportTypeCoder(
       this.requirement,
+      this.version,
       typeName,
       inlineType,
       parameterKind,
-      this.version,
     );
     coder._modulePath = modulePath;
 
@@ -230,26 +261,26 @@ export class OperationTypeCoder extends TypeCoder {
 
     const queryType = new ParametersTypeCoder(
       parameters!,
-      "query",
       this.version,
+      "query",
     ).write(script);
 
     const pathType = new ParametersTypeCoder(
       parameters!,
-      "path",
       this.version,
+      "path",
     ).write(script);
 
     const headersType = new ParametersTypeCoder(
       parameters!,
-      "header",
       this.version,
+      "header",
     ).write(script);
 
     const cookieType = new ParametersTypeCoder(
       parameters!,
-      "cookie",
       this.version,
+      "cookie",
     ).write(script);
 
     const bodyRequirement =
@@ -271,12 +302,14 @@ export class OperationTypeCoder extends TypeCoder {
         ? "never"
         : new SchemaTypeCoder(bodyRequirement, this.version).write(script);
 
+    const openApi2MediaTypes = (this.requirement.get("produces")?.data ??
+      this.requirement.specification?.rootRequirement?.get("produces")
+        ?.data) as string[] | undefined;
+
     const responseType = new ResponsesTypeCoder(
       this.requirement.get("responses")!,
-      (this.requirement.get("produces")?.data ??
-        this.requirement.specification?.rootRequirement?.get("produces")
-          ?.data) as string[] | undefined,
       this.version,
+      openApi2MediaTypes,
     ).write(script);
 
     const proxyType = "(url: string) => COUNTERFACT_RESPONSE";

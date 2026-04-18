@@ -21,20 +21,51 @@ export class OperationCoder extends Coder {
   public requestMethod: string;
   public securitySchemes: SecurityScheme[];
 
+  /** Preferred constructor shape: (requirement, version, requestMethod, securitySchemes?). */
+  public constructor(
+    requirement: Requirement,
+    version: string,
+    requestMethod: string,
+    securitySchemes?: SecurityScheme[],
+  );
   public constructor(
     requirement: Requirement,
     requestMethod: string,
-    securitySchemes: SecurityScheme[] = [],
-    version = "",
+    securitySchemes?: SecurityScheme[],
+    version?: string,
+  );
+  public constructor(
+    requirement: Requirement,
+    versionOrLegacyRequestMethod: string,
+    requestMethodOrLegacySecuritySchemes?: string | SecurityScheme[],
+    securitySchemesOrLegacyVersion?: SecurityScheme[] | string,
   ) {
+    let version = "";
+    let resolvedRequestMethod: string;
+    let resolvedSecuritySchemes: SecurityScheme[];
+
+    if (typeof requestMethodOrLegacySecuritySchemes === "string") {
+      version = versionOrLegacyRequestMethod;
+      resolvedRequestMethod = requestMethodOrLegacySecuritySchemes;
+      resolvedSecuritySchemes =
+        (securitySchemesOrLegacyVersion as SecurityScheme[] | undefined) ?? [];
+    } else {
+      if (typeof securitySchemesOrLegacyVersion === "string") {
+        version = securitySchemesOrLegacyVersion;
+      }
+
+      resolvedRequestMethod = versionOrLegacyRequestMethod;
+      resolvedSecuritySchemes = requestMethodOrLegacySecuritySchemes ?? [];
+    }
+
     super(requirement, version);
 
-    if (requestMethod === undefined) {
+    if (resolvedRequestMethod === undefined) {
       throw new Error("requestMethod is required");
     }
 
-    this.requestMethod = requestMethod;
-    this.securitySchemes = securitySchemes;
+    this.requestMethod = resolvedRequestMethod;
+    this.securitySchemes = resolvedSecuritySchemes;
   }
 
   public override names(): Generator<string> {
@@ -75,9 +106,9 @@ export class OperationCoder extends Coder {
   ): string {
     const operationTypeCoder = new OperationTypeCoder(
       this.requirement,
+      this.version,
       this.requestMethod,
       this.securitySchemes,
-      this.version,
     );
 
     return script.importType(operationTypeCoder);
