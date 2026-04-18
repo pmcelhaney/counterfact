@@ -284,7 +284,7 @@ export class Script {
         return availableCoder;
       })
       .catch((error: Error) => {
-        versionStatement.code = `{/* error declaring version "${name}" (${version}) for ${this.path}: ${error.stack} */}`;
+        versionStatement.code = `unknown /* error declaring version "${name}" (${version}) for ${this.path}: ${error.stack} */`;
         versionStatement.error = error;
         return undefined;
       })
