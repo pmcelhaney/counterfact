@@ -252,11 +252,14 @@ export class Script {
 
   public declareVersion(coder: Coder, name: string): void {
     const version =
-      (coder as Coder & {
-        version?: string;
-      }).version ?? "";
+      (
+        coder as Coder & {
+          version?: string;
+        }
+      ).version ?? "";
 
-    const versions = this.versions.get(name) ?? new Map<string, ExportStatement>();
+    const versions =
+      this.versions.get(name) ?? new Map<string, ExportStatement>();
     this.versions.set(name, versions);
 
     if (versions.has(version)) {
@@ -306,14 +309,12 @@ export class Script {
 
   /** Returns a promise that resolves when all pending export promises settle. */
   public finished(): Promise<(Coder | undefined)[]> {
-    return Promise.all(
-      [
-        ...Array.from(this.exports.values(), (value) => value.promise!),
-        ...Array.from(this.versions.values())
-          .flatMap((versions) => Array.from(versions.values()))
-          .map((value) => value.promise!),
-      ],
-    );
+    return Promise.all([
+      ...Array.from(this.exports.values(), (value) => value.promise!),
+      ...Array.from(this.versions.values())
+        .flatMap((versions) => Array.from(versions.values()))
+        .map((value) => value.promise!),
+    ]);
   }
 
   public externalImportStatements(): string[] {
