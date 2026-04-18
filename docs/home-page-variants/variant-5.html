@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Counterfact Home Variant 5</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        font-family: Inter, system-ui, sans-serif;
+      }
+      body {
+        margin: 0;
+      }
+      main {
+        max-width: 920px;
+        margin: 0 auto;
+        padding: 24px 16px 52px;
+      }
+      h1 {
+        margin: 0 0 8px;
+        font-size: clamp(2rem, 5vw, 2.7rem);
+      }
+      .summary {
+        font-size: 1.05rem;
+      }
+      .quick {
+        margin: 16px 0;
+        padding: 0;
+        list-style: none;
+      }
+      .quick li {
+        margin: 7px 0;
+      }
+      .links {
+        display: grid;
+        gap: 8px;
+        margin-top: 16px;
+      }
+      .links a {
+        width: fit-content;
+      }
+      @media (min-width: 760px) {
+        .links {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Understand Counterfact in 30 seconds.</h1>
+      <p class="summary">
+        Counterfact converts OpenAPI into a running API simulator. It is stateful, type-safe,
+        hot-reload friendly, and controllable with JavaScript in a built-in REPL.
+      </p>
+
+      <ul class="quick" aria-label="Fast scan">
+        <li><strong>Need realistic data flows?</strong> Shared context across all routes.</li>
+        <li><strong>Need speed?</strong> Start with one command and edit handlers live.</li>
+        <li><strong>Need confidence?</strong> Use patterns for testing, failure simulation, and proxying.</li>
+      </ul>
+
+      <nav class="links" aria-label="Choose a path">
+        <a href="../patterns/simulate-latency.md">Simulate latency</a>
+        <a href="../patterns/simulate-failures.md">Simulate failures</a>
+        <a href="../patterns/ai-assisted-implementation.md">AI-assisted implementation</a>
+        <a href="../patterns/test-context-not-handlers.md">Test context, not handlers</a>
+        <a href="../reference.md">Reference docs</a>
+      </nav>
+
+      <p><strong>Demo placeholder:</strong> click-to-play product tour card (coming soon).</p>
+    </main>
+  </body>
+</html>

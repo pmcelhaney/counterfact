@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Counterfact Home Variant 4</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        font-family: Inter, system-ui, sans-serif;
+      }
+      body {
+        margin: 0;
+      }
+      .wrap {
+        max-width: 760px;
+        margin: 0 auto;
+        padding: 24px 16px 40px;
+      }
+      h1 {
+        font-size: clamp(1.9rem, 5vw, 2.5rem);
+        margin: 0 0 10px;
+      }
+      .stack {
+        display: grid;
+        gap: 10px;
+        margin-top: 16px;
+      }
+      .row {
+        padding: 12px;
+        border-radius: 10px;
+        border: 1px solid color-mix(in oklab, currentColor 24%, transparent);
+      }
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 18px 0;
+      }
+      .button {
+        padding: 9px 12px;
+        border-radius: 10px;
+        text-decoration: none;
+        border: 1px solid currentColor;
+      }
+      .note {
+        padding: 10px;
+        border-radius: 8px;
+        background: color-mix(in oklab, #53d59a 12%, transparent);
+      }
+    </style>
+  </head>
+  <body>
+    <main class="wrap">
+      <h1>Counterfact: programmable API simulation from your OpenAPI spec</h1>
+      <p>
+        Replace brittle mocks with a local API you can shape in real time.
+        Generated TypeScript handlers + shared context + REPL controls.
+      </p>
+
+      <div class="actions">
+        <a class="button" href="../getting-started.md">Get started</a>
+        <a class="button" href="../comparison.md">Compare tools</a>
+        <a class="button" href="../patterns/index.md">Browse patterns</a>
+      </div>
+
+      <section class="stack" aria-label="Who is this for">
+        <article class="row"><strong>Frontend teams:</strong> unblock UI work with realistic API state.</article>
+        <article class="row"><strong>Backend teams:</strong> ship contract-safe changes with faster feedback loops.</article>
+        <article class="row"><strong>QA/Automation:</strong> run deterministic workflows and edge-case simulations.</article>
+      </section>
+
+      <p class="note"><strong>Demo placeholder:</strong> interactive mini demo (coming soon).</p>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Counterfact Home Variant 2</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        font-family: Inter, system-ui, sans-serif;
+      }
+      body {
+        margin: 0;
+      }
+      main {
+        max-width: 760px;
+        margin: 0 auto;
+        padding: 22px 16px 40px;
+      }
+      h1 {
+        margin: 0;
+        font-size: clamp(1.8rem, 5vw, 2.4rem);
+      }
+      .timeline {
+        margin: 18px 0;
+        padding: 0;
+        list-style: none;
+        display: grid;
+        gap: 10px;
+      }
+      .timeline li {
+        border: 1px solid color-mix(in oklab, currentColor 25%, transparent);
+        border-radius: 10px;
+        padding: 12px;
+      }
+      .links {
+        display: grid;
+        gap: 8px;
+      }
+      .placeholder {
+        margin-top: 20px;
+        border-radius: 10px;
+        padding: 12px;
+        background: color-mix(in oklab, #9d7dff 12%, transparent);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>From API contract to believable simulation, fast.</h1>
+      <p>
+        Counterfact is an OpenAPI-native simulator. It generates typed route handlers,
+        keeps shared state, and hot-reloads while your app keeps running.
+      </p>
+
+      <ol class="timeline" aria-label="What you learn quickly">
+        <li><strong>0–15s:</strong> You know Counterfact turns OpenAPI into a live mock API.</li>
+        <li><strong>15–30s:</strong> You see practical paths for frontend, testing, or AI-assisted development.</li>
+        <li><strong>30s+:</strong> You jump into docs that match your immediate goal.</li>
+      </ol>
+
+      <div class="links" aria-label="Explore patterns">
+        <a href="../patterns/executable-spec.md">Executable spec pattern</a>
+        <a href="../patterns/repl-inspection.md">Inspect and modify state with REPL</a>
+        <a href="../patterns/simulate-failures.md">Simulate failures safely</a>
+        <a href="../usage.md">Usage guide</a>
+      </div>
+
+      <p class="placeholder"><strong>Demo placeholder:</strong> terminal recording (coming soon).</p>
+    </main>
+  </body>
+</html>

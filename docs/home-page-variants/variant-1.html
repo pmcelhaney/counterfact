@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Counterfact Home Variant 1</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      }
+      body {
+        margin: 0;
+        line-height: 1.5;
+      }
+      main {
+        max-width: 860px;
+        margin: 0 auto;
+        padding: 24px 16px 48px;
+      }
+      h1 {
+        font-size: clamp(1.8rem, 5vw, 2.8rem);
+        margin: 0 0 12px;
+      }
+      .kicker {
+        font-weight: 600;
+        opacity: 0.8;
+      }
+      .cta {
+        display: inline-block;
+        margin-top: 8px;
+        padding: 10px 14px;
+        border-radius: 10px;
+        text-decoration: none;
+        border: 1px solid currentColor;
+      }
+      .cards {
+        display: grid;
+        gap: 12px;
+        margin-top: 20px;
+      }
+      .card {
+        border: 1px solid color-mix(in oklab, currentColor 25%, transparent);
+        border-radius: 12px;
+        padding: 14px;
+      }
+      .card h2 {
+        margin: 0 0 8px;
+        font-size: 1.1rem;
+      }
+      .placeholder {
+        margin-top: 18px;
+        padding: 12px;
+        border-left: 3px solid #7aa2ff;
+        border-radius: 8px;
+        background: color-mix(in oklab, #7aa2ff 10%, transparent);
+      }
+      @media (min-width: 720px) {
+        .cards {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <p class="kicker">Counterfact</p>
+      <h1>Your OpenAPI file becomes a living API in one command.</h1>
+      <p>
+        Counterfact generates a stateful mock server with editable TypeScript handlers and a runtime REPL.
+        In under 15 seconds: you understand what it does. In under 30 seconds: you know where to go next.
+      </p>
+      <a class="cta" href="../getting-started.md">Start in 60 seconds</a>
+
+      <section class="cards" aria-label="Entry points">
+        <article class="card">
+          <h2>Frontend first</h2>
+          <p>Need realistic API behavior while your backend is evolving?</p>
+          <a href="../patterns/mock-with-dummy-data.md">Mock with dummy data</a>
+        </article>
+        <article class="card">
+          <h2>Test and CI</h2>
+          <p>Need repeatable contract behavior in tests?</p>
+          <a href="../patterns/automated-integration-tests.md">Automated integration tests</a>
+        </article>
+        <article class="card">
+          <h2>AI workflows</h2>
+          <p>Need deterministic APIs for coding agents?</p>
+          <a href="../patterns/agentic-sandbox.md">Agentic sandbox pattern</a>
+        </article>
+      </section>
+
+      <section class="placeholder" aria-label="Demo placeholder">
+        <strong>Demo placeholder:</strong> animated GIF showing spec → server → REPL flow.
+      </section>
+    </main>
+  </body>
+</html>

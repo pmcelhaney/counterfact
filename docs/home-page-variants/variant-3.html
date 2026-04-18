@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Counterfact Home Variant 3</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        font-family: Inter, system-ui, sans-serif;
+      }
+      body {
+        margin: 0;
+      }
+      main {
+        max-width: 880px;
+        margin: 0 auto;
+        padding: 22px 16px 48px;
+      }
+      h1 {
+        margin: 0 0 8px;
+        font-size: clamp(2rem, 5vw, 2.6rem);
+      }
+      .grid {
+        display: grid;
+        gap: 12px;
+      }
+      .tile {
+        border: 1px solid color-mix(in oklab, currentColor 25%, transparent);
+        border-radius: 12px;
+        padding: 14px;
+      }
+      .tile h2 {
+        margin: 0 0 8px;
+        font-size: 1.1rem;
+      }
+      pre {
+        margin: 0;
+        padding: 10px;
+        border-radius: 8px;
+        background: color-mix(in oklab, currentColor 6%, transparent);
+        overflow-x: auto;
+      }
+      @media (min-width: 760px) {
+        .grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Need realistic APIs before production APIs exist?</h1>
+      <p>
+        Counterfact helps you prototype, test, and automate against an API that behaves like software,
+        not static fixtures.
+      </p>
+      <pre>$ npx counterfact openapi.yaml api</pre>
+
+      <section class="grid" aria-label="Popular starting points">
+        <article class="tile">
+          <h2>Explore an unfamiliar API</h2>
+          <p>Generate routes and inspect behavior quickly.</p>
+          <a href="../patterns/explore-new-api.md">Explore new API</a>
+        </article>
+        <article class="tile">
+          <h2>Hybrid with real backend</h2>
+          <p>Proxy selected endpoints while mocking the rest.</p>
+          <a href="../patterns/hybrid-proxy.md">Hybrid proxy pattern</a>
+        </article>
+        <article class="tile">
+          <h2>Script realistic scenarios</h2>
+          <p>Reproduce edge cases repeatedly.</p>
+          <a href="../patterns/scenario-scripts.md">Scenario scripts</a>
+        </article>
+        <article class="tile">
+          <h2>Reference implementation</h2>
+          <p>See how teams structure bigger simulations.</p>
+          <a href="../patterns/reference-implementation.md">Reference implementation</a>
+        </article>
+      </section>
+
+      <p><strong>Demo placeholder:</strong> split-screen walkthrough (spec + editor + requests).</p>
+    </main>
+  </body>
+</html>
