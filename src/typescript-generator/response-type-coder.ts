@@ -10,8 +10,9 @@ export class ResponseTypeCoder extends TypeCoder {
   public constructor(
     requirement: Requirement,
     openApi2MediaTypes: string[] = [],
+    version = "",
   ) {
-    super(requirement);
+    super(requirement, version);
 
     this.openApi2MediaTypes = openApi2MediaTypes;
   }
@@ -32,7 +33,7 @@ export class ResponseTypeCoder extends TypeCoder {
         .map((content, mediaType): [string, string] => [
           mediaType,
           `{ 
-            schema:  ${content.has("schema") ? new SchemaTypeCoder(content.get("schema")!).write(script) : "unknown"}
+            schema:  ${content.has("schema") ? new SchemaTypeCoder(content.get("schema")!, this.version).write(script) : "unknown"}
          }`,
         ]);
     }
@@ -40,7 +41,7 @@ export class ResponseTypeCoder extends TypeCoder {
     return this.openApi2MediaTypes.map((mediaType): [string, string] => [
       mediaType,
       `{
-            schema: ${new SchemaTypeCoder(response.get("schema")!).write(script)}
+            schema: ${new SchemaTypeCoder(response.get("schema")!, this.version).write(script)}
          }`,
     ]);
   }
@@ -61,9 +62,10 @@ export class ResponseTypeCoder extends TypeCoder {
       .get("headers")!
       .map((value, name): [string, string] => [
         name,
-        `{ schema: ${new SchemaTypeCoder(value.get("schema") ?? value).write(
-          script,
-        )}}`,
+        `{ schema: ${new SchemaTypeCoder(
+          value.get("schema") ?? value,
+          this.version,
+        ).write(script)}}`,
       ]);
   }
 

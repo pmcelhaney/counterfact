@@ -12,8 +12,9 @@ export class ParameterExportTypeCoder extends TypeCoder {
     typeName: string,
     typeCode: string,
     parameterKind: string,
+    version = "",
   ) {
-    super(requirement);
+    super(requirement, version);
     this._typeName = typeName;
     this._typeCode = typeCode;
     this._parameterKind = parameterKind;

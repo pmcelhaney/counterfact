@@ -25,8 +25,9 @@ export class OperationCoder extends Coder {
     requirement: Requirement,
     requestMethod: string,
     securitySchemes: SecurityScheme[] = [],
+    version = "",
   ) {
-    super(requirement);
+    super(requirement, version);
 
     if (requestMethod === undefined) {
       throw new Error("requestMethod is required");
@@ -76,6 +77,7 @@ export class OperationCoder extends Coder {
       this.requirement,
       this.requestMethod,
       this.securitySchemes,
+      this.version,
     );
 
     return script.importType(operationTypeCoder);

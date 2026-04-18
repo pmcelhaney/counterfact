@@ -5,6 +5,12 @@ import { Requirement } from "../../src/typescript-generator/requirement.js";
 import { Specification } from "../../src/typescript-generator/specification.js";
 
 describe("a Coder", () => {
+  it("defaults top-level coders to an empty version", () => {
+    const coder = new Coder({ url: "#/components/schemas/Person" });
+
+    expect(coder.version).toBe("");
+  });
+
   it("generates a list of potential names", () => {
     const coder = new Coder({ url: "#/components/schemas/Person" });
 
@@ -119,6 +125,7 @@ describe("a Coder", () => {
         "",
         specification,
       ),
+      "v1",
     );
 
     const otherCoder = await coder.delegate();
@@ -126,5 +133,6 @@ describe("a Coder", () => {
     expect(otherCoder).not.toBe(coder);
     expect(otherCoder.requirement.data).toStrictEqual({ type: "string" });
     expect(otherCoder.constructor.name).toBe("DelegatingCoder");
+    expect(otherCoder.version).toBe("v1");
   });
 });

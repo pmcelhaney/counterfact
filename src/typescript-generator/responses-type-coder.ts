@@ -10,8 +10,9 @@ export class ResponsesTypeCoder extends TypeCoder {
   public constructor(
     requirement: Requirement,
     openApi2MediaTypes: string[] = [],
+    version = "",
   ) {
-    super(requirement);
+    super(requirement, version);
 
     this.openApi2MediaTypes = openApi2MediaTypes;
   }
@@ -44,7 +45,11 @@ export class ResponsesTypeCoder extends TypeCoder {
     return printObjectWithoutQuotes(
       this.requirement.map((response, responseCode): [string, string] => [
         this.normalizeStatusCode(responseCode),
-        new ResponseTypeCoder(response, this.openApi2MediaTypes).write(script),
+        new ResponseTypeCoder(
+          response,
+          this.openApi2MediaTypes,
+          this.version,
+        ).write(script),
       ]),
     );
   }

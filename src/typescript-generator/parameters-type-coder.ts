@@ -8,8 +8,12 @@ import type { Script } from "./script.js";
 export class ParametersTypeCoder extends TypeCoder {
   public placement: string;
 
-  public constructor(requirement: Requirement, placement: string) {
-    super(requirement);
+  public constructor(
+    requirement: Requirement,
+    placement: string,
+    version = "",
+  ) {
+    super(requirement, version);
 
     this.placement = placement;
   }
@@ -42,7 +46,9 @@ export class ParametersTypeCoder extends TypeCoder {
         const comment = buildJsDoc(parameter.data);
         const commentPrefix = comment ? `\n${comment}` : "";
 
-        const typeString = new SchemaTypeCoder(schema).write(script);
+        const typeString = new SchemaTypeCoder(schema, this.version).write(
+          script,
+        );
 
         return `${commentPrefix}"${name}"${optionalFlag}: ${typeString}`;
       });

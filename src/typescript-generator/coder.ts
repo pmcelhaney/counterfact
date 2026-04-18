@@ -15,9 +15,11 @@ import type { Script } from "./script.js";
  */
 export class Coder {
   public requirement: Requirement;
+  public version: string;
 
-  public constructor(requirement: Requirement) {
+  public constructor(requirement: Requirement, version = "") {
     this.requirement = requirement;
+    this.version = version;
   }
 
   /**
@@ -100,9 +102,10 @@ export class Coder {
 
     const requirement = await this.requirement.reference();
 
-    return new (this.constructor as new (req: Requirement) => Coder)(
-      requirement,
-    );
+    return new (this.constructor as new (
+      req: Requirement,
+      version: string,
+    ) => Coder)(requirement, this.version);
   }
 
   /**
