@@ -26,16 +26,7 @@ exports[`an OperationTypeCoder falls back to root level produces (OpenAPI 2) 1`]
     user: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
-) => MaybePromise<
-  | {
-      status: number | undefined;
-      contentType?: "text/plain";
-      body?: Type;
-    }
-  | { status: 415; contentType: "text/plain"; body: string }
-  | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
->;
+) => MaybePromise<COUNTERFACT_RESPONSE>;
 "
 `;
 
@@ -85,26 +76,7 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2 wit
     user: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
-) => MaybePromise<
-  | {
-      status: 200;
-      contentType?: "application/json";
-      body?: Type;
-    }
-  | {
-      status: 400;
-      contentType?: "application/json";
-      body?: Type;
-    }
-  | {
-      status: number | undefined;
-      contentType?: "application/json";
-      body?: Type;
-    }
-  | { status: 415; contentType: "text/plain"; body: string }
-  | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
->;
+) => MaybePromise<COUNTERFACT_RESPONSE>;
 "
 `;
 
@@ -154,26 +126,7 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2) 1`
     user: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
-) => MaybePromise<
-  | {
-      status: 200;
-      contentType?: "application/json";
-      body?: Type;
-    }
-  | {
-      status: 400;
-      contentType?: "application/json";
-      body?: Type;
-    }
-  | {
-      status: number | undefined;
-      contentType?: "application/json";
-      body?: Type;
-    }
-  | { status: 415; contentType: "text/plain"; body: string }
-  | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
->;
+) => MaybePromise<COUNTERFACT_RESPONSE>;
 "
 `;
 
@@ -223,26 +176,7 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2, co
     user: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
-) => MaybePromise<
-  | {
-      status: 200;
-      contentType?: "application/json";
-      body?: Type;
-    }
-  | {
-      status: 400;
-      contentType?: "application/json";
-      body?: Type;
-    }
-  | {
-      status: number | undefined;
-      contentType?: "application/json";
-      body?: Type;
-    }
-  | { status: 415; contentType: "text/plain"; body: string }
-  | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
->;
+) => MaybePromise<COUNTERFACT_RESPONSE>;
 "
 `;
 
@@ -295,26 +229,7 @@ exports[`an OperationTypeCoder generates a complex post operation 1`] = `
     user: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
-) => MaybePromise<
-  | {
-      status: 200;
-      contentType?: "application/json";
-      body?: Type;
-    }
-  | {
-      status: 400;
-      contentType?: "application/json";
-      body?: Type;
-    }
-  | {
-      status: number | undefined;
-      contentType?: "application/json";
-      body?: Type;
-    }
-  | { status: 415; contentType: "text/plain"; body: string }
-  | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
->;
+) => MaybePromise<COUNTERFACT_RESPONSE>;
 "
 `;
 
@@ -344,16 +259,7 @@ exports[`an OperationTypeCoder generates a simple get operation (OpenAPI 2) 1`] 
     user: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
-) => MaybePromise<
-  | {
-      status: number | undefined;
-      contentType?: "application/json";
-      body?: Type;
-    }
-  | { status: 415; contentType: "text/plain"; body: string }
-  | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
->;
+) => MaybePromise<COUNTERFACT_RESPONSE>;
 "
 `;
 
@@ -383,16 +289,7 @@ exports[`an OperationTypeCoder generates a simple get operation 1`] = `
     user: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
-) => MaybePromise<
-  | {
-      status: number | undefined;
-      contentType?: "application/json";
-      body?: Type;
-    }
-  | { status: 415; contentType: "text/plain"; body: string }
-  | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
->;
+) => MaybePromise<COUNTERFACT_RESPONSE>;
 "
 `;
 
@@ -422,15 +319,6 @@ exports[`an OperationTypeCoder generates an auth object for basic authentication
     user: { username?: string; password?: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
-) => MaybePromise<
-  | {
-      status: number | undefined;
-      contentType?: "application/json";
-      body?: Type;
-    }
-  | { status: 415; contentType: "text/plain"; body: string }
-  | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
->;
+) => MaybePromise<COUNTERFACT_RESPONSE>;
 "
 `;
