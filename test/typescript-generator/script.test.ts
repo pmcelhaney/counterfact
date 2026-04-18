@@ -228,6 +228,45 @@ describe("a Script", () => {
     ]);
   });
 
+  it("declares versioned code grouped by name and coder version", async () => {
+    const repository = new Repository("/base/path");
+
+    class V1AccountTypeCoder extends Coder {
+      public version = "1.0.0";
+
+      *names() {
+        yield "AccountV1";
+      }
+
+      write() {
+        return "{ id: string }";
+      }
+    }
+
+    class V2AccountTypeCoder extends Coder {
+      public version = "2.0.0";
+
+      *names() {
+        yield "AccountV2";
+      }
+
+      write() {
+        return "{ id: string, email: string }";
+      }
+    }
+
+    const script = repository.get("export-to-me.ts");
+
+    script.declareVersion(new V1AccountTypeCoder({}), "Account");
+    script.declareVersion(new V2AccountTypeCoder({}), "Account");
+
+    await script.finished();
+
+    expect(script.versionsTypeStatements()).toStrictEqual([
+      'export type Versions = { "Account": { "1.0.0": { id: string }, "2.0.0": { id: string, email: string } } };',
+    ]);
+  });
+
   it("outputs the contents (import and export statements)", async () => {
     const repository = new Repository("/base/path");
 
@@ -244,6 +283,25 @@ describe("a Script", () => {
 
     await expect(script.contents()).resolves.toBe(
       '// This is a comment.\n\nimport { foo } from "./foo.js";\n\nexport const bar = "Bar";\n\nexport default class {}\n',
+    );
+  });
+
+  it("outputs the contents including Versions when versions are declared", async () => {
+    const repository = new Repository("/base/path");
+    const script = repository.get("script.ts");
+
+    class UserCoder extends Coder {
+      public version = "2025-01";
+
+      write() {
+        return "{ id: string }";
+      }
+    }
+
+    script.declareVersion(new UserCoder({}), "User");
+
+    await expect(script.contents()).resolves.toContain(
+      'export type Versions = { User: { "2025-01": { id: string } } };\n',
     );
   });
 });
