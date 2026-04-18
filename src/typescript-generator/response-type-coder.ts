@@ -7,27 +7,14 @@ import type { Script } from "./script.js";
 export class ResponseTypeCoder extends TypeCoder {
   public openApi2MediaTypes: string[];
 
-  /** Preferred constructor shape: (requirement, version, openApi2MediaTypes?). */
   public constructor(
     requirement: Requirement,
-    version: string,
-    openApi2MediaTypes?: string[],
-  );
-  public constructor(
-    requirement: Requirement,
-    versionOrLegacyMediaTypes: string | string[] = "",
+    version = "",
     openApi2MediaTypes: string[] = [],
   ) {
-    const version = Array.isArray(versionOrLegacyMediaTypes)
-      ? ""
-      : versionOrLegacyMediaTypes;
-    const resolvedOpenApi2MediaTypes = Array.isArray(versionOrLegacyMediaTypes)
-      ? versionOrLegacyMediaTypes
-      : openApi2MediaTypes;
-
     super(requirement, version);
 
-    this.openApi2MediaTypes = resolvedOpenApi2MediaTypes;
+    this.openApi2MediaTypes = openApi2MediaTypes;
   }
 
   public override names(): Generator<string> {

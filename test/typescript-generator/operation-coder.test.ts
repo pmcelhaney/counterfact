@@ -12,6 +12,7 @@ describe("an OperationCoder", () => {
   it("generates a list of potential names", () => {
     const coder = new OperationCoder(
       new Requirement({}, "#/paths/hello/get"),
+      "",
       "get",
     );
 
@@ -23,6 +24,7 @@ describe("an OperationCoder", () => {
   it("creates a type declaration", () => {
     const coder = new OperationCoder(
       new Requirement({}, "#/paths/hello/get"),
+      "",
       "get",
     );
 
@@ -59,6 +61,7 @@ describe("an OperationCoder", () => {
   it("returns the module path", () => {
     const coder = new OperationCoder(
       new Requirement({}, "#/paths/hello~1world/get", "get"),
+      "",
       "get",
     );
 
@@ -112,7 +115,7 @@ describe("an OperationCoder", () => {
       "#/paths/hello/get",
     );
 
-    const coder = new OperationCoder(requirement, "get");
+    const coder = new OperationCoder(requirement, "", "get");
 
     await expect(
       format(
@@ -145,7 +148,7 @@ describe("an OperationCoder", () => {
       "#/paths/hello/post",
     );
 
-    const coder = new OperationCoder(requirement, "get");
+    const coder = new OperationCoder(requirement, "", "get");
 
     await expect(
       format(
@@ -172,7 +175,7 @@ describe("an OperationCoder", () => {
       "#/paths/hello/delete",
     );
 
-    const coder = new OperationCoder(requirement, "delete");
+    const coder = new OperationCoder(requirement, "", "delete");
 
     await expect(
       format(

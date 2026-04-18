@@ -53,51 +53,20 @@ export class OperationTypeCoder extends TypeCoder {
   public requestMethod: string;
   public securitySchemes: SecurityScheme[];
 
-  /** Preferred constructor shape: (requirement, version, requestMethod, securitySchemes?). */
   public constructor(
     requirement: Requirement,
-    version: string,
-    requestMethod: string,
-    securitySchemes?: SecurityScheme[],
-  );
-  public constructor(
-    requirement: Requirement,
-    requestMethod: string,
-    securitySchemes?: SecurityScheme[],
-    version?: string,
-  );
-  public constructor(
-    requirement: Requirement,
-    versionOrLegacyRequestMethod: string,
-    requestMethodOrLegacySecuritySchemes?: string | SecurityScheme[],
-    securitySchemesOrLegacyVersion?: SecurityScheme[] | string,
+    version = "",
+    requestMethod = "",
+    securitySchemes: SecurityScheme[] = [],
   ) {
-    let version = "";
-    let resolvedRequestMethod: string;
-    let resolvedSecuritySchemes: SecurityScheme[];
-
-    if (typeof requestMethodOrLegacySecuritySchemes === "string") {
-      version = versionOrLegacyRequestMethod;
-      resolvedRequestMethod = requestMethodOrLegacySecuritySchemes;
-      resolvedSecuritySchemes =
-        (securitySchemesOrLegacyVersion as SecurityScheme[] | undefined) ?? [];
-    } else {
-      if (typeof securitySchemesOrLegacyVersion === "string") {
-        version = securitySchemesOrLegacyVersion;
-      }
-
-      resolvedRequestMethod = versionOrLegacyRequestMethod;
-      resolvedSecuritySchemes = requestMethodOrLegacySecuritySchemes ?? [];
-    }
-
     super(requirement, version);
 
-    if (resolvedRequestMethod === undefined) {
+    if (requestMethod === "") {
       throw new Error("requestMethod is required");
     }
 
-    this.requestMethod = resolvedRequestMethod;
-    this.securitySchemes = resolvedSecuritySchemes;
+    this.requestMethod = requestMethod;
+    this.securitySchemes = securitySchemes;
   }
 
   /**
