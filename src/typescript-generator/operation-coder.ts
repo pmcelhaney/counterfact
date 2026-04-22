@@ -23,12 +23,13 @@ export class OperationCoder extends Coder {
 
   public constructor(
     requirement: Requirement,
-    requestMethod: string,
+    version = "",
+    requestMethod = "",
     securitySchemes: SecurityScheme[] = [],
   ) {
-    super(requirement);
+    super(requirement, version);
 
-    if (requestMethod === undefined) {
+    if (requestMethod === "") {
       throw new Error("requestMethod is required");
     }
 
@@ -74,6 +75,7 @@ export class OperationCoder extends Coder {
   ): string {
     const operationTypeCoder = new OperationTypeCoder(
       this.requirement,
+      this.version,
       this.requestMethod,
       this.securitySchemes,
     );

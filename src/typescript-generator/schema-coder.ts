@@ -28,6 +28,7 @@ export class SchemaCoder extends Coder {
     const propertyLines = Object.keys(properties ?? {}).map((name) => {
       const schemaCoder = new SchemaCoder(
         this.requirement.select(`properties/${name}`)!,
+        this.version,
       );
 
       return `"${name}": ${schemaCoder.write(script)}`;
@@ -45,7 +46,7 @@ export class SchemaCoder extends Coder {
   public arraySchema(script: Script): string {
     return `{
         type: "array",     
-        items: ${new SchemaCoder(this.requirement.get("items")!).write(script)}
+        items: ${new SchemaCoder(this.requirement.get("items")!, this.version).write(script)}
       }`;
   }
 

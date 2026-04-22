@@ -29,9 +29,9 @@ describe("a ParametersTypeCoder", () => {
       { in: "header", name: "name", schema: { type: "string" } },
     ]);
 
-    const pathCoder = new ParametersTypeCoder(requirement, "path");
-    const queryCoder = new ParametersTypeCoder(requirement, "query");
-    const headerCoder = new ParametersTypeCoder(requirement, "header");
+    const pathCoder = new ParametersTypeCoder(requirement, "", "path");
+    const queryCoder = new ParametersTypeCoder(requirement, "", "query");
+    const headerCoder = new ParametersTypeCoder(requirement, "", "header");
 
     await expect(
       format(`type TestType =${pathCoder.write({})}`),
@@ -52,9 +52,9 @@ describe("a ParametersTypeCoder", () => {
       { in: "header", name: "name", type: "string" },
     ]);
 
-    const pathCoder = new ParametersTypeCoder(requirement, "path");
-    const queryCoder = new ParametersTypeCoder(requirement, "query");
-    const headerCoder = new ParametersTypeCoder(requirement, "header");
+    const pathCoder = new ParametersTypeCoder(requirement, "", "path");
+    const queryCoder = new ParametersTypeCoder(requirement, "", "query");
+    const headerCoder = new ParametersTypeCoder(requirement, "", "header");
 
     await expect(
       format(`type TestType =${pathCoder.write({})}`),
@@ -72,7 +72,7 @@ describe("a ParametersTypeCoder", () => {
       { in: "path", name: "id", required: true, schema: { type: "string" } },
     ]);
 
-    const coder = new ParametersTypeCoder(requirement, "query");
+    const coder = new ParametersTypeCoder(requirement, "", "query");
 
     await expect(
       format(`type TestType =${coder.write({})}`),
@@ -95,7 +95,7 @@ describe("a ParametersTypeCoder", () => {
       },
     ]);
 
-    const coder = new ParametersTypeCoder(requirement, "query");
+    const coder = new ParametersTypeCoder(requirement, "", "query");
     const result = await format(`type TestType = ${coder.write({})}`);
 
     expect(result).toContain("* Status values for filter");
@@ -113,7 +113,7 @@ describe("a ParametersTypeCoder", () => {
       },
     ]);
 
-    const coder = new ParametersTypeCoder(requirement, "query");
+    const coder = new ParametersTypeCoder(requirement, "", "query");
     const result = await format(`type TestType = ${coder.write({})}`);
 
     expect(result).toContain("@deprecated");

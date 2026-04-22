@@ -175,7 +175,7 @@ export class CodeGenerator extends EventTarget {
         repository
           .get(`routes${path}.ts`)
           .export(
-            new OperationCoder(operation, requestMethod, securitySchemes),
+            new OperationCoder(operation, "", requestMethod, securitySchemes),
           );
       });
     });

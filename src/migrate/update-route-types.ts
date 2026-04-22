@@ -114,6 +114,7 @@ async function buildTypeNameMapping(
         // Create the type coder to get the correct type name
         const typeCoder = new OperationTypeCoder(
           operation,
+          "",
           requestMethod,
           securitySchemes,
         );
