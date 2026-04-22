@@ -287,7 +287,7 @@ describe("a Script", () => {
   });
 
   it("outputs the contents including Versions when versions are declared", async () => {
-    const repository = new Repository("/base/path");
+    const repository = new Repository();
     const script = repository.get("script.ts");
 
     class UserCoder extends Coder {
