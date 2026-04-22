@@ -51,6 +51,7 @@ describe("an OperationTypeCoder", () => {
   it("generates a list of potential names", () => {
     const coder = new OperationTypeCoder(
       new Requirement({}, "#/paths/hello/get"),
+      "",
       "get",
     );
 
@@ -67,6 +68,7 @@ describe("an OperationTypeCoder", () => {
     it("falls back to HTTP method when operationId is absent", () => {
       const coder = new OperationTypeCoder(
         new Requirement({}, "#/paths/hello/get"),
+        "",
         "get",
       );
 
@@ -76,6 +78,7 @@ describe("an OperationTypeCoder", () => {
     it("returns a plain operationId unchanged", () => {
       const coder = new OperationTypeCoder(
         new Requirement({ operationId: "getUser" }, "#/paths/hello/get"),
+        "",
         "get",
       );
 
@@ -88,6 +91,7 @@ describe("an OperationTypeCoder", () => {
           { operationId: "get-user-profile" },
           "#/paths/hello/get",
         ),
+        "",
         "get",
       );
 
@@ -97,6 +101,7 @@ describe("an OperationTypeCoder", () => {
     it("converts dot-separated operationId to camelCase", () => {
       const coder = new OperationTypeCoder(
         new Requirement({ operationId: "user.get" }, "#/paths/hello/get"),
+        "",
         "get",
       );
 
@@ -106,6 +111,7 @@ describe("an OperationTypeCoder", () => {
     it("converts space-separated operationId to camelCase", () => {
       const coder = new OperationTypeCoder(
         new Requirement({ operationId: "get user" }, "#/paths/hello/get"),
+        "",
         "get",
       );
 
@@ -115,6 +121,7 @@ describe("an OperationTypeCoder", () => {
     it("camelCases across non-identifier characters", () => {
       const coder = new OperationTypeCoder(
         new Requirement({ operationId: "get@user!" }, "#/paths/hello/get"),
+        "",
         "get",
       );
 
@@ -124,6 +131,7 @@ describe("an OperationTypeCoder", () => {
     it("prefixes with underscore when operationId starts with a digit", () => {
       const coder = new OperationTypeCoder(
         new Requirement({ operationId: "123getUser" }, "#/paths/hello/get"),
+        "",
         "get",
       );
 
@@ -133,6 +141,7 @@ describe("an OperationTypeCoder", () => {
     it("appends underscore when operationId is a reserved word", () => {
       const coder = new OperationTypeCoder(
         new Requirement({ operationId: "delete" }, "#/paths/stuff/delete"),
+        "",
         "delete",
       );
 
@@ -142,6 +151,7 @@ describe("an OperationTypeCoder", () => {
     it("appends underscore when operationId is another reserved word", () => {
       const coder = new OperationTypeCoder(
         new Requirement({ operationId: "import" }, "#/paths/stuff/post"),
+        "",
         "post",
       );
 
@@ -151,6 +161,7 @@ describe("an OperationTypeCoder", () => {
     it("appends underscore when operationId is await", () => {
       const coder = new OperationTypeCoder(
         new Requirement({ operationId: "await" }, "#/paths/stuff/get"),
+        "",
         "get",
       );
 
@@ -159,6 +170,7 @@ describe("an OperationTypeCoder", () => {
     it("appends underscore when operationId becomes a reserved word after stripping trailing non-identifier chars", () => {
       const coder = new OperationTypeCoder(
         new Requirement({ operationId: "delete!!" }, "#/paths/stuff/delete"),
+        "",
         "delete",
       );
 
@@ -168,6 +180,7 @@ describe("an OperationTypeCoder", () => {
     it("does not append underscore when operationId already has a suffix making it non-reserved", () => {
       const coder = new OperationTypeCoder(
         new Requirement({ operationId: "deleteItem" }, "#/paths/stuff/delete"),
+        "",
         "delete",
       );
 
@@ -178,6 +191,7 @@ describe("an OperationTypeCoder", () => {
   it("creates a type declaration", () => {
     const coder = new OperationTypeCoder(
       new Requirement({}, "#/paths/hello/get"),
+      "",
       "get",
     );
 
@@ -187,6 +201,7 @@ describe("an OperationTypeCoder", () => {
   it("returns the module path", () => {
     const coder = new OperationTypeCoder(
       new Requirement({}, "#/paths/hello~1world/get"),
+      "",
       "get",
     );
 
@@ -196,6 +211,7 @@ describe("an OperationTypeCoder", () => {
   it("returns the module path for /", () => {
     const coder = new OperationTypeCoder(
       new Requirement({}, "#/paths/~1/get"),
+      "",
       "get",
     );
 
@@ -258,7 +274,7 @@ describe("an OperationTypeCoder", () => {
       "#/paths/hello/post",
     );
 
-    const coder = new OperationTypeCoder(requirement, "get");
+    const coder = new OperationTypeCoder(requirement, "", "get");
 
     await expect(
       format(`type TestType = ${coder.write(dummyScript)}`),
@@ -300,7 +316,7 @@ describe("an OperationTypeCoder", () => {
       "#/paths/hello/post",
     );
 
-    const coder = new OperationTypeCoder(requirement, "get");
+    const coder = new OperationTypeCoder(requirement, "", "get");
 
     await expect(
       format(`type TestType = ${coder.write(dummyScript)}`),
@@ -346,7 +362,7 @@ describe("an OperationTypeCoder", () => {
       }),
     };
 
-    const coder = new OperationTypeCoder(requirement, "get");
+    const coder = new OperationTypeCoder(requirement, "", "get");
 
     await expect(
       format(`type TestType = ${coder.write(dummyScript)}`),
@@ -395,7 +411,7 @@ describe("an OperationTypeCoder", () => {
       specification,
     );
 
-    const coder = new OperationTypeCoder(requirement, "get");
+    const coder = new OperationTypeCoder(requirement, "", "get");
 
     await expect(
       format(`type TestType = ${coder.write(dummyScript)}`),
@@ -418,7 +434,7 @@ describe("an OperationTypeCoder", () => {
       "#/paths/hello/get",
     );
 
-    const coder = new OperationTypeCoder(requirement, "get");
+    const coder = new OperationTypeCoder(requirement, "", "get");
 
     await expect(
       format(`type TestType =${coder.write(dummyScript)}`),
@@ -439,7 +455,7 @@ describe("an OperationTypeCoder", () => {
       "#/paths/hello/get",
     );
 
-    const coder = new OperationTypeCoder(requirement, "get");
+    const coder = new OperationTypeCoder(requirement, "", "get");
 
     await expect(
       format(`type TestType =${coder.write(dummyScript)}`),
@@ -460,7 +476,7 @@ describe("an OperationTypeCoder", () => {
       "#/paths/hello/get",
     );
 
-    const coder = new OperationTypeCoder(requirement, "get");
+    const coder = new OperationTypeCoder(requirement, "", "get");
 
     await expect(
       format(`type TestType =${coder.write(dummyScript)}`),
@@ -483,7 +499,7 @@ describe("an OperationTypeCoder", () => {
       "#/paths/hello/get",
     );
 
-    const coder = new OperationTypeCoder(requirement, "get", [
+    const coder = new OperationTypeCoder(requirement, "", "get", [
       {
         scheme: "basic",
         type: "http",
@@ -498,6 +514,7 @@ describe("an OperationTypeCoder", () => {
   it("uses operationId for type names when available", () => {
     const coder = new OperationTypeCoder(
       new Requirement({ operationId: "addPet" }, "#/paths/pet/post"),
+      "",
       "post",
     );
 
@@ -509,6 +526,7 @@ describe("an OperationTypeCoder", () => {
   it("falls back to HTTP_METHOD when operationId is not available", () => {
     const coder = new OperationTypeCoder(
       new Requirement({}, "#/paths/pet/post"),
+      "",
       "post",
     );
 
@@ -554,7 +572,7 @@ describe("an OperationTypeCoder", () => {
       },
     };
 
-    const coder = new OperationTypeCoder(requirement, "get");
+    const coder = new OperationTypeCoder(requirement, "", "get");
     const result = coder.write(scriptWithExportTracking);
 
     // Verify that parameter types are exported
@@ -601,7 +619,7 @@ describe("an OperationTypeCoder", () => {
       },
     };
 
-    const coder = new OperationTypeCoder(requirement, "get");
+    const coder = new OperationTypeCoder(requirement, "", "get");
     const result = coder.write(scriptWithExportTracking);
 
     // Verify that parameter types are NOT exported when they are 'never'
@@ -652,7 +670,7 @@ describe("an OperationTypeCoder", () => {
       },
     };
 
-    const coder = new OperationTypeCoder(requirement, "get");
+    const coder = new OperationTypeCoder(requirement, "", "get");
     const result = coder.write(scriptWithExportTracking);
 
     expect(scriptWithExportTracking.exports).toHaveProperty(
@@ -691,7 +709,7 @@ describe("an OperationTypeCoder", () => {
       "#/paths/stuff/post",
     );
 
-    const coder = new OperationTypeCoder(requirement, "post");
+    const coder = new OperationTypeCoder(requirement, "", "post");
 
     expect(() => coder.responseTypes(dummyScript)).not.toThrow();
     expect(coder.responseTypes(dummyScript)).toContain("body?: unknown");

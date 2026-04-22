@@ -34,7 +34,7 @@ export class SchemaTypeCoder extends TypeCoder {
 
     const requirement = this.requirement.get("additionalProperties")!;
 
-    return new SchemaTypeCoder(requirement).write(script);
+    return new SchemaTypeCoder(requirement, this.version).write(script);
   }
 
   public objectSchema(script: Script): string {
@@ -59,9 +59,11 @@ export class SchemaTypeCoder extends TypeCoder {
       const comment = buildJsDoc(property.data);
       const commentPrefix = comment ? `\n${comment}` : "";
 
-      return `${commentPrefix}"${name}"${optionalFlag}: ${new SchemaTypeCoder(
-        property,
-      ).write(script)}`;
+      const propertyType = new SchemaTypeCoder(property, this.version).write(
+        script,
+      );
+
+      return `${commentPrefix}"${name}"${optionalFlag}: ${propertyType}`;
     });
 
     if (typedData.additionalProperties) {
@@ -74,9 +76,10 @@ export class SchemaTypeCoder extends TypeCoder {
   }
 
   public arraySchema(script: Script): string {
-    return `Array<${new SchemaTypeCoder(this.requirement.get("items")!).write(
-      script,
-    )}>`;
+    return `Array<${new SchemaTypeCoder(
+      this.requirement.get("items")!,
+      this.version,
+    ).write(script)}>`;
   }
 
   public writePrimitive(value: unknown): string {
@@ -144,7 +147,10 @@ export class SchemaTypeCoder extends TypeCoder {
     const key = matchingKey();
     const items = (allOf ?? anyOf ?? oneOf) as unknown[];
     const types = items.map((_item, index) =>
-      new SchemaTypeCoder(this.requirement.get(key)!.get(index)!).write(script),
+      new SchemaTypeCoder(
+        this.requirement.get(key)!.get(index)!,
+        this.version,
+      ).write(script),
     );
 
     return types.join(allOf ? " & " : " | ");

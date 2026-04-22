@@ -55,12 +55,13 @@ export class OperationTypeCoder extends TypeCoder {
 
   public constructor(
     requirement: Requirement,
-    requestMethod: string,
+    version = "",
+    requestMethod = "",
     securitySchemes: SecurityScheme[] = [],
   ) {
-    super(requirement);
+    super(requirement, version);
 
-    if (requestMethod === undefined) {
+    if (requestMethod === "") {
       throw new Error("requestMethod is required");
     }
 
@@ -120,6 +121,7 @@ export class OperationTypeCoder extends TypeCoder {
 
     const coder = new ParameterExportTypeCoder(
       this.requirement,
+      this.version,
       typeName,
       inlineType,
       parameterKind,
@@ -148,7 +150,7 @@ export class OperationTypeCoder extends TypeCoder {
             (content, contentType) => `{  
               status: ${status}, 
               contentType?: "${contentType}",
-              body?: ${content.has("schema") ? new SchemaTypeCoder(content.get("schema")!).write(script) : "unknown"}
+              body?: ${content.has("schema") ? new SchemaTypeCoder(content.get("schema")!, this.version).write(script) : "unknown"}
             }`,
           );
         }
@@ -165,7 +167,7 @@ export class OperationTypeCoder extends TypeCoder {
                 (contentType) => `{
             status: ${status},
             contentType?: "${contentType}",
-            body?: ${new SchemaTypeCoder(response.get("schema")!).write(script)}
+            body?: ${new SchemaTypeCoder(response.get("schema")!, this.version).write(script)}
           }`,
               )
               .join(" | ");
@@ -226,19 +228,29 @@ export class OperationTypeCoder extends TypeCoder {
 
     const parameters = this.requirement.get("parameters");
 
-    const queryType = new ParametersTypeCoder(parameters!, "query").write(
-      script,
-    );
+    const queryType = new ParametersTypeCoder(
+      parameters!,
+      this.version,
+      "query",
+    ).write(script);
 
-    const pathType = new ParametersTypeCoder(parameters!, "path").write(script);
+    const pathType = new ParametersTypeCoder(
+      parameters!,
+      this.version,
+      "path",
+    ).write(script);
 
-    const headersType = new ParametersTypeCoder(parameters!, "header").write(
-      script,
-    );
+    const headersType = new ParametersTypeCoder(
+      parameters!,
+      this.version,
+      "header",
+    ).write(script);
 
-    const cookieType = new ParametersTypeCoder(parameters!, "cookie").write(
-      script,
-    );
+    const cookieType = new ParametersTypeCoder(
+      parameters!,
+      this.version,
+      "cookie",
+    ).write(script);
 
     const bodyRequirement =
       (this.requirement.get("consumes") ??
@@ -257,13 +269,16 @@ export class OperationTypeCoder extends TypeCoder {
     const bodyType =
       bodyRequirement === undefined
         ? "never"
-        : new SchemaTypeCoder(bodyRequirement).write(script);
+        : new SchemaTypeCoder(bodyRequirement, this.version).write(script);
+
+    const openApi2MediaTypes = (this.requirement.get("produces")?.data ??
+      this.requirement.specification?.rootRequirement?.get("produces")
+        ?.data) as string[] | undefined;
 
     const responseType = new ResponsesTypeCoder(
       this.requirement.get("responses")!,
-      (this.requirement.get("produces")?.data ??
-        this.requirement.specification?.rootRequirement?.get("produces")
-          ?.data) as string[] | undefined,
+      this.version,
+      openApi2MediaTypes,
     ).write(script);
 
     const proxyType = "(url: string) => COUNTERFACT_RESPONSE";
@@ -304,8 +319,6 @@ export class OperationTypeCoder extends TypeCoder {
       modulePath,
     );
 
-    return `($: OmitValueWhenNever<{ query: ${queryTypeName}, path: ${pathTypeName}, headers: ${headersTypeName}, cookie: ${cookieTypeName}, body: ${bodyType}, context: ${contextTypeImportName}, response: ${responseType}, x: ${xType}, proxy: ${proxyType}, user: ${this.userType()}, delay: ${delayType} }>) => MaybePromise<${this.responseTypes(
-      script,
-    )} | { status: 415, contentType: "text/plain", body: string } | COUNTERFACT_RESPONSE | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }>`;
+    return `($: OmitValueWhenNever<{ query: ${queryTypeName}, path: ${pathTypeName}, headers: ${headersTypeName}, cookie: ${cookieTypeName}, body: ${bodyType}, context: ${contextTypeImportName}, response: ${responseType}, x: ${xType}, proxy: ${proxyType}, user: ${this.userType()}, delay: ${delayType} }>) => MaybePromise<COUNTERFACT_RESPONSE>`;
   }
 }
