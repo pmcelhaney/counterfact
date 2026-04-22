@@ -251,12 +251,7 @@ export class Script {
   }
 
   public declareVersion(coder: Coder, name: string): void {
-    const version =
-      (
-        coder as Coder & {
-          version?: string;
-        }
-      ).version ?? "";
+    const version = coder.version;
 
     const versions =
       this.versions.get(name) ?? new Map<string, ExportStatement>();
@@ -273,7 +268,7 @@ export class Script {
       isDefault: false,
       isType: true,
       jsdoc: "",
-      typeDeclaration: coder.typeDeclaration(this.exports, this),
+      typeDeclaration: "",
     };
 
     versionStatement.promise = coder
@@ -382,7 +377,7 @@ export class Script {
       const mappedVersions = Array.from(
         versions,
         ([version, versionStatement]) =>
-          `"${version}": ${versionStatement.typeDeclaration || (versionStatement.code as string)}`,
+          `"${version}": ${versionStatement.code as string}`,
       );
 
       return `"${name}": { ${mappedVersions.join(", ")} }`;
