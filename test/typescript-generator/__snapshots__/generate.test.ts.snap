@@ -64,24 +64,7 @@ export type addPet = (
     user: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
-) => MaybePromise<
-  | {
-      status: 200;
-      contentType?: "application/xml";
-      body?: Pet;
-    }
-  | {
-      status: 200;
-      contentType?: "application/json";
-      body?: Pet;
-    }
-  | {
-      status: 405;
-    }
-  | { status: 415; contentType: "text/plain"; body: string }
-  | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
->;
+) => MaybePromise<COUNTERFACT_RESPONSE>;
 
 /**
  * Update an existing pet by Id
@@ -132,30 +115,7 @@ export type updatePet = (
     user: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
-) => MaybePromise<
-  | {
-      status: 200;
-      contentType?: "application/xml";
-      body?: Pet;
-    }
-  | {
-      status: 200;
-      contentType?: "application/json";
-      body?: Pet;
-    }
-  | {
-      status: 400;
-    }
-  | {
-      status: 404;
-    }
-  | {
-      status: 405;
-    }
-  | { status: 415; contentType: "text/plain"; body: string }
-  | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
->;
+) => MaybePromise<COUNTERFACT_RESPONSE>;
 "
 `;
 
@@ -218,24 +178,7 @@ export type findPetsByStatus = (
     user: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
-) => MaybePromise<
-  | {
-      status: 200;
-      contentType?: "application/xml";
-      body?: Array<Pet>;
-    }
-  | {
-      status: 200;
-      contentType?: "application/json";
-      body?: Array<Pet>;
-    }
-  | {
-      status: 400;
-    }
-  | { status: 415; contentType: "text/plain"; body: string }
-  | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
->;
+) => MaybePromise<COUNTERFACT_RESPONSE>;
 
 export type findPetsByStatus_Query = {
   /**
@@ -305,24 +248,7 @@ export type findPetsByTags = (
     user: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
-) => MaybePromise<
-  | {
-      status: 200;
-      contentType?: "application/xml";
-      body?: Array<Pet>;
-    }
-  | {
-      status: 200;
-      contentType?: "application/json";
-      body?: Array<Pet>;
-    }
-  | {
-      status: 400;
-    }
-  | { status: 415; contentType: "text/plain"; body: string }
-  | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
->;
+) => MaybePromise<COUNTERFACT_RESPONSE>;
 
 export type findPetsByTags_Query = {
   /**
@@ -408,27 +334,7 @@ export type getPetById = (
     user: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
-) => MaybePromise<
-  | {
-      status: 200;
-      contentType?: "application/xml";
-      body?: Pet;
-    }
-  | {
-      status: 200;
-      contentType?: "application/json";
-      body?: Pet;
-    }
-  | {
-      status: 400;
-    }
-  | {
-      status: 404;
-    }
-  | { status: 415; contentType: "text/plain"; body: string }
-  | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
->;
+) => MaybePromise<COUNTERFACT_RESPONSE>;
 
 export type updatePetWithForm = (
   $: OmitValueWhenNever<{
@@ -451,14 +357,7 @@ export type updatePetWithForm = (
     user: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
-) => MaybePromise<
-  | {
-      status: 405;
-    }
-  | { status: 415; contentType: "text/plain"; body: string }
-  | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
->;
+) => MaybePromise<COUNTERFACT_RESPONSE>;
 
 export type deletePet = (
   $: OmitValueWhenNever<{
@@ -481,14 +380,7 @@ export type deletePet = (
     user: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
-) => MaybePromise<
-  | {
-      status: 400;
-    }
-  | { status: 415; contentType: "text/plain"; body: string }
-  | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
->;
+) => MaybePromise<COUNTERFACT_RESPONSE>;
 
 export type getPetById_Path = {
   /**
@@ -573,16 +465,7 @@ export type uploadFile = (
     user: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
-) => MaybePromise<
-  | {
-      status: 200;
-      contentType?: "application/json";
-      body?: ApiResponse;
-    }
-  | { status: 415; contentType: "text/plain"; body: string }
-  | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
->;
+) => MaybePromise<COUNTERFACT_RESPONSE>;
 
 export type uploadFile_Query = {
   /**
@@ -649,16 +532,7 @@ export type getInventory = (
     user: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
-) => MaybePromise<
-  | {
-      status: 200;
-      contentType?: "application/json";
-      body?: { [key: string]: number };
-    }
-  | { status: 415; contentType: "text/plain"; body: string }
-  | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
->;
+) => MaybePromise<COUNTERFACT_RESPONSE>;
 "
 `;
 
@@ -718,19 +592,7 @@ export type placeOrder = (
     user: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
-) => MaybePromise<
-  | {
-      status: 200;
-      contentType?: "application/json";
-      body?: Order;
-    }
-  | {
-      status: 405;
-    }
-  | { status: 415; contentType: "text/plain"; body: string }
-  | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
->;
+) => MaybePromise<COUNTERFACT_RESPONSE>;
 "
 `;
 
@@ -804,27 +666,7 @@ export type getOrderById = (
     user: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
-) => MaybePromise<
-  | {
-      status: 200;
-      contentType?: "application/xml";
-      body?: Order;
-    }
-  | {
-      status: 200;
-      contentType?: "application/json";
-      body?: Order;
-    }
-  | {
-      status: 400;
-    }
-  | {
-      status: 404;
-    }
-  | { status: 415; contentType: "text/plain"; body: string }
-  | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
->;
+) => MaybePromise<COUNTERFACT_RESPONSE>;
 
 /**
  * For valid response try integer IDs with value < 1000. Anything above 1000 or nonintegers will generate API errors
@@ -856,17 +698,7 @@ export type deleteOrder = (
     user: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
-) => MaybePromise<
-  | {
-      status: 400;
-    }
-  | {
-      status: 404;
-    }
-  | { status: 415; contentType: "text/plain"; body: string }
-  | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
->;
+) => MaybePromise<COUNTERFACT_RESPONSE>;
 
 export type getOrderById_Path = {
   /**
@@ -938,21 +770,7 @@ export type createUser = (
     user: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
-) => MaybePromise<
-  | {
-      status: number | undefined;
-      contentType?: "application/json";
-      body?: User;
-    }
-  | {
-      status: number | undefined;
-      contentType?: "application/xml";
-      body?: User;
-    }
-  | { status: 415; contentType: "text/plain"; body: string }
-  | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
->;
+) => MaybePromise<COUNTERFACT_RESPONSE>;
 "
 `;
 
@@ -1016,24 +834,7 @@ export type createUsersWithListInput = (
     user: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
-) => MaybePromise<
-  | {
-      status: 200;
-      contentType?: "application/xml";
-      body?: User;
-    }
-  | {
-      status: 200;
-      contentType?: "application/json";
-      body?: User;
-    }
-  | {
-      status: number | undefined;
-    }
-  | { status: 415; contentType: "text/plain"; body: string }
-  | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
->;
+) => MaybePromise<COUNTERFACT_RESPONSE>;
 "
 `;
 
@@ -1095,24 +896,7 @@ export type loginUser = (
     user: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
-) => MaybePromise<
-  | {
-      status: 200;
-      contentType?: "application/xml";
-      body?: string;
-    }
-  | {
-      status: 200;
-      contentType?: "application/json";
-      body?: string;
-    }
-  | {
-      status: 400;
-    }
-  | { status: 415; contentType: "text/plain"; body: string }
-  | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
->;
+) => MaybePromise<COUNTERFACT_RESPONSE>;
 
 export type loginUser_Query = {
   /**
@@ -1170,14 +954,7 @@ export type logoutUser = (
     user: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
-) => MaybePromise<
-  | {
-      status: number | undefined;
-    }
-  | { status: 415; contentType: "text/plain"; body: string }
-  | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
->;
+) => MaybePromise<COUNTERFACT_RESPONSE>;
 "
 `;
 
@@ -1254,27 +1031,7 @@ export type getUserByName = (
     user: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
-) => MaybePromise<
-  | {
-      status: 200;
-      contentType?: "application/xml";
-      body?: User;
-    }
-  | {
-      status: 200;
-      contentType?: "application/json";
-      body?: User;
-    }
-  | {
-      status: 400;
-    }
-  | {
-      status: 404;
-    }
-  | { status: 415; contentType: "text/plain"; body: string }
-  | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
->;
+) => MaybePromise<COUNTERFACT_RESPONSE>;
 
 /**
  * This can only be done by the logged in user.
@@ -1300,14 +1057,7 @@ export type updateUser = (
     user: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
-) => MaybePromise<
-  | {
-      status: number | undefined;
-    }
-  | { status: 415; contentType: "text/plain"; body: string }
-  | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
->;
+) => MaybePromise<COUNTERFACT_RESPONSE>;
 
 /**
  * This can only be done by the logged in user.
@@ -1339,17 +1089,7 @@ export type deleteUser = (
     user: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
-) => MaybePromise<
-  | {
-      status: 400;
-    }
-  | {
-      status: 404;
-    }
-  | { status: 415; contentType: "text/plain"; body: string }
-  | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
->;
+) => MaybePromise<COUNTERFACT_RESPONSE>;
 
 export type getUserByName_Path = {
   /**
@@ -1571,16 +1311,7 @@ export type getRoot = (
     user: { username?: string; password?: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
-) => MaybePromise<
-  | {
-      status: number | undefined;
-      contentType?: "text/plain";
-      body?: string;
-    }
-  | { status: 415; contentType: "text/plain"; body: string }
-  | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
->;
+) => MaybePromise<COUNTERFACT_RESPONSE>;
 "
 `;
 
@@ -1605,7 +1336,6 @@ import type { COUNTERFACT_RESPONSE } from "../../counterfact-types/index.ts";
 import type { Context } from "@@CONTEXT_FILE_TOKEN@@";
 import type { ResponseBuilderFactory } from "../../counterfact-types/index.ts";
 import type { InternalServerError } from "../#/components/responses/InternalServerError.js";
-import type { Error } from "../components/schemas/Error.js";
 
 /**
  * outputs the number of times each URL was visited
@@ -1636,21 +1366,7 @@ export type getCount = (
     user: { username?: string; password?: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
-) => MaybePromise<
-  | {
-      status: 200;
-      contentType?: "application/json";
-      body?: number;
-    }
-  | {
-      status: 500;
-      contentType?: "application/json";
-      body?: Error;
-    }
-  | { status: 415; contentType: "text/plain"; body: string }
-  | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
->;
+) => MaybePromise<COUNTERFACT_RESPONSE>;
 "
 `;
 
@@ -1706,16 +1422,7 @@ export type helloKitty = (
     user: { username?: string; password?: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
-) => MaybePromise<
-  | {
-      status: number | undefined;
-      contentType?: "application/json";
-      body?: string;
-    }
-  | { status: 415; contentType: "text/plain"; body: string }
-  | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
->;
+) => MaybePromise<COUNTERFACT_RESPONSE>;
 "
 `;
 
@@ -1740,7 +1447,6 @@ import type { COUNTERFACT_RESPONSE } from "../../../counterfact-types/index.ts";
 import type { Context } from "@@CONTEXT_FILE_TOKEN@@";
 import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts";
 import type { BadRequest } from "../../#/components/responses/BadRequest.js";
-import type { Error } from "../../components/schemas/Error.js";
 
 /**
  * says hello to someone
@@ -1777,21 +1483,7 @@ export type sayHello = (
     user: { username?: string; password?: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
-) => MaybePromise<
-  | {
-      status: 200;
-      contentType?: "application/json";
-      body?: string;
-    }
-  | {
-      status: 400;
-      contentType?: "application/json";
-      body?: Error;
-    }
-  | { status: 415; contentType: "text/plain"; body: string }
-  | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
->;
+) => MaybePromise<COUNTERFACT_RESPONSE>;
 
 export type sayHello_Query = {
   /**
@@ -1838,7 +1530,6 @@ import type { Context } from "@@CONTEXT_FILE_TOKEN@@";
 import type { ResponseBuilderFactory } from "../../counterfact-types/index.ts";
 import type { Recursive } from "../components/schemas/Recursive.js";
 import type { BadRequest } from "../#/components/responses/BadRequest.js";
-import type { Error } from "../components/schemas/Error.js";
 
 export type getPathOne = (
   $: OmitValueWhenNever<{
@@ -1866,21 +1557,7 @@ export type getPathOne = (
     user: { username?: string; password?: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
-) => MaybePromise<
-  | {
-      status: 200;
-      contentType?: "application/json";
-      body?: Recursive;
-    }
-  | {
-      status: 400;
-      contentType?: "application/json";
-      body?: Error;
-    }
-  | { status: 415; contentType: "text/plain"; body: string }
-  | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
->;
+) => MaybePromise<COUNTERFACT_RESPONSE>;
 "
 `;
 
@@ -1930,16 +1607,7 @@ export type weirdColonPath = (
     user: { username?: string; password?: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
-) => MaybePromise<
-  | {
-      status: 200;
-      contentType?: "application/json";
-      body?: string;
-    }
-  | { status: 415; contentType: "text/plain"; body: string }
-  | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
->;
+) => MaybePromise<COUNTERFACT_RESPONSE>;
 "
 `;
 
@@ -1972,9 +1640,9 @@ import type { UserList } from "../components/schemas/UserList.js";
 import type { BadRequest } from "../#/components/responses/BadRequest.js";
 import type { Unauthorized } from "../#/components/responses/Unauthorized.js";
 import type { InternalServerError } from "../#/components/responses/InternalServerError.js";
-import type { Error } from "../components/schemas/Error.js";
 import type { CreateUserRequest } from "../components/schemas/CreateUserRequest.js";
 import type { User } from "../components/schemas/User.js";
+import type { Error } from "../components/schemas/Error.js";
 
 /**
  * List all users with optional filtering and pagination
@@ -2013,31 +1681,7 @@ export type listUsers = (
     user: { username?: string; password?: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
-) => MaybePromise<
-  | {
-      status: 200;
-      contentType?: "application/json";
-      body?: UserList;
-    }
-  | {
-      status: 400;
-      contentType?: "application/json";
-      body?: Error;
-    }
-  | {
-      status: 401;
-      contentType?: "application/json";
-      body?: Error;
-    }
-  | {
-      status: 500;
-      contentType?: "application/json";
-      body?: Error;
-    }
-  | { status: 415; contentType: "text/plain"; body: string }
-  | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
->;
+) => MaybePromise<COUNTERFACT_RESPONSE>;
 
 /**
  * Create a new user
@@ -2081,31 +1725,7 @@ export type createUser = (
     user: { username?: string; password?: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
-) => MaybePromise<
-  | {
-      status: 201;
-      contentType?: "application/json";
-      body?: User;
-    }
-  | {
-      status: 400;
-      contentType?: "application/json";
-      body?: Error;
-    }
-  | {
-      status: 409;
-      contentType?: "application/json";
-      body?: Error;
-    }
-  | {
-      status: 500;
-      contentType?: "application/json";
-      body?: Error;
-    }
-  | { status: 415; contentType: "text/plain"; body: string }
-  | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
->;
+) => MaybePromise<COUNTERFACT_RESPONSE>;
 
 export type listUsers_Query = {
   page?: number;
@@ -2156,7 +1776,6 @@ import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts
 import type { User } from "../../components/schemas/User.js";
 import type { NotFound } from "../../#/components/responses/NotFound.js";
 import type { InternalServerError } from "../../#/components/responses/InternalServerError.js";
-import type { Error } from "../../components/schemas/Error.js";
 import type { CreateUserRequest } from "../../components/schemas/CreateUserRequest.js";
 import type { BadRequest } from "../../#/components/responses/BadRequest.js";
 import type { PatchUserRequest } from "../../components/schemas/PatchUserRequest.js";
@@ -2191,26 +1810,7 @@ export type getUser = (
     user: { username?: string; password?: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
-) => MaybePromise<
-  | {
-      status: 200;
-      contentType?: "application/json";
-      body?: User;
-    }
-  | {
-      status: 404;
-      contentType?: "application/json";
-      body?: Error;
-    }
-  | {
-      status: 500;
-      contentType?: "application/json";
-      body?: Error;
-    }
-  | { status: 415; contentType: "text/plain"; body: string }
-  | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
->;
+) => MaybePromise<COUNTERFACT_RESPONSE>;
 
 /**
  * Replace a user record entirely (idempotent)
@@ -2242,26 +1842,7 @@ export type replaceUser = (
     user: { username?: string; password?: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
-) => MaybePromise<
-  | {
-      status: 200;
-      contentType?: "application/json";
-      body?: User;
-    }
-  | {
-      status: 400;
-      contentType?: "application/json";
-      body?: Error;
-    }
-  | {
-      status: 404;
-      contentType?: "application/json";
-      body?: Error;
-    }
-  | { status: 415; contentType: "text/plain"; body: string }
-  | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
->;
+) => MaybePromise<COUNTERFACT_RESPONSE>;
 
 /**
  * Partially update a user record
@@ -2293,26 +1874,7 @@ export type patchUser = (
     user: { username?: string; password?: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
-) => MaybePromise<
-  | {
-      status: 200;
-      contentType?: "application/json";
-      body?: User;
-    }
-  | {
-      status: 400;
-      contentType?: "application/json";
-      body?: Error;
-    }
-  | {
-      status: 404;
-      contentType?: "application/json";
-      body?: Error;
-    }
-  | { status: 415; contentType: "text/plain"; body: string }
-  | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
->;
+) => MaybePromise<COUNTERFACT_RESPONSE>;
 
 /**
  * Delete a user (soft-delete)
@@ -2339,19 +1901,7 @@ export type deleteUser = (
     user: { username?: string; password?: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
-) => MaybePromise<
-  | {
-      status: 204;
-    }
-  | {
-      status: 404;
-      contentType?: "application/json";
-      body?: Error;
-    }
-  | { status: 415; contentType: "text/plain"; body: string }
-  | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
->;
+) => MaybePromise<COUNTERFACT_RESPONSE>;
 
 export type getUser_Path = {
   /**
@@ -2407,7 +1957,6 @@ import type { ClickEvent } from "../components/schemas/ClickEvent.js";
 import type { PurchaseEvent } from "../components/schemas/PurchaseEvent.js";
 import type { SignUpEvent } from "../components/schemas/SignUpEvent.js";
 import type { BadRequest } from "../#/components/responses/BadRequest.js";
-import type { Error } from "../components/schemas/Error.js";
 
 /**
  * Accept a polymorphic event. The request body may be any one of the known event subtypes (oneOf), demonstrating discriminator support.
@@ -2435,19 +1984,7 @@ export type createEvent = (
     user: { username?: string; password?: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
-) => MaybePromise<
-  | {
-      status: 202;
-    }
-  | {
-      status: 400;
-      contentType?: "application/json";
-      body?: Error;
-    }
-  | { status: 415; contentType: "text/plain"; body: string }
-  | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
->;
+) => MaybePromise<COUNTERFACT_RESPONSE>;
 "
 `;
 
@@ -2473,7 +2010,6 @@ import type { Context } from "@@CONTEXT_FILE_TOKEN@@";
 import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts";
 import type { Product } from "../../components/schemas/Product.js";
 import type { NotFound } from "../../#/components/responses/NotFound.js";
-import type { Error } from "../../components/schemas/Error.js";
 
 export type getProduct = (
   $: OmitValueWhenNever<{
@@ -2501,21 +2037,7 @@ export type getProduct = (
     user: { username?: string; password?: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
-) => MaybePromise<
-  | {
-      status: 200;
-      contentType?: "application/json";
-      body?: Product;
-    }
-  | {
-      status: 404;
-      contentType?: "application/json";
-      body?: Error;
-    }
-  | { status: 415; contentType: "text/plain"; body: string }
-  | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
->;
+) => MaybePromise<COUNTERFACT_RESPONSE>;
 
 export type getProduct_Path = { productId: number };
 "
@@ -2587,27 +2109,7 @@ export type uploadFile = (
     user: { username?: string; password?: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
-) => MaybePromise<
-  | {
-      status: 201;
-      contentType?: "application/json";
-      body?: {
-        id?: string;
-        /**
-         * @format uri
-         */
-        url?: string;
-      };
-    }
-  | {
-      status: 413;
-      contentType?: "application/json";
-      body?: Error;
-    }
-  | { status: 415; contentType: "text/plain"; body: string }
-  | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
->;
+) => MaybePromise<COUNTERFACT_RESPONSE>;
 "
 `;
 
@@ -2661,16 +2163,7 @@ export type listItemsLegacy = (
     user: { username?: string; password?: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
-) => MaybePromise<
-  | {
-      status: 200;
-      contentType?: "application/json";
-      body?: Array<string>;
-    }
-  | { status: 415; contentType: "text/plain"; body: string }
-  | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
->;
+) => MaybePromise<COUNTERFACT_RESPONSE>;
 
 export type listItemsLegacy_Cookie = { session_id?: string };
 "
@@ -2697,7 +2190,6 @@ import type { COUNTERFACT_RESPONSE } from "../../../counterfact-types/index.ts";
 import type { Context } from "@@CONTEXT_FILE_TOKEN@@";
 import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts";
 import type { NotFound } from "../../#/components/responses/NotFound.js";
-import type { Error } from "../../components/schemas/Error.js";
 
 /**
  * Download a report in the requested format
@@ -2734,31 +2226,7 @@ export type getReport = (
     user: { username?: string; password?: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
-) => MaybePromise<
-  | {
-      status: 200;
-      contentType?: "application/json";
-      body?: { rows?: Array<{ [key: string]: unknown }> };
-    }
-  | {
-      status: 200;
-      contentType?: "text/csv";
-      body?: string;
-    }
-  | {
-      status: 200;
-      contentType?: "application/pdf";
-      body?: Uint8Array | string;
-    }
-  | {
-      status: 404;
-      contentType?: "application/json";
-      body?: Error;
-    }
-  | { status: 415; contentType: "text/plain"; body: string }
-  | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
->;
+) => MaybePromise<COUNTERFACT_RESPONSE>;
 
 export type getReport_Path = { reportId: string };
 
@@ -2813,14 +2281,7 @@ export type ping = (
     user: { username?: string; password?: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
-) => MaybePromise<
-  | {
-      status: 204;
-    }
-  | { status: 415; contentType: "text/plain"; body: string }
-  | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
->;
+) => MaybePromise<COUNTERFACT_RESPONSE>;
 "
 `;
 
@@ -2873,16 +2334,7 @@ export type setMetadata = (
     user: { username?: string; password?: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
   }>,
-) => MaybePromise<
-  | {
-      status: 200;
-      contentType?: "application/json";
-      body?: { [key: string]: unknown };
-    }
-  | { status: 415; contentType: "text/plain"; body: string }
-  | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
->;
+) => MaybePromise<COUNTERFACT_RESPONSE>;
 "
 `;
 
@@ -2903,27 +2355,6 @@ export type InternalServerError = {
 `;
 
 exports[`end-to-end test generates the same code for the example that it did on the last test run 32`] = `
-"types/components/schemas/Error.ts:/**
- * A generic error message suitable for 4xx and 5xx responses
- */
-export type Error = {
-  /**
-   * A machine-readable error code
-   */
-  code?: string;
-  /**
-   * A human-readable description of the error
-   */
-  message: string;
-  /**
-   * Field-level validation errors
-   */
-  details?: Array<{ field?: string; issue?: string }>;
-};
-"
-`;
-
-exports[`end-to-end test generates the same code for the example that it did on the last test run 33`] = `
 "types/#/components/responses/BadRequest.ts:import type { Error } from "../../../components/schemas/Error.js";
 
 export type BadRequest = {
@@ -2939,14 +2370,14 @@ export type BadRequest = {
 "
 `;
 
-exports[`end-to-end test generates the same code for the example that it did on the last test run 34`] = `
+exports[`end-to-end test generates the same code for the example that it did on the last test run 33`] = `
 "types/components/schemas/Recursive.ts:import type { Recursive } from "./Recursive.js";
 
 export type Recursive = Recursive;
 "
 `;
 
-exports[`end-to-end test generates the same code for the example that it did on the last test run 35`] = `
+exports[`end-to-end test generates the same code for the example that it did on the last test run 34`] = `
 "types/components/schemas/UserList.ts:import type { User } from "./User.js";
 
 export type UserList = {
@@ -2958,7 +2389,7 @@ export type UserList = {
 "
 `;
 
-exports[`end-to-end test generates the same code for the example that it did on the last test run 36`] = `
+exports[`end-to-end test generates the same code for the example that it did on the last test run 35`] = `
 "types/#/components/responses/Unauthorized.ts:import type { Error } from "../../../components/schemas/Error.js";
 
 export type Unauthorized = {
@@ -2974,7 +2405,7 @@ export type Unauthorized = {
 "
 `;
 
-exports[`end-to-end test generates the same code for the example that it did on the last test run 37`] = `
+exports[`end-to-end test generates the same code for the example that it did on the last test run 36`] = `
 "types/components/schemas/CreateUserRequest.ts:export type CreateUserRequest = {
   name: string;
   /**
@@ -2990,7 +2421,7 @@ exports[`end-to-end test generates the same code for the example that it did on 
 "
 `;
 
-exports[`end-to-end test generates the same code for the example that it did on the last test run 38`] = `
+exports[`end-to-end test generates the same code for the example that it did on the last test run 37`] = `
 "types/components/schemas/User.ts:export type User = {
   /**
    * Opaque unique identifier
@@ -3018,6 +2449,27 @@ exports[`end-to-end test generates the same code for the example that it did on 
    * Arbitrary key/value pairs attached to the user
    */
   metadata?: { [key: string]: string };
+};
+"
+`;
+
+exports[`end-to-end test generates the same code for the example that it did on the last test run 38`] = `
+"types/components/schemas/Error.ts:/**
+ * A generic error message suitable for 4xx and 5xx responses
+ */
+export type Error = {
+  /**
+   * A machine-readable error code
+   */
+  code?: string;
+  /**
+   * A human-readable description of the error
+   */
+  message: string;
+  /**
+   * Field-level validation errors
+   */
+  details?: Array<{ field?: string; issue?: string }>;
 };
 "
 `;
