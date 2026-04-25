@@ -1,4 +1,4 @@
-openapi: 3.0.3
+openapi: 3.1.0
 info:
   version: 1.0.0
   title: Sample API
@@ -579,6 +579,33 @@ paths:
                 type: object
                 additionalProperties: true
 
+  # -----------------------------------------------------------------------
+  # Bug: Query Params of Type Object do not explode #1933
+  # -----------------------------------------------------------------------
+  /explodable-parameters:
+    get:
+      description: Demonstrate explodable query parameters (https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.2.md#fixed-fields-for-use-with-schema)
+      parameters:
+        - name: pageable
+          in: query
+          required: true
+          schema:
+            $ref: "#/components/schemas/Pageable"
+        - name: pageable-not-exploded
+          in: query
+          required: false
+          explode: false
+          schema:
+            $ref: "#/components/schemas/Pageable"
+      responses:
+        "200":
+          description: Metadata saved
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+
 components:
   # -----------------------------------------------------------------------
   # Reusable responses
@@ -826,6 +853,21 @@ components:
               format: uri
             elementId:
               type: string
+    Pageable:
+      type: object
+      properties:
+        page:
+          type: integer
+          format: int32
+          minimum: 0
+        size:
+          type: integer
+          format: int32
+          minimum: 1
+        sort:
+          type: array
+          items:
+            type: string
 
     PurchaseEvent:
       title: PurchaseEvent
