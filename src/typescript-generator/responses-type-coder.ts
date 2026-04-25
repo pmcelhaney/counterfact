@@ -42,16 +42,25 @@ export class ResponsesTypeCoder extends TypeCoder {
   }
 
   public buildResponseObjectType(script: Script): string {
-    return printObjectWithoutQuotes(
-      this.requirement.map((response, responseCode): [string, string] => [
+    const entries: [string, string][] = this.requirement.map(
+      (response, responseCode): [string, string] => [
         this.normalizeStatusCode(responseCode),
         new ResponseTypeCoder(
           response,
           this.version,
           this.openApi2MediaTypes,
         ).write(script),
-      ]),
+      ],
     );
+
+    const explicitEntries = entries.filter(([key]) => !key.startsWith("["));
+    const mappedEntries = entries.filter(([key]) => key.startsWith("["));
+
+    if (explicitEntries.length > 0 && mappedEntries.length > 0) {
+      return `${printObjectWithoutQuotes(explicitEntries)} & ${printObjectWithoutQuotes(mappedEntries)}`;
+    }
+
+    return printObjectWithoutQuotes(entries);
   }
 
   public override writeCode(script: Script): string {
