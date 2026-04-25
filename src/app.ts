@@ -7,6 +7,7 @@ import type { Config } from "./server/config.js";
 import { ContextRegistry } from "./server/context-registry.js";
 import { createKoaApp } from "./server/web-server/create-koa-app.js";
 import { ScenarioRegistry } from "./server/scenario-registry.js";
+import { Repository } from "./typescript-generator/repository.js";
 
 export { loadOpenApiDocument } from "./server/load-openapi-document.js";
 export {
@@ -220,6 +221,7 @@ export async function counterfact(config: Config, specs?: SpecConfig[]) {
       ApiRunner.create(
         { ...config, openApiPath: spec.source, prefix: spec.prefix },
         spec.group,
+        spec.version ?? "",
       ),
     ),
   );
@@ -241,6 +243,11 @@ export async function counterfact(config: Config, specs?: SpecConfig[]) {
     // destination), so running them in parallel would cause a race when both
     // try to create that directory at startup.  Different groups are still
     // generated in parallel.
+    //
+    // When multiple versioned specs share the same group, they also share a
+    // single Repository instance so that the shared `types/paths/…` files
+    // accumulate all versions into a merged Versioned<…> type instead of each
+    // overwriting the previous version's types.
     const runnersByGroup = new Map<string, ApiRunner[]>();
     for (const runner of runners) {
       const bucket = runnersByGroup.get(runner.group) ?? [];
@@ -249,8 +256,10 @@ export async function counterfact(config: Config, specs?: SpecConfig[]) {
     }
     await Promise.all(
       Array.from(runnersByGroup.values()).map(async (bucket) => {
+        const sharedRepository =
+          bucket.length > 1 ? new Repository() : undefined;
         for (const runner of bucket) {
-          await runner.generate();
+          await runner.generate(sharedRepository);
         }
       }),
     );
