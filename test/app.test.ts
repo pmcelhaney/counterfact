@@ -101,14 +101,14 @@ describe("counterfact", () => {
     );
   });
 
-  it("throws when multiple specs include duplicate groups (no version)", async () => {
+  it("throws when multiple specs include duplicate groups", async () => {
     const specs = [
       { source: "_", prefix: "/api/v1", group: "billing" },
       { source: "_", prefix: "/api/v2", group: "billing" },
     ];
 
     await expect((app as any).counterfact(mockConfig, specs)).rejects.toThrow(
-      'Specs sharing the same group must each have a non-empty, distinct version. Group "billing" has entries with missing or empty version.',
+      "Each spec must define a unique group (and version) when multiple APIs are configured",
     );
   });
 
@@ -126,18 +126,6 @@ describe("counterfact", () => {
     );
   });
 
-  it("throws when two specs share the same group and only one has a version (mixed)", async () => {
-    const specs = [
-      { source: "_", prefix: "/api/v1", group: "my-api", version: "v1" },
-      // no version field — simulates user input before normalization; treated as ""
-      { source: "_", prefix: "/api/v2", group: "my-api" },
-    ];
-
-    await expect((app as any).counterfact(mockConfig, specs)).rejects.toThrow(
-      'Specs sharing the same group must each have a non-empty, distinct version. Group "my-api" has entries with missing or empty version.',
-    );
-  });
-
   it("throws when two specs share the same group and same non-empty version", async () => {
     const specs = [
       { source: "_", prefix: "/api/v1", group: "my-api", version: "v1" },
@@ -145,7 +133,7 @@ describe("counterfact", () => {
     ];
 
     await expect((app as any).counterfact(mockConfig, specs)).rejects.toThrow(
-      'Specs in group "my-api" must each have a unique version (duplicate versions: v1).',
+      "Each spec must define a unique group (and version) when multiple APIs are configured",
     );
   });
 
@@ -245,9 +233,125 @@ describe("counterfact", () => {
       await stop();
     });
   });
-});
+  it("derives prefix from group+version when no explicit prefix is provided", async () => {
+    const spy = jest.spyOn(ApiRunner, "create");
 
-describe("runStartupScenario", () => {
+    const specs = [
+      { source: "_", group: "my-api", version: "v1" },
+      { source: "_", group: "my-api", version: "v2" },
+    ];
+
+    await (app as any).counterfact(mockConfig, specs);
+
+    expect(spy).toHaveBeenCalledWith(
+      expect.objectContaining({ prefix: "/my-api/v1" }),
+      "my-api",
+    );
+    expect(spy).toHaveBeenCalledWith(
+      expect.objectContaining({ prefix: "/my-api/v2" }),
+      "my-api",
+    );
+
+    spy.mockRestore();
+  });
+
+  it("uses explicit prefix even when group and version are present", async () => {
+    const spy = jest.spyOn(ApiRunner, "create");
+
+    const specs = [
+      { source: "_", prefix: "/custom/path", group: "my-api", version: "v1" },
+    ];
+
+    await (app as any).counterfact(mockConfig, specs);
+
+    expect(spy).toHaveBeenCalledWith(
+      expect.objectContaining({ prefix: "/custom/path" }),
+      "my-api",
+    );
+
+    spy.mockRestore();
+  });
+
+  it("derives prefix from group alone when version is absent", async () => {
+    const spy = jest.spyOn(ApiRunner, "create");
+
+    const specs = [{ source: "_", group: "my-api" }];
+
+    await (app as any).counterfact(mockConfig, specs);
+
+    expect(spy).toHaveBeenCalledWith(
+      expect.objectContaining({ prefix: "/my-api" }),
+      "my-api",
+    );
+
+    spy.mockRestore();
+  });
+
+  it("allows two specs with the same group but different versions", async () => {
+    const specs = [
+      { source: "_", group: "my-api", version: "v1" },
+      { source: "_", group: "my-api", version: "v2" },
+    ];
+
+    await expect((app as any).counterfact(mockConfig, specs)).resolves.toEqual(
+      expect.objectContaining({
+        start: expect.any(Function),
+        startRepl: expect.any(Function),
+      }),
+    );
+  });
+
+  it("throws when two specs share the same group and version", async () => {
+    const specs = [
+      { source: "_", group: "my-api", version: "v1" },
+      { source: "_", group: "my-api", version: "v1" },
+    ];
+
+    await expect((app as any).counterfact(mockConfig, specs)).rejects.toThrow(
+      "Each spec must define a unique group (and version) when multiple APIs are configured",
+    );
+  });
+
+  it("routes two versioned specs to their derived prefixes", async () => {
+    await usingTemporaryFiles(async ($) => {
+      await $.add(
+        "v1/routes/greet.js",
+        `export function GET() { return { body: "hello from v1" }; }`,
+      );
+      await $.add(
+        "v2/routes/greet.js",
+        `export function GET() { return { body: "hello from v2" }; }`,
+      );
+
+      // Two specs with distinct groups and versions: each is auto-mounted at /<group>/<version>.
+      // Using v1/v1 and v2/v2 keeps the route files in separate directories.
+      const specs = [
+        { source: "_", group: "v1", version: "v1" },
+        { source: "_", group: "v2", version: "v2" },
+      ];
+
+      const { koaApp, start } = await (app as any).counterfact(
+        { ...mockConfig, basePath: $.path(".") },
+        specs,
+      );
+
+      const { stop } = await start({
+        startServer: true,
+        buildCache: false,
+        generate: { routes: false, types: false },
+        watch: { routes: false, types: false },
+      });
+
+      const v1Response = await request(koaApp.callback()).get("/v1/v1/greet");
+      const v2Response = await request(koaApp.callback()).get("/v2/v2/greet");
+
+      expect(v1Response.text).toContain("hello from v1");
+      expect(v2Response.text).toContain("hello from v2");
+
+      await stop();
+    });
+  });
+
   it("calls startup from the index module if it exists", async () => {
     const scenarioRegistry = new ScenarioRegistry();
     const contextRegistry = new ContextRegistry();

@@ -21,18 +21,37 @@ export {
  * When `counterfact()` is called with a `specs` array, one {@link ApiRunner}
  * is created per entry. When called without `specs`, a single entry is derived
  * from `config.openApiPath`, `config.prefix`, and `group = ""`.
+ *
+ * ### Prefix derivation
+ *
+ * When `prefix` is omitted (or `undefined`), the URL prefix is derived from
+ * `group` and `version` according to this table:
+ *
+ * | `prefix`    | `group` | `version` | Derived prefix       |
+ * |-------------|---------|-----------|----------------------|
+ * | provided    | any     | any       | use the explicit prefix |
+ * | absent      | set     | set       | `/<group>/<version>` |
+ * | absent      | set     | absent    | `/<group>`           |
+ * | absent      | absent  | absent    | `""` (root)          |
  */
 export interface SpecConfig {
   /** Path or URL to the OpenAPI document for this spec. */
   source: string;
-  /** URL prefix that this spec's runner intercepts. */
-  prefix: string;
+  /**
+   * URL prefix that this spec's runner intercepts.
+   *
+   * When absent, the prefix is derived automatically from `group` and
+   * `version` (see the derivation table on the interface). Pass an explicit
+   * empty string (`""`) to force the root prefix regardless of `group`/`version`.
+   */
+  prefix?: string;
   /** Name of the subdirectory under `config.basePath` where code is generated. */
   group: string;
   /**
-   * Optional version tag for this spec (defaults to `""` when omitted).
-   * When two specs share the same `group`, each must carry a distinct
-   * non-empty `version`.
+   * Optional version label for this spec (e.g. `"v1"`, `"v2"`).
+   *
+   * When combined with `group` and no explicit `prefix`, the server mounts
+   * this spec's routes under `/<group>/<version>`.
    */
   version?: string;
 }
@@ -70,19 +89,46 @@ export async function runStartupScenario(
 }
 
 /**
+ * Derives the URL prefix for a spec entry.
+ *
+ * Applies the following precedence rules:
+ *  1. Explicit `prefix` (even `""`) → returned as-is.
+ *  2. `group` + `version` both present → `/<group>/<version>`.
+ *  3. `group` present (no `version`) → `/<group>`.
+ *  4. Neither → `""` (root).
+ */
+function derivePrefix(
+  spec: Pick<SpecConfig, "prefix" | "group" | "version">,
+): string {
+  if (spec.prefix !== undefined) {
+    return spec.prefix;
+  }
+
+  if (spec.group && spec.version) {
+    return `/${spec.group}/${spec.version}`;
+  }
+
+  if (spec.group) {
+    return `/${spec.group}`;
+  }
+
+  return "";
+}
+
+/**
  * Normalises the spec configuration to an array.
  *
- * When `specs` is provided it is returned as-is. When it is omitted, a
- * single-entry array is constructed from `config.openApiPath`,
- * `config.prefix`, and `group = ""` so that the rest of the code never
- * needs to branch on single-vs-multiple specs.
+ * When `specs` is provided, each entry's `prefix` is resolved via
+ * {@link derivePrefix} so the rest of the code can assume `prefix` is always
+ * a string. When `specs` is omitted, a single-entry array is constructed from
+ * `config.openApiPath`, `config.prefix`, and `group = ""`.
  */
 function normalizeSpecs(
   config: Pick<Config, "openApiPath" | "prefix">,
   specs?: SpecConfig[],
-): SpecConfig[] {
+): Array<SpecConfig & { prefix: string }> {
   if (specs !== undefined) {
-    return specs;
+    return specs.map((spec) => ({ ...spec, prefix: derivePrefix(spec) }));
   }
 
   return [
@@ -95,7 +141,9 @@ function normalizeSpecs(
   ];
 }
 
-function validateSpecGroups(specs: SpecConfig[]): void {
+function validateSpecGroups(
+  specs: Array<SpecConfig & { prefix: string }>,
+): void {
   if (specs.length <= 1) {
     return;
   }
@@ -105,53 +153,39 @@ function validateSpecGroups(specs: SpecConfig[]): void {
     .filter(({ group }) => group === "")
     .map(({ index }) => String(index + 1));
 
-  if (invalidSpecNumbers.length > 0) {
+  if (invalidSpecNumbers.length === 0) {
+    const seenKeys = new Set<string>();
+    const duplicateKeys = new Set<string>();
+
+    for (const spec of specs) {
+      const group = spec.group.trim();
+      const version = spec.version?.trim() ?? "";
+      // Use group@version as the uniqueness key so that the same group can
+      // appear with different versions (e.g. v1 and v2 of the same API).
+      // The empty-group case is already rejected above, so `group` is always
+      // non-empty here and the `@version` suffix remains unambiguous.
+      const key = version ? `${group}@${version}` : group;
+
+      if (seenKeys.has(key)) {
+        duplicateKeys.add(key);
+        continue;
+      }
+
+      seenKeys.add(key);
+    }
+
+    if (duplicateKeys.size === 0) {
+      return;
+    }
+
     throw new Error(
-      `Each spec must define a non-empty group when multiple APIs are configured (invalid spec entries: ${invalidSpecNumbers.join(", ")}).`,
+      `Each spec must define a unique group (and version) when multiple APIs are configured (duplicates: ${[...duplicateKeys].join(", ")}).`,
     );
   }
 
-  // Group specs by group name to detect duplicate groups.
-  const groupMap = new Map<string, SpecConfig[]>();
-
-  for (const spec of specs) {
-    const group = spec.group.trim();
-    const existing = groupMap.get(group) ?? [];
-
-    groupMap.set(group, [...existing, spec]);
-  }
-
-  for (const [group, groupSpecs] of groupMap) {
-    if (groupSpecs.length <= 1) {
-      continue;
-    }
-
-    // Multiple specs share the same group: each must have a non-empty, distinct version.
-    const versions = groupSpecs.map((s) => (s.version ?? "").trim());
-
-    if (versions.some((v) => v === "")) {
-      throw new Error(
-        `Specs sharing the same group must each have a non-empty, distinct version. Group "${group}" has entries with missing or empty version.`,
-      );
-    }
-
-    const seenVersions = new Set<string>();
-    const duplicateVersions = new Set<string>();
-
-    for (const version of versions) {
-      if (seenVersions.has(version)) {
-        duplicateVersions.add(version);
-      }
-
-      seenVersions.add(version);
-    }
-
-    if (duplicateVersions.size > 0) {
-      throw new Error(
-        `Specs in group "${group}" must each have a unique version (duplicate versions: ${[...duplicateVersions].join(", ")}).`,
-      );
-    }
-  }
+  throw new Error(
+    `Each spec must define a non-empty group when multiple APIs are configured (invalid spec entries: ${invalidSpecNumbers.join(", ")}).`,
+  );
 }
 
 /**
