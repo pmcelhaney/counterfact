@@ -1,3 +1,30 @@
+# This workflow guards against a subtle problem that grows as AI handles more of the implementation work:
+# it becomes increasingly easy to approve PRs without truly understanding what the code is supposed to do.
+# Requiring a manual acceptance test checklist creates a moment of deliberate reflection—"do I actually
+# understand the expected behavior?"—before a PR can be merged.
+#
+# It also establishes a shared vocabulary between the agent that wrote the code and the human who reviews it.
+# Instead of a vague "the tests pass", there is a concrete, observable list: "here is what you should be
+# able to see working." That specificity matters for catching regressions and misunderstandings early.
+#
+# How it works in this repository:
+#
+#   Validation IS enforced when:
+#     - The PR branch name starts with "copilot", OR
+#     - The PR body contains a "## Manual acceptance tests" section.
+#
+#   Validation is NOT enforced when:
+#     - The PR carries a "design" label (design-only PRs have no observable runtime behavior to test).
+#
+#   What the section must contain:
+#     - At least one checked item: - [x] some observable behavior
+#     - Zero unchecked items: every - [ ] box must be checked before merge.
+#
+# Note: the wording of the first two paragraphs was adapted from a comment 
+# by Lilac Mohr on LinkedIn. If you're reading this, you will certainly be 
+# interested in this article on her AI coding workflow. 
+# 
+# https://lilacmohr.com/articles/tdd-is-not-optional-with-ai.html
 name: Manual acceptance tests
 
 on:
