@@ -2,6 +2,7 @@ import { pathJoin } from "../util/forward-slash-path.js";
 import { Coder } from "./coder.js";
 import {
   OperationTypeCoder,
+  VersionedArgTypeCoder,
   type SecurityScheme,
 } from "./operation-type-coder.js";
 import type { Requirement } from "./requirement.js";
@@ -79,6 +80,27 @@ export class OperationCoder extends Coder {
       this.requestMethod,
       this.securitySchemes,
     );
+
+    if (this.version !== "") {
+      // For versioned APIs: register this version's $-argument type on the
+      // shared script so that Script.versionsTypeStatements() can emit the
+      // merged handler type after all versions have been declared.
+      const versionedArgCoder = new VersionedArgTypeCoder(
+        this.requirement,
+        this.version,
+        this.requestMethod,
+        this.securitySchemes,
+      );
+
+      const sharedScript = script.repository.get(
+        operationTypeCoder.modulePath(),
+      );
+
+      sharedScript.declareVersion(
+        versionedArgCoder,
+        operationTypeCoder.getOperationBaseName(),
+      );
+    }
 
     return script.importType(operationTypeCoder);
   }
