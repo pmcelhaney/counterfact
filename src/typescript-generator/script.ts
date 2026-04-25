@@ -39,6 +39,7 @@ export class Script {
   public repository: Repository;
   public comments: string[];
   public exports: Map<string, ExportStatement>;
+  public versions: Map<string, Map<string, ExportStatement>>;
   public imports: Map<string, ImportEntry>;
   public externalImport: Map<string, ExternalImportEntry>;
   public cache: Map<string, string>;
@@ -49,6 +50,7 @@ export class Script {
     this.repository = repository;
     this.comments = [];
     this.exports = new Map();
+    this.versions = new Map();
     this.imports = new Map();
     this.externalImport = new Map();
     this.cache = new Map();
@@ -248,18 +250,66 @@ export class Script {
     return this.export(coder, true);
   }
 
+  public declareVersion(coder: Coder, name: string): void {
+    const version = coder.version;
+
+    const versions =
+      this.versions.get(name) ?? new Map<string, ExportStatement>();
+    this.versions.set(name, versions);
+
+    if (versions.has(version)) {
+      return;
+    }
+
+    const versionStatement: ExportStatement = {
+      beforeExport: "",
+      done: false,
+      id: coder.id,
+      isDefault: false,
+      isType: true,
+      jsdoc: "",
+      typeDeclaration: "",
+    };
+
+    versionStatement.promise = coder
+      .delegate()
+      .then((availableCoder) => {
+        versionStatement.code = availableCoder.write(this);
+
+        return availableCoder;
+      })
+      .catch((error: Error) => {
+        versionStatement.code = `unknown /* error declaring version "${name}" (${version}) for ${this.path}: ${error.message} */`;
+        versionStatement.error = error;
+        return undefined;
+      })
+      .finally(() => {
+        versionStatement.done = true;
+      });
+
+    versions.set(version, versionStatement);
+  }
+
   /** `true` while at least one export promise is still pending. */
   public isInProgress(): boolean {
-    return Array.from(this.exports.values()).some(
-      (exportStatement) => !exportStatement.done,
+    return (
+      Array.from(this.exports.values()).some(
+        (exportStatement) => !exportStatement.done,
+      ) ||
+      Array.from(this.versions.values())
+        .flatMap((versions) => Array.from(versions.values()))
+        .some((versionStatement) => !versionStatement.done)
     );
   }
 
   /** Returns a promise that resolves when all pending export promises settle. */
   public finished(): Promise<(Coder | undefined)[]> {
-    return Promise.all(
-      Array.from(this.exports.values(), (value) => value.promise!),
-    );
+    return Promise.all([
+      ...Array.from(this.exports.values(), (value) => value.promise!),
+      ...Array.from(this.versions.values())
+        .flatMap((versions) => Array.from(versions.values()))
+        .map((value) => value.promise!),
+    ]);
   }
 
   public externalImportStatements(): string[] {
@@ -318,12 +368,32 @@ export class Script {
     );
   }
 
+  public versionsTypeStatements(): string[] {
+    if (this.versions.size === 0) {
+      return [];
+    }
+
+    const names = Array.from(this.versions, ([name, versions]) => {
+      const mappedVersions = Array.from(
+        versions,
+        ([version, versionStatement]) =>
+          `"${version}": ${versionStatement.code as string}`,
+      );
+
+      return `"${name}": { ${mappedVersions.join(", ")} }`;
+    });
+
+    return [`export type Versions = { ${names.join(", ")} };`];
+  }
+
   /**
    * Formats the fully assembled script source with Prettier and returns it.
    *
    * All pending export promises are awaited before formatting.
    */
-  public contents(): Promise<string> {
+  public async contents(): Promise<string> {
+    await this.finished();
+
     return format(
       [
         this.comments.map((comment) => `// ${comment}`).join("\n"),
@@ -331,6 +401,8 @@ export class Script {
         this.externalImportStatements().join("\n"),
         this.importStatements().join("\n"),
         "\n\n",
+        this.versionsTypeStatements().join("\n"),
+        this.versions.size > 0 ? "\n\n" : "",
         this.exportStatements().join("\n\n"),
       ].join(""),
       { parser: "typescript" },
