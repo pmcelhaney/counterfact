@@ -119,6 +119,28 @@ export const GET: HTTP_GET = ($) => {
 
 All four objects are typed from your OpenAPI spec, so autocomplete works for parameter names and values.
 
+### Object query parameters (exploded form style)
+
+When a query parameter has `type: object` in the spec, OpenAPI's default serialisation is _exploded form style_: each property of the object becomes its own query parameter.
+
+For example, a `pageable` parameter of type `Pageable` (with `page`, `size`, and `sort` properties) is sent like this:
+
+```
+GET /items?page=0&size=100&sort=name
+```
+
+Counterfact automatically assembles these individual query parameters back into the object, so you can access them as:
+
+```ts
+export const GET: HTTP_GET = ($) => {
+  const { page, size, sort } = $.query.pageable;
+  // page = "0", size = "100", sort = "name"
+  // ...
+};
+```
+
+This behaviour follows the OpenAPI 3.x defaults (`style: form`, `explode: true`) and also applies when those values are set explicitly. To opt out, set `explode: false` on the parameter in your spec.
+
 ## Basic auth: `$.auth`
 
 When a request includes HTTP Basic credentials, they're available at `$.auth.username` and `$.auth.password`.

@@ -1376,6 +1376,141 @@ describe("given a request that contains the differently cased path", () => {
     });
   });
 
+  describe("exploded object query parameters", () => {
+    const openApiDocumentWithExplodedParam: OpenApiDocument = {
+      paths: {
+        "/items": {
+          get: {
+            parameters: [
+              {
+                in: "query",
+                name: "pageable",
+                required: true,
+                schema: {
+                  type: "object",
+                  properties: {
+                    page: { type: "integer" },
+                    size: { type: "integer" },
+                    sort: { type: "array", items: { type: "string" } },
+                  },
+                },
+              },
+            ],
+            responses: {
+              200: {
+                content: { "text/plain": { schema: { type: "string" } } },
+              },
+            },
+          },
+        },
+      },
+    };
+
+    function makeExplodedDispatcher() {
+      const registry = new Registry();
+      let capturedQuery: unknown;
+
+      registry.add("/items", {
+        GET({ query }) {
+          capturedQuery = query;
+          return { body: "ok", status: 200 };
+        },
+      });
+
+      const dispatcher = new Dispatcher(
+        registry,
+        new ContextRegistry(),
+        openApiDocumentWithExplodedParam,
+        {
+          adminApiToken: "",
+          alwaysFakeOptionals: false,
+          basePath: "/",
+          buildCache: false,
+          generate: { routes: false, types: false },
+          openApiPath: "",
+          port: 3100,
+          proxyPaths: new Map(),
+          proxyUrl: "",
+          prefix: "",
+          startAdminApi: false,
+          startRepl: false,
+          startServer: true,
+          validateRequests: true,
+          validateResponses: false,
+          watch: { routes: false, types: false },
+        },
+      );
+
+      return { dispatcher, getCapturedQuery: () => capturedQuery };
+    }
+
+    it("accepts a request when object properties are sent as individual query params", async () => {
+      const { dispatcher } = makeExplodedDispatcher();
+
+      const response = await dispatcher.request({
+        body: undefined,
+        headers: {},
+        method: "GET",
+        path: "/items",
+        query: { page: "0", size: "100" },
+        req: { path: "/items" },
+      });
+
+      expect(response.status).toBe(200);
+    });
+
+    it("rejects a request when no object properties are provided and the parameter is required", async () => {
+      const { dispatcher } = makeExplodedDispatcher();
+
+      const response = await dispatcher.request({
+        body: undefined,
+        headers: {},
+        method: "GET",
+        path: "/items",
+        query: {},
+        req: { path: "/items" },
+      });
+
+      expect(response.status).toBe(400);
+      expect(response.body).toContain("pageable");
+    });
+
+    it("reconstructs the object under the parameter name for the handler", async () => {
+      const { dispatcher, getCapturedQuery } = makeExplodedDispatcher();
+
+      await dispatcher.request({
+        body: undefined,
+        headers: {},
+        method: "GET",
+        path: "/items",
+        query: { page: "0", size: "100" },
+        req: { path: "/items" },
+      });
+
+      expect(getCapturedQuery()).toEqual({
+        pageable: { page: "0", size: "100" },
+      });
+    });
+
+    it("preserves unrelated query params outside the object", async () => {
+      const { dispatcher, getCapturedQuery } = makeExplodedDispatcher();
+
+      await dispatcher.request({
+        body: undefined,
+        headers: {},
+        method: "GET",
+        path: "/items",
+        query: { page: "0", unrelated: "yes" },
+        req: { path: "/items" },
+      });
+
+      expect(getCapturedQuery()).toEqual({
+        pageable: { page: "0" },
+        unrelated: "yes",
+      });
+    });
+  });
+
   describe("response validation", () => {
     const openApiDocument: OpenApiDocument = {
       paths: {
