@@ -301,6 +301,44 @@ describe("counterfact", () => {
     );
   });
 
+  it("runs generate() sequentially within a group to avoid concurrent writes to the same directory", async () => {
+    const order: string[] = [];
+    let runnerIndex = 0;
+    const generateSpy = jest
+      .spyOn(ApiRunner.prototype, "generate")
+      .mockImplementation(async function () {
+        const idx = ++runnerIndex;
+        order.push(`start:${idx}`);
+        await Promise.resolve(); // yield to the event loop so concurrent calls could interleave
+        order.push(`end:${idx}`);
+      });
+
+    const specs = [
+      { source: "_", group: "my-api", version: "v1" },
+      { source: "_", group: "my-api", version: "v2" },
+    ];
+
+    const { start } = await (app as any).counterfact(mockConfig, specs);
+    await start({
+      startServer: false,
+      buildCache: false,
+      generate: { routes: false, types: false },
+      watch: { routes: false, types: false },
+    });
+
+    // Serial execution: runner 1 must complete before runner 2 starts.
+    // Concurrent execution would produce ["start:1", "start:2", "end:1", "end:2"].
+    expect(order).toEqual([
+      "start:1",
+      "end:1",
+      "start:2",
+      "end:2",
+    ]);
+
+    generateSpy.mockRestore();
+  });
+
+
   it("throws when two specs share the same group and version", async () => {
     const specs = [
       { source: "_", group: "my-api", version: "v1" },
