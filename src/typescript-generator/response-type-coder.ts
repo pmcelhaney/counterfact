@@ -3,6 +3,7 @@ import { SchemaTypeCoder } from "./schema-type-coder.js";
 import { TypeCoder } from "./type-coder.js";
 import type { Requirement } from "./requirement.js";
 import type { Script } from "./script.js";
+import { pathJoin } from "../util/forward-slash-path.js";
 
 export class ResponseTypeCoder extends TypeCoder {
   public openApi2MediaTypes: string[];
@@ -117,7 +118,11 @@ export class ResponseTypeCoder extends TypeCoder {
   }
 
   public override modulePath(): string {
-    return `types/${this.requirement.data["$ref"] as string}.ts`;
+    return pathJoin(
+      "types",
+      this.version,
+      this.requirement.data["$ref"]! + ".ts",
+    );
   }
 
   public override writeCode(script: Script): string {
