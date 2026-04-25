@@ -229,7 +229,7 @@ describe("a Script", () => {
   });
 
   it("declares versioned code grouped by name and coder version", async () => {
-    const repository = new Repository("/base/path");
+    const repository = new Repository();
 
     class V1AccountTypeCoder extends Coder {
       public version = "1.0.0";
