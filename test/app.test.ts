@@ -129,6 +129,7 @@ describe("counterfact", () => {
   it("throws when two specs share the same group and only one has a version (mixed)", async () => {
     const specs = [
       { source: "_", prefix: "/api/v1", group: "my-api", version: "v1" },
+      // no version field — simulates user input before normalization; treated as ""
       { source: "_", prefix: "/api/v2", group: "my-api" },
     ];
 

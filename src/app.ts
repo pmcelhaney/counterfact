@@ -30,8 +30,9 @@ export interface SpecConfig {
   /** Name of the subdirectory under `config.basePath` where code is generated. */
   group: string;
   /**
-   * Optional version tag for this spec. When two specs share the same `group`,
-   * each must carry a distinct non-empty `version`. Defaults to `""`.
+   * Optional version tag for this spec (defaults to `""` when omitted).
+   * When two specs share the same `group`, each must carry a distinct
+   * non-empty `version`.
    */
   version?: string;
 }
