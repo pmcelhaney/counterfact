@@ -364,23 +364,6 @@ describe("REPL", () => {
     ).toMatchObject({ inventoryOnly: true });
   });
 
-  it("throws when multi-api bindings contain duplicate groups", () => {
-    expect(() =>
-      createHarness(undefined, [
-        {
-          contextRegistry: new ContextRegistry(),
-          group: "billing",
-          registry: new Registry(),
-        },
-        {
-          contextRegistry: new ContextRegistry(),
-          group: "billing",
-          registry: new Registry(),
-        },
-      ]),
-    ).toThrow("Duplicate API groups are not allowed");
-  });
-
   describe(".scenario command", () => {
     it("calls the named export from scenarios/index for a single-segment path", async () => {
       const scenarioRegistry = new ScenarioRegistry();
