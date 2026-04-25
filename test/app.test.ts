@@ -298,8 +298,8 @@ describe("counterfact", () => {
         `export function GET() { return { body: "hello from v2" }; }`,
       );
 
-      // Two specs: same version value but different groups so route files are distinct.
-      // Each is auto-mounted at /<group>/<version>.
+      // Two specs with distinct groups and versions: each is auto-mounted at /<group>/<version>.
+      // Using v1/v1 and v2/v2 keeps the route files in separate directories.
       const specs = [
         { source: "_", group: "v1", version: "v1" },
         { source: "_", group: "v2", version: "v2" },
