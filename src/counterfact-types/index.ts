@@ -17,5 +17,6 @@ export type { OpenApiParameters } from "./open-api-parameters.js";
 export type { OpenApiResponse } from "./open-api-response.js";
 export type { ResponseBuilder } from "./response-builder.js";
 export type { ResponseBuilderFactory } from "./response-builder-factory.js";
+export type { Versioned } from "./versioned.js";
 export type { WideOperationArgument } from "./wide-operation-argument.js";
 export type { WideResponseBuilder } from "./wide-response-builder.js";

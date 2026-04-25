@@ -29,6 +29,8 @@ export class CodeGenerator extends EventTarget {
 
   private readonly destination: string;
 
+  private readonly version: string;
+
   private readonly generateOptions: {
     prune?: boolean;
     routes?: boolean;
@@ -41,10 +43,12 @@ export class CodeGenerator extends EventTarget {
     openApiPath: string,
     destination: string,
     generateOptions: { prune?: boolean; routes?: boolean; types?: boolean },
+    version = "",
   ) {
     super();
     this.openapiPath = openApiPath;
     this.destination = destination;
+    this.version = version;
     this.generateOptions = generateOptions;
   }
 
@@ -175,7 +179,12 @@ export class CodeGenerator extends EventTarget {
         repository
           .get(`routes${path}.ts`)
           .export(
-            new OperationCoder(operation, "", requestMethod, securitySchemes),
+            new OperationCoder(
+              operation,
+              this.version,
+              requestMethod,
+              securitySchemes,
+            ),
           );
       });
     });
