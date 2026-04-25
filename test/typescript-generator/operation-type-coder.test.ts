@@ -775,7 +775,7 @@ describe("a VersionedArgTypeCoder", () => {
 
   it("write() on the per-version script calls writeCode() directly", () => {
     const coder = new VersionedArgTypeCoder(makeRequirement(), "v1", "get");
-    const repository = new Repository("/base");
+    const repository = new Repository();
     const perVersionScript = repository.get(coder.modulePath());
 
     // write() on the per-version file should produce the $ arg type string
@@ -787,7 +787,7 @@ describe("a VersionedArgTypeCoder", () => {
 
   it("write() on the shared script delegates to importType()", () => {
     const coder = new VersionedArgTypeCoder(makeRequirement(), "v1", "get");
-    const repository = new Repository("/base");
+    const repository = new Repository();
     const sharedScript = repository.get("types/paths/pets.types.ts");
 
     let importTypeCalled = false;
@@ -817,7 +817,7 @@ describe("an OperationTypeCoder (versioned)", () => {
 
   it("returns {raw: ''} from writeCode() so the normal export is suppressed", () => {
     const coder = new OperationTypeCoder(makeRequirement(), "v1", "get");
-    const repository = new Repository("/base");
+    const repository = new Repository();
     const sharedScript = repository.get(coder.modulePath());
 
     const result = coder.writeCode(sharedScript);
@@ -827,7 +827,7 @@ describe("an OperationTypeCoder (versioned)", () => {
 
   it("registers a versionFormatter on the shared script", () => {
     const coder = new OperationTypeCoder(makeRequirement(), "v1", "get");
-    const repository = new Repository("/base");
+    const repository = new Repository();
     const sharedScript = repository.get(coder.modulePath());
 
     coder.writeCode(sharedScript);
@@ -837,7 +837,7 @@ describe("an OperationTypeCoder (versioned)", () => {
 
   it("formatter generates correct merged type for two versions", async () => {
     const requirement = makeRequirement();
-    const repository = new Repository("/base");
+    const repository = new Repository();
     const sharedScript = repository.get(
       new OperationTypeCoder(requirement, "v1", "get").modulePath(),
     );
@@ -883,7 +883,7 @@ describe("an OperationTypeCoder (versioned)", () => {
       "#/paths/pets/get",
     );
 
-    const repository = new Repository("/base");
+    const repository = new Repository();
 
     // Simulate OperationCoder.typeDeclaration() for v1 and v2
     for (const version of ["v1", "v2"]) {

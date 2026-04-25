@@ -47,7 +47,7 @@ describe("an OperationCoder", () => {
     );
     let nestedCoderVersion = "";
 
-    const repository = new Repository("/base");
+    const repository = new Repository();
     const script = repository.get("routes/hello.ts");
 
     // Spy on importType to capture the version that is passed through
