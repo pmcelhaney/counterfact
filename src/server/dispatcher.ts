@@ -10,7 +10,10 @@ import type {
   Registry,
 } from "./registry.js";
 import { createResponseBuilder } from "./response-builder.js";
-import { validateRequest } from "./request-validator.js";
+import {
+  isExplodedObjectQueryParam,
+  validateRequest,
+} from "./request-validator.js";
 import { validateResponse } from "./response-validator.js";
 import { Tools } from "./tools.js";
 import type {
@@ -87,13 +90,60 @@ export type DispatcherRequest = {
   method: HttpMethods;
   path: string;
   query: {
-    [key: string]: string;
+    [key: string]: string | string[];
   };
   rawBody?: string;
   req: {
     path?: string;
   };
 };
+
+/**
+ * Gathers exploded object query parameters back into a nested object under the
+ * parameter's own name.
+ *
+ * Per OpenAPI 3.x, a query parameter of type `object` with `style: form` and
+ * `explode: true` (both defaults for query params) is serialised as individual
+ * query parameters — one per object property.  This function reconstructs the
+ * object so that the route handler can access `$.query.<paramName>` rather than
+ * only the individual flat parameters.
+ *
+ * Properties that are "claimed" by an object parameter are removed from the
+ * top-level map and placed under the parameter name. Unclaimed keys remain at
+ * the top level.
+ *
+ * @param query - The raw parsed query-string map from the HTTP request.
+ * @param parameters - The OpenAPI parameter definitions for the current operation.
+ * @returns A new map with exploded object parameters reconstructed as nested objects.
+ */
+export function collectExplodedObjectParams(
+  query: Record<string, string | string[] | unknown>,
+  parameters: OpenApiParameters[],
+): Record<string, unknown> {
+  const result: Record<string, unknown> = { ...query };
+
+  for (const parameter of parameters) {
+    if (!isExplodedObjectQueryParam(parameter)) continue;
+
+    const properties = parameter.schema?.properties;
+    if (!properties) continue;
+
+    const obj: Record<string, unknown> = {};
+
+    for (const key of Object.keys(properties)) {
+      if (key in result) {
+        obj[key] = result[key];
+        delete result[key];
+      }
+    }
+
+    if (Object.keys(obj).length > 0) {
+      result[parameter.name] = obj;
+    }
+  }
+
+  return result;
+}
 
 /**
  * Core HTTP request dispatcher.
@@ -355,6 +405,13 @@ export class Dispatcher {
       }
     }
 
+    // Reconstruct exploded object query parameters so that `$.query.<name>`
+    // contains the assembled object instead of only the individual flat keys.
+    const processedQuery = collectExplodedObjectParams(
+      query,
+      operation?.parameters ?? [],
+    );
+
     const continuousDistribution = (min: number, max: number) => {
       return min + Math.random() * (max - min);
     };
@@ -402,7 +459,8 @@ export class Dispatcher {
         };
       },
 
-      query,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- object params are reconstructed and typed by generated route types
+      query: processedQuery as any,
 
       // @ts-expect-error - Might be pushing the limits of what TypeScript can do here
       response: createResponseBuilder(
