@@ -118,6 +118,34 @@ describe("a ResponsesTypeCoder", () => {
     });
   });
 
+  describe("modulePath", () => {
+    it("returns path with types prefix and .ts extension", () => {
+      const coder = new ResponseTypeCoder(
+        new Requirement({ $ref: "responses/MyResponse" }),
+      );
+
+      expect(coder.modulePath()).toBe("types/responses/MyResponse.ts");
+    });
+
+    it("includes the version in the path when version is set", () => {
+      const coder = new ResponseTypeCoder(
+        new Requirement({ $ref: "responses/MyResponse" }),
+        "v2",
+      );
+
+      expect(coder.modulePath()).toBe("types/v2/responses/MyResponse.ts");
+    });
+
+    it("omits the version segment from the path when version is empty", () => {
+      const coder = new ResponseTypeCoder(
+        new Requirement({ $ref: "responses/MyResponse" }),
+        "",
+      );
+
+      expect(coder.modulePath()).toBe("types/responses/MyResponse.ts");
+    });
+  });
+
   describe("writeCode", () => {
     it("includes an 'examples' field in the output", () => {
       const response = new Requirement({
