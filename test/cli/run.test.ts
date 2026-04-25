@@ -26,9 +26,9 @@ describe("normalizeSpecOption", () => {
       ).toEqual([{ source: "api.yaml", prefix: "/api", group: "v1" }]);
     });
 
-    it("defaults prefix to empty string when omitted", () => {
+    it("leaves prefix undefined when omitted so normalizeSpecs can derive it", () => {
       expect(normalizeSpecOption({ source: "api.yaml" })).toEqual([
-        { source: "api.yaml", prefix: "", group: "" },
+        { source: "api.yaml", prefix: undefined, group: "" },
       ]);
     });
 
@@ -36,6 +36,23 @@ describe("normalizeSpecOption", () => {
       expect(
         normalizeSpecOption({ source: "api.yaml", prefix: "/v2" }),
       ).toEqual([{ source: "api.yaml", prefix: "/v2", group: "" }]);
+    });
+
+    it("passes version through when present", () => {
+      expect(
+        normalizeSpecOption({
+          source: "api.yaml",
+          group: "my-api",
+          version: "v1",
+        }),
+      ).toEqual([
+        {
+          source: "api.yaml",
+          prefix: undefined,
+          group: "my-api",
+          version: "v1",
+        },
+      ]);
     });
   });
 
@@ -52,10 +69,10 @@ describe("normalizeSpecOption", () => {
       ]);
     });
 
-    it("defaults prefix to empty string when omitted from an entry", () => {
+    it("leaves prefix undefined when omitted from an entry", () => {
       expect(
         normalizeSpecOption([{ source: "api.yaml", group: "v1" }]),
-      ).toEqual([{ source: "api.yaml", prefix: "", group: "v1" }]);
+      ).toEqual([{ source: "api.yaml", prefix: undefined, group: "v1" }]);
     });
 
     it("defaults group to empty string when omitted from an entry", () => {
@@ -64,9 +81,9 @@ describe("normalizeSpecOption", () => {
       ).toEqual([{ source: "api.yaml", prefix: "/v2", group: "" }]);
     });
 
-    it("defaults both prefix and group when both are omitted from an entry", () => {
+    it("leaves both prefix undefined and group empty when both are omitted from an entry", () => {
       expect(normalizeSpecOption([{ source: "api.yaml" }])).toEqual([
-        { source: "api.yaml", prefix: "", group: "" },
+        { source: "api.yaml", prefix: undefined, group: "" },
       ]);
     });
 
@@ -82,7 +99,29 @@ describe("normalizeSpecOption", () => {
         ]),
       ).toEqual([
         { source: "a.yaml", prefix: "/a", group: "a" },
-        { source: "b.yaml", prefix: "", group: "" },
+        { source: "b.yaml", prefix: undefined, group: "" },
+      ]);
+    });
+
+    it("passes version through for each entry", () => {
+      expect(
+        normalizeSpecOption([
+          { source: "v1.yaml", group: "my-api", version: "v1" },
+          { source: "v2.yaml", group: "my-api", version: "v2" },
+        ]),
+      ).toEqual([
+        {
+          source: "v1.yaml",
+          prefix: undefined,
+          group: "my-api",
+          version: "v1",
+        },
+        {
+          source: "v2.yaml",
+          prefix: undefined,
+          group: "my-api",
+          version: "v2",
+        },
       ]);
     });
   });

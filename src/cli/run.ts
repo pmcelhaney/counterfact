@@ -23,7 +23,12 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const DEFAULT_PORT = 3100;
 
-type SpecOptionEntry = { source: string; prefix?: string; group?: string };
+type SpecOptionEntry = {
+  source: string;
+  prefix?: string;
+  group?: string;
+  version?: string;
+};
 type SpecOption = string | SpecOptionEntry | SpecOptionEntry[] | undefined;
 
 /**
@@ -31,11 +36,15 @@ type SpecOption = string | SpecOptionEntry | SpecOptionEntry[] | undefined;
  * CLI flag) into an array of {@link SpecConfig} objects, or `undefined` when
  * the option is a plain string (single OpenAPI document path).
  *
- * - **Array**: each entry is mapped to `{source, prefix, group}` with defaults.
+ * - **Array**: each entry is mapped to `{source, prefix, group, version}` with defaults.
  * - **Object**: wrapped in a single-element array.
  * - **String / undefined**: returns `undefined` — caller handles the string
  *   case (it shifts the positional argument) and the `undefined` case
  *   (single spec derived from config).
+ *
+ * Note: `prefix` is intentionally left `undefined` when not supplied so that
+ * `normalizeSpecs` (in `app.ts`) can derive it automatically from
+ * `group`/`version`.
  */
 export function normalizeSpecOption(
   specOption: SpecOption,
@@ -43,8 +52,9 @@ export function normalizeSpecOption(
   if (Array.isArray(specOption)) {
     return specOption.map((entry) => ({
       source: entry.source,
-      prefix: entry.prefix ?? "",
+      prefix: entry.prefix,
       group: entry.group ?? "",
+      version: entry.version,
     }));
   }
 
@@ -56,8 +66,9 @@ export function normalizeSpecOption(
     return [
       {
         source: specOption.source,
-        prefix: specOption.prefix ?? "",
+        prefix: specOption.prefix,
         group: specOption.group ?? "",
+        version: specOption.version,
       },
     ];
   }
