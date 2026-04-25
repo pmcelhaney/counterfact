@@ -2,6 +2,7 @@ import { describe, expect, it } from "@jest/globals";
 import { format as formatCode } from "prettier";
 
 import { OperationCoder } from "../../src/typescript-generator/operation-coder.js";
+import { Repository } from "../../src/typescript-generator/repository.js";
 import { Requirement } from "../../src/typescript-generator/requirement.js";
 
 function format(code) {
@@ -46,11 +47,15 @@ describe("an OperationCoder", () => {
     );
     let nestedCoderVersion = "";
 
-    const script = {
-      importType(operationTypeCoder) {
-        nestedCoderVersion = operationTypeCoder.version;
-        return "HTTP_GET";
-      },
+    const repository = new Repository("/base");
+    const script = repository.get("routes/hello.ts");
+
+    // Spy on importType to capture the version that is passed through
+    const originalImportType = script.importType.bind(script);
+
+    script.importType = (operationTypeCoder) => {
+      nestedCoderVersion = operationTypeCoder.version;
+      return originalImportType(operationTypeCoder);
     };
 
     coder.typeDeclaration(undefined, script);

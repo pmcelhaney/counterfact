@@ -48,6 +48,14 @@ export interface SecurityScheme {
  * `cookie`, `body`, `context`, `response`, and `user` arguments.
  *
  * Output is written to `types/paths/<route>.types.ts`.
+ *
+ * **Versioned APIs**: when `version` is non-empty this coder emits only a
+ * sentinel `{raw: ""}` export (suppressing the normal flat type) and
+ * registers a formatter on the shared script so that
+ * {@link Script.versionsTypeStatements} can later emit the merged
+ * `HTTP_<METHOD>_$_Versions` map and the `HTTP_<METHOD>` handler type.
+ * Each version's `$`-argument type is emitted to
+ * `types/<version>/paths/<path>.types.ts` by {@link VersionedArgTypeCoder}.
  */
 export class OperationTypeCoder extends TypeCoder {
   public requestMethod: string;
@@ -212,13 +220,25 @@ export class OperationTypeCoder extends TypeCoder {
     return "never";
   }
 
-  public override writeCode(script: Script): string {
-    script.comments = READ_ONLY_COMMENTS;
-
+  /**
+   * Builds the `OmitValueWhenNever<{…}>` dollar-argument type body and sets
+   * up all required shared-type imports on `script`.
+   *
+   * This helper is reused by both {@link writeCode} (non-versioned) and
+   * {@link VersionedArgTypeCoder.writeCode} (per-version file).
+   *
+   * @param script - The script to write imports and parameter-type exports into.
+   * @param baseName - Identifier prefix used for named parameter-type exports.
+   * @param modulePath - Repository-relative path for parameter-type exports.
+   */
+  protected buildDollarArgType(
+    script: Script,
+    baseName: string,
+    modulePath: string,
+  ): string {
     const xType = script.importSharedType("WideOperationArgument");
 
     script.importSharedType("OmitValueWhenNever");
-    script.importSharedType("MaybePromise");
     script.importSharedType("COUNTERFACT_RESPONSE");
 
     const contextTypeImportName = script.importExternalType(
@@ -286,9 +306,6 @@ export class OperationTypeCoder extends TypeCoder {
     const delayType =
       "(milliseconds: number, maxMilliseconds?: number) => Promise<void>";
 
-    // Get the base name for this operation and export parameter types
-    const baseName = this.getOperationBaseName();
-    const modulePath = this.modulePath();
     const queryTypeName = this.exportParameterType(
       script,
       "query",
@@ -319,6 +336,136 @@ export class OperationTypeCoder extends TypeCoder {
       modulePath,
     );
 
-    return `($: OmitValueWhenNever<{ query: ${queryTypeName}, path: ${pathTypeName}, headers: ${headersTypeName}, cookie: ${cookieTypeName}, body: ${bodyType}, context: ${contextTypeImportName}, response: ${responseType}, x: ${xType}, proxy: ${proxyType}, user: ${this.userType()}, delay: ${delayType} }>) => MaybePromise<COUNTERFACT_RESPONSE>`;
+    return `OmitValueWhenNever<{ query: ${queryTypeName}, path: ${pathTypeName}, headers: ${headersTypeName}, cookie: ${cookieTypeName}, body: ${bodyType}, context: ${contextTypeImportName}, response: ${responseType}, x: ${xType}, proxy: ${proxyType}, user: ${this.userType()}, delay: ${delayType} }>`;
+  }
+
+  public override writeCode(script: Script): string {
+    script.comments = READ_ONLY_COMMENTS;
+
+    if (this.version !== "") {
+      // Versioned case: suppress the normal flat export and register a
+      // formatter so that Script.versionsTypeStatements() can emit the
+      // merged HTTP_<METHOD>_$_Versions + HTTP_<METHOD> types after all
+      // versions have been declared via declareVersion().
+      const versionedType = script.importSharedType("Versioned");
+      const maybePromiseType = script.importSharedType("MaybePromise");
+      const counterfactResponseType = script.importSharedType(
+        "COUNTERFACT_RESPONSE",
+      );
+      const baseName = this.getOperationBaseName();
+
+      script.setVersionFormatter(baseName, (versionCodes) => {
+        const versionsTypeName = `${baseName}_$_Versions`;
+        const versionMap = Array.from(
+          versionCodes,
+          ([v, code]) => `"${v}": ${code}`,
+        ).join("; ");
+
+        return [
+          `type ${versionsTypeName} = { ${versionMap} };`,
+          `export type ${baseName} = ($: ${versionedType}<${versionsTypeName}>) => ${maybePromiseType}<${counterfactResponseType}>;`,
+        ].join("\n");
+      });
+
+      // Return a raw-empty sentinel so exportStatements() emits nothing for
+      // this export entry.  The real export is produced by
+      // versionsTypeStatements().
+      return { raw: "" } as unknown as string;
+    }
+
+    // Non-versioned case: existing flat-type output.
+    // Import in the same order as the original writeCode so that the emitted
+    // import block is identical to the pre-refactor output (snapshot-safe).
+    script.importSharedType("WideOperationArgument");
+    script.importSharedType("OmitValueWhenNever");
+    script.importSharedType("MaybePromise");
+    script.importSharedType("COUNTERFACT_RESPONSE");
+
+    const baseName = this.getOperationBaseName();
+    const modulePath = this.modulePath();
+    const dollarArgType = this.buildDollarArgType(script, baseName, modulePath);
+
+    return `($: ${dollarArgType}) => MaybePromise<COUNTERFACT_RESPONSE>`;
+  }
+}
+
+/**
+ * Emits a per-version `$`-argument type to
+ * `types/<version>/paths/<path>.types.ts`.
+ *
+ * When called from a *different* script (e.g. the shared
+ * `types/paths/…` script via `Script.declareVersion`), `write()` delegates to
+ * `script.importType(this)` so that the type is written to the per-version
+ * file and an import is added to the calling script.
+ *
+ * Only the `OmitValueWhenNever<{…}>` type body is emitted — the
+ * function-wrapper `($: Versioned<…>) => MaybePromise<COUNTERFACT_RESPONSE>`
+ * is assembled by the shared script's `versionsTypeStatements()`.
+ */
+export class VersionedArgTypeCoder extends OperationTypeCoder {
+  /**
+   * Include the version in the cache key so v1 and v2 coders are treated as
+   * distinct exports even when they share the same requirement URL.
+   */
+  public override get id(): string {
+    return `${super.id}:${this.version}`;
+  }
+
+  /**
+   * The per-version `$`-argument type is emitted to
+   * `types/<version>/paths/<path>.types.ts`, not to the shared path.
+   */
+  public override modulePath(): string {
+    const pathString = this.requirement.url
+      .split("/")
+      .at(-2)!
+      .replaceAll("~1", "/");
+
+    return `${pathJoin(
+      `types/${this.version}/paths`,
+      pathString === "/" ? "/index" : pathString,
+    )}.types.ts`;
+  }
+
+  /**
+   * Names are version-qualified (e.g. `HTTP_GET_$_v1`) so that importing
+   * multiple versions into the shared script requires no aliasing.
+   */
+  public override *names(): Generator<string> {
+    const baseName = `${this.getOperationBaseName()}_$_${sanitizeIdentifier(this.version)}`;
+
+    yield baseName;
+
+    let index = 1;
+    const MAX = 100;
+
+    while (index < MAX) {
+      index += 1;
+      yield `${baseName}${index}`;
+    }
+  }
+
+  /**
+   * When called from the per-version file itself, generate the actual type.
+   * When called from any other script (e.g. the shared file), export to the
+   * per-version file and import the result back into that script.
+   */
+  public override write(script: Script): string {
+    if (script.path === this.modulePath()) {
+      return this.writeCode(script);
+    }
+
+    return script.importType(this);
+  }
+
+  /**
+   * Generates the `OmitValueWhenNever<{…}>` dollar-argument type and writes
+   * it to the per-version script.
+   */
+  public override writeCode(script: Script): string {
+    script.comments = READ_ONLY_COMMENTS;
+    const baseName = this.getOperationBaseName();
+
+    return this.buildDollarArgType(script, baseName, this.modulePath());
   }
 }

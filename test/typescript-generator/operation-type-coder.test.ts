@@ -1,7 +1,11 @@
 import { describe, expect, it } from "@jest/globals";
 import { format as formatCode } from "prettier";
 
-import { OperationTypeCoder } from "../../src/typescript-generator/operation-type-coder.js";
+import {
+  OperationTypeCoder,
+  VersionedArgTypeCoder,
+} from "../../src/typescript-generator/operation-type-coder.js";
+import { Repository } from "../../src/typescript-generator/repository.js";
 import { Requirement } from "../../src/typescript-generator/requirement.js";
 import { Specification } from "../../src/typescript-generator/specification.js";
 
@@ -713,5 +717,214 @@ describe("an OperationTypeCoder", () => {
 
     expect(() => coder.responseTypes(dummyScript)).not.toThrow();
     expect(coder.responseTypes(dummyScript)).toContain("body?: unknown");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// VersionedArgTypeCoder
+// ---------------------------------------------------------------------------
+
+describe("a VersionedArgTypeCoder", () => {
+  const makeRequirement = (operationData = {}) =>
+    new Requirement(
+      {
+        parameters: [],
+        responses: { 200: {} },
+        ...operationData,
+      },
+      "#/paths/pets/get",
+    );
+
+  it("includes the version in the exported name (e.g. HTTP_GET_$_v1)", () => {
+    const coder = new VersionedArgTypeCoder(makeRequirement(), "v1", "get");
+
+    const [first] = coder.names();
+
+    expect(first).toBe("HTTP_GET_$_v1");
+  });
+
+  it("sanitizes the version when building the name", () => {
+    const coder = new VersionedArgTypeCoder(
+      makeRequirement(),
+      "2.0-beta",
+      "get",
+    );
+
+    const [first] = coder.names();
+
+    // "2.0-beta" → sanitizeIdentifier → "_2Beta" (or similar safe identifier)
+    expect(first).toMatch(/^HTTP_GET_\$_/u);
+    expect(first).not.toMatch(/-|\./u);
+  });
+
+  it("writes to the per-version module path", () => {
+    const coder = new VersionedArgTypeCoder(makeRequirement(), "v1", "get");
+
+    expect(coder.modulePath()).toBe("types/v1/paths/pets.types.ts");
+  });
+
+  it("id includes the version so v1 and v2 are distinct cache entries", () => {
+    const req = makeRequirement();
+    const v1 = new VersionedArgTypeCoder(req, "v1", "get");
+    const v2 = new VersionedArgTypeCoder(req, "v2", "get");
+
+    expect(v1.id).not.toBe(v2.id);
+    expect(v1.id).toContain("v1");
+    expect(v2.id).toContain("v2");
+  });
+
+  it("write() on the per-version script calls writeCode() directly", () => {
+    const coder = new VersionedArgTypeCoder(makeRequirement(), "v1", "get");
+    const repository = new Repository("/base");
+    const perVersionScript = repository.get(coder.modulePath());
+
+    // write() on the per-version file should produce the $ arg type string
+    const result = coder.write(perVersionScript);
+
+    expect(typeof result).toBe("string");
+    expect(result).toContain("OmitValueWhenNever");
+  });
+
+  it("write() on the shared script delegates to importType()", () => {
+    const coder = new VersionedArgTypeCoder(makeRequirement(), "v1", "get");
+    const repository = new Repository("/base");
+    const sharedScript = repository.get("types/paths/pets.types.ts");
+
+    let importTypeCalled = false;
+    const originalImportType = sharedScript.importType.bind(sharedScript);
+
+    sharedScript.importType = (c) => {
+      importTypeCalled = true;
+      return originalImportType(c);
+    };
+
+    coder.write(sharedScript);
+
+    expect(importTypeCalled).toBe(true);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// OperationTypeCoder — versioned output shape
+// ---------------------------------------------------------------------------
+
+describe("an OperationTypeCoder (versioned)", () => {
+  const makeRequirement = () =>
+    new Requirement(
+      { parameters: [], responses: { 200: {} } },
+      "#/paths/pets/get",
+    );
+
+  it("returns {raw: ''} from writeCode() so the normal export is suppressed", () => {
+    const coder = new OperationTypeCoder(makeRequirement(), "v1", "get");
+    const repository = new Repository("/base");
+    const sharedScript = repository.get(coder.modulePath());
+
+    const result = coder.writeCode(sharedScript);
+
+    expect(result).toStrictEqual({ raw: "" });
+  });
+
+  it("registers a versionFormatter on the shared script", () => {
+    const coder = new OperationTypeCoder(makeRequirement(), "v1", "get");
+    const repository = new Repository("/base");
+    const sharedScript = repository.get(coder.modulePath());
+
+    coder.writeCode(sharedScript);
+
+    expect(sharedScript.versionFormatters.has("HTTP_GET")).toBe(true);
+  });
+
+  it("formatter generates correct merged type for two versions", async () => {
+    const requirement = makeRequirement();
+    const repository = new Repository("/base");
+    const sharedScript = repository.get(
+      new OperationTypeCoder(requirement, "v1", "get").modulePath(),
+    );
+
+    // Run writeCode to register the formatter
+    const coder = new OperationTypeCoder(requirement, "v1", "get");
+    coder.writeCode(sharedScript);
+
+    const formatter = sharedScript.versionFormatters.get("HTTP_GET")!;
+
+    const versionCodes = new Map([
+      ["v1", "HTTP_GET_$_v1"],
+      ["v2", "HTTP_GET_$_v2"],
+    ]);
+
+    const result = await formatCode(formatter(versionCodes), {
+      parser: "typescript",
+    });
+
+    expect(result).toContain("HTTP_GET_$_Versions");
+    expect(result).toMatch(/v1:\s*HTTP_GET_\$_v1/u);
+    expect(result).toMatch(/v2:\s*HTTP_GET_\$_v2/u);
+    expect(result).toContain("Versioned<HTTP_GET_$_Versions>");
+    expect(result).toContain("MaybePromise");
+    expect(result).toContain("COUNTERFACT_RESPONSE");
+  });
+
+  it("imports Versioned, MaybePromise, COUNTERFACT_RESPONSE on the shared script", () => {
+    const coder = new OperationTypeCoder(makeRequirement(), "v1", "get");
+    const repository = new Repository("/base");
+    const sharedScript = repository.get(coder.modulePath());
+
+    coder.writeCode(sharedScript);
+
+    expect(sharedScript.externalImport.has("Versioned")).toBe(true);
+    expect(sharedScript.externalImport.has("MaybePromise")).toBe(true);
+    expect(sharedScript.externalImport.has("COUNTERFACT_RESPONSE")).toBe(true);
+  });
+
+  it("end-to-end: shared script emits merged HTTP_GET type for two versioned specs", async () => {
+    const requirement = new Requirement(
+      { parameters: [], responses: { 200: {} } },
+      "#/paths/pets/get",
+    );
+
+    const repository = new Repository("/base");
+
+    // Simulate OperationCoder.typeDeclaration() for v1 and v2
+    for (const version of ["v1", "v2"]) {
+      const opTypeCoder = new OperationTypeCoder(requirement, version, "get");
+      const versionedArgCoder = new VersionedArgTypeCoder(
+        requirement,
+        version,
+        "get",
+      );
+      const sharedScript = repository.get(opTypeCoder.modulePath());
+      const routeScript = repository.get(`routes/v${version}/pets.ts`);
+
+      sharedScript.declareVersion(versionedArgCoder, "HTTP_GET");
+      routeScript.importType(opTypeCoder);
+    }
+
+    const sharedScript = repository.get("types/paths/pets.types.ts");
+
+    await sharedScript.finished();
+
+    const contents = await sharedScript.contents();
+
+    // The shared file must export a merged HTTP_GET type
+    expect(contents).toContain("HTTP_GET_$_Versions");
+    expect(contents).toMatch(/v1:\s*HTTP_GET_\$_v1/u);
+    expect(contents).toMatch(/v2:\s*HTTP_GET_\$_v2/u);
+    expect(contents).toContain("Versioned");
+    expect(contents).toContain("export type HTTP_GET");
+
+    // Per-version files must export their respective $ arg types
+    const v1Script = repository.get("types/v1/paths/pets.types.ts");
+    const v2Script = repository.get("types/v2/paths/pets.types.ts");
+
+    await Promise.all([v1Script.finished(), v2Script.finished()]);
+
+    const v1Contents = await v1Script.contents();
+    const v2Contents = await v2Script.contents();
+
+    expect(v1Contents).toContain("HTTP_GET_$_v1");
+    expect(v1Contents).toContain("OmitValueWhenNever");
+    expect(v2Contents).toContain("HTTP_GET_$_v2");
+    expect(v2Contents).toContain("OmitValueWhenNever");
   });
 });
