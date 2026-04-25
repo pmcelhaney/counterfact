@@ -153,8 +153,10 @@ function validateSpecGroups(
     for (const spec of specs) {
       const group = spec.group.trim();
       const version = spec.version?.trim() ?? "";
-      // Use group+version as the uniqueness key so that the same group can
+      // Use group@version as the uniqueness key so that the same group can
       // appear with different versions (e.g. v1 and v2 of the same API).
+      // The empty-group case is already rejected above, so `group` is always
+      // non-empty here and the `@version` suffix remains unambiguous.
       const key = version ? `${group}@${version}` : group;
 
       if (seenKeys.has(key)) {

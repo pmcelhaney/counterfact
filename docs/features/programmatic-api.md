@@ -134,8 +134,7 @@ const { start } = await counterfact(config, [
 ```
 
 
-
-| Property          | Type                           | Description                                                                                                                  |
+## Return value of `counterfact()`| Property          | Type                           | Description                                                                                                                  |
 | ----------------- | ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------- |
 | `contextRegistry` | `ContextRegistry`              | Registry of all context objects keyed by path. Call `.find(path)` to get the context for a given route prefix.               |
 | `registry`        | `Registry`                     | Registry of all loaded route modules.                                                                                        |
