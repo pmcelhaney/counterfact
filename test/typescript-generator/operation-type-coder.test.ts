@@ -867,7 +867,7 @@ describe("an OperationTypeCoder (versioned)", () => {
 
   it("imports Versioned, MaybePromise, COUNTERFACT_RESPONSE on the shared script", () => {
     const coder = new OperationTypeCoder(makeRequirement(), "v1", "get");
-    const repository = new Repository("/base");
+    const repository = new Repository();
     const sharedScript = repository.get(coder.modulePath());
 
     coder.writeCode(sharedScript);
