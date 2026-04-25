@@ -140,7 +140,14 @@ function normalizeSpecs(
     return specs.map((spec) => ({ ...spec, prefix: derivePrefix(spec) }));
   }
 
-  return [{ source: config.openApiPath, prefix: config.prefix, group: "" }];
+  return [
+    {
+      source: config.openApiPath,
+      prefix: config.prefix,
+      group: "",
+      version: "",
+    },
+  ];
 }
 
 function validateSpecGroups(
@@ -237,7 +244,25 @@ export async function counterfact(config: Config, specs?: SpecConfig[]) {
   async function start(
     options: Pick<Config, "generate" | "startServer" | "watch" | "buildCache">,
   ) {
-    await Promise.all(runners.map((runner) => runner.generate()));
+    // Serialize generate() calls within each group to avoid concurrent writes
+    // to the same output directory.  Runners that share a group share the same
+    // basePath subdirectory (and therefore the same counterfact-types
+    // destination), so running them in parallel would cause a race when both
+    // try to create that directory at startup.  Different groups are still
+    // generated in parallel.
+    const runnersByGroup = new Map<string, ApiRunner[]>();
+    for (const runner of runners) {
+      const bucket = runnersByGroup.get(runner.group) ?? [];
+      bucket.push(runner);
+      runnersByGroup.set(runner.group, bucket);
+    }
+    await Promise.all(
+      Array.from(runnersByGroup.values()).map(async (bucket) => {
+        for (const runner of bucket) {
+          await runner.generate();
+        }
+      }),
+    );
 
     if (options.generate?.types) {
       // Collect unique non-empty version strings in declaration order.
@@ -265,7 +290,6 @@ export async function counterfact(config: Config, specs?: SpecConfig[]) {
         /* eslint-enable security/detect-non-literal-fs-filename */
       }
     }
-
     await Promise.all(runners.map((runner) => runner.watch()));
     await Promise.all(runners.map((runner) => runner.start(options)));
 

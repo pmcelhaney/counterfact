@@ -302,12 +302,6 @@ export function startRepl(
       }
       seenGroups.add(binding.key);
     }
-
-    if (duplicateGroups.size > 0) {
-      throw new Error(
-        `Duplicate API groups are not allowed when multiple APIs are configured (duplicate groups: ${[...duplicateGroups].join(", ")}).`,
-      );
-    }
   }
 
   const rootBinding = groupedBindings[0];
