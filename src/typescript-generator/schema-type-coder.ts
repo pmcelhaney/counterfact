@@ -2,6 +2,7 @@ import { buildJsDoc } from "./jsdoc.js";
 import { TypeCoder } from "./type-coder.js";
 import type { Requirement } from "./requirement.js";
 import type { Script } from "./script.js";
+import { pathJoin } from "../util/forward-slash-path.js";
 
 export class SchemaTypeCoder extends TypeCoder {
   public override names(): Generator<string> {
@@ -163,7 +164,11 @@ export class SchemaTypeCoder extends TypeCoder {
   }
 
   public override modulePath(): string {
-    return `types/${(this.requirement.data["$ref"] as string).replace(/^#\//u, "")}.ts`;
+    return pathJoin(
+      "types",
+      this.version,
+      (this.requirement.data["$ref"] as string).replace(/^#\//u, "") + ".ts",
+    );
   }
 
   public override writeCode(script: Script): string {
