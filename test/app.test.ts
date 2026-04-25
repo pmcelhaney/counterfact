@@ -108,7 +108,7 @@ describe("counterfact", () => {
     ];
 
     await expect((app as any).counterfact(mockConfig, specs)).rejects.toThrow(
-      "Each spec must define a unique group when multiple APIs are configured",
+      "Each spec must define a unique group (and version) when multiple APIs are configured",
     );
   });
 
@@ -208,9 +208,125 @@ describe("counterfact", () => {
       await stop();
     });
   });
-});
+  it("derives prefix from group+version when no explicit prefix is provided", async () => {
+    const spy = jest.spyOn(ApiRunner, "create");
 
-describe("runStartupScenario", () => {
+    const specs = [
+      { source: "_", group: "my-api", version: "v1" },
+      { source: "_", group: "my-api", version: "v2" },
+    ];
+
+    await (app as any).counterfact(mockConfig, specs);
+
+    expect(spy).toHaveBeenCalledWith(
+      expect.objectContaining({ prefix: "/my-api/v1" }),
+      "my-api",
+    );
+    expect(spy).toHaveBeenCalledWith(
+      expect.objectContaining({ prefix: "/my-api/v2" }),
+      "my-api",
+    );
+
+    spy.mockRestore();
+  });
+
+  it("uses explicit prefix even when group and version are present", async () => {
+    const spy = jest.spyOn(ApiRunner, "create");
+
+    const specs = [
+      { source: "_", prefix: "/custom/path", group: "my-api", version: "v1" },
+    ];
+
+    await (app as any).counterfact(mockConfig, specs);
+
+    expect(spy).toHaveBeenCalledWith(
+      expect.objectContaining({ prefix: "/custom/path" }),
+      "my-api",
+    );
+
+    spy.mockRestore();
+  });
+
+  it("derives prefix from group alone when version is absent", async () => {
+    const spy = jest.spyOn(ApiRunner, "create");
+
+    const specs = [{ source: "_", group: "my-api" }];
+
+    await (app as any).counterfact(mockConfig, specs);
+
+    expect(spy).toHaveBeenCalledWith(
+      expect.objectContaining({ prefix: "/my-api" }),
+      "my-api",
+    );
+
+    spy.mockRestore();
+  });
+
+  it("allows two specs with the same group but different versions", async () => {
+    const specs = [
+      { source: "_", group: "my-api", version: "v1" },
+      { source: "_", group: "my-api", version: "v2" },
+    ];
+
+    await expect((app as any).counterfact(mockConfig, specs)).resolves.toEqual(
+      expect.objectContaining({
+        start: expect.any(Function),
+        startRepl: expect.any(Function),
+      }),
+    );
+  });
+
+  it("throws when two specs share the same group and version", async () => {
+    const specs = [
+      { source: "_", group: "my-api", version: "v1" },
+      { source: "_", group: "my-api", version: "v1" },
+    ];
+
+    await expect((app as any).counterfact(mockConfig, specs)).rejects.toThrow(
+      "Each spec must define a unique group (and version) when multiple APIs are configured",
+    );
+  });
+
+  it("routes two versioned specs to their derived prefixes", async () => {
+    await usingTemporaryFiles(async ($) => {
+      await $.add(
+        "v1/routes/greet.js",
+        `export function GET() { return { body: "hello from v1" }; }`,
+      );
+      await $.add(
+        "v2/routes/greet.js",
+        `export function GET() { return { body: "hello from v2" }; }`,
+      );
+
+      // Two specs: same version value but different groups so route files are distinct.
+      // Each is auto-mounted at /<group>/<version>.
+      const specs = [
+        { source: "_", group: "v1", version: "v1" },
+        { source: "_", group: "v2", version: "v2" },
+      ];
+
+      const { koaApp, start } = await (app as any).counterfact(
+        { ...mockConfig, basePath: $.path(".") },
+        specs,
+      );
+
+      const { stop } = await start({
+        startServer: true,
+        buildCache: false,
+        generate: { routes: false, types: false },
+        watch: { routes: false, types: false },
+      });
+
+      const v1Response = await request(koaApp.callback()).get("/v1/v1/greet");
+      const v2Response = await request(koaApp.callback()).get("/v2/v2/greet");
+
+      expect(v1Response.text).toContain("hello from v1");
+      expect(v2Response.text).toContain("hello from v2");
+
+      await stop();
+    });
+  });
+
   it("calls startup from the index module if it exists", async () => {
     const scenarioRegistry = new ScenarioRegistry();
     const contextRegistry = new ContextRegistry();

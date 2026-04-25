@@ -87,7 +87,53 @@ it("prompts for a password change when the password has expired", async () => {
 });
 ```
 
-## Return value of `counterfact()`
+## Multiple specs / versioned APIs
+
+Pass a `specs` array as the second argument to `counterfact()` to host several API specs on the same server. Each entry is a `SpecConfig` object:
+
+| Field     | Type              | Description                                                                    |
+| --------- | ----------------- | ------------------------------------------------------------------------------ |
+| `source`  | `string`          | Path or URL to the OpenAPI document (`"_"` to run without a spec).             |
+| `group`   | `string`          | Subdirectory under `config.basePath` for this spec's generated route files.    |
+| `version` | `string` (opt.)   | Version label (e.g. `"v1"`). Combined with `group` to derive the URL prefix.   |
+| `prefix`  | `string` (opt.)   | Explicit URL prefix. Overrides the derived prefix when provided.               |
+
+### Automatic prefix derivation
+
+When `prefix` is omitted, the server derives the URL prefix from `group` and `version`:
+
+| `group` | `version` | Derived prefix       |
+| ------- | --------- | -------------------- |
+| set     | set       | `/<group>/<version>` |
+| set     | absent    | `/<group>`           |
+| absent  | absent    | `""` (root)          |
+
+### Example — serving two versions of the same API
+
+```ts
+import { counterfact } from "counterfact";
+
+const { start } = await counterfact(config, [
+  { source: "./api-v1.yaml", group: "my-api", version: "v1" },
+  { source: "./api-v2.yaml", group: "my-api", version: "v2" },
+]);
+
+await start(config);
+// Routes are now available at:
+//   http://localhost:8100/my-api/v1/...
+//   http://localhost:8100/my-api/v2/...
+```
+
+Pass an explicit `prefix` to override derivation:
+
+```ts
+const { start } = await counterfact(config, [
+  { source: "./api.yaml", group: "my-api", version: "v1", prefix: "/legacy" },
+]);
+// Routes are served at /legacy/... regardless of group/version.
+```
+
+
 
 | Property          | Type                           | Description                                                                                                                  |
 | ----------------- | ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------- |
