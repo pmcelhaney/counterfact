@@ -328,16 +328,10 @@ describe("counterfact", () => {
 
     // Serial execution: runner 1 must complete before runner 2 starts.
     // Concurrent execution would produce ["start:1", "start:2", "end:1", "end:2"].
-    expect(order).toEqual([
-      "start:1",
-      "end:1",
-      "start:2",
-      "end:2",
-    ]);
+    expect(order).toEqual(["start:1", "end:1", "start:2", "end:2"]);
 
     generateSpy.mockRestore();
   });
-
 
   it("throws when two specs share the same group and version", async () => {
     const specs = [
