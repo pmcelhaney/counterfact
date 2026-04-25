@@ -53,7 +53,7 @@ describe("generateVersionsTsContent", () => {
     expect(content).toContain("export type VersionsGTE");
   });
 
-  it("produces valid TypeScript that Prettier can format", async () => {
+  it("does not throw when generating content for multiple versions", async () => {
     await expect(
       generateVersionsTsContent(["v1", "v2", "v3"]),
     ).resolves.not.toThrow();

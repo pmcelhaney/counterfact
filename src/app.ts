@@ -183,6 +183,9 @@ export async function counterfact(config: Config, specs?: SpecConfig[]) {
     await Promise.all(runners.map((runner) => runner.generate()));
 
     if (options.generate?.types) {
+      // Collect unique non-empty version strings in declaration order.
+      // new Set() preserves insertion order, so the first occurrence of each
+      // version is kept and duplicates are dropped without reordering.
       const versions = [
         ...new Set(
           normalizedSpecs
