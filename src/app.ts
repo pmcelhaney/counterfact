@@ -1,3 +1,6 @@
+import fs from "node:fs/promises";
+import nodePath from "node:path";
+
 import { createHttpTerminator, type HttpTerminator } from "http-terminator";
 
 import { ApiRunner } from "./api-runner.js";
@@ -7,6 +10,8 @@ import type { Config } from "./server/config.js";
 import { ContextRegistry } from "./server/context-registry.js";
 import { createKoaApp } from "./server/web-server/create-koa-app.js";
 import { ScenarioRegistry } from "./server/scenario-registry.js";
+import { ensureDirectoryExists } from "./util/ensure-directory-exists.js";
+import { generateVersionsTsContent } from "./typescript-generator/versions-ts-generator.js";
 
 export { loadOpenApiDocument } from "./server/load-openapi-document.js";
 export {
@@ -29,6 +34,13 @@ export interface SpecConfig {
   prefix: string;
   /** Name of the subdirectory under `config.basePath` where code is generated. */
   group: string;
+  /**
+   * Optional version string for this spec (e.g. `"v1"`, `"v2"`).
+   * When at least one spec defines a non-empty version, `types/versions.ts`
+   * is generated at the `basePath` root with the `Versions`, `VersionsGTE`,
+   * and `Versioned` types.
+   */
+  version?: string;
 }
 
 type Scenario$ = {
@@ -169,6 +181,31 @@ export async function counterfact(config: Config, specs?: SpecConfig[]) {
     options: Pick<Config, "generate" | "startServer" | "watch" | "buildCache">,
   ) {
     await Promise.all(runners.map((runner) => runner.generate()));
+
+    if (options.generate?.types) {
+      const versions = [
+        ...new Set(
+          normalizedSpecs
+            .map((spec) => (spec.version ?? "").trim())
+            .filter((v) => v !== ""),
+        ),
+      ];
+
+      if (versions.length > 0) {
+        const content = await generateVersionsTsContent(versions);
+        const versionsFilePath = nodePath.join(
+          config.basePath,
+          "types",
+          "versions.ts",
+        );
+
+        /* eslint-disable security/detect-non-literal-fs-filename -- path is derived from the caller-supplied basePath and a fixed suffix. */
+        await ensureDirectoryExists(versionsFilePath);
+        await fs.writeFile(versionsFilePath, content, "utf8");
+        /* eslint-enable security/detect-non-literal-fs-filename */
+      }
+    }
+
     await Promise.all(runners.map((runner) => runner.watch()));
     await Promise.all(runners.map((runner) => runner.start(options)));
 
