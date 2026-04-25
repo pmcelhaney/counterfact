@@ -101,14 +101,50 @@ describe("counterfact", () => {
     );
   });
 
-  it("throws when multiple specs include duplicate groups", async () => {
+  it("throws when multiple specs include duplicate groups (no version)", async () => {
     const specs = [
       { source: "_", prefix: "/api/v1", group: "billing" },
       { source: "_", prefix: "/api/v2", group: "billing" },
     ];
 
     await expect((app as any).counterfact(mockConfig, specs)).rejects.toThrow(
-      "Each spec must define a unique group when multiple APIs are configured",
+      'Specs sharing the same group must each have a non-empty, distinct version. Group "billing" has entries with missing or empty version.',
+    );
+  });
+
+  it("allows two specs with the same group but different non-empty versions", async () => {
+    const specs = [
+      { source: "_", prefix: "/api/v1", group: "my-api", version: "v1" },
+      { source: "_", prefix: "/api/v2", group: "my-api", version: "v2" },
+    ];
+
+    await expect((app as any).counterfact(mockConfig, specs)).resolves.toEqual(
+      expect.objectContaining({
+        start: expect.any(Function),
+        startRepl: expect.any(Function),
+      }),
+    );
+  });
+
+  it("throws when two specs share the same group and only one has a version (mixed)", async () => {
+    const specs = [
+      { source: "_", prefix: "/api/v1", group: "my-api", version: "v1" },
+      { source: "_", prefix: "/api/v2", group: "my-api" },
+    ];
+
+    await expect((app as any).counterfact(mockConfig, specs)).rejects.toThrow(
+      'Specs sharing the same group must each have a non-empty, distinct version. Group "my-api" has entries with missing or empty version.',
+    );
+  });
+
+  it("throws when two specs share the same group and same non-empty version", async () => {
+    const specs = [
+      { source: "_", prefix: "/api/v1", group: "my-api", version: "v1" },
+      { source: "_", prefix: "/api/v2", group: "my-api", version: "v1" },
+    ];
+
+    await expect((app as any).counterfact(mockConfig, specs)).rejects.toThrow(
+      'Specs in group "my-api" must each have a unique version (duplicate versions: v1).',
     );
   });
 

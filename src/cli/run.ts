@@ -23,7 +23,12 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const DEFAULT_PORT = 3100;
 
-type SpecOptionEntry = { source: string; prefix?: string; group?: string };
+type SpecOptionEntry = {
+  source: string;
+  prefix?: string;
+  group?: string;
+  version?: string;
+};
 type SpecOption = string | SpecOptionEntry | SpecOptionEntry[] | undefined;
 
 /**
@@ -45,6 +50,7 @@ export function normalizeSpecOption(
       source: entry.source,
       prefix: entry.prefix ?? "",
       group: entry.group ?? "",
+      version: entry.version ?? "",
     }));
   }
 
@@ -58,6 +64,7 @@ export function normalizeSpecOption(
         source: specOption.source,
         prefix: specOption.prefix ?? "",
         group: specOption.group ?? "",
+        version: specOption.version ?? "",
       },
     ];
   }

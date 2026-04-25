@@ -23,19 +23,43 @@ describe("normalizeSpecOption", () => {
           prefix: "/api",
           group: "v1",
         }),
-      ).toEqual([{ source: "api.yaml", prefix: "/api", group: "v1" }]);
+      ).toEqual([
+        { source: "api.yaml", prefix: "/api", group: "v1", version: "" },
+      ]);
     });
 
     it("defaults prefix to empty string when omitted", () => {
       expect(normalizeSpecOption({ source: "api.yaml" })).toEqual([
-        { source: "api.yaml", prefix: "", group: "" },
+        { source: "api.yaml", prefix: "", group: "", version: "" },
       ]);
     });
 
     it("defaults group to empty string when omitted", () => {
       expect(
         normalizeSpecOption({ source: "api.yaml", prefix: "/v2" }),
-      ).toEqual([{ source: "api.yaml", prefix: "/v2", group: "" }]);
+      ).toEqual([
+        { source: "api.yaml", prefix: "/v2", group: "", version: "" },
+      ]);
+    });
+
+    it("passes through version when provided", () => {
+      expect(
+        normalizeSpecOption({
+          source: "api.yaml",
+          group: "my-api",
+          version: "v1",
+        }),
+      ).toEqual([
+        { source: "api.yaml", prefix: "", group: "my-api", version: "v1" },
+      ]);
+    });
+
+    it("defaults version to empty string when omitted", () => {
+      expect(
+        normalizeSpecOption({ source: "api.yaml", prefix: "/v2", group: "g" }),
+      ).toEqual([
+        { source: "api.yaml", prefix: "/v2", group: "g", version: "" },
+      ]);
     });
   });
 
@@ -47,26 +71,28 @@ describe("normalizeSpecOption", () => {
           { source: "store.yaml", prefix: "/store", group: "store" },
         ]),
       ).toEqual([
-        { source: "pets.yaml", prefix: "/pets", group: "pets" },
-        { source: "store.yaml", prefix: "/store", group: "store" },
+        { source: "pets.yaml", prefix: "/pets", group: "pets", version: "" },
+        { source: "store.yaml", prefix: "/store", group: "store", version: "" },
       ]);
     });
 
     it("defaults prefix to empty string when omitted from an entry", () => {
       expect(
         normalizeSpecOption([{ source: "api.yaml", group: "v1" }]),
-      ).toEqual([{ source: "api.yaml", prefix: "", group: "v1" }]);
+      ).toEqual([{ source: "api.yaml", prefix: "", group: "v1", version: "" }]);
     });
 
     it("defaults group to empty string when omitted from an entry", () => {
       expect(
         normalizeSpecOption([{ source: "api.yaml", prefix: "/v2" }]),
-      ).toEqual([{ source: "api.yaml", prefix: "/v2", group: "" }]);
+      ).toEqual([
+        { source: "api.yaml", prefix: "/v2", group: "", version: "" },
+      ]);
     });
 
     it("defaults both prefix and group when both are omitted from an entry", () => {
       expect(normalizeSpecOption([{ source: "api.yaml" }])).toEqual([
-        { source: "api.yaml", prefix: "", group: "" },
+        { source: "api.yaml", prefix: "", group: "", version: "" },
       ]);
     });
 
@@ -81,8 +107,32 @@ describe("normalizeSpecOption", () => {
           { source: "b.yaml" },
         ]),
       ).toEqual([
-        { source: "a.yaml", prefix: "/a", group: "a" },
-        { source: "b.yaml", prefix: "", group: "" },
+        { source: "a.yaml", prefix: "/a", group: "a", version: "" },
+        { source: "b.yaml", prefix: "", group: "", version: "" },
+      ]);
+    });
+
+    it("passes through version for each entry when provided", () => {
+      expect(
+        normalizeSpecOption([
+          { source: "v1.yaml", group: "my-api", version: "v1" },
+          { source: "v2.yaml", group: "my-api", version: "v2" },
+        ]),
+      ).toEqual([
+        { source: "v1.yaml", prefix: "", group: "my-api", version: "v1" },
+        { source: "v2.yaml", prefix: "", group: "my-api", version: "v2" },
+      ]);
+    });
+
+    it("defaults version to empty string when omitted from an entry in an array", () => {
+      expect(
+        normalizeSpecOption([
+          { source: "a.yaml", group: "a", version: "v1" },
+          { source: "b.yaml", group: "b" },
+        ]),
+      ).toEqual([
+        { source: "a.yaml", prefix: "", group: "a", version: "v1" },
+        { source: "b.yaml", prefix: "", group: "b", version: "" },
       ]);
     });
   });

@@ -29,6 +29,11 @@ export interface SpecConfig {
   prefix: string;
   /** Name of the subdirectory under `config.basePath` where code is generated. */
   group: string;
+  /**
+   * Optional version tag for this spec. When two specs share the same `group`,
+   * each must carry a distinct non-empty `version`. Defaults to `""`.
+   */
+  version?: string;
 }
 
 type Scenario$ = {
@@ -79,7 +84,14 @@ function normalizeSpecs(
     return specs;
   }
 
-  return [{ source: config.openApiPath, prefix: config.prefix, group: "" }];
+  return [
+    {
+      source: config.openApiPath,
+      prefix: config.prefix,
+      group: "",
+      version: "",
+    },
+  ];
 }
 
 function validateSpecGroups(specs: SpecConfig[]): void {
@@ -92,33 +104,53 @@ function validateSpecGroups(specs: SpecConfig[]): void {
     .filter(({ group }) => group === "")
     .map(({ index }) => String(index + 1));
 
-  if (invalidSpecNumbers.length === 0) {
-    const seenGroups = new Set<string>();
-    const duplicateGroupNames = new Set<string>();
-
-    for (const spec of specs) {
-      const group = spec.group.trim();
-
-      if (seenGroups.has(group)) {
-        duplicateGroupNames.add(group);
-        continue;
-      }
-
-      seenGroups.add(group);
-    }
-
-    if (duplicateGroupNames.size === 0) {
-      return;
-    }
-
+  if (invalidSpecNumbers.length > 0) {
     throw new Error(
-      `Each spec must define a unique group when multiple APIs are configured (duplicate groups: ${[...duplicateGroupNames].join(", ")}).`,
+      `Each spec must define a non-empty group when multiple APIs are configured (invalid spec entries: ${invalidSpecNumbers.join(", ")}).`,
     );
   }
 
-  throw new Error(
-    `Each spec must define a non-empty group when multiple APIs are configured (invalid spec entries: ${invalidSpecNumbers.join(", ")}).`,
-  );
+  // Group specs by group name to detect duplicate groups.
+  const groupMap = new Map<string, SpecConfig[]>();
+
+  for (const spec of specs) {
+    const group = spec.group.trim();
+    const existing = groupMap.get(group) ?? [];
+
+    groupMap.set(group, [...existing, spec]);
+  }
+
+  for (const [group, groupSpecs] of groupMap) {
+    if (groupSpecs.length <= 1) {
+      continue;
+    }
+
+    // Multiple specs share the same group: each must have a non-empty, distinct version.
+    const versions = groupSpecs.map((s) => (s.version ?? "").trim());
+
+    if (versions.some((v) => v === "")) {
+      throw new Error(
+        `Specs sharing the same group must each have a non-empty, distinct version. Group "${group}" has entries with missing or empty version.`,
+      );
+    }
+
+    const seenVersions = new Set<string>();
+    const duplicateVersions = new Set<string>();
+
+    for (const version of versions) {
+      if (seenVersions.has(version)) {
+        duplicateVersions.add(version);
+      }
+
+      seenVersions.add(version);
+    }
+
+    if (duplicateVersions.size > 0) {
+      throw new Error(
+        `Specs in group "${group}" must each have a unique version (duplicate versions: ${[...duplicateVersions].join(", ")}).`,
+      );
+    }
+  }
 }
 
 /**
