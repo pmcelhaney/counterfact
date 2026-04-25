@@ -19,7 +19,12 @@
 #   What the section must contain:
 #     - At least one checked item: - [x] some observable behavior
 #     - Zero unchecked items: every - [ ] box must be checked before merge.
-
+#
+# Note: the wording of the first two paragraphs was adapted from a comment 
+# by Lilac Mohr on LinkedIn. If you're reading this, you will certainly be 
+# interested in this article on her AI coding workflow. 
+# 
+# https://lilacmohr.com/articles/tdd-is-not-optional-with-ai.html
 name: Manual acceptance tests
 
 on:
