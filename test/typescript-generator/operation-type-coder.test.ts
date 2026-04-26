@@ -865,7 +865,7 @@ describe("an OperationTypeCoder (versioned)", () => {
     expect(result).toContain("COUNTERFACT_RESPONSE");
   });
 
-  it("imports Versioned, MaybePromise, COUNTERFACT_RESPONSE on the shared script", () => {
+  it("imports Versioned (from types/versions.ts), MaybePromise, COUNTERFACT_RESPONSE on the shared script", () => {
     const coder = new OperationTypeCoder(makeRequirement(), "v1", "get");
     const repository = new Repository();
     const sharedScript = repository.get(coder.modulePath());
@@ -873,6 +873,9 @@ describe("an OperationTypeCoder (versioned)", () => {
     coder.writeCode(sharedScript);
 
     expect(sharedScript.externalImport.has("Versioned")).toBe(true);
+    expect(sharedScript.externalImport.get("Versioned")?.modulePath).toContain(
+      "types/versions.ts",
+    );
     expect(sharedScript.externalImport.has("MaybePromise")).toBe(true);
     expect(sharedScript.externalImport.has("COUNTERFACT_RESPONSE")).toBe(true);
   });
