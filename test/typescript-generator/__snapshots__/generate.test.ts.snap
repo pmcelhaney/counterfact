@@ -808,27 +808,30 @@ export type createUsersWithListInput = (
     cookie: never;
     body: Array<User>;
     context: Context;
-    response: ResponseBuilderFactory<{
-      200: {
-        headers: never;
-        requiredHeaders: never;
-        content: {
-          "application/xml": {
-            schema: User;
+    response: ResponseBuilderFactory<
+      {
+        200: {
+          headers: never;
+          requiredHeaders: never;
+          content: {
+            "application/xml": {
+              schema: User;
+            };
+            "application/json": {
+              schema: User;
+            };
           };
-          "application/json": {
-            schema: User;
-          };
+          examples: {};
         };
-        examples: {};
-      };
-      [statusCode in Exclude<HttpStatusCode, 200>]: {
-        headers: never;
-        requiredHeaders: never;
-        content: never;
-        examples: {};
-      };
-    }>;
+      } & {
+        [statusCode in Exclude<HttpStatusCode, 200>]: {
+          headers: never;
+          requiredHeaders: never;
+          content: never;
+          examples: {};
+        };
+      }
+    >;
     x: WideOperationArgument;
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
