@@ -931,3 +931,32 @@ describe("an OperationTypeCoder (versioned)", () => {
     expect(v2Contents).toContain("OmitValueWhenNever");
   });
 });
+
+// ---------------------------------------------------------------------------
+// version property in generated $ arg type
+// ---------------------------------------------------------------------------
+
+describe("version property in the generated $ arg type", () => {
+  const makeRequirement = (operationData = {}) =>
+    new Requirement(
+      { parameters: [], responses: { 200: {} }, ...operationData },
+      "#/paths/pets/get",
+    );
+
+  it("includes version: <literal> in the VersionedArgTypeCoder output", () => {
+    const coder = new VersionedArgTypeCoder(makeRequirement(), "v3", "get");
+    const repository = new Repository();
+    const perVersionScript = repository.get(coder.modulePath());
+
+    const result = coder.writeCode(perVersionScript);
+
+    expect(result).toContain('version: "v3"');
+  });
+
+  it("includes version: never in the unversioned OperationTypeCoder output", () => {
+    const coder = new OperationTypeCoder(makeRequirement(), "", "get");
+    const result = coder.write(dummyScript);
+
+    expect(result).toContain("version: never");
+  });
+});

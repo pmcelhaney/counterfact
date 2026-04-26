@@ -336,7 +336,10 @@ export class OperationTypeCoder extends TypeCoder {
       modulePath,
     );
 
-    return `OmitValueWhenNever<{ query: ${queryTypeName}, path: ${pathTypeName}, headers: ${headersTypeName}, cookie: ${cookieTypeName}, body: ${bodyType}, context: ${contextTypeImportName}, response: ${responseType}, x: ${xType}, proxy: ${proxyType}, user: ${this.userType()}, delay: ${delayType} }>`;
+    const versionLiteralType =
+      this.version !== "" ? `"${this.version}"` : "never";
+
+    return `OmitValueWhenNever<{ query: ${queryTypeName}, path: ${pathTypeName}, headers: ${headersTypeName}, cookie: ${cookieTypeName}, body: ${bodyType}, context: ${contextTypeImportName}, response: ${responseType}, x: ${xType}, proxy: ${proxyType}, user: ${this.userType()}, delay: ${delayType}, version: ${versionLiteralType} }>`;
   }
 
   public override writeCode(script: Script): string {
