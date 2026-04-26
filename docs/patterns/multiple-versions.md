@@ -8,12 +8,12 @@ Versioned APIs introduce change gradually: a new field in the response, a rename
 
 ## Solution
 
-Configure each versioned spec as a separate entry in the `specs` array passed to `counterfact()`. Give them the same `group` and different `version` labels. Counterfact generates a shared route file per path and injects two helpers into the handler's `$` argument at runtime:
+List each versioned spec under the `spec` key in `counterfact.yaml`. Give them the same `group` and different `version` labels. Counterfact generates a shared route file per path and injects two helpers into the handler's `$` argument at runtime:
 
 - **`$.version`** — a string identifying which version is handling the request (e.g. `"v1"`, `"v2"`).
 - **`$.minVersion(min)`** — returns `true` when the current version is at or after `min` in the declared version order.
 
-Version order is determined by the position of each spec in the `specs` array — first entry is the oldest version.
+Version order is determined by the order of entries in the config — first entry is the oldest version.
 
 Write one handler that branches on version using `$.minVersion()` instead of duplicating the file.
 
@@ -21,20 +21,22 @@ Write one handler that branches on version using `$.minVersion()` instead of dup
 
 ### Configuration
 
-```ts
-import { counterfact } from "counterfact";
-
-const { start } = await counterfact(config, [
-  { source: "./api-v1.yaml", group: "pets", version: "v1" },
-  { source: "./api-v2.yaml", group: "pets", version: "v2" },
-  { source: "./api-v3.yaml", group: "pets", version: "v3" },
-]);
-
-await start(config);
-// Handlers are served at:
-//   http://localhost:8100/pets/v1/...
-//   http://localhost:8100/pets/v2/...
-//   http://localhost:8100/pets/v3/...
+```yaml
+# counterfact.yaml
+spec:
+  - source: ./api-v1.yaml
+    group: pets
+    version: v1
+  - source: ./api-v2.yaml
+    group: pets
+    version: v2
+  - source: ./api-v3.yaml
+    group: pets
+    version: v3
+# Handlers are served at:
+#   http://localhost:3100/pets/v1/...
+#   http://localhost:3100/pets/v2/...
+#   http://localhost:3100/pets/v3/...
 ```
 
 ### Handler
@@ -81,7 +83,7 @@ export const GET: HTTP_GET = ($) => {
 
 - A single route file covers all versions; shared logic is not duplicated across version directories.
 - `$.minVersion()` expresses "this feature exists in version X and later" clearly at the point in the code where it matters.
-- Adding a new version only requires adding its spec to the `specs` array and updating the handlers that actually changed — handlers that did not change continue to work across all versions.
+- Adding a new version only requires adding its entry to `counterfact.yaml` and updating the handlers that actually changed — handlers that did not change continue to work across all versions.
 - Handlers that differ fundamentally between versions can still be split across version-specific files if that is clearer; the pattern does not require all logic to live in one file.
 - `$.version` and `$.minVersion()` are only present when `version` is set in the spec config. For a single, unversioned spec they are absent.
 
