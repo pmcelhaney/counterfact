@@ -94,7 +94,7 @@ export function createIntroduction(params: {
     `   API Base URL  ${url}`,
     source === "_" ? undefined : `   Swagger UI    ${swaggerUrl}`,
     "",
-    "   Instructions  https://counterfact.dev/docs/usage.html",
+    "   Instructions  https://github.com/counterfact/api-simulator/blob/main/docs/usage.md",
     "   Help/feedback https://github.com/pmcelhaney/counterfact/issues",
     "",
     ...telemetryWarning,
