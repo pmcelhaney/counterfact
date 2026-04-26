@@ -63,6 +63,7 @@ export type addPet = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+    version: never;
   }>,
 ) => MaybePromise<COUNTERFACT_RESPONSE>;
 
@@ -114,6 +115,7 @@ export type updatePet = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+    version: never;
   }>,
 ) => MaybePromise<COUNTERFACT_RESPONSE>;
 "
@@ -177,6 +179,7 @@ export type findPetsByStatus = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+    version: never;
   }>,
 ) => MaybePromise<COUNTERFACT_RESPONSE>;
 
@@ -247,6 +250,7 @@ export type findPetsByTags = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+    version: never;
   }>,
 ) => MaybePromise<COUNTERFACT_RESPONSE>;
 
@@ -333,6 +337,7 @@ export type getPetById = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+    version: never;
   }>,
 ) => MaybePromise<COUNTERFACT_RESPONSE>;
 
@@ -356,6 +361,7 @@ export type updatePetWithForm = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+    version: never;
   }>,
 ) => MaybePromise<COUNTERFACT_RESPONSE>;
 
@@ -379,6 +385,7 @@ export type deletePet = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+    version: never;
   }>,
 ) => MaybePromise<COUNTERFACT_RESPONSE>;
 
@@ -464,6 +471,7 @@ export type uploadFile = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+    version: never;
   }>,
 ) => MaybePromise<COUNTERFACT_RESPONSE>;
 
@@ -531,6 +539,7 @@ export type getInventory = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+    version: never;
   }>,
 ) => MaybePromise<COUNTERFACT_RESPONSE>;
 "
@@ -591,6 +600,7 @@ export type placeOrder = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+    version: never;
   }>,
 ) => MaybePromise<COUNTERFACT_RESPONSE>;
 "
@@ -665,6 +675,7 @@ export type getOrderById = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+    version: never;
   }>,
 ) => MaybePromise<COUNTERFACT_RESPONSE>;
 
@@ -697,6 +708,7 @@ export type deleteOrder = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+    version: never;
   }>,
 ) => MaybePromise<COUNTERFACT_RESPONSE>;
 
@@ -769,6 +781,7 @@ export type createUser = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+    version: never;
   }>,
 ) => MaybePromise<COUNTERFACT_RESPONSE>;
 "
@@ -836,6 +849,7 @@ export type createUsersWithListInput = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+    version: never;
   }>,
 ) => MaybePromise<COUNTERFACT_RESPONSE>;
 "
@@ -898,6 +912,7 @@ export type loginUser = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+    version: never;
   }>,
 ) => MaybePromise<COUNTERFACT_RESPONSE>;
 
@@ -956,6 +971,7 @@ export type logoutUser = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+    version: never;
   }>,
 ) => MaybePromise<COUNTERFACT_RESPONSE>;
 "
@@ -1033,6 +1049,7 @@ export type getUserByName = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+    version: never;
   }>,
 ) => MaybePromise<COUNTERFACT_RESPONSE>;
 
@@ -1059,6 +1076,7 @@ export type updateUser = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+    version: never;
   }>,
 ) => MaybePromise<COUNTERFACT_RESPONSE>;
 
@@ -1091,6 +1109,7 @@ export type deleteUser = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+    version: never;
   }>,
 ) => MaybePromise<COUNTERFACT_RESPONSE>;
 
@@ -1313,6 +1332,7 @@ export type getRoot = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: { username?: string; password?: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+    version: never;
   }>,
 ) => MaybePromise<COUNTERFACT_RESPONSE>;
 "
@@ -1368,6 +1388,7 @@ export type getCount = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: { username?: string; password?: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+    version: never;
   }>,
 ) => MaybePromise<COUNTERFACT_RESPONSE>;
 "
@@ -1424,6 +1445,7 @@ export type helloKitty = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: { username?: string; password?: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+    version: never;
   }>,
 ) => MaybePromise<COUNTERFACT_RESPONSE>;
 "
@@ -1485,6 +1507,7 @@ export type sayHello = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: { username?: string; password?: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+    version: never;
   }>,
 ) => MaybePromise<COUNTERFACT_RESPONSE>;
 
@@ -1559,6 +1582,7 @@ export type getPathOne = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: { username?: string; password?: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+    version: never;
   }>,
 ) => MaybePromise<COUNTERFACT_RESPONSE>;
 "
@@ -1609,6 +1633,7 @@ export type weirdColonPath = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: { username?: string; password?: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+    version: never;
   }>,
 ) => MaybePromise<COUNTERFACT_RESPONSE>;
 "
@@ -1683,6 +1708,7 @@ export type listUsers = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: { username?: string; password?: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+    version: never;
   }>,
 ) => MaybePromise<COUNTERFACT_RESPONSE>;
 
@@ -1727,6 +1753,7 @@ export type createUser = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: { username?: string; password?: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+    version: never;
   }>,
 ) => MaybePromise<COUNTERFACT_RESPONSE>;
 
@@ -1812,6 +1839,7 @@ export type getUser = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: { username?: string; password?: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+    version: never;
   }>,
 ) => MaybePromise<COUNTERFACT_RESPONSE>;
 
@@ -1844,6 +1872,7 @@ export type replaceUser = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: { username?: string; password?: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+    version: never;
   }>,
 ) => MaybePromise<COUNTERFACT_RESPONSE>;
 
@@ -1876,6 +1905,7 @@ export type patchUser = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: { username?: string; password?: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+    version: never;
   }>,
 ) => MaybePromise<COUNTERFACT_RESPONSE>;
 
@@ -1903,6 +1933,7 @@ export type deleteUser = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: { username?: string; password?: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+    version: never;
   }>,
 ) => MaybePromise<COUNTERFACT_RESPONSE>;
 
@@ -1986,6 +2017,7 @@ export type createEvent = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: { username?: string; password?: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+    version: never;
   }>,
 ) => MaybePromise<COUNTERFACT_RESPONSE>;
 "
@@ -2039,6 +2071,7 @@ export type getProduct = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: { username?: string; password?: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+    version: never;
   }>,
 ) => MaybePromise<COUNTERFACT_RESPONSE>;
 
@@ -2111,6 +2144,7 @@ export type uploadFile = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: { username?: string; password?: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+    version: never;
   }>,
 ) => MaybePromise<COUNTERFACT_RESPONSE>;
 "
@@ -2165,6 +2199,7 @@ export type listItemsLegacy = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: { username?: string; password?: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+    version: never;
   }>,
 ) => MaybePromise<COUNTERFACT_RESPONSE>;
 
@@ -2228,6 +2263,7 @@ export type getReport = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: { username?: string; password?: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+    version: never;
   }>,
 ) => MaybePromise<COUNTERFACT_RESPONSE>;
 
@@ -2283,6 +2319,7 @@ export type ping = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: { username?: string; password?: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+    version: never;
   }>,
 ) => MaybePromise<COUNTERFACT_RESPONSE>;
 "
@@ -2336,6 +2373,7 @@ export type setMetadata = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: { username?: string; password?: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+    version: never;
   }>,
 ) => MaybePromise<COUNTERFACT_RESPONSE>;
 "
@@ -2390,6 +2428,7 @@ export type HTTP_GET = (
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: { username?: string; password?: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+    version: never;
   }>,
 ) => MaybePromise<COUNTERFACT_RESPONSE>;
 

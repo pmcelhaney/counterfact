@@ -25,6 +25,7 @@ exports[`an OperationTypeCoder falls back to root level produces (OpenAPI 2) 1`]
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+    version: never;
   }>,
 ) => MaybePromise<COUNTERFACT_RESPONSE>;
 "
@@ -78,6 +79,7 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2 wit
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+    version: never;
   }>,
 ) => MaybePromise<COUNTERFACT_RESPONSE>;
 "
@@ -131,6 +133,7 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2) 1`
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+    version: never;
   }>,
 ) => MaybePromise<COUNTERFACT_RESPONSE>;
 "
@@ -184,6 +187,7 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2, co
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+    version: never;
   }>,
 ) => MaybePromise<COUNTERFACT_RESPONSE>;
 "
@@ -240,6 +244,7 @@ exports[`an OperationTypeCoder generates a complex post operation 1`] = `
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+    version: never;
   }>,
 ) => MaybePromise<COUNTERFACT_RESPONSE>;
 "
@@ -270,6 +275,7 @@ exports[`an OperationTypeCoder generates a simple get operation (OpenAPI 2) 1`] 
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+    version: never;
   }>,
 ) => MaybePromise<COUNTERFACT_RESPONSE>;
 "
@@ -300,6 +306,7 @@ exports[`an OperationTypeCoder generates a simple get operation 1`] = `
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+    version: never;
   }>,
 ) => MaybePromise<COUNTERFACT_RESPONSE>;
 "
@@ -330,6 +337,7 @@ exports[`an OperationTypeCoder generates an auth object for basic authentication
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: { username?: string; password?: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+    version: never;
   }>,
 ) => MaybePromise<COUNTERFACT_RESPONSE>;
 "

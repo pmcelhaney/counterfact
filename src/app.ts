@@ -1,3 +1,6 @@
+import fs from "node:fs/promises";
+import nodePath from "node:path";
+
 import { createHttpTerminator, type HttpTerminator } from "http-terminator";
 
 import { ApiRunner } from "./api-runner.js";
@@ -8,6 +11,8 @@ import { ContextRegistry } from "./server/context-registry.js";
 import { createKoaApp } from "./server/web-server/create-koa-app.js";
 import { ScenarioRegistry } from "./server/scenario-registry.js";
 import { Repository } from "./typescript-generator/repository.js";
+import { ensureDirectoryExists } from "./util/ensure-directory-exists.js";
+import { generateVersionsTsContent } from "./typescript-generator/versions-ts-generator.js";
 
 export { loadOpenApiDocument } from "./server/load-openapi-document.js";
 export {
@@ -53,6 +58,11 @@ export interface SpecConfig {
    *
    * When combined with `group` and no explicit `prefix`, the server mounts
    * this spec's routes under `/<group>/<version>`.
+   *
+   * When at least one spec in a group defines a non-empty version,
+   * `types/versions.ts` is generated inside that group's subdirectory
+   * (e.g. `<basePath>/<group>/types/versions.ts`) with the `Versions`,
+   * `VersionsGTE`, and `Versioned` types.
    */
   version?: string;
 }
@@ -216,12 +226,27 @@ export async function counterfact(config: Config, specs?: SpecConfig[]) {
   );
   validateSpecGroups(normalizedSpecs);
 
+  // Compute the ordered versions per group (oldest first, as declared in specs).
+  // This list is passed to each runner so that $.minVersion() can compare
+  // version positions at runtime.
+  const versionsByGroup = new Map<string, string[]>();
+  for (const spec of normalizedSpecs) {
+    const version = spec.version ?? "";
+
+    if (version) {
+      const existing = versionsByGroup.get(spec.group) ?? [];
+
+      versionsByGroup.set(spec.group, [...existing, version]);
+    }
+  }
+
   const runners = await Promise.all(
     normalizedSpecs.map((spec) =>
       ApiRunner.create(
         { ...config, openApiPath: spec.source, prefix: spec.prefix },
         spec.group,
         spec.version ?? "",
+        versionsByGroup.get(spec.group) ?? [],
       ),
     ),
   );
@@ -263,6 +288,43 @@ export async function counterfact(config: Config, specs?: SpecConfig[]) {
         }
       }),
     );
+
+    if (options.generate?.types) {
+      // Build a per-group map of unique non-empty version strings in
+      // declaration order. new Set() preserves insertion order so the first
+      // occurrence of each version is kept and duplicates are dropped without
+      // reordering.
+      const versionsByGroup = new Map<string, string[]>();
+      for (const spec of normalizedSpecs) {
+        const group = spec.group;
+        const version = (spec.version ?? "").trim();
+        if (version === "") {
+          continue;
+        }
+        const existing = versionsByGroup.get(group) ?? [];
+        if (!existing.includes(version)) {
+          existing.push(version);
+        }
+        versionsByGroup.set(group, existing);
+      }
+
+      // Write <basePath>/<group>/types/versions.ts for every group that has
+      // at least one versioned spec.  When the group is empty the path
+      // collapses to <basePath>/types/versions.ts (the single-spec case).
+      await Promise.all(
+        Array.from(versionsByGroup.entries()).map(async ([group, versions]) => {
+          const content = await generateVersionsTsContent(versions);
+          const versionsFilePath = group
+            ? nodePath.join(config.basePath, group, "types", "versions.ts")
+            : nodePath.join(config.basePath, "types", "versions.ts");
+
+          /* eslint-disable security/detect-non-literal-fs-filename -- path is derived from the caller-supplied basePath and fixed suffixes. */
+          await ensureDirectoryExists(versionsFilePath);
+          await fs.writeFile(versionsFilePath, content, "utf8");
+          /* eslint-enable security/detect-non-literal-fs-filename */
+        }),
+      );
+    }
     await Promise.all(runners.map((runner) => runner.watch()));
     await Promise.all(runners.map((runner) => runner.start(options)));
 

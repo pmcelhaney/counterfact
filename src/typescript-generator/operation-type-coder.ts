@@ -336,7 +336,10 @@ export class OperationTypeCoder extends TypeCoder {
       modulePath,
     );
 
-    return `OmitValueWhenNever<{ query: ${queryTypeName}, path: ${pathTypeName}, headers: ${headersTypeName}, cookie: ${cookieTypeName}, body: ${bodyType}, context: ${contextTypeImportName}, response: ${responseType}, x: ${xType}, proxy: ${proxyType}, user: ${this.userType()}, delay: ${delayType} }>`;
+    const versionLiteralType =
+      this.version !== "" ? `"${this.version}"` : "never";
+
+    return `OmitValueWhenNever<{ query: ${queryTypeName}, path: ${pathTypeName}, headers: ${headersTypeName}, cookie: ${cookieTypeName}, body: ${bodyType}, context: ${contextTypeImportName}, response: ${responseType}, x: ${xType}, proxy: ${proxyType}, user: ${this.userType()}, delay: ${delayType}, version: ${versionLiteralType} }>`;
   }
 
   public override writeCode(script: Script): string {
@@ -347,7 +350,7 @@ export class OperationTypeCoder extends TypeCoder {
       // formatter so that Script.versionsTypeStatements() can emit the
       // merged HTTP_<METHOD>_$_Versions + HTTP_<METHOD> types after all
       // versions have been declared via declareVersion().
-      const versionedType = script.importSharedType("Versioned");
+      const versionedType = script.importVersionsType("Versioned");
       const maybePromiseType = script.importSharedType("MaybePromise");
       const counterfactResponseType = script.importSharedType(
         "COUNTERFACT_RESPONSE",
