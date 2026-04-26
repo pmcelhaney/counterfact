@@ -40,38 +40,41 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2 wit
     cookie: never;
     body: Type;
     context: ExternalType;
-    response: ResponseBuilderFactory<{
-      200: {
-        headers: never;
-        requiredHeaders: never;
-        content: {
-          "application/json": {
-            schema: Type;
+    response: ResponseBuilderFactory<
+      {
+        200: {
+          headers: never;
+          requiredHeaders: never;
+          content: {
+            "application/json": {
+              schema: Type;
+            };
           };
+          examples: {};
         };
-        examples: {};
-      };
-      400: {
-        headers: never;
-        requiredHeaders: never;
-        content: {
-          "application/json": {
-            schema: Type;
+        400: {
+          headers: never;
+          requiredHeaders: never;
+          content: {
+            "application/json": {
+              schema: Type;
+            };
           };
+          examples: {};
         };
-        examples: {};
-      };
-      [statusCode in Exclude<HttpStatusCode, 200 | 400>]: {
-        headers: never;
-        requiredHeaders: never;
-        content: {
-          "application/json": {
-            schema: Type;
+      } & {
+        [statusCode in Exclude<HttpStatusCode, 200 | 400>]: {
+          headers: never;
+          requiredHeaders: never;
+          content: {
+            "application/json": {
+              schema: Type;
+            };
           };
+          examples: {};
         };
-        examples: {};
-      };
-    }>;
+      }
+    >;
     x: SharedType;
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
@@ -91,38 +94,41 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2) 1`
     cookie: never;
     body: Type;
     context: ExternalType;
-    response: ResponseBuilderFactory<{
-      200: {
-        headers: never;
-        requiredHeaders: never;
-        content: {
-          "application/json": {
-            schema: Type;
+    response: ResponseBuilderFactory<
+      {
+        200: {
+          headers: never;
+          requiredHeaders: never;
+          content: {
+            "application/json": {
+              schema: Type;
+            };
           };
+          examples: {};
         };
-        examples: {};
-      };
-      400: {
-        headers: never;
-        requiredHeaders: never;
-        content: {
-          "application/json": {
-            schema: Type;
+        400: {
+          headers: never;
+          requiredHeaders: never;
+          content: {
+            "application/json": {
+              schema: Type;
+            };
           };
+          examples: {};
         };
-        examples: {};
-      };
-      [statusCode in Exclude<HttpStatusCode, 200 | 400>]: {
-        headers: never;
-        requiredHeaders: never;
-        content: {
-          "application/json": {
-            schema: Type;
+      } & {
+        [statusCode in Exclude<HttpStatusCode, 200 | 400>]: {
+          headers: never;
+          requiredHeaders: never;
+          content: {
+            "application/json": {
+              schema: Type;
+            };
           };
+          examples: {};
         };
-        examples: {};
-      };
-    }>;
+      }
+    >;
     x: SharedType;
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
@@ -142,38 +148,41 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2, co
     cookie: never;
     body: Type;
     context: ExternalType;
-    response: ResponseBuilderFactory<{
-      200: {
-        headers: never;
-        requiredHeaders: never;
-        content: {
-          "application/json": {
-            schema: Type;
+    response: ResponseBuilderFactory<
+      {
+        200: {
+          headers: never;
+          requiredHeaders: never;
+          content: {
+            "application/json": {
+              schema: Type;
+            };
           };
+          examples: {};
         };
-        examples: {};
-      };
-      400: {
-        headers: never;
-        requiredHeaders: never;
-        content: {
-          "application/json": {
-            schema: Type;
+        400: {
+          headers: never;
+          requiredHeaders: never;
+          content: {
+            "application/json": {
+              schema: Type;
+            };
           };
+          examples: {};
         };
-        examples: {};
-      };
-      [statusCode in Exclude<HttpStatusCode, 200 | 400>]: {
-        headers: never;
-        requiredHeaders: never;
-        content: {
-          "application/json": {
-            schema: Type;
+      } & {
+        [statusCode in Exclude<HttpStatusCode, 200 | 400>]: {
+          headers: never;
+          requiredHeaders: never;
+          content: {
+            "application/json": {
+              schema: Type;
+            };
           };
+          examples: {};
         };
-        examples: {};
-      };
-    }>;
+      }
+    >;
     x: SharedType;
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
@@ -193,41 +202,44 @@ exports[`an OperationTypeCoder generates a complex post operation 1`] = `
     cookie: never;
     body: Type;
     context: ExternalType;
-    response: ResponseBuilderFactory<{
-      200: {
-        headers: never;
-        requiredHeaders: never;
-        content: {
-          "application/json": {
-            schema: Type;
+    response: ResponseBuilderFactory<
+      {
+        200: {
+          headers: never;
+          requiredHeaders: never;
+          content: {
+            "application/json": {
+              schema: Type;
+            };
+          };
+          examples: {
+            "first-example": unknown;
+            "second-example": unknown;
           };
         };
-        examples: {
-          "first-example": unknown;
-          "second-example": unknown;
-        };
-      };
-      400: {
-        headers: never;
-        requiredHeaders: never;
-        content: {
-          "application/json": {
-            schema: Type;
+        400: {
+          headers: never;
+          requiredHeaders: never;
+          content: {
+            "application/json": {
+              schema: Type;
+            };
           };
+          examples: {};
         };
-        examples: {};
-      };
-      [statusCode in Exclude<HttpStatusCode, 200 | 400>]: {
-        headers: never;
-        requiredHeaders: never;
-        content: {
-          "application/json": {
-            schema: Type;
+      } & {
+        [statusCode in Exclude<HttpStatusCode, 200 | 400>]: {
+          headers: never;
+          requiredHeaders: never;
+          content: {
+            "application/json": {
+              schema: Type;
+            };
           };
+          examples: {};
         };
-        examples: {};
-      };
-    }>;
+      }
+    >;
     x: SharedType;
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
