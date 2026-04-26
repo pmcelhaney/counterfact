@@ -169,6 +169,20 @@ export class Dispatcher {
     "validateRequests" | "validateResponses" | "alwaysFakeOptionals"
   >; // Add config property
 
+  /**
+   * The version label for this dispatcher's spec (e.g. `"v1"`, `"v2"`).
+   * Empty string when running without a version.
+   */
+  public readonly version: string;
+
+  /**
+   * Ordered list of all version labels for the API group this dispatcher
+   * belongs to. The first entry is the oldest version. Used by
+   * `$.minVersion()` at runtime to determine if the current version is
+   * greater than or equal to a given minimum version.
+   */
+  public readonly versions: readonly string[];
+
   public constructor(
     registry: Registry,
     contextRegistry: ContextRegistry,
@@ -177,12 +191,16 @@ export class Dispatcher {
       Config,
       "validateRequests" | "validateResponses" | "alwaysFakeOptionals"
     >,
+    version = "",
+    versions: readonly string[] = [],
   ) {
     this.registry = registry;
     this.contextRegistry = contextRegistry;
     this.openApiDocument = openApiDocument;
     this.fetch = fetch;
     this.config = config;
+    this.version = version;
+    this.versions = versions;
   }
 
   private parameterTypes(
@@ -469,6 +487,20 @@ export class Dispatcher {
       ), // Pass config
 
       tools: new Tools({ headers }),
+
+      ...(this.version !== "" && {
+        version: this.version,
+        minVersion: (min: string): boolean => {
+          const currentIdx = this.versions.indexOf(this.version);
+          const minIdx = this.versions.indexOf(min);
+
+          if (currentIdx === -1 || minIdx === -1) {
+            return false;
+          }
+
+          return currentIdx >= minIdx;
+        },
+      }),
     });
 
     if (response === undefined) {

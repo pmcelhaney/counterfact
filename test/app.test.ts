@@ -71,11 +71,13 @@ describe("counterfact", () => {
       expect.objectContaining({ openApiPath: "_", prefix: "/api/v1" }),
       "v1",
       "",
+      [],
     );
     expect(spy).toHaveBeenCalledWith(
       expect.objectContaining({ openApiPath: "_", prefix: "/api/v2" }),
       "v2",
       "",
+      [],
     );
 
     spy.mockRestore();
@@ -249,11 +251,13 @@ describe("counterfact", () => {
       expect.objectContaining({ prefix: "/my-api/v1" }),
       "my-api",
       "v1",
+      ["v1", "v2"],
     );
     expect(spy).toHaveBeenCalledWith(
       expect.objectContaining({ prefix: "/my-api/v2" }),
       "my-api",
       "v2",
+      ["v1", "v2"],
     );
 
     spy.mockRestore();
@@ -272,6 +276,7 @@ describe("counterfact", () => {
       expect.objectContaining({ prefix: "/custom/path" }),
       "my-api",
       "v1",
+      ["v1"],
     );
 
     spy.mockRestore();
@@ -288,6 +293,7 @@ describe("counterfact", () => {
       expect.objectContaining({ prefix: "/my-api" }),
       "my-api",
       "",
+      [],
     );
 
     spy.mockRestore();
