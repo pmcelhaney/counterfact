@@ -290,7 +290,7 @@ describe("REPL", () => {
       "- context: the root context ( same as loadContext('/') )",
       "- route('/some/path'): create a request builder for the given path",
       "",
-      "For more information, see https://counterfact.dev/docs/usage.html",
+      "For more information, see https://github.com/counterfact/api-simulator/blob/main/docs/usage.md",
       "",
     ]);
     expect(harness.isReset()).toBe(true);

@@ -426,7 +426,7 @@ export function startRepl(
       );
       print("");
       print(
-        "For more information, see https://counterfact.dev/docs/usage.html",
+        "For more information, see https://github.com/counterfact/api-simulator/blob/main/docs/usage.md",
       );
       print("");
 
