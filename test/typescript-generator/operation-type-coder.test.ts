@@ -865,7 +865,7 @@ describe("an OperationTypeCoder (versioned)", () => {
     expect(result).toContain("COUNTERFACT_RESPONSE");
   });
 
-  it("imports Versioned, MaybePromise, COUNTERFACT_RESPONSE on the shared script", () => {
+  it("imports Versioned (from types/versions.ts), MaybePromise, COUNTERFACT_RESPONSE on the shared script", () => {
     const coder = new OperationTypeCoder(makeRequirement(), "v1", "get");
     const repository = new Repository();
     const sharedScript = repository.get(coder.modulePath());
@@ -873,6 +873,9 @@ describe("an OperationTypeCoder (versioned)", () => {
     coder.writeCode(sharedScript);
 
     expect(sharedScript.externalImport.has("Versioned")).toBe(true);
+    expect(sharedScript.externalImport.get("Versioned")?.modulePath).toContain(
+      "types/versions.ts",
+    );
     expect(sharedScript.externalImport.has("MaybePromise")).toBe(true);
     expect(sharedScript.externalImport.has("COUNTERFACT_RESPONSE")).toBe(true);
   });
@@ -926,5 +929,34 @@ describe("an OperationTypeCoder (versioned)", () => {
     expect(v1Contents).toContain("OmitValueWhenNever");
     expect(v2Contents).toContain("HTTP_GET_$_v2");
     expect(v2Contents).toContain("OmitValueWhenNever");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// version property in generated $ arg type
+// ---------------------------------------------------------------------------
+
+describe("version property in the generated $ arg type", () => {
+  const makeRequirement = (operationData = {}) =>
+    new Requirement(
+      { parameters: [], responses: { 200: {} }, ...operationData },
+      "#/paths/pets/get",
+    );
+
+  it("includes version: <literal> in the VersionedArgTypeCoder output", () => {
+    const coder = new VersionedArgTypeCoder(makeRequirement(), "v3", "get");
+    const repository = new Repository();
+    const perVersionScript = repository.get(coder.modulePath());
+
+    const result = coder.writeCode(perVersionScript);
+
+    expect(result).toContain('version: "v3"');
+  });
+
+  it("includes version: never in the unversioned OperationTypeCoder output", () => {
+    const coder = new OperationTypeCoder(makeRequirement(), "", "get");
+    const result = coder.write(dummyScript);
+
+    expect(result).toContain("version: never");
   });
 });

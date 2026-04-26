@@ -252,6 +252,20 @@ export class Script {
     );
   }
 
+  /**
+   * Imports a type from the generated `types/versions.ts` module,
+   * resolving the path relative to this script's location in the repository.
+   *
+   * @param name - The type name to import (e.g. `"Versioned"`).
+   */
+  public importVersionsType(name: string): string {
+    return this.importExternal(
+      name,
+      pathJoin(this.relativePathToBase, "types/versions.ts"),
+      true,
+    );
+  }
+
   public exportType(coder: Coder): string {
     return this.export(coder, true);
   }
