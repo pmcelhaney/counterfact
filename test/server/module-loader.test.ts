@@ -499,6 +499,7 @@ export const notAFunction = 42;`,
     await usingTemporaryFiles(async ($) => {
       await $.add("routes/package.json", '{ "type": "module" }');
       await $.add("scenarios/index.js", `export function sharedFn() {}`);
+      await $.add("scenarios/shared.js", `export function fallbackFn() {}`);
       await $.add("scenarios/package.json", '{ "type": "module" }');
       await $.add("v2/scenarios/index.js", `export function versionedFn() {}`);
       await $.add("v2/scenarios/package.json", '{ "type": "module" }');
@@ -518,6 +519,10 @@ export const notAFunction = 42;`,
 
       expect(scenarioRegistry.getExportedFunctionNames("index")).toContain(
         "versionedFn",
+      );
+      // Shared-only file (no versioned counterpart) is still accessible.
+      expect(scenarioRegistry.getExportedFunctionNames("shared")).toContain(
+        "fallbackFn",
       );
     });
   });

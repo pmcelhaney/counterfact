@@ -149,7 +149,7 @@ export const startup: Scenario = ($) => {
 };
 ```
 
-In multi-version setups, `$.version` contains the runner's version string (e.g. `"v2"`), or `""` for unversioned runners. Use it to branch initialisation logic per version:
+In multi-version setups, `$.version` contains the runner's version string (e.g. `"v2"`), or `""` for unversioned runners. Use it to branch initialization logic per version:
 
 ```ts
 // scenarios/index.ts
