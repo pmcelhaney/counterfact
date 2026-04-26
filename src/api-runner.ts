@@ -104,6 +104,7 @@ export class ApiRunner {
     openApiDocument: OpenApiDocument | undefined,
     group: string,
     version = "",
+    versions: readonly string[] = [],
   ) {
     this.group = group;
     this.version = version;
@@ -140,6 +141,8 @@ export class ApiRunner {
       this.contextRegistry,
       openApiDocument,
       config,
+      version,
+      versions,
     );
 
     this.transpiler = new Transpiler(
@@ -167,11 +170,13 @@ export class ApiRunner {
    * @param config - Runtime configuration for this runner instance.
    * @param group - Optional group name placing generated code in a subdirectory (default `""`).
    * @param version - Optional version label for this spec (e.g. `"v1"`, `"v2"`).
+   * @param versions - Optional ordered list of all version labels in this group (oldest first).
    */
   public static async create(
     config: Config,
     group = "",
     version = "",
+    versions: readonly string[] = [],
   ): Promise<ApiRunner> {
     const nativeTs = await runtimeCanExecuteErasableTs();
 
@@ -192,7 +197,14 @@ export class ApiRunner {
         ? undefined
         : await loadOpenApiDocument(config.openApiPath);
 
-    return new ApiRunner(config, nativeTs, openApiDocument, group, version);
+    return new ApiRunner(
+      config,
+      nativeTs,
+      openApiDocument,
+      group,
+      version,
+      versions,
+    );
   }
 
   /**

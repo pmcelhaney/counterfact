@@ -1650,4 +1650,142 @@ describe("given a request that contains the differently cased path", () => {
       ).toBeUndefined();
     });
   });
+
+  describe("$.version and $.minVersion()", () => {
+    function makeVersionedDispatcher(
+      currentVersion: string,
+      orderedVersions: string[],
+    ) {
+      const registry = new Registry();
+
+      registry.add("/versioned", {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        GET($: any) {
+          return {
+            body: JSON.stringify({
+              version: $.version,
+              minV1: $.minVersion("v1"),
+              minV2: $.minVersion("v2"),
+              minV3: $.minVersion("v3"),
+            }),
+            contentType: "application/json",
+            status: 200,
+          };
+        },
+      });
+
+      return new Dispatcher(
+        registry,
+        new ContextRegistry(),
+        undefined,
+        undefined,
+        currentVersion,
+        orderedVersions,
+      );
+    }
+
+    it("provides $.version with the current version string", async () => {
+      const dispatcher = makeVersionedDispatcher("v2", ["v1", "v2", "v3"]);
+
+      const response = await dispatcher.request({
+        body: "",
+        headers: {},
+        method: "GET",
+        path: "/versioned",
+        query: {},
+        req: { path: "/versioned" },
+      });
+
+      const parsed = JSON.parse(response.body as string);
+
+      expect(parsed.version).toBe("v2");
+    });
+
+    it("$.minVersion() returns true when the current version equals the minimum", async () => {
+      const dispatcher = makeVersionedDispatcher("v2", ["v1", "v2", "v3"]);
+
+      const response = await dispatcher.request({
+        body: "",
+        headers: {},
+        method: "GET",
+        path: "/versioned",
+        query: {},
+        req: { path: "/versioned" },
+      });
+
+      const parsed = JSON.parse(response.body as string);
+
+      expect(parsed.minV2).toBe(true);
+    });
+
+    it("$.minVersion() returns true when the current version is newer than the minimum", async () => {
+      const dispatcher = makeVersionedDispatcher("v3", ["v1", "v2", "v3"]);
+
+      const response = await dispatcher.request({
+        body: "",
+        headers: {},
+        method: "GET",
+        path: "/versioned",
+        query: {},
+        req: { path: "/versioned" },
+      });
+
+      const parsed = JSON.parse(response.body as string);
+
+      expect(parsed.minV1).toBe(true);
+      expect(parsed.minV2).toBe(true);
+    });
+
+    it("$.minVersion() returns false when the current version is older than the minimum", async () => {
+      const dispatcher = makeVersionedDispatcher("v1", ["v1", "v2", "v3"]);
+
+      const response = await dispatcher.request({
+        body: "",
+        headers: {},
+        method: "GET",
+        path: "/versioned",
+        query: {},
+        req: { path: "/versioned" },
+      });
+
+      const parsed = JSON.parse(response.body as string);
+
+      expect(parsed.minV2).toBe(false);
+      expect(parsed.minV3).toBe(false);
+    });
+
+    it("does not include $.version or $.minVersion when version is empty", async () => {
+      const registry = new Registry();
+
+      registry.add("/unversioned", {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        GET($: any) {
+          return {
+            body: JSON.stringify({
+              hasVersion: "version" in $,
+              hasMinVersion: "minVersion" in $,
+            }),
+            contentType: "application/json",
+            status: 200,
+          };
+        },
+      });
+
+      const dispatcher = new Dispatcher(registry, new ContextRegistry());
+
+      const response = await dispatcher.request({
+        body: "",
+        headers: {},
+        method: "GET",
+        path: "/unversioned",
+        query: {},
+        req: { path: "/unversioned" },
+      });
+
+      const parsed = JSON.parse(response.body as string);
+
+      expect(parsed.hasVersion).toBe(false);
+      expect(parsed.hasMinVersion).toBe(false);
+    });
+  });
 });

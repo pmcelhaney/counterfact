@@ -216,12 +216,27 @@ export async function counterfact(config: Config, specs?: SpecConfig[]) {
   );
   validateSpecGroups(normalizedSpecs);
 
+  // Compute the ordered versions per group (oldest first, as declared in specs).
+  // This list is passed to each runner so that $.minVersion() can compare
+  // version positions at runtime.
+  const versionsByGroup = new Map<string, string[]>();
+  for (const spec of normalizedSpecs) {
+    const version = spec.version ?? "";
+
+    if (version) {
+      const existing = versionsByGroup.get(spec.group) ?? [];
+
+      versionsByGroup.set(spec.group, [...existing, version]);
+    }
+  }
+
   const runners = await Promise.all(
     normalizedSpecs.map((spec) =>
       ApiRunner.create(
         { ...config, openApiPath: spec.source, prefix: spec.prefix },
         spec.group,
         spec.version ?? "",
+        versionsByGroup.get(spec.group) ?? [],
       ),
     ),
   );
