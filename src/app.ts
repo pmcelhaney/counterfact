@@ -226,8 +226,7 @@ export async function counterfact(config: Config, specs?: SpecConfig[]) {
     if (version) {
       const existing = versionsByGroup.get(spec.group) ?? [];
 
-      existing.push(version);
-      versionsByGroup.set(spec.group, existing);
+      versionsByGroup.set(spec.group, [...existing, version]);
     }
   }
 

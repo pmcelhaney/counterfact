@@ -1654,7 +1654,7 @@ describe("given a request that contains the differently cased path", () => {
   describe("$.version and $.minVersion()", () => {
     function makeVersionedDispatcher(
       currentVersion: string,
-      allVersions: string[],
+      orderedVersions: string[],
     ) {
       const registry = new Registry();
 
@@ -1680,7 +1680,7 @@ describe("given a request that contains the differently cased path", () => {
         undefined,
         undefined,
         currentVersion,
-        allVersions,
+        orderedVersions,
       );
     }
 
