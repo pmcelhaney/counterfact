@@ -40,6 +40,11 @@ export class Script {
   public comments: string[];
   public exports: Map<string, ExportStatement>;
   public versions: Map<string, Map<string, ExportStatement>>;
+  public versionFormatters: Map<
+    string,
+    (versionCodes: Map<string, string>) => string
+  >;
+
   public imports: Map<string, ImportEntry>;
   public externalImport: Map<string, ExternalImportEntry>;
   public cache: Map<string, string>;
@@ -51,6 +56,7 @@ export class Script {
     this.comments = [];
     this.exports = new Map();
     this.versions = new Map();
+    this.versionFormatters = new Map();
     this.imports = new Map();
     this.externalImport = new Map();
     this.cache = new Map();
@@ -250,6 +256,22 @@ export class Script {
     return this.export(coder, true);
   }
 
+  /**
+   * Registers a formatter function for the merged versioned type emitted under
+   * `name` by {@link versionsTypeStatements}.
+   *
+   * When a formatter is present for a name, `versionsTypeStatements` delegates
+   * the entire type declaration to it instead of generating the default
+   * `Versions` object type.  The formatter receives a `Map<version, importAlias>`
+   * and must return the complete TypeScript source for that operation type.
+   */
+  public setVersionFormatter(
+    name: string,
+    formatter: (versionCodes: Map<string, string>) => string,
+  ): void {
+    this.versionFormatters.set(name, formatter);
+  }
+
   public declareVersion(coder: Coder, name: string): void {
     const version = coder.version;
 
@@ -373,17 +395,41 @@ export class Script {
       return [];
     }
 
-    const names = Array.from(this.versions, ([name, versions]) => {
-      const mappedVersions = Array.from(
-        versions,
-        ([version, versionStatement]) =>
-          `"${version}": ${versionStatement.code as string}`,
-      );
+    const statements: string[] = [];
+    const unformatted: Array<[string, Map<string, ExportStatement>]> = [];
 
-      return `"${name}": { ${mappedVersions.join(", ")} }`;
-    });
+    for (const [name, versions] of this.versions) {
+      const formatter = this.versionFormatters.get(name);
 
-    return [`export type Versions = { ${names.join(", ")} };`];
+      if (formatter) {
+        const versionCodes = new Map(
+          Array.from(versions, ([version, stmt]) => [
+            version,
+            stmt.code as string,
+          ]),
+        );
+
+        statements.push(formatter(versionCodes));
+      } else {
+        unformatted.push([name, versions]);
+      }
+    }
+
+    if (unformatted.length > 0) {
+      const names = unformatted.map(([name, versions]) => {
+        const mappedVersions = Array.from(
+          versions,
+          ([version, versionStatement]) =>
+            `"${version}": ${versionStatement.code as string}`,
+        );
+
+        return `"${name}": { ${mappedVersions.join(", ")} }`;
+      });
+
+      statements.push(`export type Versions = { ${names.join(", ")} };`);
+    }
+
+    return statements;
   }
 
   /**

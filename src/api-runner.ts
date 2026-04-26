@@ -10,6 +10,7 @@ import { Registry } from "./server/registry.js";
 import { ScenarioRegistry } from "./server/scenario-registry.js";
 import { Transpiler } from "./server/transpiler.js";
 import { CodeGenerator } from "./typescript-generator/code-generator.js";
+import { Repository } from "./typescript-generator/repository.js";
 import { ScenarioFileGenerator } from "./typescript-generator/scenario-file-generator.js";
 import { pathJoin } from "./util/forward-slash-path.js";
 import { runtimeCanExecuteErasableTs } from "./util/runtime-can-execute-erasable-ts.js";
@@ -82,6 +83,12 @@ export class ApiRunner {
   public readonly group: string;
 
   /**
+   * Optional version label for this runner's spec (e.g. `"v1"`, `"v2"`).
+   * Defaults to `""` (unversioned).
+   */
+  public readonly version: string;
+
+  /**
    * The subdirectory path segment derived from {@link group}.
    * Returns `""` when `group` is empty, otherwise `"/${group}"`.
    */
@@ -96,8 +103,10 @@ export class ApiRunner {
     nativeTs: boolean,
     openApiDocument: OpenApiDocument | undefined,
     group: string,
+    version = "",
   ) {
     this.group = group;
+    this.version = version;
 
     const modulesPath = this.group
       ? pathJoin(config.basePath, this.group)
@@ -123,6 +132,7 @@ export class ApiRunner {
       this.openApiPath,
       config.basePath + this.subdirectory,
       config.generate,
+      version,
     );
 
     this.dispatcher = new Dispatcher(
@@ -156,8 +166,13 @@ export class ApiRunner {
    *
    * @param config - Runtime configuration for this runner instance.
    * @param group - Optional group name placing generated code in a subdirectory (default `""`).
+   * @param version - Optional version label for this spec (e.g. `"v1"`, `"v2"`).
    */
-  public static async create(config: Config, group = ""): Promise<ApiRunner> {
+  public static async create(
+    config: Config,
+    group = "",
+    version = "",
+  ): Promise<ApiRunner> {
     const nativeTs = await runtimeCanExecuteErasableTs();
 
     const modulesPath = group
@@ -177,7 +192,7 @@ export class ApiRunner {
         ? undefined
         : await loadOpenApiDocument(config.openApiPath);
 
-    return new ApiRunner(config, nativeTs, openApiDocument, group);
+    return new ApiRunner(config, nativeTs, openApiDocument, group, version);
   }
 
   /**
@@ -187,13 +202,17 @@ export class ApiRunner {
    * - Routes and types are only generated when `config.openApiPath` is not `"_"`.
    * - The scenario context type file is always generated when
    *   `config.generate.types` is `true`, even without a spec.
+   *
+   * @param repository - Optional shared repository.  Pass a shared instance
+   *   when multiple versioned specs in the same group should merge their types
+   *   into the same output tree.
    */
-  public async generate(): Promise<void> {
+  public async generate(repository?: Repository): Promise<void> {
     if (
       this.config.openApiPath !== "_" &&
       (this.config.generate.routes || this.config.generate.types)
     ) {
-      await this.codeGenerator.generate();
+      await this.codeGenerator.generate(repository);
     }
 
     if (this.config.generate.types) {

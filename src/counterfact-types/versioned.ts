@@ -1,24 +1,16 @@
 /**
- * Utility type that narrows the `$` argument of a route handler to a specific
- * API version.
+ * Extracts the union of all version-specific argument types from a
+ * version map `T`.
  *
- * In most cases, prefer importing the project-specific `Versioned` from the
- * generated `types/versions.ts`, which pre-binds `TVersions` and `TVersionsGTE`
- * to the version strings declared in your spec config.
+ * When a multi-version API shares a route path, the route handler receives
+ * a `$` argument typed as `Versioned<{ v1: V1$, v2: V2$ }>`, which resolves
+ * to `V1$ | V2$`. The handler can then narrow the union to a specific
+ * version using discriminant fields on `$`.
  *
- * @typeParam TVersions - Union of all version strings (e.g. `"v1" | "v2"`).
- * @typeParam TVersionsGTE - Maps each version to the set of versions >= it.
- * @typeParam T - Map from version strings to per-version parameter/response shapes.
- * @typeParam V - The specific version(s) this handler accepts (defaults to all keys in `T`).
+ * @example
+ * ```ts
+ * type HTTP_GET = ($: Versioned<{ v1: HTTP_GET_$_v1; v2: HTTP_GET_$_v2 }>) =>
+ *   MaybePromise<COUNTERFACT_RESPONSE>;
+ * ```
  */
-export type Versioned<
-  TVersions extends string,
-  TVersionsGTE extends Record<TVersions, TVersions>,
-  T extends Partial<Record<TVersions, object>>,
-  V extends keyof T & TVersions = keyof T & TVersions,
-> = T[V] & {
-  version: V;
-  minVersion<M extends keyof T & TVersions>(
-    min: M,
-  ): this is Versioned<TVersions, TVersionsGTE, T, Extract<V, TVersionsGTE[M]>>;
-};
+export type Versioned<T extends Record<string, unknown>> = T[keyof T];
