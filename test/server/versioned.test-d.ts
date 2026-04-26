@@ -19,9 +19,13 @@ type ThreeMap = { v1: V1Args; v2: V2Args; v3: V3Args };
 declare const threeVer: Versioned<ThreeMap>;
 
 expectAssignable<V1Args | V2Args | V3Args>(threeVer);
-expectAssignable<V1Args>(threeVer);
-expectAssignable<V2Args>(threeVer);
-expectAssignable<V3Args>(threeVer);
+// Each member type is assignable to the union (i.e. it is one of the union's members)
+declare const v1Sample: V1Args;
+declare const v2Sample: V2Args;
+declare const v3Sample: V3Args;
+expectAssignable<Versioned<ThreeMap>>(v1Sample);
+expectAssignable<Versioned<ThreeMap>>(v2Sample);
+expectAssignable<Versioned<ThreeMap>>(v3Sample);
 
 // Two-version map
 type TwoMap = { v1: V1Args; v2: V2Args };
