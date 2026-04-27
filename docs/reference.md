@@ -294,23 +294,28 @@ npx counterfact@latest [spec] [output] [options]
 
 | Flag | Default | Description |
 | --- | --- | --- |
-| `--port <n>` | `3100` | HTTP server port |
+| `-p, --port <number>` | `3100` | HTTP server port |
 | `-o, --open` | `false` | Open browser on start |
-| `-g, --generate` | `false` | Generate files and exit |
-| `-w, --watch` | `false` | Regenerate on spec changes |
+| `-g, --generate` | `false` | Generate all code (routes and types) |
+| `-w, --watch` | `false` | Generate and watch all code for changes |
 | `-s, --serve` | `false` | Start the server |
 | `-r, --repl` | `false` | Start the REPL |
+| `-b, --build-cache` | `false` | Build the cache of compiled routes and types |
 | `--spec <path>` | _(positional arg)_ | Path or URL to the OpenAPI document |
 | `--proxy-url <url>` | _(none)_ | Default upstream for the proxy |
 | `--prefix <path>` | _(none)_ | Global path prefix (e.g. `/api/v1`) |
-| `--no-validate-request` | `false` | Skip OpenAPI request validation |
-| `--no-validate-response` | `false` | Skip OpenAPI response header validation |
+| `--no-validate-request` | — | Disable OpenAPI request validation |
+| `--no-validate-response` | — | Disable OpenAPI response validation |
 | `--generate-types` | `false` | Generate types only |
 | `--generate-routes` | `false` | Generate routes only |
 | `--watch-types` | `false` | Watch and regenerate types only |
 | `--watch-routes` | `false` | Watch and regenerate routes only |
 | `--always-fake-optionals` | `false` | Include optional fields in random responses |
-| `-b, --build-cache` | `false` | Pre-compile routes and types without starting the server |
+| `--prune` | `false` | Remove route files that no longer exist in the spec |
+| `--no-admin-api` | — | Disable the Admin API at `/_counterfact/api/*` |
+| `--admin-api-token <token>` | _(none)_ | Bearer token required for Admin API endpoints |
+| `--no-update-check` | — | Disable the npm update check on startup |
+| `--config <path>` | `counterfact.yaml` | Path to a config file |
 
 Run `npx counterfact@latest --help` for the full list.
 
