@@ -312,7 +312,7 @@ npx counterfact@latest [spec] [output] [options]
 | `--watch-routes` | `false` | Watch and regenerate routes only |
 | `--always-fake-optionals` | `false` | Include optional fields in random responses |
 | `--prune` | `false` | Remove route files that no longer exist in the spec |
-| `--no-admin-api` | — | Disable the Admin API at `/_counterfact/api/*` |
+| `--admin-api` | `false` | Enable the Admin API at `/_counterfact/api/*` |
 | `--admin-api-token <token>` | _(none)_ | Bearer token required for Admin API endpoints |
 | `--no-update-check` | — | Disable the npm update check on startup |
 | `--config <path>` | `counterfact.yaml` | Path to a config file |
