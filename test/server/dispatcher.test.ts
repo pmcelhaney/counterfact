@@ -737,6 +737,116 @@ describe("a dispatcher", () => {
     });
   });
 
+  it("converts query, path, and header parameters using OAS3-style schema types", async () => {
+    const registry = new Registry();
+
+    registry.add("/a/{integerInPath}/{stringInPath}", {
+      // @ts-expect-error - not obvious how to make TS happy here, and it's just a unit test
+      GET({ headers, path, query, response }) {
+        return response["200"]?.text({
+          booleanInHeader: headers.booleanInHeader,
+          integerInPath: path?.integerInPath,
+          numberInHeader: headers.numberInHeader,
+          numberInQuery: query.numberInQuery,
+          stringInHeader: headers.stringInHeader,
+          stringInPath: path?.stringInPath,
+          stringInQuery: query.stringInQuery,
+        });
+      },
+    });
+
+    const openApiDocument: OpenApiDocument = {
+      paths: {
+        "/a/{integerInPath}/{stringInPath}": {
+          get: {
+            parameters: [
+              {
+                in: "path",
+                name: "integerInPath",
+                schema: { type: "integer" },
+              },
+              { in: "path", name: "stringInPath", schema: { type: "string" } },
+              {
+                in: "query",
+                name: "numberInQuery",
+                schema: { type: "number" },
+              },
+              {
+                in: "query",
+                name: "stringInQuery",
+                schema: { type: "string" },
+              },
+              {
+                in: "header",
+                name: "numberInHeader",
+                schema: { type: "number" },
+              },
+              {
+                in: "header",
+                name: "stringInHeader",
+                schema: { type: "string" },
+              },
+              {
+                in: "header",
+                name: "booleanInHeader",
+                schema: { type: "boolean" },
+              },
+            ],
+
+            responses: {
+              200: {
+                content: {
+                  "application/json": {
+                    schema: {
+                      integerInPath: "number",
+                      stringInPath: "string",
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    };
+
+    const dispatcher = new Dispatcher(
+      registry,
+      new ContextRegistry(),
+      openApiDocument,
+    );
+    const htmlResponse = await dispatcher.request({
+      body: "",
+
+      headers: {
+        numberInHeader: "5",
+        stringInHeader: "6",
+        booleanInHeader: "true",
+      },
+
+      method: "GET",
+
+      path: "/a/1/2",
+
+      query: {
+        numberInQuery: "3",
+        stringInQuery: "4",
+      },
+
+      req: { path: "/a/1/2" },
+    });
+
+    expect(htmlResponse.body).toStrictEqual({
+      booleanInHeader: true,
+      integerInPath: 1,
+      numberInHeader: 5,
+      numberInQuery: 3,
+      stringInHeader: "6",
+      stringInPath: "2",
+      stringInQuery: "4",
+    });
+  });
+
   it("attaches the root produces array to an operation", () => {
     const registry = new Registry();
 
