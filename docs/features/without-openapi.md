@@ -22,7 +22,7 @@ In the file where the code is generated, you should find a directory -- initiall
 
 ```js
 // hello/world.js
-export const GET() {
+export function GET() {
     return "World says hello!";
 }
 ```
@@ -31,18 +31,18 @@ If part of the path is variable, name the file or directory where the variable p
 
 ```js
 //{greeting}/{subject}.js
-export const GET($) {
+export function GET($) {
     return `${$.path.subject} says ${$.path.greeting}!`;
 }
 ```
 
-For more information on the `$` object, see the [usage guide](./usage.md).
+For more information on the `$` object, see the [reference guide](../reference.md).
 
 ## Now that you know how to work without an OpenAPI doc, here's why you should have one anyway
 
 OpenAPI is the de-facto standard for documenting REST APIs. Counterfact is just one of [hundreds of tools](https://openapi.tools/) that use it. And if you pass Counterfact an OpenAPI doc, it will save you a lot of time by automatically generating default type-safe implementations of each API, with powerful context-sensitive autocomplete when you want to make changes.
 
-Not many people love writing documentation. Fewer people still love working on APIs that are not documented. Counterfact makes documentation useful, with immediate ROI, so that so that maintaining the docs is just as rewarding as writing code.
+Not many people love writing documentation. Fewer people still love working on APIs that are not documented. Counterfact makes documentation useful, with immediate ROI, so that maintaining the docs is just as rewarding as writing code.
 
 ## See also
 

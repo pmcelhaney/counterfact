@@ -220,7 +220,7 @@ export class Dispatcher {
     }
 
     for (const parameter of parameters) {
-      const type = parameter?.type;
+      const type = parameter?.type ?? parameter?.schema?.type;
 
       if (type !== undefined) {
         types[parameter.in].set(
