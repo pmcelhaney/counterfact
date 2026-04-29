@@ -14,7 +14,6 @@ const config = {
   proxyPaths: new Map(),
   proxyUrl: "",
   prefix: "",
-  startAdminApi: false,
   startRepl: false, // do not auto-start the REPL
   startServer: true,
   watch: { routes: false, types: false },

@@ -214,7 +214,7 @@ export function adminApiMiddleware(
             port: config.port,
             proxyUrl: config.proxyUrl,
             prefix: config.prefix,
-            startAdminApi: config.startAdminApi,
+            startAdminApi: config.startAdminApi ?? false,
             startRepl: config.startRepl,
             startServer: config.startServer,
             watch: config.watch,

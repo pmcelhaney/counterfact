@@ -30,8 +30,8 @@ export interface Config {
   proxyUrl: string;
   /** URL prefix that Counterfact intercepts (default `""`). */
   prefix: string;
-  /** When `true`, mount the Admin API at `/_counterfact/api/`. */
-  startAdminApi: boolean;
+  /** When `true`, mount the Admin API at `/_counterfact/api/`. Defaults to `false`. */
+  startAdminApi?: boolean;
   /** When `true`, launch the interactive REPL after the server starts. */
   startRepl: boolean;
   /** When `true`, start the Koa HTTP server. */
