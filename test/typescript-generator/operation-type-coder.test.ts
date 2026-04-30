@@ -718,6 +718,129 @@ describe("an OperationTypeCoder", () => {
     expect(() => coder.responseTypes(dummyScript)).not.toThrow();
     expect(coder.responseTypes(dummyScript)).toContain("body?: unknown");
   });
+
+  // ---------------------------------------------------------------------------
+  // Path-item-level parameters
+  // ---------------------------------------------------------------------------
+
+  it("includes path-level parameters when defined only at path item level", () => {
+    const specification = new Specification();
+    const rootRequirement = new Requirement(
+      {
+        paths: {
+          "/stuff/{stuffId}": {
+            parameters: [
+              {
+                in: "path",
+                name: "stuffId",
+                required: true,
+                schema: { type: "string" },
+              },
+            ],
+            get: {
+              responses: { "204": { description: "successful" } },
+            },
+          },
+        },
+      },
+      "spec.yaml",
+      specification,
+    );
+
+    specification.rootRequirement = rootRequirement;
+
+    // Navigate to the operation using the same escaped URL format the
+    // code-generator uses (leading slash is escaped as ~1).
+    const operationReq = rootRequirement.select(
+      "paths/~1stuff~1{stuffId}/get",
+    )!;
+
+    const scriptWithExportTracking = {
+      ...dummyScript,
+      exports: {},
+      export(coder) {
+        const name = coder.names().next().value;
+        this.exports[name] = coder;
+        return name;
+      },
+    };
+
+    const coder = new OperationTypeCoder(operationReq, "", "get");
+    const result = coder.write(scriptWithExportTracking);
+
+    // stuffId is defined at path level — it must NOT generate `path: never`
+    expect(result).not.toContain("path: never");
+    expect(scriptWithExportTracking.exports).toHaveProperty("HTTP_GET_Path");
+    expect(result).toContain("path: HTTP_GET_Path");
+  });
+
+  it("merges path-level and operation-level parameters (operation-level overrides)", () => {
+    const specification = new Specification();
+    const rootRequirement = new Requirement(
+      {
+        paths: {
+          "/stuff/{stuffId}": {
+            parameters: [
+              // path-level: stuffId (string) – will be overridden by operation level
+              {
+                in: "path",
+                name: "stuffId",
+                required: true,
+                schema: { type: "string" },
+              },
+              // path-level only: sharedQuery (string)
+              {
+                in: "query",
+                name: "sharedQuery",
+                schema: { type: "string" },
+              },
+            ],
+            get: {
+              parameters: [
+                // operation-level: stuffId (number) – overrides path-level
+                {
+                  in: "path",
+                  name: "stuffId",
+                  required: true,
+                  schema: { type: "number" },
+                },
+                // operation-level only: extraQuery (string)
+                {
+                  in: "query",
+                  name: "extraQuery",
+                  schema: { type: "string" },
+                },
+              ],
+              responses: { "204": { description: "successful" } },
+            },
+          },
+        },
+      },
+      "spec.yaml",
+      specification,
+    );
+
+    specification.rootRequirement = rootRequirement;
+
+    const operationReq = rootRequirement.select(
+      "paths/~1stuff~1{stuffId}/get",
+    )!;
+
+    const coder = new OperationTypeCoder(operationReq, "", "get");
+
+    // Use a real Repository / Script so we can inspect the full generated
+    // type text for the path and query parameter shapes.
+    const repository = new Repository();
+    const script = repository.get(coder.modulePath());
+
+    const result = coder.writeCode(script);
+    const contents = result as unknown as string;
+
+    // Path type should be exported (not never)
+    expect(contents).not.toContain("path: never");
+    // Query type should be exported (not never) — sharedQuery + extraQuery both present
+    expect(contents).not.toContain("query: never");
+  });
 });
 
 // ---------------------------------------------------------------------------

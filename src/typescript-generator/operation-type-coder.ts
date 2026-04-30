@@ -8,7 +8,8 @@ import { RESERVED_WORDS } from "./reserved-words.js";
 import { ResponsesTypeCoder } from "./responses-type-coder.js";
 import { SchemaTypeCoder } from "./schema-type-coder.js";
 import { TypeCoder } from "./type-coder.js";
-import type { Requirement } from "./requirement.js";
+import { Requirement } from "./requirement.js";
+import type { RequirementData } from "./requirement.js";
 import type { Script } from "./script.js";
 
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Lexical_grammar#reserved_words
@@ -221,6 +222,78 @@ export class OperationTypeCoder extends TypeCoder {
   }
 
   /**
+   * Returns the effective parameters for this operation by merging path-item-level
+   * parameters with operation-level parameters. Per the OpenAPI specification,
+   * operation-level parameters override path-item-level parameters that share
+   * the same `name` and `in` location.
+   *
+   * When the specification is not available (e.g. in unit tests that construct
+   * requirements directly), only the operation-level parameters are returned.
+   */
+  protected getEffectiveParameters(): Requirement | undefined {
+    const operationParams = this.requirement.get("parameters");
+
+    const specification = this.requirement.specification;
+
+    if (!specification) {
+      return operationParams;
+    }
+
+    const rootUrl = specification.rootRequirement.url;
+    const opUrl = this.requirement.url;
+
+    if (!opUrl.startsWith(`${rootUrl}/`)) {
+      return operationParams;
+    }
+
+    // Derive the relative path from the spec root to the parent path item.
+    // e.g. opUrl  = "file.yaml/paths/stuff~1{stuffId}/get"
+    //      relPath = "paths/stuff~1{stuffId}/get"
+    //      relPathToParent = "paths/stuff~1{stuffId}"
+    const relPath = opUrl.slice(rootUrl.length + 1);
+    const relPathToParent = relPath.split("/").slice(0, -1).join("/");
+
+    const pathItemReq = specification.rootRequirement.select(relPathToParent);
+    const pathLevelParams = pathItemReq?.get("parameters");
+
+    if (!pathLevelParams) {
+      return operationParams;
+    }
+
+    if (!operationParams) {
+      return pathLevelParams;
+    }
+
+    // Merge: start with path-level, then add/override with operation-level.
+    const pathData = pathLevelParams.data as unknown as Record<
+      string,
+      unknown
+    >[];
+    const opData = operationParams.data as unknown as Record<string, unknown>[];
+
+    const merged = [...pathData];
+
+    for (const opParam of opData) {
+      const existingIndex = merged.findIndex(
+        (p) => p.name === opParam.name && p.in === opParam.in,
+      );
+
+      if (existingIndex >= 0) {
+        // eslint-disable-next-line security/detect-object-injection -- existingIndex is a numeric index from Array.findIndex, not a user-supplied key.
+        merged[existingIndex] = opParam;
+      } else {
+        merged.push(opParam);
+      }
+    }
+
+    return new Requirement(
+      merged as unknown as RequirementData,
+      operationParams.url,
+      specification,
+    );
+  }
+
+  /**
    * Builds the `OmitValueWhenNever<{…}>` dollar-argument type body and sets
    * up all required shared-type imports on `script`.
    *
@@ -246,7 +319,7 @@ export class OperationTypeCoder extends TypeCoder {
       CONTEXT_FILE_TOKEN,
     );
 
-    const parameters = this.requirement.get("parameters");
+    const parameters = this.getEffectiveParameters();
 
     const queryType = new ParametersTypeCoder(
       parameters!,
