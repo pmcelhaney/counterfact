@@ -35,22 +35,17 @@ function mergeParameters(
   pathItemParams: OpenApiParameters[],
   operationParams: OpenApiParameters[],
 ): OpenApiParameters[] {
-  const merged = [...pathItemParams];
+  const map = new Map<string, OpenApiParameters>();
 
-  for (const opParam of operationParams) {
-    const existingIndex = merged.findIndex(
-      (p) => p.name === opParam.name && p.in === opParam.in,
-    );
-
-    if (existingIndex >= 0) {
-      // eslint-disable-next-line security/detect-object-injection -- existingIndex is a numeric index from Array.findIndex, not a user-supplied key.
-      merged[existingIndex] = opParam;
-    } else {
-      merged.push(opParam);
-    }
+  for (const p of pathItemParams) {
+    map.set(`${p.in}:${p.name}`, p);
   }
 
-  return merged;
+  for (const p of operationParams) {
+    map.set(`${p.in}:${p.name}`, p);
+  }
+
+  return [...map.values()];
 }
 
 export interface OpenApiDocument {

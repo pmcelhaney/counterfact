@@ -227,69 +227,46 @@ export class OperationTypeCoder extends TypeCoder {
    * operation-level parameters override path-item-level parameters that share
    * the same `name` and `in` location.
    *
-   * When the specification is not available (e.g. in unit tests that construct
-   * requirements directly), only the operation-level parameters are returned.
+   * Uses `this.requirement.parent` (the path item requirement) to access
+   * path-item-level parameters directly, without URL string parsing.
+   *
+   * When the parent is not set (e.g. in unit tests that construct requirements
+   * directly), only the operation-level parameters are returned.
    */
   protected getEffectiveParameters(): Requirement | undefined {
     const operationParams = this.requirement.get("parameters");
+    const pathItemParams = this.requirement.parent?.get("parameters");
 
-    const specification = this.requirement.specification;
-
-    if (!specification) {
-      return operationParams;
-    }
-
-    const rootUrl = specification.rootRequirement.url;
-    const opUrl = this.requirement.url;
-
-    if (!opUrl.startsWith(`${rootUrl}/`)) {
-      return operationParams;
-    }
-
-    // Derive the relative path from the spec root to the parent path item.
-    // e.g. opUrl  = "file.yaml/paths/stuff~1{stuffId}/get"
-    //      relPath = "paths/stuff~1{stuffId}/get"
-    //      relPathToParent = "paths/stuff~1{stuffId}"
-    const relPath = opUrl.slice(rootUrl.length + 1);
-    const relPathToParent = relPath.split("/").slice(0, -1).join("/");
-
-    const pathItemReq = specification.rootRequirement.select(relPathToParent);
-    const pathLevelParams = pathItemReq?.get("parameters");
-
-    if (!pathLevelParams) {
+    if (!pathItemParams) {
       return operationParams;
     }
 
     if (!operationParams) {
-      return pathLevelParams;
+      return pathItemParams;
     }
 
-    // Merge: start with path-level, then add/override with operation-level.
-    const pathData = pathLevelParams.data as unknown as Record<
+    // Merge using a Map keyed on `${in}:${name}`.
+    // Path-level params are added first; operation-level overrides them.
+    const pathData = pathItemParams.data as unknown as Record<
       string,
       unknown
     >[];
     const opData = operationParams.data as unknown as Record<string, unknown>[];
 
-    const merged = [...pathData];
+    const map = new Map<string, Record<string, unknown>>();
 
-    for (const opParam of opData) {
-      const existingIndex = merged.findIndex(
-        (p) => p.name === opParam.name && p.in === opParam.in,
-      );
+    for (const p of pathData) {
+      map.set(`${p.in as string}:${p.name as string}`, p);
+    }
 
-      if (existingIndex >= 0) {
-        // eslint-disable-next-line security/detect-object-injection -- existingIndex is a numeric index from Array.findIndex, not a user-supplied key.
-        merged[existingIndex] = opParam;
-      } else {
-        merged.push(opParam);
-      }
+    for (const p of opData) {
+      map.set(`${p.in as string}:${p.name as string}`, p);
     }
 
     return new Requirement(
-      merged as unknown as RequirementData,
+      [...map.values()] as unknown as RequirementData,
       this.requirement.url,
-      specification,
+      this.requirement.specification,
     );
   }
 
