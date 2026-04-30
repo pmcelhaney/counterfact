@@ -24,12 +24,41 @@ import type { Config } from "./config.js";
 
 const debug = createDebugger("counterfact:server:dispatcher");
 
+/**
+ * Merges path-item-level and operation-level parameter arrays.
+ *
+ * Operation-level parameters take precedence when both arrays define a
+ * parameter with the same `name` and `in` location, per the OpenAPI
+ * specification.
+ */
+function mergeParameters(
+  pathItemParams: OpenApiParameters[],
+  operationParams: OpenApiParameters[],
+): OpenApiParameters[] {
+  const merged = [...pathItemParams];
+
+  for (const opParam of operationParams) {
+    const existingIndex = merged.findIndex(
+      (p) => p.name === opParam.name && p.in === opParam.in,
+    );
+
+    if (existingIndex >= 0) {
+      // eslint-disable-next-line security/detect-object-injection -- existingIndex is a numeric index from Array.findIndex, not a user-supplied key.
+      merged[existingIndex] = opParam;
+    } else {
+      merged.push(opParam);
+    }
+  }
+
+  return merged;
+}
+
 export interface OpenApiDocument {
   basePath?: string;
   paths: {
     [key: string]: {
       [key in Lowercase<HttpMethods>]?: OpenApiOperation;
-    };
+    } & { parameters?: OpenApiParameters[] };
   };
   produces?: string[];
 }
@@ -233,17 +262,18 @@ export class Dispatcher {
     return types;
   }
 
-  private findOperation(
-    path: string,
-    method: HttpMethods,
-  ): OpenApiOperation | undefined {
-    if (this.openApiDocument) {
-      for (const key in this.openApiDocument.paths) {
-        if (key.toLowerCase() === path.toLowerCase()) {
-          return this.openApiDocument.paths[key]?.[
-            method.toLowerCase() as Lowercase<HttpMethods>
-          ];
-        }
+  private findPathItem(path: string):
+    | ({
+        [key in Lowercase<HttpMethods>]?: OpenApiOperation;
+      } & { parameters?: OpenApiParameters[] })
+    | undefined {
+    if (!this.openApiDocument) {
+      return undefined;
+    }
+
+    for (const key in this.openApiDocument.paths) {
+      if (key.toLowerCase() === path.toLowerCase()) {
+        return this.openApiDocument.paths[key];
       }
     }
 
@@ -252,7 +282,12 @@ export class Dispatcher {
 
   /**
    * Resolves the OpenAPI operation for `path` and `method`, merging any
-   * top-level `produces` array from the document root into the operation.
+   * top-level `produces` array from the document root and any path-item-level
+   * `parameters` into the operation.
+   *
+   * Per the OpenAPI specification, parameters defined at the path item level
+   * are shared across all operations on that path. Operation-level parameters
+   * take precedence when both define a parameter with the same `name` and `in`.
    *
    * @param path - The matched route path (e.g. `"/pets/{petId}"`).
    * @param method - The HTTP method.
@@ -262,20 +297,42 @@ export class Dispatcher {
     path: string,
     method: HttpMethods,
   ): OpenApiOperation | undefined {
-    const operation = this.findOperation(path, method);
+    const pathItem = this.findPathItem(path);
+
+    if (pathItem === undefined) {
+      return undefined;
+    }
+
+    const operation = pathItem[method.toLowerCase() as Lowercase<HttpMethods>];
 
     if (operation === undefined) {
       return undefined;
     }
 
+    // Merge path-item-level parameters with operation-level parameters.
+    // Operation-level parameters take precedence on same name+in collision.
+    const pathItemParams = pathItem.parameters ?? [];
+    const operationParams = operation.parameters ?? [];
+    const mergedParameters =
+      pathItemParams.length > 0
+        ? mergeParameters(pathItemParams, operationParams)
+        : operationParams.length > 0
+          ? operationParams
+          : undefined;
+
+    const mergedOperation =
+      mergedParameters !== undefined
+        ? { ...operation, parameters: mergedParameters }
+        : operation;
+
     if (this.openApiDocument?.produces) {
       return {
         produces: this.openApiDocument.produces,
-        ...operation,
+        ...mergedOperation,
       };
     }
 
-    return operation;
+    return mergedOperation;
   }
 
   private normalizeResponse(
