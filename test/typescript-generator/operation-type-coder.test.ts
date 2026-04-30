@@ -826,20 +826,23 @@ describe("an OperationTypeCoder", () => {
       "paths/~1stuff~1{stuffId}/get",
     )!;
 
+    const scriptWithExportTracking = {
+      ...dummyScript,
+      exports: {},
+      export(coder) {
+        const name = coder.names().next().value;
+        this.exports[name] = coder;
+        return name;
+      },
+    };
+
     const coder = new OperationTypeCoder(operationReq, "", "get");
-
-    // Use a real Repository / Script so we can inspect the full generated
-    // type text for the path and query parameter shapes.
-    const repository = new Repository();
-    const script = repository.get(coder.modulePath());
-
-    const result = coder.writeCode(script);
-    const contents = result as unknown as string;
+    const result = coder.write(scriptWithExportTracking);
 
     // Path type should be exported (not never)
-    expect(contents).not.toContain("path: never");
+    expect(result).not.toContain("path: never");
     // Query type should be exported (not never) — sharedQuery + extraQuery both present
-    expect(contents).not.toContain("query: never");
+    expect(result).not.toContain("query: never");
   });
 });
 

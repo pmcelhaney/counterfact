@@ -288,7 +288,7 @@ export class OperationTypeCoder extends TypeCoder {
 
     return new Requirement(
       merged as unknown as RequirementData,
-      operationParams.url,
+      this.requirement.url,
       specification,
     );
   }
