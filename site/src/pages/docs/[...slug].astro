@@ -1,0 +1,27 @@
+---
+import { getCollection, render } from "astro:content";
+import DocLayout from "../../layouts/DocLayout.astro";
+
+export async function getStaticPaths() {
+  const docs = await getCollection("docs");
+  return docs.map((doc) => ({
+    params: { slug: doc.id },
+    props: { doc },
+  }));
+}
+
+const { doc } = Astro.props;
+const { Content, headings } = await render(doc);
+
+const titleFromHeading = headings.find((h) => h.depth === 1)?.text;
+const titleFromSlug = doc.id
+  .split("/")
+  .at(-1)!
+  .replace(/-/g, " ")
+  .replace(/\b\w/g, (c) => c.toUpperCase());
+const title = titleFromHeading ?? titleFromSlug;
+---
+
+<DocLayout title={title}>
+  <Content />
+</DocLayout>
