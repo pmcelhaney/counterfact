@@ -847,6 +847,124 @@ describe("a dispatcher", () => {
     });
   });
 
+  it("converts path-level parameters to numbers when defined at path item level", async () => {
+    const registry = new Registry();
+
+    registry.add("/b/{intId}", {
+      // @ts-expect-error - not obvious how to make TS happy here, and it's just a unit test
+      GET({ path, response }) {
+        return response["200"]?.text({
+          intId: path?.intId,
+        });
+      },
+    });
+
+    const openApiDocument: OpenApiDocument = {
+      paths: {
+        "/b/{intId}": {
+          parameters: [
+            {
+              in: "path",
+              name: "intId",
+              schema: { type: "integer" },
+            },
+          ],
+          get: {
+            responses: {
+              200: {
+                content: {
+                  "application/json": {
+                    schema: { intId: "number" },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    };
+
+    const dispatcher = new Dispatcher(
+      registry,
+      new ContextRegistry(),
+      openApiDocument,
+    );
+    const result = await dispatcher.request({
+      body: "",
+      headers: {},
+      method: "GET",
+      path: "/b/42",
+      query: {},
+      req: { path: "/b/42" },
+    });
+
+    expect(result.body).toStrictEqual({ intId: 42 });
+  });
+
+  it("merges path-item-level and operation-level parameters for type conversion", async () => {
+    const registry = new Registry();
+
+    registry.add("/c/{pathId}", {
+      // @ts-expect-error - not obvious how to make TS happy here, and it's just a unit test
+      GET({ path, query, response }) {
+        return response["200"]?.text({
+          count: query.count,
+          pathId: path?.pathId,
+        });
+      },
+    });
+
+    const openApiDocument: OpenApiDocument = {
+      paths: {
+        "/c/{pathId}": {
+          // path-item-level: pathId (integer)
+          parameters: [
+            {
+              in: "path",
+              name: "pathId",
+              schema: { type: "integer" },
+            },
+          ],
+          get: {
+            // operation-level: count (integer)
+            parameters: [
+              {
+                in: "query",
+                name: "count",
+                schema: { type: "integer" },
+              },
+            ],
+            responses: {
+              200: {
+                content: {
+                  "application/json": {
+                    schema: { count: "number", pathId: "number" },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    };
+
+    const dispatcher = new Dispatcher(
+      registry,
+      new ContextRegistry(),
+      openApiDocument,
+    );
+    const result = await dispatcher.request({
+      body: "",
+      headers: {},
+      method: "GET",
+      path: "/c/7",
+      query: { count: "3" },
+      req: { path: "/c/7" },
+    });
+
+    expect(result.body).toStrictEqual({ count: 3, pathId: 7 });
+  });
+
   it("attaches the root produces array to an operation", () => {
     const registry = new Registry();
 
