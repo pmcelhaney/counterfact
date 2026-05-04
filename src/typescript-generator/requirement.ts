@@ -17,6 +17,16 @@ export class Requirement {
   public url: string;
   public specification: Specification | undefined;
 
+  /**
+   * The requirement that produced this one via a `get()` call, or `undefined`
+   * for root requirements that were constructed directly.
+   *
+   * For path-traversal purposes this is the "logical" parent: when a `$ref` is
+   * followed, the parent is the resolved reference target rather than the
+   * `$ref` node itself.
+   */
+  public parent: Requirement | undefined;
+
   public constructor(
     data: RequirementData,
     url = "",
@@ -72,11 +82,15 @@ export class Requirement {
       return undefined;
     }
 
-    return new Requirement(
+    const child = new Requirement(
       this.data[key] as RequirementData,
       `${this.url}/${this.escapeJsonPointer(key)}`,
       this.specification,
     );
+
+    child.parent = this;
+
+    return child;
   }
 
   /**

@@ -394,7 +394,7 @@ function buildProgram(version: string, taglines: string[]): Command {
       "-b, --build-cache",
       "builds the cache of compiled routes and types",
     )
-    .option("--no-admin-api", "disable the admin API at /_counterfact/api/*")
+    .option("--admin-api", "enable the admin API at /_counterfact/api/*")
     .option("-r, --repl", "start the REPL")
     .option("--proxy-url <string>", "proxy URL")
     .option(

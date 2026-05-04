@@ -239,7 +239,6 @@ const { start } = await counterfact({
   proxyPaths: new Map(),
   proxyUrl: "",
   prefix: "",
-  startAdminApi: false,
   validateRequests: true,
   validateResponses: true,
 });
