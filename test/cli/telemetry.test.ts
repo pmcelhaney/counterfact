@@ -24,16 +24,9 @@ describe("isTelemetryEnabled", () => {
     expect(isTelemetryEnabled()).toBe(false);
   });
 
-  it("returns false before the rollout date when telemetry is not explicitly enabled", () => {
+  it("returns true when no opt-out env vars are set", () => {
     delete process.env["CI"];
     delete process.env["COUNTERFACT_TELEMETRY_DISABLED"];
-    // The current date is before 2026-05-01, so telemetry is off by default
-    expect(isTelemetryEnabled()).toBe(false);
-  });
-
-  it("returns true when COUNTERFACT_TELEMETRY_DISABLED is 'false' (explicit opt-in)", () => {
-    delete process.env["CI"];
-    process.env["COUNTERFACT_TELEMETRY_DISABLED"] = "false";
     expect(isTelemetryEnabled()).toBe(true);
   });
 });
