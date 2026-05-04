@@ -91,6 +91,33 @@ describe("a Requirement", () => {
     expect(requirement.get("foo/bar").data).toBe("slash");
   });
 
+  it("get(name) - sets parent on the returned requirement", () => {
+    const parent = new Requirement({ child: { value: 42 } });
+    const child = parent.get("child");
+
+    expect(child?.parent).toBe(parent);
+  });
+
+  it("get(name) - root requirement has no parent", () => {
+    const requirement = new Requirement({ value: 1 });
+
+    expect(requirement.parent).toBeUndefined();
+  });
+
+  it("select(path) - sets parent chain correctly through multi-step navigation", () => {
+    const requirement = new Requirement({
+      a: { b: { c: { value: "leaf" } } },
+    });
+    const leaf = requirement.select("a/b/c")!;
+
+    // c's parent is b, b's parent is a, a's parent is the root requirement
+    expect(leaf.parent?.data).toStrictEqual({ c: { value: "leaf" } });
+    expect(leaf.parent?.parent?.data).toStrictEqual({
+      b: { c: { value: "leaf" } },
+    });
+    expect(leaf.parent?.parent?.parent).toBe(requirement);
+  });
+
   it("get(name) - follow $ref", () => {
     const requirement = root.get("source");
     expect(requirement.get("found").data).toEqual("yep");

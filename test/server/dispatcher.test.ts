@@ -737,6 +737,234 @@ describe("a dispatcher", () => {
     });
   });
 
+  it("converts query, path, and header parameters using OAS3-style schema types", async () => {
+    const registry = new Registry();
+
+    registry.add("/a/{integerInPath}/{stringInPath}", {
+      // @ts-expect-error - not obvious how to make TS happy here, and it's just a unit test
+      GET({ headers, path, query, response }) {
+        return response["200"]?.text({
+          booleanInHeader: headers.booleanInHeader,
+          integerInPath: path?.integerInPath,
+          numberInHeader: headers.numberInHeader,
+          numberInQuery: query.numberInQuery,
+          stringInHeader: headers.stringInHeader,
+          stringInPath: path?.stringInPath,
+          stringInQuery: query.stringInQuery,
+        });
+      },
+    });
+
+    const openApiDocument: OpenApiDocument = {
+      paths: {
+        "/a/{integerInPath}/{stringInPath}": {
+          get: {
+            parameters: [
+              {
+                in: "path",
+                name: "integerInPath",
+                schema: { type: "integer" },
+              },
+              { in: "path", name: "stringInPath", schema: { type: "string" } },
+              {
+                in: "query",
+                name: "numberInQuery",
+                schema: { type: "number" },
+              },
+              {
+                in: "query",
+                name: "stringInQuery",
+                schema: { type: "string" },
+              },
+              {
+                in: "header",
+                name: "numberInHeader",
+                schema: { type: "number" },
+              },
+              {
+                in: "header",
+                name: "stringInHeader",
+                schema: { type: "string" },
+              },
+              {
+                in: "header",
+                name: "booleanInHeader",
+                schema: { type: "boolean" },
+              },
+            ],
+
+            responses: {
+              200: {
+                content: {
+                  "application/json": {
+                    schema: {
+                      integerInPath: "number",
+                      stringInPath: "string",
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    };
+
+    const dispatcher = new Dispatcher(
+      registry,
+      new ContextRegistry(),
+      openApiDocument,
+    );
+    const htmlResponse = await dispatcher.request({
+      body: "",
+
+      headers: {
+        numberInHeader: "5",
+        stringInHeader: "6",
+        booleanInHeader: "true",
+      },
+
+      method: "GET",
+
+      path: "/a/1/2",
+
+      query: {
+        numberInQuery: "3",
+        stringInQuery: "4",
+      },
+
+      req: { path: "/a/1/2" },
+    });
+
+    expect(htmlResponse.body).toStrictEqual({
+      booleanInHeader: true,
+      integerInPath: 1,
+      numberInHeader: 5,
+      numberInQuery: 3,
+      stringInHeader: "6",
+      stringInPath: "2",
+      stringInQuery: "4",
+    });
+  });
+
+  it("converts path-level parameters to numbers when defined at path item level", async () => {
+    const registry = new Registry();
+
+    registry.add("/b/{intId}", {
+      // @ts-expect-error - not obvious how to make TS happy here, and it's just a unit test
+      GET({ path, response }) {
+        return response["200"]?.text({
+          intId: path?.intId,
+        });
+      },
+    });
+
+    const openApiDocument: OpenApiDocument = {
+      paths: {
+        "/b/{intId}": {
+          parameters: [
+            {
+              in: "path",
+              name: "intId",
+              schema: { type: "integer" },
+            },
+          ],
+          get: {
+            responses: {
+              200: {
+                content: {
+                  "application/json": {
+                    schema: { intId: "number" },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    };
+
+    const dispatcher = new Dispatcher(
+      registry,
+      new ContextRegistry(),
+      openApiDocument,
+    );
+    const result = await dispatcher.request({
+      body: "",
+      headers: {},
+      method: "GET",
+      path: "/b/42",
+      query: {},
+      req: { path: "/b/42" },
+    });
+
+    expect(result.body).toStrictEqual({ intId: 42 });
+  });
+
+  it("merges path-item-level and operation-level parameters for type conversion", async () => {
+    const registry = new Registry();
+
+    registry.add("/c/{pathId}", {
+      // @ts-expect-error - not obvious how to make TS happy here, and it's just a unit test
+      GET({ path, query, response }) {
+        return response["200"]?.text({
+          count: query.count,
+          pathId: path?.pathId,
+        });
+      },
+    });
+
+    const openApiDocument: OpenApiDocument = {
+      paths: {
+        "/c/{pathId}": {
+          // path-item-level: pathId (integer)
+          parameters: [
+            {
+              in: "path",
+              name: "pathId",
+              schema: { type: "integer" },
+            },
+          ],
+          get: {
+            // operation-level: count (integer)
+            parameters: [
+              {
+                in: "query",
+                name: "count",
+                schema: { type: "integer" },
+              },
+            ],
+            responses: {
+              200: {
+                content: {
+                  "application/json": {
+                    schema: { count: "number", pathId: "number" },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    };
+
+    const dispatcher = new Dispatcher(
+      registry,
+      new ContextRegistry(),
+      openApiDocument,
+    );
+    const result = await dispatcher.request({
+      body: "",
+      headers: {},
+      method: "GET",
+      path: "/c/7",
+      query: { count: "3" },
+      req: { path: "/c/7" },
+    });
+
+    expect(result.body).toStrictEqual({ count: 3, pathId: 7 });
+  });
+
   it("attaches the root produces array to an operation", () => {
     const registry = new Registry();
 

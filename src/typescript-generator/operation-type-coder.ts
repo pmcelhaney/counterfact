@@ -8,7 +8,8 @@ import { RESERVED_WORDS } from "./reserved-words.js";
 import { ResponsesTypeCoder } from "./responses-type-coder.js";
 import { SchemaTypeCoder } from "./schema-type-coder.js";
 import { TypeCoder } from "./type-coder.js";
-import type { Requirement } from "./requirement.js";
+import { Requirement } from "./requirement.js";
+import type { RequirementData } from "./requirement.js";
 import type { Script } from "./script.js";
 
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Lexical_grammar#reserved_words
@@ -218,6 +219,55 @@ export class OperationTypeCoder extends TypeCoder {
   }
 
   /**
+   * Returns the effective parameters for this operation by merging path-item-level
+   * parameters with operation-level parameters. Per the OpenAPI specification,
+   * operation-level parameters override path-item-level parameters that share
+   * the same `name` and `in` location.
+   *
+   * Uses `this.requirement.parent` (the path item requirement) to access
+   * path-item-level parameters directly, without URL string parsing.
+   *
+   * When the parent is not set (e.g. in unit tests that construct requirements
+   * directly), only the operation-level parameters are returned.
+   */
+  protected getEffectiveParameters(): Requirement | undefined {
+    const operationParams = this.requirement.get("parameters");
+    const pathItemParams = this.requirement.parent?.get("parameters");
+
+    if (!pathItemParams) {
+      return operationParams;
+    }
+
+    if (!operationParams) {
+      return pathItemParams;
+    }
+
+    // Merge using a Map keyed on `${in}:${name}`.
+    // Path-level params are added first; operation-level overrides them.
+    const pathData = pathItemParams.data as unknown as Record<
+      string,
+      unknown
+    >[];
+    const opData = operationParams.data as unknown as Record<string, unknown>[];
+
+    const map = new Map<string, Record<string, unknown>>();
+
+    for (const p of pathData) {
+      map.set(`${p.in as string}:${p.name as string}`, p);
+    }
+
+    for (const p of opData) {
+      map.set(`${p.in as string}:${p.name as string}`, p);
+    }
+
+    return new Requirement(
+      [...map.values()] as unknown as RequirementData,
+      this.requirement.url,
+      this.requirement.specification,
+    );
+  }
+
+  /**
    * Builds the `OmitValueWhenNever<{…}>` dollar-argument type body and sets
    * up all required shared-type imports on `script`.
    *
@@ -238,7 +288,7 @@ export class OperationTypeCoder extends TypeCoder {
       CONTEXT_FILE_TOKEN,
     );
 
-    const parameters = this.requirement.get("parameters");
+    const parameters = this.getEffectiveParameters();
 
     const queryType = new ParametersTypeCoder(
       parameters!,
