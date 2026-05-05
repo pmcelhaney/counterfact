@@ -238,15 +238,18 @@ export function createResponseBuilder(
         return {
           ...this,
 
-          content: Object.keys(content).map((type) => ({
-            body: convertToXmlIfNecessary(
-              type,
-              content[type]?.examples?.[name]?.value,
-              content[type]?.schema,
-            ),
+          content: Object.keys(content).map((type) => {
+            const example = content[type]?.examples?.[name];
+            const body =
+              example !== undefined && "dataValue" in example
+                ? example.dataValue
+                : example?.value;
 
-            type,
-          })),
+            return {
+              body: convertToXmlIfNecessary(type, body, content[type]?.schema),
+              type,
+            };
+          }),
         };
       },
 
