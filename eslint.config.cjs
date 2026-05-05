@@ -315,4 +315,7 @@ module.exports = [
       "filename-rules/kebab-case": "error",
     },
   },
+  // The site/ directory has its own package.json, tsconfig, and ESLint config;
+  // exclude it from the root ESLint run entirely.
+  { ignores: ["site/**"] },
 ];

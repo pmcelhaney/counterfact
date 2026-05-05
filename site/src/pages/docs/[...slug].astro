@@ -1,0 +1,38 @@
+---
+import { getCollection, render } from "astro:content";
+import DocLayout from "../../layouts/DocLayout.astro";
+
+export async function getStaticPaths() {
+  const docs = await getCollection("docs");
+  const routes = [];
+  for (const doc of docs) {
+    // Serve at the clean URL (e.g. /docs/getting-started)
+    routes.push({ params: { slug: doc.id }, props: { doc, isMdAlias: false } });
+    // Also serve at the .md URL (e.g. /docs/getting-started.md) so that
+    // links written with .md extensions in the source work on the site too.
+    routes.push({
+      params: { slug: `${doc.id}.md` },
+      props: { doc, isMdAlias: true },
+    });
+  }
+  return routes;
+}
+
+const { doc, isMdAlias } = Astro.props;
+const { Content, headings } = await render(doc);
+
+const titleFromHeading = headings.find((h) => h.depth === 1)?.text;
+const titleFromSlug = doc.id
+  .split("/")
+  .at(-1)!
+  .replace(/-/g, " ")
+  .replace(/\b\w/g, (c) => c.toUpperCase());
+const title = titleFromHeading ?? titleFromSlug;
+
+// Canonical URL always points to the clean (no .md) path.
+const canonicalPath = `/docs/${doc.id}`;
+---
+
+<DocLayout title={title} canonicalPath={canonicalPath}>
+  <Content />
+</DocLayout>
