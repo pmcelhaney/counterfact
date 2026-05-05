@@ -26,7 +26,7 @@ jobs:
           fetch-depth: 0
       - name: Detect docs-only pull request
         id: docs-only
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         with:
           script: |
             if (context.eventName !== "pull_request") {
