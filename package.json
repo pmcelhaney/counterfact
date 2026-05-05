@@ -82,7 +82,7 @@
     "postinstall": "patch-package"
   },
   "devDependencies": {
-    "@changesets/cli": "2.30.0",
+    "@changesets/cli": "2.31.0",
     "@eslint/js": "10.0.1",
     "@jest/globals": "^30.3.0",
     "@swc/core": "1.15.24",
