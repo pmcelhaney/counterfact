@@ -1,6 +1,5 @@
-import { readFile } from "node:fs/promises";
-
 import { load as loadYaml } from "js-yaml";
+import { readFile } from "./read-file.js";
 
 function kebabToCamel(str: string): string {
   return str.replace(/-([a-z])/g, (_, letter: string) => letter.toUpperCase());
@@ -27,7 +26,7 @@ export async function loadConfigFile(
   let content: string;
 
   try {
-    content = await readFile(configPath, "utf8");
+    content = await readFile(configPath);
   } catch (error: unknown) {
     if (
       typeof error === "object" &&

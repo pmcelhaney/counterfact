@@ -221,15 +221,37 @@ No. Counterfact only writes files that don't already exist. Your custom route lo
 
 ## Can I use it programmatically (not via the CLI)?
 
-Yes. Import `counterfact` and call it with options:
+Yes. Import `counterfact` and pass a `Config` object:
 
 ```ts
 import { counterfact } from "counterfact";
 
-await counterfact("openapi.yaml", "api", { port: 4000, serve: true });
+const { start } = await counterfact({
+  openApiPath: "openapi.yaml",
+  basePath: "api",
+  port: 4000,
+  startServer: true,
+  startRepl: false,
+  generate: { routes: false, types: false },
+  watch: { routes: false, types: false },
+  alwaysFakeOptionals: false,
+  buildCache: false,
+  proxyPaths: new Map(),
+  proxyUrl: "",
+  prefix: "",
+  validateRequests: true,
+  validateResponses: true,
+});
+
+const { stop } = await start({
+  startServer: true,
+  generate: { routes: false, types: false },
+  watch: { routes: false, types: false },
+  buildCache: false,
+});
 ```
 
-This makes Counterfact easy to embed in test setups — start a server in `beforeAll`, stop it in `afterAll`, and run real HTTP requests against it in your tests.
+This makes Counterfact easy to embed in test setups — start a server in `beforeAll`, stop it in `afterAll`, and run real HTTP requests against it in your tests. See the [Programmatic API guide](./features/programmatic-api.md) for a complete example.
 
 ---
 
@@ -287,8 +309,7 @@ Wherever you tell it. The second argument to the CLI is the output directory. Us
 ## See also
 
 - [Getting started](./getting-started.md)
-- [Usage patterns](./usage-patterns.md)
+- [Patterns](./patterns/index.md)
 - [Reference](./reference.md)
 - [How it compares](./comparison.md)
-- [Generated code FAQ](./faq-generated-code.md)
-- [Usage guide](./usage.md)
+- [Usage](./usage.md)

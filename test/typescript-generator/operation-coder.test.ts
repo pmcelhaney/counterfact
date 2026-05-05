@@ -2,6 +2,7 @@ import { describe, expect, it } from "@jest/globals";
 import { format as formatCode } from "prettier";
 
 import { OperationCoder } from "../../src/typescript-generator/operation-coder.js";
+import { Repository } from "../../src/typescript-generator/repository.js";
 import { Requirement } from "../../src/typescript-generator/requirement.js";
 
 function format(code) {
@@ -12,6 +13,7 @@ describe("an OperationCoder", () => {
   it("generates a list of potential names", () => {
     const coder = new OperationCoder(
       new Requirement({}, "#/paths/hello/get"),
+      "",
       "get",
     );
 
@@ -23,6 +25,7 @@ describe("an OperationCoder", () => {
   it("creates a type declaration", () => {
     const coder = new OperationCoder(
       new Requirement({}, "#/paths/hello/get"),
+      "",
       "get",
     );
 
@@ -35,9 +38,35 @@ describe("an OperationCoder", () => {
     expect(coder.typeDeclaration(undefined, script)).toBe("HTTP_GET");
   });
 
+  it("passes version through to nested coders", () => {
+    const coder = new OperationCoder(
+      new Requirement({}, "#/paths/hello/get"),
+      "v1",
+      "get",
+      [],
+    );
+    let nestedCoderVersion = "";
+
+    const repository = new Repository();
+    const script = repository.get("routes/hello.ts");
+
+    // Spy on importType to capture the version that is passed through
+    const originalImportType = script.importType.bind(script);
+
+    script.importType = (operationTypeCoder) => {
+      nestedCoderVersion = operationTypeCoder.version;
+      return originalImportType(operationTypeCoder);
+    };
+
+    coder.typeDeclaration(undefined, script);
+
+    expect(nestedCoderVersion).toBe("v1");
+  });
+
   it("returns the module path", () => {
     const coder = new OperationCoder(
       new Requirement({}, "#/paths/hello~1world/get", "get"),
+      "",
       "get",
     );
 
@@ -91,7 +120,7 @@ describe("an OperationCoder", () => {
       "#/paths/hello/get",
     );
 
-    const coder = new OperationCoder(requirement, "get");
+    const coder = new OperationCoder(requirement, "", "get");
 
     await expect(
       format(
@@ -124,7 +153,7 @@ describe("an OperationCoder", () => {
       "#/paths/hello/post",
     );
 
-    const coder = new OperationCoder(requirement, "get");
+    const coder = new OperationCoder(requirement, "", "get");
 
     await expect(
       format(
@@ -151,7 +180,7 @@ describe("an OperationCoder", () => {
       "#/paths/hello/delete",
     );
 
-    const coder = new OperationCoder(requirement, "delete");
+    const coder = new OperationCoder(requirement, "", "delete");
 
     await expect(
       format(

@@ -34,5 +34,5 @@ A `Webhook Simulation` pattern document would describe:
 
 - [ ] An outbound-call mechanism (e.g., `$.webhook()` or `$.emit()`) is implemented and documented
 - [ ] `docs/patterns/webhook-simulation.md` is added following the established pattern format
-- [ ] The new pattern is linked in `docs/usage-patterns.md`
+- [ ] The new pattern is linked in `docs/patterns/index.md`
 - [ ] The reference doc is updated to describe the new API

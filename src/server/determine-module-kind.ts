@@ -1,6 +1,7 @@
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
 import path from "node:path";
+/* eslint-disable security/detect-non-literal-fs-filename -- module kind detection only probes package.json while walking parent directories. */
 
 const DEFAULT_MODULE_KIND = "commonjs";
 
@@ -8,6 +9,19 @@ interface PackageJsonWithType {
   type?: string;
 }
 
+/**
+ * Determines whether a module file should be treated as CommonJS or ESM.
+ *
+ * Resolution order (matches Node.js conventions):
+ * 1. `.cjs` extension → `"commonjs"`.
+ * 2. `.mjs` or `.ts` extension → `"module"`.
+ * 3. Walk up the directory tree looking for a `package.json` with a `"type"`
+ *    field.
+ * 4. Falls back to `"commonjs"` at the filesystem root.
+ *
+ * @param modulePath - Absolute or relative path to the module file.
+ * @returns `"commonjs"` or `"module"`.
+ */
 export async function determineModuleKind(modulePath: string) {
   if (modulePath.endsWith(".cjs")) {
     return "commonjs";

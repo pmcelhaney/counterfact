@@ -10,6 +10,7 @@
  * uses the TypeScript convention of writing .js extensions in import paths
  * (which resolve to .ts files at authoring time). This loader bridges that gap.
  */
+/* eslint-disable security/detect-non-literal-fs-filename -- loader checks file existence for Node-resolved internal module URLs only. */
 
 import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";

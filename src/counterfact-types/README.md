@@ -26,6 +26,7 @@ This directory contains the TypeScript type definitions that are part of Counter
 | `random-function.ts` | `RandomFunction` — the type of the `.random()` method on the response builder |
 | `response-builder.ts` | `ResponseBuilder` — a loosely-typed chainable response builder for non-generated contexts |
 | `response-builder-factory.ts` | `ResponseBuilderFactory<Responses>` — maps status codes to their `GenericResponseBuilder` instances |
+| `versioned.ts` | `Versioned<TVersions, TVersionsGTE, T, V>` — generic utility type that narrows the `$` argument of a multi-version route handler; for per-project use, import the project-specific `Versioned` from the generated `types/versions.ts` instead |
 | `wide-operation-argument.ts` | `WideOperationArgument` — the loosely-typed argument object for wide (catch-all) route handlers |
 | `wide-response-builder.ts` | `WideResponseBuilder` — a loosely-typed response builder for wide route handlers |
 

@@ -2,6 +2,7 @@ import { buildJsDoc } from "./jsdoc.js";
 import { TypeCoder } from "./type-coder.js";
 import type { Requirement } from "./requirement.js";
 import type { Script } from "./script.js";
+import { pathJoin } from "../util/forward-slash-path.js";
 
 export class SchemaTypeCoder extends TypeCoder {
   public override names(): Generator<string> {
@@ -34,7 +35,7 @@ export class SchemaTypeCoder extends TypeCoder {
 
     const requirement = this.requirement.get("additionalProperties")!;
 
-    return new SchemaTypeCoder(requirement).write(script);
+    return new SchemaTypeCoder(requirement, this.version).write(script);
   }
 
   public objectSchema(script: Script): string {
@@ -59,9 +60,11 @@ export class SchemaTypeCoder extends TypeCoder {
       const comment = buildJsDoc(property.data);
       const commentPrefix = comment ? `\n${comment}` : "";
 
-      return `${commentPrefix}"${name}"${optionalFlag}: ${new SchemaTypeCoder(
-        property,
-      ).write(script)}`;
+      const propertyType = new SchemaTypeCoder(property, this.version).write(
+        script,
+      );
+
+      return `${commentPrefix}"${name}"${optionalFlag}: ${propertyType}`;
     });
 
     if (typedData.additionalProperties) {
@@ -74,9 +77,10 @@ export class SchemaTypeCoder extends TypeCoder {
   }
 
   public arraySchema(script: Script): string {
-    return `Array<${new SchemaTypeCoder(this.requirement.get("items")!).write(
-      script,
-    )}>`;
+    return `Array<${new SchemaTypeCoder(
+      this.requirement.get("items")!,
+      this.version,
+    ).write(script)}>`;
   }
 
   public writePrimitive(value: unknown): string {
@@ -144,7 +148,10 @@ export class SchemaTypeCoder extends TypeCoder {
     const key = matchingKey();
     const items = (allOf ?? anyOf ?? oneOf) as unknown[];
     const types = items.map((_item, index) =>
-      new SchemaTypeCoder(this.requirement.get(key)!.get(index)!).write(script),
+      new SchemaTypeCoder(
+        this.requirement.get(key)!.get(index)!,
+        this.version,
+      ).write(script),
     );
 
     return types.join(allOf ? " & " : " | ");
@@ -157,7 +164,11 @@ export class SchemaTypeCoder extends TypeCoder {
   }
 
   public override modulePath(): string {
-    return `types/${(this.requirement.data["$ref"] as string).replace(/^#\//u, "")}.ts`;
+    return pathJoin(
+      "types",
+      this.version,
+      (this.requirement.data["$ref"] as string).replace(/^#\//u, "") + ".ts",
+    );
   }
 
   public override writeCode(script: Script): string {

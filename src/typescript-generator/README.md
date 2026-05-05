@@ -14,8 +14,7 @@ We can also use those types on the _client_ side, assuming the client is written
 
 | File | Description |
 |---|---|
-| `code-generator.ts` | Top-level `CodeGenerator` class; orchestrates the generate pipeline and file watching via `EventTarget` |
-| `generate.ts` | Main async pipeline: reads the OpenAPI spec, iterates over paths/operations, and drives the `Repository` to write output files |
+| `code-generator.ts` | Top-level `CodeGenerator` class; orchestrates the full generate pipeline (reads the OpenAPI spec, iterates over paths/operations, drives the `Repository` to write output files) and file watching via `EventTarget` |
 | `specification.ts` | `Specification` class: loads and parses an OpenAPI document and provides cached `Requirement` lookup via JSON Pointer |
 | `requirement.ts` | `Requirement` class: wraps a single OpenAPI schema object with its URL and resolves `$ref` pointers |
 | `repository.ts` | `Repository` class: manages all output `Script` instances, deduplicates them, and coordinates async export resolution |

@@ -3,15 +3,17 @@ import { SchemaTypeCoder } from "./schema-type-coder.js";
 import { TypeCoder } from "./type-coder.js";
 import type { Requirement } from "./requirement.js";
 import type { Script } from "./script.js";
+import { pathJoin } from "../util/forward-slash-path.js";
 
 export class ResponseTypeCoder extends TypeCoder {
   public openApi2MediaTypes: string[];
 
   public constructor(
     requirement: Requirement,
+    version = "",
     openApi2MediaTypes: string[] = [],
   ) {
-    super(requirement);
+    super(requirement, version);
 
     this.openApi2MediaTypes = openApi2MediaTypes;
   }
@@ -32,7 +34,7 @@ export class ResponseTypeCoder extends TypeCoder {
         .map((content, mediaType): [string, string] => [
           mediaType,
           `{ 
-            schema:  ${content.has("schema") ? new SchemaTypeCoder(content.get("schema")!).write(script) : "unknown"}
+            schema:  ${content.has("schema") ? new SchemaTypeCoder(content.get("schema")!, this.version).write(script) : "unknown"}
          }`,
         ]);
     }
@@ -40,7 +42,7 @@ export class ResponseTypeCoder extends TypeCoder {
     return this.openApi2MediaTypes.map((mediaType): [string, string] => [
       mediaType,
       `{
-            schema: ${new SchemaTypeCoder(response.get("schema")!).write(script)}
+            schema: ${new SchemaTypeCoder(response.get("schema")!, this.version).write(script)}
          }`,
     ]);
   }
@@ -61,9 +63,10 @@ export class ResponseTypeCoder extends TypeCoder {
       .get("headers")!
       .map((value, name): [string, string] => [
         name,
-        `{ schema: ${new SchemaTypeCoder(value.get("schema") ?? value).write(
-          script,
-        )}}`,
+        `{ schema: ${new SchemaTypeCoder(
+          value.get("schema") ?? value,
+          this.version,
+        ).write(script)}}`,
       ]);
   }
 
@@ -115,7 +118,11 @@ export class ResponseTypeCoder extends TypeCoder {
   }
 
   public override modulePath(): string {
-    return `types/${this.requirement.data["$ref"] as string}.ts`;
+    return pathJoin(
+      "types",
+      this.version,
+      this.requirement.data["$ref"]! + ".ts",
+    );
   }
 
   public override writeCode(script: Script): string {

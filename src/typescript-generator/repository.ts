@@ -2,17 +2,24 @@ import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
 import nodePath, { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+/* eslint-disable security/detect-non-literal-fs-filename -- repository writes and stats generated files only inside destination output directories. */
 
 import createDebug from "debug";
 
 import { ensureDirectoryExists } from "../util/ensure-directory-exists.js";
+import {
+  toForwardSlashPath,
+  pathJoin,
+  pathRelative,
+  pathDirname,
+} from "../util/forward-slash-path.js";
 import { CONTEXT_FILE_TOKEN } from "./context-file-token.js";
 import { Script } from "./script.js";
 import { escapePathForWindows } from "../util/windows-escape.js";
 
 const debug = createDebug("counterfact:server:repository");
 
-const __dirname = dirname(fileURLToPath(import.meta.url)).replaceAll("\\", "/");
+const __dirname = toForwardSlashPath(dirname(fileURLToPath(import.meta.url)));
 
 debug("dirname is %s", __dirname);
 
@@ -21,6 +28,15 @@ interface WriteFilesOptions {
   types?: boolean;
 }
 
+/**
+ * Collection of {@link Script} objects keyed by their repository-relative
+ * path.
+ *
+ * Coders call {@link get} to obtain (or create) the script where they should
+ * export their generated TypeScript.  After all coders have been registered,
+ * {@link writeFiles} waits for every script to finish and writes the output to
+ * disk.
+ */
 export class Repository {
   public scripts: Map<string, Script>;
 
@@ -28,6 +44,12 @@ export class Repository {
     this.scripts = new Map();
   }
 
+  /**
+   * Returns the {@link Script} for `path`, creating it if it does not yet
+   * exist.
+   *
+   * @param path - Repository-relative path (e.g. `"routes/pets.ts"`).
+   */
   public get(path: string): Script {
     debug("getting script at %s", path);
 
@@ -46,6 +68,7 @@ export class Repository {
     return script;
   }
 
+  /** Waits until all scripts have resolved all of their pending export promises. */
   public async finished(): Promise<void> {
     while (
       Array.from(this.scripts.values()).some((script) => script.isInProgress())
@@ -58,6 +81,15 @@ export class Repository {
     }
   }
 
+  /**
+   * Copies the compiled `counterfact-types` directory from the Counterfact
+   * distribution into the generated output tree.
+   *
+   * Returns `false` when the source directory does not exist (e.g. running
+   * from source without a prior build).
+   *
+   * @param destination - The root of the generated output tree.
+   */
   public async copyCoreFiles(destination: string): Promise<boolean | void> {
     const sourcePath = nodePath.join(
       __dirname,
@@ -72,6 +104,16 @@ export class Repository {
     return fs.cp(sourcePath, destinationPath, { recursive: true });
   }
 
+  /**
+   * Waits for all scripts to finish, then writes each one to disk.
+   *
+   * Route files (`routes/…`) are never overwritten if they already exist on
+   * disk, preserving user edits.  Type files (`types/…`) are always
+   * overwritten.
+   *
+   * @param destination - Absolute path to the output root directory.
+   * @param options - Controls which artefacts are written.
+   */
   public async writeFiles(
     destination: string,
     { routes, types }: WriteFilesOptions,
@@ -89,9 +131,7 @@ export class Repository {
       async ([path, script]) => {
         const contents = await script.contents();
 
-        const fullPath = escapePathForWindows(
-          nodePath.join(destination, path).replaceAll("\\", "/"),
-        );
+        const fullPath = escapePathForWindows(pathJoin(destination, path));
 
         await ensureDirectoryExists(fullPath);
 
@@ -133,6 +173,12 @@ export class Repository {
     }
   }
 
+  /**
+   * Creates the default `routes/_.context.ts` file if it does not already
+   * exist.
+   *
+   * @param destination - Absolute path to the output root directory.
+   */
   public async createDefaultContextFile(destination: string): Promise<void> {
     const contextFilePath = nodePath.join(
       destination,
@@ -148,37 +194,51 @@ export class Repository {
 
     await fs.writeFile(
       contextFilePath,
-      `/**
-* This is the default context for Counterfact.
-*
-* It defines the context object in the REPL 
-* and the $.context object in the code.
-*
-* Add properties and methods to suit your needs.
-* 
-* See https://counterfact.dev/docs/usage.html#working-with-state-the-codecontextcode-object-and-codecontexttscode
-*/
-export class Context {
+      `import type { Context$ } from "../types/_.context.js";
 
+/**
+ * This is the default context for Counterfact.
+ *
+ * It defines the context object in the REPL
+ * and the $.context object in the code.
+ *
+ * Add properties and methods to suit your needs.
+ *
+ * See https://github.com/counterfact/api-simulator/blob/main/docs/features/state.md
+ */
+
+export class Context {
+  constructor($: Context$) {
+    void $;
+  }
 }
 `,
     );
   }
 
+  /**
+   * Returns the path of the `_.context.ts` file that is nearest to `path` in
+   * the directory hierarchy, relative to the script's output directory.
+   *
+   * @param destination - Output root directory.
+   * @param path - Repository-relative path of the script being generated.
+   */
   public findContextPath(destination: string, path: string): string {
-    return nodePath
-      .relative(
-        nodePath.join(destination, nodePath.dirname(path)),
-        this.nearestContextFile(destination, path),
-      )
-      .replaceAll("\\", "/");
+    return pathRelative(
+      nodePath.join(destination, nodePath.dirname(path)),
+      this.nearestContextFile(destination, path),
+    );
   }
 
+  /**
+   * Walks up the directory tree from `path` to find the nearest
+   * `_.context.ts` file, falling back to `routes/_.context.ts` at the root.
+   *
+   * @param destination - Output root directory.
+   * @param path - Repository-relative path to start from.
+   */
   public nearestContextFile(destination: string, path: string): string {
-    const directory = nodePath
-      .dirname(path)
-      .replaceAll("\\", "/")
-      .replace("types/paths", "routes");
+    const directory = pathDirname(path).replace("types/paths", "routes");
 
     const candidate = nodePath.join(destination, directory, "_.context.ts");
 

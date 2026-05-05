@@ -10,7 +10,10 @@ import type {
   Registry,
 } from "./registry.js";
 import { createResponseBuilder } from "./response-builder.js";
-import { validateRequest } from "./request-validator.js";
+import {
+  isExplodedObjectQueryParam,
+  validateRequest,
+} from "./request-validator.js";
 import { validateResponse } from "./response-validator.js";
 import { Tools } from "./tools.js";
 import type {
@@ -21,6 +24,49 @@ import type { Config } from "./config.js";
 
 const debug = createDebugger("counterfact:server:dispatcher");
 
+/**
+ * Merges path-item-level and operation-level parameter arrays.
+ *
+ * Operation-level parameters take precedence when both arrays define a
+ * parameter with the same `name` and `in` location, per the OpenAPI
+ * specification.
+ */
+function mergeParameters(
+  pathItemParams: OpenApiParameters[],
+  operationParams: OpenApiParameters[],
+): OpenApiParameters[] {
+  const map = new Map<string, OpenApiParameters>();
+
+  for (const p of pathItemParams) {
+    map.set(`${p.in}:${p.name}`, p);
+  }
+
+  for (const p of operationParams) {
+    map.set(`${p.in}:${p.name}`, p);
+  }
+
+  return [...map.values()];
+}
+
+export interface OpenApiDocument {
+  basePath?: string;
+  paths: {
+    [key: string]: {
+      [key in Lowercase<HttpMethods>]?: OpenApiOperation;
+    } & { parameters?: OpenApiParameters[] };
+  };
+  produces?: string[];
+}
+
+/**
+ * Parses the `Cookie` request header into a key/value map.
+ *
+ * Duplicate keys are silently dropped (first occurrence wins) and values are
+ * percent-decoded where possible.
+ *
+ * @param cookieHeader - The raw `Cookie` header string.
+ * @returns A record mapping cookie name to decoded value.
+ */
 function parseCookies(cookieHeader: string): Record<string, string> {
   const cookies: Record<string, string> = {};
 
@@ -56,16 +102,6 @@ interface ParameterTypes {
   query: Map<string, string>;
 }
 
-export interface OpenApiDocument {
-  basePath?: string;
-  paths: {
-    [key: string]: {
-      [key in Lowercase<HttpMethods>]?: OpenApiOperation;
-    };
-  };
-  produces?: string[];
-}
-
 export type DispatcherRequest = {
   auth?: {
     password?: string;
@@ -78,7 +114,7 @@ export type DispatcherRequest = {
   method: HttpMethods;
   path: string;
   query: {
-    [key: string]: string;
+    [key: string]: string | string[];
   };
   rawBody?: string;
   req: {
@@ -86,6 +122,63 @@ export type DispatcherRequest = {
   };
 };
 
+/**
+ * Gathers exploded object query parameters back into a nested object under the
+ * parameter's own name.
+ *
+ * Per OpenAPI 3.x, a query parameter of type `object` with `style: form` and
+ * `explode: true` (both defaults for query params) is serialised as individual
+ * query parameters — one per object property.  This function reconstructs the
+ * object so that the route handler can access `$.query.<paramName>` rather than
+ * only the individual flat parameters.
+ *
+ * Properties that are "claimed" by an object parameter are removed from the
+ * top-level map and placed under the parameter name. Unclaimed keys remain at
+ * the top level.
+ *
+ * @param query - The raw parsed query-string map from the HTTP request.
+ * @param parameters - The OpenAPI parameter definitions for the current operation.
+ * @returns A new map with exploded object parameters reconstructed as nested objects.
+ */
+export function collectExplodedObjectParams(
+  query: Record<string, string | string[] | unknown>,
+  parameters: OpenApiParameters[],
+): Record<string, unknown> {
+  const result: Record<string, unknown> = { ...query };
+
+  for (const parameter of parameters) {
+    if (!isExplodedObjectQueryParam(parameter)) continue;
+
+    const properties = parameter.schema?.properties;
+    if (!properties) continue;
+
+    const obj: Record<string, unknown> = {};
+
+    for (const key of Object.keys(properties)) {
+      if (key in result) {
+        obj[key] = result[key];
+        delete result[key];
+      }
+    }
+
+    if (Object.keys(obj).length > 0) {
+      result[parameter.name] = obj;
+    }
+  }
+
+  return result;
+}
+
+/**
+ * Core HTTP request dispatcher.
+ *
+ * Receives incoming requests from the Koa middleware layer, matches them
+ * against the {@link Registry}, optionally validates the request and response
+ * against the OpenAPI spec, and invokes the matching route-handler function.
+ *
+ * Content-negotiation (Accept header handling) is performed before returning
+ * the response so the caller always receives the most appropriate content type.
+ */
 export class Dispatcher {
   public registry: Registry;
 
@@ -95,19 +188,43 @@ export class Dispatcher {
 
   public fetch: typeof fetch;
 
-  public config?: Config; // Add config property
+  public config?: Pick<
+    Config,
+    "validateRequests" | "validateResponses" | "alwaysFakeOptionals"
+  >; // Add config property
+
+  /**
+   * The version label for this dispatcher's spec (e.g. `"v1"`, `"v2"`).
+   * Empty string when running without a version.
+   */
+  public readonly version: string;
+
+  /**
+   * Ordered list of all version labels for the API group this dispatcher
+   * belongs to. The first entry is the oldest version. Used by
+   * `$.minVersion()` at runtime to determine if the current version is
+   * greater than or equal to a given minimum version.
+   */
+  public readonly versions: readonly string[];
 
   public constructor(
     registry: Registry,
     contextRegistry: ContextRegistry,
     openApiDocument?: OpenApiDocument,
-    config?: Config,
+    config?: Pick<
+      Config,
+      "validateRequests" | "validateResponses" | "alwaysFakeOptionals"
+    >,
+    version = "",
+    versions: readonly string[] = [],
   ) {
     this.registry = registry;
     this.contextRegistry = contextRegistry;
     this.openApiDocument = openApiDocument;
     this.fetch = fetch;
     this.config = config;
+    this.version = version;
+    this.versions = versions;
   }
 
   private parameterTypes(
@@ -127,7 +244,7 @@ export class Dispatcher {
     }
 
     for (const parameter of parameters) {
-      const type = parameter?.type;
+      const type = parameter?.type ?? parameter?.schema?.type;
 
       if (type !== undefined) {
         types[parameter.in].set(
@@ -140,41 +257,77 @@ export class Dispatcher {
     return types;
   }
 
-  private findOperation(
-    path: string,
-    method: HttpMethods,
-  ): OpenApiOperation | undefined {
-    if (this.openApiDocument) {
-      for (const key in this.openApiDocument.paths) {
-        if (key.toLowerCase() === path.toLowerCase()) {
-          return this.openApiDocument.paths[key]?.[
-            method.toLowerCase() as Lowercase<HttpMethods>
-          ];
-        }
+  private findPathItem(path: string):
+    | ({
+        [key in Lowercase<HttpMethods>]?: OpenApiOperation;
+      } & { parameters?: OpenApiParameters[] })
+    | undefined {
+    if (!this.openApiDocument) {
+      return undefined;
+    }
+
+    for (const key in this.openApiDocument.paths) {
+      if (key.toLowerCase() === path.toLowerCase()) {
+        return this.openApiDocument.paths[key];
       }
     }
 
     return undefined;
   }
 
+  /**
+   * Resolves the OpenAPI operation for `path` and `method`, merging any
+   * top-level `produces` array from the document root and any path-item-level
+   * `parameters` into the operation.
+   *
+   * Per the OpenAPI specification, parameters defined at the path item level
+   * are shared across all operations on that path. Operation-level parameters
+   * take precedence when both define a parameter with the same `name` and `in`.
+   *
+   * @param path - The matched route path (e.g. `"/pets/{petId}"`).
+   * @param method - The HTTP method.
+   * @returns The {@link OpenApiOperation} if found, or `undefined`.
+   */
   public operationForPathAndMethod(
     path: string,
     method: HttpMethods,
   ): OpenApiOperation | undefined {
-    const operation = this.findOperation(path, method);
+    const pathItem = this.findPathItem(path);
+
+    if (pathItem === undefined) {
+      return undefined;
+    }
+
+    const operation = pathItem[method.toLowerCase() as Lowercase<HttpMethods>];
 
     if (operation === undefined) {
       return undefined;
     }
 
+    // Merge path-item-level parameters with operation-level parameters.
+    // Operation-level parameters take precedence on same name+in collision.
+    const pathItemParams = pathItem.parameters ?? [];
+    const operationParams = operation.parameters ?? [];
+    const mergedParameters =
+      pathItemParams.length > 0
+        ? mergeParameters(pathItemParams, operationParams)
+        : operationParams.length > 0
+          ? operationParams
+          : undefined;
+
+    const mergedOperation =
+      mergedParameters !== undefined
+        ? { ...operation, parameters: mergedParameters }
+        : operation;
+
     if (this.openApiDocument?.produces) {
       return {
         produces: this.openApiDocument.produces,
-        ...operation,
+        ...mergedOperation,
       };
     }
 
-    return operation;
+    return mergedOperation;
   }
 
   private normalizeResponse(
@@ -214,6 +367,16 @@ export class Dispatcher {
     };
   }
 
+  /**
+   * Picks the best matching content entry from a multi-type response using the
+   * request's `Accept` header preferences.
+   *
+   * @param acceptHeader - The value of the `Accept` request header.
+   * @param content - Array of `{ type, body }` objects representing all
+   *   available content-type variants.
+   * @returns The first entry whose MIME type satisfies the accept preferences,
+   *   or `undefined` when none match.
+   */
   public selectContent(
     acceptHeader: string,
     content: { body: unknown; type: string }[],
@@ -253,6 +416,15 @@ export class Dispatcher {
     return false;
   }
 
+  /**
+   * Main request handler.
+   *
+   * Orchestrates base-path stripping, route matching, request validation,
+   * handler invocation, content negotiation, and response validation.
+   *
+   * @param request - The incoming request descriptor.
+   * @returns A promise that resolves to a {@link CounterfactResponseObject}.
+   */
   public async request({
     auth,
     body,
@@ -303,6 +475,13 @@ export class Dispatcher {
       }
     }
 
+    // Reconstruct exploded object query parameters so that `$.query.<name>`
+    // contains the assembled object instead of only the individual flat keys.
+    const processedQuery = collectExplodedObjectParams(
+      query,
+      operation?.parameters ?? [],
+    );
+
     const continuousDistribution = (min: number, max: number) => {
       return min + Math.random() * (max - min);
     };
@@ -350,7 +529,8 @@ export class Dispatcher {
         };
       },
 
-      query,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- object params are reconstructed and typed by generated route types
+      query: processedQuery as any,
 
       // @ts-expect-error - Might be pushing the limits of what TypeScript can do here
       response: createResponseBuilder(
@@ -359,6 +539,20 @@ export class Dispatcher {
       ), // Pass config
 
       tools: new Tools({ headers }),
+
+      ...(this.version !== "" && {
+        version: this.version,
+        minVersion: (min: string): boolean => {
+          const currentIdx = this.versions.indexOf(this.version);
+          const minIdx = this.versions.indexOf(min);
+
+          if (currentIdx === -1 || minIdx === -1) {
+            return false;
+          }
+
+          return currentIdx >= minIdx;
+        },
+      }),
     });
 
     if (response === undefined) {

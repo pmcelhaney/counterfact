@@ -212,7 +212,8 @@ describe("RawHttpClient", () => {
 
     client.get("/pets");
 
-    await capture;
+    const raw = await capture;
+    expect(raw).toMatch(/^GET \/pets HTTP\/1\.1/);
     // Allow the event loop to flush the client's "data"/"end" socket events so
     // that #printResponse (including highlightJson with boolean/null values) runs.
     await new Promise((resolve) => setTimeout(resolve, 20));
@@ -227,7 +228,8 @@ describe("RawHttpClient", () => {
 
     client.get("/pets");
 
-    await capture;
+    const raw = await capture;
+    expect(raw).toMatch(/^GET \/pets HTTP\/1\.1/);
     await new Promise((resolve) => setTimeout(resolve, 20));
   });
 
@@ -240,7 +242,8 @@ describe("RawHttpClient", () => {
 
     client.get("/status");
 
-    await capture;
+    const raw = await capture;
+    expect(raw).toMatch(/^GET \/status HTTP\/1\.1/);
     await new Promise((resolve) => setTimeout(resolve, 20));
   });
 });

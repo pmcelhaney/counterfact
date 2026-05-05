@@ -16,6 +16,12 @@ describe("loadConfigFile", () => {
     ).rejects.toThrow("Config file not found");
   });
 
+  it("throws when config path contains NUL bytes", async () => {
+    await expect(loadConfigFile("counterfact\0.yaml", true)).rejects.toThrow(
+      "File path cannot contain NUL bytes.",
+    );
+  });
+
   it("returns an empty object for an empty file", async () => {
     await usingTemporaryFiles(async ($) => {
       await $.add("counterfact.yaml", "");
@@ -50,12 +56,12 @@ describe("loadConfigFile", () => {
     await usingTemporaryFiles(async ($) => {
       await $.add(
         "counterfact.yaml",
-        "proxyUrl: https://example.com\nroutePrefix: /api/v1\n",
+        "proxyUrl: https://example.com\nprefix: /api/v1\n",
       );
       const result = await loadConfigFile($.path("counterfact.yaml"));
       expect(result).toEqual({
         proxyUrl: "https://example.com",
-        routePrefix: "/api/v1",
+        prefix: "/api/v1",
       });
     });
   });

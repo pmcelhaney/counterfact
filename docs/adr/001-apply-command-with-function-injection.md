@@ -1,4 +1,4 @@
-# ADR 001: .apply Command Design — Minimalist Function Injection
+# ADR 001: .scenario Command Design — Minimalist Function Injection
 
 ## Status
 
@@ -8,7 +8,7 @@ Accepted
 
 Counterfact's REPL lets developers interact with the running mock server from the terminal. A common need is to transition the server into a specific state (e.g. "all pets sold", "service unavailable") in a reproducible, shareable way. Today, operators must manually call REPL commands one by one; there is no mechanism to save and replay a named scenario.
 
-The `.apply` command is proposed to address this: given a path argument, it loads and executes a user-authored script that mutates REPL context and routes, then reports what changed.
+The `.scenario` command is proposed to address this: given a path argument, it loads and executes a user-authored script that mutates REPL context and routes, then reports what changed.
 
 Three designs were proposed as working documents in `.github/issue-proposals/`:
 
@@ -27,13 +27,13 @@ Three designs were proposed as working documents in `.github/issue-proposals/`:
 
 **Solution 1 (Minimalist Function Injection) is selected.**
 
-An apply script is a TypeScript file with one or more named function exports. When `.apply <path>` is run, Counterfact splits the argument on `/`, uses the last segment as the function name and the rest as the file path (relative to `<basePath>/repl/`), dynamically imports the module, and calls the named function with a live `ApplyContext` (`$`) object:
+A scenario script is a TypeScript file with one or more named function exports. When `.scenario <path>` is run, Counterfact splits the argument on `/`, uses the last segment as the function name and the rest as the file path (relative to `<basePath>/repl/`), dynamically imports the module, and calls the named function with a live `Scenario$` (`$`) object:
 
 ```ts
 // repl/sold-pets.ts
-import type { ApplyContext } from "counterfact";
+import type { Scenario$ } from "../types/_.context.js";
 
-export function soldPets($: ApplyContext) {
+export function soldPets($: Scenario$) {
   $.context.petService.reset();
   $.context.petService.addPet({ id: 1, status: "sold" });
 
@@ -41,7 +41,7 @@ export function soldPets($: ApplyContext) {
 }
 ```
 
-`ApplyContext` exposes `{ context, loadContext, routes, route }`. After the function returns, Counterfact diffs the `routes` object and prints a summary of what was added or removed.
+`Scenario$` exposes `{ context, loadContext, routes, route }`. After the function returns, Counterfact diffs the `routes` object and prints a summary of what was added or removed.
 
 Solution 1 was chosen because it introduces the smallest possible API surface, imposes no structural requirements on script authors, and integrates naturally with TypeScript `import` for composability. It is the right foundation to build on before adding lifecycle or tracking features.
 
@@ -49,13 +49,13 @@ Solution 1 was chosen because it introduces the smallest possible API surface, i
 
 ### Solution 1: Minimalist Function Injection (selected)
 
-Scripts export named functions that receive `$: ApplyContext`. Counterfact resolves the file/function from the path argument and calls the function directly. Route changes are diffed and reported; context changes are not automatically tracked.
+Scripts export named functions that receive `$: Scenario$`. Counterfact resolves the file/function from the path argument and calls the function directly. Route changes are diffed and reported; context changes are not automatically tracked.
 
 **Why chosen:** Maximum simplicity. No new abstractions, no required boilerplate. Easy to implement, test, and understand. Composability via normal `import`.
 
 ### Solution 2: Scenario Class with Lifecycle Hooks
 
-Scripts export a named class that implements a `Scenario` interface with `setup()` and optional `teardown()` methods. Counterfact instantiates the class, calls `setup()`, and tracks applied instances in a map for later `.unapply`. A static `dependencies` array enables ordered composition.
+Scripts export a named class that implements a `Scenario` interface with `setup()` and optional `teardown()` methods. Counterfact instantiates the class, calls `setup()`, and tracks applied instances in a map for later `.unscenario`. A static `dependencies` array enables ordered composition.
 
 **Why not chosen:** Class syntax and lifecycle coupling add complexity that is not justified until the need for teardown and dependency ordering is proven in practice. These concerns can be layered on top of Solution 1 once the basic command exists.
 
@@ -81,7 +81,7 @@ Identical surface syntax to Solution 1, but Counterfact wraps `context` and `rou
 
 ### Risks and downsides
 
-- Without lifecycle hooks, accumulated state across many `.apply` calls may be difficult to reason about.
+- Without lifecycle hooks, accumulated state across many `.scenario` calls may be difficult to reason about.
 - If teardown proves to be a common need, adding it later will require extending the API in a backward-compatible way.
 - Proxy-based auto-diffing (Solution 3) remains attractive for DX; deferring it means script authors will need to be disciplined about documenting context changes in the short term.
 
@@ -89,7 +89,7 @@ Identical surface syntax to Solution 1, but Counterfact wraps `context` and `rou
 
 - Evaluate whether `teardown` support (from Solution 2) is needed and, if so, define a clean extension point.
 - Explore adding proxy-based context diffing (from Solution 3) as an opt-in enhancement once the core command is stable.
-- Define `ApplyContext` as a public exported type in `counterfact-types/`.
+- Define `Scenario$` as a public exported type in `counterfact-types/`.
 
 ## Advice
 

@@ -2,14 +2,8 @@ import { once } from "node:events";
 
 import { usingTemporaryFiles } from "using-temporary-files";
 
+import { toForwardSlashPath } from "../../src/util/forward-slash-path.js";
 import { Transpiler } from "../../src/server/transpiler.js";
-
-// The Transpiler internally uses string replacement on paths after normalizing
-// chokidar paths to forward slashes, so source/destination paths must also use
-// forward slashes (especially on Windows where nodePath.join uses backslashes).
-function forwardSlash(p: string): string {
-  return p.replaceAll("\\", "/");
-}
 
 const TYPESCRIPT_SOURCE = `export const x:number = 1;\n`;
 const JAVASCRIPT_SOURCE = `export const x = 1;\n`;
@@ -35,8 +29,8 @@ describe("a Transpiler", () => {
       await $.add("src/found.ts", TYPESCRIPT_SOURCE);
 
       transpiler = new Transpiler(
-        forwardSlash($.path("src")),
-        forwardSlash($.path("dist")),
+        toForwardSlashPath($.path("src")),
+        toForwardSlashPath($.path("dist")),
         "module",
       );
 
@@ -59,8 +53,8 @@ describe("a Transpiler", () => {
       await $.add("src/starter.ts", TYPESCRIPT_SOURCE);
 
       transpiler = new Transpiler(
-        forwardSlash($.path("src")),
-        forwardSlash($.path("dist")),
+        toForwardSlashPath($.path("src")),
+        toForwardSlashPath($.path("dist")),
         "module",
       );
 
@@ -71,9 +65,8 @@ describe("a Transpiler", () => {
 
       await $.add("src/added.ts", TYPESCRIPT_SOURCE);
 
+      // eslint-disable-next-line jest/no-conditional-in-test -- Chokidar's add event is unreliable on Windows CI runners.
       if (process.platform === "win32") {
-        // Chokidar's add event seems to be unreliable on Windows
-        // Not sure what to do about it, so just skip this test
         return;
       }
 
@@ -92,8 +85,8 @@ describe("a Transpiler", () => {
       await $.add("src/update-me.ts", "const x = 'code to be overwritten';\n");
 
       transpiler = new Transpiler(
-        forwardSlash($.path("src")),
-        forwardSlash($.path("dist")),
+        toForwardSlashPath($.path("src")),
+        toForwardSlashPath($.path("dist")),
         "module",
       );
 
@@ -120,8 +113,8 @@ describe("a Transpiler", () => {
       await $.add("src/delete-me.ts", TYPESCRIPT_SOURCE);
 
       transpiler = new Transpiler(
-        forwardSlash($.path("src")),
-        forwardSlash($.path("dist")),
+        toForwardSlashPath($.path("src")),
+        toForwardSlashPath($.path("dist")),
         "module",
       );
 
@@ -140,8 +133,8 @@ describe("a Transpiler", () => {
       await $.add("src/found.ts", TYPESCRIPT_SOURCE);
 
       transpiler = new Transpiler(
-        forwardSlash($.path("src")),
-        forwardSlash($.path("dist")),
+        toForwardSlashPath($.path("src")),
+        toForwardSlashPath($.path("dist")),
         "commonjs",
       );
 
@@ -165,8 +158,8 @@ describe("a Transpiler", () => {
       );
 
       transpiler = new Transpiler(
-        forwardSlash($.path("src")),
-        forwardSlash($.path("dist")),
+        toForwardSlashPath($.path("src")),
+        toForwardSlashPath($.path("dist")),
         "commonjs",
       );
 

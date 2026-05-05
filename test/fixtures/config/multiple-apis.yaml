@@ -1,0 +1,8 @@
+spec:
+  - source: ./test/fixtures/openapi/example.yaml
+    prefix: /example
+    group: example
+  - source: https://petstore3.swagger.io/api/v3/openapi.json
+    prefix: /petstore
+    group: petstore
+destination: out

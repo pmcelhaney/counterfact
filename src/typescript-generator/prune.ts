@@ -1,7 +1,10 @@
 import fs from "node:fs/promises";
 import nodePath from "node:path";
+/* eslint-disable security/detect-non-literal-fs-filename -- pruning only traverses and removes files under destination/routes. */
 
 import createDebug from "debug";
+
+import { toForwardSlashPath } from "../util/forward-slash-path.js";
 
 const debug = createDebug("counterfact:typescript-generator:prune");
 
@@ -117,7 +120,7 @@ export async function pruneRoutes(
   let prunedCount = 0;
 
   for (const file of actualFiles) {
-    const normalizedFile = file.replaceAll("\\", "/");
+    const normalizedFile = toForwardSlashPath(file);
 
     if (!expectedFiles.has(normalizedFile)) {
       const fullPath = nodePath.join(routesDir, file);

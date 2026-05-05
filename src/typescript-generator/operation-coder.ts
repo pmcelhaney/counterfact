@@ -1,25 +1,36 @@
-import nodePath from "node:path";
-
+import { pathJoin } from "../util/forward-slash-path.js";
 import { Coder } from "./coder.js";
 import {
   OperationTypeCoder,
+  VersionedArgTypeCoder,
   type SecurityScheme,
 } from "./operation-type-coder.js";
 import type { Requirement } from "./requirement.js";
 import type { Script } from "./script.js";
 
+/**
+ * Generates the default route handler stub for a single OpenAPI operation.
+ *
+ * The generated stub calls `$.response[statusCode].random()` (or `.empty()`)
+ * for the first response defined in the spec.  It is only written when no
+ * handler file exists yet — users are expected to replace it with real logic.
+ *
+ * The corresponding TypeScript type is emitted by {@link OperationTypeCoder}
+ * into the `types/paths/…` tree.
+ */
 export class OperationCoder extends Coder {
   public requestMethod: string;
   public securitySchemes: SecurityScheme[];
 
   public constructor(
     requirement: Requirement,
-    requestMethod: string,
+    version = "",
+    requestMethod = "",
     securitySchemes: SecurityScheme[] = [],
   ) {
-    super(requirement);
+    super(requirement, version);
 
-    if (requestMethod === undefined) {
+    if (requestMethod === "") {
       throw new Error("requestMethod is required");
     }
 
@@ -65,9 +76,31 @@ export class OperationCoder extends Coder {
   ): string {
     const operationTypeCoder = new OperationTypeCoder(
       this.requirement,
+      this.version,
       this.requestMethod,
       this.securitySchemes,
     );
+
+    if (this.version !== "") {
+      // For versioned APIs: register this version's $-argument type on the
+      // shared script so that Script.versionsTypeStatements() can emit the
+      // merged handler type after all versions have been declared.
+      const versionedArgCoder = new VersionedArgTypeCoder(
+        this.requirement,
+        this.version,
+        this.requestMethod,
+        this.securitySchemes,
+      );
+
+      const sharedScript = script.repository.get(
+        operationTypeCoder.modulePath(),
+      );
+
+      sharedScript.declareVersion(
+        versionedArgCoder,
+        operationTypeCoder.getOperationBaseName(),
+      );
+    }
 
     return script.importType(operationTypeCoder);
   }
@@ -78,8 +111,6 @@ export class OperationCoder extends Coder {
       .at(-2)!
       .replaceAll("~1", "/");
 
-    return `${nodePath
-      .join("routes", pathString)
-      .replaceAll("\\", "/")}.types.ts`;
+    return `${pathJoin("routes", pathString)}.types.ts`;
   }
 }

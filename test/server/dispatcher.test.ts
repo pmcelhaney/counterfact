@@ -8,6 +8,14 @@ import {
 } from "../../src/server/dispatcher.js";
 import { Registry } from "../../src/server/registry.js";
 
+function fallbackCookie(value: string | undefined, fallback: string): string {
+  return value ?? fallback;
+}
+
+function acceptsBody(acceptsHtml: boolean): string {
+  return acceptsHtml ? "acceptable" : "unacceptable";
+}
+
 describe("a dispatcher", () => {
   it("dispatches a get request to a server and returns the response", async () => {
     const registry = new Registry();
@@ -268,12 +276,10 @@ describe("a dispatcher", () => {
       req: { path: "/a" },
     });
 
-    if (!("headers" in response)) {
-      // TypeScript thinks the response object might not have a headers property. Can't figure out why.
-      throw new Error("response.headers not defined");
-    }
-
-    expect(response.headers).toStrictEqual(authHeader);
+    expect(response).toHaveProperty("headers");
+    expect(
+      (response as typeof response & { headers: typeof authHeader }).headers,
+    ).toStrictEqual(authHeader);
   });
 
   it("passes the query params", async () => {
@@ -312,7 +318,7 @@ describe("a dispatcher", () => {
     registry.add("/a", {
       GET({ tools }) {
         return {
-          body: tools.accepts("text/html") ? "acceptable" : "unacceptable",
+          body: acceptsBody(tools.accepts("text/html")),
         };
       },
     });
@@ -731,6 +737,234 @@ describe("a dispatcher", () => {
     });
   });
 
+  it("converts query, path, and header parameters using OAS3-style schema types", async () => {
+    const registry = new Registry();
+
+    registry.add("/a/{integerInPath}/{stringInPath}", {
+      // @ts-expect-error - not obvious how to make TS happy here, and it's just a unit test
+      GET({ headers, path, query, response }) {
+        return response["200"]?.text({
+          booleanInHeader: headers.booleanInHeader,
+          integerInPath: path?.integerInPath,
+          numberInHeader: headers.numberInHeader,
+          numberInQuery: query.numberInQuery,
+          stringInHeader: headers.stringInHeader,
+          stringInPath: path?.stringInPath,
+          stringInQuery: query.stringInQuery,
+        });
+      },
+    });
+
+    const openApiDocument: OpenApiDocument = {
+      paths: {
+        "/a/{integerInPath}/{stringInPath}": {
+          get: {
+            parameters: [
+              {
+                in: "path",
+                name: "integerInPath",
+                schema: { type: "integer" },
+              },
+              { in: "path", name: "stringInPath", schema: { type: "string" } },
+              {
+                in: "query",
+                name: "numberInQuery",
+                schema: { type: "number" },
+              },
+              {
+                in: "query",
+                name: "stringInQuery",
+                schema: { type: "string" },
+              },
+              {
+                in: "header",
+                name: "numberInHeader",
+                schema: { type: "number" },
+              },
+              {
+                in: "header",
+                name: "stringInHeader",
+                schema: { type: "string" },
+              },
+              {
+                in: "header",
+                name: "booleanInHeader",
+                schema: { type: "boolean" },
+              },
+            ],
+
+            responses: {
+              200: {
+                content: {
+                  "application/json": {
+                    schema: {
+                      integerInPath: "number",
+                      stringInPath: "string",
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    };
+
+    const dispatcher = new Dispatcher(
+      registry,
+      new ContextRegistry(),
+      openApiDocument,
+    );
+    const htmlResponse = await dispatcher.request({
+      body: "",
+
+      headers: {
+        numberInHeader: "5",
+        stringInHeader: "6",
+        booleanInHeader: "true",
+      },
+
+      method: "GET",
+
+      path: "/a/1/2",
+
+      query: {
+        numberInQuery: "3",
+        stringInQuery: "4",
+      },
+
+      req: { path: "/a/1/2" },
+    });
+
+    expect(htmlResponse.body).toStrictEqual({
+      booleanInHeader: true,
+      integerInPath: 1,
+      numberInHeader: 5,
+      numberInQuery: 3,
+      stringInHeader: "6",
+      stringInPath: "2",
+      stringInQuery: "4",
+    });
+  });
+
+  it("converts path-level parameters to numbers when defined at path item level", async () => {
+    const registry = new Registry();
+
+    registry.add("/b/{intId}", {
+      // @ts-expect-error - not obvious how to make TS happy here, and it's just a unit test
+      GET({ path, response }) {
+        return response["200"]?.text({
+          intId: path?.intId,
+        });
+      },
+    });
+
+    const openApiDocument: OpenApiDocument = {
+      paths: {
+        "/b/{intId}": {
+          parameters: [
+            {
+              in: "path",
+              name: "intId",
+              schema: { type: "integer" },
+            },
+          ],
+          get: {
+            responses: {
+              200: {
+                content: {
+                  "application/json": {
+                    schema: { intId: "number" },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    };
+
+    const dispatcher = new Dispatcher(
+      registry,
+      new ContextRegistry(),
+      openApiDocument,
+    );
+    const result = await dispatcher.request({
+      body: "",
+      headers: {},
+      method: "GET",
+      path: "/b/42",
+      query: {},
+      req: { path: "/b/42" },
+    });
+
+    expect(result.body).toStrictEqual({ intId: 42 });
+  });
+
+  it("merges path-item-level and operation-level parameters for type conversion", async () => {
+    const registry = new Registry();
+
+    registry.add("/c/{pathId}", {
+      // @ts-expect-error - not obvious how to make TS happy here, and it's just a unit test
+      GET({ path, query, response }) {
+        return response["200"]?.text({
+          count: query.count,
+          pathId: path?.pathId,
+        });
+      },
+    });
+
+    const openApiDocument: OpenApiDocument = {
+      paths: {
+        "/c/{pathId}": {
+          // path-item-level: pathId (integer)
+          parameters: [
+            {
+              in: "path",
+              name: "pathId",
+              schema: { type: "integer" },
+            },
+          ],
+          get: {
+            // operation-level: count (integer)
+            parameters: [
+              {
+                in: "query",
+                name: "count",
+                schema: { type: "integer" },
+              },
+            ],
+            responses: {
+              200: {
+                content: {
+                  "application/json": {
+                    schema: { count: "number", pathId: "number" },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    };
+
+    const dispatcher = new Dispatcher(
+      registry,
+      new ContextRegistry(),
+      openApiDocument,
+    );
+    const result = await dispatcher.request({
+      body: "",
+      headers: {},
+      method: "GET",
+      path: "/c/7",
+      query: { count: "3" },
+      req: { path: "/c/7" },
+    });
+
+    expect(result.body).toStrictEqual({ count: 3, pathId: 7 });
+  });
+
   it("attaches the root produces array to an operation", () => {
     const registry = new Registry();
 
@@ -776,8 +1010,10 @@ describe("a dispatcher", () => {
 
     registry.add("/a", {
       GET($) {
+        const { session } = $.cookie;
+
         return {
-          body: $.cookie.session ?? "missing",
+          body: fallbackCookie(session, "missing"),
         };
       },
     });
@@ -800,8 +1036,10 @@ describe("a dispatcher", () => {
 
     registry.add("/a", {
       GET($) {
+        const { theme } = $.cookie;
+
         return {
-          body: $.cookie.theme ?? "missing",
+          body: fallbackCookie(theme, "missing"),
         };
       },
     });
@@ -824,8 +1062,10 @@ describe("a dispatcher", () => {
 
     registry.add("/a", {
       GET($) {
+        const { missing } = $.cookie;
+
         return {
-          body: $.cookie.missing ?? "not-found",
+          body: fallbackCookie(missing, "not-found"),
         };
       },
     });
@@ -848,8 +1088,10 @@ describe("a dispatcher", () => {
 
     registry.add("/a", {
       GET($) {
+        const { session } = $.cookie;
+
         return {
-          body: $.cookie.session ?? "no-cookie",
+          body: fallbackCookie(session, "no-cookie"),
         };
       },
     });
@@ -872,8 +1114,10 @@ describe("a dispatcher", () => {
 
     registry.add("/a", {
       GET($) {
+        const { key } = $.cookie;
+
         return {
-          body: $.cookie.key ?? "missing",
+          body: fallbackCookie(key, "missing"),
         };
       },
     });
@@ -896,8 +1140,10 @@ describe("a dispatcher", () => {
 
     registry.add("/a", {
       GET($) {
+        const { data } = $.cookie;
+
         return {
-          body: $.cookie.data ?? "missing",
+          body: fallbackCookie(data, "missing"),
         };
       },
     });
@@ -920,8 +1166,10 @@ describe("a dispatcher", () => {
 
     registry.add("/a", {
       GET($) {
+        const { ok } = $.cookie;
+
         return {
-          body: $.cookie.ok ?? "safe",
+          body: fallbackCookie(ok, "safe"),
         };
       },
     });
@@ -944,8 +1192,10 @@ describe("a dispatcher", () => {
 
     registry.add("/a", {
       GET($) {
+        const { id } = $.cookie;
+
         return {
-          body: $.cookie.id ?? "missing",
+          body: fallbackCookie(id, "missing"),
         };
       },
     });
@@ -1242,7 +1492,7 @@ describe("given a request that contains the differently cased path", () => {
         port: 3100,
         proxyPaths: new Map(),
         proxyUrl: "",
-        routePrefix: "",
+        prefix: "",
         startAdminApi: false,
         startRepl: false,
         startServer: true,
@@ -1354,6 +1604,141 @@ describe("given a request that contains the differently cased path", () => {
     });
   });
 
+  describe("exploded object query parameters", () => {
+    const openApiDocumentWithExplodedParam: OpenApiDocument = {
+      paths: {
+        "/items": {
+          get: {
+            parameters: [
+              {
+                in: "query",
+                name: "pageable",
+                required: true,
+                schema: {
+                  type: "object",
+                  properties: {
+                    page: { type: "integer" },
+                    size: { type: "integer" },
+                    sort: { type: "array", items: { type: "string" } },
+                  },
+                },
+              },
+            ],
+            responses: {
+              200: {
+                content: { "text/plain": { schema: { type: "string" } } },
+              },
+            },
+          },
+        },
+      },
+    };
+
+    function makeExplodedDispatcher() {
+      const registry = new Registry();
+      let capturedQuery: unknown;
+
+      registry.add("/items", {
+        GET({ query }) {
+          capturedQuery = query;
+          return { body: "ok", status: 200 };
+        },
+      });
+
+      const dispatcher = new Dispatcher(
+        registry,
+        new ContextRegistry(),
+        openApiDocumentWithExplodedParam,
+        {
+          adminApiToken: "",
+          alwaysFakeOptionals: false,
+          basePath: "/",
+          buildCache: false,
+          generate: { routes: false, types: false },
+          openApiPath: "",
+          port: 3100,
+          proxyPaths: new Map(),
+          proxyUrl: "",
+          prefix: "",
+          startAdminApi: false,
+          startRepl: false,
+          startServer: true,
+          validateRequests: true,
+          validateResponses: false,
+          watch: { routes: false, types: false },
+        },
+      );
+
+      return { dispatcher, getCapturedQuery: () => capturedQuery };
+    }
+
+    it("accepts a request when object properties are sent as individual query params", async () => {
+      const { dispatcher } = makeExplodedDispatcher();
+
+      const response = await dispatcher.request({
+        body: undefined,
+        headers: {},
+        method: "GET",
+        path: "/items",
+        query: { page: "0", size: "100" },
+        req: { path: "/items" },
+      });
+
+      expect(response.status).toBe(200);
+    });
+
+    it("rejects a request when no object properties are provided and the parameter is required", async () => {
+      const { dispatcher } = makeExplodedDispatcher();
+
+      const response = await dispatcher.request({
+        body: undefined,
+        headers: {},
+        method: "GET",
+        path: "/items",
+        query: {},
+        req: { path: "/items" },
+      });
+
+      expect(response.status).toBe(400);
+      expect(response.body).toContain("pageable");
+    });
+
+    it("reconstructs the object under the parameter name for the handler", async () => {
+      const { dispatcher, getCapturedQuery } = makeExplodedDispatcher();
+
+      await dispatcher.request({
+        body: undefined,
+        headers: {},
+        method: "GET",
+        path: "/items",
+        query: { page: "0", size: "100" },
+        req: { path: "/items" },
+      });
+
+      expect(getCapturedQuery()).toEqual({
+        pageable: { page: "0", size: "100" },
+      });
+    });
+
+    it("preserves unrelated query params outside the object", async () => {
+      const { dispatcher, getCapturedQuery } = makeExplodedDispatcher();
+
+      await dispatcher.request({
+        body: undefined,
+        headers: {},
+        method: "GET",
+        path: "/items",
+        query: { page: "0", unrelated: "yes" },
+        req: { path: "/items" },
+      });
+
+      expect(getCapturedQuery()).toEqual({
+        pageable: { page: "0" },
+        unrelated: "yes",
+      });
+    });
+  });
+
   describe("response validation", () => {
     const openApiDocument: OpenApiDocument = {
       paths: {
@@ -1401,7 +1786,7 @@ describe("given a request that contains the differently cased path", () => {
         port: 3100,
         proxyPaths: new Map(),
         proxyUrl: "",
-        routePrefix: "",
+        prefix: "",
         startAdminApi: false,
         startRepl: false,
         startServer: true,
@@ -1491,6 +1876,144 @@ describe("given a request that contains the differently cased path", () => {
           ([key]) => key === "response-type-error",
         ),
       ).toBeUndefined();
+    });
+  });
+
+  describe("$.version and $.minVersion()", () => {
+    function makeVersionedDispatcher(
+      currentVersion: string,
+      orderedVersions: string[],
+    ) {
+      const registry = new Registry();
+
+      registry.add("/versioned", {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        GET($: any) {
+          return {
+            body: JSON.stringify({
+              version: $.version,
+              minV1: $.minVersion("v1"),
+              minV2: $.minVersion("v2"),
+              minV3: $.minVersion("v3"),
+            }),
+            contentType: "application/json",
+            status: 200,
+          };
+        },
+      });
+
+      return new Dispatcher(
+        registry,
+        new ContextRegistry(),
+        undefined,
+        undefined,
+        currentVersion,
+        orderedVersions,
+      );
+    }
+
+    it("provides $.version with the current version string", async () => {
+      const dispatcher = makeVersionedDispatcher("v2", ["v1", "v2", "v3"]);
+
+      const response = await dispatcher.request({
+        body: "",
+        headers: {},
+        method: "GET",
+        path: "/versioned",
+        query: {},
+        req: { path: "/versioned" },
+      });
+
+      const parsed = JSON.parse(response.body as string);
+
+      expect(parsed.version).toBe("v2");
+    });
+
+    it("$.minVersion() returns true when the current version equals the minimum", async () => {
+      const dispatcher = makeVersionedDispatcher("v2", ["v1", "v2", "v3"]);
+
+      const response = await dispatcher.request({
+        body: "",
+        headers: {},
+        method: "GET",
+        path: "/versioned",
+        query: {},
+        req: { path: "/versioned" },
+      });
+
+      const parsed = JSON.parse(response.body as string);
+
+      expect(parsed.minV2).toBe(true);
+    });
+
+    it("$.minVersion() returns true when the current version is newer than the minimum", async () => {
+      const dispatcher = makeVersionedDispatcher("v3", ["v1", "v2", "v3"]);
+
+      const response = await dispatcher.request({
+        body: "",
+        headers: {},
+        method: "GET",
+        path: "/versioned",
+        query: {},
+        req: { path: "/versioned" },
+      });
+
+      const parsed = JSON.parse(response.body as string);
+
+      expect(parsed.minV1).toBe(true);
+      expect(parsed.minV2).toBe(true);
+    });
+
+    it("$.minVersion() returns false when the current version is older than the minimum", async () => {
+      const dispatcher = makeVersionedDispatcher("v1", ["v1", "v2", "v3"]);
+
+      const response = await dispatcher.request({
+        body: "",
+        headers: {},
+        method: "GET",
+        path: "/versioned",
+        query: {},
+        req: { path: "/versioned" },
+      });
+
+      const parsed = JSON.parse(response.body as string);
+
+      expect(parsed.minV2).toBe(false);
+      expect(parsed.minV3).toBe(false);
+    });
+
+    it("does not include $.version or $.minVersion when version is empty", async () => {
+      const registry = new Registry();
+
+      registry.add("/unversioned", {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        GET($: any) {
+          return {
+            body: JSON.stringify({
+              hasVersion: "version" in $,
+              hasMinVersion: "minVersion" in $,
+            }),
+            contentType: "application/json",
+            status: 200,
+          };
+        },
+      });
+
+      const dispatcher = new Dispatcher(registry, new ContextRegistry());
+
+      const response = await dispatcher.request({
+        body: "",
+        headers: {},
+        method: "GET",
+        path: "/unversioned",
+        query: {},
+        req: { path: "/unversioned" },
+      });
+
+      const parsed = JSON.parse(response.body as string);
+
+      expect(parsed.hasVersion).toBe(false);
+      expect(parsed.hasMinVersion).toBe(false);
     });
   });
 });

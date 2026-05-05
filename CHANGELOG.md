@@ -1,5 +1,198 @@
 # counterfact
 
+## 2.11.0
+
+### Minor Changes
+
+- 6c383c9: Admin API is now disabled by default. Use the `--admin-api` flag to opt in.
+- a58241f: generator: emit `types/versions.ts` with `Versions`, `VersionsGTE`, and `Versioned` types
+
+  When at least one `SpecConfig` entry has a non-empty `version` field, the code generator now writes `types/versions.ts` to the `basePath` root. The file exports:
+  - `Versions` — a union of all distinct version strings in config-declaration order
+  - `VersionsGTE` — a map from each version to the set of versions that are >= it
+  - `Versioned<T, V>` — a utility type that narrows the `$` argument of a route handler to a specific API version
+
+  `Versioned` is also exported from `counterfact-types/index.ts` in its generic form (with explicit `TVersions` and `TVersionsGTE` type parameters) for use outside of the generated file.
+
+  No file is written when no spec defines a `version`.
+
+- 4bb9493: Add runtime implementation of `$.minVersion()` for versioned route handlers.
+
+  When multiple versioned specs share the same API group, each request's `$`
+  argument now includes:
+  - `version` — a string identifying which version is handling the request
+    (e.g. `"v1"`, `"v2"`).
+  - `minVersion(min)` — a method that returns `true` when the current version
+    is greater than or equal to `min` in the declared version order, and
+    `false` otherwise.
+
+  The version order is determined by the position of each spec in the `specs`
+  array passed to `counterfact()` (first entry = oldest version).
+
+  For unversioned runners (`version` is not set), neither `version` nor
+  `minVersion` is present on `$`.
+
+- af44d5b: `OperationTypeCoder` now emits version-mapped handler types for multi-version APIs.
+
+  When two or more versioned specs share the same operation path, the shared
+  `types/paths/<path>.types.ts` file exports a merged `HTTP_<METHOD>` type
+  whose `$` argument is `Versioned<{ v1: …; v2: … }>` (a union of each
+  version's strongly-typed argument object). Each version's `$`-argument type
+  is emitted to `types/<version>/paths/<path>.types.ts` and imported by the
+  shared file.
+
+  Single-spec (unversioned) output is unchanged for full backwards compatibility.
+
+  A new `Versioned<T>` utility type is exported from `counterfact-types/index.js`.
+
+- 142bcdd: When a `SpecConfig` entry declares both `group` and `version`, the server now automatically mounts that spec's routes under `/<group>/<version>` without requiring an explicit `prefix`.
+
+  The derivation rules are:
+
+  | `prefix` provided? | `group` set? | `version` set? | Derived prefix          |
+  | ------------------ | ------------ | -------------- | ----------------------- |
+  | Yes                | any          | any            | use the explicit prefix |
+  | No                 | Yes          | Yes            | `/<group>/<version>`    |
+  | No                 | Yes          | No             | `/<group>`              |
+  | No                 | No           | No             | `""` (root)             |
+
+  Two specs with the same `group` but different `version` values can coexist on a single server instance — validation now checks uniqueness on the `(group, version)` pair instead of `group` alone.
+
+  **Migration note:** `SpecConfig.prefix` is now an optional field (`prefix?: string`). Specs that omit `prefix` will have it derived automatically; pass an explicit `prefix: ""` to force the root prefix.
+
+### Patch Changes
+
+- 825b65d: Cast parameters at runtime: parameters defined with OAS3-style schema types (e.g. `schema: { type: "integer" }`) are now correctly cast to their declared JavaScript types in route handlers. For example, when `GET /pet/1` is called, `$.path.petId` will be a number rather than a string when the OpenAPI spec declares it as `integer`.
+- 161deca: Fix documentation inconsistencies: complete CLI reference table, correct programmatic API example in FAQ, fix invalid JS syntax and broken link in without-openapi guide, and fix formatting in programmatic-api guide.
+- 6d19132: Fix TypeScript error caused by combining a mapped type and explicit properties in the same generated response object type.
+
+  When an OpenAPI spec defines a `default` response alongside explicit status codes (e.g. `200`, `400`), the generated `ResponseBuilderFactory` type argument now uses an intersection (`{ 200: ..., 400: ... } & { [statusCode in Exclude<HttpStatusCode, 200 | 400>]: ... }`) instead of mixing both in a single object literal, which TypeScript does not allow.
+
+- ee38734: Fix: parameters defined at the path item level in an OpenAPI spec are now included in generated TypeScript types.
+
+  Previously, parameters declared under a path item (e.g. `/stuff/{stuffId}: parameters: [...]`) were ignored during type generation, causing the route handler's `path` (and other) argument types to be `never`. Now those path-item-level parameters are merged with any operation-level parameters (operation-level takes precedence when both declare the same name and location), producing the correct strongly-typed handler signatures.
+
+- 3e0fbc1: Telemetry is now always enabled (removed the pre-May-2026 date gate)
+- bce607e: Update usage link in REPL and CLI banner to point to the new GitHub docs URL.
+- dd4abb8: Generated `$`-arg types now include a `version` property. For versioned specs the property is a string literal (e.g. `version: "v3"`); for unversioned specs it is `never` (omitted at runtime by `OmitValueWhenNever`).
+
+## 2.10.0
+
+### Minor Changes
+
+- 43b0e34: The type system no longer allows responses constructed without $.response
+
+### Patch Changes
+
+- 68b2c8f: Fix: query parameters of type object with exploded form style (the OpenAPI default) are now properly supported. The request validator no longer falsely reports required object parameters as missing when their properties are sent as individual query params (e.g. `?page=0&size=100`). The handler receives the object assembled under the parameter name (`$.query.pageable`) rather than only the flat individual keys.
+
+## 2.9.0
+
+### Minor Changes
+
+- ffc7d53: Add `ApiRunner` class in `src/api-runner.ts` that encapsulates the creation and lifecycle management of all Counterfact sub-systems (Registry, ContextRegistry, ScenarioRegistry, ScenarioFileGenerator, CodeGenerator, Dispatcher, Transpiler, ModuleLoader, and OpenApiDocument) for a single API specification.
+
+  Each sub-system is exposed as a public property. The class provides four composite methods — `generate()`, `load()`, `watch()`, and `stopWatching()` — that coordinate across multiple sub-systems based on the supplied configuration. Use the static async `ApiRunner.create(config)` factory method to construct an instance.
+
+  `counterfact()` in `app.ts` now uses `ApiRunner` internally.
+
+- a6bb5bc: Add support for multiple API specifications via `ApiRunner`.
+  - `ApiRunner.create(config, group?)` now accepts an optional `group` string (default `""`) that places generated code in a subdirectory of `config.basePath`.
+  - `ApiRunner` exposes `group` as a public readonly property and `subdirectory` as a computed getter (returns `""` when group is empty, or `"/${group}"`).
+  - `CodeGenerator` receives `config.basePath + runner.subdirectory` so each spec's generated files land in the right subdirectory.
+  - `createKoaApp` now accepts `runners: ApiRunner[]` (an array) instead of a single `runner`. It loops over all runners to mount per-spec OpenAPI document, Swagger UI, Admin API, and route-dispatching middleware.
+  - `counterfact()` accepts an optional `specs: SpecConfig[]` second argument (each entry has `source`, `prefix`, and `group`). When omitted, a single spec is derived from `config.openApiPath` and `config.prefix` for full backward compatibility. The REPL is configured using the first spec's runner.
+  - The `spec` key in `counterfact.yaml` can now be a single `{source, prefix, group}` object or an array of such objects to configure multiple APIs from the config file.
+
+- 26e00eb: Add `openApiPath` and `prefix` as public readonly properties on `ApiRunner`.
+
+  Refactor `createKoaApp` to accept `runner: ApiRunner` (providing the dispatcher, registry, context registry, OpenAPI path, and route prefix) instead of a `config: Config` monolith plus separate sub-system refs. All other config fields used by `createKoaApp` are now explicit named arguments, laying the groundwork for passing multiple runners to `createKoaApp` in the future.
+
+### Patch Changes
+
+- aa23b79: Support `.scenario <group> <path>` in multi-API REPL sessions while preserving single-runner syntax.
+- d0dff90: Warn and skip loading context modules when they fail to import, including syntax errors in \_.context files.
+- 75938e3: Prefer OpenAPI route paths for REPL tab completion and refactor completer lookups into focused helpers.
+- 7a8c0b6: Move MSW (Mock Service Worker) code out of `app.ts` into a dedicated `src/msw.ts` module. The `MockRequest` type, `handleMswRequest`, and `createMswHandlers` are still re-exported from `app.ts` for backward compatibility. Tests for these functions have been moved to `test/msw.test.ts`.
+- 4894f18: Organized Koa middleware into a dedicated `src/server/web-server/` directory. Each middleware constructor now takes its path prefix as the first argument, making `createKoaApp` easier to read at a glance. `openapiMiddleware` simplified to handle a single path only.
+- 3aa8416: Expose grouped REPL context and routes for multi-API runners, and require non-empty unique group names when configuring multiple APIs.
+- b270516: Move CLI logic from bin/counterfact.js into src/cli/ as TypeScript modules
+- a3d16ab: Update REPL `.scenario` tab completion to suggest groups first in multi-API mode and group-scoped scenarios after selection.
+
+## 2.8.1
+
+### Patch Changes
+
+- 0b32088: Use `Pick<Config, ...>` in function signatures to declare only the config keys each function actually uses. This improves readability and makes each function's dependencies explicit.
+
+## 2.8.0
+
+### Minor Changes
+
+- c6e0625: Add startup scenario: export a function named `startup` from `scenarios/index.ts` and it will run automatically when the server initializes, right before the REPL starts. Use it to seed dummy data so the server is immediately useful without any manual REPL commands. If `startup` is not exported, the server starts normally with no error.
+- a0cbfcc: `createKoaApp()` now accepts named parameters via destructuring (`{ config, dispatcher, registry, contextRegistry }`) and creates `routesMiddleware` and `adminApiMiddleware` internally. `counterfact()` no longer returns `routesMiddleware`.
+- ae11a87: Refactor `OpenApiDocument` from a plain interface into a class.
+
+  `OpenApiDocument` now extends `EventTarget` and manages its own lifecycle:
+  - `new OpenApiDocument(source)` — create an instance pointing at a local path or URL
+  - `await document.load()` — read and parse the file, populating `paths`, `basePath`, and `produces`
+  - `await document.watch()` — start watching the source file; dispatches a `"reload"` event whenever the file changes on disk
+  - `await document.stopWatching()` — stop the file watcher
+
+  The separate `OpenApiWatcher` class has been removed; its behaviour is now built into `OpenApiDocument`.
+
+- 687f8fc: Remove the built-in GUI client (dashboard and RapiDoc pages) from src/client and the Handlebars dependency. The Swagger UI at /counterfact/swagger remains available. Navigating to /counterfact now redirects to /counterfact/swagger.
+- 55ee5e2: Export `ContextArgs` type from generated `types/_.context.ts` so that `_.context.ts` files can strongly type the `loadContext` and `readJson` parameters received in the Context constructor. The default `_.context.ts` template now imports and uses `ContextArgs`.
+
+### Patch Changes
+
+- 145c7f4: Add `toForwardSlashPath` utility function and `ForwardSlashPath` branded type. All path normalization that previously used inline `.replaceAll("\\", "/")` now goes through this single, centralized function, making Windows path handling easier to find and reason about.
+- e0414c7: Add JSDoc comments throughout the codebase, covering all major classes, functions, and interfaces in `src/server/`, `src/typescript-generator/`, `src/repl/`, and `src/util/`.
+- ea5b3e9: Make the hexagon in the REPL prompt the same shade of blue as the logo (#0071b5).
+- c047a4d: Refactor: extract a `ScenarioFileGenerator` class that encapsulates `writeScenarioContextType` and `writeDefaultScenariosIndex`, complete with its own file-system watcher for the `routes/` directory. `app.ts` now calls `ScenarioFileGenerator` directly instead of hooking into `contextRegistry` events.
+- 919fd3c: Fix Jest worker process failing to exit gracefully by closing REPL servers after each test in the repl test suite.
+- 688fb84: Fix TypeError when an OpenAPI Path Item Object contains non-HTTP-verb fields such as `summary`, `description`, `servers`, or `parameters`. These fields are now correctly ignored during code generation instead of being treated as operations.
+- ca38a27: Moved `openapi-example.yaml` from the repository root into `test/fixtures/openapi-example.yaml` and expanded it with many OpenAPI edge cases: CRUD operations on `/users` and `/users/{userId}`, polymorphic events via `oneOf`/`allOf`/`discriminator`, nullable fields, enum types, integer formats, file upload via `multipart/form-data`, cookie parameters, deprecated endpoints, multiple response content types, a no-body `204` health-check endpoint, and free-form `additionalProperties` objects.
+- 8834b1d: Refactor `createKoaApp()` to accept `adminApiMiddleware` as a parameter instead of constructing it internally. Rename the `koaMiddleware` parameter and export to `routesMiddleware`.
+- 51e3cb1: Refactor docs information architecture: `docs/usage.md` is now a central hub page linking to individual feature pages under `docs/features/`, and pattern pages are consolidated under `docs/patterns/index.md`.
+- f97e8a7: Refactor `openapiMiddleware` to accept an array of `{ path, baseUrl, id }` document descriptors. When the array contains a single entry the document is still served at `/counterfact/openapi` (backward-compatible). When multiple entries are provided each document is served at `/counterfact/openapi/{id}`.
+- b26617e: Replaced the five-minute walkthrough README with a concise, confident two-paragraph introduction. Added ten README variants under `docs/readme-variants/` for the team to review and choose from.
+- e4e8757: Rename the `.apply` REPL command to `.scenario`. Update all references in code, tests, and documentation.
+
+## 2.7.0
+
+### Minor Changes
+
+- 0043b20: Add support for a `counterfact.yaml` config file. All CLI options can now be specified in a `counterfact.yaml` file in the current working directory. Command-line options always take precedence over config file settings. Use `--config <path>` to load a config file from a non-default location.
+- 2cbd0d5: Add .empty() method to response builder for responses with no body
+- 965dc4e: Add `.apply` REPL dot-command (Approach 1: Minimalist Function Injection).
+
+  The `.apply` command lets you run scenario scripts from the REPL prompt without leaving the terminal. A scenario is a plain TypeScript (or JavaScript) file that exports named functions. Each function receives an `ApplyContext` object with `{ context, loadContext, routes, route }` and can freely read or mutate state.
+
+  **Path resolution:**
+
+  | Command              | File                   | Function |
+  | -------------------- | ---------------------- | -------- |
+  | `.apply foo`         | `scenarios/index.ts`   | `foo`    |
+  | `.apply foo/bar`     | `scenarios/foo.ts`     | `bar`    |
+  | `.apply foo/bar/baz` | `scenarios/foo/bar.ts` | `baz`    |
+
+  The `ApplyContext` type is written to `types/apply-context.ts` during code generation.
+
+- a356bdf: Validate response headers at runtime and report type errors as `response-type-error` HTTP headers (one per error, multiple headers with the same name). Use --no-validate-response to disable.
+
+### Patch Changes
+
+- 54b866c: add docs/usage-patterns.md documenting seven usage patterns: explore a new API, simulate failures and edge cases, mock APIs with dummy data, fast sandbox for agentic coding, hybrid proxy, API reference implementation, and executable spec
+- 6e0655b: fix type error when returning a response with no body (e.g. `$.response[200]` or `$.response[404]` in routes where the spec defines no response body)
+- 754dbbd: add two new usage pattern docs: Automated Integration Tests (programmatic API in test suites) and Custom Middleware (\_.middleware.ts for cross-cutting concerns); propose three future patterns as GitHub issues: Record and Replay, Webhook Simulation, and Persistent State
+- f9a9790: Refactor `src/counterfact-types/` so that each type lives in its own file with a JSDoc comment explaining its purpose. The `index.ts` now re-exports all types from the individual files. This is an internal refactor with no change to the public API.
+- 6d50ae6: Updated dependency `ajv` to `8.18.0`.
+- fa25ec3: Updated dependency `@swc/core` to `1.15.24`.
+- cbab929: Updated dependency `eslint` to `10.2.0`.
+- 9c5fc1d: Replace deprecated `unescape()` with `decodeURIComponent()` wrapped in a try/catch in `requirement.ts`. This avoids use of the deprecated global function while preserving the behavior of returning invalid percent-encoded sequences unchanged.
+- 323cf1c: Revised documentation for coherence: added table of contents to usage, reference, and FAQ pages; added "See also" sections to pages that were missing them; moved the usage guide link from the README footer into the "Go deeper" table.
+
 ## 2.6.0
 
 ### Minor Changes

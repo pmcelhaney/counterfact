@@ -1,8 +1,10 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
+/* eslint-disable security/detect-non-literal-fs-filename -- migration reads/writes discovered route files under the configured basePath/routes tree. */
 
 import createDebug from "debug";
 
+import { toForwardSlashPath } from "../util/forward-slash-path.js";
 import {
   OperationTypeCoder,
   type SecurityScheme,
@@ -112,6 +114,7 @@ async function buildTypeNameMapping(
         // Create the type coder to get the correct type name
         const typeCoder = new OperationTypeCoder(
           operation,
+          "",
           requestMethod,
           securitySchemes,
         );
@@ -271,9 +274,7 @@ async function processRouteDirectory(
         );
       } else if (entry.name.endsWith(".ts") && entry.name !== "_.context.ts") {
         // Process TypeScript route files (skip context files)
-        const routePath = relativePath
-          .replace(/\.ts$/, "")
-          .replaceAll("\\", "/");
+        const routePath = toForwardSlashPath(relativePath.replace(/\.ts$/, ""));
         const methodMap = mapping.get(routePath);
 
         if (methodMap) {

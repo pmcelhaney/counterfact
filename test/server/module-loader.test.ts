@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { once } from "node:events";
 
+import { jest } from "@jest/globals";
 import { usingTemporaryFiles } from "using-temporary-files";
 
 import { ContextRegistry } from "../../src/server/context-registry.js";
@@ -137,43 +138,6 @@ describe("a module loader", () => {
       expect(registry.exists("GET", "/READMEx")).toBe(false);
       expect(registry.exists("GET", "/other")).toBe(false);
       expect(registry.exists("GET", "/types")).toBe(false);
-
-      await loader.stopWatching();
-    });
-  });
-
-  // This should work but I can't figure out how to break the
-  // module cache when running through Jest (which uses the
-  // experimental module API).
-
-  it.skip("updates the registry when a file is changed", async () => {
-    await usingTemporaryFiles(async ($) => {
-      const registry: Registry = new Registry();
-      const loader: ModuleLoader = new ModuleLoader($.path("."), registry);
-
-      await $.add(
-        "change.js",
-        'export function GET(): { body } { return { body: "before change" }; }',
-      );
-      await $.add("package.json", '{ "type": "module" }');
-
-      await loader.watch();
-      await $.add(
-        "change.js",
-        'export function GET() { return { body: "after change" }; }',
-      );
-      await once(loader, "change");
-
-      const response = registry.endpoint(
-        "GET",
-        "/change",
-
-        // @ts-expect-error - not going to create a whole context object for a test
-      )({ headers: {}, matchedPath: "", path: {}, query: {} });
-
-      // @ts-expect-error - TypeScript doesn't know that the response will have a body property
-      expect(response.body).toBe("after change");
-      expect(registry.exists("GET", "/late/addition")).toBe(true);
 
       await loader.stopWatching();
     });
@@ -363,37 +327,6 @@ describe("a module loader", () => {
     });
   });
 
-  // can't test because I can't get Jest to refresh modules
-  it.skip("updates the registry when a dependency is updated", async () => {
-    await usingTemporaryFiles(async ($) => {
-      await $.add("package.json", '{ "type": "module" }');
-
-      await $.add("x.js", 'export const x = "original";');
-
-      await $.add(
-        "main.js",
-        'import { x } from "./x.js"; export function GET() { return x; }',
-      );
-
-      const registry: Registry = new Registry();
-      const loader: ModuleLoader = new ModuleLoader($.path("."), registry);
-
-      await loader.load();
-      await loader.watch();
-
-      // @ts-expect-error - not going to create a whole request object for a test
-      const response = await registry.endpoint("GET", "/main")({});
-
-      await $.add("x.js", 'export const x = "changed";');
-
-      await once(loader, "add");
-
-      expect(response).toEqual("changed");
-
-      await loader.stopWatching();
-    });
-  });
-
   it("registers a 500 handler for an ESM route file with a syntax error", async () => {
     await usingTemporaryFiles(async ($) => {
       await $.add("bad-syntax.js", "this is not valid javascript @@@");
@@ -431,6 +364,131 @@ describe("a module loader", () => {
       expect(response?.status).toBe(500);
       expect(response?.body).toContain("bad-syntax.cjs");
       expect(response?.body).toContain("syntax error");
+    });
+  });
+
+  it("prints a warning and skips loading a context file with a syntax error", async () => {
+    await usingTemporaryFiles(async ($) => {
+      await $.add("_.context.js", "this is not valid javascript @@@");
+      await $.add(
+        "hello.js",
+        'export function GET() { return { body: "hello" }; }',
+      );
+      await $.add("package.json", '{ "type": "module" }');
+
+      const registry: Registry = new Registry();
+      const contextRegistry: ContextRegistry = new ContextRegistry();
+      const loader: ModuleLoader = new ModuleLoader(
+        $.path(""),
+        registry,
+        contextRegistry,
+      );
+
+      const stdoutSpy = jest
+        .spyOn(process.stdout, "write")
+        .mockImplementation((() => true) as any);
+
+      await expect(loader.load()).resolves.toBeUndefined();
+
+      expect(registry.exists("GET", "/hello")).toBe(true);
+      expect(contextRegistry.getAllPaths()).toEqual(["/"]);
+      expect(stdoutSpy).toHaveBeenCalledWith(
+        expect.stringContaining(
+          "Warning: There was an error loading the context file:",
+        ),
+      );
+      expect(stdoutSpy).toHaveBeenCalledWith(
+        expect.stringContaining("_.context.js"),
+      );
+      expect(stdoutSpy).toHaveBeenCalledTimes(1);
+
+      stdoutSpy.mockRestore();
+    });
+  });
+});
+
+describe("ModuleLoader scenario loading", () => {
+  it("loads scenario files into the ScenarioRegistry on load()", async () => {
+    const { ScenarioRegistry } =
+      await import("../../src/server/scenario-registry.js");
+
+    await usingTemporaryFiles(async ($) => {
+      await $.add("routes/package.json", '{ "type": "module" }');
+      await $.add(
+        "scenarios/index.js",
+        `export function soldPets() {}
+export function resetAll() {}
+export const notAFunction = 42;`,
+      );
+      await $.add("scenarios/package.json", '{ "type": "module" }');
+
+      const registry = new Registry();
+      const scenarioRegistry = new ScenarioRegistry();
+      const loader = new ModuleLoader(
+        $.path("routes"),
+        registry,
+        undefined,
+        $.path("scenarios"),
+        scenarioRegistry,
+      );
+
+      await loader.load();
+
+      const names = scenarioRegistry.getExportedFunctionNames("index");
+
+      expect(names).toContain("soldPets");
+      expect(names).toContain("resetAll");
+      // Non-functions are still stored but getExportedFunctionNames filters them
+      expect(names).not.toContain("notAFunction");
+    });
+  });
+
+  it("stores a nested scenario file under a slash-delimited key", async () => {
+    const { ScenarioRegistry } =
+      await import("../../src/server/scenario-registry.js");
+
+    await usingTemporaryFiles(async ($) => {
+      await $.add("routes/package.json", '{ "type": "module" }');
+      await $.add("scenarios/pets/index.js", `export function sold() {}`);
+      await $.add("scenarios/pets/package.json", '{ "type": "module" }');
+
+      const registry = new Registry();
+      const scenarioRegistry = new ScenarioRegistry();
+      const loader = new ModuleLoader(
+        $.path("routes"),
+        registry,
+        undefined,
+        $.path("scenarios"),
+        scenarioRegistry,
+      );
+
+      await loader.load();
+
+      const names = scenarioRegistry.getExportedFunctionNames("pets/index");
+
+      expect(names).toContain("sold");
+    });
+  });
+
+  it("does not throw when the scenarios directory does not exist", async () => {
+    const { ScenarioRegistry } =
+      await import("../../src/server/scenario-registry.js");
+
+    await usingTemporaryFiles(async ($) => {
+      await $.add("routes/package.json", '{ "type": "module" }');
+
+      const registry = new Registry();
+      const scenarioRegistry = new ScenarioRegistry();
+      const loader = new ModuleLoader(
+        $.path("routes"),
+        registry,
+        undefined,
+        $.path("scenarios"), // does not exist
+        scenarioRegistry,
+      );
+
+      await expect(loader.load()).resolves.toBeUndefined();
+      expect(scenarioRegistry.getFileKeys()).toHaveLength(0);
     });
   });
 });

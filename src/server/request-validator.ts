@@ -1,6 +1,9 @@
 import Ajv from "ajv";
 
-import type { OpenApiOperation } from "../counterfact-types/index.js";
+import type {
+  OpenApiOperation,
+  OpenApiParameters,
+} from "../counterfact-types/index.js";
 
 const ajv = new Ajv({
   allErrors: true,
@@ -13,14 +16,59 @@ export interface ValidationResult {
   valid: boolean;
 }
 
+/**
+ * Returns `true` when a query parameter should be serialized as exploded form
+ * style — meaning its object properties appear as individual query parameters
+ * instead of being passed under the parameter's own name.
+ *
+ * Per OpenAPI 3.x: for `in: query`, the default `style` is `form` and the
+ * default `explode` for `form` is `true`.  An object-type parameter with these
+ * defaults (or with them set explicitly) uses exploded form serialization.
+ */
+export function isExplodedObjectQueryParam(
+  parameter: OpenApiParameters,
+): boolean {
+  if (parameter.in !== "query") return false;
+
+  const schema = parameter.schema;
+  if (!schema) return false;
+
+  // Must be an object type (explicit type or implied by presence of properties)
+  const isObjectType =
+    schema.type === "object" || schema.properties !== undefined;
+  if (!isObjectType) return false;
+
+  // style must be "form" (the default for query params) or unset
+  if (parameter.style !== undefined && parameter.style !== "form") return false;
+
+  // explode must not be explicitly false (default for form style is true)
+  if (parameter.explode === false) return false;
+
+  return true;
+}
+
 function findMissingRequired(
   parameters: NonNullable<OpenApiOperation["parameters"]>,
   location: string,
-  values: Record<string, string>,
+  values: Record<string, string | string[] | unknown>,
 ): string[] {
   return parameters
     .filter((p) => p.in === location && p.required === true)
-    .filter((p) => !(p.name in values) || values[p.name] === undefined)
+    .filter((p) => {
+      // For exploded object query params the individual properties appear as
+      // separate query parameters, so we check for those instead of the name.
+      if (location === "query" && isExplodedObjectQueryParam(p)) {
+        const properties = p.schema?.properties;
+        if (!properties) {
+          // Free-form object with no declared properties: treat as always
+          // satisfied — we cannot know which keys belong to the parameter.
+          return false;
+        }
+        // The parameter is "missing" only when none of its properties are present.
+        return !Object.keys(properties).some((key) => key in values);
+      }
+      return !(p.name in values) || values[p.name] === undefined;
+    })
     .map((p) => `${location} parameter '${p.name}' is required`);
 }
 
@@ -29,7 +77,7 @@ export function validateRequest(
   request: {
     body: unknown;
     headers: Record<string, string>;
-    query: Record<string, string>;
+    query: Record<string, unknown>;
   },
 ): ValidationResult {
   if (!operation) {

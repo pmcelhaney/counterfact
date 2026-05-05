@@ -1,5 +1,4 @@
-import nodePath from "node:path";
-
+import { pathJoin } from "../util/forward-slash-path.js";
 import { buildJsDoc } from "./jsdoc.js";
 import { SchemaTypeCoder } from "./schema-type-coder.js";
 import { TypeCoder } from "./type-coder.js";
@@ -9,8 +8,8 @@ import type { Script } from "./script.js";
 export class ParametersTypeCoder extends TypeCoder {
   public placement: string;
 
-  public constructor(requirement: Requirement, placement: string) {
-    super(requirement);
+  public constructor(requirement: Requirement, version = "", placement = "") {
+    super(requirement, version);
 
     this.placement = placement;
   }
@@ -43,7 +42,9 @@ export class ParametersTypeCoder extends TypeCoder {
         const comment = buildJsDoc(parameter.data);
         const commentPrefix = comment ? `\n${comment}` : "";
 
-        const typeString = new SchemaTypeCoder(schema).write(script);
+        const typeString = new SchemaTypeCoder(schema, this.version).write(
+          script,
+        );
 
         return `${commentPrefix}"${name}"${optionalFlag}: ${typeString}`;
       });
@@ -61,8 +62,6 @@ export class ParametersTypeCoder extends TypeCoder {
       .at(-2)!
       .replaceAll("~1", "/");
 
-    return `${nodePath
-      .join("parameters", pathString)
-      .replaceAll("\\", "/")}.types.ts`;
+    return `${pathJoin("parameters", pathString)}.types.ts`;
   }
 }

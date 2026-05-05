@@ -367,6 +367,28 @@ describe("a SchemaTypeCoder", () => {
     expect(coder.modulePath()).toBe("types/components/Example.ts");
   });
 
+  it("includes the version in modulePath when version is set", () => {
+    const coder = new SchemaTypeCoder(
+      new Requirement({
+        $ref: "components/Example",
+      }),
+      "v2",
+    );
+
+    expect(coder.modulePath()).toBe("types/v2/components/Example.ts");
+  });
+
+  it("omits the version segment from modulePath when version is empty", () => {
+    const coder = new SchemaTypeCoder(
+      new Requirement({
+        $ref: "components/Example",
+      }),
+      "",
+    );
+
+    expect(coder.modulePath()).toBe("types/components/Example.ts");
+  });
+
   it("does not mark a property as required when it has a nested required array for its own sub-properties", async () => {
     const coder = new SchemaTypeCoder(
       new Requirement({

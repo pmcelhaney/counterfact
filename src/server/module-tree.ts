@@ -32,6 +32,20 @@ function isDirectory(test: Directory | undefined): test is Directory {
   return test !== undefined;
 }
 
+/**
+ * Trie-based tree that maps URL path segments to route-handler modules.
+ *
+ * Each node in the tree represents one URL segment.  Segments whose names are
+ * wrapped in curly braces (e.g. `{petId}`) are treated as wildcards and can
+ * match any value in that position.
+ *
+ * The tree supports:
+ * - **Exact matches** — literal URL segments take precedence over wildcards.
+ * - **Wildcard matches** — `{param}` segments capture the matched value as a
+ *   path variable.
+ * - **Ambiguous-wildcard detection** — when multiple wildcards exist at the
+ *   same level the match is flagged as `ambiguous` and an error is logged.
+ */
 export class ModuleTree {
   public readonly root: Directory = {
     directories: new Map(),
@@ -122,6 +136,12 @@ export class ModuleTree {
     }
   }
 
+  /**
+   * Registers a module at the given URL pattern.
+   *
+   * @param url - The route URL pattern (e.g. `"/pets/{petId}"`).
+   * @param module - The route-handler module to associate with the URL.
+   */
   public add(url: string, module: Module) {
     this.addModuleToDirectory(this.root, url.split("/").slice(1), module);
   }
@@ -152,6 +172,11 @@ export class ModuleTree {
     );
   }
 
+  /**
+   * Removes the module registered at `url`.
+   *
+   * @param url - The route URL pattern to deregister.
+   */
   public remove(url: string) {
     const segments = url.split("/").slice(1);
 
@@ -315,6 +340,16 @@ export class ModuleTree {
     return wildcardMatches[0];
   }
 
+  /**
+   * Finds the best-matching module for `url` and `method`.
+   *
+   * Traverses the trie, preferring exact matches over wildcards at each
+   * segment.  Returns `undefined` when no match is found.
+   *
+   * @param url - The incoming request URL.
+   * @param method - The HTTP method (used to validate wildcard matches).
+   * @returns A {@link Match} object, or `undefined` when nothing matches.
+   */
   public match(url: string, method: string) {
     return this.matchWithinDirectory(
       this.root,
@@ -325,6 +360,7 @@ export class ModuleTree {
     );
   }
 
+  /** Returns all registered routes sorted alphabetically by path. */
   public get routes(): Route[] {
     const routes: Route[] = [];
 

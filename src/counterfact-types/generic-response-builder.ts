@@ -157,8 +157,7 @@ export type GenericResponseBuilder<
   : object extends OmitValueWhenNever<Omit<Response, "examples">>
     ? COUNTERFACT_RESPONSE
     : keyof OmitValueWhenNever<Omit<Response, "examples">> extends "headers"
-      ? {
-          ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE;
+      ? COUNTERFACT_RESPONSE & {
           header: HeaderFunction<Response>;
         }
       : GenericResponseBuilderInner<Response>;

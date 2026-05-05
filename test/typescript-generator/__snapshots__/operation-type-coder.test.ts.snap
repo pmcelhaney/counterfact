@@ -25,17 +25,9 @@ exports[`an OperationTypeCoder falls back to root level produces (OpenAPI 2) 1`]
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+    version: never;
   }>,
-) => MaybePromise<
-  | {
-      status: number | undefined;
-      contentType?: "text/plain";
-      body?: Type;
-    }
-  | { status: 415; contentType: "text/plain"; body: string }
-  | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
->;
+) => MaybePromise<COUNTERFACT_RESPONSE>;
 "
 `;
 
@@ -48,63 +40,48 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2 wit
     cookie: never;
     body: Type;
     context: ExternalType;
-    response: ResponseBuilderFactory<{
-      200: {
-        headers: never;
-        requiredHeaders: never;
-        content: {
-          "application/json": {
-            schema: Type;
+    response: ResponseBuilderFactory<
+      {
+        200: {
+          headers: never;
+          requiredHeaders: never;
+          content: {
+            "application/json": {
+              schema: Type;
+            };
           };
+          examples: {};
         };
-        examples: {};
-      };
-      400: {
-        headers: never;
-        requiredHeaders: never;
-        content: {
-          "application/json": {
-            schema: Type;
+        400: {
+          headers: never;
+          requiredHeaders: never;
+          content: {
+            "application/json": {
+              schema: Type;
+            };
           };
+          examples: {};
         };
-        examples: {};
-      };
-      [statusCode in Exclude<HttpStatusCode, 200 | 400>]: {
-        headers: never;
-        requiredHeaders: never;
-        content: {
-          "application/json": {
-            schema: Type;
+      } & {
+        [statusCode in Exclude<HttpStatusCode, 200 | 400>]: {
+          headers: never;
+          requiredHeaders: never;
+          content: {
+            "application/json": {
+              schema: Type;
+            };
           };
+          examples: {};
         };
-        examples: {};
-      };
-    }>;
+      }
+    >;
     x: SharedType;
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+    version: never;
   }>,
-) => MaybePromise<
-  | {
-      status: 200;
-      contentType?: "application/json";
-      body?: Type;
-    }
-  | {
-      status: 400;
-      contentType?: "application/json";
-      body?: Type;
-    }
-  | {
-      status: number | undefined;
-      contentType?: "application/json";
-      body?: Type;
-    }
-  | { status: 415; contentType: "text/plain"; body: string }
-  | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
->;
+) => MaybePromise<COUNTERFACT_RESPONSE>;
 "
 `;
 
@@ -117,63 +94,48 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2) 1`
     cookie: never;
     body: Type;
     context: ExternalType;
-    response: ResponseBuilderFactory<{
-      200: {
-        headers: never;
-        requiredHeaders: never;
-        content: {
-          "application/json": {
-            schema: Type;
+    response: ResponseBuilderFactory<
+      {
+        200: {
+          headers: never;
+          requiredHeaders: never;
+          content: {
+            "application/json": {
+              schema: Type;
+            };
           };
+          examples: {};
         };
-        examples: {};
-      };
-      400: {
-        headers: never;
-        requiredHeaders: never;
-        content: {
-          "application/json": {
-            schema: Type;
+        400: {
+          headers: never;
+          requiredHeaders: never;
+          content: {
+            "application/json": {
+              schema: Type;
+            };
           };
+          examples: {};
         };
-        examples: {};
-      };
-      [statusCode in Exclude<HttpStatusCode, 200 | 400>]: {
-        headers: never;
-        requiredHeaders: never;
-        content: {
-          "application/json": {
-            schema: Type;
+      } & {
+        [statusCode in Exclude<HttpStatusCode, 200 | 400>]: {
+          headers: never;
+          requiredHeaders: never;
+          content: {
+            "application/json": {
+              schema: Type;
+            };
           };
+          examples: {};
         };
-        examples: {};
-      };
-    }>;
+      }
+    >;
     x: SharedType;
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+    version: never;
   }>,
-) => MaybePromise<
-  | {
-      status: 200;
-      contentType?: "application/json";
-      body?: Type;
-    }
-  | {
-      status: 400;
-      contentType?: "application/json";
-      body?: Type;
-    }
-  | {
-      status: number | undefined;
-      contentType?: "application/json";
-      body?: Type;
-    }
-  | { status: 415; contentType: "text/plain"; body: string }
-  | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
->;
+) => MaybePromise<COUNTERFACT_RESPONSE>;
 "
 `;
 
@@ -186,63 +148,48 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2, co
     cookie: never;
     body: Type;
     context: ExternalType;
-    response: ResponseBuilderFactory<{
-      200: {
-        headers: never;
-        requiredHeaders: never;
-        content: {
-          "application/json": {
-            schema: Type;
+    response: ResponseBuilderFactory<
+      {
+        200: {
+          headers: never;
+          requiredHeaders: never;
+          content: {
+            "application/json": {
+              schema: Type;
+            };
           };
+          examples: {};
         };
-        examples: {};
-      };
-      400: {
-        headers: never;
-        requiredHeaders: never;
-        content: {
-          "application/json": {
-            schema: Type;
+        400: {
+          headers: never;
+          requiredHeaders: never;
+          content: {
+            "application/json": {
+              schema: Type;
+            };
           };
+          examples: {};
         };
-        examples: {};
-      };
-      [statusCode in Exclude<HttpStatusCode, 200 | 400>]: {
-        headers: never;
-        requiredHeaders: never;
-        content: {
-          "application/json": {
-            schema: Type;
+      } & {
+        [statusCode in Exclude<HttpStatusCode, 200 | 400>]: {
+          headers: never;
+          requiredHeaders: never;
+          content: {
+            "application/json": {
+              schema: Type;
+            };
           };
+          examples: {};
         };
-        examples: {};
-      };
-    }>;
+      }
+    >;
     x: SharedType;
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+    version: never;
   }>,
-) => MaybePromise<
-  | {
-      status: 200;
-      contentType?: "application/json";
-      body?: Type;
-    }
-  | {
-      status: 400;
-      contentType?: "application/json";
-      body?: Type;
-    }
-  | {
-      status: number | undefined;
-      contentType?: "application/json";
-      body?: Type;
-    }
-  | { status: 415; contentType: "text/plain"; body: string }
-  | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
->;
+) => MaybePromise<COUNTERFACT_RESPONSE>;
 "
 `;
 
@@ -255,66 +202,51 @@ exports[`an OperationTypeCoder generates a complex post operation 1`] = `
     cookie: never;
     body: Type;
     context: ExternalType;
-    response: ResponseBuilderFactory<{
-      200: {
-        headers: never;
-        requiredHeaders: never;
-        content: {
-          "application/json": {
-            schema: Type;
+    response: ResponseBuilderFactory<
+      {
+        200: {
+          headers: never;
+          requiredHeaders: never;
+          content: {
+            "application/json": {
+              schema: Type;
+            };
+          };
+          examples: {
+            "first-example": unknown;
+            "second-example": unknown;
           };
         };
-        examples: {
-          "first-example": unknown;
-          "second-example": unknown;
-        };
-      };
-      400: {
-        headers: never;
-        requiredHeaders: never;
-        content: {
-          "application/json": {
-            schema: Type;
+        400: {
+          headers: never;
+          requiredHeaders: never;
+          content: {
+            "application/json": {
+              schema: Type;
+            };
           };
+          examples: {};
         };
-        examples: {};
-      };
-      [statusCode in Exclude<HttpStatusCode, 200 | 400>]: {
-        headers: never;
-        requiredHeaders: never;
-        content: {
-          "application/json": {
-            schema: Type;
+      } & {
+        [statusCode in Exclude<HttpStatusCode, 200 | 400>]: {
+          headers: never;
+          requiredHeaders: never;
+          content: {
+            "application/json": {
+              schema: Type;
+            };
           };
+          examples: {};
         };
-        examples: {};
-      };
-    }>;
+      }
+    >;
     x: SharedType;
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+    version: never;
   }>,
-) => MaybePromise<
-  | {
-      status: 200;
-      contentType?: "application/json";
-      body?: Type;
-    }
-  | {
-      status: 400;
-      contentType?: "application/json";
-      body?: Type;
-    }
-  | {
-      status: number | undefined;
-      contentType?: "application/json";
-      body?: Type;
-    }
-  | { status: 415; contentType: "text/plain"; body: string }
-  | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
->;
+) => MaybePromise<COUNTERFACT_RESPONSE>;
 "
 `;
 
@@ -343,17 +275,9 @@ exports[`an OperationTypeCoder generates a simple get operation (OpenAPI 2) 1`] 
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+    version: never;
   }>,
-) => MaybePromise<
-  | {
-      status: number | undefined;
-      contentType?: "application/json";
-      body?: Type;
-    }
-  | { status: 415; contentType: "text/plain"; body: string }
-  | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
->;
+) => MaybePromise<COUNTERFACT_RESPONSE>;
 "
 `;
 
@@ -382,17 +306,9 @@ exports[`an OperationTypeCoder generates a simple get operation 1`] = `
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: never;
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+    version: never;
   }>,
-) => MaybePromise<
-  | {
-      status: number | undefined;
-      contentType?: "application/json";
-      body?: Type;
-    }
-  | { status: 415; contentType: "text/plain"; body: string }
-  | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
->;
+) => MaybePromise<COUNTERFACT_RESPONSE>;
 "
 `;
 
@@ -421,16 +337,8 @@ exports[`an OperationTypeCoder generates an auth object for basic authentication
     proxy: (url: string) => COUNTERFACT_RESPONSE;
     user: { username?: string; password?: string };
     delay: (milliseconds: number, maxMilliseconds?: number) => Promise<void>;
+    version: never;
   }>,
-) => MaybePromise<
-  | {
-      status: number | undefined;
-      contentType?: "application/json";
-      body?: Type;
-    }
-  | { status: 415; contentType: "text/plain"; body: string }
-  | COUNTERFACT_RESPONSE
-  | { ALL_REMAINING_HEADERS_ARE_OPTIONAL: COUNTERFACT_RESPONSE }
->;
+) => MaybePromise<COUNTERFACT_RESPONSE>;
 "
 `;

@@ -5,12 +5,15 @@
  * argument object.
  */
 export interface OpenApiParameters {
+  explode?: boolean;
   in: "body" | "cookie" | "formData" | "header" | "path" | "query";
   name: string;
   required?: boolean;
   schema?: {
     [key: string]: unknown;
+    properties?: Record<string, unknown>;
     type?: string;
   };
+  style?: string;
   type?: "string" | "number" | "integer" | "boolean";
 }
