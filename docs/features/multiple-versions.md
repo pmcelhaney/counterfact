@@ -10,8 +10,8 @@ Counterfact can serve several versions of the same API simultaneously from a sin
 - [URL layout](#url-layout)
 - [Generated code layout](#generated-code-layout)
 - [Writing versioned route handlers](#writing-versioned-route-handlers)
-- [TypeScript narrowing with `Versioned`](#typescript-narrowing-with-versioned)
 - [REPL usage](#repl-usage)
+- [TypeScript narrowing with `Versioned`](#typescript-narrowing-with-versioned)
 
 ---
 
@@ -37,7 +37,7 @@ spec:
 |-------|----------|-------------|
 | `source` | yes | Path or URL to the OpenAPI document |
 | `group` | yes | Subdirectory name under `basePath`; must be non-empty and unique across groups (not across versions of the same group) |
-| `version` | no | Version label (e.g. `"v1"`, `"v2"`). When set, the routes are mounted under `/<group>/<version>`. When omitted, routes are mounted under `/<group>`. |
+| `version` | yes | Version label (e.g. `"v1"`, `"v2"`). The routes are mounted under `/<group>/<version>`. |
 
 > **Note:** Version order matters. The first entry with a given `group` is treated as the **oldest** version. `$.minVersion()` compares against this declared order.
 
@@ -146,6 +146,27 @@ The conditions layer naturally — each `return` only runs if the previous `minV
 
 ---
 
+## REPL usage
+
+When running multiple APIs in one process, the REPL groups state by API group:
+
+```js
+// Access context for the catalog group
+context.catalog
+
+// Access routes for the catalog group
+routes.catalog
+```
+
+`loadContext` and `route` are similarly grouped:
+
+```js
+loadContext.catalog("/items")
+route.catalog("/items/{itemId}")
+```
+
+---
+
 ## TypeScript narrowing with `Versioned`
 
 `$.minVersion()` is a TypeScript type predicate. After a successful check, TypeScript narrows `$` to the intersection of only the versions that satisfy the minimum:
@@ -178,42 +199,6 @@ It exposes:
 - **All properties of `T[V]`** — the intersection of properties available in the current version.
 - **`version: V`** — the current version string at runtime.
 - **`minVersion<M>(min: M): this is Versioned<T, Extract<V, VersionsGTE[M]>>`** — type predicate that narrows `$` to versions ≥ `min`.
-
----
-
-## REPL usage
-
-When running multiple APIs in one process, the REPL groups state by API group:
-
-```js
-// Access context for the catalog group
-context.catalog
-
-// Access routes for the catalog group
-routes.catalog
-```
-
-`loadContext` and `route` are similarly grouped:
-
-```js
-loadContext.catalog("/items")
-route.catalog("/items/{itemId}")
-```
-
-### Running scenario scripts for a versioned group
-
-Use `.scenario <group> <path>` to run a scenario for a specific group:
-
-```
-⬣> .scenario catalog resetInventory
-```
-
-Tab completion supports this: `.scenario <Tab>` suggests groups first; `.scenario catalog <Tab>` suggests scenario paths within the `catalog` group.
-
-| Command | Group | File | Function |
-|---------|-------|------|----------|
-| `.scenario catalog resetInventory` | `catalog` | `catalog/scenarios/index.ts` | `resetInventory` |
-| `.scenario catalog items/seedData` | `catalog` | `catalog/scenarios/items.ts` | `seedData` |
 
 ---
 
