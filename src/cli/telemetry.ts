@@ -8,18 +8,13 @@ const POSTHOG_HOST = "https://us.i.posthog.com";
 /**
  * Returns `true` when telemetry should be sent.
  *
- * Telemetry is disabled in CI, when `COUNTERFACT_TELEMETRY_DISABLED=true`,
- * or before the May 2026 rollout date unless the user has explicitly opted
- * in with `COUNTERFACT_TELEMETRY_DISABLED=false`.
+ * Telemetry is disabled in CI or when `COUNTERFACT_TELEMETRY_DISABLED=true`.
  */
 export function isTelemetryEnabled(): boolean {
   if (process.env["CI"]) return false;
 
   const telemetryDisabledEnv = process.env["COUNTERFACT_TELEMETRY_DISABLED"];
   if (telemetryDisabledEnv === "true") return false;
-
-  const isBeforeRollout = new Date() < new Date("2026-05-01");
-  if (isBeforeRollout && telemetryDisabledEnv !== "false") return false;
 
   return true;
 }
