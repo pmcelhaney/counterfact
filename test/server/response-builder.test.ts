@@ -532,6 +532,101 @@ describe("a response builder", () => {
     });
   });
 
+  describe("OpenAPI 3.2: prefers dataValue over value in named examples", () => {
+    it("returns dataValue when present, ignoring value", () => {
+      const operationWithDataValue: OpenApiOperation = {
+        responses: {
+          200: {
+            content: {
+              "application/json": {
+                examples: {
+                  success: {
+                    description: "a success response",
+                    summary: "success",
+                    dataValue: { id: 99, name: "from-data-value" },
+                    value: { id: 1, name: "from-value" },
+                  },
+                },
+                schema: { type: "object" },
+              },
+            },
+          },
+        },
+      };
+
+      const response = createResponseBuilder(
+        operationWithDataValue,
+      )[200]?.example("success");
+
+      expect(response?.status).toBe(200);
+      expect(response?.content).toStrictEqual([
+        { body: { id: 99, name: "from-data-value" }, type: "application/json" },
+      ]);
+    });
+
+    it("falls back to value when dataValue is absent", () => {
+      const operationValueOnly: OpenApiOperation = {
+        responses: {
+          200: {
+            content: {
+              "application/json": {
+                examples: {
+                  success: {
+                    description: "a success response",
+                    summary: "success",
+                    value: { id: 1, name: "from-value" },
+                  },
+                },
+                schema: { type: "object" },
+              },
+            },
+          },
+        },
+      };
+
+      const response =
+        createResponseBuilder(operationValueOnly)[200]?.example("success");
+
+      expect(response?.status).toBe(200);
+      expect(response?.content).toStrictEqual([
+        { body: { id: 1, name: "from-value" }, type: "application/json" },
+      ]);
+    });
+
+    it("returns dataValue when value is absent", () => {
+      const operationDataValueOnly: OpenApiOperation = {
+        responses: {
+          200: {
+            content: {
+              "application/json": {
+                examples: {
+                  success: {
+                    description: "a success response",
+                    summary: "success",
+                    dataValue: { id: 42, name: "only-data-value" },
+                  },
+                },
+                schema: { type: "object" },
+              },
+            },
+          },
+        },
+      };
+
+      const response = createResponseBuilder(
+        operationDataValueOnly,
+      )[200]?.example("success");
+
+      expect(response?.status).toBe(200);
+      expect(response?.content).toStrictEqual([
+        {
+          body: { id: 42, name: "only-data-value" },
+          type: "application/json",
+        },
+      ]);
+    });
+  });
+
   describe("builds a random response based on an Open API operation object (OpenAPI 2)", () => {
     const operation: OpenApiOperation = {
       produces: ["application/json", "text/plain"],
