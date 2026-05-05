@@ -3,12 +3,16 @@ import MainLayout from "./MainLayout.astro";
 
 interface Props {
   title?: string;
+  canonicalPath?: string;
 }
 
-const { title } = Astro.props;
+const { title, canonicalPath } = Astro.props;
 ---
 
-<MainLayout title={title ? `${title} — Counterfact` : "Counterfact — API Simulator"}>
+<MainLayout
+  title={title ? `${title} — Counterfact` : "Counterfact — API Simulator"}
+  canonicalPath={canonicalPath}
+>
   <div class="doc-page">
     <nav class="doc-nav">
       <a href="/" class="doc-home-link">← Home</a>
