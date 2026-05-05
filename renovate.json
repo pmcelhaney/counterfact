@@ -1,5 +1,5 @@
 {
-  "extends": ["config:base"],
+  "extends": ["config:recommended"],
   "rangeStrategy": "update-lockfile",
   "enabledManagers": ["npm", "github-actions"],
   "gitIgnoredAuthors": ["github+renovate@scharley.me"],
@@ -9,17 +9,20 @@
       "description": "Automatically merge all updates",
       "addLabels": ["npm", "dependencies"],
       "automerge": true,
-      "stabilityDays": 3,
+      "minimumReleaseAge": "3 days",
       "prCreation": "not-pending",
       "rangeStrategy": "pin",
-      "depTypeList": ["dependencies", "devDependencies"]
+      "matchDepTypes": [
+        "dependencies",
+        "devDependencies"
+      ]
     },
     {
       "matchManagers": ["github-actions"],
       "description": "Automatically merge all updates",
       "addLabels": ["github_actions", "dependencies"],
       "automerge": true,
-      "stabilityDays": 3,
+      "minimumReleaseAge": "3 days",
       "prCreation": "not-pending"
     },
     {
