@@ -1423,7 +1423,7 @@ __metadata:
     json-schema-faker: "npm:0.6.3"
     koa: "npm:3.2.1"
     koa-bodyparser: "npm:4.4.1"
-    koa-proxies: "npm:0.12.4"
+    koa-proxies: "npm:0.12.6"
     koa2-swagger-ui: "npm:5.12.0"
     node-fetch: "npm:3.3.2"
     precinct: "npm:13.0.1"
@@ -8966,16 +8966,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"koa-proxies@npm:0.12.4":
-  version: 0.12.4
-  resolution: "koa-proxies@npm:0.12.4"
+"koa-proxies@npm:0.12.6":
+  version: 0.12.6
+  resolution: "koa-proxies@npm:0.12.6"
   dependencies:
     http-proxy: "npm:^1.18.1"
     path-match: "npm:^1.2.4"
     uuid: "npm:^8.3.2"
   peerDependencies:
     koa: ">=2"
-  checksum: 10c0/ef7924ae4844568a03bfb96877882d388be65201cfa047b30b06221f921e0b8703dab41a781b480badef9a52c63ef6637e5868fd16ee77270637198c6039ca32
+  checksum: 10c0/b4d2331618123e2669b8704cc82f511f6b41aac7e62509ce123908ba3261842f7d52a8a6fa5e4eb7ea76b4369d4da526e406593611ce2a0a080319fa6223dedb
   languageName: node
   linkType: hard
 
