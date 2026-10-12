@@ -2686,19 +2686,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@posthog/core@npm:^1.55.2":
-  version: 1.55.2
-  resolution: "@posthog/core@npm:1.55.2"
+"@posthog/core@npm:^1.57.2":
+  version: 1.58.0
+  resolution: "@posthog/core@npm:1.58.0"
   dependencies:
-    "@posthog/types": "npm:^1.412.4"
-  checksum: 10c0/2f8c3ccd06abd8aff0cbf810b25339af035a4cc40593f23021e73401695170c34bcd98554509202aafe7d7e71c2bc5bd6cd2fd51a3de603033d4bf2d085a3af7
+    "@posthog/types": "npm:^1.415.2"
+  checksum: 10c0/ea00f903e6d8826d803d7d6c496c1c0b4d750cc0ce104139e317ec7d714b4165cbca58d247c1e01ec0441354b1149bacbdcc64e34ba6af0d37073cc15f950237
   languageName: node
   linkType: hard
 
-"@posthog/types@npm:^1.412.4":
-  version: 1.412.4
-  resolution: "@posthog/types@npm:1.412.4"
-  checksum: 10c0/06479892bee8b0509a3e45af60944bbc7d2d949160f675250e9fe7232378f98bb08ab5388361581e20e33344d905451928e7ee3677b564b795c78b7de78d1032
+"@posthog/types@npm:^1.415.2":
+  version: 1.415.2
+  resolution: "@posthog/types@npm:1.415.2"
+  checksum: 10c0/2c1eeaf4370b0cfce61abbbe1e7fb28464f8e14f1f171670e8cadc0af64355eba331433c38922be7fe553cf6e6b20161e67fcbe754b474206633ed42143a0660
   languageName: node
   linkType: hard
 
@@ -5158,7 +5158,7 @@ __metadata:
     http-terminator: "npm:3.2.0"
     js-yaml: "npm:5.4.3"
     open: "npm:11.0.4"
-    posthog-node: "npm:5.55.0"
+    posthog-node: "npm:5.55.1"
   bin:
     counterfact: bin/counterfact.js
   languageName: unknown
@@ -10183,17 +10183,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"posthog-node@npm:5.55.0":
-  version: 5.55.0
-  resolution: "posthog-node@npm:5.55.0"
+"posthog-node@npm:5.55.1":
+  version: 5.55.1
+  resolution: "posthog-node@npm:5.55.1"
   dependencies:
-    "@posthog/core": "npm:^1.55.2"
+    "@posthog/core": "npm:^1.57.2"
   peerDependencies:
     rxjs: ^7.0.0
   peerDependenciesMeta:
     rxjs:
       optional: true
-  checksum: 10c0/a186b0eb01bf0a184a013006f6374fb8d6c6a8a2cb6cc91da8998f42203272941a1764739a93cdc0c184e2510c888572c1df4e5ed2eb49d9956216c116a01ee6
+  checksum: 10c0/204bc50c21209ba9c47a7f461c67dd684ea41c1fe88ee09ce05d936549ac7d2f824d00579a7a42bc02047bc45d6a07ff10e91ea60505d28d6d0e2a991a6e72b4
   languageName: node
   linkType: hard
 
