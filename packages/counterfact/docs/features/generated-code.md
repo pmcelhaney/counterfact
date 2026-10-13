@@ -16,7 +16,7 @@ When two or more versioned specs share the same operation path (e.g. `GET /pets`
 ```ts
 // types/paths/pets.types.ts  (generated — do not edit)
 
-import type { Versioned } from "../../counterfact-types/index.js";
+import type { Versioned } from "../versions.js";
 import type {
   MaybePromise,
   COUNTERFACT_RESPONSE,
@@ -34,8 +34,9 @@ export type HTTP_GET = (
 Each version's strongly-typed `$` argument lives in its own subdirectory
 (`types/v1/paths/pets.types.ts`, `types/v2/paths/pets.types.ts`). The shared
 file imports and combines them via `Versioned<T>`, which resolves to the union
-of all version argument types (`V1$ | V2$`). Your route handler can then
-narrow the type to the specific version using discriminant fields on `$`.
+of the selected version argument types, with `version` and `minVersion()`
+metadata. Use `$.minVersion("v2")` to narrow `$` to versions at or after `v2`
+in the configured version order and access their version-specific fields.
 
 When only a single (unversioned) spec is configured the output is unchanged
 from the flat-type format.
