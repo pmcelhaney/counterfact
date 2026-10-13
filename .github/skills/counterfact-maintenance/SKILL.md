@@ -35,6 +35,17 @@ Use this skill when finalizing contributor-facing changes that affect tests, dia
 
 - Keep historical study environments under `site/study/2026/experiments/environments/` excluded from Renovate; their manifests and lockfiles are reproducibility evidence, not maintained application dependencies. When changing `ignorePaths`, preserve the exclusions inherited from `config:recommended` because the array replaces inherited values.
 
+- Keep `catchmydrift.config.json` document-specific: connect each selected document
+  to the implementation, configuration, and tests it describes; use package-wide
+  groups only for package or product overviews. Navigation and agent-guidance
+  documents may relate to their referenced Markdown rather than unrelated code.
+  After changing mappings, validate the installed schema, check for unmatched
+  patterns or overlapping watches, and audit both missing relevant files and
+  unrelated associations. Run `yarn check:drift`; exit 1 requests document review,
+  while exit 2 indicates a configuration or operational failure. Never mark
+  documents reviewed solely to silence drift or add CI enforcement without
+  assessing the existing document-review backlog.
+
 - Use `usingTemporaryFiles()` for filesystem-heavy tests.
 - The Astro site uses `compressHTML: true` to preserve HTML whitespace around inline prose across source line breaks. Keep that setting explicit when upgrading Astro, and run `cd site && npm run test:whitespace` for rendering or formatting changes. Check generated text before applying CSS spacing: punctuation and intentional in-word links must remain adjacent.
 - Keep single-line command snippets in a focusable horizontal scroll region, with copy controls outside that region. A scrolling flex item needs `min-width: 0` so long text cannot widen the whole page. Emitted CSS/HTML checks establish this contract; they do not replace browser checks of scrolling, keyboard access, or viewport overflow.

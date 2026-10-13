@@ -4869,6 +4869,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"catchmydrift@npm:0.0.2":
+  version: 0.0.2
+  resolution: "catchmydrift@npm:0.0.2"
+  dependencies:
+    minimatch: "npm:10.2.6"
+  bin:
+    catchmydrift: index.js
+  checksum: 10c0/1a8e1dc15b83259ae1e710ca02114e07014471824b89de7f2ff2db31d41924449ff3256dee0112e9374021a516b1cad8118861a2fbc799876ff1346dfd6f7b33
+  languageName: node
+  linkType: hard
+
 "chalk@npm:^2.4.2":
   version: 2.4.2
   resolution: "chalk@npm:2.4.2"
@@ -5182,6 +5193,7 @@ __metadata:
     "@types/node": "npm:22"
     "@typescript-eslint/eslint-plugin": "npm:8.71.0"
     "@typescript-eslint/parser": "npm:8.71.0"
+    catchmydrift: "npm:0.0.2"
     copyfiles: "npm:2.4.1"
     eslint: "npm:10.12.0"
     eslint-formatter-github-annotations: "npm:0.1.0"
@@ -9384,21 +9396,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"minimatch@npm:10.2.6, minimatch@npm:^10.2.2, minimatch@npm:^10.2.5, minimatch@npm:~10.2.4":
+  version: 10.2.6
+  resolution: "minimatch@npm:10.2.6"
+  dependencies:
+    brace-expansion: "npm:^5.0.8"
+  checksum: 10c0/4559a836243b98bd4d17ea9f7edae698717c76399eea7be374f3737f33164e4907f19e9726891ddeb122f750a5a7fa80d2ac43e851d6e5984dc4ff42ec127d3a
+  languageName: node
+  linkType: hard
+
 "minimatch@npm:^10.2.1":
   version: 10.2.1
   resolution: "minimatch@npm:10.2.1"
   dependencies:
     brace-expansion: "npm:^5.0.2"
   checksum: 10c0/86c3ed013630e820fda00336ee786a03098723b60bfae452de6306708fc83619df40a99dc6ec59c97d14e25b3b3371669a04e5bf508b1b00339b20229c4907d2
-  languageName: node
-  linkType: hard
-
-"minimatch@npm:^10.2.2, minimatch@npm:^10.2.5, minimatch@npm:~10.2.4":
-  version: 10.2.6
-  resolution: "minimatch@npm:10.2.6"
-  dependencies:
-    brace-expansion: "npm:^5.0.8"
-  checksum: 10c0/4559a836243b98bd4d17ea9f7edae698717c76399eea7be374f3737f33164e4907f19e9726891ddeb122f750a5a7fa80d2ac43e851d6e5984dc4ff42ec127d3a
   languageName: node
   linkType: hard
 
