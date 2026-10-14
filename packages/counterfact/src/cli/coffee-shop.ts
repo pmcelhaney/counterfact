@@ -35,22 +35,6 @@ export const SHOP_DOCUMENT = {
         },
       },
     },
-    "/tutorial-project": {
-      post: {
-        parameters: [
-          { name: "origin", in: "header", schema: { type: "string" } },
-          { name: "host", in: "header", schema: { type: "string" } },
-        ],
-        responses: {
-          "200": jsonResponse({
-            type: "object",
-            required: ["opened"],
-            properties: { opened: { type: "boolean" } },
-          }),
-          "403": errorResponse,
-        },
-      },
-    },
     "/products": {
       get: {
         responses: {
@@ -181,22 +165,6 @@ export function coffeeShopFiles(projectPath: string): Record<string, string> {
   return {
     "routes/tutorial-info.ts": `import type { HTTP_GET } from "../types/paths/tutorial-info.types.js";
 export const GET: HTTP_GET = ($) => $.response[200].json({ projectPath: ${JSON.stringify(projectPath)}, sessionId: $.context.sessionId });
-`,
-    "routes/tutorial-project.ts": `import { spawn } from "node:child_process";
-import type { HTTP_POST } from "../types/paths/tutorial-project.types.js";
-
-export const POST: HTTP_POST = async ($) => {
-  if ($.headers.origin !== "http://" + $.headers.host) {
-    return $.response[403].json({ error: "Open the project from its own walkthrough page." });
-  }
-  const command = process.platform === "darwin" ? "open" : process.platform === "win32" ? "explorer.exe" : "xdg-open";
-  const opened = await new Promise<boolean>((resolve) => {
-    const child = spawn(command, [${JSON.stringify(projectPath)}], { stdio: "ignore" });
-    child.once("error", () => resolve(false));
-    child.once("spawn", () => { child.unref(); resolve(true); });
-  });
-  return $.response[200].json({ opened });
-};
 `,
     "routes/_.context.ts": SHOP_CONTEXT,
     "routes/products.ts": SHOP_PRODUCTS,

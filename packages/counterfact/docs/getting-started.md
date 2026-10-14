@@ -47,12 +47,11 @@ The walkthrough starts with a normal purchase, then guides you through:
 
 After edits or REPL changes, click **Refresh products** in the shop. The left
 panel confirms the responses the app actually receives. Saving a file alone
-does not complete a task. **Continue** moves on after success; **Back**, **Repeat
-instructions**, and **Skip lesson** let you control the pace. A browser reload
+does not complete a task. **Continue** moves on after success; **Back** and **Skip lesson** let you control the pace. A browser reload
 keeps the current lesson and cart within the same running API session.
 
-Use **Copy file path** or **Open project folder** to find the files in your own
-editor. Shared inventory is declared in `routes/_.context.ts` and initialized
+Use **Open in VSCode** to open the project through the `vscode://` URL scheme,
+or **Copy file path** to find the files in another editor. Shared inventory is declared in `routes/_.context.ts` and initialized
 by `scenarios/index.ts`; products and orders access the same running object.
 The initial order handler intentionally does not reduce stock until you add
 that operation. No payments or real purchases take place.

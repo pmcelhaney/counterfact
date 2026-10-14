@@ -603,13 +603,9 @@ def coffee_shop_purchase(journey):
     assert os.path.realpath(info.json()["projectPath"]) == os.path.realpath(journey.output)
     assert info.json()["sessionId"]
     assert "sessionStorage" in page.text
-    denied = journey.request("post", "/tutorial-project", headers={"Origin": "https://unrelated.example"})
-    assert denied.status_code == 403
-    denied_without_origin = journey.request("post", "/tutorial-project")
-    assert denied_without_origin.status_code == 403
-    launched = journey.request("post", "/tutorial-project", headers={"Origin": journey.base_url})
-    assert launched.status_code == 200, launched.text
-    assert launched.json()["opened"]
+    assert "Open in VSCode" in page.text
+    assert "vscode://file/" in page.text
+    assert "Repeat instructions" not in page.text
     products = journey.request("get", "/products").json()
     assert [product["id"] for product in products] == ["house-blend", "dark-roast", "decaf"]
     assert products[2]["stock"] == 0

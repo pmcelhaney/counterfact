@@ -547,15 +547,12 @@ exercises order failure and retry, adds a successful-order mutation to
 `$.context.inventory`, and restocks through `context.inventory` in the REPL.
 The product handler reads that shared inventory; successful orders and product
 refreshes demonstrate the resulting changes. Failed requests retain the task
-and the cart. Browser controls provide Continue, Back, Repeat instructions,
-and Skip lesson. Session-scoped progress and the cart survive a page reload;
+and the cart. Browser controls provide Continue, Back, and Skip lesson. Session-scoped progress and the cart survive a page reload;
 a new API session starts a new browser lesson. Completion keeps the shop and
 ordinary REPL running, retains the files, and prints a restart command.
 
-**Copy file path** and **Open project folder** help users find the example in
-their own editor. The folder-opening endpoint accepts only requests from the
-walkthrough's own origin and opens the fixed generated project directory.
-It does not accept arbitrary file paths. The app uses no external images,
+**Copy file path** and **Open in VSCode** help users find the example in
+VSCode using its `vscode://` URL scheme. Copy the path to use another editor. The app uses no external images,
 fonts, payment services, or frontend build dependencies.
 
 Discovery recognizes YAML/JSON root documents for Swagger 2.0 and OpenAPI 3.0,
