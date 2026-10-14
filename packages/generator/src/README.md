@@ -30,14 +30,15 @@ We can also use those types on the _client_ side, assuming the client is written
 | `schema-type-coder.ts`           | `SchemaTypeCoder`: converts an OpenAPI schema definition to a TypeScript type (objects, arrays, unions, enums)                                                                                                       |
 | `schema-coder.ts`                | `SchemaCoder`: generates a JSON Schema representation of an OpenAPI schema for use in runtime validation                                                                                                             |
 | `context-file-token.ts`          | Exports a placeholder token used to reference context file paths during code generation                                                                                                                              |
-| `printers.ts`                    | Utility functions for formatting TypeScript object literals in generated code                                                                                                                                        |
+| `ast.ts`                         | TypeScript AST construction and printing helpers                                                                                                                                                                    |
+| `ast-type-coder.ts`               | Base class for type coders that compose AST nodes                                                                                                                                                                   |
 | `read-only-comments.ts`          | Standard warning comments inserted into generated type files to discourage manual edits                                                                                                                              |
 
 ## Architecture
 
 ### AST migration
 
-Schema type generation now builds TypeScript AST nodes through `AstTypeCoder`.
+Schema, parameter, and response type generation now builds TypeScript AST nodes through `AstTypeCoder`.
 Migrated coders compose child types with `writeNode()`, and `Script` prints their
 type declarations before applying Prettier. The inherited `write()` method is a
 temporary text bridge for callers that have not migrated yet.

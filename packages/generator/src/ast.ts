@@ -32,12 +32,12 @@ export function neverType(): ts.TypeNode {
 
 export function typeLiteral(
   members: readonly ts.TypeElement[],
+  multiline = false,
 ): ts.TypeLiteralNode {
   const node = ts.factory.createTypeLiteralNode(members);
   // Keep JSDoc on its own line and attached to the following member.
-  return members.some(
-    (member) => ts.getSyntheticLeadingComments(member)?.length,
-  )
+  return multiline ||
+    members.some((member) => ts.getSyntheticLeadingComments(member)?.length)
     ? node
     : ts.setEmitFlags(node, ts.EmitFlags.SingleLine);
 }

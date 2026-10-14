@@ -2,8 +2,9 @@
 
 Complete reference for Counterfact's architecture, route handlers, and CLI.
 
-Generated schema types preserve literal property names and enum values, including
-quotes, backslashes, and newlines. Nested `allOf`, `anyOf`, and `oneOf` schemas
+Generated types preserve literal property, parameter, response header, media type,
+and example names and enum values, including quotes, backslashes, and newlines.
+Nested `allOf`, `anyOf`, and `oneOf` schemas
 retain their grouping in the generated TypeScript types.
 
 ---

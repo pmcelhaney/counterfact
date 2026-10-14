@@ -4,27 +4,7 @@ import ts from "typescript";
 import { Repository } from "../src/repository.js";
 import { Requirement } from "../src/requirement.js";
 import { SchemaTypeCoder } from "../src/schema-type-coder.js";
-
-function diagnostics(source: string): string[] {
-  const options: ts.CompilerOptions = {
-    strict: true,
-    noLib: true,
-    noEmit: true,
-  };
-  const host = ts.createCompilerHost(options);
-  host.getSourceFile = (name) =>
-    name === "generated.ts"
-      ? ts.createSourceFile(name, source, ts.ScriptTarget.Latest, true)
-      : undefined;
-  const program = ts.createProgram(["generated.ts"], options, host);
-
-  return [
-    ...program.getSyntacticDiagnostics(),
-    ...program.getSemanticDiagnostics(),
-  ].map((diagnostic) =>
-    ts.flattenDiagnosticMessageText(diagnostic.messageText, "\n"),
-  );
-}
+import { typeDiagnostics } from "./type-diagnostics.js";
 
 async function generateType(schema: Record<string, unknown>): Promise<string> {
   const script = new Repository().get("types/example.ts");
@@ -56,7 +36,7 @@ describe("AST schema generation", () => {
       ((member.type as ts.LiteralTypeNode).literal as ts.StringLiteral).text,
     ).toBe(value);
     expect(
-      diagnostics(
+      typeDiagnostics(
         `${source}\nconst valid: Example = { [${JSON.stringify(name)}]: ${JSON.stringify(value)} };`,
       ),
     ).toEqual([]);
@@ -88,7 +68,7 @@ describe("AST schema generation", () => {
     });
 
     expect(
-      diagnostics(`${source}
+      typeDiagnostics(`${source}
       const first: Example = { a: "ok", c: true };
       const second: Example = { b: 1, c: false };
       // @ts-expect-error Every union branch must also satisfy the intersection.
@@ -100,7 +80,7 @@ describe("AST schema generation", () => {
   it("preserves negative, boolean, and null enum literals", async () => {
     const source = await generateType({ enum: [-2, true, null] });
     expect(
-      diagnostics(`${source}
+      typeDiagnostics(`${source}
       const negative: Example = -2;
       const boolean: Example = true;
       const nullable: Example = null;
