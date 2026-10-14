@@ -31,6 +31,7 @@ Use this skill for CLI flags, option precedence, config file loading, startup di
 - Keep CLI precedence explicit: CLI flags override config file values (`program.getOptionValueSource`).
 - Treat sensitive values carefully in logs/telemetry (hash file locations, avoid raw secrets/paths).
 - Preserve existing defaults where no action flags are passed (serve/repl/watch/generate/buildCache behavior).
+- Wrap asynchronous startup work in the startup reporter so its transient spinner clears on both success and failure. Animate only on interactive stdout; keep redirected output free of cursor controls. `NO_COLOR` disables colour, not progress animation. Treat a reported terminal width of zero as unknown and use a fallback width. Keep progress within the terminal width, clear reflowed rows after resizing, and defer concurrent stdout/stderr notices until progress clears.
 - Keep startup status truthful and compact: report only work that has actually completed, do not expose local input/output paths in normal status lines, and use ANSI colour only for an interactive stdout that has not opted out through `NO_COLOR`.
 
 ## Common mistakes to avoid
