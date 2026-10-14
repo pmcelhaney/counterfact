@@ -341,6 +341,7 @@ function buildProgram(version: string, tagline: string): Command {
     const startupReporter = createStartupReporter(
       startupOutput,
       process.stdout,
+      process.stderr,
     );
     const writeStartupLine = (line: string) => {
       process.stdout.write(`${line}\n`);

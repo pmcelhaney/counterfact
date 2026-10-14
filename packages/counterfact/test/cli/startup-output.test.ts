@@ -21,6 +21,71 @@ describe("startup progress spinner", () => {
     jest.useRealTimers();
   });
 
+  it("fits narrow terminals and clears reflowed rows when resized", async () => {
+    jest.useFakeTimers();
+    const write = jest.fn<(text: string) => void>();
+    const stream = { isTTY: true, columns: 24, write };
+    const reporter = createStartupReporter(createStartupOutput(false), stream);
+    let finish = () => {};
+    const pending = reporter.step(
+      "Generating routes and types…",
+      () =>
+        new Promise<void>((resolve) => {
+          finish = resolve;
+        }),
+    );
+    expect(write).toHaveBeenLastCalledWith(
+      "\r\u001B[2K⠋ Generating routes an…",
+    );
+    stream.columns = 12;
+    jest.advanceTimersByTime(80);
+    expect(write).toHaveBeenLastCalledWith(
+      "\r\u001B[2K\u001B[1A\r\u001B[2K⠙ Generati…",
+    );
+    stream.columns = 5;
+    finish();
+    await pending;
+    expect(write).toHaveBeenLastCalledWith(
+      "\r\u001B[2K\u001B[1A\r\u001B[2K\u001B[1A\r\u001B[2K",
+    );
+    expect(jest.getTimerCount()).toBe(0);
+  });
+
+  it("defers stdout and stderr warnings until progress clears and restores writes", async () => {
+    jest.useFakeTimers();
+    const transcript: string[] = [];
+    const write = jest.fn((text: string) => {
+      transcript.push(text);
+    });
+    const writeError = jest.fn((text: string) => {
+      transcript.push(text);
+    });
+    const stdout = { isTTY: true, write };
+    const stderr = { write: writeError };
+    const reporter = createStartupReporter(
+      createStartupOutput(false),
+      stdout,
+      stderr,
+    );
+    await expect(
+      reporter.step("Loading mock routes…", async () => {
+        stdout.write("\nWarning: context failed\n");
+        stderr.write("Update notice\n");
+        jest.advanceTimersByTime(80);
+        expect(transcript.join("")).not.toContain("Warning");
+        throw new Error("Failed");
+      }),
+    ).rejects.toThrow("Failed");
+    expect(transcript.slice(-3)).toEqual([
+      "\r\u001B[2K",
+      "\nWarning: context failed\n",
+      "Update notice\n",
+    ]);
+    expect(stdout.write).toBe(write);
+    expect(stderr.write).toBe(writeError);
+    expect(jest.getTimerCount()).toBe(0);
+  });
+
   it("animates only while work is pending and clears before completion", async () => {
     jest.useFakeTimers();
     const write = jest.fn<(text: string) => void>();

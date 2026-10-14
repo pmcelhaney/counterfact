@@ -522,6 +522,8 @@ server URL, Swagger UI URL, and active file watching.
 
 Interactive terminals show a spinner while each startup step is running. The
 progress line clears when the step finishes, leaving its completed status.
+Progress labels shorten to fit narrow terminals, and resizing clears any reflowed
+progress rows. Notices written during a step appear after its spinner clears.
 Redirected output keeps progress messages on separate lines without animation.
 
 Interactive terminals use colour to distinguish progress, successful work,
