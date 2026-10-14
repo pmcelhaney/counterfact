@@ -59,7 +59,8 @@ export function coffeeShopAction({
     return { text: "Add a coffee to your cart" };
   const edit = edits[step]?.[manualStage];
   if (edit && !ordered) return { text: edit[0], confirm: edit[1] };
-  if (step === 2 || step === 9 || ordered) return { text: "refresh products" };
+  if (step === 2 || step === 9 || ordered)
+    return { text: "watch the inventory" };
   if (step === 5) return { text: "Click Try again" };
   if (step === 4) return { text: "click Place order" };
   const product =

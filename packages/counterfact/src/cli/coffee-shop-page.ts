@@ -19,7 +19,7 @@ export function coffeeShopPage(projectPath: string): string {
 :root{font-family:system-ui,-apple-system,sans-serif;color:#30251f;background:#f6f3ed;font-size:16px}*{box-sizing:border-box}body{margin:0}button,a.editor-link{font:inherit;cursor:pointer;border:0;border-radius:8px;padding:11px 16px;background:#325848;color:white;font-weight:650}button:disabled{background:#e8e3dc;color:#786f64;cursor:not-allowed}button.secondary,a.editor-link{background:#ece8df;color:#30251f}button:focus-visible,a:focus-visible{outline:3px solid #ba7738;outline-offset:3px}a{color:#325848}a.editor-link{display:inline-block;text-decoration:none}.layout{display:grid;grid-template-columns:minmax(310px,380px) 1fr;min-height:100vh}.guide{padding:36px 30px;background:#fff;border-right:1px solid #ddd7ce}.eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:#74634f}h1{font-family:Georgia,serif;font-size:36px;margin:8px 0 10px}h2{font-size:25px;line-height:1.2}h3{margin:0 0 8px}p{line-height:1.6}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f5f3ef;padding:14px;border-radius:8px;font-size:13px;line-height:1.5}.path{font-size:12px;overflow-wrap:anywhere;color:#6b6054}.shop{padding:36px;max-width:1100px;width:100%;margin:auto}.shop-head{display:flex;justify-content:space-between;gap:20px;align-items:center}.demo{font-size:13px;color:#766b60}.products{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin:28px 0}.card{background:#fff;border:1px solid #e2dcd3;border-radius:14px;padding:20px;display:flex;flex-direction:column}.bag{height:145px;display:grid;place-items:center;margin-bottom:20px;background:#efe3cb;border-radius:8px}.bag.dark-roast{background:#ddd5cb}.bag.decaf{background:#dbe8dc}.bag-label{background:#fffdf6;border:1px solid #ddd;padding:22px 14px;text-align:center;box-shadow:5px 5px 0 #0001;font-family:Georgia,serif;font-size:22px}.card p{font-size:14px;flex:1;color:#716454}.stock{font-size:13px;margin:14px 0}.stock div{display:flex;justify-content:space-between;gap:12px;padding:4px 0}.stock dt{color:#716454}.stock dd{margin:0;font-weight:700}.stock-note{font-size:12px;color:#716454}.price{font-weight:700}.effect{margin:24px 0;padding:20px;background:#fff;border:1px solid #e2dcd3;border-radius:14px}.effect h2{font-size:20px;margin-top:0}.effect p{margin:8px 0}.effect pre{margin-bottom:0}.cart{background:white;border:1px solid #e2dcd3;border-radius:14px;padding:24px}.cart-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #eee}.cart-row button{padding:5px 10px}.cart-footer{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-top:22px}.notice{padding:16px;background:#e5efe8;border-radius:8px;margin:18px 0}.error{background:#fff0e9;color:#8c381e}.guide-footer{margin-top:35px;border-top:1px solid #eee;padding-top:18px;font-size:13px}.controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}.controls button{font-size:13px}#guide-status:empty{display:none}@media(max-width:1000px){.products{grid-template-columns:1fr}.bag{height:90px}.shop{padding:24px}.bag-label{padding:10px 16px}}@media(max-width:680px){.layout{grid-template-columns:1fr}.guide{border-right:0;border-bottom:1px solid #ddd}.shop-head{align-items:start;flex-direction:column}}
 </style></head><body><main class="layout">
 <aside class="guide" aria-label="Walkthrough instructions"><div class="eyebrow">Counterfact · Learn by doing</div><div id="lesson"></div><p id="guide-status" role="status" aria-live="polite"></p><div class="controls"><button id="continue" hidden>Continue</button><button id="back" class="secondary" hidden>Back</button><button id="skip" class="secondary">Skip lesson</button></div><div class="guide-footer">Your example project<p class="path" id="project-path"></p><button id="copy-path" class="secondary">Copy project path</button> <a id="open-vscode" class="editor-link" href="${editorUrl.href}">Open in VSCode</a><p>Keep Counterfact running in your terminal. Use your own editor for changes.</p></div></aside>
-<section class="shop" aria-label="Coffee shop"><header class="shop-head"><div><div class="eyebrow">Small batch · Big comfort</div><h1>Counterfact Coffee</h1><div class="demo">A local demo shop. No payments or real orders.</div></div><button id="refresh" class="secondary">Refresh products</button></header><div id="shop-notice" role="status" aria-live="polite"></div><div id="products" class="products"></div><section id="purchase-effect" class="effect" aria-label="Latest purchase effect" aria-live="polite" hidden></section><section class="cart" aria-label="Shopping cart"><h2>Your cart</h2><div id="cart"></div><div class="cart-footer"><strong id="total"></strong><button id="checkout" disabled>Place order</button></div></section></section>
+<section class="shop" aria-label="Coffee shop"><header class="shop-head"><div><div class="eyebrow">Small batch · Big comfort</div><h1>Counterfact Coffee</h1><div class="demo">A local demo shop. No payments or real orders.</div></div><button id="refresh" class="secondary">Refresh products</button></header><p id="live-status" class="demo">Connecting to Counterfact…</p><div id="shop-notice" role="status" aria-live="polite"></div><div id="products" class="products"></div><section id="purchase-effect" class="effect" aria-label="Latest purchase effect" aria-live="polite" hidden></section><section class="cart" aria-label="Shopping cart"><h2>Your cart</h2><div id="cart"></div><div class="cart-footer"><strong id="total"></strong><button id="checkout" disabled>Place order</button></div></section></section>
 </main><script>
 const projectPath = ${path};
 const restartCommand = ${restart};
@@ -31,7 +31,7 @@ const observations = new CoffeeShopObservations();
 const progress = new CoffeeShopProgress();
 const $ = (id) => document.getElementById(id);
 const money = (cents) => new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(cents / 100);
-let products = [], cart = {}, busy = false, manualStages = {};
+let products = [], cart = {}, busy = false, manualStages = {}, refreshRequest;
 function element(tag,text,className){const node=document.createElement(tag);node.textContent=text;if(className)node.className=className;return node;}
 function notice(text,error=false){$('shop-notice').replaceChildren(element('p',text,'notice'+(error?' error':'')));}
 function stockSnapshot(){return Object.fromEntries(products.map(p=>[p.id,p.stock]));}
@@ -70,30 +70,44 @@ function renderCart(){
   if(!Object.keys(cart).length)$('cart').append(element('p','Your cart is empty. Choose a coffee above.'));
   $('total').textContent=money(total);$('checkout').disabled=busy||!Object.keys(cart).length;
 }
-async function refreshProducts(){
-  $('refresh').disabled=true;
-  try{const response=await fetch('/products');if(!response.ok)throw Error('Could not load products');const next=await response.json();if(!Array.isArray(next)||next.some(p=>!Number.isInteger(p.stock)||p.stock<0))throw Error('Invalid product response');products=next;observations.inventory(stockSnapshot());renderPurchaseEffect();renderProducts();renderCart();onProducts();}
-  catch(error){notice('We couldn’t load the products. Check Counterfact, then click Refresh products to try again.',true);$('guide-status').textContent='The product request failed. Check your edit and save the file, then refresh again.';}
-  finally{$('refresh').disabled=false;}
+async function refreshProducts({source='manual',credit=true}={}){
+  if(refreshRequest)return refreshRequest;
+  refreshRequest=(async()=>{
+    $('refresh').disabled=true;
+    try{
+      const response=await fetch('/products');if(!response.ok)throw Error('Could not load products');const next=await response.json();if(!Array.isArray(next)||next.some(p=>!Number.isInteger(p.stock)||p.stock<0))throw Error('Invalid product response');
+      const changed=JSON.stringify(products)!==JSON.stringify(next);const previous=stockSnapshot();products=next;
+      if(source!=='before-order')observations.inventory(stockSnapshot());
+      if(changed||source!=='live'){renderPurchaseEffect();renderProducts();renderCart();if(credit)onProducts();}
+      else if(credit){const wasDone=progress.done;progress.products(stockSnapshot());if(wasDone!==progress.done)checkProgress();}
+      const changes=products.filter(p=>previous[p.id]!==undefined&&previous[p.id]!==p.stock).map(p=>p.name+': '+previous[p.id]+' → '+p.stock);
+      $('live-status').textContent=(changes.length?'Product response · '+changes.join(' · '):'Live API updates · last checked '+new Date().toLocaleTimeString())+(source==='after-order'?' · checked after the order':'');
+      return true;
+    }catch(error){notice('We couldn’t load the products. Check Counterfact, then click Refresh products to try again.',true);$('guide-status').textContent='The product request failed. Check Counterfact and try again.';return false;}
+    finally{$('refresh').disabled=busy;}
+  })();
+  try{return await refreshRequest;}finally{refreshRequest=undefined;}
 }
 async function placeOrder(){
-  if(busy||!Object.keys(cart).length)return;busy=true;renderProducts();renderCart();const items=Object.entries(cart).map(([productId,quantity])=>({productId,quantity}));const before=stockSnapshot();
+  if(busy||!Object.keys(cart).length)return;busy=true;renderProducts();renderCart();
+  if(!await refreshProducts({source:'before-order',credit:false})){busy=false;renderProducts();renderCart();return;}
+  const items=Object.entries(cart).map(([productId,quantity])=>({productId,quantity}));const before=stockSnapshot();
   try{const response=await fetch('/orders',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({items})});const result=await response.json();observations.order(items,response.status,result,before);renderPurchaseEffect();if(!response.ok){notice(response.status===409?result.error:'We couldn’t place your order. Your cart is kept—please try again.',true);$('checkout').textContent='Try again';onOrder(false,items,response.status);return;}if(response.status!==201||!Number.isInteger(result.orderId))throw Error('Invalid order confirmation');cart={};notice('Thanks! Demo order #'+result.orderId+' is confirmed.');$('checkout').textContent='Place order';renderProducts();onOrder(true,items,response.status);}
   catch(error){observations.order(items,undefined,{error:'No valid confirmation received'},before);renderPurchaseEffect();notice('We couldn’t place your order. Your cart is kept—please try again.',true);$('checkout').textContent='Try again';$('guide-status').textContent='The order request could not be completed. Check Counterfact and retry.';}
-  finally{busy=false;renderProducts();renderCart();}
+  finally{await refreshProducts({source:'after-order'});busy=false;$('refresh').disabled=false;renderProducts();renderCart();}
 }
 const lessons = [
   ['Your local coffee shop is running','Click Start shopping to make a purchase. Then change the API and see how the shop responds. Keep Counterfact running in your terminal.'],
   ['Buy a bag of House Blend','Add House Blend to your cart, then place an order. No payment is needed.'],
-  ['Put Decaf back in stock','Decaf is sold out. Open routes/products.ts in your editor. Change its starting stock from 0 to 5, save, then click Refresh products.','const decafStock = 0;','const decafStock = 5;','routes/products.ts'],
+  ['Put Decaf back in stock','Decaf is sold out. Open routes/products.ts in your editor. Change its starting stock from 0 to 5, save, and watch the inventory.','const decafStock = 0;','const decafStock = 5;','routes/products.ts'],
   ['Buy the coffee you made available','Add Decaf to the cart and place an order. Your API change made this purchase possible.'],
   ['Try an order failure','Add a coffee to your cart. Open routes/orders.ts, change ordersAvailable to false, and save. Then click Place order.','const ordersAvailable = true;','const ordersAvailable = false;','routes/orders.ts'],
   ['Restore ordering and retry','In the same file, restore ordersAvailable to true and save. Click Try again. Your cart is still there.','const ordersAvailable = false;','const ordersAvailable = true;','routes/orders.ts'],
-  ['Orders aren’t reducing stock yet','Add one Dark Roast to your cart, place an order, then refresh products. The starter order handler accepts purchases but doesn’t subtract stock yet.'],
-  ['Make an order update inventory','Products read shared context. Open routes/_.context.ts to see inventory, then open routes/orders.ts. Add these lines at the INVENTORY LESSON comment, save. Add one Dark Roast to your cart, place an order, and refresh products.','', 'for (const item of items) {\\n  $.context.inventory[item.productId] -= item.quantity;\\n}', 'routes/orders.ts'],
-  ['Watch Dark Roast sell out','Add the remaining Dark Roast bags to your cart and place an order. Then refresh products. Its Add to cart button should become disabled.'],
-  ['Restock through the REPL','Switch to Counterfact’s terminal. Its ⬣> prompt is the REPL: you can inspect and change the running context. Inspect the inventory with the first command. Restock it with the second command, then return here and refresh products.','context.inventory["dark-roast"]','context.inventory["dark-roast"] = 5'],
-  ['Buy from the updated inventory','Add one Dark Roast to your cart, place an order, then refresh products. You should see four bags remaining. The REPL and order handler changed the same context.'],
+  ['Orders aren’t reducing stock yet','Add one Dark Roast to your cart, place an order, then watch the inventory. The starter order handler accepts purchases but doesn’t subtract stock yet.'],
+  ['Make an order update inventory','Products read shared context. Open routes/_.context.ts to see inventory, then open routes/orders.ts. Add these lines at the INVENTORY LESSON comment, save. Add one Dark Roast to your cart, place an order, and watch the inventory.','', 'for (const item of items) {\\n  $.context.inventory[item.productId] -= item.quantity;\\n}', 'routes/orders.ts'],
+  ['Watch Dark Roast sell out','Add the remaining Dark Roast bags to your cart and place an order. Then watch the inventory. Its Add to cart button should become disabled.'],
+  ['Restock through the REPL','Switch to Counterfact’s terminal. Its ⬣> prompt is the REPL: you can inspect and change the running context. Inspect the inventory with the first command. Restock it with the second command, then return here and watch the inventory.','context.inventory["dark-roast"]','context.inventory["dark-roast"] = 5'],
+  ['Buy from the updated inventory','Add one Dark Roast to your cart, place an order, then watch the inventory. You should see four bags remaining. The REPL and order handler changed the same context.'],
   ['You changed a shopping workflow','You made a product available, tested failure and recovery, updated context in a handler, and restocked it through the REPL. The app and Counterfact are still running. Keep experimenting.'],
 ];
 const successes = {
@@ -121,7 +135,7 @@ function updateAction(){
 function showLesson(){
   saveProgress();
   const lesson=[...lessons[progress.step]];
-  if(progress.step===7&&progress.inventoryUpdated&&!progress.done){lesson[1]='Your order handler already updates inventory. You do not need to add the lines again. Add one Dark Roast to your cart, place an order, and refresh products to verify the shared state.';lesson[2]='';lesson[3]='';}$('lesson').replaceChildren(element('div','Step '+Math.min(progress.step+1,12)+' of 12','eyebrow'),element('h2',lesson[0]),instructionParagraph(lesson[1]));
+  if(progress.step===7&&progress.inventoryUpdated&&!progress.done){lesson[1]='Your order handler already updates inventory. You do not need to add the lines again. Add one Dark Roast to your cart, place an order, and watch the inventory to verify the shared state.';lesson[2]='';lesson[3]='';}$('lesson').replaceChildren(element('div','Step '+Math.min(progress.step+1,12)+' of 12','eyebrow'),element('h2',lesson[0]),instructionParagraph(lesson[1]));
   if(lesson[4]){
     $('lesson').append(element('p',projectPath+'/'+lesson[4],'path'));
     const copy=element('button','Copy file path','secondary');copy.onclick=()=>copyPath(projectPath+'/'+lesson[4],copy);$('lesson').append(copy);
@@ -137,16 +151,16 @@ function checkProgress(){if(progress.done)showLesson();else updateAction();}
 function onCart(){updateAction();if(progress.step===1&&cart['house-blend'])$('guide-status').textContent='Your cart is ready. Click Place order.';if(progress.step===3&&cart.decaf)$('guide-status').textContent='Decaf is in your cart. Click Place order.';}
 function onProducts(){
   progress.products(Object.fromEntries(products.map(product=>[product.id,product.stock])));checkProgress();
-  if(!progress.done&&progress.step===2)$('guide-status').textContent='Decaf is still unavailable. Check the displayed file, save your change, then refresh again.';
-  if(!progress.done&&[7,8].includes(progress.step)&&progress.lastOrder)$('guide-status').textContent='The inventory has not decreased as expected. Check that your new lines are in the successful-order section, save, buy another bag, and refresh.';
+  if(!progress.done&&progress.step===2)$('guide-status').textContent='Decaf is still unavailable. Check the displayed file, save your change, then watch for the product response.';
+  if(!progress.done&&[7,8].includes(progress.step)&&progress.lastOrder)$('guide-status').textContent='The inventory has not decreased as expected. Check that your new lines are in the successful-order section, save, buy another bag, and watch its effect.';
 }
 function onOrder(success,items,status){
   progress.order(success,items,products.find(product=>product.id==='dark-roast')?.stock||0,status);checkProgress();
-  if(success&&[6,7,8,10].includes(progress.step)&&!progress.done)$('guide-status').textContent='The order went through. Now click Refresh products to see the inventory.';
+  if(success&&[6,7,8,10].includes(progress.step)&&!progress.done)$('guide-status').textContent='The order went through. Watching for the product response to show the inventory.';
   if(success&&progress.step===4)$('guide-status').textContent='This order succeeded. Save ordersAvailable = false, add another coffee, and try again.';
 }
-$('refresh').onclick=refreshProducts;$('checkout').onclick=placeOrder;
-$('continue').onclick=()=>{progress.next();showLesson();};$('back').onclick=()=>{progress.back();showLesson();};$('skip').onclick=()=>{progress.skip();showLesson();};
+$('refresh').onclick=()=>refreshProducts();$('checkout').onclick=placeOrder;
+$('continue').onclick=()=>{progress.next();showLesson();refreshProducts({source:'lesson'});};$('back').onclick=()=>{progress.back();showLesson();refreshProducts({source:'lesson'});};$('skip').onclick=()=>{progress.skip();showLesson();refreshProducts({source:'lesson'});};
 async function copyPath(path,button){try{await navigator.clipboard.writeText(path);button.textContent='Copied';}catch{$('guide-status').textContent='Select and copy the path shown in the instructions.';}}
 $('copy-path').onclick=()=>copyPath(projectPath,$('copy-path'));
 function saveProgress(){if(!sessionId)return;try{sessionStorage.setItem('counterfact-coffee',JSON.stringify({sessionId,progress,cart,manualStages}));}catch{}}
@@ -166,5 +180,7 @@ async function startWalkthrough(){
   showLesson();renderCart();await refreshProducts();
 }
 $('project-path').textContent=projectPath;startWalkthrough();
+setInterval(()=>{if(!busy&&!document.hidden)refreshProducts({source:'live'});},1000);
+window.addEventListener('focus',()=>{if(!busy)refreshProducts({source:'live'});});
 </script></body></html>`;
 }

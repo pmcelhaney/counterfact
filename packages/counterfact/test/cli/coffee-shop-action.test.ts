@@ -22,7 +22,7 @@ it("moves from adding all remaining bags to ordering, then refreshing", () => {
     "place an order",
   );
   expect(coffeeShopAction({ ...state, ordered: true })?.text).toBe(
-    "refresh products",
+    "watch the inventory",
   );
   expect(coffeeShopAction({ ...state, done: true })).toBeUndefined();
 });
@@ -47,7 +47,7 @@ it("confirms editor actions separately and still requires a product refresh", ()
   );
   expect(coffeeShopAction({ ...edit, manualStage: 2 })?.text).toBe("save");
   expect(coffeeShopAction({ ...edit, manualStage: 3 })).toEqual({
-    text: "refresh products",
+    text: "watch the inventory",
   });
 });
 

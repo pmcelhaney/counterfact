@@ -55,7 +55,9 @@ Each product card shows **Inventory in Counterfact**, **In your cart**, and
 immediately; reducing a quantity or removing an item restores availability.
 Only the API reports inventory changes after purchases or context updates.
 
-After edits or REPL changes, click **Refresh products** in the shop. The left
+The shop checks the products API automatically while visible and after each
+order. Saved inventory edits and REPL changes appear without a manual refresh.
+**Refresh products** remains available to request another check. The left
 panel confirms the responses the app actually receives. Saving a file alone
 does not complete a task. **Continue** moves on after success; **Back** and **Skip lesson** let you control the pace. A browser reload
 keeps the current lesson and cart within the same running API session.
