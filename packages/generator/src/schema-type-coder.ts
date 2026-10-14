@@ -149,7 +149,7 @@ export class SchemaTypeCoder extends TypeCoder {
       case "null":
         return ts.factory.createLiteralTypeNode(ts.factory.createNull());
       default:
-        return typeof type === "string" ? typeReference(type) : unknownType();
+        return unknownType();
     }
   }
 

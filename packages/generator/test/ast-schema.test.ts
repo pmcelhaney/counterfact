@@ -13,6 +13,24 @@ async function generateType(schema: Record<string, unknown>): Promise<string> {
 }
 
 describe("AST schema generation", () => {
+  it.each([
+    "unsupported",
+    "string; export const injected = 1; type Other = string",
+  ])(
+    "does not treat an unsupported schema type as TypeScript syntax: %s",
+    async (type) => {
+      const source = await generateType({ type });
+      const parsed = ts.createSourceFile(
+        "generated.ts",
+        source,
+        ts.ScriptTarget.Latest,
+        true,
+      );
+      expect(parsed.statements).toHaveLength(1);
+      expect(source).toContain("export type Example = unknown;");
+      expect(typeDiagnostics(source)).toEqual([]);
+    },
+  );
   it("preserves literal property names and enum values through final printing", async () => {
     const name = 'quote" slash\\ newline\n';
     const value = 'value" slash\\ newline\n';

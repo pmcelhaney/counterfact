@@ -6,6 +6,8 @@ Generated types preserve literal property, parameter, response header, media typ
 and example names and enum values, including quotes, backslashes, and newlines.
 Nested `allOf`, `anyOf`, and `oneOf` schemas
 retain their grouping in the generated TypeScript types.
+Unsupported schema type strings produce `unknown`; use standard OpenAPI types
+and `$ref` references to describe named schemas.
 
 ---
 
