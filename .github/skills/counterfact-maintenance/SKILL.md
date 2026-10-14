@@ -32,6 +32,7 @@ Use this skill when finalizing contributor-facing changes that affect tests, dia
 
 ## Existing conventions to follow
 
+- Keep the root development build stages aligned with `packages/counterfact/package.json` build order and commands. Preserve the self-contained workspace build for packaging; repository-only progress scripts must not become required files in published packages.
 - Use `usingTemporaryFiles()` for filesystem-heavy tests.
 - Keep tests focused by subsystem (`packages/counterfact/test/cli`, `packages/counterfact/test/server`, `packages/counterfact/test/typescript-generator`, `packages/counterfact/test/util`).
 - Preserve documented behavior promises (e.g., regen preserves route edits; types are regenerated).
