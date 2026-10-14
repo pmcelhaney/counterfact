@@ -12,7 +12,7 @@ const ansi = {
 
 export type StartupOutput = {
   error: (message: string) => string;
-  progress: (message: string) => string;
+  progress: (message: string, frame?: string) => string;
   success: (label: string, value?: string) => string;
   title: (version: string) => string;
   warning: (message: string) => string;
@@ -75,8 +75,8 @@ export function createStartupOutput(useColor: boolean): StartupOutput {
     title(version) {
       return `${color(ansi.bold, "Counterfact")} ${color(ansi.dim, `v${version}`)}`;
     },
-    progress(message) {
-      return `${color(ansi.cyan, "→")} ${color(ansi.dim, message)}`;
+    progress(message, frame = "→") {
+      return `${color(ansi.cyan, frame)} ${color(ansi.dim, message)}`;
     },
     success(label, value) {
       const detail =
@@ -88,6 +88,48 @@ export function createStartupOutput(useColor: boolean): StartupOutput {
     },
     error(message) {
       return color(ansi.red, message);
+    },
+  };
+}
+
+/** Owns the transient progress line; redirected output has no terminal controls. */
+export function createStartupReporter(
+  output: StartupOutput,
+  stream: { isTTY?: boolean; write: (text: string) => unknown },
+) {
+  const frames = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"];
+  let timer: ReturnType<typeof setInterval> | undefined;
+  const stop = () => {
+    if (timer !== undefined) {
+      clearInterval(timer);
+      timer = undefined;
+      stream.write("\r\u001B[2K");
+    }
+  };
+
+  return {
+    async step<T>(message: string, operation: () => Promise<T>): Promise<T> {
+      stop();
+      if (stream.isTTY === true) {
+        let frame = 0;
+        const render = () => {
+          stream.write(
+            `\r\u001B[2K${output.progress(message, frames.at(frame))}`,
+          );
+          frame = (frame + 1) % frames.length;
+        };
+        render();
+        timer = setInterval(render, 80);
+        timer.unref();
+      } else {
+        stream.write(`${output.progress(message)}\n`);
+      }
+
+      try {
+        return await operation();
+      } finally {
+        stop();
+      }
     },
   };
 }

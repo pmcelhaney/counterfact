@@ -1,10 +1,11 @@
-import { describe, expect, it } from "@jest/globals";
+import { afterEach, describe, expect, it, jest } from "@jest/globals";
 
 import type { Config } from "../../src/config.js";
 import {
   createGeneratedArtifactsSummary,
   createRuntimeProgressMessage,
   createStartupOutput,
+  createStartupReporter,
   createSwaggerUrls,
   createWatchSummary,
   shouldUseColor,
@@ -14,6 +15,70 @@ const baseConfig: Pick<Config, "generate" | "watch"> = {
   generate: { routes: false, types: false },
   watch: { routes: false, types: false },
 };
+
+describe("startup progress spinner", () => {
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+
+  it("animates only while work is pending and clears before completion", async () => {
+    jest.useFakeTimers();
+    const write = jest.fn<(text: string) => void>();
+    const reporter = createStartupReporter(createStartupOutput(false), {
+      isTTY: true,
+      write,
+    });
+    let finish = () => {};
+    const pending = reporter.step(
+      "Reading OpenAPI document…",
+      () =>
+        new Promise<string>((resolve) => {
+          finish = () => resolve("ready");
+        }),
+    );
+    expect(write).toHaveBeenLastCalledWith(
+      "\r\u001B[2K⠋ Reading OpenAPI document…",
+    );
+    jest.advanceTimersByTime(80);
+    expect(write).toHaveBeenLastCalledWith(
+      "\r\u001B[2K⠙ Reading OpenAPI document…",
+    );
+    finish();
+    await expect(pending).resolves.toBe("ready");
+    expect(write).toHaveBeenLastCalledWith("\r\u001B[2K");
+    const calls = write.mock.calls.length;
+    jest.advanceTimersByTime(800);
+    expect(write).toHaveBeenCalledTimes(calls);
+    expect(jest.getTimerCount()).toBe(0);
+  });
+
+  it("clears failed steps and cancels their animation", async () => {
+    jest.useFakeTimers();
+    const write = jest.fn<(text: string) => void>();
+    const reporter = createStartupReporter(createStartupOutput(true), {
+      isTTY: true,
+      write,
+    });
+    await expect(
+      reporter.step("Generating types…", () =>
+        Promise.reject(new Error("Failed")),
+      ),
+    ).rejects.toThrow("Failed");
+    expect(write).toHaveBeenLastCalledWith("\r\u001B[2K");
+    expect(jest.getTimerCount()).toBe(0);
+  });
+
+  it("keeps redirected progress plain without animation or cursor controls", async () => {
+    jest.useFakeTimers();
+    const write = jest.fn<(text: string) => void>();
+    const reporter = createStartupReporter(createStartupOutput(false), {
+      write,
+    });
+    await reporter.step("Preparing spec-free mock…", () => Promise.resolve());
+    expect(write.mock.calls).toEqual([["→ Preparing spec-free mock…\n"]]);
+    expect(jest.getTimerCount()).toBe(0);
+  });
+});
 
 describe("shouldUseColor", () => {
   it("enables colour for an interactive terminal without NO_COLOR", () => {

@@ -513,10 +513,16 @@ Run `npx counterfact@latest --help` for the full list.
 
 ### Startup output
 
+Counterfact prints its version and a random tagline from its bundled collection.
+
 On startup, Counterfact reports the real work it is doing: loading an OpenAPI
 document, generating enabled artifacts, and preparing the mock runtime. Once
 ready, it prints only the capabilities enabled for that run, such as the mock
 server URL, Swagger UI URL, and active file watching.
+
+Interactive terminals show a spinner while each startup step is running. The
+progress line clears when the step finishes, leaving its completed status.
+Redirected output keeps progress messages on separate lines without animation.
 
 Interactive terminals use colour to distinguish progress, successful work,
 links, warnings, and errors. Redirected output remains plain text, and setting

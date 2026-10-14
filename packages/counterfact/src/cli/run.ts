@@ -17,6 +17,7 @@ import {
   createGeneratedArtifactsSummary,
   createRuntimeProgressMessage,
   createStartupOutput,
+  createStartupReporter,
   createSwaggerUrls,
   createWatchSummary,
   shouldUseColor,
@@ -157,7 +158,7 @@ export function buildStartupTelemetryProperties(
  *
  * @param version - Package version string shown in `--version` output.
  */
-function buildProgram(version: string): Command {
+function buildProgram(version: string, tagline: string): Command {
   const program = new Command();
 
   async function main(source: string, destination: string): Promise<void> {
@@ -337,6 +338,10 @@ function buildProgram(version: string): Command {
         noColor: process.env["NO_COLOR"],
       }),
     );
+    const startupReporter = createStartupReporter(
+      startupOutput,
+      process.stdout,
+    );
     const writeStartupLine = (line: string) => {
       process.stdout.write(`${line}\n`);
     };
@@ -351,6 +356,8 @@ function buildProgram(version: string): Command {
     );
 
     writeStartupLine(startupOutput.title(version));
+    writeStartupLine(tagline);
+    writeStartupLine("");
 
     if (config.startAdminApi && !config.adminApiToken) {
       writeWarning(
@@ -364,32 +371,33 @@ function buildProgram(version: string): Command {
     let didMigrate = false;
 
     if (fs.existsSync(join(config.basePath, "paths"))) {
-      writeStartupLine(
-        startupOutput.progress("Updating legacy project layout…"),
+      await startupReporter.step(
+        "Updating legacy project layout…",
+        async () => {
+          await pathsToRoutes(config.basePath);
+          await fs.promises.rmdir(join(config.basePath, "paths"), {
+            recursive: true,
+          });
+          await fs.promises.rmdir(join(config.basePath, "path-types"), {
+            recursive: true,
+          });
+          await fs.promises.rmdir(join(config.basePath, "components"), {
+            recursive: true,
+          });
+        },
       );
-      await pathsToRoutes(config.basePath);
-      await fs.promises.rmdir(join(config.basePath, "paths"), {
-        recursive: true,
-      });
-      await fs.promises.rmdir(join(config.basePath, "path-types"), {
-        recursive: true,
-      });
-      await fs.promises.rmdir(join(config.basePath, "components"), {
-        recursive: true,
-      });
-
       didMigrate = true;
       writeStartupLine(startupOutput.success("Legacy project layout updated"));
     }
 
-    writeStartupLine(
-      startupOutput.progress(
-        hasOpenApi ? "Reading OpenAPI document…" : "Preparing spec-free mock…",
-      ),
-    );
     const { start, startRepl } = await (async () => {
       try {
-        return await counterfact(config, specs);
+        return await startupReporter.step(
+          hasOpenApi
+            ? "Reading OpenAPI document…"
+            : "Preparing spec-free mock…",
+          () => counterfact(config, specs),
+        );
       } catch (error) {
         process.stderr.write(
           `\n${startupOutput.error(`❌ ${error instanceof Error ? error.message : String(error)}`)}\n\n`,
@@ -425,13 +433,12 @@ function buildProgram(version: string): Command {
       );
     }
 
-    writeStartupLine(
-      startupOutput.progress(createRuntimeProgressMessage(config, hasOpenApi)),
-    );
-
     debug("starting server");
     try {
-      await start(config);
+      await startupReporter.step(
+        createRuntimeProgressMessage(config, hasOpenApi),
+        () => start(config),
+      );
     } catch (error) {
       process.stderr.write(
         `\n${startupOutput.error(`❌ ${error instanceof Error ? error.message : String(error)}`)}\n\n`,
@@ -596,7 +603,7 @@ function buildProgram(version: string): Command {
 /**
  * Entry point for the Counterfact CLI.
  *
- * Reads the package version, then hands off to Commander to parse `argv` and
+ * Reads the package version and a random tagline, then hands off to Commander to parse `argv` and
  * invoke the action handler.
  *
  * @param argv - Raw argument vector, typically `process.argv`.
@@ -613,8 +620,24 @@ export async function runCli(argv: string[]): Promise<void> {
   ) as { version: string };
   const version = packageJson.version;
 
+  let tagline = "counterfact — mock API server";
+  try {
+    const taglinesFile = await fs.promises.readFile(
+      resolve(__dirname, "../../bin/taglines.txt"),
+      "utf8",
+    );
+    const taglines = taglinesFile
+      .split(/\r?\n/u)
+      .map((line) => line.trim())
+      .filter(Boolean);
+    tagline =
+      taglines.at(Math.floor(Math.random() * taglines.length)) ?? tagline;
+  } catch {
+    // A missing optional tagline file must not prevent startup.
+  }
+
   debug("running counterfact CLI v%s", version);
 
-  const program = buildProgram(version);
+  const program = buildProgram(version, tagline);
   await program.parseAsync(argv);
 }
