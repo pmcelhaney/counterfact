@@ -1,5 +1,9 @@
 import createDebugger from "debug";
 import { format } from "prettier";
+import ts from "typescript";
+
+import { AstTypeCoder } from "./ast-type-coder.js";
+import { printNode, withComment } from "./ast.js";
 
 import { escapePathForWindows } from "./windows-escape.js";
 import { pathJoin, pathRelative, pathDirname } from "./forward-slash-path.js";
@@ -126,7 +130,11 @@ export class Script {
 
       .then((availableCoder) => {
         exportStatement.name = name;
-        exportStatement.code = availableCoder.write(this);
+        if (isType && availableCoder instanceof AstTypeCoder) {
+          exportStatement.typeNode = availableCoder.writeNode(this);
+        } else {
+          exportStatement.code = availableCoder.write(this);
+        }
         exportStatement.jsdoc = availableCoder.jsdoc();
 
         return availableCoder;
@@ -380,7 +388,18 @@ export class Script {
         jsdoc,
         name,
         typeDeclaration,
+        typeNode,
       }) => {
+        if (typeNode) {
+          const declaration = ts.factory.createTypeAliasDeclaration(
+            [ts.factory.createModifier(ts.SyntaxKind.ExportKeyword)],
+            name!,
+            undefined,
+            typeNode,
+          );
+          return `${beforeExport}${printNode(withComment(declaration, jsdoc))}`;
+        }
+
         if (typeof code === "object" && code !== null && "raw" in code) {
           return code.raw;
         }

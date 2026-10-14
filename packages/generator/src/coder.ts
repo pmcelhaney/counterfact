@@ -1,4 +1,5 @@
 import { RESERVED_WORDS } from "./reserved-words.js";
+import type ts from "typescript";
 import type { Requirement } from "./requirement.js";
 import type { Script } from "./script.js";
 
@@ -172,6 +173,7 @@ export interface ExportStatement {
   typeDeclaration: string;
   name?: string;
   code?: string | { raw: string };
+  typeNode?: ts.TypeNode;
   error?: Error;
   promise?: Promise<Coder | undefined>;
 }

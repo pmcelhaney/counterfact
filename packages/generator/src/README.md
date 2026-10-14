@@ -35,6 +35,22 @@ We can also use those types on the _client_ side, assuming the client is written
 
 ## Architecture
 
+### AST migration
+
+Schema type generation now builds TypeScript AST nodes through `AstTypeCoder`.
+Migrated coders compose child types with `writeNode()`, and `Script` prints their
+type declarations before applying Prettier. The inherited `write()` method is a
+temporary text bridge for callers that have not migrated yet.
+
+`ast.ts` centralizes printing, literal property names, type references, and
+synthetic JSDoc. TypeScript is an explicit, pinned generator dependency because
+its compiler API is used when the installed package generates files.
+
+Keep OpenAPI traversal and file-writing policy separate from AST construction.
+Existing route edits must survive regeneration, including when new handlers are
+added. Check generated assignment behavior as well as snapshots when changing
+type composition.
+
 ```
 openapi.yaml
      │
