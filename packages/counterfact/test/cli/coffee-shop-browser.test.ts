@@ -205,17 +205,15 @@ it("shows shopper availability while adding to the cart leaves API inventory unc
   expect(app.root("products").textContent).toContain("4 bags available");
 });
 
-it("automatically compares actual unchanged and decreased inventory after orders", async () => {
+it("automatically refreshes shop availability after accepted orders", async () => {
   const app = await browser();
   app.add();
   await app.order();
-  expect(app.root("purchase-effect").textContent).toContain("inventory 5 → 5");
-  expect(app.root("purchase-effect").textContent).toContain("did not change");
+  expect(app.root("products").textContent).toContain("5 bags available");
   app.server.deduct = true;
   app.add();
   await app.order();
-  expect(app.root("purchase-effect").textContent).toContain("inventory 5 → 4");
-  expect(app.root("purchase-effect").textContent).toContain("5 − 1 = 4");
+  expect(app.root("products").textContent).toContain("4 bags available");
   expect(app.calls.filter((path) => path === "/orders")).toHaveLength(2);
 });
 
@@ -228,7 +226,7 @@ it("observes a live inventory edit and credits the response without manual refre
   await app.poll();
   expect(app.read("progress.done")).toBe(true);
   expect(app.root("products").textContent).toContain("Decaf");
-  expect(app.root("history").textContent).toContain("Decaf 0 → 5");
+  expect(app.stocks.decaf).toBe(5);
 });
 
 it("keeps rejected carts and explains server-reported requested and available quantities", async () => {
@@ -241,7 +239,6 @@ it("keeps rejected carts and explains server-reported requested and available qu
     "House Blend: your cart requested 1; the order API reported 0 available",
   );
   expect(app.root("cart").textContent).toContain("House Blend × 1");
-  expect(app.root("history").textContent).toContain("Rejected");
 });
 
 it.each(["invalid", "offline"])(
@@ -274,25 +271,16 @@ it("distinguishes an unknown confirmation from rejection and prevents duplicate 
   expect(app.root("shop-notice").textContent).toContain(
     "may have been accepted",
   );
-  expect(app.root("history").textContent).toContain("Unknown");
   expect(app.root("cart").textContent).toContain("House Blend × 1");
 });
 
-it("preserves history on reload and lets inspection show an older request without sending it again", async () => {
+it("preserves the current lesson and cart on reload without another order", async () => {
   const app = await browser();
+  app.read("progress.step=1;showLesson()");
   app.add();
-  await app.order();
-  app.server.deduct = true;
-  app.add();
-  await app.order();
   const restored = await browser(app.storage, app.stocks);
-  expect(restored.root("history").textContent).toContain("Purchase #1");
-  const firstRow = find(
-    restored.root("history"),
-    (node) => node.tag === "tr" && node.textContent.includes("Purchase #1"),
-  )!;
-  find(firstRow, (node) => node.tag === "button")!.onclick!();
-  expect(restored.root("history").textContent).toContain('"orderId": 1');
+  expect(restored.read("progress.step")).toBe(1);
+  expect(restored.root("cart").textContent).toContain("House Blend × 1");
   expect(restored.calls).not.toContain("/orders");
 });
 

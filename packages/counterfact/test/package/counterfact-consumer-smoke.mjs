@@ -171,7 +171,6 @@ try {
     "coffee-shop-progress",
     "coffee-shop-action",
     "coffee-shop-validation",
-    "coffee-shop-observations",
     "counterfact-logo",
   ]) {
     assert.ok(

@@ -46,15 +46,14 @@ The walkthrough starts with a normal purchase, then guides you through:
 
 6. Making another purchase and seeing five bags become four.
 
-Each lesson poses a small question to investigate in the real shop. Compare
-actual inventory before and after a purchase; open **Show code hint** when you
+Follow the instructions beside the real shop. Open **Show code hint** when you
 want the exact file or example edit. File names and displayed file paths in the
 instructions open the corresponding file in VSCode. The instructions bold the next action. Cart changes and successful orders move
 the emphasis automatically. Saved lesson files are detected automatically and their
 handlers are called with fresh test inventory. A passing check moves the emphasis
 to trying the change in the shop; an unexpected response or broken handler shows
 an alert explaining the mismatch. Fix the code and save again to rerun the check.
-Test orders do not consume the shop’s inventory or affect its cart and history.
+Test orders do not consume the shop’s inventory or affect its cart.
 REPL actions still use the displayed confirmation buttons. Checks and confirmations
 do not replace the shopper actions required to complete the lesson.
 
@@ -62,11 +61,6 @@ Product cards use shopper-facing messages such as **4 bags available** or
 **Sold out**, without exposing where inventory is stored. Adding bags changes the cart and availability
 immediately; reducing a quantity or removing an item restores availability.
 Only the API reports inventory changes after purchases or context updates.
-**What the purchase did**, below the lesson in the instructions panel, compares
-the last order with its next product response.
-**What happened**, also in the instructions panel, keeps up to 30 purchases and observed inventory changes. Use
-**Inspect** to compare actual requests, responses, and inventory snapshots. This
-history survives a reload within the same API session; inspecting it sends no order.
 If the products response fails or contains invalid stock, cards show **Availability temporarily unavailable** and buying pauses until a fresh response arrives. Stock rejections
 show the requested and available quantities reported by the order API. Missing
 order confirmations are labeled unknown rather than rejected; the cart is kept.
