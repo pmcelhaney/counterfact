@@ -1,6 +1,7 @@
 export class CoffeeShopProgress {
   step = 0;
   done = false;
+  inventoryUpdated = false;
   lastOrder:
     | { items: { productId: string; quantity: number }[]; stock: number }
     | undefined;
@@ -59,7 +60,11 @@ export class CoffeeShopProgress {
       success &&
       items.some((item) => item.productId === "dark-roast")
     ) {
-      this.lastOrder = { items, stock };
+      if (this.lastOrder && this.lastOrder.stock === stock) {
+        this.lastOrder.items.push(...items);
+      } else {
+        this.lastOrder = { items: items.map((item) => ({ ...item })), stock };
+      }
     }
   }
 
@@ -67,6 +72,8 @@ export class CoffeeShopProgress {
     if (this.done) return;
     if (this.step === 2 && stock["decaf"] === 5) this.done = true;
     if (this.step === 9 && stock["dark-roast"] === 5) this.done = true;
+    if (this.step === 8 && this.inventoryUpdated && stock["dark-roast"] === 0)
+      this.done = true;
     if (!this.lastOrder) return;
     const quantity = this.lastOrder.items
       .filter((item) => item.productId === "dark-roast")
@@ -77,8 +84,10 @@ export class CoffeeShopProgress {
       this.step === 7 &&
       this.lastOrder.stock > 0 &&
       stock["dark-roast"] === this.lastOrder.stock - quantity
-    )
+    ) {
       this.done = true;
+      this.inventoryUpdated = true;
+    }
     if (
       this.step === 8 &&
       this.lastOrder.stock === quantity &&

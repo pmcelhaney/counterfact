@@ -62,3 +62,17 @@ it("requires an order followed by the expected stock change and subsequent REPL 
   lesson.next();
   expect(lesson.step).toBe(11);
 });
+
+it("accounts for multiple purchases before refresh and an already sold-out result", () => {
+  const lesson = new CoffeeShopProgress();
+  lesson.step = 7;
+  const item = [{ productId: "dark-roast", quantity: 1 }];
+  lesson.order(true, item, 3, 201);
+  lesson.order(true, item, 3, 201);
+  lesson.order(true, item, 3, 201);
+  lesson.products({ "dark-roast": 0 });
+  expect(lesson.done).toBe(true);
+  lesson.next();
+  lesson.products({ "dark-roast": 0 });
+  expect(lesson.done).toBe(true);
+});

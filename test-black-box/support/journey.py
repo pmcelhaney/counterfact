@@ -99,6 +99,10 @@ class ReplTerminal:
         except OSError:
             pass
 
+        # Close the master before waiting: an exiting child can otherwise
+        # remain blocked draining terminal output that nobody is reading.
+        os.close(self.terminal)
+
         def wait_for_exit(timeout):
             deadline = time.monotonic() + timeout
             while time.monotonic() < deadline:
@@ -111,19 +115,16 @@ class ReplTerminal:
                 time.sleep(0.05)
             return False
 
-        try:
-            if wait_for_exit(2):
+        if wait_for_exit(2):
+            return
+        for stop_signal in (signal.SIGTERM, signal.SIGKILL):
+            try:
+                os.kill(self.process_id, stop_signal)
+            except ProcessLookupError:
                 return
-            for stop_signal in (signal.SIGTERM, signal.SIGKILL):
-                try:
-                    os.kill(self.process_id, stop_signal)
-                except ProcessLookupError:
-                    return
-                if wait_for_exit(3):
-                    return
-            raise AssertionError(f"Terminal child {self.process_id} did not terminate.\n{self.transcript()}")
-        finally:
-            os.close(self.terminal)
+            if wait_for_exit(3):
+                return
+        raise AssertionError(f"Terminal child {self.process_id} did not terminate.\n{self.transcript()}")
 
 
 @dataclass

@@ -24,14 +24,14 @@ function renderProducts(){
     const card=element('article','', 'card');card.dataset.productId=product.id;
     const bag=element('div','','bag '+product.id);bag.append(element('div',product.name,'bag-label'));card.append(bag,element('h3',product.name),element('p',product.description),element('div',money(product.price)+' / 250g','price'));
     card.append(element('div',product.stock>0?product.stock+' bags available':'Sold out','stock'));
-    const add=element('button','Add to cart');add.disabled=product.stock<=0||((cart[product.id]||0)>=product.stock);add.onclick=()=>{cart[product.id]=(cart[product.id]||0)+1;$('shop-notice').replaceChildren();renderProducts();renderCart();onCart();};card.append(add);$('products').append(card);
+    const add=element('button','Add to cart');add.disabled=busy||product.stock<=0||((cart[product.id]||0)>=product.stock);add.onclick=()=>{cart[product.id]=(cart[product.id]||0)+1;$('shop-notice').replaceChildren();renderProducts();renderCart();onCart();};card.append(add);$('products').append(card);
   }
 }
 function renderCart(){
   $('cart').replaceChildren();let total=0;
   for(const [id,quantity] of Object.entries(cart)){
     const product=products.find(p=>p.id===id);if(!product)continue;total+=product.price*quantity;
-    const row=element('div','','cart-row');row.append(element('span',product.name+' × '+quantity));const remove=element('button','Remove','secondary');remove.onclick=()=>{delete cart[id];renderProducts();renderCart();};row.append(remove);$('cart').append(row);
+    const row=element('div','','cart-row');row.append(element('span',product.name+' × '+quantity));const quantities=element('span');for(const [label,delta] of [['−',-1],['+',1]]){const button=element('button',label,'secondary');button.setAttribute('aria-label',(delta<0?'Decrease ':'Increase ')+product.name+' quantity');button.disabled=busy||(delta>0&&quantity>=product.stock);button.onclick=()=>{const next=quantity+delta;if(next===0)delete cart[id];else cart[id]=next;renderProducts();renderCart();onCart();};quantities.append(button);}row.append(quantities);const remove=element('button','Remove','secondary');remove.disabled=busy;remove.onclick=()=>{delete cart[id];renderProducts();renderCart();};row.append(remove);$('cart').append(row);
   }
   if(!Object.keys(cart).length)$('cart').append(element('p','Your cart is empty. Choose a coffee above.'));
   $('total').textContent=money(total);$('checkout').disabled=busy||!Object.keys(cart).length;
@@ -43,10 +43,10 @@ async function refreshProducts(){
   finally{$('refresh').disabled=false;}
 }
 async function placeOrder(){
-  if(busy||!Object.keys(cart).length)return;busy=true;renderCart();const items=Object.entries(cart).map(([productId,quantity])=>({productId,quantity}));
+  if(busy||!Object.keys(cart).length)return;busy=true;renderProducts();renderCart();const items=Object.entries(cart).map(([productId,quantity])=>({productId,quantity}));
   try{const response=await fetch('/orders',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({items})});const result=await response.json();if(!response.ok){notice(response.status===409?result.error:'We couldn’t place your order. Your cart is kept—please try again.',true);$('checkout').textContent='Try again';onOrder(false,items,response.status);return;}if(response.status!==201||!Number.isInteger(result.orderId))throw Error('Invalid order confirmation');cart={};notice('Thanks! Demo order #'+result.orderId+' is confirmed.');$('checkout').textContent='Place order';renderProducts();onOrder(true,items,response.status);}
   catch(error){notice('We couldn’t place your order. Your cart is kept—please try again.',true);$('checkout').textContent='Try again';$('guide-status').textContent='The order request could not be completed. Check Counterfact and retry.';}
-  finally{busy=false;renderCart();}
+  finally{busy=false;renderProducts();renderCart();}
 }
 const lessons = [
   ['Your local coffee shop is running','First, make a purchase. Then change the API and see how the shop responds. Keep Counterfact running in your terminal.'],

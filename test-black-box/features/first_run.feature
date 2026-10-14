@@ -105,3 +105,19 @@ Feature: Find a useful starting point on the first run
     When I run Counterfact without arguments in a terminal
     And I start the guided example on an available port
     Then the coffee shop serves products and accepts a demo purchase
+
+  Scenario: Update coffee inventory in a handler and restock through the REPL
+    Given an empty first-run directory
+    When I run Counterfact without arguments in a terminal
+    And I start the guided example on an available port
+    Then the coffee shop serves products and accepts a demo purchase
+    When I make Decaf available by editing its product handler
+    Then the coffee API returns the changed stock and accepts a Decaf order
+    When I make ordering unavailable and then restore it
+    Then an unsuccessful order preserves inventory and a retry succeeds
+    When I add the inventory mutation to the successful order handler
+    Then buying coffee reduces the inventory returned by the products API
+    When I purchase the remaining Dark Roast stock
+    Then Dark Roast is sold out and another order is rejected
+    When I restock Dark Roast through the running REPL
+    Then the products API shows five bags and the next purchase leaves four
