@@ -1,6 +1,7 @@
 import { valueExpression, printNode } from "../src/ast.js";
 import { describe, expect, it } from "@jest/globals";
 import { format as formatCode } from "prettier";
+import { runInNewContext } from "node:vm";
 
 import { Requirement } from "../src/requirement.js";
 import { SchemaCoder } from "../src/schema-coder.js";
@@ -10,6 +11,31 @@ function format(code) {
 }
 
 describe("a SchemaCoder", () => {
+  it("preserves escaped schema keys and own __proto__ properties", () => {
+    const properties = JSON.parse(
+      '{"slash/name":{"type":"string"},"__proto__":{"type":"number"}}',
+    );
+    const node = new SchemaCoder(
+      new Requirement({ type: "object", properties }),
+    ).writeCode(undefined);
+    const result = runInNewContext("(" + printNode(node) + ")");
+    expect(Object.hasOwn(result.properties, "__proto__")).toBe(true);
+    expect(JSON.stringify(result)).toBe(
+      JSON.stringify({ type: "object", required: [], properties }),
+    );
+  });
+
+  it("retains JSON serialization of dates and undefined values", () => {
+    const data = {
+      type: "string",
+      default: new Date("2026-10-14T00:00:00.000Z"),
+      omitted: undefined,
+    };
+    const node = new SchemaCoder(new Requirement(data)).writeCode(undefined);
+    expect(JSON.stringify(runInNewContext("(" + printNode(node) + ")"))).toBe(
+      JSON.stringify(data),
+    );
+  });
   it("generates a list of potential names", () => {
     const coder = new SchemaCoder(
       new Requirement({ $ref: "/components/schemas/Example" }),

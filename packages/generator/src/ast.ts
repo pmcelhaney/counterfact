@@ -144,19 +144,25 @@ export function importDeclaration(
 }
 
 export function valueExpression(value: unknown): ts.Expression {
+  // Normalize JSON data as the previous serializer did, including dates and
+  // omitted undefined properties. This parses data, never TypeScript fragments.
+  const json = JSON.stringify(value);
+  if (json === undefined)
+    throw new Error(`Cannot generate a JSON expression for ${typeof value}`);
+  return jsonExpression(JSON.parse(json) as unknown);
+}
+
+function jsonExpression(value: unknown): ts.Expression {
   if (value === null) return ts.factory.createNull();
   if (typeof value === "string") return ts.factory.createStringLiteral(value);
   if (typeof value === "number") return literalType(value).literal;
   if (typeof value === "boolean")
     return value ? ts.factory.createTrue() : ts.factory.createFalse();
   if (Array.isArray(value))
-    return ts.factory.createArrayLiteralExpression(value.map(valueExpression));
+    return ts.factory.createArrayLiteralExpression(value.map(jsonExpression));
   if (typeof value === "object")
     return objectExpression(
-      Object.entries(value).map(([name, item]) => [
-        name,
-        valueExpression(item),
-      ]),
+      Object.entries(value).map(([name, item]) => [name, jsonExpression(item)]),
     );
   throw new Error(`Cannot generate a JSON expression for ${typeof value}`);
 }
@@ -177,6 +183,36 @@ export function objectExpression(
       ),
     ),
     multiline,
+  );
+}
+
+export function exportedConst(
+  name: string,
+  value: ts.Expression,
+  type?: ts.TypeNode,
+): ts.VariableStatement {
+  return ts.factory.createVariableStatement(
+    [ts.factory.createModifier(ts.SyntaxKind.ExportKeyword)],
+    ts.factory.createVariableDeclarationList(
+      [ts.factory.createVariableDeclaration(name, undefined, type, value)],
+      ts.NodeFlags.Const,
+    ),
+  );
+}
+
+export function readonlyProperty(
+  name: string,
+  type: ts.TypeNode,
+  description: string,
+): ts.PropertySignature {
+  return withJsDoc(
+    ts.factory.createPropertySignature(
+      [ts.factory.createModifier(ts.SyntaxKind.ReadonlyKeyword)],
+      name,
+      undefined,
+      type,
+    ),
+    { description },
   );
 }
 

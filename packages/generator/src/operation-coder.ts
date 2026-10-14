@@ -70,13 +70,16 @@ export class OperationCoder extends Coder {
         : "empty";
     const statements: ts.Statement[] = [];
     if (streaming) {
-      const body = ts.factory.createBlock([], true);
+      const placeholder = ts.factory.createNotEmittedStatement(
+        ts.factory.createIdentifier("items"),
+      );
       ts.addSyntheticLeadingComment(
-        body,
+        placeholder,
         ts.SyntaxKind.SingleLineCommentTrivia,
         " yield items here",
         true,
       );
+      const body = ts.factory.createBlock([placeholder], true);
       statements.push(
         ts.factory.createFunctionDeclaration(
           [ts.factory.createModifier(ts.SyntaxKind.AsyncKeyword)],

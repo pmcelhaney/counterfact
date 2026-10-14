@@ -2850,7 +2850,9 @@ export type HTTP_GET_Headers = { "x-api-key": string };
 exports[`end-to-end test generates the same code for the example that it did on the last test run 46`] = `
 "routes/stream/events.ts:import type { streamEvents } from "../../types/paths/stream/events.types.js";
 export const GET: streamEvents = async ($) => {
-  async function* items() {}
+  async function* items() {
+    // yield items here
+  }
   return $.response[200].stream(items());
 };
 "

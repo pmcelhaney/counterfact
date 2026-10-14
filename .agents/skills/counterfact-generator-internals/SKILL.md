@@ -33,6 +33,8 @@ Use this skill when changing OpenAPI loading/bundling, schema-to-type generation
 - Keep generated output deterministic and formatted via existing script/repository pipeline.
 - Type coders return `TypeNode`s and runtime coders return `Expression`s from `write()`. Compose nodes with TypeScript factories and the AST helpers; do not print and reparse fragments or interpolate TypeScript source text.
 - Assemble imports, exports, and version declarations as statements in `Script`. Resolve context module references before printing; do not replace placeholder tokens in generated source.
+- Use the same AST helpers for versions, scenarios, middleware, and starter files. For route regeneration, inspect user-authored ASTs and insert printed generated declarations at source offsets; do not reprint the existing route or match handlers with regular expressions.
+- Keep context import aliases unique and valid even when path names sanitize to the same identifier or start with a digit. Build parameterized path types with template literal nodes.
 - Keep TypeScript's compiler API dependency explicit and pinned in `@counterfact/generator`; a sibling package's dependency does not satisfy the packed generator.
 - Use the AST helpers for literal names, comments, and grouping. Preserve compact type-literal printing so Prettier does not introduce avoidable snapshot churn.
 - Validate generated syntax and assignment behavior for escaping and union/intersection precedence; snapshots alone do not establish type correctness.
