@@ -34,8 +34,9 @@ function renderProducts(){
   for(const product of products){
     const card=element('article','', 'card');card.dataset.productId=product.id;
     const bag=element('div','','bag '+product.id);bag.append(element('div',product.name,'bag-label'));card.append(bag,element('h3',product.name),element('p',product.description),element('div',money(product.price)+' / 250g','price'));
-    card.append(element('div',product.stock>0?product.stock+' bags available':'Sold out','stock'));
-    const add=element('button','Add to cart');add.disabled=busy||product.stock<=0||((cart[product.id]||0)>=product.stock);add.onclick=()=>{cart[product.id]=(cart[product.id]||0)+1;$('shop-notice').replaceChildren();renderProducts();renderCart();onCart();};card.append(add);$('products').append(card);
+    const inCart=cart[product.id]||0;const available=Math.max(0,product.stock-inCart);
+    card.append(element('div',(product.stock>0?available+' bags available':'Sold out')+(inCart?' · '+inCart+' in your cart':''),'stock'));
+    const add=element('button','Add to cart');add.disabled=busy||available===0;add.onclick=()=>{cart[product.id]=(cart[product.id]||0)+1;$('shop-notice').replaceChildren();renderProducts();renderCart();onCart();};card.append(add);$('products').append(card);
   }
 }
 function renderCart(){
