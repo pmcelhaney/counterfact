@@ -171,6 +171,7 @@ try {
     "coffee-shop-progress",
     "coffee-shop-action",
     "coffee-shop-observations",
+    "counterfact-logo",
   ]) {
     assert.ok(
       packFiles.includes(`dist/cli/${module}.js`),
