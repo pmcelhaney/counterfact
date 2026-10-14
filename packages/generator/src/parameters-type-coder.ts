@@ -1,13 +1,13 @@
 import type ts from "typescript";
 
 import { neverType, typeLiteral, typeProperty } from "./ast.js";
-import { AstTypeCoder } from "./ast-type-coder.js";
+import { TypeCoder } from "./type-coder.js";
 import { pathJoin } from "./forward-slash-path.js";
 import { SchemaTypeCoder } from "./schema-type-coder.js";
 import type { Requirement } from "./requirement.js";
 import type { Script } from "./script.js";
 
-export class ParametersTypeCoder extends AstTypeCoder {
+export class ParametersTypeCoder extends TypeCoder {
   public placement: string;
 
   public constructor(requirement: Requirement, version = "", placement = "") {
@@ -19,7 +19,7 @@ export class ParametersTypeCoder extends AstTypeCoder {
     return super.names("parameters");
   }
 
-  public override buildTypeNode(script: Script): ts.TypeNode {
+  public override writeCode(script: Script): ts.TypeNode {
     const members = ((this.requirement?.data as unknown as unknown[]) ?? [])
       .map((_, index) => this.requirement.get(index)!)
       .filter((parameter) => parameter.get("in")!.data === this.placement)
@@ -29,7 +29,7 @@ export class ParametersTypeCoder extends AstTypeCoder {
         const schema = parameter.get("schema") ?? parameter;
         return typeProperty(
           String(name),
-          new SchemaTypeCoder(schema, this.version).writeNode(script),
+          new SchemaTypeCoder(schema, this.version).write(script),
           !required,
           parameter.data,
         );

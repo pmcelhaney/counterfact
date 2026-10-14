@@ -1,3 +1,12 @@
+import ts from "typescript";
+import {
+  importDeclaration,
+  stringType,
+  typeLiteral,
+  typeProperty,
+  valueExpression,
+  printNode,
+} from "../src/ast.js";
 import { describe, expect, it } from "@jest/globals";
 
 import { Coder } from "../src/coder.js";
@@ -96,7 +105,7 @@ describe("a Script", () => {
 
     script.importExternalType("ResponseBuilderFactory", "file.ts");
 
-    expect(script.importStatements()).toStrictEqual([
+    expect(script.importStatements().map(printNode)).toStrictEqual([
       'import { Account0 } from "./export-from-me.js";',
       'import type { Account1 } from "./export-from-me.js";',
       'import Account2 from "./export-from-me.js";',
@@ -122,7 +131,7 @@ describe("a Script", () => {
 
     script.importType(coder);
 
-    expect(script.importStatements()).toStrictEqual([
+    expect(script.importStatements().map(printNode)).toStrictEqual([
       'import type { stuffAction } from "../types/paths/stuff∶action.types.js";',
     ]);
   });
@@ -135,7 +144,7 @@ describe("a Script", () => {
     script.importExternal("SomeClass", "code.ts");
     script.importExternalType("SomeType", "type.ts");
 
-    expect(script.externalImportStatements()).toStrictEqual([
+    expect(script.externalImportStatements().map(printNode)).toStrictEqual([
       'import { SomeClass } from "code.ts";',
       'import type { SomeType } from "type.ts";',
     ]);
@@ -150,11 +159,11 @@ describe("a Script", () => {
     script1.importSharedType("SomeType");
     script2.importSharedType("SomeType");
 
-    expect(script1.externalImportStatements()).toStrictEqual([
+    expect(script1.externalImportStatements().map(printNode)).toStrictEqual([
       'import type { SomeType } from "../counterfact-types/index.ts";',
     ]);
 
-    expect(script2.externalImportStatements()).toStrictEqual([
+    expect(script2.externalImportStatements().map(printNode)).toStrictEqual([
       'import type { SomeType } from "../../../counterfact-types/index.ts";',
     ]);
   });
@@ -185,7 +194,7 @@ describe("a Script", () => {
     script.importType(coder);
     script.importDefault(coder);
 
-    expect(script.importStatements()).toStrictEqual([
+    expect(script.importStatements().map(printNode)).toStrictEqual([
       'import { Account0 } from "../../types/export-from-me.js";',
       'import type { Account1 } from "../../types/export-from-me.js";',
       'import Account2 from "../../types/export-from-me.js";',
@@ -201,7 +210,7 @@ describe("a Script", () => {
       }
 
       write() {
-        return "{ }";
+        return ts.factory.createObjectLiteralExpression([]);
       }
     }
 
@@ -211,7 +220,7 @@ describe("a Script", () => {
       }
 
       write() {
-        return "{ }";
+        return typeLiteral([]);
       }
     }
 
@@ -222,9 +231,9 @@ describe("a Script", () => {
 
     await script.finished();
 
-    expect(script.exportStatements()).toStrictEqual([
-      "export const Account = { };",
-      "export type AccountType = { };",
+    expect(script.exportStatements().map(printNode)).toStrictEqual([
+      "export const Account = {};",
+      "export type AccountType = {};",
     ]);
   });
 
@@ -239,7 +248,7 @@ describe("a Script", () => {
       }
 
       write() {
-        return "{ id: string }";
+        return typeLiteral([typeProperty("id", stringType())]);
       }
     }
 
@@ -251,7 +260,10 @@ describe("a Script", () => {
       }
 
       write() {
-        return "{ id: string, email: string }";
+        return typeLiteral([
+          typeProperty("id", stringType()),
+          typeProperty("email", stringType()),
+        ]);
       }
     }
 
@@ -262,8 +274,8 @@ describe("a Script", () => {
 
     await script.finished();
 
-    expect(script.versionsTypeStatements()).toStrictEqual([
-      'export type Versions = { "Account": { "1.0.0": { id: string }, "2.0.0": { id: string, email: string } } };',
+    expect(script.versionsTypeStatements().map(printNode)).toStrictEqual([
+      'export type Versions = { Account: { "1.0.0": { id: string; }; "2.0.0": { id: string; email: string; }; }; };',
     ]);
   });
 
@@ -274,15 +286,33 @@ describe("a Script", () => {
 
     script.comments = ["This is a comment."];
 
-    script.importStatements = () => ["import { foo } from './foo.js';"];
-
-    script.exportStatements = () => [
-      'export const bar = "Bar";',
-      "export default class {};",
-    ];
-
+    script.importStatements = () => [importDeclaration("foo", "./foo.js")];
+    class BarCoder extends Coder {
+      *names() {
+        yield "bar";
+      }
+      write() {
+        return valueExpression("Bar");
+      }
+    }
+    class ClassCoder extends Coder {
+      *names() {
+        yield "DefaultClass";
+      }
+      write() {
+        return ts.factory.createClassExpression(
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          [],
+        );
+      }
+    }
+    script.export(new BarCoder({}));
+    script.exportDefault(new ClassCoder({}));
     await expect(script.contents()).resolves.toBe(
-      '// This is a comment.\n\nimport { foo } from "./foo.js";\n\nexport const bar = "Bar";\n\nexport default class {}\n',
+      '// This is a comment.\nimport { foo } from "./foo.js";\nexport const bar = "Bar";\nexport default (class {});\n',
     );
   });
 
@@ -294,7 +324,7 @@ describe("a Script", () => {
       public version = "2025-01";
 
       write() {
-        return "{ id: string }";
+        return typeLiteral([typeProperty("id", stringType())]);
       }
     }
 

@@ -12,7 +12,6 @@ import {
   pathRelative,
   pathDirname,
 } from "./forward-slash-path.js";
-import { CONTEXT_FILE_TOKEN } from "./context-file-token.js";
 import { Script } from "./script.js";
 import { escapePathForWindows } from "./windows-escape.js";
 
@@ -183,7 +182,9 @@ export class Repository {
 
       async ([path, script]) => {
         const fullPath = resolveDestinationPath(destination, path);
-        const contents = await script.contents();
+        const contents = await script.contents(
+          this.findContextPath(destination, path),
+        );
 
         await ensureDirectoryExists(fullPath);
 
@@ -198,13 +199,7 @@ export class Repository {
 
           if (fileExists) {
             debug(`route file exists, checking for new handlers: ${fullPath}`);
-            await this.appendNewHandlers(
-              fullPath,
-              contents.replaceAll(
-                CONTEXT_FILE_TOKEN,
-                this.findContextPath(destination, path),
-              ),
-            );
+            await this.appendNewHandlers(fullPath, contents);
 
             return;
           }
@@ -212,13 +207,7 @@ export class Repository {
 
         if (shouldWriteRoutes || shouldWriteTypes) {
           debug("about to write", fullPath);
-          await fs.writeFile(
-            fullPath,
-            contents.replaceAll(
-              CONTEXT_FILE_TOKEN,
-              this.findContextPath(destination, path),
-            ),
-          );
+          await fs.writeFile(fullPath, contents);
           debug("did write", fullPath);
         }
       },

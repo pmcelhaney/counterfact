@@ -31,17 +31,17 @@ We can also use those types on the _client_ side, assuming the client is written
 | `schema-coder.ts`                | `SchemaCoder`: generates a JSON Schema representation of an OpenAPI schema for use in runtime validation                                                                                                             |
 | `context-file-token.ts`          | Exports a placeholder token used to reference context file paths during code generation                                                                                                                              |
 | `ast.ts`                         | TypeScript AST construction and printing helpers                                                                                                                                                                    |
-| `ast-type-coder.ts`               | Base class for type coders that compose AST nodes                                                                                                                                                                   |
 | `read-only-comments.ts`          | Standard warning comments inserted into generated type files to discourage manual edits                                                                                                                              |
 
 ## Architecture
 
-### AST migration
+### AST assembly
 
-Schema, parameter, and response type generation now builds TypeScript AST nodes through `AstTypeCoder`.
-Migrated coders compose child types with `writeNode()`, and `Script` prints their
-type declarations before applying Prettier. The inherited `write()` method is a
-temporary text bridge for callers that have not migrated yet.
+Type coders compose `TypeNode`s, and runtime coders compose `Expression`s through
+`write()`. `Script` assembles import, export, and version declarations into a
+`SourceFile`; the TypeScript printer emits it before Prettier formats the result.
+Versioned operations register declaration builders rather than raw source text.
+Context imports resolve their module paths before printing.
 
 `ast.ts` centralizes printing, literal property names, type references, and
 synthetic JSDoc. TypeScript is an explicit, pinned generator dependency because

@@ -1,3 +1,4 @@
+import { printNode } from "../src/ast.js";
 import { describe, expect, it } from "@jest/globals";
 
 import { ParametersTypeCoder } from "../src/parameters-type-coder.js";
@@ -95,9 +96,11 @@ describe("AST parameter and response contracts", () => {
         },
       }),
     );
-    const source = coder.writeCode({
-      importSharedType: (name: string) => name,
-    });
+    const source = printNode(
+      coder.writeCode({
+        importSharedType: (name: string) => name,
+      }),
+    );
 
     expect(
       typeDiagnostics(`

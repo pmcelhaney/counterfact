@@ -63,8 +63,10 @@ describe("a ResponsesTypeCoder", () => {
   it("imports HttpStatusCode explicitly when default is present", () => {
     const names: string[] = [];
     const script = { importSharedType: (name: string) => names.push(name) };
-    new ResponsesTypeCoder(new Requirement({ 200: {}, default: {} })).writeCode(
-      script,
+    printNode(
+      new ResponsesTypeCoder(
+        new Requirement({ 200: {}, default: {} }),
+      ).writeCode(script),
     );
     expect(names).toEqual(["ResponseBuilderFactory", "HttpStatusCode"]);
   });
@@ -72,17 +74,19 @@ describe("a ResponsesTypeCoder", () => {
   it("does not mistake an example named HttpStatusCode for a type dependency", () => {
     const names: string[] = [];
     const script = { importSharedType: (name: string) => names.push(name) };
-    new ResponsesTypeCoder(
-      new Requirement({
-        200: {
-          content: {
-            "application/json": {
-              examples: { HttpStatusCode: { value: "example" } },
+    printNode(
+      new ResponsesTypeCoder(
+        new Requirement({
+          200: {
+            content: {
+              "application/json": {
+                examples: { HttpStatusCode: { value: "example" } },
+              },
             },
           },
-        },
-      }),
-    ).writeCode(script);
+        }),
+      ).writeCode(script),
+    );
     expect(names).toEqual(["ResponseBuilderFactory"]);
   });
 });

@@ -7,13 +7,13 @@ import {
   unionType,
   unknownType,
 } from "./ast.js";
-import { AstTypeCoder } from "./ast-type-coder.js";
+import { TypeCoder } from "./type-coder.js";
 import { pathJoin } from "./forward-slash-path.js";
 import { buildJsDoc } from "./jsdoc.js";
 import { Requirement } from "./requirement.js";
 import type { Script } from "./script.js";
 
-export class SchemaTypeCoder extends AstTypeCoder {
+export class SchemaTypeCoder extends TypeCoder {
   public override names(): Generator<string> {
     return super.names(this.requirement.refUrl?.split("/").at(-1));
   }
@@ -40,7 +40,7 @@ export class SchemaTypeCoder extends AstTypeCoder {
     return new SchemaTypeCoder(
       this.requirement.get("additionalProperties")!,
       this.version,
-    ).writeNode(script);
+    ).write(script);
   }
 
   public objectSchema(script: Script): ts.TypeNode {
@@ -59,7 +59,7 @@ export class SchemaTypeCoder extends AstTypeCoder {
 
         return typeProperty(
           name,
-          new SchemaTypeCoder(property, this.version).writeNode(script),
+          new SchemaTypeCoder(property, this.version).write(script),
           !isRequired,
           property.data,
         );
@@ -89,10 +89,9 @@ export class SchemaTypeCoder extends AstTypeCoder {
 
   public arraySchema(script: Script): ts.TypeNode {
     return typeReference("Array", [
-      new SchemaTypeCoder(
-        this.requirement.get("items")!,
-        this.version,
-      ).writeNode(script),
+      new SchemaTypeCoder(this.requirement.get("items")!, this.version).write(
+        script,
+      ),
     ]);
   }
 
@@ -168,7 +167,7 @@ export class SchemaTypeCoder extends AstTypeCoder {
       new SchemaTypeCoder(
         this.requirement.get(key)!.get(index)!,
         this.version,
-      ).writeNode(script),
+      ).write(script),
     );
 
     // OpenAPI 3.2 discriminator fallback participates in the union.
@@ -186,7 +185,7 @@ export class SchemaTypeCoder extends AstTypeCoder {
               this.requirement.specification,
             ),
             this.version,
-          ).writeNode(script),
+          ).write(script),
         );
       }
     }
@@ -212,7 +211,7 @@ export class SchemaTypeCoder extends AstTypeCoder {
     );
   }
 
-  public override buildTypeNode(script: Script): ts.TypeNode {
+  public override writeCode(script: Script): ts.TypeNode {
     const { allOf, anyOf, oneOf, type, format, itemSchema } = this.requirement
       .data as {
       allOf?: unknown[];
@@ -228,7 +227,7 @@ export class SchemaTypeCoder extends AstTypeCoder {
         new SchemaTypeCoder(
           this.requirement.get("itemSchema")!,
           this.version,
-        ).writeNode(script),
+        ).write(script),
       ]);
     }
 

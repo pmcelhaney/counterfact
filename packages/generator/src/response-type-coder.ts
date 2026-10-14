@@ -9,13 +9,13 @@ import {
   unionType,
   unknownType,
 } from "./ast.js";
-import { AstTypeCoder } from "./ast-type-coder.js";
+import { TypeCoder } from "./type-coder.js";
 import { pathJoin } from "./forward-slash-path.js";
 import { SchemaTypeCoder } from "./schema-type-coder.js";
 import type { Requirement } from "./requirement.js";
 import type { Script } from "./script.js";
 
-export class ResponseTypeCoder extends AstTypeCoder {
+export class ResponseTypeCoder extends TypeCoder {
   public openApi2MediaTypes: string[];
 
   public constructor(
@@ -48,14 +48,13 @@ export class ResponseTypeCoder extends AstTypeCoder {
               new SchemaTypeCoder(
                 content.get("itemSchema")!,
                 this.version,
-              ).writeNode(script),
+              ).write(script),
             ]);
           } else {
             schemaType = content.has("schema")
-              ? new SchemaTypeCoder(
-                  content.get("schema")!,
-                  this.version,
-                ).writeNode(script)
+              ? new SchemaTypeCoder(content.get("schema")!, this.version).write(
+                  script,
+                )
               : unknownType();
           }
           return [
@@ -71,10 +70,9 @@ export class ResponseTypeCoder extends AstTypeCoder {
         [
           typeProperty(
             "schema",
-            new SchemaTypeCoder(
-              response.get("schema")!,
-              this.version,
-            ).writeNode(script),
+            new SchemaTypeCoder(response.get("schema")!, this.version).write(
+              script,
+            ),
           ),
         ],
         true,
@@ -110,7 +108,7 @@ export class ResponseTypeCoder extends AstTypeCoder {
                 new SchemaTypeCoder(
                   value.get("schema") ?? value,
                   this.version,
-                ).writeNode(script),
+                ).write(script),
               ),
             ]),
           ),
@@ -153,7 +151,7 @@ export class ResponseTypeCoder extends AstTypeCoder {
     return pathJoin("types", this.version, this.requirement.refUrl! + ".ts");
   }
 
-  public override buildTypeNode(script: Script): ts.TypeNode {
+  public override writeCode(script: Script): ts.TypeNode {
     return typeLiteral(
       [
         typeProperty("headers", this.headersType(script, this.requirement)),

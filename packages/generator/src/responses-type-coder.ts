@@ -1,7 +1,7 @@
 import ts from "typescript";
 
 import { typeLiteral, typeReference, unionType } from "./ast.js";
-import { AstTypeCoder } from "./ast-type-coder.js";
+import { TypeCoder } from "./type-coder.js";
 import { ResponseTypeCoder } from "./response-type-coder.js";
 import type { Requirement } from "./requirement.js";
 import type { Script } from "./script.js";
@@ -16,7 +16,7 @@ function statusLiteral(status: string): ts.LiteralTypeNode {
   return ts.factory.createLiteralTypeNode(statusName(status));
 }
 
-export class ResponsesTypeCoder extends AstTypeCoder {
+export class ResponsesTypeCoder extends TypeCoder {
   public openApi2MediaTypes: string[];
 
   public constructor(
@@ -47,7 +47,7 @@ export class ResponsesTypeCoder extends AstTypeCoder {
         response,
         this.version,
         this.openApi2MediaTypes,
-      ).writeNode(script);
+      ).write(script);
       if (code === "default") {
         fallback = ts.factory.createMappedTypeNode(
           undefined,
@@ -83,7 +83,7 @@ export class ResponsesTypeCoder extends AstTypeCoder {
       : explicit;
   }
 
-  public override buildTypeNode(script: Script): ts.TypeNode {
+  public override writeCode(script: Script): ts.TypeNode {
     script.importSharedType("ResponseBuilderFactory");
     const type = this.buildResponseObjectType(script);
     if (this.requirement.has("default")) {

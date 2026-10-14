@@ -264,10 +264,10 @@ describe("a ResponseTypeCoder", () => {
       });
       const coder = new ResponseTypeCoder(response);
 
-      const code = coder.writeCode(null);
+      const code = printNode(coder.writeCode(null));
 
-      expect(code).toContain('"examples":');
-      expect(code).toContain('"myExample": unknown');
+      expect(code).toContain("examples:");
+      expect(code).toContain("myExample: unknown");
     });
 
     it("includes 'examples: {}' when no examples are defined", () => {
@@ -280,9 +280,9 @@ describe("a ResponseTypeCoder", () => {
       });
       const coder = new ResponseTypeCoder(response);
 
-      const code = coder.writeCode(null);
+      const code = printNode(coder.writeCode(null));
 
-      expect(code).toContain('"examples": {}');
+      expect(code).toContain("examples: {}");
     });
   });
 });
