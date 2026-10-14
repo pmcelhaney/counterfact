@@ -1,8 +1,10 @@
+import { isAbsolute } from "node:path";
 import { createInterface } from "node:readline/promises";
 
 import open from "open";
 
 import { discoverOpenApiSpecs } from "./discover-openapi.js";
+import { findDemoDirectory, isPortAvailable, prepareDemo } from "./tutorial.js";
 
 const DOCS_URL = "https://counterfact.dev/docs/getting-started/";
 const PETSTORE_URL = "https://petstore3.swagger.io/api/v3/openapi.json";
@@ -17,9 +19,14 @@ export function canRunIntro(
   );
 }
 
-export async function runIntro(): Promise<
-  { source: string; destination: string; port: number } | undefined
-> {
+export type IntroSelection = {
+  source: string;
+  destination: string;
+  port: number;
+  tutorial?: boolean;
+};
+
+export async function runIntro(): Promise<IntroSelection | undefined> {
   if (
     !canRunIntro(process.stdin.isTTY, process.stdout.isTTY, process.env["CI"])
   ) {
@@ -31,7 +38,6 @@ export async function runIntro(): Promise<
     );
     return undefined;
   }
-
   const terminal = createInterface({
     input: process.stdin,
     output: process.stdout,
@@ -40,8 +46,8 @@ export async function runIntro(): Promise<
   const cancel = () => cancellation.abort();
   terminal.on("SIGINT", cancel);
   terminal.on("close", cancel);
-
   const write = (text: string) => process.stdout.write(`${text}\n`);
+  const safe = (text: string) => text.replace(/[\p{Cc}\p{Cf}]/gu, "?");
   const question = async (prompt: string): Promise<string | undefined> => {
     if (cancellation.signal.aborted) return undefined;
     try {
@@ -54,40 +60,30 @@ export async function runIntro(): Promise<
       throw error;
     }
   };
-
+  const choosePort = async (): Promise<number | undefined> => {
+    while (!cancellation.signal.aborted) {
+      const answer = await question("Server port [3100]: ");
+      if (answer === undefined) return undefined;
+      const port = answer === "" ? 3100 : Number(answer);
+      if (!Number.isInteger(port) || port <= 0 || port > 65535) {
+        write("Choose a port between 1 and 65535, or q to quit.");
+      } else if (!(await isPortAvailable(port))) {
+        write(`Port ${port} is already in use. Choose another port.`);
+      } else return port;
+    }
+    return undefined;
+  };
   try {
     write("\nWelcome to Counterfact!");
-    write(
-      "Turn an OpenAPI document into a local API with editable routes and live state.",
-    );
-    write("Looking for local OpenAPI documents…");
-    const discovered = await discoverOpenApiSpecs(
-      process.cwd(),
-      cancellation.signal,
-    );
-    if (discovered.limited) {
-      write(
-        "Search limits reached; some files were skipped. Pass a spec explicitly to use it.",
-      );
-    }
-    if (discovered.unreadable)
-      write("Some files or directories could not be read; they were skipped.");
-
+    write("Build your frontend against a local API you can change.");
     while (!cancellation.signal.aborted) {
-      write("\n1) Start with Swagger Petstore (default)");
-      write("2) View documentation");
-      write("3) Guided tour");
-      for (const [index, spec] of discovered.specs.entries()) {
-        // Filenames are untrusted terminal text; never emit control sequences.
-        write(`${index + 4}) ${spec.replace(/[\p{Cc}\p{Cf}]/gu, "?")}`);
-      }
-      if (discovered.specs.length === 0)
-        write("No local OpenAPI documents found.");
+      write("\n1) Try a guided example (recommended)");
+      write("2) Use my OpenAPI document");
+      write("3) Open documentation");
       write("q) Quit (Ctrl+C or Ctrl+D also cancels)");
       const answer = await question("Choose [1]: ");
       if (answer === undefined) break;
-
-      if (answer === "2") {
+      if (answer === "3") {
         write(`Documentation: ${DOCS_URL}`);
         try {
           await open(DOCS_URL);
@@ -96,59 +92,133 @@ export async function runIntro(): Promise<
         }
         return undefined;
       }
-
-      if (answer === "3") {
-        const steps = [
-          "1/3 — Start a local API\n" +
-            "Choose Petstore or a local spec. Counterfact generates routes/ (editable handlers)\n" +
-            "and types/ (generated contracts), then starts a mock server and REPL.",
-          "2/3 — Make a request\n" +
-            "Open the Swagger UI URL printed on startup, or point your frontend at the mock URL.\n" +
-            'With Petstore, try GET /pet/1. In the REPL, try: await client.get("/pet/1")',
-          "3/3 — Make the behavior yours\n" +
-            "Edit a handler under routes/ and save; Counterfact hot-reloads it. Leave types/ generated.\n" +
-            "Add a _.context.ts to share state, then inspect it with context in the REPL.\n" +
-            `Continue the getting-started guide: ${DOCS_URL}`,
-        ];
-        for (const step of steps) {
-          write(`\n${step}`);
-          if (
-            (await question("Press Enter to continue (q to quit): ")) ===
-            undefined
-          ) {
-            return undefined;
+      if (answer === "" || answer === "1") {
+        const destination = await findDemoDirectory(process.cwd());
+        write(
+          `\nMake a request, edit a response, and see the change without restarting.`,
+        );
+        write(
+          `This creates ${destination}/ and starts a local server. No download needed.`,
+        );
+        write(
+          "Keep this terminal open; you'll also use your editor. Your files will be kept when you quit.",
+        );
+        let port = 3100;
+        while (!cancellation.signal.aborted) {
+          write(`Server: http://localhost:${port}`);
+          const start = await question(
+            "Start [Enter] (p: change port, b: back, q: quit): ",
+          );
+          if (start === undefined) return undefined;
+          if (start === "b") break;
+          if (start === "p") {
+            const chosen = await choosePort();
+            if (chosen === undefined) return undefined;
+            port = chosen;
+            continue;
           }
+          if (start !== "") {
+            write(
+              "Press Enter to start, p to change port, b to go back, or q to quit.",
+            );
+            continue;
+          }
+          if (!(await isPortAvailable(port))) {
+            write(`Port ${port} is already in use. Choose another port.`);
+            const chosen = await choosePort();
+            if (chosen === undefined) return undefined;
+            port = chosen;
+            continue;
+          }
+          if (cancellation.signal.aborted) return undefined;
+          try {
+            await prepareDemo(process.cwd(), destination);
+          } catch (error) {
+            if ((error as NodeJS.ErrnoException).code === "EEXIST") {
+              write(
+                "That directory was created while you were choosing. Nothing was overwritten; choose the example again for a new directory.",
+              );
+              break;
+            }
+            throw error;
+          }
+          return {
+            source: `./${destination}/openapi.json`,
+            destination,
+            port,
+            tutorial: true,
+          };
         }
         continue;
       }
-
-      const choice = answer === "" ? 1 : Number(answer);
-      const localSpec = discovered.specs.at(choice - 4);
-      if (
-        !Number.isInteger(choice) ||
-        (choice !== 1 && (choice < 4 || localSpec === undefined))
-      ) {
+      if (answer !== "2") {
         write("Choose one of the listed numbers, or q to quit.");
         continue;
       }
-      const source = choice === 1 ? PETSTORE_URL : `./${localSpec!}`;
-      write(
-        "Generated files will go in the output directory; existing route edits are preserved.",
+      write("\nLooking for local OpenAPI documents…");
+      const discovered = await discoverOpenApiSpecs(
+        process.cwd(),
+        cancellation.signal,
       );
-      const destination = await question("Output directory [api]: ");
-      if (destination === undefined) break;
+      if (discovered.limited)
+        write(
+          "Search limits reached; some files were skipped. Enter a path or URL to use another document.",
+        );
+      if (discovered.unreadable)
+        write(
+          "Some files or directories could not be read; they were skipped.",
+        );
+      if (cancellation.signal.aborted) break;
       while (!cancellation.signal.aborted) {
-        const answer = await question("Server port [3100]: ");
-        if (answer === undefined) break;
-        const port = answer === "" ? 3100 : Number(answer);
-        if (Number.isInteger(port) && port > 0 && port <= 65535) {
-          return { source, destination: destination || "api", port };
+        for (const [index, spec] of discovered.specs.entries())
+          write(`${index + 1}) ${safe(spec)}`);
+        if (discovered.specs.length === 0)
+          write("No local OpenAPI documents found.");
+        write("p) Enter a path or URL\nb) Back\nq) Quit");
+        const choice = await question("Choose a document: ");
+        if (choice === undefined) return undefined;
+        if (choice === "b") break;
+        let source: string;
+        if (choice === "p") {
+          const entered = await question("OpenAPI path or URL (b: back): ");
+          if (entered === undefined) return undefined;
+          if (entered === "b") continue;
+          if (!entered) {
+            write("Enter a path or URL.");
+            continue;
+          }
+          source =
+            /^https?:\/\//iu.test(entered) ||
+            isAbsolute(entered) ||
+            entered.startsWith("./") ||
+            entered.startsWith("../")
+              ? entered
+              : `./${entered}`;
+        } else {
+          const index = Number(choice);
+          const spec =
+            Number.isInteger(index) && index > 0
+              ? discovered.specs.at(index - 1)
+              : undefined;
+          if (!spec) {
+            write("Choose a listed document, p, b, or q.");
+            continue;
+          }
+          source = `./${spec}`;
         }
-        write("Choose a port between 1 and 65535, or q to quit.");
+        write(
+          "Generated files go in the output directory; existing route edits are preserved.",
+        );
+        const destination = await question(
+          "Output directory [api] (b: back): ",
+        );
+        if (destination === undefined) return undefined;
+        if (destination === "b") continue;
+        const port = await choosePort();
+        if (port === undefined) return undefined;
+        return { source, destination: destination || "api", port };
       }
-      break;
     }
-
     write("\nIntro cancelled. Run npx counterfact again when you're ready.");
     return undefined;
   } finally {

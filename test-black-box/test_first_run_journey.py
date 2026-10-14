@@ -16,7 +16,7 @@ TERMINAL_ONLY = pytest.mark.skipif(os.name == "nt", reason="Windows does not pro
 
 
 @TERMINAL_ONLY
-@scenario("features/first_run.feature", "Tour Counterfact and start a discovered nested contract")
+@scenario("features/first_run.feature", "Start a discovered nested contract")
 def test_nested_contract():
     """Exercise discovery, tour, generated HTTP, and REPL as one journey."""
 
@@ -195,12 +195,13 @@ def unattended_intro(journey):
     journey.run_cli(timeout=10)
 
 
-@then("the intro offers documentation, a guided tour, and Swagger Petstore by default")
+@then("the intro offers a guided example, my own document, and documentation")
 def intro_options(journey):
     transcript = journey.transcript()
-    assert "Swagger Petstore (default)" in transcript
-    assert "View documentation" in transcript
-    assert "Guided tour" in transcript
+    assert "Try a guided example (recommended)" in transcript
+    assert "Use my OpenAPI document" in transcript
+    assert "Open documentation" in transcript
+    assert "Looking for local" not in transcript
 
 
 @then("only supported local contracts are offered")
@@ -218,24 +219,19 @@ def type_and_wait(journey, keys, expected):
     journey.terminal.wait_for(expected, STARTUP_TIMEOUT, start=start)
 
 
-@when("I enter an invalid menu choice and take the guided tour")
-def guided_tour(journey):
+@when("I choose my OpenAPI document")
+def choose_own_document(journey):
     type_and_wait(journey, b"invalid\r", "Choose one of the listed numbers")
-    type_and_wait(journey, b"3\r", "Press Enter to continue")
-    assert "1/3" in journey.transcript()
-    type_and_wait(journey, b"\r", "2/3")
-    journey.terminal.wait_for("Press Enter to continue", STARTUP_TIMEOUT, start=journey.terminal.output.rfind(b"2/3"))
-    type_and_wait(journey, b"\r", "3/3")
-    journey.terminal.wait_for("Press Enter to continue", STARTUP_TIMEOUT, start=journey.terminal.output.rfind(b"3/3"))
-    type_and_wait(journey, b"\r", "Choose [1]: ")
-    assert "hot-reloads" in journey.transcript()
+    type_and_wait(journey, b"2\r", "Choose a document: ")
 
 
 @when("I select the nested contract and an available server port")
 def choose_nested_contract(journey):
+    if "Choose a document:" not in journey.transcript():
+        type_and_wait(journey, b"2\r", "Choose a document: ")
     match = re.search(r"(\d+)\) contracts/nested/service.json", journey.transcript())
     assert match is not None, journey.logs()
-    type_and_wait(journey, f"{match.group(1)}\r".encode(), "Output directory [api]: ")
+    type_and_wait(journey, f"{match.group(1)}\r".encode(), "Output directory [api] (b: back): ")
     type_and_wait(journey, b"\r", "Server port [3100]: ")
     type_and_wait(journey, b"invalid\r", "Choose a port between")
     journey.output = journey.project / "api"
@@ -244,9 +240,10 @@ def choose_nested_contract(journey):
 
 @when("I select the contract whose filename looks like a URL")
 def choose_scheme_filename(journey):
+    type_and_wait(journey, b"2\r", "Choose a document: ")
     match = re.search(r"(\d+)\) http:spec\.json", journey.transcript())
     assert match is not None, journey.logs()
-    type_and_wait(journey, f"{match.group(1)}\r".encode(), "Output directory [api]: ")
+    type_and_wait(journey, f"{match.group(1)}\r".encode(), "Output directory [api] (b: back): ")
     type_and_wait(journey, b"\r", "Server port [3100]: ")
     journey.output = journey.project / "api"
     os.write(journey.terminal.terminal, f"{journey.allocate_port()}\r".encode())
@@ -303,13 +300,15 @@ def cancel_control_d(journey):
 
 @when("I cancel the intro using q at the destination")
 def cancel_destination(journey):
-    type_and_wait(journey, b"\r", "Output directory [api]: ")
+    type_and_wait(journey, b"2\r", "Choose a document: ")
+    type_and_wait(journey, b"p\r", "OpenAPI path or URL")
+    type_and_wait(journey, b"./openapi.json\r", "Output directory [api] (b: back): ")
     os.write(journey.terminal.terminal, b"q\r")
 
 
-@when("I cancel the intro using q during the tour")
+@when("I cancel the intro using q before starting example")
 def cancel_tour(journey):
-    type_and_wait(journey, b"3\r", "Press Enter to continue")
+    type_and_wait(journey, b"\r", "Start [Enter]")
     os.write(journey.terminal.terminal, b"q\r")
 
 
@@ -338,7 +337,7 @@ def exits_without_files(journey):
 
 @when("I choose documentation")
 def choose_documentation(journey):
-    type_and_wait(journey, b"2\r", "Documentation: ")
+    type_and_wait(journey, b"3\r", "Documentation: ")
 
 
 @then("the documentation URL is handed to the browser without generating files")
@@ -419,3 +418,242 @@ def explicit_generation_works(journey):
         assert result.returncode == 0, result.stderr
         assert "Welcome to Counterfact" not in result.stdout
     assert (journey.project / "explicit-output/routes/hello.ts").exists()
+
+
+@TERMINAL_ONLY
+@scenario("features/first_run.feature", "Change a running API through the guided example")
+def test_live_tutorial():
+    """Learn requests and hot reload using the shipped terminal."""
+
+
+@TERMINAL_ONLY
+@scenario("features/first_run.feature", "Recover from an unsuccessful edit and leave the tutorial")
+def test_tutorial_recovery():
+    """Unsuccessful actions do not complete the tutorial."""
+
+
+@TERMINAL_ONLY
+@scenario("features/first_run.feature", "Preserve an existing example and choose an available port")
+def test_tutorial_existing_directory():
+    """Protect existing files and recover from a port conflict."""
+
+
+@TERMINAL_ONLY
+@scenario("features/first_run.feature", "Enter a contract path and return from document selection")
+def test_enter_contract():
+    """Use explicit document entry and back navigation."""
+
+
+@when("I start the guided example on an available port")
+def start_example(journey):
+    type_and_wait(journey, b"\r", "Start [Enter]")
+    type_and_wait(journey, b"p\r", "Server port [3100]: ")
+    type_and_wait(journey, f"{journey.allocate_port()}\r".encode(), "Start [Enter]")
+    journey.output = journey.project / "counterfact-demo"
+    os.write(journey.terminal.terminal, b"\r")
+    journey.terminal.wait_for("1/3 — Make a request", STARTUP_TIMEOUT)
+
+
+@then("the example starts without downloading a contract")
+def example_started(journey):
+    assert (journey.output / "openapi.json").exists()
+    assert (journey.output / "routes/tickets/{ticketId}.ts").exists()
+    assert "No download needed" in journey.transcript()
+    assert "petstore3.swagger.io" not in journey.transcript()
+    assert journey.request("get", "/tickets/1").json()["status"] == "open"
+
+
+@when("I request another ticket and repeat the tutorial instructions")
+def unrelated_ticket(journey):
+    journey.terminal.command('await client.get("/tickets/2")')
+    journey.terminal.command('({id: 1, status: "closed"})')
+    journey.last_tutorial_help = journey.terminal.command(".tutorial repeat")
+
+
+@then("the tutorial still asks for the first ticket")
+def still_first_step(journey):
+    assert "1/3 — Make a request" in journey.last_tutorial_help
+    assert "2/3 — Change the response" not in journey.transcript()
+
+
+@when("I request the example ticket")
+def request_ticket(journey):
+    output = journey.terminal.command('await client.get("/tickets/1")')
+    assert "HTTP/1.1 200 OK\\r\\n" not in output
+    journey.terminal.wait_for("2/3 — Change the response", STARTUP_TIMEOUT)
+
+
+@then("the tutorial points to the editable handler")
+def handler_instruction(journey):
+    assert "counterfact-demo/routes/tickets/{ticketId}.ts" in journey.transcript()
+    assert 'Change status: "open" to status: "closed" and save.' in journey.transcript()
+
+
+@when("I save a closed status in the example handler and request the ticket again")
+def close_ticket(journey):
+    route = journey.output / "routes/tickets/{ticketId}.ts"
+    route.write_text(route.read_text().replace('status: "open"', 'status: "closed"'))
+    journey.wait_for_http("/tickets/1", lambda response: response.status_code == 200 and response.json()["status"] == "closed")
+    journey.terminal.command('await client.get("/tickets/1")')
+
+
+@then("the tutorial completes and the API remains usable")
+def tutorial_complete(journey):
+    journey.terminal.wait_for("3/3 — You changed a running API", STARTUP_TIMEOUT)
+    assert "no server restart needed" in journey.transcript()
+    assert "npx counterfact ./counterfact-demo/openapi.json ./counterfact-demo" in journey.transcript()
+    assert "2" in journey.terminal.command("1 + 1")
+    assert journey.request("get", "/tickets/1").json()["status"] == "closed"
+
+
+@when("I request the unchanged ticket")
+def request_unchanged(journey):
+    journey.terminal.command('await client.get("/tickets/1")')
+
+
+@then("the tutorial asks me to save and retry")
+def save_retry(journey):
+    journey.terminal.wait_for("Check the route file, save it, and retry", STARTUP_TIMEOUT)
+
+
+@when("I break the example handler and request the ticket")
+def break_handler(journey):
+    route = journey.output / "routes/tickets/{ticketId}.ts"
+    journey.original_handler = route.read_text()
+    route.write_text('throw new Error("tutorial edit error");\n')
+    journey.wait_for_http("/tickets/1", lambda response: response.status_code >= 400)
+    journey.terminal.command('await client.get("/tickets/1")')
+
+
+@then("the tutorial does not report completion")
+def tutorial_not_complete(journey):
+    assert "3/3 — You changed a running API" not in journey.transcript()
+    assert "2/3 — Change the response" in journey.terminal.command(".tutorial")
+
+
+@when("I restore the example handler and skip the tutorial")
+def restore_skip(journey):
+    route = journey.output / "routes/tickets/{ticketId}.ts"
+    route.write_text(journey.original_handler)
+    journey.wait_for_http("/tickets/1", lambda response: response.status_code == 200)
+    journey.terminal.command(".tutorial skip")
+
+
+@then("the ordinary REPL and API remain usable and my files are kept")
+def skipped_usable(journey):
+    assert "Tutorial skipped" in journey.transcript()
+    assert "2" in journey.terminal.command("1 + 1")
+    assert journey.request("get", "/tickets/1").json()["status"] == "open"
+    assert (journey.output / "routes/tickets/{ticketId}.ts").exists()
+
+
+@given("an existing example directory and an occupied server port")
+def existing_example(journey):
+    import socket
+    empty_directory(journey)
+    journey.write_text("counterfact-demo/keep.txt", "user content")
+    with socket.socket() as listener:
+        listener.bind(("", 0))
+        listener.listen()
+        journey.occupied_port = listener.getsockname()[1]
+        yield
+
+
+@when("I return from example setup to the opening menu")
+def back_from_example(journey):
+    type_and_wait(journey, b"\r", "Start [Enter]")
+    assert "counterfact-demo-2/" in journey.transcript()
+    type_and_wait(journey, b"b\r", "Choose [1]: ")
+    assert not (journey.project / "counterfact-demo-2").exists()
+
+
+@when("I start the example after correcting an occupied port")
+def correct_port(journey):
+    type_and_wait(journey, b"\r", "Start [Enter]")
+    type_and_wait(journey, b"p\r", "Server port [3100]: ")
+    type_and_wait(journey, f"{journey.occupied_port}\r".encode(), "already in use")
+    type_and_wait(journey, f"{journey.allocate_port()}\r".encode(), "Start [Enter]")
+    journey.output = journey.project / "counterfact-demo-2"
+    os.write(journey.terminal.terminal, b"\r")
+    journey.terminal.wait_for("1/3 — Make a request", STARTUP_TIMEOUT)
+
+
+@then("the existing example is unchanged and the new example runs")
+def existing_unchanged(journey):
+    assert (journey.project / "counterfact-demo/keep.txt").read_text() == "user content"
+    assert set((journey.project / "counterfact-demo").iterdir()) == {journey.project / "counterfact-demo/keep.txt"}
+    assert journey.request("get", "/tickets/1").json()["status"] == "open"
+
+
+@when("I return from document selection to the opening menu")
+def back_from_documents(journey):
+    type_and_wait(journey, b"2\r", "Choose a document: ")
+    type_and_wait(journey, b"b\r", "Choose [1]: ")
+
+
+@when("I enter the contract path and choose an available server port")
+def enter_contract_path(journey):
+    type_and_wait(journey, b"2\r", "Choose a document: ")
+    type_and_wait(journey, b"p\r", "OpenAPI path or URL")
+    type_and_wait(journey, b"contracts/nested/service.json\r", "Output directory [api] (b: back): ")
+    type_and_wait(journey, b"\r", "Server port [3100]: ")
+    journey.output = journey.project / "api"
+    os.write(journey.terminal.terminal, f"{journey.allocate_port()}\r".encode())
+
+
+@TERMINAL_ONLY
+@scenario("features/first_run.feature", "Return from an empty document chooser without creating files")
+def test_empty_document_back():
+    """Back navigation leaves an empty project untouched."""
+
+
+@when("I go back and quit the intro")
+def back_and_quit(journey):
+    type_and_wait(journey, b"b\r", "Choose [1]: ")
+    os.write(journey.terminal.terminal, b"q\r")
+
+
+@TERMINAL_ONLY
+@scenario("features/first_run.feature", "Start an API from an entered contract URL")
+def test_enter_contract_url():
+    """An entered HTTP URL is loaded through normal CLI startup."""
+
+
+@given("a contract served at a local HTTP URL")
+def served_contract(journey):
+    import json
+    import threading
+    from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+    empty_directory(journey)
+
+    class ContractHandler(BaseHTTPRequestHandler):
+        def do_GET(self):
+            body = json.dumps(contract()).encode()
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.send_header("Content-Length", str(len(body)))
+            self.end_headers()
+            self.wfile.write(body)
+
+        def log_message(self, *args):
+            pass
+
+    with ThreadingHTTPServer(("127.0.0.1", 0), ContractHandler) as server:
+        thread = threading.Thread(target=server.serve_forever, daemon=True)
+        thread.start()
+        journey.contract_url = f"http://127.0.0.1:{server.server_port}/openapi.json"
+        try:
+            yield
+        finally:
+            server.shutdown()
+            thread.join(timeout=5)
+
+
+@when("I enter the contract URL and choose an available server port")
+def enter_contract_url(journey):
+    type_and_wait(journey, b"2\r", "Choose a document: ")
+    type_and_wait(journey, b"p\r", "OpenAPI path or URL")
+    type_and_wait(journey, f"{journey.contract_url}\r".encode(), "Output directory [api] (b: back): ")
+    type_and_wait(journey, b"\r", "Server port [3100]: ")
+    journey.output = journey.project / "api"
+    os.write(journey.terminal.terminal, f"{journey.allocate_port()}\r".encode())

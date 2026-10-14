@@ -526,11 +526,28 @@ Run `npx counterfact@latest --help` for the full list.
 
 Running with no arguments and no `counterfact.yaml` starts an interactive intro.
 Even an empty config file bypasses the intro, as does any explicit CLI argument.
-The menu offers Swagger Petstore (the default), documentation, a guided tour,
-and recursively discovered local specs. Selecting a spec asks for an output
-directory (default: `api/`) and port (default: `3100`), then uses the usual
-generation, server, watching, and REPL startup. Documentation and cancellation
-exit without generating files.
+The opening menu offers a guided example (the default), your own OpenAPI
+document, and documentation. Local discovery starts only when you choose your
+own document; you can also enter a path or HTTP(S) URL. Setup asks for an output
+directory (default: `api/`) and an available port (default: `3100`).
+
+The guided example uses a bundled ticket API without a contract download or
+update check. Before creating files, it shows the new `counterfact-demo/`
+directory and server address. Existing files, directories, and symlinks are
+preserved by selecting an unused numbered directory. Enter starts the example;
+`p` changes its port, `b` returns to the opening menu, and `q` quits.
+An occupied port prompts for another choice. Port checks are advisory; another
+process can claim the port before the server starts.
+
+Once the example is running, the tutorial guides `await client.get("/tickets/1")`,
+shows the exact editable handler, and asks you to change the ticket status from
+`open` to `closed`. It advances only after successful requests show the expected
+initial and changed response. Unchanged responses and errors retain the current
+step. `.tutorial` and `.tutorial repeat` show the current instruction;
+`.tutorial skip` leaves guidance while keeping the API and REPL running.
+Completion also leaves the project running and prints its restart command.
+Example files and edits are kept after exiting. Documentation and cancellation
+before starting a project create no files.
 
 Discovery recognizes YAML/JSON root documents for Swagger 2.0 and OpenAPI 3.0,
 3.1, and 3.2; it ignores malformed files, ordinary config, and schema fragments.

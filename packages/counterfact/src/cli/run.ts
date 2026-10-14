@@ -14,6 +14,7 @@ import { pathResolve } from "../util/forward-slash-path.js";
 import { loadConfigFile } from "../util/load-config-file.js";
 import { checkForUpdates } from "./check-for-updates.js";
 import { runIntro } from "./intro.js";
+import { attachTutorial } from "./tutorial.js";
 import {
   createGeneratedArtifactsSummary,
   createRuntimeProgressMessage,
@@ -195,6 +196,8 @@ function buildProgram(
       watchTypes?: boolean;
     }>();
 
+    let tutorial = false;
+
     // Load the config file (counterfact.yaml by default, or --config <path>).
     // CLI options always take precedence over config file settings.
     const configFilePath = resolve(options.config ?? "counterfact.yaml");
@@ -210,6 +213,8 @@ function buildProgram(
       if (selection === undefined) return;
       ({ source, destination } = selection);
       options.port = selection.port;
+      tutorial = selection.tutorial ?? false;
+      if (tutorial) options.updateCheck = false;
     }
 
     const updateCheckPromise =
@@ -487,7 +492,8 @@ function buildProgram(
     await updateCheckPromise;
 
     if (config.startRepl) {
-      startRepl();
+      const repl = startRepl();
+      if (tutorial) attachTutorial(repl, destination, options.port);
     }
 
     if (openBrowser) {

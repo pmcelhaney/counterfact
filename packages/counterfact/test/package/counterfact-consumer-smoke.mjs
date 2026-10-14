@@ -161,6 +161,10 @@ try {
   const packFiles = pack.files
     .map(({ path: packedPath }) => packedPath.split(path.sep).join("/"))
     .sort();
+  assert.ok(
+    packFiles.includes("dist/cli/tutorial.js"),
+    "The offline tutorial must ship in the CLI package",
+  );
   const publicPackFiles = packFiles.filter(
     (packedPath) =>
       !packedPath.startsWith("bin/") && !packedPath.startsWith("dist/"),
