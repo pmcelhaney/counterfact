@@ -33,6 +33,7 @@ Use this skill when finalizing contributor-facing changes that affect tests, dia
 
 ## Existing conventions to follow
 
+- When spawning Yarn from a package script, use the Yarn command on PATH with Windows command-shim handling. Yarn 4 can set `npm_execpath` to a shell wrapper; passing that path to Node treats shell code as JavaScript. Validate the runner with `yarn test:build` on both CI operating systems.
 - Keep the root development build stages aligned with `packages/counterfact/package.json` build order and commands. Preserve the self-contained workspace build for packaging; repository-only progress scripts must not become required files in published packages.
 
 - Keep historical study environments under `site/study/2026/experiments/environments/` excluded from Renovate; their manifests and lockfiles are reproducibility evidence, not maintained application dependencies. When changing `ignorePaths`, preserve the exclusions inherited from `config:recommended` because the array replaces inherited values.

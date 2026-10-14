@@ -3,9 +3,8 @@ import { performance } from "node:perf_hooks";
 import { fileURLToPath } from "node:url";
 
 const repositoryRoot = fileURLToPath(new URL("../", import.meta.url));
-const yarnPath = process.env["npm_execpath"];
-const command = yarnPath === undefined ? "yarn" : process.execPath;
-const commandArgs = yarnPath === undefined ? [] : [yarnPath];
+// Yarn adds its executable shims to PATH for package scripts. npm_execpath
+// may itself point to a shell wrapper, so do not execute it as JavaScript.
 const elapsed = (start) =>
   `${((performance.now() - start) / 1000).toFixed(1)}s`;
 
@@ -36,15 +35,11 @@ const stages = [
 
 async function run(workspace, args) {
   return new Promise((resolve, reject) => {
-    const child = spawn(
-      command,
-      [...commandArgs, "workspace", workspace, ...args],
-      {
-        cwd: repositoryRoot,
-        stdio: "inherit",
-        shell: yarnPath === undefined && process.platform === "win32",
-      },
-    );
+    const child = spawn("yarn", ["workspace", workspace, ...args], {
+      cwd: repositoryRoot,
+      stdio: "inherit",
+      shell: process.platform === "win32",
+    });
     child.on("error", reject);
     child.on("close", (code, signal) => {
       if (signal !== null) {
