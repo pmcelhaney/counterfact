@@ -532,7 +532,8 @@ own document; you can also enter a path or HTTP(S) URL. Setup asks for an output
 directory (default: `api/`) and an available port (default: `3100`).
 
 The guided example opens a bundled coffee shop at `/walkthrough`, with
-instructions on the left and an interactive storefront on the right. The
+instructions on the left and an interactive storefront on the right. It uses a
+desktop layout at least 1100px wide, with a three-column product catalog. The
 browser requests real `/products` and `/orders` routes from the generated
 project. It needs no external contract download or update check. Setup shows
 an unused `counterfact-demo/` directory and an available port before creating

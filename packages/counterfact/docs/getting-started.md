@@ -21,7 +21,8 @@ With no arguments and no `counterfact.yaml`, choose **Try a guided example**
 (the default) or **Use my OpenAPI document**. Documentation is also available.
 
 The guided example opens **Counterfact Coffee** in your browser. Instructions
-stay on the left; the working shop is on the right. Keep Counterfact running
+stay on the left; the working shop is on the right. The walkthrough is designed
+for a desktop browser window at least 1100px wide. Keep Counterfact running
 in its terminal and make file changes in your own editor.
 
 Before starting, Counterfact shows the new `counterfact-demo/` directory and
