@@ -31,6 +31,16 @@ and server runtime are currently part of the `counterfact` workspace. Root
 scripts coordinate builds and checks, so contributors do not need to change
 directories for the standard workflow.
 
+### Build feedback
+
+Run `yarn build` from the repository root to build the development workspaces.
+It reports each stage as it starts and finishes, with elapsed times and a final
+build summary. Compiler diagnostics remain visible, and a failed stage stops
+the build with a nonzero exit status.
+
+This progress output belongs to repository tooling. The published Counterfact
+CLI and the workspace build used for packaging keep their own behavior.
+
 ### Development container
 
 Counterfact includes a [Development Container](./.devcontainer/devcontainer.json)
