@@ -60,6 +60,10 @@ Only the API reports inventory changes after purchases or context updates.
 **What happened** keeps up to 30 purchases and observed inventory changes. Use
 **Inspect** to compare actual requests, responses, and inventory snapshots. This
 history survives a reload within the same API session; inspecting it sends no order.
+If the products response fails or contains invalid stock, cards show **Last known
+inventory** and buying pauses until a fresh response arrives. Stock rejections
+show the requested and available quantities reported by the order API. Missing
+order confirmations are labeled unknown rather than rejected; the cart is kept.
 
 The shop checks the products API automatically while visible and after each
 order. Saved inventory edits and REPL changes appear without a manual refresh.

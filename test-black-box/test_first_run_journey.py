@@ -709,6 +709,7 @@ def restock_and_purchase(journey):
     assert coffee_order(journey, "dark-roast", 5).status_code == 409
     duplicate = journey.request("post", "/orders", json={"items": [{"productId": "dark-roast", "quantity": 3}, {"productId": "dark-roast", "quantity": 3}]})
     assert duplicate.status_code == 409
+    assert duplicate.json()["shortages"] == [{"productId": "dark-roast", "requested": 6, "available": 4}]
     assert coffee_stock(journey, "dark-roast") == 4
     path = journey.output / "routes/products.ts"
     path.write_text(path.read_text() + "\n// Preserve running inventory across route reloads.\n")

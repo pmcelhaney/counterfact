@@ -31,9 +31,26 @@ const observations = new CoffeeShopObservations();
 const progress = new CoffeeShopProgress();
 const $ = (id) => document.getElementById(id);
 const money = (cents) => new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(cents / 100);
-let products = [], cart = {}, busy = false, manualStages = {}, refreshRequest, selectedEvent;
+let products = [], cart = {}, busy = false, manualStages = {}, refreshRequest, selectedEvent, inventoryFresh=false, lastFailure, productError=false;
 function element(tag,text,className){const node=document.createElement(tag);node.textContent=text;if(className)node.className=className;return node;}
 function notice(text,error=false){$('shop-notice').replaceChildren(element('p',text,'notice'+(error?' error':'')));}
+async function requestJson(path,options={}){
+  const controller=new AbortController();const timeout=setTimeout(()=>controller.abort(),4000);
+  try{const response=await fetch(path,{...options,signal:controller.signal});const result=await response.json();return {response,result};}finally{clearTimeout(timeout);}
+}
+function validProducts(value){
+  const ids=['house-blend','dark-roast','decaf'];return Array.isArray(value)&&value.length===3&&new Set(value.map(p=>p?.id)).size===3&&value.every(p=>p&&ids.includes(p.id)&&typeof p.name==='string'&&typeof p.description==='string'&&Number.isSafeInteger(p.price)&&p.price>=0&&Number.isSafeInteger(p.stock)&&p.stock>=0);
+}
+function renderOrderFailure(){
+  if(!lastFailure)return;const {status,result,items}=lastFailure;let text;
+  if(status===undefined)text='Order confirmation unavailable. The request may have been accepted; inspect the latest event and inventory before retrying. Your cart has been kept.';
+  else if(status===409){
+    const shortages=Array.isArray(result?.shortages)?result.shortages.filter(s=>s&&items.some(i=>i.productId===s.productId)&&Number.isSafeInteger(s.requested)&&s.requested>0&&Number.isSafeInteger(s.available)&&s.available>=0):[];
+    text=shortages.length?shortages.map(s=>productName(s.productId)+': your cart requested '+s.requested+'; the order API reported '+s.available+' available.').join(' '):'The API rejected the order because it could not fulfill the cart. Compare the cart with the latest reported inventory.';
+    text+=' Your cart has been kept. Reduce its quantity or restock in Counterfact, then try again.';
+  }else text=(typeof result?.error==='string'?result.error:'Order rejected (HTTP '+status+').')+' Your cart has been kept; restore ordering and try again.';
+  notice(text,true);
+}
 function stockSnapshot(){return Object.fromEntries(products.map(p=>[p.id,p.stock]));}
 function productName(id){return products.find(p=>p.id===id)?.name||id;}
 function renderHistory(){
@@ -49,7 +66,7 @@ function renderHistory(){
     const details=element('td','');const inspect=element('button','Inspect','secondary');inspect.setAttribute('aria-label','Inspect event '+event.id);inspect.onclick=()=>{selectedEvent=event.id;renderHistory();};details.append(inspect);row.append(details);body.append(row);
   }
   table.append(body);const scroll=element('div','','history-scroll');scroll.append(table);target.append(scroll);
-  const selected=observations.events.find(e=>e.id===selectedEvent)||observations.events.at(-1);
+  const selected=observations.events.find(e=>e.id===selectedEvent);if(!selected)return;
   const detail=element('section','','event-detail');detail.setAttribute('aria-label','Selected event details');detail.append(element('h3','Event '+selected.id+' · '+new Date(selected.time).toLocaleTimeString()));
   detail.append(element('p',selected.kind==='order'?'Request · POST /orders':'Request · GET /products'));
   if(selected.kind==='order')detail.append(element('pre',JSON.stringify({items:selected.items},null,2)));
@@ -60,7 +77,7 @@ function renderPurchaseEffect(){
   for(const change of observations.comparisons()){
     const name=products.find(p=>p.id===change.productId)?.name||change.productId;
     const outcome=change.accepted?'order accepted':observations.latest.status===undefined?'confirmation unavailable':'order rejected (HTTP '+observations.latest.status+')';
-    target.append(element('p','Ordered '+change.quantity+' '+name+' → '+outcome+' → inventory '+(change.before??'unknown')+' → '+(change.after??'waiting for a product response')));
+    target.append(element('p','Ordered '+change.quantity+' '+name+' → '+outcome+' → inventory '+(change.before??'unknown')+' → '+(change.after??(inventoryFresh?'waiting for a product response':'unavailable; inventory is not verified'))));
     if(change.accepted&&change.after!==undefined&&change.before!==undefined){
       if(change.before===change.after)target.append(element('p','The order succeeded, but API inventory did not change.'));
       else if(change.after===change.before-change.quantity){target.append(element('p','The product response shows the purchased quantity subtracted.'),element('pre','$.context.inventory[item.productId] -= item.quantity;'+String.fromCharCode(10)+name+': '+change.before+' − '+change.quantity+' = '+change.after));}
@@ -75,9 +92,9 @@ function renderProducts(){
     const bag=element('div','','bag '+product.id);bag.append(element('div',product.name,'bag-label'));card.append(bag,element('h3',product.name),element('p',product.description),element('div',money(product.price)+' / 250g','price'));
     const inCart=cart[product.id]||0;const available=Math.max(0,product.stock-inCart);
     const quantities=element('dl','','stock');quantities.setAttribute('aria-label',product.name+' inventory');
-    for(const [label,value] of [['Inventory in Counterfact',product.stock],['In your cart',inCart],['Available to add',available]]){const row=element('div','');row.append(element('dt',label),element('dd',String(value)));quantities.append(row);}
-    card.append(quantities,element('div',product.stock===0?'Sold out':inCart?'Cart quantities do not change API inventory.':'Stock reported by the products API.','stock-note'));
-    const add=element('button','Add to cart');add.disabled=busy||available===0;add.onclick=()=>{cart[product.id]=(cart[product.id]||0)+1;$('shop-notice').replaceChildren();renderProducts();renderCart();onCart();};card.append(add);$('products').append(card);
+    for(const [label,value] of [[inventoryFresh?'Inventory in Counterfact':'Last known inventory',product.stock],['In your cart',inCart],['Available to add',available]]){const row=element('div','');row.append(element('dt',label),element('dd',String(value)));quantities.append(row);}
+    card.append(quantities,element('div',!inventoryFresh?'Latest inventory could not be verified.':product.stock===0?'Sold out':inCart?'Cart quantities do not change API inventory.':'Stock reported by the products API.','stock-note'));
+    const add=element('button','Add to cart');add.disabled=busy||!inventoryFresh||available===0;add.onclick=()=>{cart[product.id]=(cart[product.id]||0)+1;lastFailure=undefined;$('shop-notice').replaceChildren();renderProducts();renderCart();onCart();};card.append(add);$('products').append(card);
   }
 }
 function renderCart(){
@@ -85,35 +102,36 @@ function renderCart(){
   $('cart').replaceChildren();let total=0;
   for(const [id,quantity] of Object.entries(cart)){
     const product=products.find(p=>p.id===id);if(!product)continue;total+=product.price*quantity;
-    const row=element('div','','cart-row');row.append(element('span',product.name+' × '+quantity));const quantities=element('span');for(const [label,delta] of [['−',-1],['+',1]]){const button=element('button',label,'secondary');button.setAttribute('aria-label',(delta<0?'Decrease ':'Increase ')+product.name+' quantity');button.disabled=busy||(delta>0&&quantity>=product.stock);button.onclick=()=>{const next=quantity+delta;if(next===0)delete cart[id];else cart[id]=next;renderProducts();renderCart();onCart();};quantities.append(button);}row.append(quantities);const remove=element('button','Remove','secondary');remove.disabled=busy;remove.onclick=()=>{delete cart[id];renderProducts();renderCart();onCart();};row.append(remove);$('cart').append(row);
+    const row=element('div','','cart-row');row.append(element('span',product.name+' × '+quantity));const quantities=element('span');for(const [label,delta] of [['−',-1],['+',1]]){const button=element('button',label,'secondary');button.setAttribute('aria-label',(delta<0?'Decrease ':'Increase ')+product.name+' quantity');button.disabled=busy||(delta>0&&(!inventoryFresh||quantity>=product.stock));button.onclick=()=>{lastFailure=undefined;const next=quantity+delta;if(next===0)delete cart[id];else cart[id]=next;renderProducts();renderCart();onCart();};quantities.append(button);}row.append(quantities);const remove=element('button','Remove','secondary');remove.disabled=busy;remove.onclick=()=>{lastFailure=undefined;delete cart[id];renderProducts();renderCart();onCart();};row.append(remove);$('cart').append(row);
   }
   if(!Object.keys(cart).length)$('cart').append(element('p','Your cart is empty. Choose a coffee above.'));
-  $('total').textContent=money(total);$('checkout').disabled=busy||!Object.keys(cart).length;
+  $('total').textContent=money(total);$('checkout').disabled=busy||!inventoryFresh||!Object.keys(cart).length;
 }
 async function refreshProducts({source='manual',credit=true}={}){
   if(refreshRequest)return refreshRequest;
   refreshRequest=(async()=>{
     $('refresh').disabled=true;
     try{
-      const response=await fetch('/products');if(!response.ok)throw Error('Could not load products');const next=await response.json();if(!Array.isArray(next)||next.some(p=>!Number.isInteger(p.stock)||p.stock<0))throw Error('Invalid product response');
-      const changed=JSON.stringify(products)!==JSON.stringify(next);const previous=stockSnapshot();products=next;
+      const {response,result:next}=await requestJson('/products');if(!response.ok||!validProducts(next))throw Error('Invalid product response');
+      const recovered=!inventoryFresh;inventoryFresh=true;const changed=JSON.stringify(products)!==JSON.stringify(next);const previous=stockSnapshot();products=next;
       if(source!=='before-order')observations.inventory(stockSnapshot(),next);
-      if(changed||source!=='live'){renderPurchaseEffect();renderProducts();renderCart();if(credit)onProducts();}
+      if(changed||recovered||source!=='live'){renderPurchaseEffect();renderProducts();renderCart();if(credit)onProducts();}
       else if(credit){const wasDone=progress.done;progress.products(stockSnapshot());if(wasDone!==progress.done)checkProgress();}
+      if(productError){productError=false;$('shop-notice').replaceChildren();if(!progress.done){$('guide-status').textContent='API connection restored. Continue the experiment.';updateAction();}}renderOrderFailure();
       const changes=products.filter(p=>previous[p.id]!==undefined&&previous[p.id]!==p.stock).map(p=>p.name+': '+previous[p.id]+' → '+p.stock);
       $('live-status').textContent=(changes.length?'Product response · '+changes.join(' · '):'Live API updates · last checked '+new Date().toLocaleTimeString())+(source==='after-order'?' · checked after the order':'');
       return true;
-    }catch(error){notice('We couldn’t load the products. Check Counterfact, then click Refresh products to try again.',true);$('guide-status').textContent='The product request failed. Check Counterfact and try again.';return false;}
+    }catch(error){inventoryFresh=false;productError=true;renderProducts();renderCart();renderPurchaseEffect();$('live-status').textContent=products.length?'Last known inventory · the latest products response is unavailable or invalid.':'Inventory unavailable · waiting for a valid products response.';notice('Current inventory could not be verified. Your cart has been kept. Check Counterfact; the shop will reconnect automatically.',true);$('guide-status').textContent='Waiting for a valid products response. Displayed inventory is last known, not current.';return false;}
     finally{$('refresh').disabled=busy;}
   })();
   try{return await refreshRequest;}finally{refreshRequest=undefined;}
 }
 async function placeOrder(){
   if(busy||!Object.keys(cart).length)return;busy=true;renderProducts();renderCart();
-  if(!await refreshProducts({source:'before-order',credit:false})){busy=false;renderProducts();renderCart();return;}
+  if(!await refreshProducts({source:'before-order',credit:false})){busy=false;$('refresh').disabled=false;renderProducts();renderCart();return;}
   const items=Object.entries(cart).map(([productId,quantity])=>({productId,quantity}));const before=stockSnapshot();
-  try{const response=await fetch('/orders',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({items})});const result=await response.json();observations.order(items,response.status,result,before);renderPurchaseEffect();if(!response.ok){notice(response.status===409?result.error:'We couldn’t place your order. Your cart is kept—please try again.',true);$('checkout').textContent='Try again';onOrder(false,items,response.status);return;}if(response.status!==201||!Number.isInteger(result.orderId))throw Error('Invalid order confirmation');cart={};notice('Thanks! Demo order #'+result.orderId+' is confirmed.');$('checkout').textContent='Place order';renderProducts();onOrder(true,items,response.status);}
-  catch(error){observations.order(items,undefined,{error:'No valid confirmation received'},before);renderPurchaseEffect();notice('We couldn’t place your order. Your cart is kept—please try again.',true);$('checkout').textContent='Try again';$('guide-status').textContent='The order request could not be completed. Check Counterfact and retry.';}
+  try{const {response,result}=await requestJson('/orders',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({items})});if(response.ok&&(response.status!==201||!Number.isInteger(result?.orderId)))throw Error('Invalid order confirmation');observations.order(items,response.status,result,before);renderPurchaseEffect();if(!response.ok){lastFailure={status:response.status,result,items};renderOrderFailure();$('checkout').textContent='Try again';onOrder(false,items,response.status);return;}lastFailure=undefined;cart={};notice('Thanks! Demo order #'+result.orderId+' is confirmed.');$('checkout').textContent='Place order';renderProducts();onOrder(true,items,response.status);}
+  catch(error){observations.order(items,undefined,{error:'No valid confirmation received'},before);lastFailure={status:undefined,result:undefined,items};renderPurchaseEffect();renderOrderFailure();$('checkout').textContent='Try again';$('guide-status').textContent='The order request could not be completed. Check Counterfact and retry.';}
   finally{await refreshProducts({source:'after-order'});busy=false;$('refresh').disabled=false;renderProducts();renderCart();}
 }
 const lessons = [
@@ -201,7 +219,7 @@ $('copy-path').onclick=()=>copyPath(projectPath,$('copy-path'));
 function saveProgress(){if(!sessionId)return;try{sessionStorage.setItem('counterfact-coffee',JSON.stringify({sessionId,progress,cart,manualStages,history:observations.events}));}catch{}}
 async function startWalkthrough(){
   try{
-    const response=await fetch('/tutorial-info');if(!response.ok)throw Error('Project information unavailable');const info=await response.json();sessionId=info.sessionId;
+    const {response,result:info}=await requestJson('/tutorial-info');if(!response.ok)throw Error('Project information unavailable');sessionId=info.sessionId;
     const saved=JSON.parse(sessionStorage.getItem('counterfact-coffee')||'null');
     if(saved&&saved.sessionId===sessionId&&saved.progress&&Number.isInteger(saved.progress.step)&&saved.progress.step>=0&&saved.progress.step<=11){
       observations.restore(saved.history);
@@ -215,7 +233,7 @@ async function startWalkthrough(){
   }catch{ /* A missing or corrupt saved lesson starts a fresh browser lesson. */ }
   showLesson();renderCart();renderPurchaseEffect();await refreshProducts();
 }
-$('project-path').textContent=projectPath;startWalkthrough();
+$('project-path').textContent=projectPath;const walkthroughReady=startWalkthrough();
 setInterval(()=>{if(!busy&&!document.hidden)refreshProducts({source:'live'});},1000);
 window.addEventListener('focus',()=>{if(!busy)refreshProducts({source:'live'});});
 </script></body></html>`;

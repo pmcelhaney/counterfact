@@ -80,7 +80,25 @@ export const SHOP_DOCUMENT = {
               items: { type: "array", items: item },
             },
           }),
-          "409": errorResponse,
+          "409": jsonResponse({
+            type: "object",
+            required: ["error", "shortages"],
+            properties: {
+              error: { type: "string" },
+              shortages: {
+                type: "array",
+                items: {
+                  type: "object",
+                  required: ["productId", "requested", "available"],
+                  properties: {
+                    productId: { type: "string" },
+                    requested: { type: "integer" },
+                    available: { type: "integer", minimum: 0 },
+                  },
+                },
+              },
+            },
+          }),
           "503": errorResponse,
         },
       },
@@ -152,7 +170,10 @@ export const POST: HTTP_POST = ($) => {
   }
   const items = $.body.items;
   if (!$.context.canFulfill(items)) {
-    return $.response[409].json({ error: "There isn't enough stock for this order. Refresh products and check your cart." });
+    const quantities: Record<string, number> = {};
+    for (const item of items) quantities[item.productId] = (quantities[item.productId] ?? 0) + item.quantity;
+    const shortages = Object.entries(quantities).filter(([id, quantity]) => quantity > ($.context.inventory[id] ?? 0)).map(([productId, requested]) => ({ productId, requested, available: $.context.inventory[productId] ?? 0 }));
+    return $.response[409].json({ error: "There isn't enough stock for this order.", shortages });
   }
 
   // INVENTORY LESSON: subtract each purchased quantity here.

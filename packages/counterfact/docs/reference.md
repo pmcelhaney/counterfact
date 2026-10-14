@@ -545,17 +545,35 @@ If browser launch fails, the terminal prints the walkthrough URL for manual use.
 The user completes a purchase, changes Decaf stock in the product handler,
 exercises order failure and retry, adds a successful-order mutation to
 `$.context.inventory`, and restocks through `context.inventory` in the REPL.
+Each lesson poses a small experiment and bolds the next action; exact edits
+remain available under **Show code hint**. Editor and REPL confirmations move
+instruction emphasis but do not credit a lesson without its expected API response.
+
+Product cards distinguish API inventory, cart quantity, and availability to add.
+The browser checks the products API every second while visible, before ordering,
+and after each order; it serializes refreshes with purchases. Manual refresh is
+optional. The latest purchase shows observed inventory before and after the
+request, including successful orders that did not change stock. **What happened**
+retains up to 30 purchases and external inventory changes, with actual requests,
+responses, and snapshots available through **Inspect**. Inspection sends no order.
+
+Invalid or unavailable product responses mark inventory as last known and pause
+buying until a fresh response arrives. Stock rejections explain the requested and
+available quantities returned by the order API. An unavailable or invalid order
+confirmation is unknown, not proof that the request was rejected. Failed requests
+keep the cart. Requests time out after four seconds and live product checks retry
+automatically. Session-scoped progress, the cart, and history survive a reload;
+a new API session starts a new lesson. Completion keeps the shop and ordinary
+REPL running, retains the files, and prints a restart command.
+
 Unchanged object and array initializers preserve scenario, request, and REPL
 state when the context file reloads; deliberately changed initializers replace
-that property. The product handler reads that shared inventory; successful orders and product
-refreshes demonstrate the resulting changes. Failed requests retain the task
-and the cart. Browser controls provide Continue, Back, and Skip lesson. Session-scoped progress and the cart survive a page reload;
-a new API session starts a new browser lesson. Completion keeps the shop and
-ordinary REPL running, retains the files, and prints a restart command.
+that property. The product handler reads the same inventory that orders and
+the REPL update.
 
-**Copy file path** and **Open in VSCode** help users find the example in
-VSCode using its `vscode://` URL scheme. Copy the path to use another editor. The app uses no external images,
-fonts, payment services, or frontend build dependencies.
+**Copy file path** and **Open in VSCode** help users find the example. The latter
+uses VSCode's `vscode://` URL scheme; copying paths supports other editors. The
+app uses no external images, fonts, payment services, or frontend build dependencies.
 
 Discovery recognizes YAML/JSON root documents for Swagger 2.0 and OpenAPI 3.0,
 3.1, and 3.2; it ignores malformed files, ordinary config, and schema fragments.
