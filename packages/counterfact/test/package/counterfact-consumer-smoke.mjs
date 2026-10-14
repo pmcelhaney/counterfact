@@ -170,6 +170,7 @@ try {
     "coffee-shop-page",
     "coffee-shop-progress",
     "coffee-shop-action",
+    "coffee-shop-observations",
   ]) {
     assert.ok(
       packFiles.includes(`dist/cli/${module}.js`),
