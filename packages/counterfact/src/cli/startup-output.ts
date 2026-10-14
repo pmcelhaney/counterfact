@@ -115,7 +115,7 @@ export function createStartupReporter(
       const restoreWrites: Array<() => void> = [];
       const clear = (nextLine = "") => {
         // A resize can reflow the previously displayed line onto several rows.
-        const columns = Math.max(1, stream.columns ?? 80);
+        const columns = Math.max(1, stream.columns || 80);
         const rows = Math.max(1, Math.ceil(displayedLength / columns));
         write(
           `\r\u001B[2K${"\u001B[1A\r\u001B[2K".repeat(rows - 1)}${nextLine}`,
@@ -139,7 +139,7 @@ export function createStartupReporter(
         const render = () => {
           // Startup labels use single-cell characters. Leave the last column
           // empty to avoid automatic wrapping at the terminal margin.
-          const available = Math.max(0, (stream.columns ?? 80) - 3);
+          const available = Math.max(0, (stream.columns || 80) - 3);
           const label =
             message.length > available
               ? `${message.slice(0, Math.max(0, available - 1))}…`.slice(

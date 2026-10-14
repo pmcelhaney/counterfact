@@ -91,6 +91,7 @@ describe("startup progress spinner", () => {
     const write = jest.fn<(text: string) => void>();
     const reporter = createStartupReporter(createStartupOutput(false), {
       isTTY: true,
+      columns: 0,
       write,
     });
     let finish = () => {};

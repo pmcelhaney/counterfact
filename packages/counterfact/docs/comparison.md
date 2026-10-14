@@ -10,7 +10,7 @@ There are several tools in the API mocking space. Here's an honest look at how C
 | **Type-safe handlers**     | ✅ TypeScript       | ❌                                         | ❌                                   | ❌                             | ❌                                   |
 | **Real logic in handlers** | ✅                  | Limited                                    | Via templating                       | ❌                             | Via scripts                          |
 | **Hot reload**             | ✅ state-preserving | ❌                                         | ❌                                   | ❌                             | ❌                                   |
-| **In-memory state**        | ✅ shared Context   | ✅ flat JSON                               | ❌                                   | ❌                             | ❌                                   |
+| **In-memory state**        | ✅ shared Context   | ✅ flat JSON                               | ✅ scenario state                    | ❌                             | ❌                                   |
 | **Interactive REPL**       | ✅                  | ❌                                         | ❌                                   | ❌                             | ❌                                   |
 | **Hybrid proxy**           | ✅ per-path         | ❌                                         | ✅                                   | ✅                             | ✅                                   |
 | **Request validation**     | ✅                  | ❌                                         | ✅                                   | ✅                             | ✅                                   |
@@ -54,6 +54,10 @@ Use Counterfact when: you have an OpenAPI spec and want a server that actually m
 
 ## Counterfact vs. WireMock
 
+WireMock supports [scenario state machines](https://wiremock.org/docs/stateful-behaviour/)
+that transition after requests and can be inspected or reset. This differs from
+Counterfact's shared user-authored context objects.
+
 **WireMock** is battle-tested and runs on the JVM. It excels at stubbing precise request/response pairs and is widely used in Java/Spring ecosystems.
 
 Counterfact is purpose-built for OpenAPI and TypeScript. Instead of configuring stubs, you write real TypeScript logic. Hot reload means you never restart. The REPL means you can inspect and mutate state live. If you're working in a Node.js or frontend-focused environment, Counterfact is a much lighter lift.
@@ -81,7 +85,7 @@ Use Counterfact when: you're a developer who wants to spin up a mock in seconds 
 
 ## Counterfact vs. MSW (Mock Service Worker)
 
-**MSW** intercepts requests in the browser or Node.js using Service Workers. It's excellent for unit and integration tests, and for mocking APIs in a test environment without a running server.
+**MSW** intercepts browser requests through a Service Worker and Node.js requests through [low-level interception](https://github.com/mswjs/msw#nodejs). It's excellent for unit and integration tests, and for mocking APIs in a test environment without a running server.
 
 Counterfact runs an actual HTTP server. Other processes — not just the browser — can call it. It has persistent state, a REPL, and hot reload. It is designed for development workflows, but it works equally well in automated test suites — particularly end-to-end and integration tests where you need a real HTTP server that any client can reach, not just the one running in the same process.
 
