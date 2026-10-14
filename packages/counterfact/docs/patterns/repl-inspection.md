@@ -8,7 +8,7 @@ Development workflows that require a restart to change behavior — seeding a da
 
 ## How it works
 
-Use Counterfact's built-in REPL. The REPL runs alongside the server in the same terminal, connected directly to the live `context` and a built-in `client`. You can call context methods to inspect or mutate state, send HTTP requests, read the responses, and toggle behavior flags — all without touching a file or restarting anything.
+Use Counterfact's built-in REPL. For a single API group, `context` is its root context; with multiple groups, `context` and `loadContext` are keyed by group. The REPL runs alongside the server in the same terminal, connected directly to the live `context` and a built-in `client`. You can call context methods to inspect or mutate state, send HTTP requests, read the responses, and toggle behavior flags — all without touching a file or restarting anything.
 
 ## Example
 
@@ -26,12 +26,18 @@ Start the server with the REPL enabled (the default when running via `npx counte
 
 ### Send real requests and inspect responses
 
-```
-⬣> client.get("/pet/1")
-{ status: 200, body: { id: 1, name: 'Fluffy', status: 'available', photoUrls: [] } }
+`client` prints HTTP request/response text and returns a promise of the raw response string. The transcripts below show abbreviated response output: request logs, headers, and colors are omitted. `void` starts the request without also displaying the returned promise; use `await client.get(...)` when you need the raw string.
 
-⬣> client.post("/pet", { name: "Bella", status: "available", photoUrls: [] })
-{ status: 200, body: { id: 3, name: 'Bella', status: 'available', photoUrls: [] } }
+```
+⬣> void client.get("/pet/1")
+HTTP/1.1 200 OK
+
+{"id":1,"name":"Fluffy","status":"available","photoUrls":[]}
+
+⬣> void client.post("/pet", { name: "Bella", status: "available", photoUrls: [] })
+HTTP/1.1 200 OK
+
+{"id":3,"name":"Bella","status":"available","photoUrls":[]}
 ```
 
 ### Toggle failure modes without editing a file
@@ -40,12 +46,16 @@ If the context exposes a failure flag (see [Simulate Failures and Edge Cases](./
 
 ```
 ⬣> context.isRateLimited = true
-⬣> client.get("/pet/1")
-{ status: 429, body: 'Too Many Requests' }
+⬣> void client.get("/pet/1")
+HTTP/1.1 429 Too Many Requests
+
+Too Many Requests
 
 ⬣> context.isRateLimited = false
-⬣> client.get("/pet/1")
-{ status: 200, body: { id: 1, name: 'Fluffy', status: 'available', photoUrls: [] } }
+⬣> void client.get("/pet/1")
+HTTP/1.1 200 OK
+
+{"id":1,"name":"Fluffy","status":"available","photoUrls":[]}
 ```
 
 ### Inspect state mid-session
@@ -65,24 +75,29 @@ If the context exposes a failure flag (see [Simulate Failures and Edge Cases](./
 ### Control the proxy at runtime
 
 ```
-⬣> .proxy on /payments    # forward /payments/* to the real API
-⬣> client.get("/payments/42")
-{ status: 200, body: { ... real response ... } }
+⬣> .proxy url https://api.example.com
+⬣> .proxy on /payments
+⬣> void client.get("/payments/42")
+HTTP/1.1 200 OK
 
-⬣> .proxy off             # back to mock for everything
+... real response body ...
+
+⬣> .proxy off /payments
 ```
+
+These commands enable and then disable the `/payments` proxy entry. More specific child entries can still override it; turning off the root alone does not clear a subtree override.
 
 ## What you get
 
 - Changes made through the REPL take effect on the next request with no restart; the server is never interrupted.
 - REPL state changes persist for the lifetime of the server process; restarting the server resets the context to its initial values.
-- The `context` variable in the REPL is the same instance the route handlers use — there is no synchronization lag.
-- The REPL is a JavaScript environment; any expression that is valid in a Node.js module is valid at the prompt, including `await`.
+- In a single group, `context` is its root instance; handlers in subtrees with their own context files use those nearer instances — there is no synchronization lag.
+- The REPL is a JavaScript environment; it supports interactive expressions and top-level `await`, with Node.js REPL syntax rules.
 
 ## Keep exploring
 
 - [Share State Across API Groups](./shared-store.md) — inspect the unqualified live `store` shared by every API group
 - [Simulate Failures and Edge Cases](./simulate-failures.md) — expose context flags that the REPL can toggle
-- [Federated Context Files](./federated-context.md) — use `$.loadContext()` in the REPL to inspect a specific domain's context
+- [Federated Context Files](./federated-context.md) — use `loadContext()` in a single-group REPL to inspect a specific domain's context
 - [Mock APIs with Dummy Data](./mock-with-dummy-data.md) — use the REPL to seed and inspect stateful handler data
 - [Hybrid Proxy](./hybrid-proxy.md) — toggle individual proxy paths from the REPL during development

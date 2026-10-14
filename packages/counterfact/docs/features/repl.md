@@ -1,15 +1,16 @@
 # REPL ⬣
 
-The REPL is a JavaScript prompt connected directly to the running server — like the browser DevTools console, but for your mock API. After starting Counterfact you'll see:
+The REPL is a JavaScript prompt connected directly to the running server — like the browser DevTools console, but for your mock API. For a default OpenAPI-backed session, startup output includes:
 
-```
-____ ____ _  _ _ _ ___ ____ ____ ____ ____ ____ ___
-|___ [__] |__| |\|  |  |=== |--< |--- |--| |___  |
-            Storybook for the back-end
-
-| API Base URL  ==> http://localhost:3100
-| Admin Console ==> http://localhost:3100/counterfact/
-
+```text
+Counterfact v<version>
+→ Reading OpenAPI document…
+✓ OpenAPI document ready
+→ Generating routes and types…
+✓ Generated routes and types
+✓ Mock server → http://localhost:3100
+✓ Swagger UI → http://localhost:3100/counterfact/swagger/
+✓ Watching routes and types
 ⬣>
 ```
 
@@ -49,7 +50,9 @@ loadContext.billing("/pets");
 route.inventory("/stock/{sku}");
 ```
 
-When configuring multiple APIs, each API must define a non-empty, unique group name.
+When configuring multiple APIs, each spec must define a non-empty group and a
+unique group/version pair. Versions of the same API can share a group; distinct
+unversioned APIs need distinct groups.
 
 If `<basePath>/_.store.ts` exists, `store` is an unqualified REPL binding in
 both single- and multi-API sessions. It is the same live application-level
@@ -143,7 +146,8 @@ The `Scenario` type and `Scenario$` interface are generated automatically into `
 
 ## Startup scenario
 
-The `startup` export in `scenarios/index.ts` is special: it runs automatically when the server initializes, right before the REPL prompt appears. Use it to seed dummy data so the server is immediately useful without any manual REPL commands.
+The `startup` export in `scenarios/index.ts` is special: it is awaited during server initialization, before the HTTP server starts
+listening and before the REPL opens. It also runs when the REPL is disabled. Use it to seed dummy data so the server is immediately useful without any manual REPL commands.
 
 ```ts
 // scenarios/index.ts

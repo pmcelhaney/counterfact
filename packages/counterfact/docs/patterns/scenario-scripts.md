@@ -1,6 +1,6 @@
 # Scenario Scripts
 
-Save the REPL setups you use more than once: seed data, configure state, and build reusable request sequences that run on demand or at startup.
+Save the REPL setups you use more than once: seed data, configure state, and build reusable request sequences that run on demand. Seed context state at startup.
 
 ## Why teams use this
 
@@ -23,11 +23,6 @@ export const soldPets: Scenario = ($) => {
   $.context.petService.reset();
   $.context.petService.addPet({ id: 1, status: "sold" });
   $.context.petService.addPet({ id: 2, status: "available" });
-
-  // Store a pre-configured route builder in the REPL environment
-  $.routes.findSold = $.route("/pet/findByStatus")
-    .method("get")
-    .query({ status: "sold" });
 };
 ```
 
@@ -46,15 +41,18 @@ Applied soldPets
 | `.scenario pets/resetAll`       | `scenarios/pets.ts`        | `resetAll` |
 | `.scenario pets/orders/pending` | `scenarios/pets/orders.ts` | `pending`  |
 
-After running, anything stored in `$.routes` is immediately available in the REPL:
+For multiple API groups, select the group explicitly, for example `.scenario pets soldPets`.
+
+Generated `Scenario$` currently types `route(...)` and entries in `routes` as `unknown`, so the fluent builder API is not type-checked through that surface. Build a reusable request separately at the untyped REPL prompt after running the state scenario:
 
 ```js
+⬣> routes.findSold = route("/pet/findByStatus").method("get").query({ status: "sold" })
 ⬣> routes.findSold.send()
 ```
 
 ### Automatic startup
 
-Export a function named `startup` from `scenarios/index.ts` and Counterfact calls it automatically when the server initializes, right before the REPL prompt appears — no manual command required:
+Export a function named `startup` from `scenarios/index.ts` and Counterfact calls it automatically when the server initializes, before the HTTP server starts listening — no manual command required:
 
 ```ts
 // scenarios/index.ts
@@ -66,7 +64,7 @@ export const startup: Scenario = ($) => {
 };
 ```
 
-If `startup` is not exported, the server starts normally with no error.
+If `startup` is not exported, the server starts normally with no error. Startup is awaited once per API group. Seed context directly there; requests to this same server cannot complete before it starts listening. Startup receives a separate `routes` object, so aliases created there are not retained in the later REPL. Create reusable aliases after startup, at the prompt or in an on-demand scenario with an explicitly narrowed builder type.
 
 ### Delegating to helpers with extra arguments
 
@@ -114,6 +112,8 @@ Named scenario exports that need no extra arguments can also be called as standa
 
 ```ts
 // scenarios/pets.ts
+import type { Scenario } from "../types/_.context.js";
+
 export const addThreeDogs: Scenario = ($) => addPets($, 3, "dog");
 ```
 

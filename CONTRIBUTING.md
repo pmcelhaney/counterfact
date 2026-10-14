@@ -78,6 +78,51 @@ pass, task branches may be pushed and opened as pull requests; releases,
 deployments, production data, paid services, and credential changes require
 separate authorization.
 
+### Documentation drift checks
+
+Run `yarn check:drift` from the repository root to check documentation and agent
+guidance against related Git-tracked changes. The pinned `catchmydrift` development
+dependency reads [`catchmydrift.config.json`](./catchmydrift.config.json).
+
+Each of the 72 selected documents has an explicit watch rule connected to named
+implementation, configuration, and test groups. For example, the route-builder
+guide follows the client builder/catalog/HTTP transport and REPL integration;
+state guides follow context loading and registries; the REPL _skill_ follows the
+HTTP admin API it actually describes. The migration and utility READMEs follow
+their own modules rather than the whole application.
+
+Package READMEs and the whole-product README, FAQ, reference, comparison, and
+design principles retain package-level scopes because they describe those full
+interfaces. The monorepo migration account also spans package boundaries,
+packaging, and releases. Navigation indexes follow their linked guide inventory;
+agent instructions follow the referenced guidance and test conventions.
+
+The initial threshold is 20%, used as a review reminder. Implementation groups
+exclude Markdown, fixtures, and snapshots so prose and generated test artifacts
+do not dilute code measurements. Guide-navigation and agent-guidance groups
+include the Markdown they directly describe. Lockfiles, changelogs, historical
+studies, issue proposals, and ADRs are not watched; they record dependencies or
+historical decisions rather than current behavior. This check is opt-in and is
+not a required CI gate. Relationships operate at file granularity: a change to
+an unrelated function in a shared module can still contribute drift.
+
+An exit code of 1 means a watched file needs review, not that the configuration
+is invalid; exit code 2 indicates a configuration or operational error. Drift
+measures changed lines since the watched file's last update or recorded review,
+so a successful setup can still report existing drift.
+
+Read each reported document alongside its related changes and update inaccurate
+guidance. If the document is still accurate after review, record that assessment:
+
+```sh
+yarn catchmydrift review packages/runtime/README.md
+```
+
+This writes `.catchmydrift-state.json`; commit it with the reviewed changes when
+that assessment should be shared. Do not bulk-mark documents as reviewed just to
+make the check pass. See the [catchmydrift documentation](https://github.com/pmcelhaney/catchmydrift)
+for thresholds and review-state behavior.
+
 ### Mutation testing
 
 Mutation testing runs against one workspace package at a time so reports stay actionable and CI can process packages in parallel.

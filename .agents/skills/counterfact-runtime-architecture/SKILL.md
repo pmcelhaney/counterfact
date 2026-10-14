@@ -6,10 +6,12 @@ description: >
 applyTo:
   - "packages/counterfact/src/app.ts"
   - "packages/counterfact/src/api-runner.ts"
-  - "packages/counterfact/src/server/**/*.ts"
+  - "packages/runtime/src/server/**/*.ts"
   - "packages/counterfact/src/util/**/*.ts"
-  - "packages/counterfact/test/server/**/*.test.ts"
+  - "packages/runtime/test/server/**/*.test.ts"
   - "packages/counterfact/test/app.test.ts"
+  - "packages/repl/src/**/*.ts"
+  - "packages/repl/test/**/*.test.ts"
 ---
 
 # Counterfact Runtime Architecture Skill
@@ -22,9 +24,10 @@ Use this skill when changing runtime orchestration, server dispatch flow, module
 
 - `packages/counterfact/src/app.ts`
 - `packages/counterfact/src/api-runner.ts`
-- `packages/counterfact/src/server/dispatcher.ts`
-- `packages/counterfact/src/server/module-loader.ts`
-- `packages/counterfact/src/server/web-server/create-koa-app.ts`
+- `packages/repl/src/repl.ts`
+- `packages/runtime/src/server/dispatcher.ts`
+- `packages/runtime/src/server/module-loader.ts`
+- `packages/runtime/src/server/web-server/create-koa-app.ts`
 - `packages/counterfact/docs/reference.md` (architecture + runtime behavior)
 
 ## Existing conventions to follow
@@ -36,13 +39,13 @@ Use this skill when changing runtime orchestration, server dispatch flow, module
 
 ## Common mistakes to avoid
 
-- Coupling generator concerns into `packages/counterfact/src/server/*` code paths.
+- Coupling generator concerns into `packages/runtime/src/server/*` code paths.
 - Breaking prefix/group/version routing derivation in `app.ts`.
 - Introducing restart-only behavior for changes currently handled by watch/reload paths.
 - Changing response defaults/content negotiation semantics unintentionally in `dispatcher` or Koa middleware.
 
 ## How to validate the change
 
-- Run: `yarn lint`, `yarn build`, `yarn test`.
-- Run focused runtime tests first (for touched areas), e.g. `packages/counterfact/test/server/dispatcher.test.ts`, `packages/counterfact/test/server/module-loader.test.ts`, `packages/counterfact/test/app.test.ts`.
+- Run: `yarn lint`, `yarn build`, `yarn test`. The root test command uses the shared Jest configuration across application, runtime, REPL, generator, client, and OpenAPI test roots. Use `yarn test:runtime` or `yarn test:repl` to select those boundaries for focused runs.
+- Run focused runtime tests first (for touched areas), e.g. `packages/runtime/test/server/dispatcher.test.ts`, `packages/runtime/test/server/module-loader.test.ts`, `packages/counterfact/test/app.test.ts`.
 - Manually sanity-check startup + runtime flow with `yarn go:example` when behavior changes.

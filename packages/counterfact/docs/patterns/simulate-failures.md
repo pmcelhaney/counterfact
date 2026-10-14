@@ -19,13 +19,16 @@ Define failure flags in the context:
 export class Context {
   isBroken = false;
   isRateLimited = false;
+  callCount = 0;
 }
 ```
 
-Read those flags in the route handler:
+Read those flags in the route handler. The OpenAPI operation must declare the shown status codes and media types (including `503` for the later examples), so its generated response builders allow them:
 
 ```ts
 // api/routes/payments/{paymentId}.ts
+import type { HTTP_GET } from "../../types/paths/payments/{paymentId}.types.js";
+
 export const GET: HTTP_GET = ($) => {
   if ($.context.isRateLimited) return $.response[429].text("Too Many Requests");
   if ($.context.isBroken) return $.response[500].text("Internal Server Error");
@@ -33,28 +36,32 @@ export const GET: HTTP_GET = ($) => {
 };
 ```
 
-Toggle failures from the REPL or from a test without restarting the server:
+Toggle failures from the REPL or from a test without restarting the server. This abbreviated `client` output omits request logs, headers, and colors; the client returns a promise of raw HTTP text, not a `{ status, body }` object:
 
 ```
 ⬣> context.isRateLimited = true
-⬣> client.get("/payments/1")
-{ status: 429, body: 'Too Many Requests' }
+⬣> void client.get("/payments/1")
+HTTP/1.1 429 Too Many Requests
+
+Too Many Requests
 
 ⬣> context.isRateLimited = false
 ⬣> context.isBroken = true
-⬣> client.get("/payments/1")
-{ status: 500, body: 'Internal Server Error' }
+⬣> void client.get("/payments/1")
+HTTP/1.1 500 Internal Server Error
+
+Internal Server Error
 ```
 
 To simulate intermittent failures, use a counter or a random function:
 
 ```ts
 export const GET: HTTP_GET = ($) => {
-  $.context.callCount = ($.context.callCount ?? 0) + 1;
+  $.context.callCount += 1;
   if ($.context.callCount % 3 === 0) {
     return $.response[503].text("Flaky error");
   }
-  return $.response[200].json({ id: $.path.petId });
+  return $.response[200].json({ id: $.path.paymentId });
 };
 ```
 
@@ -65,13 +72,13 @@ export const GET: HTTP_GET = ($) => {
   if (Math.random() < 0.2) {
     return $.response[503].text("Flaky error");
   }
-  return $.response[200].json({ id: $.path.petId });
+  return $.response[200].json({ id: $.path.paymentId });
 };
 ```
 
 ## What you get
 
-- Flag-based failures are deterministic and reproducible — valuable for automated tests. Random and counter-based approaches introduce non-determinism intentionally, to simulate flakiness.
+- Flag-based failures are deterministic and reproducible — valuable for automated tests. A counter fails every third call reproducibly when its state is reset; random failures are intentionally non-deterministic.
 - The same handler serves both happy-path and failure traffic; a flag decides which.
 - The context's in-memory state resets on server restart, so you always start from a clean slate.
 - The pattern does not simulate network-level connection drops. For latency simulation, use `$.delay()` directly in the handler — see [Simulate Realistic Latency](./simulate-latency.md).
