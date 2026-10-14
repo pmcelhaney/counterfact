@@ -24,6 +24,7 @@ export function coffeeShopPage(projectPath: string): string {
 <section class="shop" aria-label="Coffee shop"><header class="shop-head"><div><div class="eyebrow">Small batch · Big comfort</div><h1>Counterfact Coffee</h1><div class="demo">A local demo shop. No payments or real orders.</div></div><button id="refresh" class="secondary">Refresh products</button></header><div id="shop-notice" role="status" aria-live="polite"></div><div id="products" class="products"></div><section class="cart" aria-label="Shopping cart"><h2>Your cart</h2><div id="cart"></div><div class="cart-footer"><strong id="total"></strong><button id="checkout" disabled>Place order</button></div></section></section>
 </main><script>
 const projectPath = ${path};
+const projectEditorUrl = ${JSON.stringify(editorUrl.href)};
 const restartCommand = ${restart};
 let sessionId;
 ${CoffeeShopProgress.toString()}
@@ -176,10 +177,22 @@ const successes = {
   10:'Five bags became four. The REPL and order handler use the same inventory.',
 };
 function currentAction(){return coffeeShopAction({step:progress.step,done:progress.done,cart,stock:Object.fromEntries(products.map(p=>[p.id,p.stock])),ordered:!!progress.lastOrder,manualStage:manualStages[progress.step]||0,inventoryUpdated:progress.inventoryUpdated});}
+const instructionFiles=['routes/_.context.ts','routes/products.ts','routes/orders.ts','scenarios/index.ts','openapi.json'];
+function fileLink(file,label=file){const link=element('a',label);link.href=new URL(file,projectEditorUrl).href;return link;}
+function fileText(tag,text,className){
+  const node=element(tag,'',className);
+  while(text){
+    const match=instructionFiles.map(file=>({file,index:text.indexOf(file)})).filter(match=>match.index>=0).sort((a,b)=>a.index-b.index||b.file.length-a.file.length)[0];
+    if(!match){node.append(element('span',text));break;}
+    if(match.index)node.append(element('span',text.slice(0,match.index)));
+    node.append(fileLink(match.file));text=text.slice(match.index+match.file.length);
+  }
+  return node;
+}
 function instructionParagraph(text){
   const paragraph=element('p','');paragraph.id='instruction-text';const action=currentAction();const start=action?text.toLowerCase().indexOf(action.text.toLowerCase()):-1;
-  if(start<0){paragraph.textContent=text;return paragraph;}
-  paragraph.append(element('span',text.slice(0,start)),element('strong',text.slice(start,start+action.text.length)),element('span',text.slice(start+action.text.length)));return paragraph;
+  if(start<0){paragraph.append(fileText('span',text));return paragraph;}
+  paragraph.append(fileText('span',text.slice(0,start)),fileText('strong',text.slice(start,start+action.text.length)),fileText('span',text.slice(start+action.text.length)));return paragraph;
 }
 function updateAction(){
   const paragraph=$('instruction-text');if(paragraph)paragraph.replaceWith(instructionParagraph(paragraph.textContent));
@@ -188,15 +201,15 @@ function updateAction(){
 function showLesson(){
   saveProgress();
   const lesson=[...lessons[progress.step]];
-  if(progress.step===7&&progress.inventoryUpdated&&!progress.done){lesson[1]='Your order handler already updates inventory. You do not need to add the lines again. Add one Dark Roast to your cart, place an order, and watch the inventory to verify the shared state.';lesson[2]='';lesson[3]='';}$('lesson').replaceChildren(element('div','Step '+Math.min(progress.step+1,12)+' of 12','eyebrow'),element('h2',lesson[0]),element('p',questions[progress.step],'experiment-question'),instructionParagraph(lesson[1]));
+  if(progress.step===7&&progress.inventoryUpdated&&!progress.done){lesson[1]='Your order handler already updates inventory. You do not need to add the lines again. Add one Dark Roast to your cart, place an order, and watch the inventory to verify the shared state.';lesson[2]='';lesson[3]='';}$('lesson').replaceChildren(element('div','Step '+Math.min(progress.step+1,12)+' of 12','eyebrow'),fileText('h2',lesson[0]),fileText('p',questions[progress.step],'experiment-question'),instructionParagraph(lesson[1]));
   if(lesson[4]||lesson[2]||lesson[3]){
     const hint=element('details','','code-hint');hint.append(element('summary','Show code hint'));
-    if(lesson[4]){hint.append(element('p',projectPath+'/'+lesson[4],'path'));const copy=element('button','Copy file path','secondary');copy.onclick=()=>copyPath(projectPath+'/'+lesson[4],copy);hint.append(copy);}
-    if(lesson[2])hint.append(element('p',progress.step===9?'Read the current quantity:':'Find:'),element('pre',lesson[2]));
-    if(lesson[3])hint.append(element('p',progress.step===9?'Then update it:':progress.step===7?'Add:':'Change to:'),element('pre',lesson[3]));
+    if(lesson[4]){const path=element('p','','path');path.append(fileLink(lesson[4],projectPath+'/'+lesson[4]));hint.append(path);const copy=element('button','Copy file path','secondary');copy.onclick=()=>copyPath(projectPath+'/'+lesson[4],copy);hint.append(copy);}
+    if(lesson[2])hint.append(element('p',progress.step===9?'Read the current quantity:':'Find:'),fileText('pre',lesson[2]));
+    if(lesson[3])hint.append(element('p',progress.step===9?'Then update it:':progress.step===7?'Add:':'Change to:'),fileText('pre',lesson[3]));
     $('lesson').append(hint);
   }
-  if(progress.step===11){$('lesson').append(element('p','To restart this project, run:'),element('pre',restartCommand));const link=element('a','Continue learning');link.href='https://counterfact.dev/docs/first-10-minutes/';$('lesson').append(link);}
+  if(progress.step===11){$('lesson').append(element('p','To restart this project, run:'),fileText('pre',restartCommand));const link=element('a','Continue learning');link.href='https://counterfact.dev/docs/first-10-minutes/';$('lesson').append(link);}
   if(progress.done&&progress.step<11){const next=element('p','');next.append(element('strong','Click Continue'),element('span',' to move to the next lesson.'));$('lesson').append(next);}
   $('guide-status').textContent=progress.done?(progress.step===6&&progress.inventoryUpdated?'Your saved order handler already reduces stock. Continue to verify the shared inventory.':successes[progress.step]):'';
   $('continue').hidden=!(progress.done||progress.step===0);$('continue').textContent=progress.step===0?'Start shopping':'Continue';$('back').hidden=progress.step===0;$('skip').hidden=progress.step===11;updateAction();

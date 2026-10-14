@@ -6,6 +6,7 @@ import { coffeeShopPage } from "../../src/cli/coffee-shop-page.js";
 // including async refreshes. Real-browser layout is checked separately.
 class Element {
   id = "";
+  href = "";
   className = "";
   dataset: Record<string, string> = {};
   disabled = false;
@@ -63,8 +64,9 @@ function find(
 async function browser(
   storage = new Map<string, string>(),
   stocks = { "house-blend": 5, "dark-roast": 3, decaf: 0 },
+  projectPath = "/tmp/coffee-shop",
 ) {
-  const page = coffeeShopPage("/tmp/coffee-shop");
+  const page = coffeeShopPage(projectPath);
   const roots = [...page.split("<script>")[0]!.matchAll(/id="([^"]+)"/gu)].map(
     (match) => {
       const node = new Element("div");
@@ -109,6 +111,7 @@ async function browser(
     window: { addEventListener: () => undefined },
     navigator: {},
     AbortController,
+    URL,
     setTimeout,
     clearTimeout,
     setInterval: (callback: () => void) => {
@@ -276,3 +279,56 @@ it("preserves history on reload and lets inspection show an older request withou
   expect(restored.root("history").textContent).toContain('"orderId": 1');
   expect(restored.calls).not.toContain("/orders");
 });
+
+it.each([
+  ["/tmp/coffee shop#1?", "vscode://file/tmp/coffee%20shop%231%3F/"],
+  [String.raw`C:\coffee shop\demo`, "vscode://file/C:/coffee%20shop/demo/"],
+])(
+  "links instructional file names, including bold actions and hints (%s)",
+  async (projectPath, base) => {
+    const app = await browser(undefined, undefined, projectPath);
+    app.read("progress.step=7;progress.inventoryUpdated=false;showLesson()");
+    const paragraph = app.root("instruction-text");
+    expect(
+      find(
+        paragraph,
+        (node) =>
+          node.tag === "a" && node.textContent === "routes/_.context.ts",
+      )?.href,
+    ).toBe(base + "routes/_.context.ts");
+    expect(
+      find(
+        paragraph,
+        (node) => node.tag === "a" && node.textContent === "routes/orders.ts",
+      )?.href,
+    ).toBe(base + "routes/orders.ts");
+    expect(
+      find(
+        find(paragraph, (node) => node.tag === "strong")!,
+        (node) => node.tag === "a",
+      )?.href,
+    ).toBe(base + "routes/_.context.ts");
+    expect(
+      find(
+        app.root("lesson"),
+        (node) =>
+          node.tag === "a" &&
+          node.textContent === projectPath + "/routes/orders.ts",
+      )?.href,
+    ).toBe(base + "routes/orders.ts");
+    app.root("confirm-action").onclick!();
+    expect(
+      find(
+        find(app.root("instruction-text"), (node) => node.tag === "strong")!,
+        (node) => node.tag === "a",
+      )?.href,
+    ).toBe(base + "routes/orders.ts");
+    app.read("progress.step=11;showLesson()");
+    expect(
+      find(
+        app.root("lesson"),
+        (node) => node.tag === "a" && node.textContent === "openapi.json",
+      )?.href,
+    ).toBe(base + "openapi.json");
+  },
+);
