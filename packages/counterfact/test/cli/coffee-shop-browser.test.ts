@@ -76,9 +76,15 @@ async function browser(
   );
   const root = (id: string) =>
     roots.map((node) => find(node, (node) => node.id === id)).find(Boolean)!;
-  const server = { productMode: "valid", orderMode: "accepted", deduct: false };
+  const server = {
+    productMode: "valid",
+    orderMode: "accepted",
+    deduct: false,
+    revision: "original",
+    checkOk: false,
+  };
   const calls: string[] = [];
-  let poll: (() => void) | undefined;
+  let poll: (() => unknown) | undefined;
   const products = () => [
     {
       id: "house-blend",
@@ -126,7 +132,16 @@ async function browser(
       calls.push(path);
       let status = 200;
       let result: unknown;
-      if (path === "/tutorial-info") result = { sessionId: "same-api-session" };
+      if (path === "/tutorial-info")
+        result = { sessionId: "same-api-session", revision: server.revision };
+      else if (path === "/tutorial-check")
+        result = {
+          revision: server.revision,
+          ok: server.checkOk,
+          message: server.checkOk
+            ? "Saved change checked"
+            : "Expected different handler behavior",
+        };
       else if (path === "/products") {
         if (server.productMode === "offline") throw Error("Disconnected");
         result =
@@ -178,8 +193,7 @@ async function browser(
     },
     order: () => read<Promise<void>>("placeOrder()"),
     async poll() {
-      poll!();
-      await read<Promise<void>>("refreshRequest");
+      await poll!();
     },
   };
 }
@@ -209,6 +223,8 @@ it("observes a live inventory edit and credits the response without manual refre
   const app = await browser();
   app.read("progress.step=2;showLesson()");
   app.stocks.decaf = 5;
+  app.server.checkOk = true;
+  app.server.revision = "decaf-change";
   await app.poll();
   expect(app.read("progress.done")).toBe(true);
   expect(app.root("products").textContent).toContain("Decaf");
@@ -304,23 +320,17 @@ it.each([
     ).toBe(base + "routes/orders.ts");
     expect(
       find(
-        find(paragraph, (node) => node.tag === "strong")!,
-        (node) => node.tag === "a",
-      )?.href,
-    ).toBe(base + "routes/_.context.ts");
-    expect(
-      find(
         app.root("lesson"),
         (node) =>
           node.tag === "a" &&
           node.textContent === projectPath + "/routes/orders.ts",
       )?.href,
     ).toBe(base + "routes/orders.ts");
-    app.root("confirm-action").onclick!();
+    app.read("manualStages[7]=4;updateAction()");
     expect(
       find(
-        find(app.root("instruction-text"), (node) => node.tag === "strong")!,
-        (node) => node.tag === "a",
+        app.root("instruction-text"),
+        (node) => node.tag === "a" && node.textContent === "routes/orders.ts",
       )?.href,
     ).toBe(base + "routes/orders.ts");
     app.read("progress.step=11;showLesson()");
@@ -332,3 +342,44 @@ it.each([
     ).toBe(base + "openapi.json");
   },
 );
+
+it("detects saves, reports a failed check, and advances the action only after a passing check", async () => {
+  const app = await browser();
+  app.read("progress.step=4;cart={'house-blend':1};showLesson()");
+  await app.poll(); // Establish the lesson's saved revision; no failed alert before an edit.
+  expect(app.root("save-check").textContent).toBe("");
+  expect(app.root("lesson").textContent).not.toContain("I've saved the file");
+  app.server.revision = "wrong-edit";
+  await app.poll();
+  expect(app.root("save-check").textContent).toContain(
+    "Expected different handler behavior",
+  );
+  expect(app.read("manualStages[4]")).toBe(0);
+  const checks = app.calls.filter((path) => path === "/tutorial-check").length;
+  await app.poll();
+  expect(app.calls.filter((path) => path === "/tutorial-check")).toHaveLength(
+    checks,
+  );
+  app.server.revision = "correct-edit";
+  app.server.checkOk = true;
+  await app.poll();
+  expect(app.root("save-check").textContent).toContain("Saved change checked");
+  expect(app.read("manualStages[4]")).toBe(4);
+  expect(app.read("progress.done")).toBe(false);
+  expect(app.read("cart")).toEqual({ "house-blend": 1 });
+  expect(app.calls.filter((path) => path === "/orders")).toHaveLength(0);
+});
+
+it("discards a delayed check when the user has moved to another lesson", async () => {
+  const app = await browser();
+  app.read(`progress.step=4;showLesson();
+    const originalRequest=requestJson;
+    let releaseCheck;
+    requestJson=async(path,options)=>{if(path==='/tutorial-check')await new Promise(resolve=>releaseCheck=resolve);return originalRequest(path,options);};`);
+  const pending = app.read<Promise<void>>("checkSavedFiles()");
+  await new Promise((resolve) => setImmediate(resolve));
+  app.read("progress.step=5;showLesson();releaseCheck()");
+  await pending;
+  expect(app.root("save-check").textContent).toBe("");
+  expect(app.read("manualStages[5]")).toBeUndefined();
+});

@@ -18,34 +18,12 @@ export function coffeeShopAction({
   if (done || step === 11) return;
   if (step === 0) return { text: "Click Start shopping" };
   const edits: Record<number, [string, string][]> = {
-    2: [
-      ["Open routes/products.ts in your editor", "File is open"],
-      ["Change its starting stock from 0 to 5", "I've made the change"],
-      ["save", "I've saved the file"],
-    ],
-    4: [
-      ["Open routes/orders.ts", "File is open"],
-      ["change ordersAvailable to false", "I've made the change"],
-      ["save", "I've saved the file"],
-    ],
-    5: [
-      ["restore ordersAvailable to true", "I've made the change"],
-      ["save", "I've saved the file"],
-    ],
+    2: [["Change its starting stock from 0 to 5, save", ""]],
+    4: [["change ordersAvailable to false, and save", ""]],
+    5: [["restore ordersAvailable to true and save", ""]],
     7: inventoryUpdated
       ? []
-      : [
-          [
-            "Open routes/_.context.ts to see inventory",
-            "I've inspected the inventory",
-          ],
-          ["open routes/orders.ts", "File is open"],
-          [
-            "Add these lines at the INVENTORY LESSON comment",
-            "I've added the lines",
-          ],
-          ["save", "I've saved the file"],
-        ],
+      : [["Add these lines at the INVENTORY LESSON comment, save", ""]],
     9: [
       ["Switch to Counterfact’s terminal", "I'm at the REPL"],
       [
@@ -58,7 +36,8 @@ export function coffeeShopAction({
   if (step === 4 && !Object.keys(cart).length)
     return { text: "Add a coffee to your cart" };
   const edit = edits[step]?.[manualStage];
-  if (edit && !ordered) return { text: edit[0], confirm: edit[1] };
+  if (edit && !ordered)
+    return edit[1] ? { text: edit[0], confirm: edit[1] } : { text: edit[0] };
   if (step === 2 || step === 9 || ordered)
     return { text: "watch the inventory" };
   if (step === 5) return { text: "Click Try again" };

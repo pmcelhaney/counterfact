@@ -50,9 +50,13 @@ Each lesson poses a small question to investigate in the real shop. Compare
 actual inventory before and after a purchase; open **Show code hint** when you
 want the exact file or example edit. File names and displayed file paths in the
 instructions open the corresponding file in VSCode. The instructions bold the next action. Cart changes and successful orders move
-the emphasis automatically; confirm editor and REPL actions with the displayed
-button to move to the next action. These confirmations do not complete a lesson:
-the app must still receive the expected API response.
+the emphasis automatically. Saved lesson files are detected automatically and their
+handlers are called with fresh test inventory. A passing check moves the emphasis
+to trying the change in the shop; an unexpected response or broken handler shows
+an alert explaining the mismatch. Fix the code and save again to rerun the check.
+Test orders do not consume the shop’s inventory or affect its cart and history.
+REPL actions still use the displayed confirmation buttons. Checks and confirmations
+do not replace the shopper actions required to complete the lesson.
 
 Product cards use shopper-facing messages such as **4 bags available** or
 **Sold out**, without exposing where inventory is stored. Adding bags changes the cart and availability

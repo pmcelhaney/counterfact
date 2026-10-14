@@ -20,13 +20,14 @@ export function coffeeShopPage(projectPath: string): string {
 <style>
 :root{--paper:#fafafa;--surface:#fff;--ink:#17202a;--muted:#536170;--rule:#dce2e8;--blue:#0869a6;--blue-dark:#04517f;--orange:#f58e00;--orange-dark:#a24b00;--code:#f1f4f6;font-family:system-ui,-apple-system,sans-serif;color:var(--ink);background:var(--paper);font-size:16px}*{box-sizing:border-box}body{margin:0}button,a.editor-link{font:inherit;cursor:pointer;border:0;border-radius:8px;padding:11px 16px;background:var(--blue);color:white;font-weight:650}button:hover:not(:disabled){background:var(--blue-dark)}button.secondary:hover:not(:disabled),a.editor-link:hover{background:#dce9f3}button:disabled{background:#e5eaf0;color:var(--muted);cursor:not-allowed}button.secondary,a.editor-link{background:#edf3f8;color:var(--ink)}button:focus-visible,a:focus-visible{outline:3px solid var(--orange-dark);outline-offset:3px}a{color:var(--blue)}a.editor-link{display:inline-block;text-decoration:none}.brand{margin-bottom:24px}.counterfact-logo{display:block;width:240px;max-width:100%;height:auto;margin-bottom:14px}.layout{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));min-width:1100px;min-height:100vh}.guide{min-width:0;padding:36px;background:#fff;border-right:1px solid var(--rule)}.eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--muted)}h1{font-family:Georgia,serif;font-size:36px;margin:8px 0 10px}h2{font-size:25px;line-height:1.2}h3{margin:0 0 8px}p{line-height:1.6}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:var(--code);padding:14px;border-radius:8px;font-size:13px;line-height:1.5}.path{font-size:12px;overflow-wrap:anywhere;color:var(--muted)}.shop{min-width:0;padding:36px;width:100%;align-self:start}.shop-head{display:flex;justify-content:space-between;gap:20px;align-items:center}.demo{font-size:13px;color:var(--muted)}.products{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin:28px 0}.card{background:#fff;border:1px solid var(--rule);border-radius:14px;padding:20px;display:flex;flex-direction:column}.bag{height:145px;display:grid;place-items:center;margin-bottom:20px;background:#e3f0f9;border-radius:8px}.bag.dark-roast{background:#dce7f0}.bag.decaf{background:#fff0d9}.bag-label{background:#fff;border:1px solid var(--rule);padding:22px 14px;text-align:center;box-shadow:5px 5px 0 #0001;font-family:Georgia,serif;font-size:22px}.card p{font-size:14px;flex:1;color:var(--muted)}.stock{font-size:14px;margin:14px 0;color:var(--muted);font-weight:600}.price{font-weight:700}.effect{margin:24px 0;padding:20px;background:#fff;border:1px solid var(--rule);border-radius:14px}.history-scroll{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:13px;text-align:left}caption{text-align:left;color:var(--muted);margin-bottom:10px}th,td{padding:10px 8px;border-bottom:1px solid var(--rule)}td button{font-size:12px;padding:6px 10px}.event-detail{margin-top:22px}.guide .effect{padding:16px;background:#f4f8fb}.guide .effect p{font-size:14px}.effect h2{font-size:20px;margin-top:0}.effect p{margin:8px 0}.effect pre{margin-bottom:0}.cart{background:white;border:1px solid var(--rule);border-radius:14px;padding:24px}.cart-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--rule)}.cart-row button{padding:5px 10px}.cart-footer{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-top:22px}.notice{padding:16px;background:#eaf5fb;border-radius:8px;margin:18px 0}.error{background:#fff0e7;color:#8c351c}.experiment-question{padding:12px;border-left:3px solid var(--orange);background:#fff5e5;color:var(--ink)}.code-hint{margin:18px 0}.code-hint summary{cursor:pointer;font-weight:650}.guide-footer{margin-top:35px;border-top:1px solid var(--rule);padding-top:18px;font-size:13px}.controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}.controls button{font-size:13px}#guide-status:empty{display:none}
 </style></head><body><main class="layout">
-<aside class="guide" aria-label="Walkthrough instructions"><div class="brand">${COUNTERFACT_LOGO}<div class="eyebrow">Learn by doing</div></div><div id="lesson"></div><p id="guide-status" role="status" aria-live="polite"></p><p id="live-status" class="demo">Connecting to Counterfact…</p><section id="purchase-effect" class="effect" aria-label="Latest purchase effect" aria-live="polite" hidden></section><div class="controls"><button id="continue" hidden>Continue</button><button id="back" class="secondary" hidden>Back</button><button id="skip" class="secondary">Skip lesson</button></div><section id="history" class="effect" aria-label="Transaction history"></section><div class="guide-footer">Your example project<p class="path" id="project-path"></p><button id="copy-path" class="secondary">Copy project path</button> <a id="open-vscode" class="editor-link" href="${editorUrl.href}">Open in VSCode</a><p>Keep Counterfact running in your terminal. Use your own editor for changes.</p></div></aside>
+<aside class="guide" aria-label="Walkthrough instructions"><div class="brand">${COUNTERFACT_LOGO}<div class="eyebrow">Learn by doing</div></div><div id="lesson"></div><p id="guide-status" role="status" aria-live="polite"></p><div id="save-check" role="status" aria-live="polite"></div><p id="live-status" class="demo">Connecting to Counterfact…</p><section id="purchase-effect" class="effect" aria-label="Latest purchase effect" aria-live="polite" hidden></section><div class="controls"><button id="continue" hidden>Continue</button><button id="back" class="secondary" hidden>Back</button><button id="skip" class="secondary">Skip lesson</button></div><section id="history" class="effect" aria-label="Transaction history"></section><div class="guide-footer">Your example project<p class="path" id="project-path"></p><button id="copy-path" class="secondary">Copy project path</button> <a id="open-vscode" class="editor-link" href="${editorUrl.href}">Open in VSCode</a><p>Keep Counterfact running in your terminal. Use your own editor for changes.</p></div></aside>
 <section class="shop" aria-label="Coffee shop"><header class="shop-head"><div><div class="eyebrow">Small batch · Big comfort</div><h1>Counterfact Coffee</h1><div class="demo">A local demo shop. No payments or real orders.</div></div><button id="refresh" class="secondary">Refresh products</button></header><div id="shop-notice" role="status" aria-live="polite"></div><div id="products" class="products"></div><section class="cart" aria-label="Shopping cart"><h2>Your cart</h2><div id="cart"></div><div class="cart-footer"><strong id="total"></strong><button id="checkout" disabled>Place order</button></div></section></section>
 </main><script>
 const projectPath = ${path};
 const projectEditorUrl = ${JSON.stringify(editorUrl.href)};
 const restartCommand = ${restart};
 let sessionId;
+let savedRevision, saveCheckRequest, checkedLesson, passedSaveCheck=false, saveCheckDirty=false;
 ${CoffeeShopProgress.toString()}
 ${coffeeShopAction.toString()}
 ${CoffeeShopObservations.toString()}
@@ -118,7 +119,7 @@ async function refreshProducts({source='manual',credit=true}={}){
       const recovered=!inventoryFresh;inventoryFresh=true;const changed=JSON.stringify(products)!==JSON.stringify(next);const previous=stockSnapshot();products=next;
       if(source!=='before-order')observations.inventory(stockSnapshot(),next);
       if(changed||recovered||source!=='live'){renderPurchaseEffect();renderProducts();renderCart();if(credit)onProducts();}
-      else if(credit){const wasDone=progress.done;progress.products(stockSnapshot());if(wasDone!==progress.done)checkProgress();}
+      else if(credit&&(progress.step!==2||passedSaveCheck)){const wasDone=progress.done;progress.products(stockSnapshot());if(wasDone!==progress.done)checkProgress();}
       if(productError){productError=false;$('shop-notice').replaceChildren();if(!progress.done){$('guide-status').textContent='API connection restored. Continue the experiment.';updateAction();}}renderOrderFailure();
       const changes=products.filter(p=>previous[p.id]!==undefined&&previous[p.id]!==p.stock).map(p=>p.name+': '+previous[p.id]+' → '+p.stock);
       $('live-status').textContent=(changes.length?'Product response · '+changes.join(' · '):'Live API updates · last checked '+new Date().toLocaleTimeString())+(source==='after-order'?' · checked after the order':'');
@@ -196,9 +197,10 @@ function instructionParagraph(text){
 }
 function updateAction(){
   const paragraph=$('instruction-text');if(paragraph)paragraph.replaceWith(instructionParagraph(paragraph.textContent));
-  $('confirm-action')?.remove();const action=currentAction();if(action?.confirm){const button=element('button',action.confirm,'secondary');button.id='confirm-action';button.onclick=()=>{manualStages[progress.step]=(manualStages[progress.step]||0)+1;saveProgress();updateAction();};$('lesson').append(button);}
+  $('confirm-action')?.remove();const action=currentAction();if(action?.confirm&&![2,4,5,7].includes(progress.step)){const button=element('button',action.confirm,'secondary');button.id='confirm-action';button.onclick=()=>{manualStages[progress.step]=(manualStages[progress.step]||0)+1;saveProgress();updateAction();};$('lesson').append(button);}
 }
 function showLesson(){
+  if(checkedLesson!==progress.step){passedSaveCheck=false;$('save-check').replaceChildren();}
   saveProgress();
   const lesson=[...lessons[progress.step]];
   if(progress.step===7&&progress.inventoryUpdated&&!progress.done){lesson[1]='Your order handler already updates inventory. You do not need to add the lines again. Add one Dark Roast to your cart, place an order, and watch the inventory to verify the shared state.';lesson[2]='';lesson[3]='';}$('lesson').replaceChildren(element('div','Step '+Math.min(progress.step+1,12)+' of 12','eyebrow'),fileText('h2',lesson[0]),fileText('p',questions[progress.step],'experiment-question'),instructionParagraph(lesson[1]));
@@ -217,6 +219,7 @@ function showLesson(){
 function checkProgress(){if(progress.done)showLesson();else updateAction();}
 function onCart(){updateAction();if(progress.step===1&&cart['house-blend'])$('guide-status').textContent='Your cart is ready. Click Place order.';if(progress.step===3&&cart.decaf)$('guide-status').textContent='Decaf is in your cart. Click Place order.';}
 function onProducts(){
+  if(progress.step===2&&!passedSaveCheck)return;
   progress.products(Object.fromEntries(products.map(product=>[product.id,product.stock])));checkProgress();
   if(!progress.done&&progress.step===2)$('guide-status').textContent='Decaf is still unavailable. Check the displayed file, save your change, then watch for the product response.';
   if(!progress.done&&[7,8].includes(progress.step)&&progress.lastOrder)$('guide-status').textContent='The inventory has not decreased as expected. Check that your new lines are in the successful-order section, save, buy another bag, and watch its effect.';
@@ -231,6 +234,35 @@ $('continue').onclick=()=>{progress.next();showLesson();refreshProducts({source:
 async function copyPath(path,button){try{await navigator.clipboard.writeText(path);button.textContent='Copied';}catch{$('guide-status').textContent='Select and copy the path shown in the instructions.';}}
 $('copy-path').onclick=()=>copyPath(projectPath,$('copy-path'));
 function saveProgress(){if(!sessionId)return;try{sessionStorage.setItem('counterfact-coffee',JSON.stringify({sessionId,progress,cart,manualStages,history:observations.events}));}catch{}}
+async function checkSavedFiles(){
+  if(saveCheckRequest)return saveCheckRequest;
+  saveCheckRequest=(async()=>{
+    try{
+      const {response,result:info}=await requestJson('/tutorial-info');
+      if(!response.ok||typeof info.revision!=='string')return;
+      const changed=savedRevision!==undefined&&savedRevision!==info.revision;
+      const lessonChanged=checkedLesson!==progress.step;
+      if(!changed&&!lessonChanged)return;
+      if(lessonChanged&&checkedLesson!==undefined)saveCheckDirty=false;
+      if(changed)saveCheckDirty=true;
+      savedRevision=info.revision;checkedLesson=progress.step;
+      if(![2,4,5,7].includes(progress.step))return;
+      const step=progress.step, revision=info.revision;
+      if(changed){passedSaveCheck=false;$('save-check').replaceChildren(element('p','File saved. Checking the handler…','notice'));}
+      const {response:checked,result}=await requestJson('/tutorial-check',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({step})});
+      if(!checked.ok||typeof result?.revision!=='string'||typeof result.ok!=='boolean'||typeof result.message!=='string')throw Error('The check returned an invalid response.');
+      const {result:latest}=await requestJson('/tutorial-info');
+      if(progress.step!==step||latest.revision!==revision||result.revision!==revision){savedRevision=undefined;checkedLesson=undefined;return;}
+      passedSaveCheck=result.ok;
+      if(!result.ok){manualStages[step]=0;progress.lastOrder=undefined;if(changed&&progress.done){progress.done=false;progress.lastOrder=undefined;showLesson();}updateAction();}
+      if(result.ok||saveCheckDirty){const panel=$('save-check');panel.setAttribute('role',result.ok?'status':'alert');panel.replaceChildren(element('p',result.message+(result.ok?(progress.done?'':' Now try it in the shop.'):' Fix the file and save again; it will be checked automatically.'),'notice'+(result.ok?'':' error')));}
+      saveCheckDirty=false;
+      if(result.ok){manualStages[step]=4;updateAction();saveProgress();await refreshProducts({source:'saved-file'});}
+    }catch{savedRevision=undefined;checkedLesson=undefined;$('save-check').setAttribute('role','alert');$('save-check').replaceChildren(element('p','The saved handler could not be checked. Check Counterfact’s terminal for errors; the walkthrough will retry automatically.','notice error'));}
+  })();
+  try{return await saveCheckRequest;}finally{saveCheckRequest=undefined;}
+}
+async function pollWalkthrough(){if(busy||document.hidden)return;await checkSavedFiles();await refreshProducts({source:'live'});}
 async function startWalkthrough(){
   try{
     const {response,result:info}=await requestJson('/tutorial-info');if(!response.ok)throw Error('Project information unavailable');sessionId=info.sessionId;
@@ -245,10 +277,10 @@ async function startWalkthrough(){
       if(saved.cart&&typeof saved.cart==='object')cart=Object.fromEntries(Object.entries(saved.cart).filter(([id,quantity])=>['house-blend','dark-roast','decaf'].includes(id)&&Number.isSafeInteger(quantity)&&quantity>0));
     }
   }catch{ /* A missing or corrupt saved lesson starts a fresh browser lesson. */ }
-  showLesson();renderCart();renderPurchaseEffect();await refreshProducts();
+  showLesson();renderCart();renderPurchaseEffect();await checkSavedFiles();await refreshProducts();
 }
 $('project-path').textContent=projectPath;const walkthroughReady=startWalkthrough();
-setInterval(()=>{if(!busy&&!document.hidden)refreshProducts({source:'live'});},1000);
-window.addEventListener('focus',()=>{if(!busy)refreshProducts({source:'live'});});
+setInterval(()=>pollWalkthrough(),1000);
+window.addEventListener('focus',()=>pollWalkthrough());
 </script></body></html>`;
 }

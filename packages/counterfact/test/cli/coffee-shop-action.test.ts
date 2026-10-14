@@ -36,17 +36,12 @@ it("returns to adding bags if the user reduces the cart before ordering", () => 
   );
 });
 
-it("confirms editor actions separately and still requires a product refresh", () => {
+it("waits for automatic saved-handler validation before the next shop action", () => {
   const edit = { ...state, step: 2 };
   expect(coffeeShopAction(edit)).toEqual({
-    text: "Open routes/products.ts in your editor",
-    confirm: "File is open",
+    text: "Change its starting stock from 0 to 5, save",
   });
-  expect(coffeeShopAction({ ...edit, manualStage: 1 })?.text).toBe(
-    "Change its starting stock from 0 to 5",
-  );
-  expect(coffeeShopAction({ ...edit, manualStage: 2 })?.text).toBe("save");
-  expect(coffeeShopAction({ ...edit, manualStage: 3 })).toEqual({
+  expect(coffeeShopAction({ ...edit, manualStage: 4 })).toEqual({
     text: "watch the inventory",
   });
 });
@@ -60,6 +55,6 @@ it("keeps failed orders at the ordering action and skips retained inventory edit
     "Add one Dark Roast to your cart",
   );
   expect(
-    coffeeShopAction({ ...state, step: 7, inventoryUpdated: false })?.confirm,
-  ).toBe("I've inspected the inventory");
+    coffeeShopAction({ ...state, step: 7, inventoryUpdated: false })?.text,
+  ).toBe("Add these lines at the INVENTORY LESSON comment, save");
 });

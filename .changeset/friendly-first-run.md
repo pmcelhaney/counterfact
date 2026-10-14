@@ -7,3 +7,5 @@ Running Counterfact without arguments or a config file now opens a hands-on brow
 The walkthrough includes the Counterfact wordmark and a blue/orange palette aligned with the website. The shop uses customer-facing stock messages, keeps API explanations beside the instructions, shows real purchase effects, updates automatically, poses small experiments with optional hints, and preserves an inspectable session history. Stale data, stock rejections, and missing order confirmations have explicit explanations and keep the cart available for recovery.
 
 Instructional file names and file paths link directly to the corresponding generated files using VSCode URLs.
+
+Detect saved lesson files, run their handlers against separate test inventory, and explain unexpected behavior without consuming shop stock or requiring editor confirmation clicks.

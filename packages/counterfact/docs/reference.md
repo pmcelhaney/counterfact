@@ -548,7 +548,10 @@ The user completes a purchase, changes Decaf stock in the product handler,
 exercises order failure and retry, adds a successful-order mutation to
 `$.context.inventory`, and restocks through `context.inventory` in the REPL.
 Each lesson poses a small experiment and bolds the next action; exact edits
-remain available under **Show code hint**. Editor and REPL confirmations move
+remain available under **Show code hint**. Saved lesson files trigger checks of their handler functions with separate test
+inventory; failed checks show the expected and observed behavior and rerun on
+the next save. Test orders leave the running shop, cart, and history unchanged.
+Only REPL confirmations move
 instruction emphasis but do not credit a lesson without its expected API response.
 
 Product cards show shopper-facing availability and sold-out messages. API update

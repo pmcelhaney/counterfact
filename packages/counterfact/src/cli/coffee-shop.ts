@@ -1,5 +1,8 @@
 import { coffeeShopPage } from "./coffee-shop-page.js";
 
+const validationModule = new URL("./coffee-shop-validation.js", import.meta.url)
+  .href;
+
 const item = {
   type: "object",
   required: ["productId", "quantity"],
@@ -30,6 +33,34 @@ export const SHOP_DOCUMENT = {
             properties: {
               projectPath: { type: "string" },
               sessionId: { type: "string" },
+              revision: { type: "string" },
+            },
+          }),
+        },
+      },
+    },
+    "/tutorial-check": {
+      post: {
+        requestBody: {
+          required: true,
+          content: {
+            "application/json": {
+              schema: {
+                type: "object",
+                required: ["step"],
+                properties: { step: { type: "integer", enum: [2, 4, 5, 7] } },
+              },
+            },
+          },
+        },
+        responses: {
+          "200": jsonResponse({
+            type: "object",
+            required: ["revision", "ok", "message"],
+            properties: {
+              revision: { type: "string" },
+              ok: { type: "boolean" },
+              message: { type: "string" },
             },
           }),
         },
@@ -185,7 +216,14 @@ export const POST: HTTP_POST = ($) => {
 export function coffeeShopFiles(projectPath: string): Record<string, string> {
   return {
     "routes/tutorial-info.ts": `import type { HTTP_GET } from "../types/paths/tutorial-info.types.js";
-export const GET: HTTP_GET = ($) => $.response[200].json({ projectPath: ${JSON.stringify(projectPath)}, sessionId: $.context.sessionId });
+// Keep native ESM import when Counterfact compiles this route to CommonJS.
+const helpers = new Function("url", "return import(url)")(${JSON.stringify(validationModule)});
+export const GET: HTTP_GET = async ($) => $.response[200].json({ projectPath: ${JSON.stringify(projectPath)}, sessionId: $.context.sessionId, revision: await (await helpers).shopRevision(${JSON.stringify(projectPath)}) });
+`,
+    "routes/tutorial-check.ts": `import type { HTTP_POST } from "../types/paths/tutorial-check.types.js";
+// Keep native ESM import when Counterfact compiles this route to CommonJS.
+const helpers = new Function("url", "return import(url)")(${JSON.stringify(validationModule)});
+export const POST: HTTP_POST = async ($) => $.response[200].json(await (await helpers).checkShopSave(${JSON.stringify(projectPath)}, $.body.step));
 `,
     "routes/_.context.ts": SHOP_CONTEXT,
     "routes/products.ts": SHOP_PRODUCTS,
