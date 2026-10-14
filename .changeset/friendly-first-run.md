@@ -2,4 +2,4 @@
 "counterfact": minor
 ---
 
-Running Counterfact without arguments or a config file now offers a hands-on, offline guided example or setup from a local OpenAPI document, path, or URL. The tutorial starts a ticket API, guides a request and handler edit, and advances when real responses demonstrate success and hot reload. Existing projects are preserved, documentation remains available, and unattended first runs print guidance and exit. Configured and explicit CLI invocations keep their behavior.
+Running Counterfact without arguments or a config file now opens a hands-on browser walkthrough with a coffee shop beside its instructions. Complete purchases, edit real product and order handlers, update shared context inventory, and restock through the REPL while seeing the app respond. The bundled example preserves existing projects, supports available ports and browser fallback, and keeps the ordinary API and REPL running after completion. Own-document setup supports local discovery, paths, and URLs; configured, explicit, and unattended invocations retain their behavior.

@@ -138,6 +138,8 @@ Before adding or approving a black-box test:
    rg -n '@counterfact/|import .*counterfact|from .*counterfact' test-black-box
    ```
 
+For pseudo-terminal teardown, close the master before waiting for child exit so unread output cannot block terminal draining. Bound every wait, including after SIGTERM, and escalate to SIGKILL rather than using an unbounded waitpid. Avoid parent HTTP-server threads before forkpty on macOS; keep HTTP fixtures in separate processes.
+
 For interactive CLI behavior, use a real pseudo-terminal and send the literal keystrokes a user would type.
 If the required terminal facility is unavailable on an operating system, skip explicitly and ensure another CI operating system executes the test; do not replace the test with a direct function call.
 Keep that operating-system skip scoped to the real-terminal scenario so non-interactive journeys continue to run cross-platform.

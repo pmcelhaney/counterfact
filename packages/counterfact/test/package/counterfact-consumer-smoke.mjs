@@ -165,6 +165,16 @@ try {
     packFiles.includes("dist/cli/tutorial.js"),
     "The offline tutorial must ship in the CLI package",
   );
+  for (const module of [
+    "coffee-shop",
+    "coffee-shop-page",
+    "coffee-shop-progress",
+  ]) {
+    assert.ok(
+      packFiles.includes(`dist/cli/${module}.js`),
+      `The browser tutorial must ship ${module}`,
+    );
+  }
   const publicPackFiles = packFiles.filter(
     (packedPath) =>
       !packedPath.startsWith("bin/") && !packedPath.startsWith("dist/"),

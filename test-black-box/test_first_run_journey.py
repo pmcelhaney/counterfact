@@ -598,6 +598,18 @@ def coffee_shop_purchase(journey):
     assert "text/html" in page.headers["Content-Type"]
     assert "Counterfact Coffee" in page.text
     assert "Walkthrough instructions" in page.text
+    info = journey.request("get", "/tutorial-info")
+    assert info.status_code == 200, info.text
+    assert os.path.realpath(info.json()["projectPath"]) == os.path.realpath(journey.output)
+    assert info.json()["sessionId"]
+    assert "sessionStorage" in page.text
+    denied = journey.request("post", "/tutorial-project", headers={"Origin": "https://unrelated.example"})
+    assert denied.status_code == 403
+    denied_without_origin = journey.request("post", "/tutorial-project")
+    assert denied_without_origin.status_code == 403
+    launched = journey.request("post", "/tutorial-project", headers={"Origin": journey.base_url})
+    assert launched.status_code == 200, launched.text
+    assert launched.json()["opened"]
     products = journey.request("get", "/products").json()
     assert [product["id"] for product in products] == ["house-blend", "dark-roast", "decaf"]
     assert products[2]["stock"] == 0

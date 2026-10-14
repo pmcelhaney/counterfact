@@ -76,3 +76,12 @@ it("accounts for multiple purchases before refresh and an already sold-out resul
   lesson.products({ "dark-roast": 0 });
   expect(lesson.done).toBe(true);
 });
+
+it("recognizes an inventory handler retained from a previous tutorial session", () => {
+  const lesson = new CoffeeShopProgress();
+  lesson.step = 6;
+  lesson.order(true, [{ productId: "dark-roast", quantity: 1 }], 3, 201);
+  lesson.products({ "dark-roast": 2 });
+  expect(lesson.done).toBe(true);
+  expect(lesson.inventoryUpdated).toBe(true);
+});

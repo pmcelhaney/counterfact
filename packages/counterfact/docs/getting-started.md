@@ -20,24 +20,46 @@ npx counterfact@latest
 With no arguments and no `counterfact.yaml`, choose **Try a guided example**
 (the default) or **Use my OpenAPI document**. Documentation is also available.
 
-The guided example works offline. Before starting, Counterfact shows the new
-`counterfact-demo/` directory and local server address. Press Enter to start,
-`p` to change the port, or `b` to go back. If that directory already exists,
-Counterfact chooses a new numbered directory and preserves your existing files.
+The guided example opens **Counterfact Coffee** in your browser. Instructions
+stay on the left; the working shop is on the right. Keep Counterfact running
+in its terminal and make file changes in your own editor.
 
-Once the API is running, the tutorial gives you one action at a time:
+Before starting, Counterfact shows the new `counterfact-demo/` directory and
+local server address. Press Enter to start, `p` to change the port, or `b` to
+go back. Existing directories are preserved by choosing a new numbered name.
+The example uses bundled files and needs no contract download.
 
-1. Type `await client.get("/tickets/1")` at the Counterfact prompt. The ticket
-   initially has status `open`.
-2. Open the route file shown in the terminal, change `status: "open"` to
-   `status: "closed"`, and save it in your editor.
-3. Run the same request again. When the API returns `closed`, the tutorial
-   confirms your edit is live without a restart.
+The walkthrough starts with a normal purchase, then guides you through:
 
-Use `.tutorial` or `.tutorial repeat` for the current instruction. Use
-`.tutorial skip` to leave the lesson while keeping the server and REPL running.
-Your example files remain available after you quit; the terminal prints the
-command to restart that project. The browser is optional throughout the lesson.
+1. Making sold-out Decaf available by editing `routes/products.ts`.
+2. Making orders fail, preserving the cart, and restoring successful retries.
+3. Adding an inventory update to `routes/orders.ts`: subtract each purchased
+   quantity from `$.context.inventory`.
+4. Buying the remaining Dark Roast stock and seeing the shop mark it sold out.
+5. Inspecting and replenishing that same inventory through the REPL:
+
+   ```js
+   context.inventory["dark-roast"];
+   context.inventory["dark-roast"] = 5;
+   ```
+
+6. Making another purchase and seeing five bags become four.
+
+After edits or REPL changes, click **Refresh products** in the shop. The left
+panel confirms the responses the app actually receives. Saving a file alone
+does not complete a task. **Continue** moves on after success; **Back**, **Repeat
+instructions**, and **Skip lesson** let you control the pace. A browser reload
+keeps the current lesson and cart within the same running API session.
+
+Use **Copy file path** or **Open project folder** to find the files in your own
+editor. Shared inventory is declared in `routes/_.context.ts` and initialized
+by `scenarios/index.ts`; products and orders access the same running object.
+The initial order handler intentionally does not reduce stock until you add
+that operation. No payments or real purchases take place.
+
+The shop and REPL remain running after completion, and your files remain after
+quitting. If a browser cannot be opened, use the walkthrough URL printed in the
+terminal. The final panel prints the command to restart the project.
 
 To use your own document, choose it from discovered local OpenAPI files or
 enter a path or URL, then choose an output directory and available port.

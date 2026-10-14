@@ -78,8 +78,13 @@ export class CoffeeShopProgress {
     const quantity = this.lastOrder.items
       .filter((item) => item.productId === "dark-roast")
       .reduce((total, item) => total + item.quantity, 0);
-    if (this.step === 6 && stock["dark-roast"] === this.lastOrder.stock)
-      this.done = true;
+    if (this.step === 6) {
+      if (stock["dark-roast"] === this.lastOrder.stock) this.done = true;
+      if (stock["dark-roast"] === this.lastOrder.stock - quantity) {
+        this.done = true;
+        this.inventoryUpdated = true;
+      }
+    }
     if (
       this.step === 7 &&
       this.lastOrder.stock > 0 &&

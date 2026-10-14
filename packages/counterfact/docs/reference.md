@@ -531,23 +531,32 @@ document, and documentation. Local discovery starts only when you choose your
 own document; you can also enter a path or HTTP(S) URL. Setup asks for an output
 directory (default: `api/`) and an available port (default: `3100`).
 
-The guided example uses a bundled ticket API without a contract download or
-update check. Before creating files, it shows the new `counterfact-demo/`
-directory and server address. Existing files, directories, and symlinks are
-preserved by selecting an unused numbered directory. Enter starts the example;
-`p` changes its port, `b` returns to the opening menu, and `q` quits.
-An occupied port prompts for another choice. Port checks are advisory; another
-process can claim the port before the server starts.
+The guided example opens a bundled coffee shop at `/walkthrough`, with
+instructions on the left and an interactive storefront on the right. The
+browser requests real `/products` and `/orders` routes from the generated
+project. It needs no external contract download or update check. Setup shows
+an unused `counterfact-demo/` directory and an available port before creating
+files; existing files, directories, and symlinks are preserved.
 
-Once the example is running, the tutorial guides `await client.get("/tickets/1")`,
-shows the exact editable handler, and asks you to change the ticket status from
-`open` to `closed`. It advances only after successful requests show the expected
-initial and changed response. Unchanged responses and errors retain the current
-step. `.tutorial` and `.tutorial repeat` show the current instruction;
-`.tutorial skip` leaves guidance while keeping the API and REPL running.
-Completion also leaves the project running and prints its restart command.
-Example files and edits are kept after exiting. Documentation and cancellation
-before starting a project create no files.
+Enter starts the example, `p` changes its port, `b` goes back, and `q` quits.
+Port checks are advisory; another process can claim a port before startup.
+If browser launch fails, the terminal prints the walkthrough URL for manual use.
+
+The user completes a purchase, changes Decaf stock in the product handler,
+exercises order failure and retry, adds a successful-order mutation to
+`$.context.inventory`, and restocks through `context.inventory` in the REPL.
+The product handler reads that shared inventory; successful orders and product
+refreshes demonstrate the resulting changes. Failed requests retain the task
+and the cart. Browser controls provide Continue, Back, Repeat instructions,
+and Skip lesson. Session-scoped progress and the cart survive a page reload;
+a new API session starts a new browser lesson. Completion keeps the shop and
+ordinary REPL running, retains the files, and prints a restart command.
+
+**Copy file path** and **Open project folder** help users find the example in
+their own editor. The folder-opening endpoint accepts only requests from the
+walkthrough's own origin and opens the fixed generated project directory.
+It does not accept arbitrary file paths. The app uses no external images,
+fonts, payment services, or frontend build dependencies.
 
 Discovery recognizes YAML/JSON root documents for Swagger 2.0 and OpenAPI 3.0,
 3.1, and 3.2; it ignores malformed files, ordinary config, and schema fragments.

@@ -491,7 +491,6 @@ function buildProgram(
     await updateCheckPromise;
 
     if (config.startRepl) {
-      startRepl();
       if (tutorial) {
         const walkthroughUrl = `${origin}/walkthrough`;
         writeStartupLine(`Coffee shop walkthrough → ${walkthroughUrl}`);
@@ -503,6 +502,7 @@ function buildProgram(
           );
         }
       }
+      startRepl();
     }
 
     if (openBrowser) {

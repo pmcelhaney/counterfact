@@ -1,16 +1,24 @@
 import { CoffeeShopProgress } from "./coffee-shop-progress.js";
 
+import { basename } from "node:path";
+
 export function coffeeShopPage(projectPath: string): string {
   const path = JSON.stringify(projectPath).replace(/</gu, "\\u003c");
+  const name = basename(projectPath);
+  const restart = JSON.stringify(
+    `npx counterfact ./${name}/openapi.json ./${name}`,
+  ).replace(/</gu, "\\u003c");
   return `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Counterfact Coffee · Guided example</title>
 <style>
 :root{font-family:system-ui,-apple-system,sans-serif;color:#30251f;background:#f6f3ed;font-size:16px}*{box-sizing:border-box}body{margin:0}button{font:inherit;cursor:pointer;border:0;border-radius:8px;padding:11px 16px;background:#325848;color:white;font-weight:650}button:disabled{background:#e8e3dc;color:#786f64;cursor:not-allowed}button.secondary{background:#ece8df;color:#30251f}button:focus-visible,a:focus-visible{outline:3px solid #ba7738;outline-offset:3px}a{color:#325848}.layout{display:grid;grid-template-columns:minmax(310px,380px) 1fr;min-height:100vh}.guide{padding:36px 30px;background:#fff;border-right:1px solid #ddd7ce}.eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:#74634f}h1{font-family:Georgia,serif;font-size:36px;margin:8px 0 10px}h2{font-size:25px;line-height:1.2}h3{margin:0 0 8px}p{line-height:1.6}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f5f3ef;padding:14px;border-radius:8px;font-size:13px;line-height:1.5}.path{font-size:12px;overflow-wrap:anywhere;color:#6b6054}.shop{padding:36px;max-width:1100px;width:100%;margin:auto}.shop-head{display:flex;justify-content:space-between;gap:20px;align-items:center}.demo{font-size:13px;color:#766b60}.products{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin:28px 0}.card{background:#fff;border:1px solid #e2dcd3;border-radius:14px;padding:20px;display:flex;flex-direction:column}.bag{height:145px;display:grid;place-items:center;margin-bottom:20px;background:#efe3cb;border-radius:8px}.bag.dark-roast{background:#ddd5cb}.bag.decaf{background:#dbe8dc}.bag-label{background:#fffdf6;border:1px solid #ddd;padding:22px 14px;text-align:center;box-shadow:5px 5px 0 #0001;font-family:Georgia,serif;font-size:22px}.card p{font-size:14px;flex:1;color:#716454}.stock{font-size:13px;margin:10px 0}.price{font-weight:700}.cart{background:white;border:1px solid #e2dcd3;border-radius:14px;padding:24px}.cart-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #eee}.cart-row button{padding:5px 10px}.cart-footer{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-top:22px}.notice{padding:16px;background:#e5efe8;border-radius:8px;margin:18px 0}.error{background:#fff0e9;color:#8c381e}.guide-footer{margin-top:35px;border-top:1px solid #eee;padding-top:18px;font-size:13px}.controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}.controls button{font-size:13px}#guide-status:empty{display:none}@media(max-width:1000px){.products{grid-template-columns:1fr}.bag{height:90px}.shop{padding:24px}.bag-label{padding:10px 16px}}@media(max-width:680px){.layout{grid-template-columns:1fr}.guide{border-right:0;border-bottom:1px solid #ddd}.shop-head{align-items:start;flex-direction:column}}
 </style></head><body><main class="layout">
-<aside class="guide" aria-label="Walkthrough instructions"><div class="eyebrow">Counterfact · Learn by doing</div><div id="lesson"></div><p id="guide-status" role="status" aria-live="polite"></p><div class="controls"><button id="continue" hidden>Continue</button><button id="back" class="secondary" hidden>Back</button><button id="repeat" class="secondary">Repeat instructions</button><button id="skip" class="secondary">Skip lesson</button></div><div class="guide-footer">Your example project<p class="path" id="project-path"></p><button id="copy-path" class="secondary">Copy project path</button><p>Keep Counterfact running in your terminal. Use your own editor for changes.</p></div></aside>
+<aside class="guide" aria-label="Walkthrough instructions"><div class="eyebrow">Counterfact · Learn by doing</div><div id="lesson"></div><p id="guide-status" role="status" aria-live="polite"></p><div class="controls"><button id="continue" hidden>Continue</button><button id="back" class="secondary" hidden>Back</button><button id="repeat" class="secondary">Repeat instructions</button><button id="skip" class="secondary">Skip lesson</button></div><div class="guide-footer">Your example project<p class="path" id="project-path"></p><button id="copy-path" class="secondary">Copy project path</button> <button id="open-project" class="secondary">Open project folder</button><p>Keep Counterfact running in your terminal. Use your own editor for changes.</p></div></aside>
 <section class="shop" aria-label="Coffee shop"><header class="shop-head"><div><div class="eyebrow">Small batch · Big comfort</div><h1>Counterfact Coffee</h1><div class="demo">A local demo shop. No payments or real orders.</div></div><button id="refresh" class="secondary">Refresh products</button></header><div id="shop-notice" role="status" aria-live="polite"></div><div id="products" class="products"></div><section class="cart" aria-label="Shopping cart"><h2>Your cart</h2><div id="cart"></div><div class="cart-footer"><strong id="total"></strong><button id="checkout" disabled>Place order</button></div></section></section>
 </main><script>
 const projectPath = ${path};
+const restartCommand = ${restart};
+let sessionId;
 ${CoffeeShopProgress.toString()}
 const progress = new CoffeeShopProgress();
 const $ = (id) => document.getElementById(id);
@@ -28,6 +36,7 @@ function renderProducts(){
   }
 }
 function renderCart(){
+  saveProgress();
   $('cart').replaceChildren();let total=0;
   for(const [id,quantity] of Object.entries(cart)){
     const product=products.find(p=>p.id===id);if(!product)continue;total+=product.price*quantity;
@@ -55,10 +64,10 @@ const lessons = [
   ['Buy the coffee you made available','Add Decaf to the cart and place an order. Your API change made this purchase possible.'],
   ['Try an order failure','Add a coffee to your cart. Open routes/orders.ts, change ordersAvailable to false, and save. Then click Place order.','const ordersAvailable = true;','const ordersAvailable = false;','routes/orders.ts'],
   ['Restore ordering and retry','In the same file, restore ordersAvailable to true and save. Click Try again. Your cart is still there.','const ordersAvailable = false;','const ordersAvailable = true;','routes/orders.ts'],
-  ['Shouldn’t there be fewer bags left?','Buy one bag of Dark Roast, then click Refresh products. The starter order handler accepts purchases but doesn’t subtract stock yet.'],
+  ['Orders aren’t reducing stock yet','Buy one bag of Dark Roast, then click Refresh products. The starter order handler accepts purchases but doesn’t subtract stock yet.'],
   ['Make an order update inventory','Products read shared context. Open routes/_.context.ts to see inventory, then open routes/orders.ts. Add these lines at the INVENTORY LESSON comment, save, buy one Dark Roast, and refresh products.','', 'for (const item of items) {\\n  $.context.inventory[item.productId] -= item.quantity;\\n}', 'routes/orders.ts'],
   ['Watch Dark Roast sell out','Add the remaining Dark Roast bags to your cart and place an order. Then refresh products. Its Add to cart button should become disabled.'],
-  ['Restock through the REPL','Switch to the terminal where Counterfact is running. At the ⬣> prompt, inspect the inventory, then put five bags back in stock. Return here and refresh products.','context.inventory["dark-roast"]','context.inventory["dark-roast"] = 5'],
+  ['Restock through the REPL','Switch to Counterfact’s terminal. Its ⬣> prompt is the REPL: you can inspect and change the running context. Run these commands, then return here and refresh products.','context.inventory["dark-roast"]','context.inventory["dark-roast"] = 5'],
   ['Buy from the updated inventory','Buy one Dark Roast, then refresh products. You should see four bags remaining. The REPL and order handler changed the same context.'],
   ['You changed a shopping workflow','You made a product available, tested failure and recovery, updated context in a handler, and restocked it through the REPL. The app and Counterfact are still running. Keep experimenting.'],
 ];
@@ -75,15 +84,17 @@ const successes = {
   10:'Five bags became four. The REPL and order handler use the same inventory.',
 };
 function showLesson(){
-  const lesson=lessons[progress.step];$('lesson').replaceChildren(element('div','Step '+Math.min(progress.step+1,12)+' of 12','eyebrow'),element('h2',lesson[0]),element('p',lesson[1]));
+  saveProgress();
+  const lesson=[...lessons[progress.step]];
+  if(progress.step===7&&progress.inventoryUpdated&&!progress.done){lesson[1]='Your order handler already updates inventory. You do not need to add the lines again. Buy one Dark Roast and refresh products to verify the shared state.';lesson[2]='';lesson[3]='';}$('lesson').replaceChildren(element('div','Step '+Math.min(progress.step+1,12)+' of 12','eyebrow'),element('h2',lesson[0]),element('p',lesson[1]));
   if(lesson[4]){
     $('lesson').append(element('p',projectPath+'/'+lesson[4],'path'));
     const copy=element('button','Copy file path','secondary');copy.onclick=()=>copyPath(projectPath+'/'+lesson[4],copy);$('lesson').append(copy);
   }
   if(lesson[2])$('lesson').append(element('p',progress.step===9?'Read the current quantity:':'Find:'),element('pre',lesson[2]));
   if(lesson[3])$('lesson').append(element('p',progress.step===9?'Then update it:':progress.step===7?'Add:':'Change to:'),element('pre',lesson[3]));
-  if(progress.step===11){$('lesson').append(element('p','To restart this project, run:'),element('pre','npx counterfact "'+projectPath+'/openapi.json" "'+projectPath+'"'));const link=element('a','Continue learning');link.href='https://counterfact.dev/docs/first-10-minutes/';$('lesson').append(link);}
-  $('guide-status').textContent=progress.done?successes[progress.step]:'';
+  if(progress.step===11){$('lesson').append(element('p','To restart this project, run:'),element('pre',restartCommand));const link=element('a','Continue learning');link.href='https://counterfact.dev/docs/first-10-minutes/';$('lesson').append(link);}
+  $('guide-status').textContent=progress.done?(progress.step===6&&progress.inventoryUpdated?'Your saved order handler already reduces stock. Continue to verify the shared inventory.':successes[progress.step]):'';
   $('continue').hidden=!(progress.done||progress.step===0);$('continue').textContent=progress.step===0?'Start shopping':'Continue';$('back').hidden=progress.step===0;$('skip').hidden=progress.step===11;$('repeat').hidden=progress.step===11;
 }
 function checkProgress(){if(progress.done)showLesson();}
@@ -91,7 +102,7 @@ function onCart(){if(progress.step===1&&cart['house-blend'])$('guide-status').te
 function onProducts(){
   progress.products(Object.fromEntries(products.map(product=>[product.id,product.stock])));checkProgress();
   if(!progress.done&&progress.step===2)$('guide-status').textContent='Decaf is still unavailable. Check the displayed file, save your change, then refresh again.';
-  if(!progress.done&&progress.step===7&&progress.lastOrder)$('guide-status').textContent='The inventory has not decreased as expected. Check that your new lines are in the successful-order section, save, buy another bag, and refresh.';
+  if(!progress.done&&[7,8].includes(progress.step)&&progress.lastOrder)$('guide-status').textContent='The inventory has not decreased as expected. Check that your new lines are in the successful-order section, save, buy another bag, and refresh.';
 }
 function onOrder(success,items,status){
   progress.order(success,items,products.find(product=>product.id==='dark-roast')?.stock||0,status);checkProgress();
@@ -102,6 +113,22 @@ $('refresh').onclick=refreshProducts;$('checkout').onclick=placeOrder;$('repeat'
 $('continue').onclick=()=>{progress.next();showLesson();};$('back').onclick=()=>{progress.back();showLesson();};$('skip').onclick=()=>{progress.skip();showLesson();};
 async function copyPath(path,button){try{await navigator.clipboard.writeText(path);button.textContent='Copied';}catch{$('guide-status').textContent='Select and copy the path shown in the instructions.';}}
 $('copy-path').onclick=()=>copyPath(projectPath,$('copy-path'));
-$('project-path').textContent=projectPath;showLesson();renderCart();refreshProducts();
+function saveProgress(){if(!sessionId)return;try{sessionStorage.setItem('counterfact-coffee',JSON.stringify({sessionId,progress,cart}));}catch{}}
+async function startWalkthrough(){
+  try{
+    const response=await fetch('/tutorial-info');if(!response.ok)throw Error('Project information unavailable');const info=await response.json();sessionId=info.sessionId;
+    const saved=JSON.parse(sessionStorage.getItem('counterfact-coffee')||'null');
+    if(saved&&saved.sessionId===sessionId&&saved.progress&&Number.isInteger(saved.progress.step)&&saved.progress.step>=0&&saved.progress.step<=11){
+      progress.step=saved.progress.step;progress.done=saved.progress.done===true;progress.inventoryUpdated=saved.progress.inventoryUpdated===true;
+      if(typeof saved.progress.failedItems==='string')progress.failedItems=saved.progress.failedItems;
+      const previous=saved.progress.lastOrder;
+      if(previous&&Number.isInteger(previous.stock)&&Array.isArray(previous.items)&&previous.items.every(item=>['house-blend','dark-roast','decaf'].includes(item.productId)&&Number.isSafeInteger(item.quantity)&&item.quantity>0))progress.lastOrder=previous;
+      if(saved.cart&&typeof saved.cart==='object')cart=Object.fromEntries(Object.entries(saved.cart).filter(([id,quantity])=>['house-blend','dark-roast','decaf'].includes(id)&&Number.isSafeInteger(quantity)&&quantity>0));
+    }
+  }catch{ /* A missing or corrupt saved lesson starts a fresh browser lesson. */ }
+  showLesson();renderCart();await refreshProducts();
+}
+$('open-project').onclick=async()=>{const button=$('open-project');button.disabled=true;try{const response=await fetch('/tutorial-project',{method:'POST'});const result=await response.json();$('guide-status').textContent=result.opened?'Requested your file manager. Open the project in your own editor.':'Could not open the folder. Copy the project path and open it in your editor.';}catch{$('guide-status').textContent='Copy the project path and open it in your editor.';}finally{button.disabled=false;}};
+$('project-path').textContent=projectPath;startWalkthrough();
 </script></body></html>`;
 }
