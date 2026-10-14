@@ -50,9 +50,10 @@ the emphasis automatically; confirm editor and REPL actions with the displayed
 button to move to the next action. These confirmations do not complete a lesson:
 the app must still receive the expected API response.
 
-Adding bags to the cart immediately lowers the availability shown on the product
-cards; reducing a quantity or removing an item restores it. The cards also show
-how many bags are in your cart.
+Each product card shows **Inventory in Counterfact**, **In your cart**, and
+**Available to add** separately. Adding bags changes the cart and availability
+immediately; reducing a quantity or removing an item restores availability.
+Only the API reports inventory changes after purchases or context updates.
 
 After edits or REPL changes, click **Refresh products** in the shop. The left
 panel confirms the responses the app actually receives. Saving a file alone
