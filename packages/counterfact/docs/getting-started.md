@@ -53,8 +53,8 @@ the emphasis automatically; confirm editor and REPL actions with the displayed
 button to move to the next action. These confirmations do not complete a lesson:
 the app must still receive the expected API response.
 
-Each product card shows **Inventory in Counterfact**, **In your cart**, and
-**Available to add** separately. Adding bags changes the cart and availability
+Product cards use shopper-facing messages such as **4 bags available** or
+**Sold out**, without exposing where inventory is stored. Adding bags changes the cart and availability
 immediately; reducing a quantity or removing an item restores availability.
 Only the API reports inventory changes after purchases or context updates.
 **What the purchase did**, below the lesson in the instructions panel, compares
@@ -62,8 +62,7 @@ the last order with its next product response.
 **What happened** keeps up to 30 purchases and observed inventory changes. Use
 **Inspect** to compare actual requests, responses, and inventory snapshots. This
 history survives a reload within the same API session; inspecting it sends no order.
-If the products response fails or contains invalid stock, cards show **Last known
-inventory** and buying pauses until a fresh response arrives. Stock rejections
+If the products response fails or contains invalid stock, cards show **Availability temporarily unavailable** and buying pauses until a fresh response arrives. Stock rejections
 show the requested and available quantities reported by the order API. Missing
 order confirmations are labeled unknown rather than rejected; the cart is kept.
 

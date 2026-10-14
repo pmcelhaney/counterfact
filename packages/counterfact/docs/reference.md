@@ -550,7 +550,8 @@ Each lesson poses a small experiment and bolds the next action; exact edits
 remain available under **Show code hint**. Editor and REPL confirmations move
 instruction emphasis but do not credit a lesson without its expected API response.
 
-Product cards distinguish API inventory, cart quantity, and availability to add.
+Product cards show shopper-facing availability and sold-out messages. API update
+status and purchase-effect explanations belong in the instructions panel.
 The browser checks the products API every second while visible, before ordering,
 and after each order; it serializes refreshes with purchases. Manual refresh is
 optional. The latest purchase shows observed inventory before and after the
@@ -558,8 +559,9 @@ request, including successful orders that did not change stock. **What happened*
 retains up to 30 purchases and external inventory changes, with actual requests,
 responses, and snapshots available through **Inspect**. Inspection sends no order.
 
-Invalid or unavailable product responses mark inventory as last known and pause
-buying until a fresh response arrives. Stock rejections explain the requested and
+Invalid or unavailable product responses mark diagnostic inventory as last known
+and show unavailable stock on product cards. Buying pauses until a fresh response
+arrives. Stock rejections explain the requested and
 available quantities returned by the order API. An unavailable or invalid order
 confirmation is unknown, not proof that the request was rejected. Failed requests
 keep the cart. Requests time out after four seconds and live product checks retry

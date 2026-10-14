@@ -181,13 +181,11 @@ async function browser(
   };
 }
 
-it("shows API inventory, cart quantity, and availability separately", async () => {
+it("shows shopper availability while adding to the cart leaves API inventory unchanged", async () => {
   const app = await browser();
   app.add();
   expect(app.stocks["house-blend"]).toBe(5);
-  expect(app.root("products").textContent).toContain(
-    "Inventory in Counterfact5In your cart1Available to add4",
-  );
+  expect(app.root("products").textContent).toContain("4 bags available");
 });
 
 it("automatically compares actual unchanged and decreased inventory after orders", async () => {
@@ -234,14 +232,16 @@ it.each(["invalid", "offline"])(
     app.add();
     app.server.productMode = mode;
     await app.poll();
-    expect(app.root("products").textContent).toContain("Last known inventory");
+    expect(app.root("products").textContent).toContain(
+      "Availability temporarily unavailable",
+    );
     expect(app.root("checkout").disabled).toBe(true);
     expect(app.root("cart").textContent).toContain("House Blend × 1");
     app.server.productMode = "valid";
     await app.poll();
     expect(app.root("checkout").disabled).toBe(false);
     expect(app.root("products").textContent).not.toContain(
-      "Last known inventory",
+      "Availability temporarily unavailable",
     );
   },
 );
