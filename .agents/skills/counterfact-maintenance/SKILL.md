@@ -45,6 +45,10 @@ Use this skill when finalizing contributor-facing changes that affect tests, dia
   while exit 2 indicates a configuration or operational failure. Never mark
   documents reviewed solely to silence drift or add CI enforcement without
   assessing the existing document-review backlog.
+  When watched documents move, retarget their watch rules and related groups,
+  compare their contents and related tracked files with the recorded assessment,
+  and use the official review command for verified moved documents. Remove only
+  their obsolete state keys; a rename alone does not establish a new review.
 
 - Use `usingTemporaryFiles()` for filesystem-heavy tests.
 - The Astro site uses `compressHTML: true` to preserve HTML whitespace around inline prose across source line breaks. Keep that setting explicit when upgrading Astro, and run `cd site && npm run test:whitespace` for rendering or formatting changes. Check generated text before applying CSS spacing: punctuation and intentional in-word links must remain adjacent.

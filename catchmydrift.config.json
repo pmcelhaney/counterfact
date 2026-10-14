@@ -652,7 +652,7 @@
       "include": ["packages/counterfact/docs/patterns/*.md"]
     },
     "agent-guidance": {
-      "include": [".github/skills/**", ".github/instructions/**"]
+      "include": [".agents/skills/**", ".github/instructions/**"]
     },
     "test-conventions": {
       "include": [
@@ -666,21 +666,21 @@
       "include": [
         ".github/workflows/manual-acceptance-tests.yaml",
         ".github/pull_request_template.md",
-        ".github/skills/**"
+        ".agents/skills/**"
       ]
     }
   },
   "watch": [
     {
-      "include": [".github/skills/counterfact-cli-runtime/SKILL.md"],
+      "include": [".agents/skills/counterfact-cli-runtime/SKILL.md"],
       "groups": ["cli", "telemetry", "application"]
     },
     {
-      "include": [".github/skills/counterfact-generator-internals/SKILL.md"],
+      "include": [".agents/skills/counterfact-generator-internals/SKILL.md"],
       "groups": ["generator", "openapi", "types"]
     },
     {
-      "include": [".github/skills/counterfact-maintenance/SKILL.md"],
+      "include": [".agents/skills/counterfact-maintenance/SKILL.md"],
       "groups": [
         "counterfact",
         "client",
@@ -695,11 +695,11 @@
       ]
     },
     {
-      "include": [".github/skills/counterfact-pr-creation/SKILL.md"],
+      "include": [".agents/skills/counterfact-pr-creation/SKILL.md"],
       "groups": ["pull-request-process"]
     },
     {
-      "include": [".github/skills/counterfact-repo-basics/SKILL.md"],
+      "include": [".agents/skills/counterfact-repo-basics/SKILL.md"],
       "groups": [
         "counterfact",
         "client",
@@ -712,7 +712,7 @@
       ]
     },
     {
-      "include": [".github/skills/counterfact-runtime-architecture/SKILL.md"],
+      "include": [".agents/skills/counterfact-runtime-architecture/SKILL.md"],
       "groups": ["application", "runtime", "repl"]
     },
     {
@@ -1100,7 +1100,7 @@
       "groups": ["types"]
     },
     {
-      "include": ["skills/build-simulation/SKILL.md"],
+      "include": [".agents/skills/build-simulation/SKILL.md"],
       "groups": [
         "cli",
         "generator",
@@ -1113,19 +1113,19 @@
       ]
     },
     {
-      "include": ["skills/context/SKILL.md"],
+      "include": [".agents/skills/context/SKILL.md"],
       "groups": ["contexts", "scenarios", "first-run-example"]
     },
     {
-      "include": ["skills/counterfact-repl/SKILL.md"],
+      "include": [".agents/skills/counterfact-repl/SKILL.md"],
       "groups": ["admin-api", "dispatch", "responses"]
     },
     {
-      "include": ["skills/counterfact-repl/examples.md"],
+      "include": [".agents/skills/counterfact-repl/examples.md"],
       "groups": ["admin-api", "dispatch", "responses"]
     },
     {
-      "include": ["skills/counterfact/SKILL.md"],
+      "include": [".agents/skills/counterfact/SKILL.md"],
       "groups": [
         "generator",
         "openapi",
@@ -1138,7 +1138,7 @@
       ]
     },
     {
-      "include": ["skills/route/SKILL.md"],
+      "include": [".agents/skills/route/SKILL.md"],
       "groups": [
         "dispatch",
         "responses",
@@ -1148,7 +1148,7 @@
       ]
     },
     {
-      "include": ["skills/scenario/SKILL.md"],
+      "include": [".agents/skills/scenario/SKILL.md"],
       "groups": ["scenarios", "request-builder", "contexts"]
     }
   ]

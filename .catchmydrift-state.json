@@ -1,6 +1,795 @@
 {
   "version": 1,
   "reviews": {
+    ".agents/skills/context/SKILL.md": {
+      "token": "e4747bf3-0d65-4916-a17a-5b4eba866195",
+      "relationship": "4e36cbdb8f4e16aa055cfd58028bf84835cb21f1bef99d30ffd488e5eeb0fec6",
+      "snapshotDigest": "799cb4af04b8b196307e7e3efb9c2f8094b0fce6f5cf45c13d59b53ca473ab0d",
+      "files": [
+        {
+          "path": ".github/workflows/first-10-minutes.yml",
+          "blob": "3ba53729cf26c621cbac9712d92970462a3a9b70"
+        },
+        {
+          "path": "examples/first-10-minutes/api/routes/_.context.ts",
+          "blob": "69888e479868978c1b9d5862cbd114846fab82f5"
+        },
+        {
+          "path": "examples/first-10-minutes/api/routes/pets.ts",
+          "blob": "e875936282482e71203039995c15f92747060fd1"
+        },
+        {
+          "path": "examples/first-10-minutes/api/routes/pets/{petId}.ts",
+          "blob": "596ccab9bcc7dd89b2a197cac5bc26d29de36e49"
+        },
+        {
+          "path": "examples/first-10-minutes/client/pets.ts",
+          "blob": "5d2fd85a14f29f0db3f5c1cfb6c9ac424ca37f44"
+        },
+        {
+          "path": "examples/first-10-minutes/openapi.yaml",
+          "blob": "605482220428c6afd1b6ca9b9fdfe699dd00115a"
+        },
+        {
+          "path": "examples/first-10-minutes/package.json",
+          "blob": "256903f10a2d765739c36b984951946b7cb24557"
+        },
+        {
+          "path": "examples/first-10-minutes/test/counterfact.test.mjs",
+          "blob": "4f5efb9fe3cce40df5a1f453aee8f4da939cf6df"
+        },
+        {
+          "path": "examples/first-10-minutes/tsconfig.counterfact.json",
+          "blob": "d445d784eab977fc8965c1a5f6dfad5173c61254"
+        },
+        {
+          "path": "packages/counterfact/src/api-runner.ts",
+          "blob": "6fe3876c89a902a1aef6fc32c1bd36a8746e508b"
+        },
+        {
+          "path": "packages/counterfact/src/app.ts",
+          "blob": "7374171631ce5541728a0c79c1b6b67fc6766eee"
+        },
+        {
+          "path": "packages/counterfact/test/api-runner.test.ts",
+          "blob": "102a209eb3e55f565a1c0105d17460d2a8e0dcb9"
+        },
+        {
+          "path": "packages/counterfact/test/app.test.ts",
+          "blob": "b1a9116b8c399b98894df94701199567f2fc2487"
+        },
+        {
+          "path": "packages/generator/src/code-generator.ts",
+          "blob": "fb26d4f2ca37062b7d433275304fb126930a1033"
+        },
+        {
+          "path": "packages/generator/src/context-file-token.ts",
+          "blob": "fbcbf6655ab20797c274966a4918a4031efb4958"
+        },
+        {
+          "path": "packages/generator/src/scenario-file-generator.ts",
+          "blob": "1a380a670619c0b84974466c92012294fb45937b"
+        },
+        {
+          "path": "packages/generator/test/code-generator.test.ts",
+          "blob": "148f3592a8055b0cb1be0f2ec3d763f08014581f"
+        },
+        {
+          "path": "packages/generator/test/generate.test.ts",
+          "blob": "ce6c7f88be8179bf5bd13c1c1b366644f9477adf"
+        },
+        {
+          "path": "packages/repl/src/repl.ts",
+          "blob": "e81e987b7a8102f9440d880d88984c7f22493f1f"
+        },
+        {
+          "path": "packages/repl/test/repl.test.ts",
+          "blob": "ad02291ec6ef922331711875c9c42b81f5ff8890"
+        },
+        {
+          "path": "packages/runtime/src/server/context-registry.ts",
+          "blob": "2ab55f5aae1888ef760ec0a6d1090fc33974480e"
+        },
+        {
+          "path": "packages/runtime/src/server/module-loader.ts",
+          "blob": "c5e2421b9efcccc3a996fcd1475593e20096d990"
+        },
+        {
+          "path": "packages/runtime/src/server/module-tree.ts",
+          "blob": "bb58907055e1dee892e7b0b5dcf8f572dc84c23d"
+        },
+        {
+          "path": "packages/runtime/src/server/scenario-registry.ts",
+          "blob": "e9da042baeea20ff065f9c8a1fd8000d3a7429dc"
+        },
+        {
+          "path": "packages/runtime/src/server/tools.ts",
+          "blob": "b88ca864d19ff89a8c1bbf429ea52c7ac7f5c785"
+        },
+        {
+          "path": "packages/runtime/test/server/context-registry.test.ts",
+          "blob": "dad87d7e66ddc17f3118ea91f9c0712e6c3552e9"
+        },
+        {
+          "path": "packages/runtime/test/server/module-loader.test.ts",
+          "blob": "18743a3733eaecd77feff06fe5195659c4b675a6"
+        },
+        {
+          "path": "packages/runtime/test/server/module-tree.test.ts",
+          "blob": "b73c47acc41fb816d557fbe8e1539e889320c030"
+        },
+        {
+          "path": "packages/runtime/test/server/scenario-registry.test.ts",
+          "blob": "352026d1bc185b9b0029da457140daf51c5b0877"
+        },
+        {
+          "path": "packages/runtime/test/server/tools.test.ts",
+          "blob": "989d5af56a754228ced1189f2dd495447efbfde4"
+        }
+      ]
+    },
+    ".agents/skills/counterfact/SKILL.md": {
+      "token": "31c17e3f-9049-45a5-9318-55c7863ead95",
+      "relationship": "e8abcbbf928d51cdc4ec0fb53d94774b512c383155d3bc24e951017abe5bf955",
+      "snapshotDigest": "eee14eb3cbc0b299737bee84d25fd2ec6035ba427c45cc2b9171a818833a410a",
+      "files": [
+        {
+          "path": "packages/counterfact/src/api-runner.ts",
+          "blob": "6fe3876c89a902a1aef6fc32c1bd36a8746e508b"
+        },
+        {
+          "path": "packages/counterfact/src/app.ts",
+          "blob": "7374171631ce5541728a0c79c1b6b67fc6766eee"
+        },
+        {
+          "path": "packages/counterfact/test/api-runner.test.ts",
+          "blob": "102a209eb3e55f565a1c0105d17460d2a8e0dcb9"
+        },
+        {
+          "path": "packages/counterfact/test/app.test.ts",
+          "blob": "b1a9116b8c399b98894df94701199567f2fc2487"
+        },
+        {
+          "path": "packages/generator/package.json",
+          "blob": "8df70696e69308fa3afe2511aea93b9242358399"
+        },
+        {
+          "path": "packages/generator/src/code-generator.ts",
+          "blob": "fb26d4f2ca37062b7d433275304fb126930a1033"
+        },
+        {
+          "path": "packages/generator/src/coder.ts",
+          "blob": "025ba5f829c5dd3696f916c51abe412f0e246d21"
+        },
+        {
+          "path": "packages/generator/src/context-file-token.ts",
+          "blob": "fbcbf6655ab20797c274966a4918a4031efb4958"
+        },
+        {
+          "path": "packages/generator/src/ensure-directory-exists.ts",
+          "blob": "3ee0ed9a64dcb18a323c86670cac6780ae48e18f"
+        },
+        {
+          "path": "packages/generator/src/forward-slash-path.ts",
+          "blob": "d1b8ab70b091103b92991a0267ae6e329b0ab110"
+        },
+        {
+          "path": "packages/generator/src/index.ts",
+          "blob": "934f6e06328dd32450439c6ee29fe5e09fa94fae"
+        },
+        {
+          "path": "packages/generator/src/jsdoc.ts",
+          "blob": "5ed7e42c7de5b658bd3fd19184346d719713bb56"
+        },
+        {
+          "path": "packages/generator/src/openapi-path.ts",
+          "blob": "f2226506c5850616b09afb0247b76a18c59c073d"
+        },
+        {
+          "path": "packages/generator/src/operation-coder.ts",
+          "blob": "2ab4d6f0aead01bf6295939a93a319a8325e8a03"
+        },
+        {
+          "path": "packages/generator/src/operation-type-coder.ts",
+          "blob": "38d5491154afb4bfe2517632d539a8a0390e7eb4"
+        },
+        {
+          "path": "packages/generator/src/operation-type-name-mapping.ts",
+          "blob": "783653e9bd10457c96906471189a58df5e184fb9"
+        },
+        {
+          "path": "packages/generator/src/parameter-export-type-coder.ts",
+          "blob": "fedf6dd38339873962fd3b00919a04e763a128a6"
+        },
+        {
+          "path": "packages/generator/src/parameters-type-coder.ts",
+          "blob": "eac25cd2ddf0290cab1465055977e84594aa31cf"
+        },
+        {
+          "path": "packages/generator/src/printers.ts",
+          "blob": "2b18d7ad3f17310b36bb11db1d39372eb1d800ba"
+        },
+        {
+          "path": "packages/generator/src/prune.ts",
+          "blob": "f1bd68246fcd36a3c17bebf01f8b91ef7244cbaf"
+        },
+        {
+          "path": "packages/generator/src/read-only-comments.ts",
+          "blob": "41f6e70a74a7e6ff921f8e8d570565ef8963cfdf"
+        },
+        {
+          "path": "packages/generator/src/repository.ts",
+          "blob": "102626117ec743dddafe44cff7a226eb9cf1d574"
+        },
+        {
+          "path": "packages/generator/src/requirement.ts",
+          "blob": "1e55155958bba403175622da77deaebb941a321a"
+        },
+        {
+          "path": "packages/generator/src/reserved-words.ts",
+          "blob": "f5eb17acc9c315712eb35ddb73f632bffc45f00f"
+        },
+        {
+          "path": "packages/generator/src/response-type-coder.ts",
+          "blob": "5380b9edd0e2a5a9f7c9f135d2dbad04001e2611"
+        },
+        {
+          "path": "packages/generator/src/responses-type-coder.ts",
+          "blob": "572164e19d1d6316287ca873d10682aba0defcdf"
+        },
+        {
+          "path": "packages/generator/src/scenario-file-generator.ts",
+          "blob": "1a380a670619c0b84974466c92012294fb45937b"
+        },
+        {
+          "path": "packages/generator/src/schema-coder.ts",
+          "blob": "55ad008554c4478f5b438f1c65bb24d967a579d0"
+        },
+        {
+          "path": "packages/generator/src/schema-type-coder.ts",
+          "blob": "5ae59a57e9a5278c93a0deaf5b2f3898a25939d8"
+        },
+        {
+          "path": "packages/generator/src/script.ts",
+          "blob": "ed7afbd42db050a9eedf06f6c7750fa271070085"
+        },
+        {
+          "path": "packages/generator/src/specification.ts",
+          "blob": "ba953a792a16df0a7d3ed73d162804ddf4a4d51f"
+        },
+        {
+          "path": "packages/generator/src/type-coder.ts",
+          "blob": "eaac95df919772e70c3ed27dbd06f999b88db795"
+        },
+        {
+          "path": "packages/generator/src/versions-ts-generator.ts",
+          "blob": "a164fc596cf339401f1703e297a8989ebc2f675f"
+        },
+        {
+          "path": "packages/generator/src/wait-for-event.ts",
+          "blob": "ec0002198213e0468d2f66e85fd94e3e70f8bd6d"
+        },
+        {
+          "path": "packages/generator/src/watch-options.ts",
+          "blob": "e82d8d4259ba75b03aed340c2814c3be1a4dfd0d"
+        },
+        {
+          "path": "packages/generator/src/windows-escape.ts",
+          "blob": "21be51fcb40ee7428d97f2668ef1df46e1c93912"
+        },
+        {
+          "path": "packages/generator/test/code-generator.test.ts",
+          "blob": "148f3592a8055b0cb1be0f2ec3d763f08014581f"
+        },
+        {
+          "path": "packages/generator/test/coder.test.ts",
+          "blob": "81b2c9064cb6045ce809d9d2c8dfba8d54e75671"
+        },
+        {
+          "path": "packages/generator/test/generate.test.ts",
+          "blob": "ce6c7f88be8179bf5bd13c1c1b366644f9477adf"
+        },
+        {
+          "path": "packages/generator/test/integration.test.ts",
+          "blob": "d6c650045893f802902779424bb2d92955ac99d3"
+        },
+        {
+          "path": "packages/generator/test/jsdoc.test.ts",
+          "blob": "8eb5ea8e1a964bb0d823d3655929ff53a84ac5fb"
+        },
+        {
+          "path": "packages/generator/test/operation-coder.test.ts",
+          "blob": "3aaab13e7dd3e6b44d8a65258346840c7df70a74"
+        },
+        {
+          "path": "packages/generator/test/operation-type-coder.test.ts",
+          "blob": "4826bb4afb8a27e563b779982e28947a4b999917"
+        },
+        {
+          "path": "packages/generator/test/package/generator-consumer-smoke.mjs",
+          "blob": "67d279448bec122e807ee4f3bb742e17a2c1f15e"
+        },
+        {
+          "path": "packages/generator/test/parameters-type-coder.test.ts",
+          "blob": "aac7f30818ed9aa5c309740665ec0a67e9e4223c"
+        },
+        {
+          "path": "packages/generator/test/prune.test.ts",
+          "blob": "a00d1d336fbc29ea2b6b0113d73f7aad743f7186"
+        },
+        {
+          "path": "packages/generator/test/repository.test.ts",
+          "blob": "64cdb8022404689d7447534a7488b0b76645d8e2"
+        },
+        {
+          "path": "packages/generator/test/requirement.test.ts",
+          "blob": "e4201567205df5fff2caf95aff39009cdfbec022"
+        },
+        {
+          "path": "packages/generator/test/response-type-coder.test.ts",
+          "blob": "f264d177d70072b1231fddfb4c44eaf9cad51632"
+        },
+        {
+          "path": "packages/generator/test/responses-type-coder.test.ts",
+          "blob": "c384dcd3bd71ba9410e7357c34d876a92853a6e1"
+        },
+        {
+          "path": "packages/generator/test/schema-coder.test.ts",
+          "blob": "0601bab6857bab045dcfb14f126e0eadfe982170"
+        },
+        {
+          "path": "packages/generator/test/schema-type-coder.test.ts",
+          "blob": "8f5e247dc0c4e5b2a4ecee55f80539d034cd85c6"
+        },
+        {
+          "path": "packages/generator/test/script.test.ts",
+          "blob": "c05166f234f4d8240aa6705c2ee4c72dda84e3f8"
+        },
+        {
+          "path": "packages/generator/test/specification.test.ts",
+          "blob": "660f20c26f6f45d9ae7dabdb264ce5ae77267089"
+        },
+        {
+          "path": "packages/generator/test/versions-ts-generator.test.ts",
+          "blob": "745093ddeb0e8d8e85a98498bb8ae58caf6f7ab6"
+        },
+        {
+          "path": "packages/generator/tsconfig.json",
+          "blob": "4cdac195c6759e41e9976e07c618e2e8bc3646ae"
+        },
+        {
+          "path": "packages/openapi/package.json",
+          "blob": "80ae284599de74df6f64ae5c97aadd1547dc6beb"
+        },
+        {
+          "path": "packages/openapi/src/apply-overlay.ts",
+          "blob": "6cbc806de74c9935d476178d03a69e180ce6031a"
+        },
+        {
+          "path": "packages/openapi/src/index.ts",
+          "blob": "47ebecad93c2644ff92d6c7d1bb2933eff0ec021"
+        },
+        {
+          "path": "packages/openapi/src/load-openapi-document.ts",
+          "blob": "9eeb17201044087f2b1f45c1a3d80414f94dda31"
+        },
+        {
+          "path": "packages/openapi/src/openapi-source.ts",
+          "blob": "7818e4c3fef6fab2c53e800e279d3a56b49c5392"
+        },
+        {
+          "path": "packages/openapi/src/read-file.ts",
+          "blob": "2b8df0252dacc8d9950229b6cfadb09926c8096c"
+        },
+        {
+          "path": "packages/openapi/test/apply-overlay.test.ts",
+          "blob": "3fa871463628716b53425376fc62211d05e7ae7c"
+        },
+        {
+          "path": "packages/openapi/test/load-openapi-document.test.ts",
+          "blob": "bd3d681495c150f094c8f47fbb7d83d63815e992"
+        },
+        {
+          "path": "packages/openapi/test/openapi-source.test.ts",
+          "blob": "460955b5e3535bcb856ed1f76c02d00a0849f32c"
+        },
+        {
+          "path": "packages/openapi/test/read-file.test.ts",
+          "blob": "280970c6d46bb70c95b0b7f28179751187a5516c"
+        },
+        {
+          "path": "packages/openapi/tsconfig.json",
+          "blob": "a69087fce9ab4e27ee9be520d5c363721d2220bc"
+        },
+        {
+          "path": "packages/repl/package.json",
+          "blob": "6aff6bbf1e718fc448118bc9758a72550d218c5f"
+        },
+        {
+          "path": "packages/repl/src/index.ts",
+          "blob": "0fa7a60fd3a3f0ca9a6258184d1ee324c028e80e"
+        },
+        {
+          "path": "packages/repl/src/repl.ts",
+          "blob": "e81e987b7a8102f9440d880d88984c7f22493f1f"
+        },
+        {
+          "path": "packages/repl/test/package/repl-consumer-smoke.mjs",
+          "blob": "ec4ff7dd2ab58b26e7c38eded7f8328f1bdc8389"
+        },
+        {
+          "path": "packages/repl/test/repl.test.ts",
+          "blob": "ad02291ec6ef922331711875c9c42b81f5ff8890"
+        },
+        {
+          "path": "packages/repl/tsconfig.json",
+          "blob": "bb82549edb9725ef9293d5f2d639d570286847b1"
+        },
+        {
+          "path": "packages/runtime/src/runtime-config.ts",
+          "blob": "7a474677ba6f749bb45991027e34b22d8b6a0fd7"
+        },
+        {
+          "path": "packages/runtime/src/server/context-registry.ts",
+          "blob": "2ab55f5aae1888ef760ec0a6d1090fc33974480e"
+        },
+        {
+          "path": "packages/runtime/src/server/dispatcher.ts",
+          "blob": "8d9182e8ed3f0c0d9682e172df0854d436a3ec8a"
+        },
+        {
+          "path": "packages/runtime/src/server/file-discovery.ts",
+          "blob": "c459d4a3b84683d4df17a0061709148d911916af"
+        },
+        {
+          "path": "packages/runtime/src/server/module-dependency-graph.ts",
+          "blob": "5a1a95629ce2000c6653189f061803c30d7a3882"
+        },
+        {
+          "path": "packages/runtime/src/server/module-loader.ts",
+          "blob": "c5e2421b9efcccc3a996fcd1475593e20096d990"
+        },
+        {
+          "path": "packages/runtime/src/server/module-tree.ts",
+          "blob": "bb58907055e1dee892e7b0b5dcf8f572dc84c23d"
+        },
+        {
+          "path": "packages/runtime/src/server/openapi-document.ts",
+          "blob": "af8b5f99440983a22ed546db1d1c0eacce24dfcb"
+        },
+        {
+          "path": "packages/runtime/src/server/openapi-watcher.ts",
+          "blob": "a4d911300369ab34e8dcfcde296a3b1e3ade5cad"
+        },
+        {
+          "path": "packages/runtime/src/server/registry.ts",
+          "blob": "465aa6e683c1116eb20fc562e0eceb4db4571efc"
+        },
+        {
+          "path": "packages/runtime/src/server/request-validator.ts",
+          "blob": "1f7d588e99cf7c9539c4bb6f1a397a1ef960042b"
+        },
+        {
+          "path": "packages/runtime/src/server/response-validator.ts",
+          "blob": "2480111e0dc0bac9ae5507cc713b16ef086f7a9e"
+        },
+        {
+          "path": "packages/runtime/src/server/scenario-registry.ts",
+          "blob": "e9da042baeea20ff065f9c8a1fd8000d3a7429dc"
+        },
+        {
+          "path": "packages/runtime/src/server/store-loader.ts",
+          "blob": "fe09a4a8a1274135cd382129126a40669b1e1ecb"
+        },
+        {
+          "path": "packages/runtime/src/server/tools.ts",
+          "blob": "b88ca864d19ff89a8c1bbf429ea52c7ac7f5c785"
+        },
+        {
+          "path": "packages/runtime/src/server/transpiler.ts",
+          "blob": "49fe09eee21ccb902b41a2ef1c4b1af1b68e005c"
+        },
+        {
+          "path": "packages/runtime/src/server/uncached-import.ts",
+          "blob": "0a198737398b257c6a4b492287fc3d5f3a6e626e"
+        },
+        {
+          "path": "packages/runtime/src/server/uncached-require.cjs",
+          "blob": "33ee7777d78b2c613a28d4cb106afefe8643c8f3"
+        },
+        {
+          "path": "packages/runtime/test/server/context-registry.test.ts",
+          "blob": "dad87d7e66ddc17f3118ea91f9c0712e6c3552e9"
+        },
+        {
+          "path": "packages/runtime/test/server/dispatcher.proxy.test.ts",
+          "blob": "f9029e774412c7d6dbcb249bbf7f7e11d20e0aa4"
+        },
+        {
+          "path": "packages/runtime/test/server/dispatcher.test.ts",
+          "blob": "38121a5141f92069ffa3a6a29e770c3c5cfe5270"
+        },
+        {
+          "path": "packages/runtime/test/server/file-discovery.test.ts",
+          "blob": "30e64f41469895695ce0c3453509085dfb8713b8"
+        },
+        {
+          "path": "packages/runtime/test/server/module-dependency-graph.test.ts",
+          "blob": "f8ccc048050454fa903565c1c3e8dc1ccaca0598"
+        },
+        {
+          "path": "packages/runtime/test/server/module-loader.test.ts",
+          "blob": "18743a3733eaecd77feff06fe5195659c4b675a6"
+        },
+        {
+          "path": "packages/runtime/test/server/module-tree.test.ts",
+          "blob": "b73c47acc41fb816d557fbe8e1539e889320c030"
+        },
+        {
+          "path": "packages/runtime/test/server/openapi-document.test.ts",
+          "blob": "9e302e0eb70a72e6f44410ee5b2c068551fcc12f"
+        },
+        {
+          "path": "packages/runtime/test/server/registry.test.ts",
+          "blob": "2dfa8653cd583ba9adcdbeda0e9963e07884dd77"
+        },
+        {
+          "path": "packages/runtime/test/server/response-validator.test.ts",
+          "blob": "00ba6e9e0b60681e65aa3dd31f861c7e2e9e016d"
+        },
+        {
+          "path": "packages/runtime/test/server/scenario-registry.test.ts",
+          "blob": "352026d1bc185b9b0029da457140daf51c5b0877"
+        },
+        {
+          "path": "packages/runtime/test/server/store-loader.test.ts",
+          "blob": "3283dd3bf6ace1e4f3d5dd75959355e336edf77c"
+        },
+        {
+          "path": "packages/runtime/test/server/tools.test.ts",
+          "blob": "989d5af56a754228ced1189f2dd495447efbfde4"
+        },
+        {
+          "path": "packages/runtime/test/server/transpiler.test.ts",
+          "blob": "f297fc65f6a28b5c2bbef6113f1a75fe292edd5a"
+        },
+        {
+          "path": "packages/types/package.json",
+          "blob": "5bbad20002f4664008fa0343f4457e07725ca9d7"
+        },
+        {
+          "path": "packages/types/src/cookie-options.ts",
+          "blob": "2bed81d33288a19c411c2bf36de6be78dd0d6f54"
+        },
+        {
+          "path": "packages/types/src/counterfact-response.ts",
+          "blob": "9488ff78c02dd8171e98d560748cc1f4bec59fd7"
+        },
+        {
+          "path": "packages/types/src/example-names.ts",
+          "blob": "d1fe5b3f22a8c5461dda159544bd6c22052cbf8e"
+        },
+        {
+          "path": "packages/types/src/example.ts",
+          "blob": "52561d6c3f497e45e617631441ba3ba6cf142baf"
+        },
+        {
+          "path": "packages/types/src/generic-response-builder.ts",
+          "blob": "25e28c8f34507b3054f80661d7d72c4772a87926"
+        },
+        {
+          "path": "packages/types/src/http-status-code.ts",
+          "blob": "d8093639ae2c429a325c9b2eee1f503fcaac19bb"
+        },
+        {
+          "path": "packages/types/src/if-has-key.ts",
+          "blob": "6608e83859a3ebd992f5edd5331f37936ebb5d80"
+        },
+        {
+          "path": "packages/types/src/index.ts",
+          "blob": "a239ee53b7b1dfcaebaa433e3a0446427037269e"
+        },
+        {
+          "path": "packages/types/src/maybe-promise.ts",
+          "blob": "65a990e0e63028efa74983cf10f0e79018ee623e"
+        },
+        {
+          "path": "packages/types/src/media-type.ts",
+          "blob": "d3cc528389baa139041333fe49d4e990a30b2fd0"
+        },
+        {
+          "path": "packages/types/src/middleware.ts",
+          "blob": "79087c2e08ef599cc2e27fba803d58c916359b28"
+        },
+        {
+          "path": "packages/types/src/omit-all.ts",
+          "blob": "0921eca5752ec87fc2b82f9110792a3da7b54968"
+        },
+        {
+          "path": "packages/types/src/omit-value-when-never.ts",
+          "blob": "e93f56b89f18074ba6a93b80703edfb5e83862b0"
+        },
+        {
+          "path": "packages/types/src/open-api-content.ts",
+          "blob": "05d4bc845f0cacdd408d2e0fb7533c165696f41f"
+        },
+        {
+          "path": "packages/types/src/open-api-header.ts",
+          "blob": "341f6a1f3aaa0c5277a69ac305097834babbdf80"
+        },
+        {
+          "path": "packages/types/src/open-api-operation.ts",
+          "blob": "b5cc9e3f4ac6b2cf1842b5d69c42d8800a3b8ef2"
+        },
+        {
+          "path": "packages/types/src/open-api-parameters.ts",
+          "blob": "9dad5861afc38e4788c7332705a5064b669871ef"
+        },
+        {
+          "path": "packages/types/src/open-api-response.ts",
+          "blob": "3d41c15181aae978e16d4a2260f9488fdfdb1a6c"
+        },
+        {
+          "path": "packages/types/src/random-function.ts",
+          "blob": "332b5fe441abd579ab6a91e3b6a4beeefd904ec4"
+        },
+        {
+          "path": "packages/types/src/response-builder-factory.ts",
+          "blob": "15cd813f7e7d57e3844e3df15ebc737dedac3c45"
+        },
+        {
+          "path": "packages/types/src/response-builder.ts",
+          "blob": "b4bdd61bac80fa2068c638670c04b054316c85ad"
+        },
+        {
+          "path": "packages/types/src/streaming-content-types.ts",
+          "blob": "26a6c14443abfa1addfd376d0f21263e66069d32"
+        },
+        {
+          "path": "packages/types/src/wide-operation-argument.ts",
+          "blob": "74dc5e66f97818e6ccf04f85ef2da3eebbeabb32"
+        },
+        {
+          "path": "packages/types/src/wide-response-builder.ts",
+          "blob": "0f1cd8f20e507fd4ef577dd8a3919844efeee4de"
+        },
+        {
+          "path": "packages/types/test/types.test-d.ts",
+          "blob": "ecf38fc81855987cd253f067f1a55f384cd8e9b0"
+        },
+        {
+          "path": "packages/types/tsconfig.json",
+          "blob": "e12efe59029fb097f05b4f15026ec7cbbbd16644"
+        }
+      ]
+    },
+    ".agents/skills/scenario/SKILL.md": {
+      "token": "289faa84-61dc-4ffc-bedb-a15eace7d0d6",
+      "relationship": "d16f31cf3c4f06e7f1442f5f670e99d0516e9fd30ad915e4457a5511b95341b1",
+      "snapshotDigest": "94a428a8e540533f6496e89bd9803430b191409ea13978f405bcea0106d0bbd0",
+      "files": [
+        {
+          "path": "packages/client/package.json",
+          "blob": "ee9c0a78634821880312cdbfddeda06209a61e55"
+        },
+        {
+          "path": "packages/client/src/index.ts",
+          "blob": "a7a1be52f6cd9b9a439461067fd98f177550ee4f"
+        },
+        {
+          "path": "packages/client/src/raw-http-client.ts",
+          "blob": "d7ae9a2b9cbe4e3615a16c90e7d3208d4f9b2002"
+        },
+        {
+          "path": "packages/client/src/route-builder.ts",
+          "blob": "87bbe3fc0f920561e94e26ba4d3e613117a1df48"
+        },
+        {
+          "path": "packages/client/src/route-catalog.ts",
+          "blob": "133ff0681c0f89331fe1f31d15b99830c264efff"
+        },
+        {
+          "path": "packages/client/test/raw-http-client.test.ts",
+          "blob": "fbd7fb38152ede227f4f067d64dfcba6bfbc6dbb"
+        },
+        {
+          "path": "packages/client/test/route-builder.integration.test.ts",
+          "blob": "4dc7f3086699eb2dbf7483587ee3726102c63c40"
+        },
+        {
+          "path": "packages/client/test/route-builder.test.ts",
+          "blob": "0635144305d5a932c9c00bfa73acc2192a038ef3"
+        },
+        {
+          "path": "packages/client/test/route-catalog.test.ts",
+          "blob": "e424fae2ded0ca818a08f9021d75bba753cf77fa"
+        },
+        {
+          "path": "packages/counterfact/src/api-runner.ts",
+          "blob": "6fe3876c89a902a1aef6fc32c1bd36a8746e508b"
+        },
+        {
+          "path": "packages/counterfact/src/app.ts",
+          "blob": "7374171631ce5541728a0c79c1b6b67fc6766eee"
+        },
+        {
+          "path": "packages/counterfact/test/api-runner.test.ts",
+          "blob": "102a209eb3e55f565a1c0105d17460d2a8e0dcb9"
+        },
+        {
+          "path": "packages/counterfact/test/app.test.ts",
+          "blob": "b1a9116b8c399b98894df94701199567f2fc2487"
+        },
+        {
+          "path": "packages/generator/src/code-generator.ts",
+          "blob": "fb26d4f2ca37062b7d433275304fb126930a1033"
+        },
+        {
+          "path": "packages/generator/src/context-file-token.ts",
+          "blob": "fbcbf6655ab20797c274966a4918a4031efb4958"
+        },
+        {
+          "path": "packages/generator/src/scenario-file-generator.ts",
+          "blob": "1a380a670619c0b84974466c92012294fb45937b"
+        },
+        {
+          "path": "packages/generator/test/code-generator.test.ts",
+          "blob": "148f3592a8055b0cb1be0f2ec3d763f08014581f"
+        },
+        {
+          "path": "packages/generator/test/generate.test.ts",
+          "blob": "ce6c7f88be8179bf5bd13c1c1b366644f9477adf"
+        },
+        {
+          "path": "packages/repl/src/repl.ts",
+          "blob": "e81e987b7a8102f9440d880d88984c7f22493f1f"
+        },
+        {
+          "path": "packages/repl/test/repl.test.ts",
+          "blob": "ad02291ec6ef922331711875c9c42b81f5ff8890"
+        },
+        {
+          "path": "packages/runtime/src/server/context-registry.ts",
+          "blob": "2ab55f5aae1888ef760ec0a6d1090fc33974480e"
+        },
+        {
+          "path": "packages/runtime/src/server/module-loader.ts",
+          "blob": "c5e2421b9efcccc3a996fcd1475593e20096d990"
+        },
+        {
+          "path": "packages/runtime/src/server/module-tree.ts",
+          "blob": "bb58907055e1dee892e7b0b5dcf8f572dc84c23d"
+        },
+        {
+          "path": "packages/runtime/src/server/scenario-registry.ts",
+          "blob": "e9da042baeea20ff065f9c8a1fd8000d3a7429dc"
+        },
+        {
+          "path": "packages/runtime/src/server/tools.ts",
+          "blob": "b88ca864d19ff89a8c1bbf429ea52c7ac7f5c785"
+        },
+        {
+          "path": "packages/runtime/test/server/context-registry.test.ts",
+          "blob": "dad87d7e66ddc17f3118ea91f9c0712e6c3552e9"
+        },
+        {
+          "path": "packages/runtime/test/server/module-loader.test.ts",
+          "blob": "18743a3733eaecd77feff06fe5195659c4b675a6"
+        },
+        {
+          "path": "packages/runtime/test/server/module-tree.test.ts",
+          "blob": "b73c47acc41fb816d557fbe8e1539e889320c030"
+        },
+        {
+          "path": "packages/runtime/test/server/scenario-registry.test.ts",
+          "blob": "352026d1bc185b9b0029da457140daf51c5b0877"
+        },
+        {
+          "path": "packages/runtime/test/server/tools.test.ts",
+          "blob": "989d5af56a754228ced1189f2dd495447efbfde4"
+        }
+      ]
+    },
     "docs/development/ai-assisted-monorepo-migration.md": {
       "token": "b91fe1ce-acef-42b7-9657-13b821904e05",
       "relationship": "2a4eedde79b3b7a59cabed59d5ad904db957954c871a32d9bdc0ea2515c45c35",
@@ -7412,795 +8201,6 @@
         {
           "path": "packages/runtime/test/server/module-tree.test.ts",
           "blob": "b73c47acc41fb816d557fbe8e1539e889320c030"
-        },
-        {
-          "path": "packages/runtime/test/server/tools.test.ts",
-          "blob": "989d5af56a754228ced1189f2dd495447efbfde4"
-        }
-      ]
-    },
-    "skills/context/SKILL.md": {
-      "token": "58dfeaa5-ddbf-4893-bd0d-808507315831",
-      "relationship": "4e36cbdb8f4e16aa055cfd58028bf84835cb21f1bef99d30ffd488e5eeb0fec6",
-      "snapshotDigest": "799cb4af04b8b196307e7e3efb9c2f8094b0fce6f5cf45c13d59b53ca473ab0d",
-      "files": [
-        {
-          "path": ".github/workflows/first-10-minutes.yml",
-          "blob": "3ba53729cf26c621cbac9712d92970462a3a9b70"
-        },
-        {
-          "path": "examples/first-10-minutes/api/routes/_.context.ts",
-          "blob": "69888e479868978c1b9d5862cbd114846fab82f5"
-        },
-        {
-          "path": "examples/first-10-minutes/api/routes/pets.ts",
-          "blob": "e875936282482e71203039995c15f92747060fd1"
-        },
-        {
-          "path": "examples/first-10-minutes/api/routes/pets/{petId}.ts",
-          "blob": "596ccab9bcc7dd89b2a197cac5bc26d29de36e49"
-        },
-        {
-          "path": "examples/first-10-minutes/client/pets.ts",
-          "blob": "5d2fd85a14f29f0db3f5c1cfb6c9ac424ca37f44"
-        },
-        {
-          "path": "examples/first-10-minutes/openapi.yaml",
-          "blob": "605482220428c6afd1b6ca9b9fdfe699dd00115a"
-        },
-        {
-          "path": "examples/first-10-minutes/package.json",
-          "blob": "256903f10a2d765739c36b984951946b7cb24557"
-        },
-        {
-          "path": "examples/first-10-minutes/test/counterfact.test.mjs",
-          "blob": "4f5efb9fe3cce40df5a1f453aee8f4da939cf6df"
-        },
-        {
-          "path": "examples/first-10-minutes/tsconfig.counterfact.json",
-          "blob": "d445d784eab977fc8965c1a5f6dfad5173c61254"
-        },
-        {
-          "path": "packages/counterfact/src/api-runner.ts",
-          "blob": "6fe3876c89a902a1aef6fc32c1bd36a8746e508b"
-        },
-        {
-          "path": "packages/counterfact/src/app.ts",
-          "blob": "7374171631ce5541728a0c79c1b6b67fc6766eee"
-        },
-        {
-          "path": "packages/counterfact/test/api-runner.test.ts",
-          "blob": "102a209eb3e55f565a1c0105d17460d2a8e0dcb9"
-        },
-        {
-          "path": "packages/counterfact/test/app.test.ts",
-          "blob": "b1a9116b8c399b98894df94701199567f2fc2487"
-        },
-        {
-          "path": "packages/generator/src/code-generator.ts",
-          "blob": "fb26d4f2ca37062b7d433275304fb126930a1033"
-        },
-        {
-          "path": "packages/generator/src/context-file-token.ts",
-          "blob": "fbcbf6655ab20797c274966a4918a4031efb4958"
-        },
-        {
-          "path": "packages/generator/src/scenario-file-generator.ts",
-          "blob": "1a380a670619c0b84974466c92012294fb45937b"
-        },
-        {
-          "path": "packages/generator/test/code-generator.test.ts",
-          "blob": "148f3592a8055b0cb1be0f2ec3d763f08014581f"
-        },
-        {
-          "path": "packages/generator/test/generate.test.ts",
-          "blob": "ce6c7f88be8179bf5bd13c1c1b366644f9477adf"
-        },
-        {
-          "path": "packages/repl/src/repl.ts",
-          "blob": "e81e987b7a8102f9440d880d88984c7f22493f1f"
-        },
-        {
-          "path": "packages/repl/test/repl.test.ts",
-          "blob": "ad02291ec6ef922331711875c9c42b81f5ff8890"
-        },
-        {
-          "path": "packages/runtime/src/server/context-registry.ts",
-          "blob": "2ab55f5aae1888ef760ec0a6d1090fc33974480e"
-        },
-        {
-          "path": "packages/runtime/src/server/module-loader.ts",
-          "blob": "c5e2421b9efcccc3a996fcd1475593e20096d990"
-        },
-        {
-          "path": "packages/runtime/src/server/module-tree.ts",
-          "blob": "bb58907055e1dee892e7b0b5dcf8f572dc84c23d"
-        },
-        {
-          "path": "packages/runtime/src/server/scenario-registry.ts",
-          "blob": "e9da042baeea20ff065f9c8a1fd8000d3a7429dc"
-        },
-        {
-          "path": "packages/runtime/src/server/tools.ts",
-          "blob": "b88ca864d19ff89a8c1bbf429ea52c7ac7f5c785"
-        },
-        {
-          "path": "packages/runtime/test/server/context-registry.test.ts",
-          "blob": "dad87d7e66ddc17f3118ea91f9c0712e6c3552e9"
-        },
-        {
-          "path": "packages/runtime/test/server/module-loader.test.ts",
-          "blob": "18743a3733eaecd77feff06fe5195659c4b675a6"
-        },
-        {
-          "path": "packages/runtime/test/server/module-tree.test.ts",
-          "blob": "b73c47acc41fb816d557fbe8e1539e889320c030"
-        },
-        {
-          "path": "packages/runtime/test/server/scenario-registry.test.ts",
-          "blob": "352026d1bc185b9b0029da457140daf51c5b0877"
-        },
-        {
-          "path": "packages/runtime/test/server/tools.test.ts",
-          "blob": "989d5af56a754228ced1189f2dd495447efbfde4"
-        }
-      ]
-    },
-    "skills/counterfact/SKILL.md": {
-      "token": "c5a67c9f-a8d2-4a05-91b7-35fef40e1961",
-      "relationship": "e8abcbbf928d51cdc4ec0fb53d94774b512c383155d3bc24e951017abe5bf955",
-      "snapshotDigest": "eee14eb3cbc0b299737bee84d25fd2ec6035ba427c45cc2b9171a818833a410a",
-      "files": [
-        {
-          "path": "packages/counterfact/src/api-runner.ts",
-          "blob": "6fe3876c89a902a1aef6fc32c1bd36a8746e508b"
-        },
-        {
-          "path": "packages/counterfact/src/app.ts",
-          "blob": "7374171631ce5541728a0c79c1b6b67fc6766eee"
-        },
-        {
-          "path": "packages/counterfact/test/api-runner.test.ts",
-          "blob": "102a209eb3e55f565a1c0105d17460d2a8e0dcb9"
-        },
-        {
-          "path": "packages/counterfact/test/app.test.ts",
-          "blob": "b1a9116b8c399b98894df94701199567f2fc2487"
-        },
-        {
-          "path": "packages/generator/package.json",
-          "blob": "8df70696e69308fa3afe2511aea93b9242358399"
-        },
-        {
-          "path": "packages/generator/src/code-generator.ts",
-          "blob": "fb26d4f2ca37062b7d433275304fb126930a1033"
-        },
-        {
-          "path": "packages/generator/src/coder.ts",
-          "blob": "025ba5f829c5dd3696f916c51abe412f0e246d21"
-        },
-        {
-          "path": "packages/generator/src/context-file-token.ts",
-          "blob": "fbcbf6655ab20797c274966a4918a4031efb4958"
-        },
-        {
-          "path": "packages/generator/src/ensure-directory-exists.ts",
-          "blob": "3ee0ed9a64dcb18a323c86670cac6780ae48e18f"
-        },
-        {
-          "path": "packages/generator/src/forward-slash-path.ts",
-          "blob": "d1b8ab70b091103b92991a0267ae6e329b0ab110"
-        },
-        {
-          "path": "packages/generator/src/index.ts",
-          "blob": "934f6e06328dd32450439c6ee29fe5e09fa94fae"
-        },
-        {
-          "path": "packages/generator/src/jsdoc.ts",
-          "blob": "5ed7e42c7de5b658bd3fd19184346d719713bb56"
-        },
-        {
-          "path": "packages/generator/src/openapi-path.ts",
-          "blob": "f2226506c5850616b09afb0247b76a18c59c073d"
-        },
-        {
-          "path": "packages/generator/src/operation-coder.ts",
-          "blob": "2ab4d6f0aead01bf6295939a93a319a8325e8a03"
-        },
-        {
-          "path": "packages/generator/src/operation-type-coder.ts",
-          "blob": "38d5491154afb4bfe2517632d539a8a0390e7eb4"
-        },
-        {
-          "path": "packages/generator/src/operation-type-name-mapping.ts",
-          "blob": "783653e9bd10457c96906471189a58df5e184fb9"
-        },
-        {
-          "path": "packages/generator/src/parameter-export-type-coder.ts",
-          "blob": "fedf6dd38339873962fd3b00919a04e763a128a6"
-        },
-        {
-          "path": "packages/generator/src/parameters-type-coder.ts",
-          "blob": "eac25cd2ddf0290cab1465055977e84594aa31cf"
-        },
-        {
-          "path": "packages/generator/src/printers.ts",
-          "blob": "2b18d7ad3f17310b36bb11db1d39372eb1d800ba"
-        },
-        {
-          "path": "packages/generator/src/prune.ts",
-          "blob": "f1bd68246fcd36a3c17bebf01f8b91ef7244cbaf"
-        },
-        {
-          "path": "packages/generator/src/read-only-comments.ts",
-          "blob": "41f6e70a74a7e6ff921f8e8d570565ef8963cfdf"
-        },
-        {
-          "path": "packages/generator/src/repository.ts",
-          "blob": "102626117ec743dddafe44cff7a226eb9cf1d574"
-        },
-        {
-          "path": "packages/generator/src/requirement.ts",
-          "blob": "1e55155958bba403175622da77deaebb941a321a"
-        },
-        {
-          "path": "packages/generator/src/reserved-words.ts",
-          "blob": "f5eb17acc9c315712eb35ddb73f632bffc45f00f"
-        },
-        {
-          "path": "packages/generator/src/response-type-coder.ts",
-          "blob": "5380b9edd0e2a5a9f7c9f135d2dbad04001e2611"
-        },
-        {
-          "path": "packages/generator/src/responses-type-coder.ts",
-          "blob": "572164e19d1d6316287ca873d10682aba0defcdf"
-        },
-        {
-          "path": "packages/generator/src/scenario-file-generator.ts",
-          "blob": "1a380a670619c0b84974466c92012294fb45937b"
-        },
-        {
-          "path": "packages/generator/src/schema-coder.ts",
-          "blob": "55ad008554c4478f5b438f1c65bb24d967a579d0"
-        },
-        {
-          "path": "packages/generator/src/schema-type-coder.ts",
-          "blob": "5ae59a57e9a5278c93a0deaf5b2f3898a25939d8"
-        },
-        {
-          "path": "packages/generator/src/script.ts",
-          "blob": "ed7afbd42db050a9eedf06f6c7750fa271070085"
-        },
-        {
-          "path": "packages/generator/src/specification.ts",
-          "blob": "ba953a792a16df0a7d3ed73d162804ddf4a4d51f"
-        },
-        {
-          "path": "packages/generator/src/type-coder.ts",
-          "blob": "eaac95df919772e70c3ed27dbd06f999b88db795"
-        },
-        {
-          "path": "packages/generator/src/versions-ts-generator.ts",
-          "blob": "a164fc596cf339401f1703e297a8989ebc2f675f"
-        },
-        {
-          "path": "packages/generator/src/wait-for-event.ts",
-          "blob": "ec0002198213e0468d2f66e85fd94e3e70f8bd6d"
-        },
-        {
-          "path": "packages/generator/src/watch-options.ts",
-          "blob": "e82d8d4259ba75b03aed340c2814c3be1a4dfd0d"
-        },
-        {
-          "path": "packages/generator/src/windows-escape.ts",
-          "blob": "21be51fcb40ee7428d97f2668ef1df46e1c93912"
-        },
-        {
-          "path": "packages/generator/test/code-generator.test.ts",
-          "blob": "148f3592a8055b0cb1be0f2ec3d763f08014581f"
-        },
-        {
-          "path": "packages/generator/test/coder.test.ts",
-          "blob": "81b2c9064cb6045ce809d9d2c8dfba8d54e75671"
-        },
-        {
-          "path": "packages/generator/test/generate.test.ts",
-          "blob": "ce6c7f88be8179bf5bd13c1c1b366644f9477adf"
-        },
-        {
-          "path": "packages/generator/test/integration.test.ts",
-          "blob": "d6c650045893f802902779424bb2d92955ac99d3"
-        },
-        {
-          "path": "packages/generator/test/jsdoc.test.ts",
-          "blob": "8eb5ea8e1a964bb0d823d3655929ff53a84ac5fb"
-        },
-        {
-          "path": "packages/generator/test/operation-coder.test.ts",
-          "blob": "3aaab13e7dd3e6b44d8a65258346840c7df70a74"
-        },
-        {
-          "path": "packages/generator/test/operation-type-coder.test.ts",
-          "blob": "4826bb4afb8a27e563b779982e28947a4b999917"
-        },
-        {
-          "path": "packages/generator/test/package/generator-consumer-smoke.mjs",
-          "blob": "67d279448bec122e807ee4f3bb742e17a2c1f15e"
-        },
-        {
-          "path": "packages/generator/test/parameters-type-coder.test.ts",
-          "blob": "aac7f30818ed9aa5c309740665ec0a67e9e4223c"
-        },
-        {
-          "path": "packages/generator/test/prune.test.ts",
-          "blob": "a00d1d336fbc29ea2b6b0113d73f7aad743f7186"
-        },
-        {
-          "path": "packages/generator/test/repository.test.ts",
-          "blob": "64cdb8022404689d7447534a7488b0b76645d8e2"
-        },
-        {
-          "path": "packages/generator/test/requirement.test.ts",
-          "blob": "e4201567205df5fff2caf95aff39009cdfbec022"
-        },
-        {
-          "path": "packages/generator/test/response-type-coder.test.ts",
-          "blob": "f264d177d70072b1231fddfb4c44eaf9cad51632"
-        },
-        {
-          "path": "packages/generator/test/responses-type-coder.test.ts",
-          "blob": "c384dcd3bd71ba9410e7357c34d876a92853a6e1"
-        },
-        {
-          "path": "packages/generator/test/schema-coder.test.ts",
-          "blob": "0601bab6857bab045dcfb14f126e0eadfe982170"
-        },
-        {
-          "path": "packages/generator/test/schema-type-coder.test.ts",
-          "blob": "8f5e247dc0c4e5b2a4ecee55f80539d034cd85c6"
-        },
-        {
-          "path": "packages/generator/test/script.test.ts",
-          "blob": "c05166f234f4d8240aa6705c2ee4c72dda84e3f8"
-        },
-        {
-          "path": "packages/generator/test/specification.test.ts",
-          "blob": "660f20c26f6f45d9ae7dabdb264ce5ae77267089"
-        },
-        {
-          "path": "packages/generator/test/versions-ts-generator.test.ts",
-          "blob": "745093ddeb0e8d8e85a98498bb8ae58caf6f7ab6"
-        },
-        {
-          "path": "packages/generator/tsconfig.json",
-          "blob": "4cdac195c6759e41e9976e07c618e2e8bc3646ae"
-        },
-        {
-          "path": "packages/openapi/package.json",
-          "blob": "80ae284599de74df6f64ae5c97aadd1547dc6beb"
-        },
-        {
-          "path": "packages/openapi/src/apply-overlay.ts",
-          "blob": "6cbc806de74c9935d476178d03a69e180ce6031a"
-        },
-        {
-          "path": "packages/openapi/src/index.ts",
-          "blob": "47ebecad93c2644ff92d6c7d1bb2933eff0ec021"
-        },
-        {
-          "path": "packages/openapi/src/load-openapi-document.ts",
-          "blob": "9eeb17201044087f2b1f45c1a3d80414f94dda31"
-        },
-        {
-          "path": "packages/openapi/src/openapi-source.ts",
-          "blob": "7818e4c3fef6fab2c53e800e279d3a56b49c5392"
-        },
-        {
-          "path": "packages/openapi/src/read-file.ts",
-          "blob": "2b8df0252dacc8d9950229b6cfadb09926c8096c"
-        },
-        {
-          "path": "packages/openapi/test/apply-overlay.test.ts",
-          "blob": "3fa871463628716b53425376fc62211d05e7ae7c"
-        },
-        {
-          "path": "packages/openapi/test/load-openapi-document.test.ts",
-          "blob": "bd3d681495c150f094c8f47fbb7d83d63815e992"
-        },
-        {
-          "path": "packages/openapi/test/openapi-source.test.ts",
-          "blob": "460955b5e3535bcb856ed1f76c02d00a0849f32c"
-        },
-        {
-          "path": "packages/openapi/test/read-file.test.ts",
-          "blob": "280970c6d46bb70c95b0b7f28179751187a5516c"
-        },
-        {
-          "path": "packages/openapi/tsconfig.json",
-          "blob": "a69087fce9ab4e27ee9be520d5c363721d2220bc"
-        },
-        {
-          "path": "packages/repl/package.json",
-          "blob": "6aff6bbf1e718fc448118bc9758a72550d218c5f"
-        },
-        {
-          "path": "packages/repl/src/index.ts",
-          "blob": "0fa7a60fd3a3f0ca9a6258184d1ee324c028e80e"
-        },
-        {
-          "path": "packages/repl/src/repl.ts",
-          "blob": "e81e987b7a8102f9440d880d88984c7f22493f1f"
-        },
-        {
-          "path": "packages/repl/test/package/repl-consumer-smoke.mjs",
-          "blob": "ec4ff7dd2ab58b26e7c38eded7f8328f1bdc8389"
-        },
-        {
-          "path": "packages/repl/test/repl.test.ts",
-          "blob": "ad02291ec6ef922331711875c9c42b81f5ff8890"
-        },
-        {
-          "path": "packages/repl/tsconfig.json",
-          "blob": "bb82549edb9725ef9293d5f2d639d570286847b1"
-        },
-        {
-          "path": "packages/runtime/src/runtime-config.ts",
-          "blob": "7a474677ba6f749bb45991027e34b22d8b6a0fd7"
-        },
-        {
-          "path": "packages/runtime/src/server/context-registry.ts",
-          "blob": "2ab55f5aae1888ef760ec0a6d1090fc33974480e"
-        },
-        {
-          "path": "packages/runtime/src/server/dispatcher.ts",
-          "blob": "8d9182e8ed3f0c0d9682e172df0854d436a3ec8a"
-        },
-        {
-          "path": "packages/runtime/src/server/file-discovery.ts",
-          "blob": "c459d4a3b84683d4df17a0061709148d911916af"
-        },
-        {
-          "path": "packages/runtime/src/server/module-dependency-graph.ts",
-          "blob": "5a1a95629ce2000c6653189f061803c30d7a3882"
-        },
-        {
-          "path": "packages/runtime/src/server/module-loader.ts",
-          "blob": "c5e2421b9efcccc3a996fcd1475593e20096d990"
-        },
-        {
-          "path": "packages/runtime/src/server/module-tree.ts",
-          "blob": "bb58907055e1dee892e7b0b5dcf8f572dc84c23d"
-        },
-        {
-          "path": "packages/runtime/src/server/openapi-document.ts",
-          "blob": "af8b5f99440983a22ed546db1d1c0eacce24dfcb"
-        },
-        {
-          "path": "packages/runtime/src/server/openapi-watcher.ts",
-          "blob": "a4d911300369ab34e8dcfcde296a3b1e3ade5cad"
-        },
-        {
-          "path": "packages/runtime/src/server/registry.ts",
-          "blob": "465aa6e683c1116eb20fc562e0eceb4db4571efc"
-        },
-        {
-          "path": "packages/runtime/src/server/request-validator.ts",
-          "blob": "1f7d588e99cf7c9539c4bb6f1a397a1ef960042b"
-        },
-        {
-          "path": "packages/runtime/src/server/response-validator.ts",
-          "blob": "2480111e0dc0bac9ae5507cc713b16ef086f7a9e"
-        },
-        {
-          "path": "packages/runtime/src/server/scenario-registry.ts",
-          "blob": "e9da042baeea20ff065f9c8a1fd8000d3a7429dc"
-        },
-        {
-          "path": "packages/runtime/src/server/store-loader.ts",
-          "blob": "fe09a4a8a1274135cd382129126a40669b1e1ecb"
-        },
-        {
-          "path": "packages/runtime/src/server/tools.ts",
-          "blob": "b88ca864d19ff89a8c1bbf429ea52c7ac7f5c785"
-        },
-        {
-          "path": "packages/runtime/src/server/transpiler.ts",
-          "blob": "49fe09eee21ccb902b41a2ef1c4b1af1b68e005c"
-        },
-        {
-          "path": "packages/runtime/src/server/uncached-import.ts",
-          "blob": "0a198737398b257c6a4b492287fc3d5f3a6e626e"
-        },
-        {
-          "path": "packages/runtime/src/server/uncached-require.cjs",
-          "blob": "33ee7777d78b2c613a28d4cb106afefe8643c8f3"
-        },
-        {
-          "path": "packages/runtime/test/server/context-registry.test.ts",
-          "blob": "dad87d7e66ddc17f3118ea91f9c0712e6c3552e9"
-        },
-        {
-          "path": "packages/runtime/test/server/dispatcher.proxy.test.ts",
-          "blob": "f9029e774412c7d6dbcb249bbf7f7e11d20e0aa4"
-        },
-        {
-          "path": "packages/runtime/test/server/dispatcher.test.ts",
-          "blob": "38121a5141f92069ffa3a6a29e770c3c5cfe5270"
-        },
-        {
-          "path": "packages/runtime/test/server/file-discovery.test.ts",
-          "blob": "30e64f41469895695ce0c3453509085dfb8713b8"
-        },
-        {
-          "path": "packages/runtime/test/server/module-dependency-graph.test.ts",
-          "blob": "f8ccc048050454fa903565c1c3e8dc1ccaca0598"
-        },
-        {
-          "path": "packages/runtime/test/server/module-loader.test.ts",
-          "blob": "18743a3733eaecd77feff06fe5195659c4b675a6"
-        },
-        {
-          "path": "packages/runtime/test/server/module-tree.test.ts",
-          "blob": "b73c47acc41fb816d557fbe8e1539e889320c030"
-        },
-        {
-          "path": "packages/runtime/test/server/openapi-document.test.ts",
-          "blob": "9e302e0eb70a72e6f44410ee5b2c068551fcc12f"
-        },
-        {
-          "path": "packages/runtime/test/server/registry.test.ts",
-          "blob": "2dfa8653cd583ba9adcdbeda0e9963e07884dd77"
-        },
-        {
-          "path": "packages/runtime/test/server/response-validator.test.ts",
-          "blob": "00ba6e9e0b60681e65aa3dd31f861c7e2e9e016d"
-        },
-        {
-          "path": "packages/runtime/test/server/scenario-registry.test.ts",
-          "blob": "352026d1bc185b9b0029da457140daf51c5b0877"
-        },
-        {
-          "path": "packages/runtime/test/server/store-loader.test.ts",
-          "blob": "3283dd3bf6ace1e4f3d5dd75959355e336edf77c"
-        },
-        {
-          "path": "packages/runtime/test/server/tools.test.ts",
-          "blob": "989d5af56a754228ced1189f2dd495447efbfde4"
-        },
-        {
-          "path": "packages/runtime/test/server/transpiler.test.ts",
-          "blob": "f297fc65f6a28b5c2bbef6113f1a75fe292edd5a"
-        },
-        {
-          "path": "packages/types/package.json",
-          "blob": "5bbad20002f4664008fa0343f4457e07725ca9d7"
-        },
-        {
-          "path": "packages/types/src/cookie-options.ts",
-          "blob": "2bed81d33288a19c411c2bf36de6be78dd0d6f54"
-        },
-        {
-          "path": "packages/types/src/counterfact-response.ts",
-          "blob": "9488ff78c02dd8171e98d560748cc1f4bec59fd7"
-        },
-        {
-          "path": "packages/types/src/example-names.ts",
-          "blob": "d1fe5b3f22a8c5461dda159544bd6c22052cbf8e"
-        },
-        {
-          "path": "packages/types/src/example.ts",
-          "blob": "52561d6c3f497e45e617631441ba3ba6cf142baf"
-        },
-        {
-          "path": "packages/types/src/generic-response-builder.ts",
-          "blob": "25e28c8f34507b3054f80661d7d72c4772a87926"
-        },
-        {
-          "path": "packages/types/src/http-status-code.ts",
-          "blob": "d8093639ae2c429a325c9b2eee1f503fcaac19bb"
-        },
-        {
-          "path": "packages/types/src/if-has-key.ts",
-          "blob": "6608e83859a3ebd992f5edd5331f37936ebb5d80"
-        },
-        {
-          "path": "packages/types/src/index.ts",
-          "blob": "a239ee53b7b1dfcaebaa433e3a0446427037269e"
-        },
-        {
-          "path": "packages/types/src/maybe-promise.ts",
-          "blob": "65a990e0e63028efa74983cf10f0e79018ee623e"
-        },
-        {
-          "path": "packages/types/src/media-type.ts",
-          "blob": "d3cc528389baa139041333fe49d4e990a30b2fd0"
-        },
-        {
-          "path": "packages/types/src/middleware.ts",
-          "blob": "79087c2e08ef599cc2e27fba803d58c916359b28"
-        },
-        {
-          "path": "packages/types/src/omit-all.ts",
-          "blob": "0921eca5752ec87fc2b82f9110792a3da7b54968"
-        },
-        {
-          "path": "packages/types/src/omit-value-when-never.ts",
-          "blob": "e93f56b89f18074ba6a93b80703edfb5e83862b0"
-        },
-        {
-          "path": "packages/types/src/open-api-content.ts",
-          "blob": "05d4bc845f0cacdd408d2e0fb7533c165696f41f"
-        },
-        {
-          "path": "packages/types/src/open-api-header.ts",
-          "blob": "341f6a1f3aaa0c5277a69ac305097834babbdf80"
-        },
-        {
-          "path": "packages/types/src/open-api-operation.ts",
-          "blob": "b5cc9e3f4ac6b2cf1842b5d69c42d8800a3b8ef2"
-        },
-        {
-          "path": "packages/types/src/open-api-parameters.ts",
-          "blob": "9dad5861afc38e4788c7332705a5064b669871ef"
-        },
-        {
-          "path": "packages/types/src/open-api-response.ts",
-          "blob": "3d41c15181aae978e16d4a2260f9488fdfdb1a6c"
-        },
-        {
-          "path": "packages/types/src/random-function.ts",
-          "blob": "332b5fe441abd579ab6a91e3b6a4beeefd904ec4"
-        },
-        {
-          "path": "packages/types/src/response-builder-factory.ts",
-          "blob": "15cd813f7e7d57e3844e3df15ebc737dedac3c45"
-        },
-        {
-          "path": "packages/types/src/response-builder.ts",
-          "blob": "b4bdd61bac80fa2068c638670c04b054316c85ad"
-        },
-        {
-          "path": "packages/types/src/streaming-content-types.ts",
-          "blob": "26a6c14443abfa1addfd376d0f21263e66069d32"
-        },
-        {
-          "path": "packages/types/src/wide-operation-argument.ts",
-          "blob": "74dc5e66f97818e6ccf04f85ef2da3eebbeabb32"
-        },
-        {
-          "path": "packages/types/src/wide-response-builder.ts",
-          "blob": "0f1cd8f20e507fd4ef577dd8a3919844efeee4de"
-        },
-        {
-          "path": "packages/types/test/types.test-d.ts",
-          "blob": "ecf38fc81855987cd253f067f1a55f384cd8e9b0"
-        },
-        {
-          "path": "packages/types/tsconfig.json",
-          "blob": "e12efe59029fb097f05b4f15026ec7cbbbd16644"
-        }
-      ]
-    },
-    "skills/scenario/SKILL.md": {
-      "token": "43541df9-432c-4caa-bb11-bd12f1c35f87",
-      "relationship": "d16f31cf3c4f06e7f1442f5f670e99d0516e9fd30ad915e4457a5511b95341b1",
-      "snapshotDigest": "94a428a8e540533f6496e89bd9803430b191409ea13978f405bcea0106d0bbd0",
-      "files": [
-        {
-          "path": "packages/client/package.json",
-          "blob": "ee9c0a78634821880312cdbfddeda06209a61e55"
-        },
-        {
-          "path": "packages/client/src/index.ts",
-          "blob": "a7a1be52f6cd9b9a439461067fd98f177550ee4f"
-        },
-        {
-          "path": "packages/client/src/raw-http-client.ts",
-          "blob": "d7ae9a2b9cbe4e3615a16c90e7d3208d4f9b2002"
-        },
-        {
-          "path": "packages/client/src/route-builder.ts",
-          "blob": "87bbe3fc0f920561e94e26ba4d3e613117a1df48"
-        },
-        {
-          "path": "packages/client/src/route-catalog.ts",
-          "blob": "133ff0681c0f89331fe1f31d15b99830c264efff"
-        },
-        {
-          "path": "packages/client/test/raw-http-client.test.ts",
-          "blob": "fbd7fb38152ede227f4f067d64dfcba6bfbc6dbb"
-        },
-        {
-          "path": "packages/client/test/route-builder.integration.test.ts",
-          "blob": "4dc7f3086699eb2dbf7483587ee3726102c63c40"
-        },
-        {
-          "path": "packages/client/test/route-builder.test.ts",
-          "blob": "0635144305d5a932c9c00bfa73acc2192a038ef3"
-        },
-        {
-          "path": "packages/client/test/route-catalog.test.ts",
-          "blob": "e424fae2ded0ca818a08f9021d75bba753cf77fa"
-        },
-        {
-          "path": "packages/counterfact/src/api-runner.ts",
-          "blob": "6fe3876c89a902a1aef6fc32c1bd36a8746e508b"
-        },
-        {
-          "path": "packages/counterfact/src/app.ts",
-          "blob": "7374171631ce5541728a0c79c1b6b67fc6766eee"
-        },
-        {
-          "path": "packages/counterfact/test/api-runner.test.ts",
-          "blob": "102a209eb3e55f565a1c0105d17460d2a8e0dcb9"
-        },
-        {
-          "path": "packages/counterfact/test/app.test.ts",
-          "blob": "b1a9116b8c399b98894df94701199567f2fc2487"
-        },
-        {
-          "path": "packages/generator/src/code-generator.ts",
-          "blob": "fb26d4f2ca37062b7d433275304fb126930a1033"
-        },
-        {
-          "path": "packages/generator/src/context-file-token.ts",
-          "blob": "fbcbf6655ab20797c274966a4918a4031efb4958"
-        },
-        {
-          "path": "packages/generator/src/scenario-file-generator.ts",
-          "blob": "1a380a670619c0b84974466c92012294fb45937b"
-        },
-        {
-          "path": "packages/generator/test/code-generator.test.ts",
-          "blob": "148f3592a8055b0cb1be0f2ec3d763f08014581f"
-        },
-        {
-          "path": "packages/generator/test/generate.test.ts",
-          "blob": "ce6c7f88be8179bf5bd13c1c1b366644f9477adf"
-        },
-        {
-          "path": "packages/repl/src/repl.ts",
-          "blob": "e81e987b7a8102f9440d880d88984c7f22493f1f"
-        },
-        {
-          "path": "packages/repl/test/repl.test.ts",
-          "blob": "ad02291ec6ef922331711875c9c42b81f5ff8890"
-        },
-        {
-          "path": "packages/runtime/src/server/context-registry.ts",
-          "blob": "2ab55f5aae1888ef760ec0a6d1090fc33974480e"
-        },
-        {
-          "path": "packages/runtime/src/server/module-loader.ts",
-          "blob": "c5e2421b9efcccc3a996fcd1475593e20096d990"
-        },
-        {
-          "path": "packages/runtime/src/server/module-tree.ts",
-          "blob": "bb58907055e1dee892e7b0b5dcf8f572dc84c23d"
-        },
-        {
-          "path": "packages/runtime/src/server/scenario-registry.ts",
-          "blob": "e9da042baeea20ff065f9c8a1fd8000d3a7429dc"
-        },
-        {
-          "path": "packages/runtime/src/server/tools.ts",
-          "blob": "b88ca864d19ff89a8c1bbf429ea52c7ac7f5c785"
-        },
-        {
-          "path": "packages/runtime/test/server/context-registry.test.ts",
-          "blob": "dad87d7e66ddc17f3118ea91f9c0712e6c3552e9"
-        },
-        {
-          "path": "packages/runtime/test/server/module-loader.test.ts",
-          "blob": "18743a3733eaecd77feff06fe5195659c4b675a6"
-        },
-        {
-          "path": "packages/runtime/test/server/module-tree.test.ts",
-          "blob": "b73c47acc41fb816d557fbe8e1539e889320c030"
-        },
-        {
-          "path": "packages/runtime/test/server/scenario-registry.test.ts",
-          "blob": "352026d1bc185b9b0029da457140daf51c5b0877"
         },
         {
           "path": "packages/runtime/test/server/tools.test.ts",
