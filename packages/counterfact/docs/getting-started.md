@@ -45,6 +45,11 @@ The walkthrough starts with a normal purchase, then guides you through:
 
 6. Making another purchase and seeing five bags become four.
 
+The instructions bold the next action. Cart changes and successful orders move
+the emphasis automatically; confirm editor and REPL actions with the displayed
+button to move to the next action. These confirmations do not complete a lesson:
+the app must still receive the expected API response.
+
 Adding bags to the cart immediately lowers the availability shown on the product
 cards; reducing a quantity or removing an item restores it. The cards also show
 how many bags are in your cart.
