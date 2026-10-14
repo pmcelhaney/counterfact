@@ -8,9 +8,11 @@ Handlers are a poor place for cross-cutting concerns. Adding an auth check, a CO
 
 ## How it works
 
-Drop a `_.middleware.ts` file into any directory in the routes tree. It exports a standard Koa middleware function that applies to all routes in that subtree. Handlers in the subtree receive the request only after the middleware has run, so a rejected request never reaches a handler.
+Drop a `_.middleware.ts` file into any directory in the routes tree. It exports a named Counterfact `middleware` function that applies to all routes in that subtree. Handlers in the subtree receive the request only after the middleware has run, so a rejected request never reaches a handler.
 
 Place middleware close to the routes it governs. A `_.middleware.ts` at the root applies everywhere. One under `routes/admin/` applies only to admin endpoints.
+
+The generated `Middleware` type lives in the matching directory under `types/`. Its `$` request and `respondTo($)` callback are Counterfact APIs; they are different from a Koa context and `next()`.
 
 ## Example
 
@@ -20,21 +22,17 @@ Reject unauthenticated requests before any handler runs:
 
 ```ts
 // routes/_.middleware.ts
-import type { Middleware } from "koa";
+import type { Middleware } from "../types/_.middleware.js";
 
-const middleware: Middleware = async (ctx, next) => {
-  if (!ctx.headers.authorization) {
-    ctx.status = 401;
-    ctx.body = "Unauthorized";
-    return;
+export const middleware: Middleware = async ($, respondTo) => {
+  if (!$.headers.authorization) {
+    return $.response[401].text("Unauthorized");
   }
-  await next();
+  return respondTo($);
 };
-
-export default middleware;
 ```
 
-All routes now require an `Authorization` header. A missing header returns `401` immediately — no handler is called.
+This example checks header presence only; add token validation for an authentication policy. All routes now require an `Authorization` header. A missing header returns `401` immediately — no handler is called.
 
 ### Adding response headers
 
@@ -43,34 +41,38 @@ Attach headers to every response in a subtree — useful for simulating CORS, ra
 ```ts
 // routes/_.middleware.ts
 import { randomUUID } from "node:crypto";
-import type { Middleware } from "koa";
+import type { Middleware } from "../types/_.middleware.js";
 
-const middleware: Middleware = async (ctx, next) => {
-  await next();
-  ctx.set("x-ratelimit-limit", "1000");
-  ctx.set("x-ratelimit-remaining", "999");
-  ctx.set("x-request-id", randomUUID());
+export const middleware: Middleware = async ($, respondTo) => {
+  const response = await respondTo($);
+  return {
+    ...response,
+    headers: {
+      ...("headers" in response ? response.headers : {}),
+      "x-ratelimit-limit": "1000",
+      "x-ratelimit-remaining": "999",
+      "x-request-id": randomUUID(),
+    },
+  };
 };
-
-export default middleware;
 ```
 
 ### Request logging
 
-Log every request and its response status without touching any handler:
+Log each matched route and its response status without touching any handler:
 
 ```ts
 // routes/_.middleware.ts
-import type { Middleware } from "koa";
+import type { Middleware } from "../types/_.middleware.js";
 
-const middleware: Middleware = async (ctx, next) => {
+export const middleware: Middleware = async ($, respondTo) => {
   const start = Date.now();
-  await next();
+  const response = await respondTo($);
   const elapsed = Date.now() - start;
-  console.log(`${ctx.method} ${ctx.path} → ${ctx.status} (${elapsed}ms)`);
+  const status = "status" in response ? response.status : undefined;
+  console.log(`${$.matchedPath} → ${status ?? "default"} (${elapsed}ms)`);
+  return response;
 };
-
-export default middleware;
 ```
 
 ### Scoped middleware
@@ -79,19 +81,15 @@ Apply middleware only to a specific domain. The `_.middleware.ts` under `routes/
 
 ```ts
 // routes/admin/_.middleware.ts
-import type { Middleware } from "koa";
+import type { Middleware } from "../../types/admin/_.middleware.js";
 
-const middleware: Middleware = async (ctx, next) => {
-  const token = ctx.headers["x-admin-token"];
+export const middleware: Middleware = async ($, respondTo) => {
+  const token = $.headers["x-admin-token"];
   if (token !== "super-secret") {
-    ctx.status = 403;
-    ctx.body = "Forbidden";
-    return;
+    return $.response[403].text("Forbidden");
   }
-  await next();
+  return respondTo($);
 };
-
-export default middleware;
 ```
 
 ## What you get
@@ -99,7 +97,7 @@ export default middleware;
 - Middleware applies automatically to every new route added to the subtree — no per-handler boilerplate is required.
 - A single `_.middleware.ts` at the routes root applies to all paths; placing it in a subdirectory scopes it to that domain.
 - Handlers remain focused on response logic; authentication, headers, and logging live in a separate file.
-- Middleware runs in Koa's standard onion model — you can add logic before `next()` (pre-processing) and after (post-processing).
+- Middleware uses onion-style composition: add logic before `respondTo($)` and inspect or modify its returned response afterward. Return a response from every branch.
 
 ## Keep exploring
 

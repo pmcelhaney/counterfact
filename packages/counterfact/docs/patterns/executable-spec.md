@@ -25,6 +25,7 @@ components:
   schemas:
     Vaccination:
       type: object
+      required: [vaccine, date]
       properties:
         vaccine:
           type: string
@@ -33,6 +34,7 @@ components:
           format: date
     Pet:
       type: object
+      required: [vaccinations]
       properties:
         id:
           type: integer
@@ -44,14 +46,18 @@ components:
             $ref: "#/components/schemas/Vaccination"
 ```
 
-Save the file. Counterfact regenerates the types immediately. The GET `/pet/{petId}` handler's return type now includes `vaccinations`. If the handler uses the default `random()` implementation, the server already returns the new field automatically:
+Save the file. Counterfact regenerates the types immediately. The GET `/pet/{petId}` handler's return type now includes `vaccinations`. Because `vaccinations` is required, a default `random()` response includes it. Array contents, names, and dates vary; the following HTTP response body is illustrative (request logging and headers omitted):
 
 ```
-⬣> client.get("/pet/1")
-{ status: 200, body: { id: 1, name: 'Fluffy', vaccinations: [{ vaccine: 'Rabies', date: '2024-03-15' }] } }
+⬣> void client.get("/pet/1")
+HTTP/1.1 200 OK
+
+{"id":1,"name":"Fluffy","vaccinations":[{"vaccine":"Rabies","date":"2024-03-15"}]}
 ```
 
-If the handler returns a fixed value, you will need to update it — but TypeScript guides you: the IDE highlights the mismatch and describes exactly what is missing or incorrect. You can iterate on the spec — adding fields, changing types, restructuring schemas — and see the downstream effects on handlers and responses before any client code is written.
+If a fixed handler omits the newly required `vaccinations` field, you will need to update it — but TypeScript guides you: the IDE highlights the mismatch and describes exactly what is missing or incorrect. You can iterate on the spec — adding fields, changing types, restructuring schemas — and see the downstream effects on handlers and responses before any client code is written.
+
+Adding an optional field instead does not force existing fixed handlers to change, and random generation may omit that field unless `--always-fake-optionals` is enabled.
 
 ## What you get
 

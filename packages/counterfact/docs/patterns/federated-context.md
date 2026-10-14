@@ -8,7 +8,7 @@ Placing one `_.context.ts` at the root of the routes tree is convenient at first
 
 ## How it works
 
-Place a `_.context.ts` file at each domain boundary. Each subtree owns its context and is responsible only for its own state and logic. When a route in one subtree needs data from another, use `$.loadContext(path)` to reach across the boundary — without merging the two contexts into one.
+Place a `_.context.ts` file at each domain boundary. Each subtree owns its context and is responsible only for its own state and logic. When one domain needs data from another, inject `Context$` into its context constructor and use `$.loadContext(path)` there to reach across the boundary — without merging the two contexts into one.
 
 This keeps each context class small, focused, and independently testable. The `_.context.ts` file nearest to a handler wins; a handler under `/payments` uses the payments context, not the root context.
 
@@ -42,9 +42,22 @@ export class Context {
 ```ts
 // api/routes/payments/_.context.ts
 import type { Payment } from "../../types/components/payment.types.js";
+import type { Context$ } from "../../types/_.context.js";
 
 export class Context {
   private payments = new Map<string, Payment>();
+  private loadContext: Context$["loadContext"];
+
+  constructor($: Context$) {
+    this.loadContext = $.loadContext;
+  }
+
+  getWithUser(id: string) {
+    const payment = this.getById(id);
+    if (!payment) return undefined;
+    const user = this.loadContext("/users").getById(payment.userId);
+    return { ...payment, user };
+  }
 
   record(payment: Payment): void {
     this.payments.set(payment.id, payment);
@@ -58,30 +71,28 @@ export class Context {
 }
 ```
 
-When a payment route needs to enrich a response with user data, it loads the users context by path:
+The payments context uses the injected helper when a request needs user data. Looking it up inside `getWithUser` avoids depending on context initialization order. The route delegates to that method:
 
 ```ts
 // api/routes/payments/{paymentId}.ts
-import type { Context as UsersContext } from "../../users/_.context.js";
+import type { HTTP_GET } from "../../types/paths/payments/{paymentId}.types.js";
 
 export const GET: HTTP_GET = ($) => {
-  const payment = $.context.getById($.path.paymentId);
+  const payment = $.context.getWithUser($.path.paymentId);
   if (!payment) return $.response[404].text("Payment not found");
-
-  const usersContext = $.loadContext("/users") as UsersContext;
-  const user = usersContext.getById(payment.userId);
-
-  return $.response[200].json({ ...payment, user });
+  return $.response[200].json(payment);
 };
 ```
 
-The `loadContext(path)` call returns the live context instance rooted at that path. The two contexts remain independent classes; neither imports from the other's module.
+This example assumes `Payment` has string `id` and numeric `userId`, and the GET operation declares the enriched JSON response and a text `404` response. Regenerate types after adding the context files so `Context$` has a typed `loadContext("/users")` overload.
+
+The helper returns the live context nearest to the requested path. It is available to context constructors and scenarios; the REPL exposes it as `loadContext(path)`. Handler arguments do not expose `loadContext`, so cross-domain logic belongs in an authored context method. The two contexts remain independent classes.
 
 ## What you get
 
 - Each context class has a single responsibility and a clear boundary; it is easier to understand and unit-test in isolation.
-- `loadContext()` makes cross-domain dependencies explicit at the call site — the reader can immediately see which domain the route depends on.
-- The type cast (`as UsersContext`) is required because `loadContext()` returns `unknown`; consider co-locating a typed helper if cross-domain calls are frequent.
+- `loadContext()` makes cross-domain dependencies explicit inside the context method, keeping the route adapter small.
+- Generated overloads infer the context type for known literal paths; arbitrary string paths use the `Record<string, unknown>` fallback.
 - Contexts are still shared within a subtree: all routes under `/payments` share the same payments context instance.
 
 ## Keep exploring
