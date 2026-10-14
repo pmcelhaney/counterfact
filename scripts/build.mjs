@@ -4,7 +4,8 @@ import { fileURLToPath } from "node:url";
 
 const repositoryRoot = fileURLToPath(new URL("../", import.meta.url));
 const yarnPath = process.env["npm_execpath"];
-const command = yarnPath ?? "yarn";
+const command = yarnPath === undefined ? "yarn" : process.execPath;
+const commandArgs = yarnPath === undefined ? [] : [yarnPath];
 const elapsed = (start) =>
   `${((performance.now() - start) / 1000).toFixed(1)}s`;
 
@@ -35,11 +36,15 @@ const stages = [
 
 async function run(workspace, args) {
   return new Promise((resolve, reject) => {
-    const child = spawn(command, ["workspace", workspace, ...args], {
-      cwd: repositoryRoot,
-      stdio: "inherit",
-      shell: process.platform === "win32",
-    });
+    const child = spawn(
+      command,
+      [...commandArgs, "workspace", workspace, ...args],
+      {
+        cwd: repositoryRoot,
+        stdio: "inherit",
+        shell: yarnPath === undefined && process.platform === "win32",
+      },
+    );
     child.on("error", reject);
     child.on("close", (code, signal) => {
       if (signal !== null) {
