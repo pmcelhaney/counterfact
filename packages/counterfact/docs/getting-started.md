@@ -45,7 +45,9 @@ The walkthrough starts with a normal purchase, then guides you through:
 
 6. Making another purchase and seeing five bags become four.
 
-The instructions bold the next action. Cart changes and successful orders move
+Each lesson poses a small question to investigate in the real shop. Compare
+actual inventory before and after a purchase; open **Show code hint** when you
+want the exact file or example edit. The instructions bold the next action. Cart changes and successful orders move
 the emphasis automatically; confirm editor and REPL actions with the displayed
 button to move to the next action. These confirmations do not complete a lesson:
 the app must still receive the expected API response.
