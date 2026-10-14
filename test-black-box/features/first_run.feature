@@ -124,3 +124,9 @@ Feature: Find a useful starting point on the first run
     When I run Counterfact without arguments in a terminal
     And I enter the contract URL and choose an available server port
     Then the generated API and Swagger UI work and the REPL accepts requests
+
+  Scenario: Shop for coffee against the generated Counterfact API
+    Given an empty first-run directory
+    When I run Counterfact without arguments in a terminal
+    And I start the guided example on an available port
+    Then the coffee shop serves products and accepts a demo purchase

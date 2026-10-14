@@ -4,6 +4,8 @@ import net from "node:net";
 import { join } from "node:path";
 import type { REPLServer } from "node:repl";
 
+import { coffeeShopFiles, SHOP_DOCUMENT } from "./coffee-shop.js";
+
 import type { RawHttpClient } from "@counterfact/client";
 
 export const TUTORIAL_ROUTE = "routes/tickets/{ticketId}.ts";
@@ -80,9 +82,17 @@ export async function prepareDemo(
   await fs.mkdir(join(destination, "routes/tickets"), { recursive: true });
   await fs.writeFile(
     join(destination, "openapi.json"),
-    JSON.stringify(document, null, 2),
+    JSON.stringify(
+      { ...document, paths: { ...document.paths, ...SHOP_DOCUMENT.paths } },
+      null,
+      2,
+    ),
   );
   await fs.writeFile(join(destination, TUTORIAL_ROUTE), handler);
+  for (const [file, contents] of Object.entries(coffeeShopFiles(destination))) {
+    await fs.mkdir(join(destination, file, ".."), { recursive: true });
+    await fs.writeFile(join(destination, file), contents);
+  }
 }
 
 export async function isPortAvailable(port: number): Promise<boolean> {

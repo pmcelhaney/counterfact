@@ -657,3 +657,26 @@ def enter_contract_url(journey):
     type_and_wait(journey, b"\r", "Server port [3100]: ")
     journey.output = journey.project / "api"
     os.write(journey.terminal.terminal, f"{journey.allocate_port()}\r".encode())
+
+
+@TERMINAL_ONLY
+@scenario("features/first_run.feature", "Shop for coffee against the generated Counterfact API")
+def test_coffee_shop_purchase():
+    """The generated project serves the app and its real shopping API."""
+
+
+@then("the coffee shop serves products and accepts a demo purchase")
+def coffee_shop_purchase(journey):
+    page = journey.request("get", "/walkthrough")
+    assert page.status_code == 200
+    assert "text/html" in page.headers["Content-Type"]
+    assert "Counterfact Coffee" in page.text
+    assert "Walkthrough instructions" in page.text
+    products = journey.request("get", "/products").json()
+    assert [product["id"] for product in products] == ["house-blend", "dark-roast", "decaf"]
+    assert products[2]["stock"] == 0
+    order = journey.request("post", "/orders", json={"items": [{"productId": "house-blend", "quantity": 1}]})
+    assert order.status_code == 201, order.text
+    assert order.json()["orderId"] == 1
+    impossible = journey.request("post", "/orders", json={"items": [{"productId": "dark-roast", "quantity": 4}]})
+    assert impossible.status_code == 409
