@@ -2686,19 +2686,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@posthog/core@npm:^1.57.2":
-  version: 1.58.0
-  resolution: "@posthog/core@npm:1.58.0"
+"@posthog/core@npm:^1.58.0":
+  version: 1.59.0
+  resolution: "@posthog/core@npm:1.59.0"
   dependencies:
-    "@posthog/types": "npm:^1.415.2"
-  checksum: 10c0/ea00f903e6d8826d803d7d6c496c1c0b4d750cc0ce104139e317ec7d714b4165cbca58d247c1e01ec0441354b1149bacbdcc64e34ba6af0d37073cc15f950237
+    "@posthog/types": "npm:^1.416.0"
+  checksum: 10c0/0619893bbc6cecac9b4d8f470722927dfd0b104c818d7dfbde524f4ec1138a83bc274d9b7629134234bf0fc443debb7efb024447aeaa2275920506838e3f3e80
   languageName: node
   linkType: hard
 
-"@posthog/types@npm:^1.415.2":
-  version: 1.415.2
-  resolution: "@posthog/types@npm:1.415.2"
-  checksum: 10c0/2c1eeaf4370b0cfce61abbbe1e7fb28464f8e14f1f171670e8cadc0af64355eba331433c38922be7fe553cf6e6b20161e67fcbe754b474206633ed42143a0660
+"@posthog/types@npm:^1.416.0":
+  version: 1.416.0
+  resolution: "@posthog/types@npm:1.416.0"
+  checksum: 10c0/d3227a4b6423a1ce69db9c8e74ada17a5c3fd8ba824b0e6ed496744d907859717a0d3ad162bde08d5908679916896e7a1c4f1793ea74c6e641cf08928fe80c4e
   languageName: node
   linkType: hard
 
@@ -5226,7 +5226,7 @@ __metadata:
     http-terminator: "npm:3.2.0"
     js-yaml: "npm:5.4.3"
     open: "npm:11.0.4"
-    posthog-node: "npm:5.55.1"
+    posthog-node: "npm:5.55.2"
   bin:
     counterfact: bin/counterfact.js
   languageName: unknown
@@ -10251,17 +10251,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"posthog-node@npm:5.55.1":
-  version: 5.55.1
-  resolution: "posthog-node@npm:5.55.1"
+"posthog-node@npm:5.55.2":
+  version: 5.55.2
+  resolution: "posthog-node@npm:5.55.2"
   dependencies:
-    "@posthog/core": "npm:^1.57.2"
+    "@posthog/core": "npm:^1.58.0"
   peerDependencies:
     rxjs: ^7.0.0
   peerDependenciesMeta:
     rxjs:
       optional: true
-  checksum: 10c0/204bc50c21209ba9c47a7f461c67dd684ea41c1fe88ee09ce05d936549ac7d2f824d00579a7a42bc02047bc45d6a07ff10e91ea60505d28d6d0e2a991a6e72b4
+  checksum: 10c0/adca9ca806acb29ca1b107770fedfb44af4cf8b4ebeb2950b2d34f225efb0c23fe144df92f8283f13d1a9b0af7b8cbfeeaf6bc614e890c81719bc08ed34f5ff5
   languageName: node
   linkType: hard
 
