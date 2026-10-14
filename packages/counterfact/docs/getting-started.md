@@ -56,7 +56,8 @@ Each product card shows **Inventory in Counterfact**, **In your cart**, and
 **Available to add** separately. Adding bags changes the cart and availability
 immediately; reducing a quantity or removing an item restores availability.
 Only the API reports inventory changes after purchases or context updates.
-**What the purchase did** compares the last order with its next product response.
+**What the purchase did**, below the lesson in the instructions panel, compares
+the last order with its next product response.
 **What happened** keeps up to 30 purchases and observed inventory changes. Use
 **Inspect** to compare actual requests, responses, and inventory snapshots. This
 history survives a reload within the same API session; inspecting it sends no order.
