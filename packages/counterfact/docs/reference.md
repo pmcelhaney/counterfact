@@ -532,7 +532,8 @@ own document; you can also enter a path or HTTP(S) URL. Setup asks for an output
 directory (default: `api/`) and an available port (default: `3100`).
 
 The guided example opens a bundled coffee shop at `/walkthrough`, with
-instructions on the left and an interactive storefront on the right. It uses a
+instructions on the left and an interactive storefront on the right, in
+equal-width columns. It uses a
 desktop layout at least 1100px wide, with a three-column product catalog. The
 browser requests real `/products` and `/orders` routes from the generated
 project. It needs no external contract download or update check. Setup shows
@@ -555,7 +556,7 @@ status and purchase-effect explanations belong in the instructions panel.
 The browser checks the products API every second while visible, before ordering,
 and after each order; it serializes refreshes with purchases. Manual refresh is
 optional. The latest purchase shows observed inventory before and after the
-request, including successful orders that did not change stock. **What happened**
+request, including successful orders that did not change stock. **What happened**, in the instructions panel,
 retains up to 30 purchases and external inventory changes, with actual requests,
 responses, and snapshots available through **Inspect**. Inspection sends no order.
 
