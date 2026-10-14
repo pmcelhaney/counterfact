@@ -713,3 +713,12 @@ def restock_and_purchase(journey):
     path = journey.output / "routes/products.ts"
     path.write_text(path.read_text() + "\n// Preserve running inventory across route reloads.\n")
     journey.wait_for_http("/products", lambda response: response.status_code == 200 and response.json()[1]["stock"] == 4)
+
+    session = journey.request("get", "/tutorial-info").json()["sessionId"]
+    context_path = journey.output / "routes/_.context.ts"
+    context_path.write_text(context_path.read_text() + "\n// Reload context without changing the inventory declaration.\n")
+    journey.wait_for_http("/tutorial-info", lambda response: response.status_code == 200 and response.json()["sessionId"] != session)
+    assert coffee_stock(journey, "dark-roast") == 4
+    assert coffee_stock(journey, "house-blend") == 5
+    assert coffee_order(journey, "house-blend", 1).status_code == 201
+    assert coffee_stock(journey, "house-blend") == 4

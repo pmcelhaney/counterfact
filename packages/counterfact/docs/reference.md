@@ -545,7 +545,9 @@ If browser launch fails, the terminal prints the walkthrough URL for manual use.
 The user completes a purchase, changes Decaf stock in the product handler,
 exercises order failure and retry, adds a successful-order mutation to
 `$.context.inventory`, and restocks through `context.inventory` in the REPL.
-The product handler reads that shared inventory; successful orders and product
+Unchanged object and array initializers preserve scenario, request, and REPL
+state when the context file reloads; deliberately changed initializers replace
+that property. The product handler reads that shared inventory; successful orders and product
 refreshes demonstrate the resulting changes. Failed requests retain the task
 and the cart. Browser controls provide Continue, Back, and Skip lesson. Session-scoped progress and the cart survive a page reload;
 a new API session starts a new browser lesson. Completion keeps the shop and
