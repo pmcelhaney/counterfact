@@ -14,7 +14,6 @@ import { pathResolve } from "../util/forward-slash-path.js";
 import { loadConfigFile } from "../util/load-config-file.js";
 import { checkForUpdates } from "./check-for-updates.js";
 import { runIntro } from "./intro.js";
-import { attachTutorial } from "./tutorial.js";
 import {
   createGeneratedArtifactsSummary,
   createRuntimeProgressMessage,
@@ -492,8 +491,18 @@ function buildProgram(
     await updateCheckPromise;
 
     if (config.startRepl) {
-      const repl = startRepl();
-      if (tutorial) attachTutorial(repl, destination, options.port);
+      startRepl();
+      if (tutorial) {
+        const walkthroughUrl = `${origin}/walkthrough`;
+        writeStartupLine(`Coffee shop walkthrough → ${walkthroughUrl}`);
+        try {
+          await open(walkthroughUrl);
+        } catch {
+          writeStartupLine(
+            "Could not open a browser. Open the walkthrough URL above.",
+          );
+        }
+      }
     }
 
     if (openBrowser) {

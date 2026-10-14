@@ -72,31 +72,6 @@ Feature: Find a useful starting point on the first run
     When I change the selected contract's response example
     Then the running API reloads the local contract change
 
-  Scenario: Change a running API through the guided example
-    Given an empty first-run directory
-    When I run Counterfact without arguments in a terminal
-    Then the intro offers a guided example, my own document, and documentation
-    When I start the guided example on an available port
-    Then the example starts without downloading a contract
-    When I request another ticket and repeat the tutorial instructions
-    Then the tutorial still asks for the first ticket
-    When I request the example ticket
-    Then the tutorial points to the editable handler
-    When I save a closed status in the example handler and request the ticket again
-    Then the tutorial completes and the API remains usable
-
-  Scenario: Recover from an unsuccessful edit and leave the tutorial
-    Given an empty first-run directory
-    When I run Counterfact without arguments in a terminal
-    And I start the guided example on an available port
-    And I request the example ticket
-    And I request the unchanged ticket
-    Then the tutorial asks me to save and retry
-    When I break the example handler and request the ticket
-    Then the tutorial does not report completion
-    When I restore the example handler and skip the tutorial
-    Then the ordinary REPL and API remain usable and my files are kept
-
   Scenario: Preserve an existing example and choose an available port
     Given an existing example directory and an occupied server port
     When I run Counterfact without arguments in a terminal

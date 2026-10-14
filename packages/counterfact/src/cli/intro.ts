@@ -95,13 +95,13 @@ export async function runIntro(): Promise<IntroSelection | undefined> {
       if (answer === "" || answer === "1") {
         const destination = await findDemoDirectory(process.cwd());
         write(
-          `\nMake a request, edit a response, and see the change without restarting.`,
+          `\nShop for coffee, change the API in your editor, and restock through the REPL.`,
         );
         write(
           `This creates ${destination}/ and starts a local server. No download needed.`,
         );
         write(
-          "Keep this terminal open; you'll also use your editor. Your files will be kept when you quit.",
+          "The walkthrough opens in your browser. Keep this terminal open and use your own editor. Your files are kept.",
         );
         let port = 3100;
         while (!cancellation.signal.aborted) {

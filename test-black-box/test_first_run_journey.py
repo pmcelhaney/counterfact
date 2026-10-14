@@ -185,6 +185,11 @@ def scheme_filename(journey):
 
 @when("I run Counterfact without arguments in a terminal")
 def start_intro(journey):
+    if "INTRO_BROWSER_CAPTURE" not in journey.environment:
+        ci = journey.environment.get("CI")
+        browser_launcher(journey)
+        if ci is not None:
+            journey.environment["CI"] = ci
     journey.start_cli(terminal=True)
     if journey.environment.get("CI") != "true":
         journey.terminal.wait_for("Choose [1]: ", STARTUP_TIMEOUT)
@@ -420,16 +425,8 @@ def explicit_generation_works(journey):
     assert (journey.project / "explicit-output/routes/hello.ts").exists()
 
 
-@TERMINAL_ONLY
-@scenario("features/first_run.feature", "Change a running API through the guided example")
-def test_live_tutorial():
-    """Learn requests and hot reload using the shipped terminal."""
 
 
-@TERMINAL_ONLY
-@scenario("features/first_run.feature", "Recover from an unsuccessful edit and leave the tutorial")
-def test_tutorial_recovery():
-    """Unsuccessful actions do not complete the tutorial."""
 
 
 @TERMINAL_ONLY
@@ -451,100 +448,33 @@ def start_example(journey):
     type_and_wait(journey, f"{journey.allocate_port()}\r".encode(), "Start [Enter]")
     journey.output = journey.project / "counterfact-demo"
     os.write(journey.terminal.terminal, b"\r")
-    journey.terminal.wait_for("1/3 — Make a request", STARTUP_TIMEOUT)
+    journey.terminal.wait_for("Coffee shop walkthrough", STARTUP_TIMEOUT)
 
 
-@then("the example starts without downloading a contract")
-def example_started(journey):
-    assert (journey.output / "openapi.json").exists()
-    assert (journey.output / "routes/tickets/{ticketId}.ts").exists()
-    assert "No download needed" in journey.transcript()
-    assert "petstore3.swagger.io" not in journey.transcript()
-    assert journey.request("get", "/tickets/1").json()["status"] == "open"
 
 
-@when("I request another ticket and repeat the tutorial instructions")
-def unrelated_ticket(journey):
-    journey.terminal.command('await client.get("/tickets/2")')
-    journey.terminal.command('({id: 1, status: "closed"})')
-    journey.last_tutorial_help = journey.terminal.command(".tutorial repeat")
 
 
-@then("the tutorial still asks for the first ticket")
-def still_first_step(journey):
-    assert "1/3 — Make a request" in journey.last_tutorial_help
-    assert "2/3 — Change the response" not in journey.transcript()
 
 
-@when("I request the example ticket")
-def request_ticket(journey):
-    output = journey.terminal.command('await client.get("/tickets/1")')
-    assert "HTTP/1.1 200 OK\\r\\n" not in output
-    journey.terminal.wait_for("2/3 — Change the response", STARTUP_TIMEOUT)
 
 
-@then("the tutorial points to the editable handler")
-def handler_instruction(journey):
-    assert "counterfact-demo/routes/tickets/{ticketId}.ts" in journey.transcript()
-    assert 'Change status: "open" to status: "closed" and save.' in journey.transcript()
 
 
-@when("I save a closed status in the example handler and request the ticket again")
-def close_ticket(journey):
-    route = journey.output / "routes/tickets/{ticketId}.ts"
-    route.write_text(route.read_text().replace('status: "open"', 'status: "closed"'))
-    journey.wait_for_http("/tickets/1", lambda response: response.status_code == 200 and response.json()["status"] == "closed")
-    journey.terminal.command('await client.get("/tickets/1")')
 
 
-@then("the tutorial completes and the API remains usable")
-def tutorial_complete(journey):
-    journey.terminal.wait_for("3/3 — You changed a running API", STARTUP_TIMEOUT)
-    assert "no server restart needed" in journey.transcript()
-    assert "npx counterfact ./counterfact-demo/openapi.json ./counterfact-demo" in journey.transcript()
-    assert "2" in journey.terminal.command("1 + 1")
-    assert journey.request("get", "/tickets/1").json()["status"] == "closed"
 
 
-@when("I request the unchanged ticket")
-def request_unchanged(journey):
-    journey.terminal.command('await client.get("/tickets/1")')
 
 
-@then("the tutorial asks me to save and retry")
-def save_retry(journey):
-    journey.terminal.wait_for("Check the route file, save it, and retry", STARTUP_TIMEOUT)
 
 
-@when("I break the example handler and request the ticket")
-def break_handler(journey):
-    route = journey.output / "routes/tickets/{ticketId}.ts"
-    journey.original_handler = route.read_text()
-    route.write_text('throw new Error("tutorial edit error");\n')
-    journey.wait_for_http("/tickets/1", lambda response: response.status_code >= 400)
-    journey.terminal.command('await client.get("/tickets/1")')
 
 
-@then("the tutorial does not report completion")
-def tutorial_not_complete(journey):
-    assert "3/3 — You changed a running API" not in journey.transcript()
-    assert "2/3 — Change the response" in journey.terminal.command(".tutorial")
 
 
-@when("I restore the example handler and skip the tutorial")
-def restore_skip(journey):
-    route = journey.output / "routes/tickets/{ticketId}.ts"
-    route.write_text(journey.original_handler)
-    journey.wait_for_http("/tickets/1", lambda response: response.status_code == 200)
-    journey.terminal.command(".tutorial skip")
 
 
-@then("the ordinary REPL and API remain usable and my files are kept")
-def skipped_usable(journey):
-    assert "Tutorial skipped" in journey.transcript()
-    assert "2" in journey.terminal.command("1 + 1")
-    assert journey.request("get", "/tickets/1").json()["status"] == "open"
-    assert (journey.output / "routes/tickets/{ticketId}.ts").exists()
 
 
 @given("an existing example directory and an occupied server port")
@@ -575,14 +505,14 @@ def correct_port(journey):
     type_and_wait(journey, f"{journey.allocate_port()}\r".encode(), "Start [Enter]")
     journey.output = journey.project / "counterfact-demo-2"
     os.write(journey.terminal.terminal, b"\r")
-    journey.terminal.wait_for("1/3 — Make a request", STARTUP_TIMEOUT)
+    journey.terminal.wait_for("Coffee shop walkthrough", STARTUP_TIMEOUT)
 
 
 @then("the existing example is unchanged and the new example runs")
 def existing_unchanged(journey):
     assert (journey.project / "counterfact-demo/keep.txt").read_text() == "user content"
     assert set((journey.project / "counterfact-demo").iterdir()) == {journey.project / "counterfact-demo/keep.txt"}
-    assert journey.request("get", "/tickets/1").json()["status"] == "open"
+    assert journey.request("get", "/products").json()[2]["stock"] == 0
 
 
 @when("I return from document selection to the opening menu")
@@ -621,32 +551,28 @@ def test_enter_contract_url():
 
 @given("a contract served at a local HTTP URL")
 def served_contract(journey):
-    import json
-    import threading
-    from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+    import subprocess
+    import sys
     empty_directory(journey)
-
-    class ContractHandler(BaseHTTPRequestHandler):
-        def do_GET(self):
-            body = json.dumps(contract()).encode()
-            self.send_response(200)
-            self.send_header("Content-Type", "application/json")
-            self.send_header("Content-Length", str(len(body)))
-            self.end_headers()
-            self.wfile.write(body)
-
-        def log_message(self, *args):
-            pass
-
-    with ThreadingHTTPServer(("127.0.0.1", 0), ContractHandler) as server:
-        thread = threading.Thread(target=server.serve_forever, daemon=True)
-        thread.start()
-        journey.contract_url = f"http://127.0.0.1:{server.server_port}/openapi.json"
+    journey.write_json("remote-contract/openapi.json", contract())
+    # Keep the HTTP fixture in a child process: starting a parent thread before
+    # forkpty can deadlock the terminal child on macOS.
+    server = subprocess.Popen([sys.executable, "-u", "-m", "http.server", "0", "--bind", "127.0.0.1", "--directory", str(journey.project)], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+    try:
+        readable, _, _ = select.select([server.stdout], [], [], 10)
+        assert readable, "Contract fixture did not start"
+        line = server.stdout.readline()
+        match = re.search(r"port (\d+)", line)
+        assert match is not None, line
+        journey.contract_url = f"http://127.0.0.1:{match.group(1)}/remote-contract/openapi.json"
+        yield
+    finally:
+        server.terminate()
         try:
-            yield
-        finally:
-            server.shutdown()
-            thread.join(timeout=5)
+            server.wait(timeout=5)
+        except subprocess.TimeoutExpired:
+            server.kill()
+            server.wait(timeout=5)
 
 
 @when("I enter the contract URL and choose an available server port")

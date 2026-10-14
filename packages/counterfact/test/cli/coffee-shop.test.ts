@@ -3,6 +3,8 @@ import vm from "node:vm";
 import { describe, expect, it } from "@jest/globals";
 import ts from "typescript";
 
+import { coffeeShopPage } from "../../src/cli/coffee-shop-page.js";
+
 import { SHOP_CONTEXT } from "../../src/cli/coffee-shop.js";
 
 function context() {
@@ -56,4 +58,12 @@ describe("the example's shared context", () => {
     expect(shop.canFulfill([])).toBe(false);
     expect(shop.inventory["dark-roast"]).toBe(3);
   });
+});
+
+it("ships syntactically valid browser code with escaped project paths", () => {
+  const page = coffeeShopPage("/tmp/coffee</script>shop");
+  const script = page.split("<script>")[1]!.split("</script>")[0]!;
+  expect(() => new vm.Script(script)).not.toThrow();
+  expect(page).toContain("Walkthrough instructions");
+  expect(page).not.toContain("/tmp/coffee</script>shop");
 });
