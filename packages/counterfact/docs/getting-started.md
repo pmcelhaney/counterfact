@@ -74,7 +74,7 @@ order confirmations are labeled unknown rather than rejected; the cart is kept.
 
 The shop checks the products API automatically while visible and after each
 order. Saved inventory edits and REPL changes appear without a manual refresh.
-**Refresh products** remains available to request another check. Changing feedback appears under a small **Update** label, separate from the
+Changing feedback appears under a small **Update** label, separate from the
 lesson instructions. Background API checks run without a status feed or clock. Saving a file alone
 does not complete a task. **Continue** moves on after success; **Back** and **Skip lesson** let you control the pace. A browser reload
 keeps the current lesson and cart within the same running API session.

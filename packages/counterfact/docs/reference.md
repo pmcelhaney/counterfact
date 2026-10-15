@@ -561,7 +561,7 @@ Product cards show shopper-facing availability and sold-out messages. The left
 panel focuses on instructions, saved-file checks, and the controls for advancing
 through the lesson. The browser checks the products API every second while
 visible, before ordering, and after each order; it serializes refreshes with
-purchases. Manual refresh is optional. There is no live API activity feed or clock; transient
+purchases. The shop refreshes automatically. There is no live API activity feed or clock; transient
 lesson feedback has a small Update label and a subtle left rule.
 
 Invalid or unavailable product responses show unavailable stock on product cards. Buying pauses until a fresh response
