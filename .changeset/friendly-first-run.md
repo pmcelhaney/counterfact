@@ -25,3 +25,5 @@ State the API-editing promise at the start, explain the one-time Decaf setting, 
 Use the existing Update message to compare real API stock before and after an accepted purchase, without a history or diagnostic panel.
 
 Accept positive stock variations and verify purchases by their actual quantity rather than requiring exactly five bags to become four.
+
+Expose editor handoff and path copying beside the current edit instruction, and remove obsolete refresh instructions from the generated handler.

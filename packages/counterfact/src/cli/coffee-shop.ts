@@ -177,7 +177,8 @@ export const SHOP_CONTEXT = `export class Context {
 
 export const SHOP_PRODUCTS = `import type { HTTP_GET } from "../types/paths/products.types.js";
 
-// Lesson: change Decaf's starting stock from 0 to 5, then save and refresh.
+// Lesson: change Decaf's starting stock from 0 to 5, then save and watch the shop update.
+// The changed setting is applied once; later requests read the running inventory.
 const decafStock = 0;
 
 export const GET: HTTP_GET = ($) => {

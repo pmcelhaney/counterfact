@@ -84,7 +84,9 @@ keeps your edited handlers and inventory; if an exercise needs stock, its
 instructions show the REPL command to restore it without resetting your files.
 
 Use the instructional file links to open files in VSCode through the `vscode://`
-URL scheme, or **Copy file path** in a code hint to find a file in another editor. Shared inventory is declared in `routes/_.context.ts` and initialized
+URL scheme, or **Copy file path** beside the edit instruction to find a file in another editor.
+The adjacent **Open in VSCode** link names its destination explicitly; code hints
+remain optional. Shared inventory is declared in `routes/_.context.ts` and initialized
 by `scenarios/index.ts`; products and orders access the same running object.
 The initial order handler intentionally does not reduce stock until you add
 that operation. No payments or real purchases take place. The final screen offers an optional

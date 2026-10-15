@@ -316,6 +316,19 @@ it.each([
     const paragraph = app.root("instruction-text");
     expect(
       find(
+        app.root("lesson"),
+        (node) => node.tag === "a" && node.textContent === "Open in VSCode",
+      )?.href,
+    ).toBe(base + "routes/orders.ts");
+    expect(
+      find(
+        app.root("lesson"),
+        (node) =>
+          node.tag === "button" && node.textContent === "Copy file path",
+      )?.parent?.className,
+    ).toBe("file-actions");
+    expect(
+      find(
         paragraph,
         (node) =>
           node.tag === "a" && node.textContent === "routes/_.context.ts",

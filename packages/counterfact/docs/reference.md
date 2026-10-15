@@ -579,8 +579,8 @@ that property. The product handler reads the same inventory that orders and
 the REPL update.
 
 File names in lesson text, code hints, and restart examples link directly to
-their generated files through VSCode’s `vscode://` URL scheme. **Copy file path**
-in code hints supports other editors. The
+their generated files through VSCode’s `vscode://` URL scheme. **Open in VSCode** and **Copy file path** appear beside each edit instruction,
+so another editor can be used without expanding the code hint. The
 app uses no external images, fonts, payment services, or frontend build dependencies.
 
 Discovery recognizes YAML/JSON root documents for Swagger 2.0 and OpenAPI 3.0,
