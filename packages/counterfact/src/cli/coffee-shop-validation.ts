@@ -133,14 +133,7 @@ export async function checkShopSave(root: string, step: number) {
     return {
       revision: savedRevision,
       ok: true,
-      message:
-        step === 2
-          ? "Saved change checked: the products handler returns 5 Decaf bags."
-          : step === 4
-            ? "Saved change checked: the order handler returns HTTP 503 and leaves inventory unchanged."
-            : step === 5
-              ? "Saved change checked: the order handler accepts an order again."
-              : "Saved change checked: ordering 2 Dark Roast changes inventory from 3 to 1, and the products handler returns 1.",
+      message: "Saved change verified.",
     };
   } catch (error) {
     return {

@@ -206,7 +206,7 @@ async function checkSavedFiles(){
       if(progress.step!==step||latest.revision!==revision||result.revision!==revision){savedRevision=undefined;checkedLesson=undefined;return;}
       passedSaveCheck=result.ok;
       if(!result.ok){manualStages[step]=0;progress.lastOrder=undefined;if(changed&&progress.done){progress.done=false;progress.lastOrder=undefined;showLesson();}updateAction();}
-      if(result.ok||saveCheckDirty){const panel=$('save-check');panel.setAttribute('role',result.ok?'status':'alert');panel.replaceChildren(element('p',result.message+(result.ok?(progress.done?'':' Now try it in the shop.'):' Fix the file and save again; it will be checked automatically.'),'notice'+(result.ok?'':' error')));}
+      if(result.ok||saveCheckDirty){const panel=$('save-check');panel.setAttribute('role',result.ok?'status':'alert');panel.replaceChildren(element('p',result.message+(result.ok?(progress.done?'':step===7?' Now place an order to see the inventory decrease.':step===5?' Now retry your order.':' Now try it in the shop.'):' Fix the file and save again; it will be checked automatically.'),'notice'+(result.ok?'':' error')));}
       saveCheckDirty=false;
       if(step===5&&lastFailure?.status===503){lastFailure.resolved=result.ok;renderOrderFailure();}
       if(result.ok){manualStages[step]=4;updateAction();saveProgress();await refreshProducts({source:'saved-file'});}
