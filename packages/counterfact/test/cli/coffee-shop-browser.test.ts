@@ -155,7 +155,12 @@ async function browser(
             items: { productId: keyof typeof stocks; quantity: number }[];
           }
         ).items;
-        status = server.orderMode === "shortage" ? 409 : 201;
+        status =
+          server.orderMode === "shortage"
+            ? 409
+            : server.orderMode === "unavailable"
+              ? 503
+              : 201;
         result =
           status === 409
             ? {
@@ -370,4 +375,25 @@ it("discards a delayed check when the user has moved to another lesson", async (
   await pending;
   expect(app.root("save-check").textContent).toBe("");
   expect(app.read("manualStages[5]")).toBeUndefined();
+});
+
+it("replaces the old failure notice when a saved handler recovers and clears the check after retry", async () => {
+  const app = await browser();
+  app.read("progress.step=4;showLesson()");
+  app.add();
+  app.server.orderMode = "unavailable";
+  await app.order();
+  expect(app.root("shop-notice").textContent).toContain("restore ordering");
+  app.read("progress.step=5;progress.done=false;showLesson()");
+  app.server.orderMode = "accepted";
+  app.server.checkOk = true;
+  app.server.revision = "recovered";
+  await app.poll();
+  expect(app.root("shop-notice").textContent).toContain(
+    "Ordering is available again",
+  );
+  expect(app.root("shop-notice").textContent).not.toContain("restore ordering");
+  await app.order();
+  expect(app.root("save-check").textContent).toBe("");
+  expect(app.read("progress.done")).toBe(true);
 });

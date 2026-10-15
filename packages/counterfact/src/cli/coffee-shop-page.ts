@@ -44,6 +44,7 @@ function validProducts(value){
 }
 function renderOrderFailure(){
   if(!lastFailure)return;const {status,result,items}=lastFailure;let text;
+  if(status===503&&lastFailure.resolved){notice('Ordering is available again. Retry your order; your cart is ready.');return;}
   if(status===undefined)text='Order confirmation unavailable. The request may have been accepted; check the inventory before retrying. Your cart has been kept.';
   else if(status===409){
     const shortages=Array.isArray(result?.shortages)?result.shortages.filter(s=>s&&items.some(i=>i.productId===s.productId)&&Number.isSafeInteger(s.requested)&&s.requested>0&&Number.isSafeInteger(s.available)&&s.available>=0):[];
@@ -70,7 +71,7 @@ function renderCart(){
   $('cart').replaceChildren();let total=0;
   for(const [id,quantity] of Object.entries(cart)){
     const product=products.find(p=>p.id===id);if(!product)continue;total+=product.price*quantity;
-    const row=element('div','','cart-row');row.append(element('span',product.name+' × '+quantity));const quantities=element('span');for(const [label,delta] of [['−',-1],['+',1]]){const button=element('button',label,'secondary');button.setAttribute('aria-label',(delta<0?'Decrease ':'Increase ')+product.name+' quantity');button.disabled=busy||(delta>0&&(!inventoryFresh||quantity>=product.stock));button.onclick=()=>{lastFailure=undefined;const next=quantity+delta;if(next===0)delete cart[id];else cart[id]=next;renderProducts();renderCart();onCart();};quantities.append(button);}row.append(quantities);const remove=element('button','Remove','secondary');remove.disabled=busy;remove.onclick=()=>{lastFailure=undefined;delete cart[id];renderProducts();renderCart();onCart();};row.append(remove);$('cart').append(row);
+    const row=element('div','','cart-row');row.append(element('span',product.name+' × '+quantity));const quantities=element('span');for(const [label,delta] of [['−',-1],['+',1]]){const button=element('button',label,'secondary');button.setAttribute('aria-label',(delta<0?'Decrease ':'Increase ')+product.name+' quantity');button.disabled=busy||(delta>0&&(!inventoryFresh||quantity>=product.stock));button.onclick=()=>{lastFailure=undefined;$('shop-notice').replaceChildren();const next=quantity+delta;if(next===0)delete cart[id];else cart[id]=next;renderProducts();renderCart();onCart();};quantities.append(button);}row.append(quantities);const remove=element('button','Remove','secondary');remove.disabled=busy;remove.onclick=()=>{lastFailure=undefined;$('shop-notice').replaceChildren();delete cart[id];renderProducts();renderCart();onCart();};row.append(remove);$('cart').append(row);
   }
   if(!Object.keys(cart).length)$('cart').append(element('p','Your cart is empty. Choose a coffee above.'));
   $('total').textContent=money(total);$('checkout').disabled=busy||!inventoryFresh||!Object.keys(cart).length;
@@ -151,6 +152,7 @@ function updateAction(){
 }
 function showLesson(){
   if(checkedLesson!==progress.step){passedSaveCheck=false;$('save-check').replaceChildren();}
+  if(progress.done&&passedSaveCheck)$('save-check').replaceChildren();
   saveProgress();
   const lesson=[...lessons[progress.step]];
   if(progress.step===7&&progress.inventoryUpdated&&!progress.done){lesson[1]='Your order handler already updates inventory. You do not need to add the lines again. Add one Dark Roast to your cart, place an order, and watch the inventory to verify the shared state.';lesson[2]='';lesson[3]='';}$('lesson').replaceChildren(element('div','Step '+Math.min(progress.step+1,12)+' of 12','eyebrow'),fileText('h2',lesson[0]),instructionParagraph(lesson[1]));
@@ -206,6 +208,7 @@ async function checkSavedFiles(){
       if(!result.ok){manualStages[step]=0;progress.lastOrder=undefined;if(changed&&progress.done){progress.done=false;progress.lastOrder=undefined;showLesson();}updateAction();}
       if(result.ok||saveCheckDirty){const panel=$('save-check');panel.setAttribute('role',result.ok?'status':'alert');panel.replaceChildren(element('p',result.message+(result.ok?(progress.done?'':' Now try it in the shop.'):' Fix the file and save again; it will be checked automatically.'),'notice'+(result.ok?'':' error')));}
       saveCheckDirty=false;
+      if(step===5&&lastFailure?.status===503){lastFailure.resolved=result.ok;renderOrderFailure();}
       if(result.ok){manualStages[step]=4;updateAction();saveProgress();await refreshProducts({source:'saved-file'});}
     }catch{savedRevision=undefined;checkedLesson=undefined;$('save-check').setAttribute('role','alert');$('save-check').replaceChildren(element('p','The saved handler could not be checked. Check Counterfact’s terminal for errors; the walkthrough will retry automatically.','notice error'));}
   })();
