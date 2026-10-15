@@ -547,6 +547,9 @@ If browser launch fails, the terminal prints the walkthrough URL for manual use.
 The user completes a purchase, changes Decaf stock in the product handler,
 exercises order failure and retry, adds a successful-order mutation to
 `$.context.inventory`, and restocks through `context.inventory` in the REPL.
+Eight screens group related edits and purchases. Instructions advance automatically
+within each concept, while Continue moves to the next concept. Back and Skip
+operate on whole concepts, and existing session progress retains its current phase.
 Each lesson bolds the next action; exact edits
 remain available under **Show code hint**. Saved lesson files trigger checks of their handler functions with separate test
 inventory; failed checks show the expected and observed behavior and rerun on

@@ -11,3 +11,5 @@ The instructions omit the project-folder footer and divider. Instructional file 
 Detect saved lesson files, run their handlers against separate test inventory, and explain unexpected behavior without consuming shop stock or requiring editor confirmation clicks.
 
 Explain the starter API’s unchanged stock immediately after the first purchase.
+
+Group related edits and purchases into eight screens, advance instructions automatically within a lesson, clear completed feedback, simplify saved-check success messages, and detect REPL restocking without confirmation buttons.

@@ -229,7 +229,8 @@ it("observes a live inventory edit and credits the response without manual refre
   app.server.checkOk = true;
   app.server.revision = "decaf-change";
   await app.poll();
-  expect(app.read("progress.done")).toBe(true);
+  expect(app.read("progress.step")).toBe(3);
+  expect(app.read("progress.done")).toBe(false);
   expect(app.root("products").textContent).toContain("Decaf");
   expect(app.stocks.decaf).toBe(5);
 });
@@ -384,6 +385,8 @@ it("replaces the old failure notice when a saved handler recovers and clears the
   app.server.orderMode = "unavailable";
   await app.order();
   expect(app.root("shop-notice").textContent).toContain("restore ordering");
+  const restored = await browser(app.storage, app.stocks);
+  expect(restored.root("checkout").textContent).toBe("Try again");
   app.read("progress.step=5;progress.done=false;showLesson()");
   app.server.orderMode = "accepted";
   app.server.checkOk = true;
@@ -393,7 +396,78 @@ it("replaces the old failure notice when a saved handler recovers and clears the
     "Ordering is available again",
   );
   expect(app.root("shop-notice").textContent).not.toContain("restore ordering");
+  expect(app.root("guide-status").textContent).not.toContain(
+    "Restore ordering",
+  );
   await app.order();
   expect(app.root("save-check").textContent).toBe("");
   expect(app.read("progress.done")).toBe(true);
+});
+
+it("completes all eight lessons with automatic transitions inside each concept", async () => {
+  const app = await browser();
+  const advance = async () => {
+    app.root("continue").onclick!();
+    await app.poll();
+  };
+  await advance();
+  app.add();
+  await app.order();
+  expect(app.root("guide-status").textContent).toContain(
+    "has not reduced stock",
+  );
+  await advance();
+  expect(app.root("shop-notice").textContent).toBe("");
+  app.stocks.decaf = 5;
+  app.server.revision = "decaf";
+  app.server.checkOk = true;
+  await app.poll();
+  expect(app.read("progress.step")).toBe(3);
+  expect(app.root("lesson").textContent).toContain("Step 3 of 8");
+  expect(app.root("continue").hidden).toBe(true);
+  expect(app.root("save-check").textContent).toBe("");
+  app.add("decaf");
+  await app.order();
+  await advance();
+  app.add("dark-roast");
+  app.server.orderMode = "unavailable";
+  await app.order();
+  expect(app.read("progress.step")).toBe(5);
+  expect(app.root("lesson").textContent).toContain("Step 4 of 8");
+  app.server.orderMode = "accepted";
+  app.server.revision = "recovered";
+  await app.poll();
+  await app.order();
+  expect(app.root("save-check").textContent).toBe("");
+  await advance();
+  app.add("dark-roast");
+  await app.order();
+  expect(app.read("progress.step")).toBe(7);
+  expect(app.root("lesson").textContent).toContain("Step 5 of 8");
+  app.server.deduct = true;
+  app.server.revision = "subtract";
+  await app.poll();
+  app.add("dark-roast");
+  await app.order();
+  await advance();
+  app.add("dark-roast");
+  app.add("dark-roast");
+  await app.order();
+  expect(app.stocks["dark-roast"]).toBe(0);
+  await advance();
+  expect(app.root("lesson").textContent).toContain(
+    'context.inventory["dark-roast"] = 5',
+  );
+  expect(app.root("lesson").textContent).not.toContain("I'm at the REPL");
+  app.stocks["dark-roast"] = 5;
+  await app.poll();
+  expect(app.read("progress.step")).toBe(10);
+  expect(app.root("lesson").textContent).toContain("Step 7 of 8");
+  expect(app.root("continue").hidden).toBe(true);
+  app.add("dark-roast");
+  await app.order();
+  expect(app.stocks["dark-roast"]).toBe(4);
+  await advance();
+  expect(app.root("lesson").textContent).toContain("Step 8 of 8");
+  expect(app.read("progress.step")).toBe(11);
 });

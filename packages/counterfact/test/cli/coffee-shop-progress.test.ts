@@ -85,3 +85,22 @@ it("recognizes an inventory handler retained from a previous tutorial session", 
   expect(lesson.done).toBe(true);
   expect(lesson.inventoryUpdated).toBe(true);
 });
+
+it("treats related phases as one lesson for numbering, Back, and Skip", () => {
+  const lesson = new CoffeeShopProgress();
+  lesson.step = 3;
+  expect(lesson.lessonIndex).toBe(2);
+  lesson.back();
+  expect(lesson.step).toBe(1);
+  lesson.step = 2;
+  lesson.skip();
+  expect(lesson.step).toBe(4);
+  lesson.step = 7;
+  expect(lesson.lessonIndex).toBe(4);
+  lesson.back();
+  expect(lesson.step).toBe(4);
+  lesson.step = 9;
+  lesson.skip();
+  expect(lesson.step).toBe(11);
+  expect(lesson.lessonIndex).toBe(7);
+});

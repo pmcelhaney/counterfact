@@ -25,7 +25,7 @@ export function coffeeShopPage(projectPath: string): string {
 const projectPath = ${path};
 const projectEditorUrl = ${JSON.stringify(editorUrl.href)};
 const restartCommand = ${restart};
-let sessionId;
+let sessionId, displayedPhase;
 let savedRevision, saveCheckRequest, checkedLesson, passedSaveCheck=false, saveCheckDirty=false;
 ${CoffeeShopProgress.toString()}
 ${coffeeShopAction.toString()}
@@ -74,7 +74,7 @@ function renderCart(){
     const row=element('div','','cart-row');row.append(element('span',product.name+' × '+quantity));const quantities=element('span');for(const [label,delta] of [['−',-1],['+',1]]){const button=element('button',label,'secondary');button.setAttribute('aria-label',(delta<0?'Decrease ':'Increase ')+product.name+' quantity');button.disabled=busy||(delta>0&&(!inventoryFresh||quantity>=product.stock));button.onclick=()=>{lastFailure=undefined;$('shop-notice').replaceChildren();const next=quantity+delta;if(next===0)delete cart[id];else cart[id]=next;renderProducts();renderCart();onCart();};quantities.append(button);}row.append(quantities);const remove=element('button','Remove','secondary');remove.disabled=busy;remove.onclick=()=>{lastFailure=undefined;$('shop-notice').replaceChildren();delete cart[id];renderProducts();renderCart();onCart();};row.append(remove);$('cart').append(row);
   }
   if(!Object.keys(cart).length)$('cart').append(element('p','Your cart is empty. Choose a coffee above.'));
-  $('total').textContent=money(total);$('checkout').disabled=busy||!inventoryFresh||!Object.keys(cart).length;
+  $('total').textContent=money(total);$('checkout').textContent=lastFailure||(progress.step===5&&!progress.done&&progress.failedItems)?'Try again':'Place order';$('checkout').disabled=busy||!inventoryFresh||!Object.keys(cart).length;
 }
 async function refreshProducts({source='manual',credit=true}={}){
   if(refreshRequest)return refreshRequest;
@@ -105,15 +105,15 @@ async function placeOrder(){
 const lessons = [
   ['Your local coffee shop is running','Click Start shopping to make a purchase. Then change the API and see how the shop responds. Keep Counterfact running in your terminal.'],
   ['Buy a bag of House Blend','Add House Blend to your cart, then place an order. No payment is needed.'],
-  ['Put Decaf back in stock','Decaf is sold out. Open routes/products.ts in your editor. Change its starting stock from 0 to 5, save, and watch the inventory.','const decafStock = 0;','const decafStock = 5;','routes/products.ts'],
-  ['Buy the coffee you made available','Add Decaf to the cart and place an order. Your API change made this purchase possible.'],
-  ['Try an order failure','Add a coffee to your cart. Open routes/orders.ts, change ordersAvailable to false, and save. Then click Place order.','const ordersAvailable = true;','const ordersAvailable = false;','routes/orders.ts'],
-  ['Restore ordering and retry','In the same file, restore ordersAvailable to true and save. Click Try again. Your cart is still there.','const ordersAvailable = false;','const ordersAvailable = true;','routes/orders.ts'],
-  ['Does a purchase reduce inventory?','Add one Dark Roast to your cart, place an order, then watch the inventory. Compare the inventory before and after the purchase. Does accepting an order also subtract stock?'],
-  ['Make an order update inventory','Products read shared context. Open routes/_.context.ts to see inventory, then open routes/orders.ts. Add these lines at the INVENTORY LESSON comment, save. Add one Dark Roast to your cart, place an order, and watch the inventory.','', 'for (const item of items) {\\n  $.context.inventory[item.productId] -= item.quantity;\\n}', 'routes/orders.ts'],
+  ['Make Decaf available','Decaf is sold out. Open routes/products.ts in your editor. Change its starting stock from 0 to 5, save, and watch the inventory.','const decafStock = 0;','const decafStock = 5;','routes/products.ts'],
+  ['Make Decaf available','Add Decaf to the cart and place an order. Your API change made this purchase possible.'],
+  ['Test order failure and recovery','Add a coffee to your cart. Open routes/orders.ts, change ordersAvailable to false, and save. Then click Place order.','const ordersAvailable = true;','const ordersAvailable = false;','routes/orders.ts'],
+  ['Test order failure and recovery','In the same file, restore ordersAvailable to true and save. Click Try again. Your cart is still there.','const ordersAvailable = false;','const ordersAvailable = true;','routes/orders.ts'],
+  ['Make purchases reduce inventory','Add one Dark Roast to your cart, place an order, then watch the inventory. Compare the inventory before and after the purchase. Does accepting an order also subtract stock?'],
+  ['Make purchases reduce inventory','Products read shared context. Open routes/_.context.ts to see inventory, then open routes/orders.ts. Add these lines at the INVENTORY LESSON comment, save. Add one Dark Roast to your cart, place an order, and watch the inventory.','', 'for (const item of items) {\\n  $.context.inventory[item.productId] -= item.quantity;\\n}', 'routes/orders.ts'],
   ['Watch Dark Roast sell out','Add the remaining Dark Roast bags to your cart and place an order. Then watch the inventory. Watch what happens to the final bag and the Add to cart button.'],
-  ['Restock through the REPL','Switch to Counterfact’s terminal. Its ⬣> prompt is the REPL: you can inspect and change the running context. Inspect the inventory with the first command. Restock it with the second command, then return here and watch the inventory.','context.inventory["dark-roast"]','context.inventory["dark-roast"] = 5'],
-  ['Buy from the updated inventory','Add one Dark Roast to your cart, place an order, then watch the inventory. Compare the five bags you added through the REPL with the inventory after the purchase. Are the REPL and order handler changing the same object?'],
+  ['Restock through the REPL and buy a bag','Switch to Counterfact’s terminal. Its ⬣> prompt is the REPL: you can inspect and change the running context. Inspect the inventory with the first command. Restock it with the second command, then return here and watch the inventory.','context.inventory["dark-roast"]','context.inventory["dark-roast"] = 5'],
+  ['Restock through the REPL and buy a bag','Add one Dark Roast to your cart, place an order, then watch the inventory. Compare the five bags you added through the REPL with the inventory after the purchase. Are the REPL and order handler changing the same object?'],
   ['You changed a shopping workflow','You made a product available, tested failure and recovery, updated context in a handler, and restocked it through the REPL. The app and Counterfact are still running. Keep experimenting.'],
 ];
 const successes = {
@@ -151,11 +151,13 @@ function updateAction(){
 
 }
 function showLesson(){
+  if(displayedPhase!==progress.step&&!lastFailure)$('shop-notice').replaceChildren();
+  displayedPhase=progress.step;
   if(checkedLesson!==progress.step){passedSaveCheck=false;$('save-check').replaceChildren();}
   if(progress.done&&passedSaveCheck)$('save-check').replaceChildren();
   saveProgress();
   const lesson=[...lessons[progress.step]];
-  if(progress.step===7&&progress.inventoryUpdated&&!progress.done){lesson[1]='Your order handler already updates inventory. You do not need to add the lines again. Add one Dark Roast to your cart, place an order, and watch the inventory to verify the shared state.';lesson[2]='';lesson[3]='';}$('lesson').replaceChildren(element('div','Step '+Math.min(progress.step+1,12)+' of 12','eyebrow'),fileText('h2',lesson[0]),instructionParagraph(lesson[1]));
+  if(progress.step===7&&progress.inventoryUpdated&&!progress.done){lesson[1]='Your order handler already updates inventory. You do not need to add the lines again. Add one Dark Roast to your cart, place an order, and watch the inventory to verify the shared state.';lesson[2]='';lesson[3]='';}$('lesson').replaceChildren(element('div','Step '+(progress.lessonIndex+1)+' of 8','eyebrow'),fileText('h2',lesson[0]),instructionParagraph(lesson[1]));
   if(lesson[4]||lesson[2]||lesson[3]){
     const hint=element(progress.step===9?'div':'details','','code-hint');if(progress.step!==9)hint.append(element('summary','Show code hint'));
     if(lesson[4]){const path=element('p','','path');path.append(fileLink(lesson[4],projectPath+'/'+lesson[4]));hint.append(path);const copy=element('button','Copy file path','secondary');copy.onclick=()=>copyPath(projectPath+'/'+lesson[4],copy);hint.append(copy);}
@@ -168,7 +170,13 @@ function showLesson(){
   $('guide-status').textContent=progress.done?(progress.step===6&&progress.inventoryUpdated?'Your saved order handler already reduces stock. Continue to verify the shared inventory.':successes[progress.step]):'';
   $('continue').hidden=!(progress.done||progress.step===0);$('continue').textContent=progress.step===0?'Start shopping':'Continue';$('back').hidden=progress.step===0;$('skip').hidden=progress.step===11;updateAction();
 }
-function checkProgress(){if(progress.done)showLesson();else updateAction();}
+function checkProgress(){
+  if(progress.done&&[2,4,6,9].includes(progress.step)){
+    const phase=progress.step;progress.next();showLesson();
+    const transitions={2:'Decaf is available. Now buy a bag to try your change.',4:'The order failed and your cart is still here. Restore ordering, then retry.',6:progress.inventoryUpdated?'Your handler already reduces stock. Make one more purchase to verify it.':'The order succeeded, but stock stayed the same. Now add the inventory update.',9:'Dark Roast is back in stock. Buy one bag to check the shared inventory.'};
+    $('guide-status').textContent=transitions[phase];
+  }else if(progress.done)showLesson();else updateAction();
+}
 function onCart(){updateAction();if(progress.step===1&&cart['house-blend'])$('guide-status').textContent='Your cart is ready. Click Place order.';if(progress.step===3&&cart.decaf)$('guide-status').textContent='Decaf is in your cart. Click Place order.';}
 function onProducts(){
   if(progress.step===2&&!passedSaveCheck)return;
@@ -209,7 +217,7 @@ async function checkSavedFiles(){
       if(result.ok||saveCheckDirty){const panel=$('save-check');panel.setAttribute('role',result.ok?'status':'alert');panel.replaceChildren(element('p',result.message+(result.ok?(progress.done?'':step===7?' Now place an order to see the inventory decrease.':step===5?' Now retry your order.':' Now try it in the shop.'):' Fix the file and save again; it will be checked automatically.'),'notice'+(result.ok?'':' error')));}
       saveCheckDirty=false;
       if(step===5&&lastFailure?.status===503){lastFailure.resolved=result.ok;renderOrderFailure();}
-      if(result.ok){updateAction();saveProgress();await refreshProducts({source:'saved-file'});}
+      if(result.ok){$('guide-status').textContent='';updateAction();saveProgress();await refreshProducts({source:'saved-file'});}
     }catch{savedRevision=undefined;checkedLesson=undefined;$('save-check').setAttribute('role','alert');$('save-check').replaceChildren(element('p','The saved handler could not be checked. Check Counterfact’s terminal for errors; the walkthrough will retry automatically.','notice error'));}
   })();
   try{return await saveCheckRequest;}finally{saveCheckRequest=undefined;}

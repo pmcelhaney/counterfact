@@ -46,6 +46,12 @@ The walkthrough starts with a normal purchase, then guides you through:
 
 6. Making another purchase and seeing five bags become four.
 
+The walkthrough has eight screens. Related phases share one lesson: making
+Decaf available and buying it; failing and retrying an order; observing unchanged
+stock and adding inventory subtraction; restocking through the REPL and buying
+from that inventory. Instructions advance automatically within each lesson;
+**Continue** moves between concepts.
+
 Follow the instructions beside the real shop. Open **Show code hint** when you
 want the exact file or example edit. File names and displayed file paths in the
 instructions open the corresponding file in VSCode. The instructions bold the next action. Cart changes and successful orders move

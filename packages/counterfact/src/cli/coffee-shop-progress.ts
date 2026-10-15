@@ -7,6 +7,12 @@ export class CoffeeShopProgress {
     | undefined;
   failedItems: string | undefined;
 
+  get lessonIndex() {
+    return (
+      [0, 1, 2, 4, 6, 8, 9, 11].filter((start) => start <= this.step).length - 1
+    );
+  }
+
   next() {
     if (!this.done && this.step !== 0) return;
     this.step = Math.min(11, this.step + 1);
@@ -15,13 +21,15 @@ export class CoffeeShopProgress {
   }
 
   skip() {
-    this.step = Math.min(11, this.step + 1);
+    this.step =
+      [0, 1, 2, 4, 6, 8, 9, 11].find((start) => start > this.step) ?? 11;
     this.done = false;
     this.lastOrder = undefined;
   }
 
   back() {
-    this.step = Math.max(0, this.step - 1);
+    const starts = [0, 1, 2, 4, 6, 8, 9, 11];
+    this.step = starts[Math.max(0, this.lessonIndex - 1)]!;
     this.done = false;
     this.lastOrder = undefined;
   }
