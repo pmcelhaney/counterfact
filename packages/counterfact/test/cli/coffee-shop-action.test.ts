@@ -7,7 +7,7 @@ const state = {
   cart: {},
   stock: { "dark-roast": 3 },
   ordered: false,
-  manualStage: 0,
+  editVerified: false,
   inventoryUpdated: true,
 };
 
@@ -41,7 +41,7 @@ it("waits for automatic saved-handler validation before the next shop action", (
   expect(coffeeShopAction(edit)).toEqual({
     text: "Change its starting stock from 0 to 5, save",
   });
-  expect(coffeeShopAction({ ...edit, manualStage: 4 })).toEqual({
+  expect(coffeeShopAction({ ...edit, editVerified: true })).toEqual({
     text: "watch the inventory",
   });
 });
@@ -57,4 +57,10 @@ it("keeps failed orders at the ordering action and skips retained inventory edit
   expect(
     coffeeShopAction({ ...state, step: 7, inventoryUpdated: false })?.text,
   ).toBe("Add these lines at the INVENTORY LESSON comment, save");
+});
+
+it("points to the REPL restock without confirmation buttons", () => {
+  expect(coffeeShopAction({ ...state, step: 9 })).toEqual({
+    text: "Restock it with the second command",
+  });
 });

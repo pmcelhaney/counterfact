@@ -551,8 +551,8 @@ Each lesson bolds the next action; exact edits
 remain available under **Show code hint**. Saved lesson files trigger checks of their handler functions with separate test
 inventory; failed checks show the expected and observed behavior and rerun on
 the next save. Test orders leave the running shop, and cart unchanged.
-Only REPL confirmations move
-instruction emphasis but do not credit a lesson without its expected API response.
+REPL commands are shown directly, and the observed restock advances the
+instructions without confirmation buttons.
 
 Product cards show shopper-facing availability and sold-out messages. The left
 panel focuses on instructions, saved-file checks, and the controls for advancing

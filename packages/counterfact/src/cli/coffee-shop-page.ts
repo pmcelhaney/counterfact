@@ -32,7 +32,7 @@ ${coffeeShopAction.toString()}
 const progress = new CoffeeShopProgress();
 const $ = (id) => document.getElementById(id);
 const money = (cents) => new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(cents / 100);
-let products = [], cart = {}, busy = false, manualStages = {}, refreshRequest, inventoryFresh=false, lastFailure, productError=false;
+let products = [], cart = {}, busy = false, refreshRequest, inventoryFresh=false, lastFailure, productError=false;
 function element(tag,text,className){const node=document.createElement(tag);node.textContent=text;if(className)node.className=className;return node;}
 function notice(text,error=false){$('shop-notice').replaceChildren(element('p',text,'notice'+(error?' error':'')));}
 async function requestJson(path,options={}){
@@ -128,7 +128,7 @@ const successes = {
   9:'Dark Roast is back in stock. The product handler read your updated context.',
   10:'Five bags became four. The REPL and order handler use the same inventory.',
 };
-function currentAction(){return coffeeShopAction({step:progress.step,done:progress.done,cart,stock:Object.fromEntries(products.map(p=>[p.id,p.stock])),ordered:!!progress.lastOrder,manualStage:manualStages[progress.step]||0,inventoryUpdated:progress.inventoryUpdated});}
+function currentAction(){return coffeeShopAction({step:progress.step,done:progress.done,cart,stock:Object.fromEntries(products.map(p=>[p.id,p.stock])),ordered:!!progress.lastOrder,editVerified:passedSaveCheck,inventoryUpdated:progress.inventoryUpdated});}
 const instructionFiles=['routes/_.context.ts','routes/products.ts','routes/orders.ts','scenarios/index.ts','openapi.json'];
 function fileLink(file,label=file){const link=element('a',label);link.href=new URL(file,projectEditorUrl).href;return link;}
 function fileText(tag,text,className){
@@ -148,7 +148,7 @@ function instructionParagraph(text){
 }
 function updateAction(){
   const paragraph=$('instruction-text');if(paragraph)paragraph.replaceWith(instructionParagraph(paragraph.textContent));
-  $('confirm-action')?.remove();const action=currentAction();if(action?.confirm&&![2,4,5,7].includes(progress.step)){const button=element('button',action.confirm,'secondary');button.id='confirm-action';button.onclick=()=>{manualStages[progress.step]=(manualStages[progress.step]||0)+1;saveProgress();updateAction();};$('lesson').append(button);}
+
 }
 function showLesson(){
   if(checkedLesson!==progress.step){passedSaveCheck=false;$('save-check').replaceChildren();}
@@ -157,7 +157,7 @@ function showLesson(){
   const lesson=[...lessons[progress.step]];
   if(progress.step===7&&progress.inventoryUpdated&&!progress.done){lesson[1]='Your order handler already updates inventory. You do not need to add the lines again. Add one Dark Roast to your cart, place an order, and watch the inventory to verify the shared state.';lesson[2]='';lesson[3]='';}$('lesson').replaceChildren(element('div','Step '+Math.min(progress.step+1,12)+' of 12','eyebrow'),fileText('h2',lesson[0]),instructionParagraph(lesson[1]));
   if(lesson[4]||lesson[2]||lesson[3]){
-    const hint=element('details','','code-hint');hint.append(element('summary','Show code hint'));
+    const hint=element(progress.step===9?'div':'details','','code-hint');if(progress.step!==9)hint.append(element('summary','Show code hint'));
     if(lesson[4]){const path=element('p','','path');path.append(fileLink(lesson[4],projectPath+'/'+lesson[4]));hint.append(path);const copy=element('button','Copy file path','secondary');copy.onclick=()=>copyPath(projectPath+'/'+lesson[4],copy);hint.append(copy);}
     if(lesson[2])hint.append(element('p',progress.step===9?'Read the current quantity:':'Find:'),fileText('pre',lesson[2]));
     if(lesson[3])hint.append(element('p',progress.step===9?'Then update it:':progress.step===7?'Add:':'Change to:'),fileText('pre',lesson[3]));
@@ -184,7 +184,7 @@ function onOrder(success,items,status){
 $('refresh').onclick=()=>refreshProducts();$('checkout').onclick=placeOrder;
 $('continue').onclick=()=>{progress.next();showLesson();refreshProducts({source:'lesson'});};$('back').onclick=()=>{progress.back();showLesson();refreshProducts({source:'lesson'});};$('skip').onclick=()=>{progress.skip();showLesson();refreshProducts({source:'lesson'});};
 async function copyPath(path,button){try{await navigator.clipboard.writeText(path);button.textContent='Copied';}catch{$('guide-status').textContent='Select and copy the path shown in the instructions.';}}
-function saveProgress(){if(!sessionId)return;try{sessionStorage.setItem('counterfact-coffee',JSON.stringify({sessionId,progress,cart,manualStages}));}catch{}}
+function saveProgress(){if(!sessionId)return;try{sessionStorage.setItem('counterfact-coffee',JSON.stringify({sessionId,progress,cart}));}catch{}}
 async function checkSavedFiles(){
   if(saveCheckRequest)return saveCheckRequest;
   saveCheckRequest=(async()=>{
@@ -205,11 +205,11 @@ async function checkSavedFiles(){
       const {result:latest}=await requestJson('/tutorial-info');
       if(progress.step!==step||latest.revision!==revision||result.revision!==revision){savedRevision=undefined;checkedLesson=undefined;return;}
       passedSaveCheck=result.ok;
-      if(!result.ok){manualStages[step]=0;progress.lastOrder=undefined;if(changed&&progress.done){progress.done=false;progress.lastOrder=undefined;showLesson();}updateAction();}
+      if(!result.ok){progress.lastOrder=undefined;if(changed&&progress.done){progress.done=false;progress.lastOrder=undefined;showLesson();}updateAction();}
       if(result.ok||saveCheckDirty){const panel=$('save-check');panel.setAttribute('role',result.ok?'status':'alert');panel.replaceChildren(element('p',result.message+(result.ok?(progress.done?'':step===7?' Now place an order to see the inventory decrease.':step===5?' Now retry your order.':' Now try it in the shop.'):' Fix the file and save again; it will be checked automatically.'),'notice'+(result.ok?'':' error')));}
       saveCheckDirty=false;
       if(step===5&&lastFailure?.status===503){lastFailure.resolved=result.ok;renderOrderFailure();}
-      if(result.ok){manualStages[step]=4;updateAction();saveProgress();await refreshProducts({source:'saved-file'});}
+      if(result.ok){updateAction();saveProgress();await refreshProducts({source:'saved-file'});}
     }catch{savedRevision=undefined;checkedLesson=undefined;$('save-check').setAttribute('role','alert');$('save-check').replaceChildren(element('p','The saved handler could not be checked. Check Counterfact’s terminal for errors; the walkthrough will retry automatically.','notice error'));}
   })();
   try{return await saveCheckRequest;}finally{saveCheckRequest=undefined;}
@@ -220,7 +220,6 @@ async function startWalkthrough(){
     const {response,result:info}=await requestJson('/tutorial-info');if(!response.ok)throw Error('Project information unavailable');sessionId=info.sessionId;
     const saved=JSON.parse(sessionStorage.getItem('counterfact-coffee')||'null');
     if(saved&&saved.sessionId===sessionId&&saved.progress&&Number.isInteger(saved.progress.step)&&saved.progress.step>=0&&saved.progress.step<=11){
-      if(saved.manualStages&&typeof saved.manualStages==='object')manualStages=Object.fromEntries(Object.entries(saved.manualStages).filter(([step,stage])=>Number.isInteger(Number(step))&&Number(step)>=0&&Number(step)<=11&&Number.isInteger(stage)&&stage>=0&&stage<=4));
       progress.step=saved.progress.step;progress.done=saved.progress.done===true;progress.inventoryUpdated=saved.progress.inventoryUpdated===true;
       if(typeof saved.progress.failedItems==='string')progress.failedItems=saved.progress.failedItems;
       const previous=saved.progress.lastOrder;

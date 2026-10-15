@@ -4,7 +4,7 @@ export function coffeeShopAction({
   cart,
   stock,
   ordered,
-  manualStage,
+  editVerified,
   inventoryUpdated,
 }: {
   step: number;
@@ -12,32 +12,23 @@ export function coffeeShopAction({
   cart: Record<string, number>;
   stock: Record<string, number>;
   ordered: boolean;
-  manualStage: number;
+  editVerified: boolean;
   inventoryUpdated: boolean;
-}): { text: string; confirm?: string } | undefined {
+}): { text: string } | undefined {
   if (done || step === 11) return;
   if (step === 0) return { text: "Click Start shopping" };
-  const edits: Record<number, [string, string][]> = {
-    2: [["Change its starting stock from 0 to 5, save", ""]],
-    4: [["change ordersAvailable to false, and save", ""]],
-    5: [["restore ordersAvailable to true and save", ""]],
-    7: inventoryUpdated
-      ? []
-      : [["Add these lines at the INVENTORY LESSON comment, save", ""]],
-    9: [
-      ["Switch to Counterfact’s terminal", "I'm at the REPL"],
-      [
-        "Inspect the inventory with the first command",
-        "I've inspected the inventory",
-      ],
-      ["Restock it with the second command", "I've run the command"],
-    ],
+  const edits: Record<number, string> = {
+    2: "Change its starting stock from 0 to 5, save",
+    4: "change ordersAvailable to false, and save",
+    5: "restore ordersAvailable to true and save",
+    7: "Add these lines at the INVENTORY LESSON comment, save",
   };
+  if (step === 9) return { text: "Restock it with the second command" };
   if (step === 4 && !Object.keys(cart).length)
     return { text: "Add a coffee to your cart" };
-  const edit = edits[step]?.[manualStage];
-  if (edit && !ordered)
-    return edit[1] ? { text: edit[0], confirm: edit[1] } : { text: edit[0] };
+  const edit = edits[step];
+  if (edit && !ordered && !editVerified && !(step === 7 && inventoryUpdated))
+    return { text: edit };
   if (step === 2 || step === 9 || ordered)
     return { text: "watch the inventory" };
   if (step === 5) return { text: "Click Try again" };

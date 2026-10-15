@@ -319,7 +319,7 @@ it.each([
           node.textContent === projectPath + "/routes/orders.ts",
       )?.href,
     ).toBe(base + "routes/orders.ts");
-    app.read("manualStages[7]=4;updateAction()");
+    app.read("passedSaveCheck=true;updateAction()");
     expect(
       find(
         app.root("instruction-text"),
@@ -347,7 +347,7 @@ it("detects saves, reports a failed check, and advances the action only after a 
   expect(app.root("save-check").textContent).toContain(
     "Expected different handler behavior",
   );
-  expect(app.read("manualStages[4]")).toBe(0);
+  expect(app.read("passedSaveCheck")).toBe(false);
   const checks = app.calls.filter((path) => path === "/tutorial-check").length;
   await app.poll();
   expect(app.calls.filter((path) => path === "/tutorial-check")).toHaveLength(
@@ -357,7 +357,7 @@ it("detects saves, reports a failed check, and advances the action only after a 
   app.server.checkOk = true;
   await app.poll();
   expect(app.root("save-check").textContent).toContain("Saved change checked");
-  expect(app.read("manualStages[4]")).toBe(4);
+  expect(app.read("passedSaveCheck")).toBe(true);
   expect(app.read("progress.done")).toBe(false);
   expect(app.read("cart")).toEqual({ "house-blend": 1 });
   expect(app.calls.filter((path) => path === "/orders")).toHaveLength(0);
@@ -374,7 +374,7 @@ it("discards a delayed check when the user has moved to another lesson", async (
   app.read("progress.step=5;showLesson();releaseCheck()");
   await pending;
   expect(app.root("save-check").textContent).toBe("");
-  expect(app.read("manualStages[5]")).toBeUndefined();
+  expect(app.read("passedSaveCheck")).toBe(false);
 });
 
 it("replaces the old failure notice when a saved handler recovers and clears the check after retry", async () => {

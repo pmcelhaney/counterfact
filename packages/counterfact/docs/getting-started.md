@@ -54,8 +54,9 @@ handlers are called with fresh test inventory. A passing check moves the emphasi
 to trying the change in the shop; an unexpected response or broken handler shows
 an alert explaining the mismatch. Fix the code and save again to rerun the check.
 Test orders do not consume the shop’s inventory or affect its cart.
-REPL actions still use the displayed confirmation buttons. Checks and confirmations
-do not replace the shopper actions required to complete the lesson.
+The REPL commands are shown directly; restocking is detected from the product
+response, without confirmation buttons. Saved-file checks do not replace the
+shopper actions required to complete the lesson.
 
 Product cards use shopper-facing messages such as **4 bags available** or
 **Sold out**, without exposing where inventory is stored. Adding bags changes the cart and availability
