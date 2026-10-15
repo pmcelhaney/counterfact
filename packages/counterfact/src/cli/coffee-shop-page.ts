@@ -25,7 +25,7 @@ export function coffeeShopPage(projectPath: string): string {
 const projectPath = ${path};
 const projectEditorUrl = ${JSON.stringify(editorUrl.href)};
 const restartCommand = ${restart};
-let sessionId, displayedPhase, displayedRecovery;
+let sessionId, displayedPhase, displayedRecovery, pendingPurchase;
 let savedRevision, saveCheckRequest, checkedLesson, passedSaveCheck=false, saveCheckDirty=false;
 ${CoffeeShopProgress.toString()}
 ${coffeeShopAction.toString()}
@@ -55,6 +55,16 @@ function renderOrderFailure(){
 }
 function stockSnapshot(){return Object.fromEntries(products.map(p=>[p.id,p.stock]));}
 function productName(id){return products.find(p=>p.id===id)?.name||id;}
+function reportPurchase(){
+  if(!pendingPurchase)return;const {items,before,phase}=pendingPurchase;pendingPurchase=undefined;
+  const after=stockSnapshot();const observed=items.filter(item=>before[item.productId]!==undefined&&after[item.productId]!==undefined);
+  if(!observed.length)return;
+  const unchanged=observed.every(item=>before[item.productId]===after[item.productId]);
+  const text=observed.map(item=>productName(item.productId)+' API stock '+(before[item.productId]===after[item.productId]?'stayed at '+after[item.productId]:before[item.productId]+' → '+after[item.productId]+' after checkout')).join('; ');
+  const explanation=phase===1&&unchanged?'The order succeeded, but the starter API has not reduced stock. '+text+'. We’ll add that behavior shortly.':'Order confirmed. '+text+'.';
+  const next=phase===6&&progress.step===7&&!progress.done&&!progress.inventoryUpdated?' Now add the inventory update.':phase===4&&!progress.done?' Save ordersAvailable = false, then try another order.':'';
+  $('guide-status').textContent=explanation+next;
+}
 function renderProducts(){
   $('products').replaceChildren();
   for(const product of products){
@@ -84,17 +94,17 @@ async function refreshProducts({source='manual',credit=true}={}){
       const recovered=!inventoryFresh;inventoryFresh=true;const changed=JSON.stringify(products)!==JSON.stringify(next);products=next;
       if(changed||recovered||source!=='live'){renderProducts();renderCart();if(credit)onProducts();}
       else if(credit&&(progress.step!==2||passedSaveCheck)){const wasDone=progress.done;progress.products(stockSnapshot());if(wasDone!==progress.done)checkProgress();}
-      if(productError){productError=false;$('shop-notice').replaceChildren();if(!progress.done){$('guide-status').textContent='API connection restored. Continue the experiment.';updateAction();}}renderOrderFailure();
+      if(productError){productError=false;$('shop-notice').replaceChildren();if(!progress.done){$('guide-status').textContent='API connection restored. Continue the experiment.';updateAction();}}renderOrderFailure();if(source!=='before-order')reportPurchase();
       return true;
     }catch(error){inventoryFresh=false;productError=true;renderProducts();renderCart();notice('Current inventory could not be verified. Your cart has been kept. Check Counterfact; the shop will reconnect automatically.',true);$('guide-status').textContent='Waiting for a valid products response. Displayed inventory is last known, not current.';return false;}
   })();
   try{return await refreshRequest;}finally{refreshRequest=undefined;}
 }
 async function placeOrder(){
-  if(busy||!Object.keys(cart).length)return;busy=true;renderProducts();renderCart();
+  if(busy||!Object.keys(cart).length)return;pendingPurchase=undefined;busy=true;renderProducts();renderCart();
   if(!await refreshProducts({source:'before-order',credit:false})){busy=false;renderProducts();renderCart();return;}
-  const items=Object.entries(cart).map(([productId,quantity])=>({productId,quantity}));
-  try{const {response,result}=await requestJson('/orders',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({items})});if(response.ok&&(response.status!==201||!Number.isInteger(result?.orderId)))throw Error('Invalid order confirmation');if(!response.ok){lastFailure={status:response.status,result,items};renderOrderFailure();$('checkout').textContent='Try again';onOrder(false,items,response.status);return;}lastFailure=undefined;cart={};notice('Thanks! Demo order #'+result.orderId+' is confirmed.');$('checkout').textContent='Place order';renderProducts();onOrder(true,items,response.status);}
+  const items=Object.entries(cart).map(([productId,quantity])=>({productId,quantity}));const before=stockSnapshot(),phase=progress.step;
+  try{const {response,result}=await requestJson('/orders',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({items})});if(response.ok&&(response.status!==201||!Number.isInteger(result?.orderId)))throw Error('Invalid order confirmation');if(!response.ok){lastFailure={status:response.status,result,items};renderOrderFailure();$('checkout').textContent='Try again';onOrder(false,items,response.status);return;}pendingPurchase={items,before,phase};lastFailure=undefined;cart={};notice('Thanks! Demo order #'+result.orderId+' is confirmed.');$('checkout').textContent='Place order';renderProducts();onOrder(true,items,response.status);}
   catch(error){lastFailure={status:undefined,result:undefined,items};renderOrderFailure();$('checkout').textContent='Try again';$('guide-status').textContent='The order request could not be completed. Check Counterfact and retry.';}
   finally{await refreshProducts({source:'after-order'});busy=false;renderProducts();renderCart();}
 }

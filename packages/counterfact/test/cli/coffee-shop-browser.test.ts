@@ -215,10 +215,12 @@ it("automatically refreshes shop availability after accepted orders", async () =
   app.add();
   await app.order();
   expect(app.root("products").textContent).toContain("5 bags available");
+  expect(app.root("guide-status").textContent).toContain("House Blend API stock stayed at 5");
   app.server.deduct = true;
   app.add();
   await app.order();
   expect(app.root("products").textContent).toContain("4 bags available");
+  expect(app.root("guide-status").textContent).toContain("House Blend API stock 5 → 4 after checkout");
   expect(app.calls.filter((path) => path === "/orders")).toHaveLength(2);
 });
 
