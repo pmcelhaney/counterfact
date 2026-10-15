@@ -111,15 +111,15 @@ async function placeOrder(){
 const lessons = [
   ['Your local coffee shop is running','Change your local API’s behavior and see this app respond—without restarting Counterfact. Click Start shopping to make a purchase. Keep Counterfact running in your terminal.'],
   ['Buy a bag of House Blend','Add House Blend to your cart, then place an order. No payment is needed.'],
-  ['Make Decaf available','Decaf is sold out. Open routes/products.ts in your editor. Change its starting stock from 0 to 5, save, and watch the inventory. This starter handler applies a changed starting quantity once; later requests read the running inventory.','const decafStock = 0;','const decafStock = 5;','routes/products.ts'],
+  ['Make Decaf available','Decaf is sold out. Open routes/products.ts in your editor. Change its starting stock from 0 to 5, save, and watch the inventory. This starter handler applies a changed starting quantity once; later requests read the running inventory. Five is the guided example; another positive whole-number quantity works too.','const decafStock = 0;','const decafStock = 5;','routes/products.ts'],
   ['Make Decaf available','Add Decaf to the cart and place an order. Your API change made this purchase possible.'],
   ['Test order failure and recovery','Add a coffee to your cart. Open routes/orders.ts, change ordersAvailable to false, and save. Then click Place order.','const ordersAvailable = true;','const ordersAvailable = false;','routes/orders.ts'],
   ['Test order failure and recovery','In the same file, restore ordersAvailable to true and save. Click Try again. Your cart is still there.','const ordersAvailable = false;','const ordersAvailable = true;','routes/orders.ts'],
   ['Make purchases reduce inventory','Add one Dark Roast to your cart, place an order, then watch the inventory. Compare the inventory before and after the purchase. Does accepting an order also subtract stock?'],
   ['Make purchases reduce inventory','Products read shared context. Open routes/_.context.ts to see inventory, then open routes/orders.ts. Add these lines at the INVENTORY LESSON comment, save. Add one Dark Roast to your cart, place an order, and watch the inventory.','', 'for (const item of items) {\\n  $.context.inventory[item.productId] -= item.quantity;\\n}', 'routes/orders.ts'],
   ['Watch Dark Roast sell out','Add the remaining Dark Roast bags to your cart and place an order. Then watch the inventory. Watch what happens to the final bag and the Add to cart button.'],
-  ['Restock through the REPL and buy a bag','Switch to Counterfact’s terminal. Its ⬣> prompt is the REPL: you can inspect and change the running context. Inspect the inventory with the first command. Restock it with the second command, then return here and watch the inventory.','context.inventory["dark-roast"]','context.inventory["dark-roast"] = 5'],
-  ['Restock through the REPL and buy a bag','Add one Dark Roast to your cart, place an order, then watch the inventory. Compare the five bags you added through the REPL with the inventory after the purchase. Are the REPL and order handler changing the same object?'],
+  ['Restock through the REPL and buy a bag','Switch to Counterfact’s terminal. Its ⬣> prompt is the REPL: you can inspect and change the running context. Inspect the inventory with the first command. Restock it with the second command, then return here and watch the inventory. Five is an example; another positive whole-number quantity works too.','context.inventory["dark-roast"]','context.inventory["dark-roast"] = 5'],
+  ['Restock through the REPL and buy a bag','Add one Dark Roast to your cart, place an order, then watch the inventory. One bag is the guided example; you may buy another quantity. Compare the restocked inventory with the quantity purchased to verify the REPL and order handler share the same object.'],
   ['You changed a shopping workflow','You made a product available, tested failure and recovery, updated context in a handler, and restocked it through the REPL. The app and Counterfact are still running. You can use the same workflow with your own API: locate a handler, change its response or shared context, exercise the client, and verify the result.'],
 ];
 const successes = {
@@ -132,14 +132,14 @@ const successes = {
   7:'The order updated context; the product request returned the lower stock.',
   8:'Dark Roast sold out. The shop reacted to inventory reaching zero.',
   9:'Dark Roast is back in stock. The product handler read your updated context.',
-  10:'Five bags became four. The REPL and order handler use the same inventory.',
+  10:'The purchased quantity was subtracted from the inventory you restocked. The REPL and order handler share the same inventory.',
 };
 function currentRecovery(){
   if(progress.done||!inventoryFresh)return;
   const id=progress.step===1?'house-blend':[2,3].includes(progress.step)?'decaf':[6,7,8].includes(progress.step)?'dark-roast':undefined;
   if(!id||(progress.step===2&&!passedSaveCheck))return;
   const stock=products.find(product=>product.id===id)?.stock;
-  if(stock===undefined||(progress.step===2?stock===5:stock>0))return;
+  if(stock===undefined||stock>0)return;
   return {id,stock,name:productName(id),command:'context.inventory["'+id+'"] = 5'};
 }
 function currentAction(){const recovery=currentRecovery();if(recovery)return {text:'Restock '+recovery.name+' through Counterfact’s REPL'};return coffeeShopAction({step:progress.step,done:progress.done,cart,stock:Object.fromEntries(products.map(p=>[p.id,p.stock])),ordered:!!progress.lastOrder,editVerified:passedSaveCheck,inventoryUpdated:progress.inventoryUpdated});}
@@ -191,7 +191,7 @@ function showLesson(){
 function checkProgress(){
   if(progress.done&&[2,4,6,9].includes(progress.step)){
     const phase=progress.step;progress.next();showLesson();
-    const transitions={2:'Decaf is available. Now buy a bag to try your change.',4:'The order failed and your cart is still here. Restore ordering, then retry.',6:progress.inventoryUpdated?'Your handler already reduces stock. Make one more purchase to verify it.':'The order succeeded, but stock stayed the same. Now add the inventory update.',9:'Dark Roast is back in stock. Buy one bag to check the shared inventory.'};
+    const transitions={2:'Decaf is available. Now buy a bag to try your change.',4:'The order failed and your cart is still here. Restore ordering, then retry.',6:progress.inventoryUpdated?'Your handler already reduces stock. Make one more purchase to verify it.':'The order succeeded, but stock stayed the same. Now add the inventory update.',9:'Dark Roast is available. Buy a bag to check the shared inventory.'};
     $('guide-status').textContent=transitions[phase];
   }else if(progress.done||displayedRecovery!==currentRecovery()?.id)showLesson();else updateAction();
 }

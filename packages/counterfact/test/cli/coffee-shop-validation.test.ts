@@ -24,6 +24,11 @@ it("checks saved functions using separate inventory and fresh modules after each
     );
     expect(await shopRevision(root)).not.toBe(original);
     expect((await checkShopSave(root, 2)).ok).toBe(true);
+    await $.add(
+      "routes/products.ts",
+      SHOP_PRODUCTS.replace("const decafStock = 0", "const decafStock = 7"),
+    );
+    expect((await checkShopSave(root, 2)).ok).toBe(true);
     expect((await checkShopSave(root, 4)).ok).toBe(false);
     await $.add(
       "routes/orders.ts",

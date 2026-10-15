@@ -215,12 +215,16 @@ it("automatically refreshes shop availability after accepted orders", async () =
   app.add();
   await app.order();
   expect(app.root("products").textContent).toContain("5 bags available");
-  expect(app.root("guide-status").textContent).toContain("House Blend API stock stayed at 5");
+  expect(app.root("guide-status").textContent).toContain(
+    "House Blend API stock stayed at 5",
+  );
   app.server.deduct = true;
   app.add();
   await app.order();
   expect(app.root("products").textContent).toContain("4 bags available");
-  expect(app.root("guide-status").textContent).toContain("House Blend API stock 5 → 4 after checkout");
+  expect(app.root("guide-status").textContent).toContain(
+    "House Blend API stock 5 → 4 after checkout",
+  );
   expect(app.calls.filter((path) => path === "/orders")).toHaveLength(2);
 });
 
@@ -483,7 +487,7 @@ it("completes all eight lessons with automatic transitions inside each concept",
   expect(app.read("progress.step")).toBe(11);
 });
 
-it("offers a REPL recovery when Back retains depleted inventory and clears it after restocking", async () => {
+it("keeps usable stock on Back and offers REPL recovery only for depleted inventory", async () => {
   const app = await browser(undefined, {
     "house-blend": 5,
     "dark-roast": 3,
@@ -493,17 +497,19 @@ it("offers a REPL recovery when Back retains depleted inventory and clears it af
   app.read("progress.step=4;showLesson()");
   app.root("back").onclick!();
   await app.poll();
-  expect(app.read("progress.step")).toBe(2);
+  expect(app.read("progress.step")).toBe(3);
+  expect(app.stocks.decaf).toBe(4);
+  app.stocks.decaf = 0;
+  await app.poll();
   expect(app.root("lesson").textContent).toContain(
     "Back keeps your files and inventory",
   );
   expect(app.root("lesson").textContent).toContain(
     'context.inventory["decaf"] = 5',
   );
-  expect(app.stocks.decaf).toBe(4);
-  app.stocks.decaf = 5;
+  expect(app.stocks.decaf).toBe(0);
+  app.stocks.decaf = 7;
   await app.poll();
-  expect(app.read("progress.step")).toBe(3);
   expect(app.root("lesson").textContent).not.toContain("Back keeps your files");
   app.read("progress.step=1;showLesson()");
   app.stocks["house-blend"] = 0;

@@ -95,8 +95,8 @@ export async function checkShopSave(root: string, step: number) {
     if (step === 2) {
       const stock = catalog.find((product) => product.id === "decaf")?.stock;
       expectResult(
-        stock === 5,
-        `Expected Decaf stock 5; the products handler returned ${String(stock)}.`,
+        Number.isSafeInteger(stock) && (stock ?? 0) > 0,
+        `Expected a positive whole-number Decaf stock; the products handler returned ${String(stock)}.`,
       );
     } else {
       const result = await orders(request);

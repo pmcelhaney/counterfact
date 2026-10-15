@@ -78,8 +78,18 @@ export class CoffeeShopProgress {
 
   products(stock: Record<string, number>) {
     if (this.done) return;
-    if (this.step === 2 && stock["decaf"] === 5) this.done = true;
-    if (this.step === 9 && stock["dark-roast"] === 5) this.done = true;
+    if (
+      this.step === 2 &&
+      Number.isSafeInteger(stock["decaf"]) &&
+      (stock["decaf"] ?? 0) > 0
+    )
+      this.done = true;
+    if (
+      this.step === 9 &&
+      Number.isSafeInteger(stock["dark-roast"]) &&
+      (stock["dark-roast"] ?? 0) > 0
+    )
+      this.done = true;
     if (this.step === 8 && this.inventoryUpdated && stock["dark-roast"] === 0)
       this.done = true;
     if (!this.lastOrder) return;
@@ -109,9 +119,9 @@ export class CoffeeShopProgress {
       this.done = true;
     if (
       this.step === 10 &&
-      this.lastOrder.stock === 5 &&
-      quantity === 1 &&
-      stock["dark-roast"] === 4
+      this.lastOrder.stock > 0 &&
+      quantity > 0 &&
+      stock["dark-roast"] === this.lastOrder.stock - quantity
     )
       this.done = true;
   }

@@ -104,3 +104,22 @@ it("treats related phases as one lesson for numbering, Back, and Skip", () => {
   expect(lesson.step).toBe(11);
   expect(lesson.lessonIndex).toBe(7);
 });
+
+it("accepts a positive restock and the corresponding purchase reduction beyond the example quantities", () => {
+  const lesson = new CoffeeShopProgress();
+  lesson.step = 2;
+  lesson.products({ decaf: 7 });
+  expect(lesson.done).toBe(true);
+  lesson.step = 9;
+  lesson.done = false;
+  lesson.products({ "dark-roast": 0 });
+  expect(lesson.done).toBe(false);
+  lesson.products({ "dark-roast": 7 });
+  expect(lesson.done).toBe(true);
+  lesson.next();
+  lesson.order(true, [{ productId: "dark-roast", quantity: 2 }], 7, 201);
+  lesson.products({ "dark-roast": 6 });
+  expect(lesson.done).toBe(false);
+  lesson.products({ "dark-roast": 5 });
+  expect(lesson.done).toBe(true);
+});
