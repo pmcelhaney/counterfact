@@ -207,7 +207,7 @@ it("shows shopper availability while adding to the cart leaves API inventory unc
   const app = await browser();
   app.add();
   expect(app.stocks["house-blend"]).toBe(5);
-  expect(app.root("products").textContent).toContain("4 bags available");
+  expect(app.root("products").textContent).toContain("4 more bags available");
 });
 
 it("automatically refreshes shop availability after accepted orders", async () => {
