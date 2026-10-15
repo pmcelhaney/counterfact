@@ -99,9 +99,9 @@ async function placeOrder(){
   finally{await refreshProducts({source:'after-order'});busy=false;renderProducts();renderCart();}
 }
 const lessons = [
-  ['Your local coffee shop is running','Click Start shopping to make a purchase. Then change the API and see how the shop responds. Keep Counterfact running in your terminal.'],
+  ['Your local coffee shop is running','Change your local API’s behavior and see this app respond—without restarting Counterfact. Click Start shopping to make a purchase. Keep Counterfact running in your terminal.'],
   ['Buy a bag of House Blend','Add House Blend to your cart, then place an order. No payment is needed.'],
-  ['Make Decaf available','Decaf is sold out. Open routes/products.ts in your editor. Change its starting stock from 0 to 5, save, and watch the inventory.','const decafStock = 0;','const decafStock = 5;','routes/products.ts'],
+  ['Make Decaf available','Decaf is sold out. Open routes/products.ts in your editor. Change its starting stock from 0 to 5, save, and watch the inventory. This starter handler applies a changed starting quantity once; later requests read the running inventory.','const decafStock = 0;','const decafStock = 5;','routes/products.ts'],
   ['Make Decaf available','Add Decaf to the cart and place an order. Your API change made this purchase possible.'],
   ['Test order failure and recovery','Add a coffee to your cart. Open routes/orders.ts, change ordersAvailable to false, and save. Then click Place order.','const ordersAvailable = true;','const ordersAvailable = false;','routes/orders.ts'],
   ['Test order failure and recovery','In the same file, restore ordersAvailable to true and save. Click Try again. Your cart is still there.','const ordersAvailable = false;','const ordersAvailable = true;','routes/orders.ts'],
@@ -110,7 +110,7 @@ const lessons = [
   ['Watch Dark Roast sell out','Add the remaining Dark Roast bags to your cart and place an order. Then watch the inventory. Watch what happens to the final bag and the Add to cart button.'],
   ['Restock through the REPL and buy a bag','Switch to Counterfact’s terminal. Its ⬣> prompt is the REPL: you can inspect and change the running context. Inspect the inventory with the first command. Restock it with the second command, then return here and watch the inventory.','context.inventory["dark-roast"]','context.inventory["dark-roast"] = 5'],
   ['Restock through the REPL and buy a bag','Add one Dark Roast to your cart, place an order, then watch the inventory. Compare the five bags you added through the REPL with the inventory after the purchase. Are the REPL and order handler changing the same object?'],
-  ['You changed a shopping workflow','You made a product available, tested failure and recovery, updated context in a handler, and restocked it through the REPL. The app and Counterfact are still running. Keep experimenting.'],
+  ['You changed a shopping workflow','You made a product available, tested failure and recovery, updated context in a handler, and restocked it through the REPL. The app and Counterfact are still running. You can use the same workflow with your own API: locate a handler, change its response or shared context, exercise the client, and verify the result.'],
 ];
 const successes = {
   1:'The order succeeded, but the starter API has not reduced stock. We’ll add that behavior shortly.',
@@ -173,7 +173,7 @@ function showLesson(){
     if(lesson[3])hint.append(element('p',progress.step===9?'Then update it:':progress.step===7?'Add:':'Change to:'),fileText('pre',lesson[3]));
     $('lesson').append(hint);
   }
-  if(progress.step===11){$('lesson').append(element('p','To restart this project, run:'),fileText('pre',restartCommand));const link=element('a','Continue learning');link.href='https://counterfact.dev/docs/first-10-minutes/';$('lesson').append(link);}
+  if(progress.step===11){$('lesson').append(element('p','Try it without a hint: choose another coffee, make it unavailable, verify the shopper’s experience, then restore it. This optional challenge is yours to explore.'),element('p','To restart this project, run:'),fileText('pre',restartCommand));const link=element('a','Continue learning');link.href='https://counterfact.dev/docs/first-10-minutes/';$('lesson').append(link);}
   if(progress.done&&progress.step<11){const next=element('p','');next.append(element('strong','Click Continue'),element('span',' to move to the next lesson.'));$('lesson').append(next);}
   $('guide-status').textContent=progress.done?(progress.step===6&&progress.inventoryUpdated?'Your saved order handler already reduces stock. Continue to verify the shared inventory.':successes[progress.step]):'';
   $('continue').hidden=!(progress.done||progress.step===0);$('continue').textContent=progress.step===0?'Start shopping':'Continue';$('back').hidden=progress.step===0;$('skip').hidden=progress.step===11;updateAction();

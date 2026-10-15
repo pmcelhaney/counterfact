@@ -19,3 +19,5 @@ Remove the live API update feed and distinguish changing lesson feedback with a 
 Remove the manual product-refresh button; product updates continue automatically.
 
 Revisited exercises keep live state and offer a contextual REPL restock when their inventory is depleted.
+
+State the API-editing promise at the start, explain the one-time Decaf setting, and finish with an optional independent challenge.

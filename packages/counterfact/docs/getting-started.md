@@ -85,7 +85,9 @@ Use the instructional file links to open files in VSCode through the `vscode://`
 URL scheme, or **Copy file path** in a code hint to find a file in another editor. Shared inventory is declared in `routes/_.context.ts` and initialized
 by `scenarios/index.ts`; products and orders access the same running object.
 The initial order handler intentionally does not reduce stock until you add
-that operation. No payments or real purchases take place.
+that operation. No payments or real purchases take place. The final screen offers an optional
+challenge: make another coffee unavailable, verify the shopper’s experience,
+then restore it without a hint. The same workflow applies to your own API.
 
 The shop and REPL remain running after completion, and your files remain after
 quitting. If a browser cannot be opened, use the walkthrough URL printed in the
