@@ -9,3 +9,5 @@ The walkthrough includes the Counterfact wordmark and a blue/orange palette alig
 The instructions omit the project-folder footer and divider. Instructional file names and file paths link directly to the corresponding generated files using VSCode URLs.
 
 Detect saved lesson files, run their handlers against separate test inventory, and explain unexpected behavior without consuming shop stock or requiring editor confirmation clicks.
+
+Explain the starter API’s unchanged stock immediately after the first purchase.

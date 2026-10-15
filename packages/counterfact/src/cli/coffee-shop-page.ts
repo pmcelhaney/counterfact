@@ -116,7 +116,7 @@ const lessons = [
   ['You changed a shopping workflow','You made a product available, tested failure and recovery, updated context in a handler, and restocked it through the REPL. The app and Counterfact are still running. Keep experimenting.'],
 ];
 const successes = {
-  1:'Your first order went through. Counterfact returned a successful confirmation.',
+  1:'The order succeeded, but the starter API has not reduced stock. We’ll add that behavior shortly.',
   2:'Decaf is available. Your saved change reached the API without a restart.',
   3:'You changed what a shopper could buy.',
   4:'The order failed, and the shop kept your cart so you can retry.',
