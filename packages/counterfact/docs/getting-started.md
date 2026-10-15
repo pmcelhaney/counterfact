@@ -72,8 +72,8 @@ panel confirms the responses the app actually receives. Saving a file alone
 does not complete a task. **Continue** moves on after success; **Back** and **Skip lesson** let you control the pace. A browser reload
 keeps the current lesson and cart within the same running API session.
 
-Use **Open in VSCode** to open the project through the `vscode://` URL scheme,
-or **Copy file path** to find the files in another editor. Shared inventory is declared in `routes/_.context.ts` and initialized
+Use the instructional file links to open files in VSCode through the `vscode://`
+URL scheme, or **Copy file path** in a code hint to find a file in another editor. Shared inventory is declared in `routes/_.context.ts` and initialized
 by `scenarios/index.ts`; products and orders access the same running object.
 The initial order handler intentionally does not reduce stock until you add
 that operation. No payments or real purchases take place.

@@ -72,10 +72,10 @@ it.each([
   ["/tmp/coffee shop#1?", "vscode://file/tmp/coffee%20shop%231%3F/"],
   [String.raw`C:\coffee shop\demo`, "vscode://file/C:/coffee%20shop/demo/"],
 ])(
-  "opens the project in VSCode with an escaped folder URL (%s)",
+  "uses an escaped VSCode base URL for instructional file links (%s)",
   (path, url) => {
     const page = coffeeShopPage(path);
-    expect(page).toContain(`href="${url}">Open in VSCode</a>`);
+    expect(page).toContain(`const projectEditorUrl = "${url}";`);
     expect(page).not.toContain("Repeat instructions");
   },
 );
