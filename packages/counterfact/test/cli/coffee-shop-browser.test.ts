@@ -233,6 +233,15 @@ it("observes a live inventory edit and credits the response without manual refre
   expect(app.read("progress.done")).toBe(false);
   expect(app.root("products").textContent).toContain("Decaf");
   expect(app.stocks.decaf).toBe(5);
+  app.add("decaf");
+  expect(app.root("guide-status").textContent).toContain(
+    "Decaf is in your cart",
+  );
+  find(
+    app.root("cart"),
+    (node) => node.tag === "button" && node.textContent === "Remove",
+  )!.onclick!();
+  expect(app.root("guide-status").textContent).toBe("");
 });
 
 it("keeps rejected carts and explains server-reported requested and available quantities", async () => {

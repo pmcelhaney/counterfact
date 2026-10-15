@@ -13,3 +13,5 @@ Detect saved lesson files, run their handlers against separate test inventory, a
 Explain the starter API’s unchanged stock immediately after the first purchase.
 
 Group related edits and purchases into eight screens, advance instructions automatically within a lesson, clear completed feedback, simplify saved-check success messages, and detect REPL restocking without confirmation buttons.
+
+Remove the live API update feed and distinguish changing lesson feedback with a subtle Update label.
