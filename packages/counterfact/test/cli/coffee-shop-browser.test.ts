@@ -480,3 +480,38 @@ it("completes all eight lessons with automatic transitions inside each concept",
   expect(app.root("lesson").textContent).toContain("Step 8 of 8");
   expect(app.read("progress.step")).toBe(11);
 });
+
+it("offers a REPL recovery when Back retains depleted inventory and clears it after restocking", async () => {
+  const app = await browser(undefined, {
+    "house-blend": 5,
+    "dark-roast": 3,
+    decaf: 4,
+  });
+  app.server.checkOk = true;
+  app.read("progress.step=4;showLesson()");
+  app.root("back").onclick!();
+  await app.poll();
+  expect(app.read("progress.step")).toBe(2);
+  expect(app.root("lesson").textContent).toContain(
+    "Back keeps your files and inventory",
+  );
+  expect(app.root("lesson").textContent).toContain(
+    'context.inventory["decaf"] = 5',
+  );
+  expect(app.stocks.decaf).toBe(4);
+  app.stocks.decaf = 5;
+  await app.poll();
+  expect(app.read("progress.step")).toBe(3);
+  expect(app.root("lesson").textContent).not.toContain("Back keeps your files");
+  app.read("progress.step=1;showLesson()");
+  app.stocks["house-blend"] = 0;
+  await app.poll();
+  expect(app.root("lesson").textContent).toContain(
+    'context.inventory["house-blend"] = 5',
+  );
+  app.stocks["house-blend"] = 5;
+  await app.poll();
+  expect(app.root("lesson").textContent).toContain(
+    "Add House Blend to your cart",
+  );
+});

@@ -77,7 +77,9 @@ order. Saved inventory edits and REPL changes appear without a manual refresh.
 Changing feedback appears under a small **Update** label, separate from the
 lesson instructions. Background API checks run without a status feed or clock. Saving a file alone
 does not complete a task. **Continue** moves on after success; **Back** and **Skip lesson** let you control the pace. A browser reload
-keeps the current lesson and cart within the same running API session.
+keeps the current lesson and cart within the same running API session. Back also
+keeps your edited handlers and inventory; if an exercise needs stock, its
+instructions show the REPL command to restore it without resetting your files.
 
 Use the instructional file links to open files in VSCode through the `vscode://`
 URL scheme, or **Copy file path** in a code hint to find a file in another editor. Shared inventory is declared in `routes/_.context.ts` and initialized

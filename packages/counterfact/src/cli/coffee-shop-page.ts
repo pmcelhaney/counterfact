@@ -25,7 +25,7 @@ export function coffeeShopPage(projectPath: string): string {
 const projectPath = ${path};
 const projectEditorUrl = ${JSON.stringify(editorUrl.href)};
 const restartCommand = ${restart};
-let sessionId, displayedPhase;
+let sessionId, displayedPhase, displayedRecovery;
 let savedRevision, saveCheckRequest, checkedLesson, passedSaveCheck=false, saveCheckDirty=false;
 ${CoffeeShopProgress.toString()}
 ${coffeeShopAction.toString()}
@@ -124,7 +124,15 @@ const successes = {
   9:'Dark Roast is back in stock. The product handler read your updated context.',
   10:'Five bags became four. The REPL and order handler use the same inventory.',
 };
-function currentAction(){return coffeeShopAction({step:progress.step,done:progress.done,cart,stock:Object.fromEntries(products.map(p=>[p.id,p.stock])),ordered:!!progress.lastOrder,editVerified:passedSaveCheck,inventoryUpdated:progress.inventoryUpdated});}
+function currentRecovery(){
+  if(progress.done||!inventoryFresh)return;
+  const id=progress.step===1?'house-blend':[2,3].includes(progress.step)?'decaf':[6,7,8].includes(progress.step)?'dark-roast':undefined;
+  if(!id||(progress.step===2&&!passedSaveCheck))return;
+  const stock=products.find(product=>product.id===id)?.stock;
+  if(stock===undefined||(progress.step===2?stock===5:stock>0))return;
+  return {id,stock,name:productName(id),command:'context.inventory["'+id+'"] = 5'};
+}
+function currentAction(){const recovery=currentRecovery();if(recovery)return {text:'Restock '+recovery.name+' through Counterfact’s REPL'};return coffeeShopAction({step:progress.step,done:progress.done,cart,stock:Object.fromEntries(products.map(p=>[p.id,p.stock])),ordered:!!progress.lastOrder,editVerified:passedSaveCheck,inventoryUpdated:progress.inventoryUpdated});}
 const instructionFiles=['routes/_.context.ts','routes/products.ts','routes/orders.ts','scenarios/index.ts','openapi.json'];
 function fileLink(file,label=file){const link=element('a',label);link.href=new URL(file,projectEditorUrl).href;return link;}
 function fileText(tag,text,className){
@@ -153,7 +161,11 @@ function showLesson(){
   if(progress.done&&passedSaveCheck)$('save-check').replaceChildren();
   saveProgress();
   const lesson=[...lessons[progress.step]];
-  if(progress.step===7&&progress.inventoryUpdated&&!progress.done){lesson[1]='Your order handler already updates inventory. You do not need to add the lines again. Add one Dark Roast to your cart, place an order, and watch the inventory to verify the shared state.';lesson[2]='';lesson[3]='';}$('lesson').replaceChildren(element('div','Step '+(progress.lessonIndex+1)+' of 8','eyebrow'),fileText('h2',lesson[0]),instructionParagraph(lesson[1]));
+  const recovery=currentRecovery();displayedRecovery=recovery?.id;
+  if(recovery){lesson[1]=recovery.name+' has '+recovery.stock+' bags in your running shop. Back keeps your files and inventory. Restock '+recovery.name+' through Counterfact’s REPL, then continue this exercise.';lesson[2]='';lesson[3]='';lesson[4]='';}
+
+  if(!recovery&&progress.step===7&&progress.inventoryUpdated&&!progress.done){lesson[1]='Your order handler already updates inventory. You do not need to add the lines again. Add one Dark Roast to your cart, place an order, and watch the inventory to verify the shared state.';lesson[2]='';lesson[3]='';}$('lesson').replaceChildren(element('div','Step '+(progress.lessonIndex+1)+' of 8','eyebrow'),fileText('h2',lesson[0]),instructionParagraph(lesson[1]));
+  if(recovery)$('lesson').append(element('pre',recovery.command));
   if(lesson[4]||lesson[2]||lesson[3]){
     const hint=element(progress.step===9?'div':'details','','code-hint');if(progress.step!==9)hint.append(element('summary','Show code hint'));
     if(lesson[4]){const path=element('p','','path');path.append(fileLink(lesson[4],projectPath+'/'+lesson[4]));hint.append(path);const copy=element('button','Copy file path','secondary');copy.onclick=()=>copyPath(projectPath+'/'+lesson[4],copy);hint.append(copy);}
@@ -171,7 +183,7 @@ function checkProgress(){
     const phase=progress.step;progress.next();showLesson();
     const transitions={2:'Decaf is available. Now buy a bag to try your change.',4:'The order failed and your cart is still here. Restore ordering, then retry.',6:progress.inventoryUpdated?'Your handler already reduces stock. Make one more purchase to verify it.':'The order succeeded, but stock stayed the same. Now add the inventory update.',9:'Dark Roast is back in stock. Buy one bag to check the shared inventory.'};
     $('guide-status').textContent=transitions[phase];
-  }else if(progress.done)showLesson();else updateAction();
+  }else if(progress.done||displayedRecovery!==currentRecovery()?.id)showLesson();else updateAction();
 }
 function onCart(){if(!progress.done)$('guide-status').textContent='';updateAction();if(progress.step===1&&cart['house-blend'])$('guide-status').textContent='Your cart is ready. Click Place order.';if(progress.step===3&&cart.decaf)$('guide-status').textContent='Decaf is in your cart. Click Place order.';}
 function onProducts(){
@@ -213,7 +225,7 @@ async function checkSavedFiles(){
       if(result.ok||saveCheckDirty){const panel=$('save-check');panel.setAttribute('role',result.ok?'status':'alert');panel.replaceChildren(element('p',result.message+(result.ok?(progress.done?'':step===7?' Now place an order to see the inventory decrease.':step===5?' Now retry your order.':' Now try it in the shop.'):' Fix the file and save again; it will be checked automatically.'),'notice'+(result.ok?'':' error')));}
       saveCheckDirty=false;
       if(step===5&&lastFailure?.status===503){lastFailure.resolved=result.ok;renderOrderFailure();}
-      if(result.ok){$('guide-status').textContent='';updateAction();saveProgress();await refreshProducts({source:'saved-file'});}
+      if(result.ok){$('guide-status').textContent='';checkProgress();saveProgress();await refreshProducts({source:'saved-file'});}
     }catch{savedRevision=undefined;checkedLesson=undefined;$('save-check').setAttribute('role','alert');$('save-check').replaceChildren(element('p','The saved handler could not be checked. Check Counterfact’s terminal for errors; the walkthrough will retry automatically.','notice error'));}
   })();
   try{return await saveCheckRequest;}finally{saveCheckRequest=undefined;}

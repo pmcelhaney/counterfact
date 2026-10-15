@@ -17,3 +17,5 @@ Group related edits and purchases into eight screens, advance instructions autom
 Remove the live API update feed and distinguish changing lesson feedback with a subtle Update label.
 
 Remove the manual product-refresh button; product updates continue automatically.
+
+Revisited exercises keep live state and offer a contextual REPL restock when their inventory is depleted.
