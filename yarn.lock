@@ -1390,7 +1390,7 @@ __metadata:
   dependencies:
     "@apidevtools/json-schema-ref-parser": "npm:16.0.5"
     "@types/json-schema": "npm:7.0.15"
-    js-yaml: "npm:5.4.3"
+    js-yaml: "npm:5.5.0"
     jsonpath-plus: "npm:11.2.1"
     node-fetch: "npm:3.3.2"
   languageName: unknown
@@ -1418,7 +1418,7 @@ __metadata:
     ajv: "npm:8.20.0"
     chokidar: "npm:5.0.0"
     debug: "npm:4.4.3"
-    js-yaml: "npm:5.4.3"
+    js-yaml: "npm:5.5.0"
     json-schema-faker: "npm:0.6.3"
     koa: "npm:3.2.1"
     koa-bodyparser: "npm:4.4.1"
@@ -4341,6 +4341,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"argparse@npm:^3.0.3":
+  version: 3.0.3
+  resolution: "argparse@npm:3.0.3"
+  checksum: 10c0/8d715f1c4bb0aa14a8b8ee749d6ab6f12d380caba33139d527cac79988af152cfd160f152c3964c76c7ea473f1899bd0989bd1e9cfdba22e68f50b6a4b5c9d0d
+  languageName: node
+  linkType: hard
+
 "aria-query@npm:5.3.0":
   version: 5.3.0
   resolution: "aria-query@npm:5.3.0"
@@ -5174,7 +5181,7 @@ __metadata:
     commander: "npm:15.0.0"
     debug: "npm:4.4.3"
     http-terminator: "npm:3.2.0"
-    js-yaml: "npm:5.4.3"
+    js-yaml: "npm:5.5.0"
     open: "npm:11.0.4"
     posthog-node: "npm:5.56.1"
   bin:
@@ -8775,14 +8782,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"js-yaml@npm:5.4.3":
-  version: 5.4.3
-  resolution: "js-yaml@npm:5.4.3"
+"js-yaml@npm:5.5.0":
+  version: 5.5.0
+  resolution: "js-yaml@npm:5.5.0"
   dependencies:
-    argparse: "npm:^2.0.1"
+    argparse: "npm:^3.0.3"
   bin:
     js-yaml: bin/js-yaml.mjs
-  checksum: 10c0/7180bf35feef9815a06cb2f8845c1196f1e4264430a04623884d87c3d21475de7d46a86c9c5142dcc1646c788bc0e676eb09ba817810707e0b4e984f7cf93a5f
+  checksum: 10c0/311619f44dd788657e9b81d4b5c60ff367441f364045e3796bc604a41f25819852748fb173ae82f2553d53cb609d7fdb79e0a74148892cb2c085eebe91839b53
   languageName: node
   linkType: hard
 
