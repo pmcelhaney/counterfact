@@ -34,6 +34,7 @@ Use this skill when changing runtime orchestration, server dispatch flow, module
 
 - Keep orchestration in `app.ts` / `ApiRunner`; avoid leaking server details into generator modules.
 - Keep subsystems separated (`registry`, `context-registry`, `module-loader`, `dispatcher`) and connected through explicit constructor interfaces.
+- Keep programmatic defaults in `counterfact()` separate from CLI action defaults. Embedding an existing API needs only `basePath`; `start()` reuses the resolved configuration. `watch` flags govern code regeneration, while server startup also enables runtime module/spec/store watching.
 - Preserve hot-reload expectations: route/module changes should apply without restart and context should survive reloads.
 - Prefer graceful degradation with actionable errors (see `docs/development/design-principles.md`).
 

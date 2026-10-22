@@ -77,6 +77,10 @@ export interface SpecConfig {
   overlays?: string[];
 }
 
+/** Options for embedding an existing API in a test or another Node.js process. */
+export type CounterfactOptions = Pick<Config, "basePath"> &
+  Partial<Omit<Config, "basePath">>;
+
 type Scenario$ = {
   context: Record<string, unknown>;
   loadContext: (path: string) => Record<string, unknown>;
@@ -233,20 +237,40 @@ function validateSpecGroups(
  * The returned object exposes handles for starting the server, stopping it,
  * and launching the interactive REPL.
  *
- * @param config - Runtime configuration (port, paths, feature flags, etc.).
+ * @param options - API directory and optional runtime overrides. Defaults to serving
+ *   existing routes on port 8100 without generation, spec loading, or a REPL.
  * @param specs - Optional array of spec entries. Omit to use a single spec
  *   derived from `config.openApiPath` and `config.prefix`.
  * @returns An object containing the configured sub-systems and two entry-point
  *   functions:
- *   - `start(options)` — generates/watches code and optionally starts the HTTP
+ *   - `start(options?)` — reuses the initial configuration unless options are
+ *     supplied; generates/watches code and optionally starts the HTTP
  *     server; returns a `stop()` handle.
  *   - `startRepl()` — launches the interactive Node.js REPL connected to the
  *     live server state.
  */
 export async function counterfact<TStore = unknown>(
-  config: Config,
+  options: CounterfactOptions,
   specs?: SpecConfig[],
 ) {
+  const config: Config = {
+    alwaysFakeOptionals: false,
+    buildCache: false,
+    generate: { routes: false, types: false },
+    openApiPath: "_",
+    port: 8100,
+    prefix: "",
+    proxyPaths: new Map(),
+    proxyUrl: "",
+    startAdminApi: false,
+    startRepl: false,
+    startServer: true,
+    validateRequests: true,
+    validateResponses: true,
+    watch: { routes: false, types: false },
+    ...options,
+    basePath: nodePath.resolve(options.basePath),
+  };
   const normalizedSpecs = normalizeSpecs(
     { openApiPath: config.openApiPath, prefix: config.prefix },
     specs,
@@ -370,7 +394,10 @@ export async function counterfact<TStore = unknown>(
   const primaryRunner = runners[0]!;
 
   async function start(
-    options: Pick<Config, "generate" | "startServer" | "watch" | "buildCache">,
+    options: Pick<
+      Config,
+      "generate" | "startServer" | "watch" | "buildCache"
+    > = config,
   ) {
     async function completeStage(operations: Array<Promise<unknown>>) {
       const results = await Promise.allSettled(operations);

@@ -341,7 +341,7 @@ OpenAPI descriptions are preserved as JSDoc comments on generated types, so they
 
 ## Programmatic API
 
-Import `counterfact` and call it with an explicit configuration instead of using the CLI. The returned `start()` method gives tests an awaited `stop()` handle and access to the live context registry.
+Import `counterfact` and pass `{ basePath: "api" }` to serve an existing API directory. Other options are optional; the default port is 8100. The returned `start()` method gives tests an awaited `stop()` handle and access to the live context registry.
 
 See the copyable [Programmatic API configuration](./features/programmatic-api.md) and [Automated Integration Tests](./patterns/automated-integration-tests.md).
 

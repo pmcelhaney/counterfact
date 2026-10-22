@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // import { describe, it, expect } from "@jest/globals";
+import { relative } from "node:path";
+
 import { jest } from "@jest/globals";
 import request from "supertest";
 import { usingTemporaryFiles } from "using-temporary-files";
@@ -38,6 +40,57 @@ async function waitUntil(predicate: () => boolean): Promise<void> {
 }
 
 describe("counterfact", () => {
+  it("serves existing routes with minimal options and exposes their live context", async () => {
+    await usingTemporaryFiles(async ($) => {
+      const handler =
+        "export function GET($) { return { body: { message: $.context.message } }; }";
+      await $.add("routes/hello.js", handler);
+      await $.add(
+        "routes/_.context.js",
+        'export class Context { message = "hello"; }',
+      );
+      const simulator = await app.counterfact({
+        basePath: relative(process.cwd(), $.path(".")),
+        port: 0,
+      });
+      const listen = jest.spyOn(simulator.koaApp, "listen");
+      const { stop } = await simulator.start();
+      const server = listen.mock.results[0]!.value;
+
+      try {
+        expect((await request(server).get("/hello")).body).toEqual({
+          message: "hello",
+        });
+        simulator.contextRegistry.find("/").message = "changed by the test";
+        expect((await request(server).get("/hello")).body).toEqual({
+          message: "changed by the test",
+        });
+        expect(await $.read("routes/hello.js")).toBe(handler);
+      } finally {
+        await stop();
+        listen.mockRestore();
+      }
+      expect(server.listening).toBe(false);
+    });
+  });
+
+  it("reuses an explicit startServer override when start has no arguments", async () => {
+    await usingTemporaryFiles(async ($) => {
+      const simulator = await app.counterfact({
+        basePath: $.path("."),
+        startServer: false,
+      });
+      const listen = jest.spyOn(simulator.koaApp, "listen");
+      try {
+        const { stop } = await simulator.start();
+        await stop();
+        expect(listen).not.toHaveBeenCalled();
+      } finally {
+        listen.mockRestore();
+      }
+    });
+  });
+
   it("shares store mutations across API groups through real HTTP requests", async () => {
     await usingTemporaryFiles(async ($) => {
       await $.add(
