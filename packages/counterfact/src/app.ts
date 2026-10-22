@@ -1,4 +1,5 @@
 import fs from "node:fs/promises";
+import { once } from "node:events";
 import nodePath from "node:path";
 
 import { createHttpTerminator, type HttpTerminator } from "http-terminator";
@@ -103,7 +104,7 @@ export async function runStartupScenario(
     loadContext: (path: string) =>
       contextRegistry.find(path) as Record<string, unknown>,
     route: createRouteFunction(
-      config.port,
+      () => config.port,
       "localhost",
       openApiDocument ? createOpenApiRouteCatalog(openApiDocument) : undefined,
     ),
@@ -339,6 +340,8 @@ export async function counterfact<TStore = unknown>(
   let phase:
     "idle" | "running" | "resetting" | "failed" | "stopping" | "stopped" =
     "idle";
+  let listeningPort = config.port;
+  let stateUnavailable = false;
   let activeRequests = 0;
   let drained: (() => void) | undefined;
   let resetPromise: Promise<void> | undefined;
@@ -507,10 +510,15 @@ export async function counterfact<TStore = unknown>(
 
       await runGroupStartupScenarios(
         runners,
-        { port: config.port },
+        {
+          get port() {
+            return listeningPort;
+          },
+        },
         routesByGroup,
       );
 
+      stateUnavailable = false;
       phase = "running";
       const server = koaApp.listen({
         port: config.port,
@@ -519,6 +527,9 @@ export async function counterfact<TStore = unknown>(
       httpTerminator = createHttpTerminator({
         server,
       });
+      if (!server.listening) await once(server, "listening");
+      const address = server.address();
+      if (address && typeof address !== "string") listeningPort = address.port;
     } catch (error) {
       phase = "failed";
       await stopResources().catch(() => undefined);
@@ -541,6 +552,7 @@ export async function counterfact<TStore = unknown>(
         new Error("Cannot reset while a scenario is running"),
       );
     phase = "resetting";
+    stateUnavailable = true;
     const resumeUpdates: Array<() => void> = [];
     resetPromise = Promise.resolve()
       .then(async () => {
@@ -566,10 +578,15 @@ export async function counterfact<TStore = unknown>(
             routesByGroup.set(group, {});
           await runGroupStartupScenarios(
             runners,
-            { port: config.port },
+            {
+              get port() {
+                return listeningPort;
+              },
+            },
             routesByGroup,
           );
           refreshReplReferences();
+          stateUnavailable = false;
           if (phase === "resetting") phase = "running";
           return undefined;
         } catch (error) {
@@ -616,7 +633,7 @@ export async function counterfact<TStore = unknown>(
           loadContext: (contextPath) =>
             runner.contextRegistry.find(contextPath),
           route: createRouteFunction(
-            config.port,
+            listeningPort,
             "localhost",
             runner.openApiDocument
               ? createOpenApiRouteCatalog(runner.openApiDocument)
@@ -656,7 +673,7 @@ export async function counterfact<TStore = unknown>(
     scenario,
     /** Reacquire live contexts after reset; group is required with multiple groups. */
     loadContext(path = "/", group?: string) {
-      if (phase === "resetting" || phase === "failed")
+      if (stateUnavailable)
         throw new Error(
           "Context unavailable; await a successful reset() first",
         );
@@ -686,7 +703,7 @@ export async function counterfact<TStore = unknown>(
         primaryRunner.contextRegistry,
         primaryRunner.registry,
         {
-          port: config.port,
+          port: listeningPort,
           proxyPaths: config.proxyPaths,
           proxyUrl: config.proxyUrl,
         },
@@ -717,7 +734,7 @@ export async function counterfact<TStore = unknown>(
     Object.defineProperty(result, "store", {
       enumerable: true,
       get(): TStore | undefined {
-        if (phase === "resetting" || phase === "failed")
+        if (stateUnavailable)
           throw new Error(
             "Store unavailable; await a successful reset() first",
           );

@@ -107,7 +107,7 @@ when multiple groups are configured. The built-in REPL's `context`, `store`, and
 variables are still stale.
 
 Public `store` and `loadContext()` access throws during reset and after reset
-failure. The low-level registries and externally held references bypass this
+failure, including when shutdown is waiting for reset to settle. The low-level registries and externally held references bypass this
 protection; callers must avoid reading or mutating those during lifecycle work.
 
 ### Concurrency and failures
@@ -115,7 +115,8 @@ protection; callers must avoid reading or mutating those during lifecycle work.
 - Reset requires a successful `start({ startServer: true, ... })`. Overlapping
   `reset()` calls share the same promise and reconstruct state once.
 - Requests already accepted finish before reconstruction begins, including
-  asynchronous handlers and streamed responses. A handler or stream that never
+  asynchronous handlers, streamed responses, and producer cleanup after a client
+  disconnect. A handler or stream that never
   finishes can keep reset pending; stop its producer before awaiting reset.
 - Requests arriving during reset receive HTTP **503** immediately. They are not
   queued or replayed. The listener stays on the same port.
@@ -148,6 +149,9 @@ export from `scenarios/index.ts`; `pets/orders/pending` selects `pending` from
 file or non-function export produces a descriptive error. No extra user arguments
 are supported, matching the REPL; use a named wrapper for parameterized helpers.
 Scenarios normally transform live state; reset is the explicit fresh baseline.
+With `port: 0`, `start()` awaits the OS-assigned listening address. Scenario
+requests use that actual port, including named builders saved by startup before
+the listener was bound and builders recreated during reset.
 
 With multiple groups, select the group separately so scenario paths stay
 unambiguous:

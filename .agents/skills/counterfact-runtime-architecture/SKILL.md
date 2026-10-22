@@ -56,8 +56,13 @@ Use this skill when changing runtime orchestration, server dispatch flow, module
   Retain loaded constructors/source route definitions; reconstruct stores before
   contexts and resolve context dependencies on demand, detecting cycles.
 - Gate new HTTP requests before draining accepted handlers and response streams.
-  Hold watcher updates during reconstruction and startup; keep failed resets
+  A disconnected response is not producer completion: await body stream cleanup
+  before releasing the barrier. Hold watcher updates during reconstruction and
+  startup; keep failed resets
   unavailable until a later reset succeeds. Never close/rebind the listener.
+- Track state availability independently from shutdown phase so overlapping stop
+  cannot expose pending or failed reconstruction. Resolve scenario builder ports
+  from the bound listener, including builders created before ephemeral binding.
 - Contexts and stores change identity on reset. Refresh built-in REPL references
   and require consumers to reacquire live objects; registry handles stay stable.
 - Share scenario path resolution between programmatic and REPL entrypoints, and

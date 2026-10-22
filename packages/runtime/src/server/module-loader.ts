@@ -454,7 +454,7 @@ export class ModuleLoader extends EventTarget {
           status: 500,
         });
 
-        this.registry.add(url, {
+        const errorModule = {
           DELETE: errorResponse,
           GET: errorResponse,
           HEAD: errorResponse,
@@ -463,7 +463,13 @@ export class ModuleLoader extends EventTarget {
           POST: errorResponse,
           PUT: errorResponse,
           TRACE: errorResponse,
-        });
+        };
+        this.sourceRoutes.set(url, { ...errorModule });
+        this.registry.add(url, errorModule);
+        if (url === "/index") {
+          this.sourceRoutes.set("/", { ...errorModule });
+          this.registry.add("/", errorModule);
+        }
 
         this.dispatchEvent(new Event("add"));
 

@@ -480,3 +480,138 @@ it("waits for streamed responses before rebuilding application state", async () 
     }
   });
 });
+
+it("uses the assigned port for public scenarios and startup builders recreated by reset", async () => {
+  await usingTemporaryFiles(async ($) => {
+    await $.add(
+      "routes/state.cjs",
+      `exports.GET = ({context}) => {
+      context.requests = (context.requests || 0) + 1; return "connected";
+    };`,
+    );
+    await $.add(
+      "scenarios/index.cjs",
+      `exports.startup = ($) => { $.routes.state = $.route("/state").method("get"); };
+      exports.request = async ($) => { await $.route("/state").method("get").send(); };
+      exports.savedRequest = async ($) => { await $.routes.state.send(); };`,
+    );
+    const simulator = await counterfact({ ...config, basePath: $.path(".") });
+    const { stop } = await simulator.start(config);
+    try {
+      await simulator.scenario("request");
+      expect(simulator.loadContext()["requests"]).toBe(1);
+      await simulator.scenario("savedRequest");
+      expect(simulator.loadContext()["requests"]).toBe(2);
+      await simulator.reset();
+      await simulator.scenario("savedRequest");
+      expect(simulator.loadContext()["requests"]).toBe(1);
+    } finally {
+      await stop();
+    }
+  });
+});
+
+it("keeps state guarded when shutdown overlaps pending or failed reset startup", async () => {
+  await usingTemporaryFiles(async ($) => {
+    await $.addDirectory("routes");
+    await $.add("_.store.ts", `export class Store { ready = true; }`);
+    await $.add(
+      "scenarios/index.cjs",
+      `let gate; let entered; let fail;
+      exports.arm = ($) => { gate = $.context.gate; entered = $.context.entered; fail = $.context.fail; };
+      exports.startup = async () => { if (gate) { entered(); await gate; if (fail) throw new Error("seed failed"); } };`,
+    );
+    for (const fail of [false, true]) {
+      const simulator = await counterfact({ ...config, basePath: $.path(".") });
+      const { stop } = await simulator.start(config);
+      const entered = deferred();
+      const gate = deferred();
+      try {
+        Object.assign(simulator.loadContext(), {
+          gate: gate.promise,
+          entered: entered.resolve,
+          fail,
+        });
+        await simulator.scenario("arm");
+        const resetting = simulator.reset();
+        const outcome = resetting.then(
+          () => undefined,
+          (error) => error,
+        );
+        await entered.promise;
+        const stopping = stop();
+        expect(() => simulator.store).toThrow("Store unavailable");
+        expect(() => simulator.loadContext()).toThrow("Context unavailable");
+        gate.resolve();
+        const error = await outcome;
+        await stopping;
+        expect(error instanceof Error).toBe(fail);
+      } finally {
+        gate.resolve();
+        await stop();
+      }
+    }
+  });
+});
+
+it("waits for a disconnected stream's blocked producer and asynchronous cleanup", async () => {
+  await usingTemporaryFiles(async ($) => {
+    await $.add(
+      "routes/stream.cjs",
+      `exports.GET = ({context}) => ({contentType: "text/plain", body: (async function* () {
+      try { yield "first"; context.entered(); await context.wait; }
+      finally { context.cleanupEntered(); await context.cleanup; context.cleaned = true; }
+    })()});`,
+    );
+    const simulator = await counterfact({ ...config, basePath: $.path(".") });
+    const listen = jest.spyOn(simulator.koaApp, "listen");
+    const { stop } = await simulator.start(config);
+    const server = listen.mock.results[0]!.value;
+    const entered = deferred();
+    const finish = deferred();
+    const cleanupEntered = deferred();
+    const cleanup = deferred();
+    const closed = deferred();
+    // A deliberate client disconnect can emit Koa's expected premature-close error.
+    simulator.koaApp.on("error", () => {});
+    const context = simulator.loadContext();
+    Object.assign(context, {
+      entered: entered.resolve,
+      wait: finish.promise,
+      cleanupEntered: cleanupEntered.resolve,
+      cleanup: cleanup.promise,
+    });
+    try {
+      const address = server.address();
+      if (!address || typeof address === "string")
+        throw new Error("Expected a TCP listener");
+      const { get } = await import("node:http");
+      const client = get(
+        `http://localhost:${address.port}/stream`,
+        (response) => {
+          response.on("error", () => {});
+          response.once("close", closed.resolve);
+          response.once("data", () => response.destroy());
+        },
+      );
+      client.on("error", () => {});
+      await entered.promise;
+      await closed.promise;
+      const resetting = simulator.reset();
+      await request(server).get("/stream").expect(503);
+      finish.resolve();
+      await cleanupEntered.promise;
+      await request(server).get("/stream").expect(503);
+      expect(context["cleaned"]).toBeUndefined();
+      cleanup.resolve();
+      await resetting;
+      expect(context["cleaned"]).toBe(true);
+      expect(simulator.loadContext()["cleaned"]).toBeUndefined();
+    } finally {
+      finish.resolve();
+      cleanup.resolve();
+      await stop();
+      listen.mockRestore();
+    }
+  });
+});
