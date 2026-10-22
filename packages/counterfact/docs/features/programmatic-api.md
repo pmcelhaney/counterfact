@@ -168,7 +168,7 @@ the REPL's URL behavior: supply the effective request path, including any prefix
 
 For worker-scoped Playwright startup, automatic per-test reset, optional scenario
 selection, and HTTP assertions, see the runnable
-[Playwright example](../../../../examples/playwright-reset/README.md) and
+[Playwright example](https://github.com/counterfact/api-simulator/tree/main/examples/playwright-reset) and
 [Automated Integration Tests](../patterns/automated-integration-tests.md).
 
 ## Multiple specs / versioned APIs

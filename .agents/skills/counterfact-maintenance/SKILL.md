@@ -53,6 +53,13 @@ Use this skill when finalizing contributor-facing changes that affect tests, dia
   and use the official review command for verified moved documents. Remove only
   their obsolete state keys; a rename alone does not establish a new review.
 
+- Quote glob arguments in package scripts when the receiving tool accepts the pattern.
+  In particular, keep the `test:tsd` file pattern quoted: shell expansion of
+  multiple files can turn an extra path into tsd's positional working directory.
+- Documentation is also rendered as site pages. Link repository-only examples
+  outside the published docs tree through GitHub source URLs, and validate the
+  rendered site with `npm run check-links` instead of relying on filesystem paths.
+
 - Use `usingTemporaryFiles()` for filesystem-heavy tests.
 - The Astro site uses `compressHTML: true` to preserve HTML whitespace around inline prose across source line breaks. Keep that setting explicit when upgrading Astro, and run `cd site && npm run test:whitespace` for rendering or formatting changes. Check generated text before applying CSS spacing: punctuation and intentional in-word links must remain adjacent.
 - Keep single-line command snippets in a focusable horizontal scroll region, with copy controls outside that region. A scrolling flex item needs `min-width: 0` so long text cannot widen the whole page. Emitted CSS/HTML checks establish this contract; they do not replace browser checks of scrolling, keyboard access, or viewport overflow.
