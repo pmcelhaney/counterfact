@@ -63,6 +63,12 @@ Use this skill when finalizing contributor-facing changes that affect tests, dia
 - Use `usingTemporaryFiles()` for filesystem-heavy tests.
 - The Astro site uses `compressHTML: true` to preserve HTML whitespace around inline prose across source line breaks. Keep that setting explicit when upgrading Astro, and run `cd site && npm run test:whitespace` for rendering or formatting changes. Check generated text before applying CSS spacing: punctuation and intentional in-word links must remain adjacent.
 - Keep single-line command snippets in a focusable horizontal scroll region, with copy controls outside that region. A scrolling flex item needs `min-width: 0` so long text cannot widen the whole page. Emitted CSS/HTML checks establish this contract; they do not replace browser checks of scrolling, keyboard access, or viewport overflow.
+- Keep Astro fixture output in workspace-local temporary directories, using
+  `USING_TEMPORARY_FILES_DEBUG=1` for the `usingTemporaryFiles()` helper. Astro
+  stages prerender assets beneath the checkout and moves them with `rename`, so
+  OS temporary directories on another filesystem fail with `EXDEV`. Workspace-local
+  output also preserves dependency lookup; setting `cacheDir` alone is insufficient.
+  The helper still removes these directories when the test completes.
 - In file-watching tests, register the expected event listener before writing the file, then await the saved promise. Close watchers in test teardown so Jest timeouts cannot skip cleanup; restore any changed working directory there as well.
 - For source or tsconfig analysis in repository tooling, use the existing
   TypeScript parser instead of custom tokenizers or JSONC stripping. Preserve
