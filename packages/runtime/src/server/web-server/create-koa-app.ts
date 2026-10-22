@@ -52,12 +52,45 @@ export function createKoaApp({
   runners,
   config,
   adminApi,
+  lifecycle,
 }: {
   runners: RuntimeRunner[];
   config: KoaRuntimeConfig;
   adminApi?: AdminApiAdapter;
+  lifecycle?: {
+    enter(): boolean;
+    leave(): void;
+  };
 }) {
   const app = new Koa();
+
+  if (lifecycle) {
+    app.use(async (ctx, next) => {
+      if (!lifecycle.enter()) {
+        ctx.status = 503;
+        ctx.body =
+          "Counterfact is unavailable during reset or after a lifecycle failure";
+        return;
+      }
+      let left = false;
+      let responseDone = false;
+      let handlerDone = false;
+      const leave = () => {
+        responseDone = true;
+        if (left || !handlerDone) return;
+        left = true;
+        lifecycle.leave();
+      };
+      ctx.res.once("finish", leave);
+      ctx.res.once("close", leave);
+      try {
+        await next();
+      } finally {
+        handlerDone = true;
+        if (responseDone) leave();
+      }
+    });
+  }
 
   for (const runner of runners) {
     app.use(

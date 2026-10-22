@@ -23,11 +23,11 @@ const config = {
   watch: { routes: false, types: false },
 };
 
-const { contextRegistry, start } = await counterfact(config);
-const { stop } = await start(config);
+const simulator = await counterfact(config);
+const { stop } = await simulator.start(config);
 
 // Get the root context — the object your routes see as $.context
-const rootContext = contextRegistry.find("/");
+const rootContext = simulator.loadContext("/");
 ```
 
 Once you have `rootContext` you can read and write any state that your route handlers expose.
@@ -57,63 +57,115 @@ caller-local file exists. The object is the same live store used by every API
 group's context constructors and by the REPL. It is available before `start()`
 when discovered during simulator construction.
 
-## Example: parameterised auth scenario with Playwright
-
-Given this route handler:
+## Resetting a running simulator
 
 ```ts
-// routes/auth/login.ts
-export const POST: HTTP_POST = ($) => {
-  if ($.context.passwordResponse === "ok") return $.response[200];
-  if ($.context.passwordResponse === "expired")
-    return $.response[403].header("reason", "expired-password");
-  return $.response[401];
-};
-```
-
-A Playwright test can flip between scenarios without hard-coded usernames:
-
-```ts
-import { counterfact } from "counterfact";
-import { chromium } from "playwright";
-
-let page;
-let rootContext;
-let stop;
-let browser;
-
-beforeAll(async () => {
-  browser = await chromium.launch({ headless: true });
-  page = await (await browser.newContext()).newPage();
-
-  const { contextRegistry, start } = await counterfact(config);
-  ({ stop } = await start(config));
-  rootContext = contextRegistry.find("/");
-});
-
-afterAll(async () => {
+const simulator = await counterfact(config);
+const { stop } = await simulator.start(config);
+try {
+  await simulator.reset();
+  await simulator.scenario("emptyProjects");
+  await simulator.scenario("pets/orders/pending");
+  const currentContext = simulator.loadContext("/");
+} finally {
   await stop();
-  await browser.close();
-});
-
-it("rejects an incorrect password", async () => {
-  rootContext.passwordResponse = "incorrect";
-  await attemptToLogIn();
-  expect(await page.isVisible("#authentication-error")).toBe(true);
-});
-
-it("loads the dashboard on success", async () => {
-  rootContext.passwordResponse = "ok";
-  await attemptToLogIn();
-  expect(await page.isVisible("#dashboard")).toBe(true);
-});
-
-it("prompts for a password change when the password has expired", async () => {
-  rootContext.passwordResponse = "expired";
-  await attemptToLogIn();
-  expect(await page.isVisible("#password-change-form")).toBe(true);
-});
+}
 ```
+
+`reset(): Promise<void>` reconstructs application state from the currently loaded
+code and configuration. It constructs a new application store, reconstructs all
+source-defined contexts (including nested contexts and dependencies resolved by
+`loadContext`), restores source routes and middleware, and awaits `startup` from
+`scenarios/index.ts`. With multiple API groups, startup runs once per group in
+specification declaration order; versions in a group share contexts. All groups
+receive the same newly constructed store.
+
+Dynamically added properties, records, contexts, handler overrides, and named
+builders in `$.routes` disappear. Deleted baseline data returns. Startup can add
+its own baseline data and named builders again. Reset does not merge defaults,
+clone application objects, regenerate files, reimport modules, or restart the
+listener. Constructors run normally, preserving class behavior and shared
+references. Missing optional store, context, and startup files remain supported.
+
+Hot reload retains its existing state-preserving behavior. Reset uses the last
+successfully loaded store/context constructors and currently loaded scenarios,
+including accepted hot reloads. File events received during reset wait until it
+finishes. Configuration such as routing prefixes, validation and proxy settings
+is preserved. Reset cannot undo external database writes, timers/background jobs,
+module-level singleton mutations, or other side effects outside managed stores
+and contexts. Put resettable application state in constructors and startup.
+
+### Reference lifetime
+
+Every successful reset replaces context and store identities. Previously saved
+references continue to point to the old objects and must be discarded. Reacquire
+`simulator.store` and `simulator.loadContext(path, group?)` after awaiting reset.
+Existing `contextRegistry` and `registry` handles retain their identities; the
+exposed registries refer to the primary API group. `loadContext` requires a group
+when multiple groups are configured. The built-in REPL's `context`, `store`, and
+`routes` globals are refreshed after successful reset. Copies saved in other REPL
+variables are still stale.
+
+Public `store` and `loadContext()` access throws during reset and after reset
+failure. The low-level registries and externally held references bypass this
+protection; callers must avoid reading or mutating those during lifecycle work.
+
+### Concurrency and failures
+
+- Reset requires a successful `start({ startServer: true, ... })`. Overlapping
+  `reset()` calls share the same promise and reconstruct state once.
+- Requests already accepted finish before reconstruction begins, including
+  asynchronous handlers and streamed responses. A handler or stream that never
+  finishes can keep reset pending; stop its producer before awaiting reset.
+- Requests arriving during reset receive HTTP **503** immediately. They are not
+  queued or replayed. The listener stays on the same port.
+- Reset resolves only after all startup scenarios finish. Startup runs without
+  application HTTP access: the listener is gated during reset, just as initial
+  startup runs before listening. Seed state directly through scenario arguments.
+- Public `scenario()` calls reject while resetting, after failure, or after stop.
+  Only one public scenario may run at once; reset rejects while a scenario runs.
+  Scenario execution otherwise leaves HTTP available, matching interactive REPL
+  use. Quiesce test traffic before applying scenarios for deterministic setup.
+- A constructor, context dependency cycle, or startup failure rejects reset with
+  its cause. Startup failures identify the API group. HTTP stays at **503** until
+  a subsequent reset succeeds. Fix the underlying problem (hot reload continues
+  to work), retry reset, or stop the simulator. Partial initialization is never
+  silently made available to HTTP clients.
+- Scenario lookup and execution errors reject `scenario()`; scenario mutations
+  are not rolled back. Reset before continuing if a scenario failed partway.
+- `stop()` waits for an active reset/scenario, then closes the listener and
+  watchers, even after reset failure. Do not call lifecycle methods from inside
+  handlers or scenarios; waiting for their own completion would deadlock. Direct
+  REPL or low-level registry mutation must be serialized by the caller.
+
+### Invoking named scenarios
+
+`scenario(path: string, group?: string): Promise<void>` uses the REPL's path
+resolver and supplies `{ context, loadContext, route, routes }` automatically.
+It awaits asynchronous scenarios and propagates errors. A bare name selects an
+export from `scenarios/index.ts`; `pets/orders/pending` selects `pending` from
+`scenarios/pets/orders.ts`. Empty paths and `.`/`..` segments reject. A missing
+file or non-function export produces a descriptive error. No extra user arguments
+are supported, matching the REPL; use a named wrapper for parameterized helpers.
+Scenarios normally transform live state; reset is the explicit fresh baseline.
+
+With multiple groups, select the group separately so scenario paths stay
+unambiguous:
+
+```ts
+await simulator.reset(); // all groups, once each
+await simulator.scenario("pets/orders/pending", "pets");
+const pets = simulator.loadContext("/", "pets");
+```
+
+When several versions belong to one group, scenario execution uses that group's
+first declared runner, as startup does, with its route catalog. `route()` retains
+the REPL's URL behavior: supply the effective request path, including any prefix.
+
+For worker-scoped Playwright startup, automatic per-test reset, optional scenario
+selection, and HTTP assertions, see the runnable
+[Playwright example](../../../../examples/playwright-reset/README.md) and
+[Automated Integration Tests](../patterns/automated-integration-tests.md).
 
 ## Multiple specs / versioned APIs
 
@@ -190,14 +242,17 @@ const { start } = await counterfact(config, [
 
 ## Return value of `counterfact()`
 
-| Property          | Type                           | Description                                                                                                                  |
-| ----------------- | ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------- |
-| `contextRegistry` | `ContextRegistry`              | Registry of all context objects keyed by path. Call `.find(path)` to get the context for a given route prefix.               |
-| `registry`        | `Registry`                     | Registry of all loaded route modules.                                                                                        |
-| `koaApp`          | `Koa`                          | The underlying Koa application.                                                                                              |
-| `store`           | `TStore \| undefined`          | Optional application-level store loaded from `<basePath>/_.store.ts`. Supply `TStore` to `counterfact<TStore>()`.            |
-| `start(config)`   | `async (config) => { stop() }` | Starts the server (and optionally the file watcher and code generator). Returns a `stop()` function to gracefully shut down. |
-| `startRepl()`     | `() => REPLServer`             | Starts the interactive REPL. Returns the REPL server instance.                                                               |
+| Property                     | Type                                 | Description                                                                                                                  |
+| ---------------------------- | ------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------- |
+| `contextRegistry`            | `ContextRegistry`                    | Registry of all context objects keyed by path. Call `.find(path)` to get the context for a given route prefix.               |
+| `registry`                   | `Registry`                           | Registry of all loaded route modules.                                                                                        |
+| `koaApp`                     | `Koa`                                | The underlying Koa application.                                                                                              |
+| `store`                      | `TStore \| undefined`                | Optional application-level store loaded from `<basePath>/_.store.ts`. Supply `TStore` to `counterfact<TStore>()`.            |
+| `start(config)`              | `async (config) => { stop() }`       | Starts the server (and optionally the file watcher and code generator). Returns a `stop()` function to gracefully shut down. |
+| `reset()`                    | `() => Promise<void>`                | Reconstructs managed application state and awaits startup without restarting HTTP.                                           |
+| `scenario(path, group?)`     | `(string, string?) => Promise<void>` | Resolves and awaits a named scenario, supplying the REPL arguments.                                                          |
+| `loadContext(path?, group?)` | `(string?, string?) => Context`      | Gets the current context; reacquire after reset.                                                                             |
+| `startRepl()`                | `() => REPLServer`                   | Starts the interactive REPL. Returns the REPL server instance.                                                               |
 
 ## See also
 
