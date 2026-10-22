@@ -22,7 +22,7 @@
   "devDependencies": {
     "linkinator": "8.1.0",
     "parse5": "8.0.1",
-    "postcss": "8.5.30",
+    "postcss": "8.5.31",
     "using-temporary-files": "2.2.1"
   },
   "overrides": {
