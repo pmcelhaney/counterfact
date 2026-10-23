@@ -542,6 +542,20 @@ document, generating enabled artifacts, and preparing the mock runtime. Once
 ready, it prints only the capabilities enabled for that run, such as the mock
 server URL, Swagger UI URL, and active file watching.
 
+The built-in Swagger UI uses version 5.32.0 and supports Swagger 2.0 and OpenAPI
+3.0.4, 3.1, and 3.2 documents. Grouped APIs have separate documentation pages at
+`/counterfact/swagger/<group>/`, backed by `/counterfact/openapi/<group>`.
+
+From a repository checkout, `npm run go:multiple-apis` starts the example and
+Petstore APIs at `/example` and `/petstore`. `npm run go:multiple-versions` starts
+two versions of the Greetings API at `/v1/greeting` and `/v2/greeting`; v2 adds a
+`locale` field. Both versions share generated handlers and types in the
+`greetings` group; `/counterfact/swagger/greetings/` shows the first configured
+version (v1). Both commands build first and run from
+the Counterfact package directory so fixture paths resolve correctly. Generated
+files go into `packages/counterfact/out/multiple-apis` and
+`packages/counterfact/out/multiple-versions`, respectively.
+
 Interactive terminals show a spinner while each startup step is running. The
 progress line clears when the step finishes, leaving its completed status.
 Progress labels shorten to fit narrow terminals, and resizing clears any reflowed
