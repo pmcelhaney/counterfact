@@ -1381,6 +1381,7 @@ __metadata:
     chokidar: "npm:5.0.0"
     debug: "npm:4.4.3"
     prettier: "npm:3.9.10"
+    typescript: "npm:6.0.3"
   languageName: unknown
   linkType: soft
 
