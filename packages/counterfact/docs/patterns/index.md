@@ -8,6 +8,12 @@ As the mock grows, [Scenario Scripts](./scenario-scripts.md) let you automate re
 
 When your project involves multiple versions or multiple specs, [Multiple API Versions](./multiple-versions.md) shows how to serve them from a shared set of route files using `$.minVersion()` to branch on version without duplicating handlers. For teams that want the mock to remain a reliable, long-lived artifact, [Reference Implementation](./reference-implementation.md) and [Automated Integration Tests](./automated-integration-tests.md) make it a first-class part of the codebase that can run in CI. Finally, [Agentic Sandbox](./agentic-sandbox.md) and [Hybrid Proxy](./hybrid-proxy.md) address the two common integration strategies — isolating an AI agent from the real service, or blending mock and live traffic — and [Custom Middleware](./custom-middleware.md) covers cross-cutting concerns like authentication and logging without touching individual handlers.
 
+## Complete recipes
+
+- [Payment retry and reset](./payment-retry.md)
+- [Contract-change check](./contract-change.md)
+- [AI-assisted workflows](./agentic-sandbox.md)
+
 ## Find your path
 
 | Pattern                                                              | When to use it                                                                                       |

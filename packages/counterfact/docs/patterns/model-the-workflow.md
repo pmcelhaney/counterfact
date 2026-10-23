@@ -74,10 +74,11 @@ import type { Scenario } from "../types/_.context.js";
 export const startup: Scenario = ($) => $.context.reset();
 
 export const declinedPayment: Scenario = ($) => {
-  $.context.reset();
   $.context.paymentOutcome = "declined";
 };
 ```
+
+`declinedPayment` changes only the payment outcome; it preserves orders and unrelated state. Use `await simulator.reset()` explicitly when a fresh baseline is required. The [complete payment retry recipe](./payment-retry.md) connects this model to HTTP handlers and an automated decline, recovery, permission, and reset check.
 
 During development, the same state is available as a direct control surface:
 
@@ -88,7 +89,7 @@ During development, the same state is available as a direct control surface:
 
 ## What you get
 
-- Deterministic behavior by default, with state only where continuity matters.
+- Predictable behavior when handlers use fixed values or deterministic functions, with controlled state and delays. Local execution or reset alone does not make random responses deterministic.
 - A small model that is easy to understand, reset, and commit with the client.
 - Named scenarios that reproduce relevant API worlds without production data.
 - Clear reasons to keep targeted tests against the real backend: the simulator

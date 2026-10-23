@@ -1,5 +1,7 @@
 # Automated Integration Tests
 
+The minimal-options startup, `reset()`, and `scenario()` examples describe the current repository API and are not included in published 2.16.6. Use the [commit-pinned lifecycle setup](./lifecycle-setup.md) to run them until a release includes these methods.
+
 Run integration tests against a real local HTTP server that your test suite can start, shape, and tear down on demand.
 
 ## Why teams use this
@@ -8,7 +10,7 @@ Unit tests that mock HTTP calls at the library boundary (using `jest.mock()`, `v
 
 ## How it works
 
-Use Counterfact's programmatic API to embed the mock server directly in your test suite. Start it in a `beforeAll` hook, run every test against it, and stop it in `afterAll`. The server is entirely local, so tests are fast and deterministic. Handler files control exactly what the mock returns for each test scenario.
+Use Counterfact's programmatic API to embed the mock server directly in your test suite. Start it in a `beforeAll` hook, run every test against it, and stop it in `afterAll`. Local execution removes dependence on a remote environment. Repeatable tests additionally need fixed responses or named examples, controlled delays, isolated simulator instances, and awaited reset/scenario setup. Generated `.random()` responses can still vary after reset. See [sample responses](../manual/sample-responses.md) and [edge cases](../manual/edge-cases.md).
 
 Install Counterfact as a dev dependency:
 
@@ -75,6 +77,8 @@ afterAll(async () => {
 See the [configuration options](../features/programmatic-api.md), apply named
 scenarios with `await simulator.scenario(name)`, then send HTTP requests to the
 configured port. Keep independently running tests on separate simulators.
+
+Follow [the complete payment test](./payment-retry.md) to connect lifecycle setup to an empty account, decline, successful retry, permission outcome, and restored baseline.
 
 ## Keep exploring
 

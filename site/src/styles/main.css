@@ -691,3 +691,11 @@ nav a[aria-current] {
     padding-block: 2.5rem;
   }
 }
+
+.contract-callout {
+  padding-block: 0 4rem;
+}
+.contract-callout p {
+  color: var(--muted);
+  max-width: 72ch;
+}

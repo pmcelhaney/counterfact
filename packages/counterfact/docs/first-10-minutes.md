@@ -10,10 +10,10 @@ For a repeatable project, pin Counterfact and keep the OpenAPI document in the
 repository:
 
 ```sh
-npm install --save-dev counterfact@2.16.3
+npm install --save-dev counterfact@2.16.6
 curl --fail --location \
   --output openapi.yaml \
-  https://raw.githubusercontent.com/counterfact/api-simulator/v2.16.3/petstore.yaml
+  https://raw.githubusercontent.com/counterfact/api-simulator/3b9f65fe94af0efc8ef4ce4d666a6f7126f7a28c/packages/counterfact/petstore.yaml
 npx counterfact ./openapi.yaml api
 ```
 
@@ -33,6 +33,7 @@ import type { Pet } from "../types/components/schemas/Pet.js";
 export class Context {
   private pets = new Map<number, Pet>();
   private nextId = 1;
+  unavailable = false;
 
   add(pet: Omit<Pet, "id">): Pet {
     const created = { ...pet, id: this.nextId++ };
@@ -65,21 +66,43 @@ export const GET: getPetById = ($) => {
 };
 ```
 
-From the frontend, create a record and fetch it later with the same localhost
-base URL. That is the state you need for a visible create/read flow—no database
-or recreation of the production backend required.
+## Create a pet and read it back
+
+Run this in your frontend or browser console while the server is running. `name` and `photoUrls` satisfy the pinned Petstore document's required request fields:
+
+```js
+const baseUrl = "http://localhost:3100";
+const createdResponse = await fetch(`${baseUrl}/pet`, {
+  method: "POST",
+  headers: { "content-type": "application/json" },
+  body: JSON.stringify({ name: "Juniper", photoUrls: [] }),
+});
+if (!createdResponse.ok)
+  throw new Error(`Create failed: ${createdResponse.status}`);
+const created = await createdResponse.json();
+
+const readResponse = await fetch(`${baseUrl}/pet/${created.id}`);
+if (!readResponse.ok) throw new Error(`Read failed: ${readResponse.status}`);
+const found = await readResponse.json();
+console.assert(found.id === created.id && found.name === "Juniper");
+console.log(found); // the same pet you just created, with its assigned id
+```
+
+The GET returns the pet created by POST, rather than an unrelated generated sample. The small in-memory map is sufficient for this client-visible workflow.
 
 ## Add one frontend-relevant failure
 
-The missing record branch above returns `404`, so your frontend can implement
-an empty or not-found state. When you need a deliberate error branch, add it
-to the handler as an explicit response. Keep it narrow and deterministic:
+The missing-record branch above returns `404`. To exercise an unavailable state for the same pet, add this branch at the beginning of the GET handler:
 
 ```ts
-if ($.path.petId === 99) {
-  return $.response[503].text("Try again shortly");
+if ($.context.unavailable) {
+  return $.x.response[503].text("Try again shortly");
 }
 ```
+
+The pinned Petstore operation does not declare this 503 text response. `$.x` deliberately widens the generated types for this experiment; it does not disable runtime validation. For a contract-defined failure, declare the status and media type in OpenAPI, regenerate, and use the typed `$.response` instead.
+
+At the REPL, set `context.unavailable = true`, then repeat the GET above: it returns 503 for the same resource. Set `context.unavailable = false` and fetch again to recover. The flag changes behavior without reserving a magic pet ID. See [validation boundaries](./manual/validation.md).
 
 Use [Simulate failures](./patterns/simulate-failures.md) for reusable failure
 controls and [Simulate latency](./patterns/simulate-latency.md) when loading

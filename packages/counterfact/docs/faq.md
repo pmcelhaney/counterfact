@@ -182,14 +182,16 @@ You can toggle individual paths from the REPL at runtime:
 ```
 ⬣> .proxy on /payments      # forward /payments/* to the real API
 ⬣> .proxy off /payments     # mock /payments/* again
-⬣> .proxy off               # mock everything
+⬣> .proxy off               # disable the root proxy default
 ```
+
+The root `.proxy off` command leaves explicit path overrides in place. Disable any remaining path-specific `on` settings separately. For a setup that survives restarts, use the [checked-in hybrid recipe](./patterns/hybrid-proxy.md#check-in-a-hybrid-setup).
 
 ---
 
 ## How does type safety work?
 
-Every route handler type is generated from the spec. When you call `.json(...)` on a response builder, TypeScript checks that the object you pass matches the schema defined in the spec. When the spec changes and you regenerate, TypeScript surfaces every handler that no longer matches — before any request fails.
+Every route handler type is generated from the spec. When you call `.json(...)` on a response builder, TypeScript checks that the object you pass matches the schema defined in the spec. When the spec changes and you regenerate, an editor or explicit TypeScript check can report mismatches in checked, typed handlers. Serving and hot-reloading TypeScript does not itself run a full project typecheck; untyped code and `$.x` can bypass these authoring checks. See the [contract-change check](./patterns/contract-change.md).
 
 OpenAPI descriptions are preserved as JSDoc comments on the generated types, so they appear inline in your editor as you type.
 

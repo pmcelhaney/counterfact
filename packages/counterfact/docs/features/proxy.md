@@ -7,13 +7,15 @@ To proxy a single endpoint from within a route file:
 ```ts
 // routes/pet/{petId}.ts
 export const GET: HTTP_GET = ($) => {
-  return $.proxy("https://uat.petstore.example.com");
+  return $.proxy(
+    `https://uat.petstore.example.com/pet/${encodeURIComponent(String($.path.petId))}`,
+  );
 };
 ```
 
-`$.proxy()` appends the full incoming request path to the supplied URL. For
-example, a request to `/pet/123` is forwarded to
-`https://uat.petstore.example.com/pet/123`.
+`$.proxy(targetUrl)` forwards to the explicit URL. In the standard HTTP server, the helper does not automatically preserve the incoming path or query string. Include the upstream operation path, encoded path parameters, and any query parameters that the operation needs. The example maps `/pet/123` to the upstream `/pet/123` explicitly.
+
+It forwards the method, incoming headers (except `Host`), and raw body. Route-level forwarding passes through local request and supported response checks; it differs from configuration-selected proxying, which bypasses local dispatch. See the [proxy API contract](../api/handlers.md#forward-a-request-with-proxytargeturl).
 
 To set a proxy for the entire API at startup, pass `--proxy-url` on the CLI:
 

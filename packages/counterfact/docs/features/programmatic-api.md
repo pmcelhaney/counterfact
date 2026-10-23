@@ -1,5 +1,7 @@
 # Programmatic API
 
+The minimal-options startup, `reset()`, and `scenario()` examples describe the current repository API and are not included in published 2.16.6. Use the [commit-pinned lifecycle setup](../patterns/lifecycle-setup.md) to run them until a release includes these methods.
+
 Counterfact can be used as a library — for example, from [Playwright](https://playwright.dev/) or [Cypress](https://www.cypress.io/) tests. This lets you manipulate context state directly in test code without relying on special magic values in mock logic.
 
 Point Counterfact at an API directory, then start it:

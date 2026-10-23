@@ -74,7 +74,7 @@ export const startup: Scenario = ($) => {
 };
 ```
 
-If `startup` is not exported, the server starts normally with no error. Startup is awaited once per API group. Seed context directly there; requests to this same server cannot complete before it starts listening. Startup receives a separate `routes` object, so aliases created there are not retained in the later REPL. Create reusable aliases after startup, at the prompt or in an on-demand scenario with an explicitly narrowed builder type.
+If `startup` is not exported, the server starts normally with no error. Startup is awaited once per API group. Seed context directly there; requests to this same server cannot complete before it starts listening. Startup receives the API group’s shared `routes` collection. Named builders saved there are available in the later REPL and on-demand scenarios. Reset replaces the collection, then reruns startup so it can recreate those builders; reacquire references after reset. Builders created before an ephemeral port is bound resolve the actual port when sent. Construct builders during startup, but do not send requests to this server until startup completes and the listener is ready. The generated scenario types expose builders as `unknown`; narrow them explicitly when using their methods.
 
 ### Delegating to helpers with extra arguments
 

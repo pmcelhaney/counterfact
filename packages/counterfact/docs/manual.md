@@ -45,3 +45,10 @@ New to Counterfact? Start with [Generate an API from OpenAPI](./getting-started.
 
 - [Programmatic use and tests](./features/programmatic-api.md) — Start, inspect, reset, seed, and stop a simulator from code.
 - [HTTP Admin API](./manual/admin-api.md) — Inspect contexts, routes, and proxy settings over HTTP.
+
+## Complete workflows
+
+- [Payment decline, retry, permissions, and reset](./patterns/payment-retry.md) — connect a small state model to real HTTP assertions.
+- [Contract-change check](./patterns/contract-change.md) — regenerate types, observe a compiler error, and fix the handler.
+- [Reproducible hybrid proxy](./patterns/hybrid-proxy.md#check-in-a-hybrid-setup) — check local/upstream selection into source control.
+- [AI-assisted workflows](./patterns/agentic-sandbox.md) — run a bounded noninteractive task and return evidence for human review.

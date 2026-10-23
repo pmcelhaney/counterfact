@@ -184,5 +184,23 @@
       "title": "Public packages",
       "path": "/docs/api/packages"
     }
+  ],
+  "recipes": [
+    {
+      "title": "Payment retry and reset",
+      "path": "/docs/patterns/payment-retry"
+    },
+    {
+      "title": "Contract-change check",
+      "path": "/docs/patterns/contract-change"
+    },
+    {
+      "title": "Reproducible hybrid proxy",
+      "path": "/docs/patterns/hybrid-proxy"
+    },
+    {
+      "title": "AI-assisted workflows",
+      "path": "/docs/patterns/agentic-sandbox"
+    }
   ]
 }

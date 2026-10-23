@@ -18,4 +18,12 @@ Export one function per HTTP method from a file under `routes/`. The generated `
 | `$.delay(ms, maxMs?)` | Await a fixed delay or a random delay in the supplied range, in milliseconds.                                                          |
 | `$.x`                 | The handler argument with widened types, for intentionally out-of-contract behavior. Runtime validation remains separately configured. |
 
+## Forward a request with `$.proxy(targetUrl)`
+
+`$.proxy(targetUrl: string)` returns a promise of a response object containing `status`, `headers`, `contentType`, and the upstream body as text. Return or await it from a handler. It forwards the incoming HTTP method, headers (with `Host` removed), and raw body.
+
+Use an explicit target URL including the operation path and any query string. In the standard HTTP server, the helper does not append the incoming path or query. For example, `$.proxy("http://localhost:9000/users")` forwards to `/users`; using only `http://localhost:9000` sends to the root. Encode path values when constructing a target from request parameters.
+
+Route-level `$.proxy()` runs after local request validation and its returned response passes through local content negotiation and supported response-header validation. In contrast, forwarding selected by the global/path proxy configuration happens before local dispatch and bypasses those checks. Neither path performs general response-body schema validation. See [hybrid proxying](../patterns/hybrid-proxy.md).
+
 See [custom route handlers](../features/routes.md) for request serialization and authentication examples, and [response builders](./responses.md) for return values.
