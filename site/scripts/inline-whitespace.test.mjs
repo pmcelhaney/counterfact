@@ -8,6 +8,23 @@ import { usingTemporaryFiles } from "using-temporary-files";
 
 const siteRoot = new URL("../", import.meta.url);
 
+async function usingSiteTemporaryFiles(callback) {
+  // Astro stages static assets under cwd when outDir is outside it, then
+  // renames them into outDir. Keep both paths on the checkout's filesystem.
+  const variable = process.platform === "win32" ? "TEMP" : "TMPDIR";
+  const previous = process.env[variable];
+  process.env[variable] = fileURLToPath(siteRoot);
+  try {
+    await usingTemporaryFiles(callback);
+  } finally {
+    if (previous === undefined) {
+      delete process.env[variable];
+    } else {
+      process.env[variable] = previous;
+    }
+  }
+}
+
 function elements(node, predicate) {
   return [
     ...(predicate(node) ? [node] : []),
@@ -32,7 +49,7 @@ function paragraphs(html) {
 }
 
 test("the site build preserves authored inline whitespace", async (t) => {
-  await usingTemporaryFiles(async ($) => {
+  await usingSiteTemporaryFiles(async ($) => {
     // Build fixtures with the site's actual config and compiler, without
     // publishing test routes or overriding the whitespace setting under test.
     await build({

@@ -1,5 +1,7 @@
-import fs from "node:fs/promises";
 import { once } from "node:events";
+import fs from "node:fs/promises";
+import type { Server } from "node:http";
+import type { AddressInfo } from "node:net";
 import nodePath from "node:path";
 
 import { createHttpTerminator, type HttpTerminator } from "http-terminator";
@@ -77,6 +79,24 @@ export interface SpecConfig {
    * containing `actions` that modify the loaded spec via JSONPath targeting.
    */
   overlays?: string[];
+}
+
+/** Options for embedding an existing API in a test or another Node.js process. */
+export type CounterfactOptions = Pick<Config, "basePath"> &
+  Partial<Omit<Config, "basePath">>;
+
+/** Overrides applied when starting a configured simulator. */
+export type CounterfactStartOptions = Partial<
+  Pick<Config, "port" | "startServer" | "buildCache">
+> & {
+  generate?: Partial<Config["generate"]>;
+  watch?: Partial<Config["watch"]>;
+};
+
+/** Snapshot of the simulator's API directory and current HTTP listener. */
+export interface CounterfactStatus extends Omit<Config, "adminApiToken"> {
+  listening: boolean;
+  address: AddressInfo | null;
 }
 
 type Scenario$ = {
@@ -238,20 +258,41 @@ function validateSpecGroups(
  * The returned object exposes handles for starting the server, stopping it,
  * and launching the interactive REPL.
  *
- * @param config - Runtime configuration (port, paths, feature flags, etc.).
+ * @param options - API directory and optional runtime overrides. Defaults to serving
+ *   routes on port 8100 with generation, watching, and cache building enabled;
+ *   spec loading and a REPL remain optional.
  * @param specs - Optional array of spec entries. Omit to use a single spec
  *   derived from `config.openApiPath` and `config.prefix`.
  * @returns An object containing the configured sub-systems and two entry-point
  *   functions:
- *   - `start(options)` — generates/watches code and optionally starts the HTTP
+ *   - `start(options?)` — reuses the initial configuration unless options are
+ *     supplied; generates/watches code and optionally starts the HTTP
  *     server; returns a `stop()` handle.
  *   - `startRepl()` — launches the interactive Node.js REPL connected to the
  *     live server state.
  */
 export async function counterfact<TStore = unknown>(
-  config: Config,
+  options: CounterfactOptions,
   specs?: SpecConfig[],
 ) {
+  const config: Config = {
+    alwaysFakeOptionals: false,
+    buildCache: true,
+    generate: { routes: true, types: true },
+    openApiPath: "_",
+    port: 8100,
+    prefix: "",
+    proxyPaths: new Map(),
+    proxyUrl: "",
+    startAdminApi: false,
+    startRepl: false,
+    startServer: true,
+    validateRequests: true,
+    validateResponses: true,
+    watch: { routes: true, types: true },
+    ...options,
+    basePath: nodePath.resolve(options.basePath),
+  };
   const normalizedSpecs = normalizeSpecs(
     { openApiPath: config.openApiPath, prefix: config.prefix },
     specs,
@@ -395,9 +436,46 @@ export async function counterfact<TStore = unknown>(
   // The REPL is configured using the first runner.
   const primaryRunner = runners[0]!;
 
-  async function start(
-    options: Pick<Config, "generate" | "startServer" | "watch" | "buildCache">,
-  ) {
+  let httpServer: Server | undefined;
+  let startupOptions: Pick<
+    Config,
+    "port" | "generate" | "startServer" | "watch" | "buildCache"
+  > = config;
+
+  function status(): CounterfactStatus {
+    const address = httpServer?.address();
+    const snapshot = {
+      ...config,
+      port: startupOptions.port,
+      generate: startupOptions.generate,
+      startServer: startupOptions.startServer,
+      watch: startupOptions.watch,
+      buildCache: startupOptions.buildCache,
+    };
+    delete snapshot.adminApiToken;
+    return {
+      ...structuredClone(snapshot),
+      listening: httpServer?.listening ?? false,
+      address:
+        address !== undefined && address !== null && typeof address !== "string"
+          ? { ...address }
+          : null,
+    };
+  }
+
+  async function start(overrides: CounterfactStartOptions = {}) {
+    const options = {
+      ...config,
+      ...overrides,
+      generate: { ...config.generate, ...overrides.generate },
+      watch: { ...config.watch, ...overrides.watch },
+    };
+    startupOptions = options;
+    listeningPort = options.port;
+    for (const runner of runners) {
+      runner.configureStartup(options);
+    }
+
     async function completeStage(operations: Array<Promise<unknown>>) {
       const results = await Promise.allSettled(operations);
       const failure = results.find(
@@ -521,9 +599,10 @@ export async function counterfact<TStore = unknown>(
       stateUnavailable = false;
       phase = "running";
       const server = koaApp.listen({
-        port: config.port,
+        port: options.port,
       });
 
+      httpServer = server;
       httpTerminator = createHttpTerminator({
         server,
       });
@@ -669,6 +748,7 @@ export async function counterfact<TStore = unknown>(
   }
 
   const baseSimulator = {
+    status,
     reset,
     scenario,
     /** Reacquire live contexts after reset; group is required with multiple groups. */

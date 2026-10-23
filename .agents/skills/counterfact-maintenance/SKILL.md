@@ -36,7 +36,7 @@ Use this skill when finalizing contributor-facing changes that affect tests, dia
 - When spawning Yarn from a package script, use the Yarn command on PATH with Windows command-shim handling. Yarn 4 can set `npm_execpath` to a shell wrapper; passing that path to Node treats shell code as JavaScript. Validate the runner with `yarn test:build` on both CI operating systems.
 - Keep the root development build stages aligned with `packages/counterfact/package.json` build order and commands. Preserve the self-contained workspace build for packaging; repository-only progress scripts must not become required files in published packages.
 
-- Keep historical study environments under `site/study/2026/experiments/environments/` excluded from Renovate; their manifests and lockfiles are reproducibility evidence, not maintained application dependencies. When changing `ignorePaths`, preserve the exclusions inherited from `config:recommended` because the array replaces inherited values.
+- Preserve historical experiment inputs in `counterfact/historical-experiments` rather than the maintained product tree. Pin external evidence to a full commit and retain its hash manifest and result snapshot locally so site builds stay offline. Verify the archive bytes against that pin with `cd site && npm run verify:experiment-archive -- /path/to/archive` when migrating or changing evidence; `verify:audit` checks local integrity and pin consistency, not external bytes. Keep historical dependency upgrades separate from preserved runs.
 
 - Keep `catchmydrift.config.json` document-specific: connect each selected document
   to the implementation, configuration, and tests it describes; use package-wide
@@ -60,15 +60,12 @@ Use this skill when finalizing contributor-facing changes that affect tests, dia
   outside the published docs tree through GitHub source URLs, and validate the
   rendered site with `npm run check-links` instead of relying on filesystem paths.
 
+- Keep maintained examples eligible for Renovate updates; do not exclude `**/examples/**` in `ignorePaths`. Preserve the other dependency, vendor, test, and fixture exclusions when editing that array.
+- Validate `examples/first-10-minutes` with its own `npm ci` and `npm run verify`; its npm lockfile is independent of the root Yarn lockfile. Prefer a disposable copy for this check: generation writes routes, types, and caches into the example, and those outputs can cause unrelated root lint failures if left in the worktree.
 - Use `usingTemporaryFiles()` for filesystem-heavy tests.
+- Astro static-build tests must keep temporary output on the checkout filesystem: Astro stages assets under the working directory and renames them into the output, so system temporary directories on a different volume cause `EXDEV`. Continue using `usingTemporaryFiles()` and restore any temporary-directory environment override in `finally`.
 - The Astro site uses `compressHTML: true` to preserve HTML whitespace around inline prose across source line breaks. Keep that setting explicit when upgrading Astro, and run `cd site && npm run test:whitespace` for rendering or formatting changes. Check generated text before applying CSS spacing: punctuation and intentional in-word links must remain adjacent.
 - Keep single-line command snippets in a focusable horizontal scroll region, with copy controls outside that region. A scrolling flex item needs `min-width: 0` so long text cannot widen the whole page. Emitted CSS/HTML checks establish this contract; they do not replace browser checks of scrolling, keyboard access, or viewport overflow.
-- Keep Astro fixture output in workspace-local temporary directories, using
-  `USING_TEMPORARY_FILES_DEBUG=1` for the `usingTemporaryFiles()` helper. Astro
-  stages prerender assets beneath the checkout and moves them with `rename`, so
-  OS temporary directories on another filesystem fail with `EXDEV`. Workspace-local
-  output also preserves dependency lookup; setting `cacheDir` alone is insufficient.
-  The helper still removes these directories when the test completes.
 - In file-watching tests, register the expected event listener before writing the file, then await the saved promise. Close watchers in test teardown so Jest timeouts cannot skip cleanup; restore any changed working directory there as well.
 - For source or tsconfig analysis in repository tooling, use the existing
   TypeScript parser instead of custom tokenizers or JSONC stripping. Preserve

@@ -233,35 +233,27 @@ If you add a new HTTP method to an existing path in your spec (for example addin
 
 ## Can I use it programmatically (not via the CLI)?
 
-Yes. Import `counterfact` and pass a `Config` object:
+Yes. Point `counterfact` at your API directory:
 
 ```ts
 import { counterfact } from "counterfact";
 
-const { start } = await counterfact({
-  openApiPath: "openapi.yaml",
-  basePath: "api",
-  port: 4000,
-  startServer: true,
-  startRepl: false,
-  generate: { routes: false, types: false },
-  watch: { routes: false, types: false },
-  alwaysFakeOptionals: false,
-  buildCache: false,
-  proxyPaths: new Map(),
-  proxyUrl: "",
-  prefix: "",
-  validateRequests: true,
-  validateResponses: true,
-});
+const api = await counterfact({ basePath: "api" });
+const { stop } = await api.start();
 
-const { stop } = await start({
-  startServer: true,
-  generate: { routes: false, types: false },
-  watch: { routes: false, types: false },
-  buildCache: false,
-});
+// When finished:
+await stop();
 ```
+
+The server listens on port 8100 by default and creates missing API, route, and
+cache directories. An empty API returns 404. Add `openApiPath` to generate routes
+and types from a spec and watch for changes. Generation, watching, and cache
+building are enabled by default; you can explicitly disable them.
+
+Use `await api.start({ port: 8111 })` to override the port while preserving other
+options. Startup waits for the HTTP listener and rejects if binding fails.
+`api.status()` reports the absolute API directory, resolved configuration, and
+live listening address. After `stop()`, it reports `listening: false`.
 
 This makes Counterfact easy to embed in test setups — start a server in `beforeAll`, stop it in `afterAll`, and run real HTTP requests against it in your tests. See the [Programmatic API guide](./features/programmatic-api.md) for a complete example.
 

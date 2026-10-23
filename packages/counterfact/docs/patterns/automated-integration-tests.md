@@ -10,6 +10,17 @@ Unit tests that mock HTTP calls at the library boundary (using `jest.mock()`, `v
 
 Use Counterfact's programmatic API to embed the mock server directly in your test suite. Start it in a `beforeAll` hook, run every test against it, and stop it in `afterAll`. The server is entirely local, so tests are fast and deterministic. Handler files control exactly what the mock returns for each test scenario.
 
+Install Counterfact as a dev dependency:
+
+```sh
+npm install --save-dev counterfact
+```
+
+Supplying `openApiPath` generates routes and types at startup, then watches the
+spec for changes. Missing API directories are created automatically. To use
+existing routes without regeneration, set both `generate` and `watch` to
+`{ routes: false, types: false }`.
+
 ## Playwright: one simulator per worker
 
 Use a worker-scoped fixture to start Counterfact once, and an automatic test
@@ -41,12 +52,15 @@ and failure semantics.
 The same lifecycle works with suite hooks:
 
 ```ts
+import { counterfact } from "counterfact";
+
+const config = { basePath: "api", openApiPath: "openapi.yaml", port: 4001 };
 let simulator;
 let stop;
 
 beforeAll(async () => {
   simulator = await counterfact(config);
-  ({ stop } = await simulator.start(config));
+  ({ stop } = await simulator.start());
 });
 
 beforeEach(async () => {
@@ -58,7 +72,7 @@ afterAll(async () => {
 });
 ```
 
-Use the [complete configuration](../features/programmatic-api.md), apply named
+See the [configuration options](../features/programmatic-api.md), apply named
 scenarios with `await simulator.scenario(name)`, then send HTTP requests to the
 configured port. Keep independently running tests on separate simulators.
 

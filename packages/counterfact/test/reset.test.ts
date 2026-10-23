@@ -481,35 +481,49 @@ it("waits for streamed responses before rebuilding application state", async () 
   });
 });
 
-it("uses the assigned port for public scenarios and startup builders recreated by reset", async () => {
-  await usingTemporaryFiles(async ($) => {
-    await $.add(
-      "routes/state.cjs",
-      `exports.GET = ({context}) => {
+it.each(["initial configuration", "startup override"])(
+  "uses the assigned port from %s for public scenarios and startup builders recreated by reset",
+  async (portSource) => {
+    await usingTemporaryFiles(async ($) => {
+      await $.add(
+        "routes/state.cjs",
+        `exports.GET = ({context}) => {
       context.requests = (context.requests || 0) + 1; return "connected";
     };`,
-    );
-    await $.add(
-      "scenarios/index.cjs",
-      `exports.startup = ($) => { $.routes.state = $.route("/state").method("get"); };
+      );
+      await $.add(
+        "scenarios/index.cjs",
+        `exports.startup = ($) => { $.routes.state = $.route("/state").method("get"); };
       exports.request = async ($) => { await $.route("/state").method("get").send(); };
       exports.savedRequest = async ($) => { await $.routes.state.send(); };`,
-    );
-    const simulator = await counterfact({ ...config, basePath: $.path(".") });
-    const { stop } = await simulator.start(config);
-    try {
-      await simulator.scenario("request");
-      expect(simulator.loadContext()["requests"]).toBe(1);
-      await simulator.scenario("savedRequest");
-      expect(simulator.loadContext()["requests"]).toBe(2);
-      await simulator.reset();
-      await simulator.scenario("savedRequest");
-      expect(simulator.loadContext()["requests"]).toBe(1);
-    } finally {
-      await stop();
-    }
-  });
-});
+      );
+      const simulator = await counterfact({
+        ...config,
+        basePath: $.path("."),
+        port: portSource === "startup override" ? 8100 : 0,
+      });
+      const { stop } = await simulator.start(
+        portSource === "startup override" ? { port: 0 } : undefined,
+      );
+      try {
+        const initialStatus = simulator.status();
+        expect(initialStatus.listening).toBe(true);
+        expect(initialStatus.port).toBe(0);
+        expect(initialStatus.address?.port).toBeGreaterThan(0);
+        await simulator.scenario("request");
+        expect(simulator.loadContext()["requests"]).toBe(1);
+        await simulator.scenario("savedRequest");
+        expect(simulator.loadContext()["requests"]).toBe(2);
+        await simulator.reset();
+        expect(simulator.status()).toEqual(initialStatus);
+        await simulator.scenario("savedRequest");
+        expect(simulator.loadContext()["requests"]).toBe(1);
+      } finally {
+        await stop();
+      }
+    });
+  },
+);
 
 it("keeps state guarded when shutdown overlaps pending or failed reset startup", async () => {
   await usingTemporaryFiles(async ($) => {
