@@ -341,7 +341,18 @@ OpenAPI descriptions are preserved as JSDoc comments on generated types, so they
 
 ## Programmatic API
 
-Import `counterfact` and pass `{ basePath: "api" }` to serve an existing API directory. Other options are optional; the default port is 8100. The returned `start()` method gives tests an awaited `stop()` handle and access to the live context registry.
+Import `{ counterfact }` from `"counterfact"` and pass `{ basePath: "api" }`.
+Missing directories are created automatically; an empty API returns 404. The
+default port is 8100. Generation, watching, and cache building default to enabled;
+add `openApiPath` to generate routes and types and watch the spec for changes.
+The REPL and Admin API default to disabled. Explicit options override defaults.
+
+`await api.start()` waits for the listener and returns an awaited `stop()` handle.
+`api.start({ port: 8111 })` merges partial startup overrides with the original
+configuration. `api.status()` reports the absolute API directory, resolved
+configuration (excluding the Admin API token), and live listening address,
+including the allocated port for `port: 0`. The live context is available through
+`api.contextRegistry`.
 
 See the copyable [Programmatic API configuration](./features/programmatic-api.md) and [Automated Integration Tests](./patterns/automated-integration-tests.md).
 

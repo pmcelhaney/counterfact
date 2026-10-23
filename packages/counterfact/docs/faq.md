@@ -233,7 +233,7 @@ If you add a new HTTP method to an existing path in your spec (for example addin
 
 ## Can I use it programmatically (not via the CLI)?
 
-Yes. Point `counterfact` at your existing API directory:
+Yes. Point `counterfact` at your API directory:
 
 ```ts
 import { counterfact } from "counterfact";
@@ -245,9 +245,15 @@ const { stop } = await api.start();
 await stop();
 ```
 
-The server listens on port 8100 by default. Add `port` to choose another port and
-`openApiPath` to enable spec-backed validation. Other options have defaults suited
-to running existing routes in tests.
+The server listens on port 8100 by default and creates missing API, route, and
+cache directories. An empty API returns 404. Add `openApiPath` to generate routes
+and types from a spec and watch for changes. Generation, watching, and cache
+building are enabled by default; you can explicitly disable them.
+
+Use `await api.start({ port: 8111 })` to override the port while preserving other
+options. Startup waits for the HTTP listener and rejects if binding fails.
+`api.status()` reports the absolute API directory, resolved configuration, and
+live listening address. After `stop()`, it reports `listening: false`.
 
 This makes Counterfact easy to embed in test setups — start a server in `beforeAll`, stop it in `afterAll`, and run real HTTP requests against it in your tests. See the [Programmatic API guide](./features/programmatic-api.md) for a complete example.
 

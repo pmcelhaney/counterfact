@@ -1,4 +1,7 @@
+import { once } from "node:events";
 import fs from "node:fs/promises";
+import type { Server } from "node:http";
+import type { AddressInfo } from "node:net";
 import nodePath from "node:path";
 
 import { createHttpTerminator, type HttpTerminator } from "http-terminator";
@@ -80,6 +83,20 @@ export interface SpecConfig {
 /** Options for embedding an existing API in a test or another Node.js process. */
 export type CounterfactOptions = Pick<Config, "basePath"> &
   Partial<Omit<Config, "basePath">>;
+
+/** Overrides applied when starting a configured simulator. */
+export type CounterfactStartOptions = Partial<
+  Pick<Config, "port" | "startServer" | "buildCache">
+> & {
+  generate?: Partial<Config["generate"]>;
+  watch?: Partial<Config["watch"]>;
+};
+
+/** Snapshot of the simulator's API directory and current HTTP listener. */
+export interface CounterfactStatus extends Omit<Config, "adminApiToken"> {
+  listening: boolean;
+  address: AddressInfo | null;
+}
 
 type Scenario$ = {
   context: Record<string, unknown>;
@@ -238,7 +255,8 @@ function validateSpecGroups(
  * and launching the interactive REPL.
  *
  * @param options - API directory and optional runtime overrides. Defaults to serving
- *   existing routes on port 8100 without generation, spec loading, or a REPL.
+ *   routes on port 8100 with generation, watching, and cache building enabled;
+ *   spec loading and a REPL remain optional.
  * @param specs - Optional array of spec entries. Omit to use a single spec
  *   derived from `config.openApiPath` and `config.prefix`.
  * @returns An object containing the configured sub-systems and two entry-point
@@ -255,8 +273,8 @@ export async function counterfact<TStore = unknown>(
 ) {
   const config: Config = {
     alwaysFakeOptionals: false,
-    buildCache: false,
-    generate: { routes: false, types: false },
+    buildCache: true,
+    generate: { routes: true, types: true },
     openApiPath: "_",
     port: 8100,
     prefix: "",
@@ -267,7 +285,7 @@ export async function counterfact<TStore = unknown>(
     startServer: true,
     validateRequests: true,
     validateResponses: true,
-    watch: { routes: false, types: false },
+    watch: { routes: true, types: true },
     ...options,
     basePath: nodePath.resolve(options.basePath),
   };
@@ -393,12 +411,45 @@ export async function counterfact<TStore = unknown>(
   // The REPL is configured using the first runner.
   const primaryRunner = runners[0]!;
 
-  async function start(
-    options: Pick<
-      Config,
-      "generate" | "startServer" | "watch" | "buildCache"
-    > = config,
-  ) {
+  let httpServer: Server | undefined;
+  let startupOptions: Pick<
+    Config,
+    "port" | "generate" | "startServer" | "watch" | "buildCache"
+  > = config;
+
+  function status(): CounterfactStatus {
+    const address = httpServer?.address();
+    const snapshot = {
+      ...config,
+      port: startupOptions.port,
+      generate: startupOptions.generate,
+      startServer: startupOptions.startServer,
+      watch: startupOptions.watch,
+      buildCache: startupOptions.buildCache,
+    };
+    delete snapshot.adminApiToken;
+    return {
+      ...structuredClone(snapshot),
+      listening: httpServer?.listening ?? false,
+      address:
+        address !== undefined && address !== null && typeof address !== "string"
+          ? { ...address }
+          : null,
+    };
+  }
+
+  async function start(overrides: CounterfactStartOptions = {}) {
+    const options = {
+      ...config,
+      ...overrides,
+      generate: { ...config.generate, ...overrides.generate },
+      watch: { ...config.watch, ...overrides.watch },
+    };
+    startupOptions = options;
+    for (const runner of runners) {
+      runner.configureStartup(options);
+    }
+
     async function completeStage(operations: Array<Promise<unknown>>) {
       const results = await Promise.allSettled(operations);
       const failure = results.find(
@@ -506,15 +557,17 @@ export async function counterfact<TStore = unknown>(
         return { stop: stopResources };
       }
 
-      await runGroupStartupScenarios(runners, { port: config.port });
+      await runGroupStartupScenarios(runners, { port: options.port });
 
       const server = koaApp.listen({
-        port: config.port,
+        port: options.port,
       });
 
+      httpServer = server;
       httpTerminator = createHttpTerminator({
         server,
       });
+      await once(server, "listening");
     } catch (error) {
       await stopResources().catch(() => undefined);
       throw error;
@@ -526,6 +579,7 @@ export async function counterfact<TStore = unknown>(
   }
 
   const baseSimulator = {
+    status,
     contextRegistry: primaryRunner.contextRegistry,
     koaApp,
     registry: primaryRunner.registry,
@@ -543,7 +597,7 @@ export async function counterfact<TStore = unknown>(
         primaryRunner.contextRegistry,
         primaryRunner.registry,
         {
-          port: config.port,
+          port: startupOptions.port,
           proxyPaths: config.proxyPaths,
           proxyUrl: config.proxyUrl,
         },

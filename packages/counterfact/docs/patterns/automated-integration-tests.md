@@ -12,12 +12,16 @@ Use Counterfact's programmatic API to embed the mock server directly in your tes
 
 ## Example
 
-Install Counterfact as a dev dependency and generate route files from your spec:
+Install Counterfact as a dev dependency:
 
 ```sh
 npm install --save-dev counterfact
-npx counterfact openapi.yaml api --generate
 ```
+
+Supplying `openApiPath` generates routes and types at startup, then watches the
+spec for changes. Missing API directories are created automatically. To use
+existing routes without regeneration, set both `generate` and `watch` to
+`{ routes: false, types: false }`.
 
 Start and stop the server around your test suite:
 
@@ -32,6 +36,7 @@ const config = { basePath: "api", openApiPath: "openapi.yaml", port };
 beforeAll(async () => {
   const app = await counterfact(config);
   ({ stop } = await app.start());
+  console.log(app.status()); // resolved configuration and live listener
 });
 
 afterAll(async () => {
