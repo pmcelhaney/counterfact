@@ -23,7 +23,7 @@ Counterfact writes editable route files and generated TypeScript types to
 For a project or CI workflow, install a pinned version and commit the lockfile:
 
 ```sh
-npm install --save-dev counterfact@2.16.3
+npm install --save-dev counterfact@2.16.6
 npx counterfact ./openapi.yaml api
 ```
 
@@ -44,6 +44,7 @@ edit a handler. A response might look like this:
 {
   "id": 1,
   "name": "string",
+  "photoUrls": [],
   "status": "available"
 }
 ```
@@ -73,12 +74,13 @@ corresponding handler:
 
 ```ts
 // api/routes/pet/{petId}.ts
-import type { HTTP_GET } from "../../types/paths/pet/{petId}.types.js";
+import type { getPetById } from "../../types/paths/pet/{petId}.types.js";
 
-export const GET: HTTP_GET = ($) =>
+export const GET: getPetById = ($) =>
   $.response[200].json({
     id: $.path.petId,
     name: "Fluffy",
+    photoUrls: [],
     status: "available",
   });
 ```
