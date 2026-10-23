@@ -19,6 +19,7 @@ import type { Repository } from "./repository.js";
 const debug = createDebugger("counterfact:typescript-generator:script");
 
 interface ImportEntry {
+  id: string;
   isDefault: boolean;
   isType: boolean;
   name: string;
@@ -62,11 +63,21 @@ export class Script {
       .join("/");
   }
 
-  public firstUniqueName(coder: Coder): string {
+  public firstUniqueName(
+    coder: Coder,
+    isType = false,
+    isDefault = false,
+  ): string {
     for (const name of coder.names()) {
       if (
-        !this.imports.has(name) &&
-        !this.exports.has(name) &&
+        (!this.imports.has(name) ||
+          (this.imports.get(name)!.id === coder.exportId &&
+            this.imports.get(name)!.isType === isType &&
+            this.imports.get(name)!.isDefault === isDefault)) &&
+        (!this.exports.has(name) ||
+          (this.exports.get(name)!.id === coder.exportId &&
+            this.exports.get(name)!.isType === isType &&
+            this.exports.get(name)!.isDefault === isDefault)) &&
         !this.externalImport.has(name)
       )
         return name;
@@ -77,12 +88,12 @@ export class Script {
   public export(coder: Coder, isType = false, isDefault = false): string {
     const cacheKey = isDefault ? "default" : `${coder.id}:${isType}`;
     if (this.cache.has(cacheKey)) return this.cache.get(cacheKey)!;
-    const name = this.firstUniqueName(coder);
+    const name = this.firstUniqueName(coder, isType, isDefault);
     this.cache.set(cacheKey, name);
 
     const entry: ExportStatement = {
       done: false,
-      id: coder.id,
+      id: coder.exportId,
       isDefault,
       isType,
       name,
@@ -119,11 +130,17 @@ export class Script {
     const key = `${coder.id}@${modulePath}:${isType}:${isDefault}`;
     if (this.cache.has(key)) return this.cache.get(key)!;
     if (modulePath === this.path) return this.export(coder, isType, isDefault);
-    const name = this.firstUniqueName(coder);
+    const name = this.firstUniqueName(coder, isType, isDefault);
     this.cache.set(key, name);
     const script = this.repository.get(modulePath);
     const exportedName = script.export(coder, isType, isDefault);
-    this.imports.set(name, { isDefault, isType, name: exportedName, script });
+    this.imports.set(name, {
+      id: coder.exportId,
+      isDefault,
+      isType,
+      name: exportedName,
+      script,
+    });
     debug("import %s as %s from %s", exportedName, name, modulePath);
     return name;
   }
@@ -176,7 +193,7 @@ export class Script {
     if (versions.has(coder.version)) return;
     const entry: ExportStatement = {
       done: false,
-      id: coder.id,
+      id: coder.exportId,
       isDefault: false,
       isType: true,
       jsdoc: "",

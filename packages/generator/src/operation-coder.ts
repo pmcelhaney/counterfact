@@ -43,6 +43,12 @@ export class OperationCoder extends Coder {
     this.securitySchemes = securitySchemes;
   }
 
+  public override get exportId(): string {
+    return this.version === ""
+      ? this.id
+      : `${this.constructor.name}@${this.modulePath()}:${this.requestMethod.toLowerCase()}`;
+  }
+
   public override names(): Generator<string> {
     return super.names(this.requestMethod.toUpperCase());
   }

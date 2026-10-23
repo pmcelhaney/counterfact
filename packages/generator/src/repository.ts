@@ -308,12 +308,15 @@ export class Repository {
     );
     const exported = new Set<string>();
     const bindings = new Set<string>();
+    const valueBindings = new Set<string>();
     const imports = new Map<string, { module: string; exported: string }>();
     let lastImport: ts.ImportDeclaration | undefined;
 
     const collectBinding = (name: ts.BindingName): void => {
-      if (ts.isIdentifier(name)) bindings.add(name.text);
-      else
+      if (ts.isIdentifier(name)) {
+        bindings.add(name.text);
+        valueBindings.add(name.text);
+      } else
         for (const element of name.elements) {
           if (ts.isBindingElement(element)) collectBinding(element.name);
         }
@@ -340,49 +343,91 @@ export class Repository {
         statement.name
       ) {
         bindings.add(statement.name.text);
-        if (isExported) exported.add(statement.name.text);
+        if (
+          !ts.isTypeAliasDeclaration(statement) &&
+          !ts.isInterfaceDeclaration(statement)
+        ) {
+          valueBindings.add(statement.name.text);
+          if (isExported) exported.add(statement.name.text);
+        }
       } else if (ts.isExportDeclaration(statement)) {
-        if (!statement.exportClause) {
-          // Resolve star exports without executing the user's module.
-          const program = ts.createProgram([fullPath], {
-            allowJs: true,
-            noLib: true,
-            types: [],
-            module: ts.ModuleKind.ESNext,
-            moduleResolution: ts.ModuleResolutionKind.Bundler,
-          });
-          const moduleSource = program.getSourceFile(fullPath)!;
-          const checker = program.getTypeChecker();
-          for (const item of moduleSource.statements) {
+        if (statement.isTypeOnly) continue;
+        // Resolve aliases and re-exports using TypeScript's value namespace,
+        // without loading or executing any user-authored JavaScript.
+        const program = ts.createProgram([fullPath], {
+          allowJs: true,
+          noLib: true,
+          types: [],
+          module: ts.ModuleKind.ESNext,
+          moduleResolution: ts.ModuleResolutionKind.Bundler,
+        });
+        const checker = program.getTypeChecker();
+        const moduleSource = program.getSourceFile(fullPath)!;
+        const hasValue = (symbol: ts.Symbol | undefined): boolean => {
+          if (!symbol) return false;
+          if (symbol.flags & ts.SymbolFlags.Alias) {
             if (
-              ts.isExportDeclaration(item) &&
-              !item.exportClause &&
-              item.moduleSpecifier &&
-              !checker.getSymbolAtLocation(item.moduleSpecifier)
-            ) {
+              symbol.declarations?.some(
+                (declaration) =>
+                  (ts.isExportSpecifier(declaration) &&
+                    (declaration.isTypeOnly ||
+                      declaration.parent.parent.isTypeOnly)) ||
+                  (ts.isImportSpecifier(declaration) &&
+                    (declaration.isTypeOnly ||
+                      declaration.parent.parent.isTypeOnly)),
+              )
+            )
+              return false;
+            return hasValue(checker.getAliasedSymbol(symbol));
+          }
+          return (symbol.flags & ts.SymbolFlags.Value) !== 0;
+        };
+        const item = moduleSource.statements.find(
+          (candidate) => candidate.pos === statement.pos,
+        )!;
+        if (ts.isExportDeclaration(item)) {
+          if (item.exportClause && ts.isNamedExports(item.exportClause)) {
+            for (const element of item.exportClause.elements)
+              if (
+                !element.isTypeOnly &&
+                hasValue(checker.getSymbolAtLocation(element.name))
+              )
+                exported.add(element.name.text);
+          } else if (
+            item.exportClause &&
+            ts.isNamespaceExport(item.exportClause)
+          ) {
+            if (hasValue(checker.getSymbolAtLocation(item.exportClause.name)))
+              exported.add(item.exportClause.name.text);
+          } else if (item.moduleSpecifier) {
+            const symbol = checker.getSymbolAtLocation(item.moduleSpecifier);
+            if (!symbol)
               throw new Error(
                 "Cannot resolve a star re-export while updating " + fullPath,
               );
-            }
+            for (const entry of checker.getExportsOfModule(symbol))
+              if (entry.name !== "default" && hasValue(entry))
+                exported.add(entry.name);
           }
-          const symbol = checker.getSymbolAtLocation(moduleSource);
-          if (symbol)
-            for (const item of checker.getExportsOfModule(symbol))
-              exported.add(item.name);
         }
-        if (statement.exportClause && ts.isNamedExports(statement.exportClause))
-          for (const element of statement.exportClause.elements)
-            exported.add(element.name.text);
       }
       if (ts.isImportDeclaration(statement)) {
         lastImport = statement;
-        if (statement.importClause?.name)
+        if (statement.importClause?.name) {
           bindings.add(statement.importClause.name.text);
+          if (!statement.importClause.isTypeOnly)
+            valueBindings.add(statement.importClause.name.text);
+        }
         const named = statement.importClause?.namedBindings;
-        if (named && ts.isNamespaceImport(named)) bindings.add(named.name.text);
-        else if (named && ts.isStringLiteral(statement.moduleSpecifier)) {
+        if (named && ts.isNamespaceImport(named)) {
+          bindings.add(named.name.text);
+          if (!statement.importClause?.isTypeOnly)
+            valueBindings.add(named.name.text);
+        } else if (named && ts.isStringLiteral(statement.moduleSpecifier)) {
           for (const element of named.elements) {
             bindings.add(element.name.text);
+            if (!statement.importClause?.isTypeOnly && !element.isTypeOnly)
+              valueBindings.add(element.name.text);
             imports.set(element.name.text, {
               module: statement.moduleSpecifier.text,
               exported: element.propertyName?.text ?? element.name.text,
@@ -404,7 +449,7 @@ export class Repository {
         exported.has(declaration.name.text)
       )
         continue;
-      if (bindings.has(declaration.name.text))
+      if (valueBindings.has(declaration.name.text))
         throw new Error(
           "Cannot add handler " +
             declaration.name.text +
@@ -468,6 +513,7 @@ export class Repository {
       );
       exported.add(declaration.name.text);
       bindings.add(declaration.name.text);
+      valueBindings.add(declaration.name.text);
     }
     if (handlers.length === 0) return;
 

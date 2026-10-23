@@ -230,7 +230,8 @@ No. Counterfact never overwrites an existing route file. Your custom route logic
 If you add a new HTTP method to an existing path in your spec (for example adding `POST` to a route that already has `GET`), Counterfact **appends** the new handler stub to the bottom of the existing file and inserts its `import type` statement after the existing imports. All pre-existing code in the file is left untouched.
 
 Existing handlers declared as functions or exported through aliases are also
-recognized. Multiline imports and their comments remain intact, and a new
+recognized. Type-only exports do not count as runtime handlers and do not prevent
+new handler generation. Multiline imports and their comments remain intact, and a new
 handler's type import receives an alias if its name is already in use.
 
 ---

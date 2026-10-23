@@ -70,6 +70,7 @@ describe("a Script", () => {
     importingScript.import(coder);
 
     expect(importingScript.imports.get("Account")).toStrictEqual({
+      id: coder.exportId,
       isDefault: false,
       isType: false,
       name: "Account",

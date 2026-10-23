@@ -3,6 +3,8 @@ import ts from "typescript";
 import { usingTemporaryFiles } from "using-temporary-files";
 
 import { CodeGenerator } from "../src/code-generator.js";
+import { Repository } from "../src/repository.js";
+import { generateVersionsTsContent } from "../src/versions-ts-generator.js";
 import { ScenarioFileGenerator } from "../src/scenario-file-generator.js";
 
 const specification = {
@@ -23,6 +25,139 @@ const specification = {
 };
 
 describe("AST route regeneration", () => {
+  it("shares handler names across distinct versioned specifications", async () => {
+    await usingTemporaryFiles(async ($) => {
+      const repository = new Repository();
+      for (const version of ["v1", "v2"]) {
+        await $.add(
+          `${version}.json`,
+          JSON.stringify({
+            ...specification,
+            paths: {
+              "/thing": {
+                get: { responses: { 204: { description: version } } },
+              },
+            },
+          }),
+        );
+        await new CodeGenerator(
+          $.path(`${version}.json`),
+          $.path(""),
+          {
+            routes: true,
+            types: true,
+          },
+          version,
+        ).generate(repository);
+      }
+      await $.add(
+        "types/versions.ts",
+        await generateVersionsTsContent(["v1", "v2"]),
+      );
+      await new ScenarioFileGenerator($.path("")).generate();
+      const route = await $.read("routes/thing.ts");
+      const contract = await $.read("types/paths/thing.types.ts");
+      expect(route).toContain("export const GET: HTTP_GET");
+      expect(route).not.toContain("GET2");
+      expect(contract).toContain("export type HTTP_GET =");
+      expect(contract).toContain("v1: HTTP_GET_$_v1");
+      expect(contract).toContain("v2: HTTP_GET_$_v2");
+      const program = ts.createProgram([$.path("routes/thing.ts")], {
+        strict: true,
+        noEmit: true,
+        skipLibCheck: true,
+        types: [],
+        target: ts.ScriptTarget.ES2022,
+        module: ts.ModuleKind.ESNext,
+        moduleResolution: ts.ModuleResolutionKind.Bundler,
+        allowImportingTsExtensions: true,
+      });
+      expect(
+        ts
+          .getPreEmitDiagnostics(program)
+          .map((diagnostic) =>
+            ts.flattenDiagnosticMessageText(diagnostic.messageText, "\n"),
+          ),
+      ).toEqual([]);
+    });
+  });
+
+  it.each([
+    "export type POST = string;",
+    "export interface POST { label: string }",
+    'export type { POST } from "./other.js";',
+    'export { type POST } from "./other.js";',
+    'export { POST } from "./other.js";',
+    'export type * from "./other.js";',
+    'export * from "./other.js";',
+    'import type { POST } from "./other.js";\nexport type { POST };',
+  ])(
+    "adds a runtime handler alongside type-only declarations: %s",
+    async (declaration) => {
+      await usingTemporaryFiles(async ($) => {
+        await $.add("openapi.json", JSON.stringify(specification));
+        await $.add(
+          "routes/other.ts",
+          "export interface POST { label: string }",
+        );
+        const original =
+          declaration + "\nexport function GET() { return {}; }\n";
+        await $.add("routes/thing.ts", original);
+        const generator = new CodeGenerator(
+          $.path("openapi.json"),
+          $.path(""),
+          { routes: true, types: true },
+        );
+        await generator.generate();
+        const content = await $.read("routes/thing.ts");
+        for (const line of original.trim().split("\n"))
+          expect(content).toContain(line);
+        expect(content).toContain("export const POST: createThing");
+        await generator.generate();
+        expect(await $.read("routes/thing.ts")).toBe(content);
+      });
+    },
+  );
+
+  it.each([
+    'export type { POST } from "./other.js";',
+    'export { type POST } from "./other.js";',
+    'export type * from "./other.js";',
+  ])(
+    "does not treat a type-only re-export of a value as a handler: %s",
+    async (original) => {
+      await usingTemporaryFiles(async ($) => {
+        await $.add("openapi.json", JSON.stringify(specification));
+        await $.add("routes/other.ts", "export function POST() { return {}; }");
+        await $.add("routes/thing.ts", original + "\n");
+        await new CodeGenerator($.path("openapi.json"), $.path(""), {
+          routes: true,
+          types: true,
+        }).generate();
+        expect(await $.read("routes/thing.ts")).toContain(
+          "export const POST: createThing",
+        );
+      });
+    },
+  );
+
+  it("rejects a conflicting local runtime binding", async () => {
+    await usingTemporaryFiles(async ($) => {
+      await $.add("openapi.json", JSON.stringify(specification));
+      const original = "const POST = () => {};\n";
+      await $.add("routes/thing.ts", original);
+      await expect(
+        new CodeGenerator($.path("openapi.json"), $.path(""), {
+          routes: true,
+          types: true,
+        }).generate(),
+      ).rejects.toThrow(
+        "Cannot add handler POST: a local binding already exists",
+      );
+      expect(await $.read("routes/thing.ts")).toBe(original);
+    });
+  });
+
   it("recognizes handlers supplied by a star re-export without executing them", async () => {
     await usingTemporaryFiles(async ($) => {
       await $.add("openapi.json", JSON.stringify(specification));

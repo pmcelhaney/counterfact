@@ -35,6 +35,11 @@ export class Coder {
     return `${this.constructor.name}@${this.requirement.url}`;
   }
 
+  /** Identity of a logical export, which may be shared by versioned inputs. */
+  public get exportId(): string {
+    return this.id;
+  }
+
   /** Override when one export requires several declarations or deferred assembly. */
   public exportDeclarations(
     _script: Script,

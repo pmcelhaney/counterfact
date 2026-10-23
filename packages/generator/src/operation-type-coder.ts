@@ -110,6 +110,12 @@ export class OperationTypeCoder extends TypeCoder {
     return buildJsDoc(this.requirement.data);
   }
 
+  public override get exportId(): string {
+    return this.version === ""
+      ? this.id
+      : `${this.constructor.name}@${this.modulePath()}:${this.requestMethod.toLowerCase()}`;
+  }
+
   public override names(): Generator<string> {
     return super.names(this.getOperationBaseName());
   }
@@ -574,6 +580,10 @@ export class OperationTypeCoder extends TypeCoder {
  * is assembled by the shared script's `versionsTypeStatements()`.
  */
 export class VersionedArgTypeCoder extends OperationTypeCoder {
+  public override get exportId(): string {
+    return this.id;
+  }
+
   /**
    * Include the version in the cache key so v1 and v2 coders are treated as
    * distinct exports even when they share the same requirement URL.
