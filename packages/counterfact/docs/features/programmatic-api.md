@@ -2,35 +2,104 @@
 
 Counterfact can be used as a library — for example, from [Playwright](https://playwright.dev/) or [Cypress](https://www.cypress.io/) tests. This lets you manipulate context state directly in test code without relying on special magic values in mock logic.
 
+Point Counterfact at an API directory, then start it:
+
 ```ts
-import path from "node:path";
 import { counterfact } from "counterfact";
 
-const config = {
-  basePath: path.resolve("api"), // directory containing your routes/
-  buildCache: false,
-  openApiPath: path.resolve("api.yaml"), // pass "_" to run without a spec
-  port: 8100,
-  alwaysFakeOptionals: false,
-  generate: { routes: false, types: false },
-  proxyPaths: new Map(),
-  proxyUrl: "",
-  prefix: "",
-  startRepl: false, // do not auto-start the REPL
-  startServer: true,
-  validateRequests: true,
-  validateResponses: true,
-  watch: { routes: false, types: false },
-};
+const api = await counterfact({ basePath: "api" });
+const { stop } = await api.start();
 
-const { contextRegistry, start } = await counterfact(config);
-const { stop } = await start(config);
+// The same live context your routes see as $.context
+const rootContext = api.contextRegistry.find("/");
 
-// Get the root context — the object your routes see as $.context
-const rootContext = contextRegistry.find("/");
+// When the test suite finishes
+await stop();
 ```
 
+`basePath` is the only required option and can be relative to the current working
+directory. Missing API, route, and required cache directories are created
+automatically; an empty API starts successfully and returns 404 until routes are
+added. By default, Counterfact serves existing routes on port **8100** without
+loading an OpenAPI spec, starting a REPL, or enabling the Admin API. Runtime hot reload stays active until you call `stop()`.
+
+Pass only the options you need to change:
+
+```ts
+const api = await counterfact({
+  basePath: "api",
+  openApiPath: "openapi.yaml", // generates routes/types and watches this spec
+  port: 4001,
+});
+const { stop } = await api.start();
+```
+
+Generation, watching, and cache building are enabled by default, with or without
+a spec. Supplying `openApiPath` generates routes and types at startup, watches
+for spec changes, and enables spec-backed validation. Without a spec, there
+are no spec-driven routes or types to generate. Generated handlers that use
+`$.response[status].random()` or `.example(name)` require a supplied spec;
+without it, the response definition is unavailable. To opt out, pass
+`generate: { routes: false, types: false }`,
+`watch: { routes: false, types: false }`, or `buildCache: false`.
+`watch` controls regeneration; it does not disable runtime hot reload. Other runtime
+options remain available as overrides. Each simulator gets its own proxy map. `buildCache` enables a one-time cache
+build when `startServer` is false; a running server compiles and reloads routes
+as needed regardless of that flag.
+
+`start()` reuses the configuration passed to `counterfact()`. Pass partial
+startup overrides to change the port or startup controls while retaining defaults:
+
+```ts
+const { stop } = await api.start({ port: 8111 });
+console.log(api.status().address?.port); // 8111
+```
+
+`port`, `startServer`, `buildCache`, `generate`, and `watch` can be overridden.
+Existing calls that pass a full configuration to `counterfact(config)` and `start(config)` remain
+supported. In the examples below, `config` can be a minimal object such as
+`{ basePath: "api" }`.
+
 Once you have `rootContext` you can read and write any state that your route handlers expose.
+
+## Checking server status
+
+Call `api.status()` for the resolved API directory and a snapshot of the HTTP listener:
+
+```ts
+const api = await counterfact({ basePath: "api", port: 0 });
+api.status().basePath; // "/absolute/path/to/api"
+api.status().listening; // false
+
+const { stop } = await api.start();
+const status = api.status();
+if (status.listening && status.address) {
+  console.log(`Counterfact is listening on port ${status.address.port}`);
+}
+
+await stop();
+api.status().basePath; // "/absolute/path/to/api"
+api.status().listening; // false
+```
+
+`basePath` is the absolute API directory containing `routes/`, resolved relative
+to the working directory when `counterfact()` is called. It remains available
+before startup, after shutdown, and when the HTTP server is disabled.
+
+The snapshot also includes resolved configuration: `port`, `openApiPath`,
+`prefix`, `generate`, `watch`, `buildCache`, server/REPL/Admin API flags,
+validation settings, overlays, and proxy settings. Explicit startup options are
+reflected after calling `start(options)`. The configured `port` can be `0`;
+`address.port` is the actual allocated port. The Admin API token is omitted.
+Objects, arrays, and maps are copied so editing a snapshot does not change the
+simulator's configuration.
+
+`address` contains the bound address, address family, and actual port, including
+an automatically assigned port when configured with `port: 0`. `start()` waits
+until the listener is ready and rejects if binding fails, such as when the port
+is already occupied. With `startServer: false`, `listening` remains `false` and
+`address` remains `null`. This reports the local HTTP listener;
+it does not probe application routes or upstream services.
 
 ## Accessing an application-level store
 
@@ -49,7 +118,7 @@ if (simulator.store === undefined) {
 }
 
 simulator.store.seed();
-const { stop } = await simulator.start(config);
+const { stop } = await simulator.start();
 ```
 
 The property remains optional because the published API cannot infer whether a
@@ -71,49 +140,53 @@ export const POST: HTTP_POST = ($) => {
 };
 ```
 
-A Playwright test can flip between scenarios without hard-coded usernames:
+A Playwright Test suite can change the live context before each login attempt.
+Here, `attemptToLogIn(page)` is your application's login helper:
 
 ```ts
+import { test, expect } from "@playwright/test";
 import { counterfact } from "counterfact";
-import { chromium } from "playwright";
+import { attemptToLogIn } from "./support/login.js";
 
-let page;
-let rootContext;
-let stop;
-let browser;
+let api: Awaited<ReturnType<typeof counterfact>>;
+let stop: () => Promise<void>;
 
-beforeAll(async () => {
-  browser = await chromium.launch({ headless: true });
-  page = await (await browser.newContext()).newPage();
+// These tests deliberately share one server and its mutable context.
+test.describe.configure({ mode: "serial" });
 
-  const { contextRegistry, start } = await counterfact(config);
-  ({ stop } = await start(config));
-  rootContext = contextRegistry.find("/");
+test.beforeAll(async () => {
+  api = await counterfact({ basePath: "api" });
+  ({ stop } = await api.start());
 });
 
-afterAll(async () => {
-  await stop();
-  await browser.close();
+test.afterAll(async () => {
+  await stop?.();
 });
 
-it("rejects an incorrect password", async () => {
-  rootContext.passwordResponse = "incorrect";
-  await attemptToLogIn();
-  expect(await page.isVisible("#authentication-error")).toBe(true);
+test("rejects an incorrect password", async ({ page }) => {
+  api.contextRegistry.find("/").passwordResponse = "incorrect";
+  await attemptToLogIn(page);
+  await expect(page.locator("#authentication-error")).toBeVisible();
 });
 
-it("loads the dashboard on success", async () => {
-  rootContext.passwordResponse = "ok";
-  await attemptToLogIn();
-  expect(await page.isVisible("#dashboard")).toBe(true);
+test("loads the dashboard on success", async ({ page }) => {
+  api.contextRegistry.find("/").passwordResponse = "ok";
+  await attemptToLogIn(page);
+  await expect(page.locator("#dashboard")).toBeVisible();
 });
 
-it("prompts for a password change when the password has expired", async () => {
-  rootContext.passwordResponse = "expired";
-  await attemptToLogIn();
-  expect(await page.isVisible("#password-change-form")).toBe(true);
+test("prompts for a password change when the password has expired", async ({
+  page,
+}) => {
+  api.contextRegistry.find("/").passwordResponse = "expired";
+  await attemptToLogIn(page);
+  await expect(page.locator("#password-change-form")).toBeVisible();
 });
 ```
+
+Configure your application to send API requests to `http://localhost:8100`. This
+example uses one serial suite; parallel workers need separate server ports and
+application API URLs so they do not share a listener or mutable state.
 
 ## Multiple specs / versioned APIs
 
@@ -148,7 +221,7 @@ const { start } = await counterfact(config, [
   { source: "./products.yaml", group: "products" },
 ]);
 
-await start(config);
+await start();
 // /customers from customers.yaml is served at /customers.
 // /products from products.yaml is served at /products.
 ```
@@ -173,7 +246,7 @@ const { start } = await counterfact(config, [
   },
 ]);
 
-await start(config);
+await start();
 // Routes are now available at:
 //   http://localhost:8100/api/v1/...
 //   http://localhost:8100/api/v2/...
@@ -190,14 +263,15 @@ const { start } = await counterfact(config, [
 
 ## Return value of `counterfact()`
 
-| Property          | Type                           | Description                                                                                                                  |
-| ----------------- | ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------- |
-| `contextRegistry` | `ContextRegistry`              | Registry of all context objects keyed by path. Call `.find(path)` to get the context for a given route prefix.               |
-| `registry`        | `Registry`                     | Registry of all loaded route modules.                                                                                        |
-| `koaApp`          | `Koa`                          | The underlying Koa application.                                                                                              |
-| `store`           | `TStore \| undefined`          | Optional application-level store loaded from `<basePath>/_.store.ts`. Supply `TStore` to `counterfact<TStore>()`.            |
-| `start(config)`   | `async (config) => { stop() }` | Starts the server (and optionally the file watcher and code generator). Returns a `stop()` function to gracefully shut down. |
-| `startRepl()`     | `() => REPLServer`             | Starts the interactive REPL. Returns the REPL server instance.                                                               |
+| Property          | Type                             | Description                                                                                                                     |
+| ----------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `status()`        | `() => CounterfactStatus`        | Returns the absolute API directory, current HTTP listening state, and bound address.                                            |
+| `contextRegistry` | `ContextRegistry`                | Registry of all context objects keyed by path. Call `.find(path)` to get the context for a given route prefix.                  |
+| `registry`        | `Registry`                       | Registry of all loaded route modules.                                                                                           |
+| `koaApp`          | `Koa`                            | The underlying Koa application.                                                                                                 |
+| `store`           | `TStore \| undefined`            | Optional application-level store loaded from `<basePath>/_.store.ts`. Supply `TStore` to `counterfact<TStore>()`.               |
+| `start(options?)` | `async (options?) => { stop() }` | Merges partial startup overrides into the initial configuration and waits for the listener. Returns an awaited `stop()` handle. |
+| `startRepl()`     | `() => REPLServer`               | Starts the interactive REPL. Returns the REPL server instance.                                                                  |
 
 ## See also
 

@@ -12,42 +12,31 @@ Use Counterfact's programmatic API to embed the mock server directly in your tes
 
 ## Example
 
-Install Counterfact as a dev dependency and generate route files from your spec:
+Install Counterfact as a dev dependency:
 
 ```sh
 npm install --save-dev counterfact
-npx counterfact openapi.yaml api --generate
 ```
+
+Supplying `openApiPath` generates routes and types at startup, then watches the
+spec for changes. Missing API directories are created automatically. To use
+existing routes without regeneration, set both `generate` and `watch` to
+`{ routes: false, types: false }`.
 
 Start and stop the server around your test suite:
 
 ```ts
-import path from "node:path";
 import { counterfact } from "counterfact";
 
 const port = 4001;
 let stop: () => Promise<void>;
 
-const config = {
-  alwaysFakeOptionals: false,
-  openApiPath: path.resolve("openapi.yaml"),
-  basePath: path.resolve("api"),
-  buildCache: false,
-  port,
-  prefix: "",
-  proxyPaths: new Map(),
-  proxyUrl: "",
-  startRepl: false,
-  startServer: true,
-  validateRequests: true,
-  validateResponses: true,
-  generate: { routes: false, types: false },
-  watch: { routes: false, types: false },
-};
+const config = { basePath: "api", openApiPath: "openapi.yaml", port };
 
 beforeAll(async () => {
   const app = await counterfact(config);
-  ({ stop } = await app.start(config));
+  ({ stop } = await app.start());
+  console.log(app.status()); // resolved configuration and live listener
 });
 
 afterAll(async () => {
@@ -97,34 +86,18 @@ export const GET: HTTP_GET = ($) => {
 Reach into the live context via the `contextRegistry` returned by `counterfact()` to toggle behavior per test:
 
 ```ts
-import path from "node:path";
 import { counterfact } from "counterfact";
 
 const port = 4001;
 let contextRegistry: Awaited<ReturnType<typeof counterfact>>["contextRegistry"];
 let stop: () => Promise<void>;
 
-const config = {
-  alwaysFakeOptionals: false,
-  openApiPath: path.resolve("openapi.yaml"),
-  basePath: path.resolve("api"),
-  buildCache: false,
-  port,
-  prefix: "",
-  proxyPaths: new Map(),
-  proxyUrl: "",
-  startRepl: false,
-  startServer: true,
-  validateRequests: true,
-  validateResponses: true,
-  generate: { routes: false, types: false },
-  watch: { routes: false, types: false },
-};
+const config = { basePath: "api", openApiPath: "openapi.yaml", port };
 
 beforeAll(async () => {
   const app = await counterfact(config);
   contextRegistry = app.contextRegistry;
-  ({ stop } = await app.start(config));
+  ({ stop } = await app.start());
 });
 
 afterAll(async () => {
