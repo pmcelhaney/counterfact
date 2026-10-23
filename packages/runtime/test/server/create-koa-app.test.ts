@@ -1,5 +1,7 @@
 import Koa from "koa";
 import request from "supertest";
+import { load as yamlLoad } from "js-yaml";
+import { usingTemporaryFiles } from "using-temporary-files";
 
 import { createKoaApp } from "../../src/koa.js";
 import { ContextRegistry } from "../../src/server/context-registry.js";
@@ -7,6 +9,65 @@ import { Dispatcher } from "../../src/server/dispatcher.js";
 import { Registry } from "../../src/server/registry.js";
 
 describe("createKoaApp", () => {
+  it.each([
+    { field: "openapi", version: "3.0.4", subdirectory: "/petstore" },
+    { field: "openapi", version: "3.2.0", subdirectory: "" },
+    { field: "swagger", version: "2.0", subdirectory: "/legacy" },
+  ])(
+    "serves documentation for $field $version at '$subdirectory'",
+    async ({ field, version, subdirectory }) => {
+      await usingTemporaryFiles(async ($) => {
+        await $.add(
+          "openapi.yaml",
+          `${field}: "${version}"\ninfo:\n  title: Version compatibility\n  version: "1.0.0"\npaths: {}\n`,
+        );
+        const contextRegistry = new ContextRegistry();
+        const registry = new Registry();
+        const app = createKoaApp({
+          runners: [
+            {
+              contextRegistry,
+              dispatcher: new Dispatcher(registry, contextRegistry),
+              openApiPath: $.path("openapi.yaml"),
+              overlays: [],
+              prefix: subdirectory,
+              registry,
+              subdirectory,
+            },
+          ],
+          config: {
+            basePath: $.path(""),
+            port: 0,
+            proxyPaths: new Map(),
+            proxyUrl: "",
+            startAdminApi: false,
+          },
+        });
+        const page = await request(app.callback()).get(
+          `/counterfact/swagger${subdirectory}/`,
+        );
+        expect(page.status).toBe(200);
+        for (const asset of [
+          "swagger-ui.min.css",
+          "swagger-ui-bundle.js",
+          "swagger-ui-standalone-preset.js",
+        ]) {
+          expect(page.text).toContain(
+            `https://cdn.jsdelivr.net/npm/swagger-ui-dist@5.32.0/${asset}`,
+          );
+        }
+        expect(page.text).toContain(
+          `"url":"/counterfact/openapi${subdirectory}"`,
+        );
+        const response = await request(app.callback()).get(
+          `/counterfact/openapi${subdirectory}`,
+        );
+        expect(response.status).toBe(200);
+        expect(yamlLoad(response.text)).toMatchObject({ [field]: version });
+      });
+    },
+  );
+
   it("serves a runtime runner below its configured prefix", async () => {
     const contextRegistry = new ContextRegistry();
     const registry = new Registry();

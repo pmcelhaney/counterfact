@@ -70,6 +70,9 @@ export function createKoaApp({
 
     app.use(
       koaSwagger({
+        // The wrapper's default predates OpenAPI 3.0.4 and 3.2 support.
+        swaggerCdnUrl: "https://cdn.jsdelivr.net/npm",
+        swaggerVersion: "swagger-ui-dist@5.32.0",
         routePrefix: `/counterfact/swagger${runner.subdirectory}`,
 
         swaggerOptions: {
