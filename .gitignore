@@ -1,5 +1,6 @@
 node_modules
-.yarn/
+.yarn/*
+!.yarn/patches/
 yarn-error.log
 dist
 site/node_modules

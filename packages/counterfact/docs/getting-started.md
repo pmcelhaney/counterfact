@@ -6,7 +6,7 @@ unstable, or owned by another team.
 
 ## Prerequisite
 
-Use Node.js 22 or newer. Counterfact supports Swagger 2.0 and OpenAPI 3.0,
+Use Node.js 22.22 or newer. Counterfact supports Swagger 2.0 and OpenAPI 3.0,
 3.1, and 3.2.
 
 ## Run one command
