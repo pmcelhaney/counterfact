@@ -3,7 +3,7 @@ import { fileURLToPath } from "node:url";
 
 import { test as base, expect } from "@playwright/test";
 import { usingTemporaryFiles } from "using-temporary-files";
-import { counterfact, type Simulator, type Config } from "counterfact";
+import { counterfact, type Simulator } from "counterfact";
 
 interface TestFixtures {
   scenarioName: string | undefined;
@@ -46,24 +46,11 @@ export const test = base.extend<TestFixtures, WorkerFixtures>({
           );
           await $.add(file, await $.read(source));
         }
-        const config: Config = {
+        const simulator = await counterfact({
           basePath: $.path("."),
-          openApiPath: "_",
           port: Number(new URL(simulatorURL).port),
-          prefix: "",
-          buildCache: false,
-          generate: { routes: false, types: false },
-          watch: { routes: false, types: false },
-          proxyPaths: new Map(),
-          proxyUrl: "",
-          alwaysFakeOptionals: false,
-          startRepl: false,
-          startServer: true,
-          validateRequests: false,
-          validateResponses: false,
-        };
-        const simulator = await counterfact(config);
-        const { stop } = await simulator.start(config);
+        });
+        const { stop } = await simulator.start();
         try {
           await use(simulator);
         } finally {
