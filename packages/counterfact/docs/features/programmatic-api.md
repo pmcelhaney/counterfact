@@ -235,8 +235,10 @@ When several versions belong to one group, scenario execution uses that group's
 first declared runner, as startup does, with its route catalog. `route()` retains
 the REPL's URL behavior: supply the effective request path, including any prefix.
 
-For worker-scoped Playwright startup, automatic per-test reset, optional scenario
-selection, and HTTP assertions, see the runnable
+For worker-scoped Playwright startup, use `createCounterfactTest({ basePath: "./api" })`
+from the separate `@counterfact/playwright` package. It provides automatic per-test
+reset, optional `test.use({ scenarioName })`, simulator access, and OS-assigned
+ports without adding Playwright to Counterfact core. See the runnable
 [Playwright example](https://github.com/counterfact/api-simulator/blob/0e4f31b8ccb827036085b452d8e18a76236a029a/examples/playwright-reset/README.md) and
 [Automated Integration Tests](../patterns/automated-integration-tests.md).
 

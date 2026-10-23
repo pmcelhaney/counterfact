@@ -8,6 +8,7 @@ yarn test:boundaries
 yarn check:boundaries
 yarn lint
 yarn typecheck
+yarn test:playwright
 yarn test:packed-consumer
 yarn test:package-closures
 yarn test --runInBand --forceExit --verbose --no-watchman

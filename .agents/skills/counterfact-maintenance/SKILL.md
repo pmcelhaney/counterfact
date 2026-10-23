@@ -154,6 +154,20 @@ For interactive CLI behavior, use a real pseudo-terminal and send the literal ke
 If the required terminal facility is unavailable on an operating system, skip explicitly and ensure another CI operating system executes the test; do not replace the test with a direct function call.
 Keep that operating-system skip scoped to the real-terminal scenario so non-interactive journeys continue to run cross-platform.
 
+## Test-framework adapter packages
+
+- Keep framework dependencies in their adapter workspace, never in the facade
+  or foundational packages. Use a peer dependency for the host test runner.
+- Test fixture behavior through the real runner, and compile consumer fixture
+  declarations: transpilation alone does not verify preserved composition types.
+- Keep scenario options at test scope so changing them does not rebuild worker
+  resources. Derive ephemeral listener URLs from `status()` after startup.
+- When copying API sources, isolate compiled caches and preserve runtime package
+  resolution. Verify worker reuse, multiple-worker isolation, and teardown after
+  startup, reset, scenario, and test failures.
+- Include new adapter workspaces in the build, typecheck, boundary policy, CI,
+  and isolated packed-consumer checks. ESM-only adapters need ESM test projects.
+
 ## Common mistakes to avoid
 
 - Introducing direct fs imports in tests instead of `usingTemporaryFiles` helper.
