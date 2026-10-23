@@ -293,12 +293,20 @@ The REPL runs in the terminal alongside the server. It connects directly to the 
 ⬣> context.add({ name: 'Rex', photoUrls: [], status: 'pending' })
 { id: 2, name: 'Rex', photoUrls: [], status: 'pending' }
 
-⬣> client.get("/pet/1")
-{ status: 200, body: { id: 1, name: 'Fluffy', status: 'available' } }
+⬣> void client.get("/pet/1")
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{ "id": 1, "name": "Fluffy", "status": "available" }
 
 ⬣> .proxy on /payments    # forward /payments/* to the real API
-⬣> .proxy off             # disable all proxying
+⬣> .proxy off             # disable the root proxy default
+⬣> .proxy off /payments   # disable the explicit payments override
 ```
+
+The HTTP output above is abbreviated. `client.get()` returns a promise of raw HTTP text, rather than a `{ status, body }` object.
+
+The root `.proxy off` command leaves path-specific overrides in place. Turn each explicit `on` override off separately when all requests must stay local. See the [hybrid proxy guide](./patterns/hybrid-proxy.md).
 
 ---
 

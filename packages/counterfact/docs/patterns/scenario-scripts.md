@@ -135,7 +135,7 @@ export const addThreeDogs: Scenario = ($) => addPets($, 3, "dog");
 
 - Scenario functions are plain TypeScript — no special framework, fully type-checked, easy to test in isolation.
 - `.scenario` provides on-demand state changes without editing handler files or restarting the server.
-- `startup` gives the server a deterministic initial state on every restart, eliminating manual seeding steps.
+- `startup` applies your authored initialization on every restart. Fixed seed data and controlled inputs make that initial state repeatable; the hook does not make random or time-dependent initialization deterministic.
 - Helper functions accepting extra arguments let the same logic create a repeatable baseline at startup and smaller targeted variants during debugging.
 - Scenarios live alongside your handler code, making them easy to discover and keep in sync with the API.
 
