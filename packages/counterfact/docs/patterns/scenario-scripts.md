@@ -50,6 +50,16 @@ Generated `Scenario$` currently types `route(...)` and entries in `routes` as `u
 ⬣> routes.findSold.send()
 ```
 
+### Running scenarios from test code
+
+After starting a simulator, call `await simulator.scenario("soldPets")` or
+`await simulator.scenario("pets/orders/pending", "pets")` for an explicit group.
+Counterfact supplies the same argument as the REPL and awaits async work.
+Use `await simulator.reset()` before each test to reconstruct the baseline;
+re-running a seed scenario alone can retain mutations or duplicate records.
+See [Programmatic API](../features/programmatic-api.md) for concurrency,
+error handling, and reference-lifetime rules.
+
 ### Automatic startup
 
 Export a function named `startup` from `scenarios/index.ts` and Counterfact calls it automatically when the server initializes, before the HTTP server starts listening — no manual command required:

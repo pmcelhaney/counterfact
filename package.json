@@ -28,7 +28,7 @@
     "test:black-box": "yarn workspace counterfact build && python3 -m pytest test-black-box/ -vv --gherkin-terminal-reporter",
     "test:packed-consumer": "yarn workspace counterfact test:packed-consumer",
     "test:package-closures": "node scripts/test-package-closures.mjs",
-    "test:tsd": "tsd --typings ./packages/types/dist/index.d.ts --files ./packages/types/test/**/*.test-d.ts",
+    "test:tsd": "tsd --typings ./packages/types/dist/index.d.ts --files \"./packages/types/test/**/*.test-d.ts\"",
     "build": "node scripts/build.mjs",
     "typecheck": "tsc --noEmit --pretty false -p packages/types && tsc --noEmit --pretty false -p packages/openapi && tsc --noEmit --pretty false -p packages/runtime && tsc --noEmit --pretty false -p packages/client && tsc --noEmit --pretty false -p packages/generator && tsc --noEmit --pretty false -p packages/repl && tsc --noEmit --pretty false -p packages/counterfact",
     "release:preflight": "node scripts/release-preflight.mjs",

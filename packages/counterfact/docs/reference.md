@@ -361,6 +361,8 @@ configuration (excluding the Admin API token), and live listening address,
 including the allocated port for `port: 0`. The live context is available through
 `api.contextRegistry`.
 
+`reset()` reconstructs stores and contexts and awaits group startup while keeping the listener on the same port; `scenario(path, group?)` invokes and awaits named scenarios with the REPL arguments. Reacquire `store` and `loadContext(path, group?)` references after reset. Requests arriving during reset or after reset failure receive 503; accepted requests drain first. Concurrent resets coalesce.
+
 See the copyable [Programmatic API configuration](./features/programmatic-api.md) and [Automated Integration Tests](./patterns/automated-integration-tests.md).
 
 ---

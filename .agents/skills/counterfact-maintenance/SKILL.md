@@ -53,6 +53,16 @@ Use this skill when finalizing contributor-facing changes that affect tests, dia
   and use the official review command for verified moved documents. Remove only
   their obsolete state keys; a rename alone does not establish a new review.
 
+- Quote glob arguments in package scripts when the receiving tool accepts the pattern.
+  In particular, keep the `test:tsd` file pattern quoted: shell expansion of
+  multiple files can turn an extra path into tsd's positional working directory.
+- Documentation is also rendered as site pages. Link repository-only examples
+  outside the published docs tree through GitHub source URLs, and validate the
+  rendered site with `npm run check-links` instead of relying on filesystem paths.
+  For examples introduced by an unmerged PR, use a verified commit-pinned source
+  URL; a `main` URL returns 404 until merge. Check external example destinations
+  separately because the site link checker skips external URLs.
+
 - Keep maintained examples eligible for Renovate updates; do not exclude `**/examples/**` in `ignorePaths`. Preserve the other dependency, vendor, test, and fixture exclusions when editing that array.
 - Validate `examples/first-10-minutes` with its own `npm ci` and `npm run verify`; its npm lockfile is independent of the root Yarn lockfile. Prefer a disposable copy for this check: generation writes routes, types, and caches into the example, and those outputs can cause unrelated root lint failures if left in the worktree.
 - Use `usingTemporaryFiles()` for filesystem-heavy tests.
