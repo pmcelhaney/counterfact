@@ -1,4 +1,4 @@
-# Proxy 🔀
+# Proxying and hybrid simulation
 
 You can mix real backend calls with mocks — useful when some endpoints are not finished or you need to test edge cases like 500 errors.
 
@@ -40,5 +40,5 @@ Type `.proxy help` in the REPL for the full list of proxy commands.
 
 - [Patterns: Hybrid Proxy](../patterns/hybrid-proxy.md) — when to mix real and mocked endpoints
 - [REPL](./repl.md) — toggle proxying at runtime
-- [Reference](../reference.md) — CLI flags
-- [Usage](../usage.md)
+- [Reference](../api.md) — CLI flags
+- [Usage](../manual.md)

@@ -93,5 +93,5 @@ behavior needs a delay.
 - [Generated code](./features/generated-code.md) explains regeneration and the boundary between `routes/` and `types/`.
 - The [verified first-10-minutes example](https://github.com/counterfact/api-simulator/tree/main/examples/first-10-minutes) is a checked-in, CI-verified variant with a minimal contract.
 
-For a complete map of the deeper documentation, see [Usage](./usage.md) and
-[Reference](./reference.md).
+For a complete map of the deeper documentation, see [Usage](./manual.md) and
+[Reference](./api.md).

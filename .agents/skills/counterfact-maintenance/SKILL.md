@@ -56,6 +56,7 @@ Use this skill when finalizing contributor-facing changes that affect tests, dia
 - Quote glob arguments in package scripts when the receiving tool accepts the pattern.
   In particular, keep the `test:tsd` file pattern quoted: shell expansion of
   multiple files can turn an extra path into tsd's positional working directory.
+- The documentation has a feature-based manual and a separate API reference. Keep `site/src/data/navigation.json`, the Markdown manual/reference indexes, and the home-page feature count aligned when adding chapters. Reuse canonical Markdown pages rather than duplicating existing guides, preserve published documentation URLs, and check rendered anchors as well as page destinations after restructuring.
 - Documentation is also rendered as site pages. Link repository-only examples
   outside the published docs tree through GitHub source URLs, and validate the
   rendered site with `npm run check-links` instead of relying on filesystem paths.

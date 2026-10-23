@@ -325,6 +325,6 @@ Wherever you tell it. The second argument to the CLI is the output directory. Us
 
 - [Getting started](./getting-started.md)
 - [Patterns](./patterns/index.md)
-- [Reference](./reference.md)
+- [Reference](./api.md)
 - [How it compares](./comparison.md)
-- [Usage](./usage.md)
+- [Usage](./manual.md)

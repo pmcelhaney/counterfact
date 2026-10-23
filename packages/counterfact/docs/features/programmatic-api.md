@@ -333,5 +333,5 @@ const { start } = await counterfact(config, [
 - [State](./state.md) — the context objects you manipulate from test code
 - [Patterns: Share State Across API Groups](../patterns/shared-store.md) — typed shared state for multi-API simulations
 - [Patterns: Automated Integration Tests](../patterns/automated-integration-tests.md) — using the programmatic API in a CI-friendly test suite
-- [Reference](../reference.md) — CLI flags, architecture
-- [Usage](../usage.md)
+- [Reference](../api.md) — CLI flags, architecture
+- [Usage](../manual.md)

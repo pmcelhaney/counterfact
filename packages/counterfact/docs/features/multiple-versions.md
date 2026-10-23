@@ -220,4 +220,4 @@ It exposes:
 - [Reference: `version` field and `Versioned` type](../reference.md#multiple-api-versions)
 - [REPL](./repl.md) — interactive terminal for runtime inspection
 - [Generated code](./generated-code.md) — how code generation works
-- [Usage](../usage.md)
+- [Usage](../manual.md)

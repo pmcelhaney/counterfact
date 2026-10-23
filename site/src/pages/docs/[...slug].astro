@@ -42,6 +42,6 @@ const titleFromSlug = doc.id
 const title = titleFromHeading ?? titleFromSlug;
 ---
 
-<DocLayout title={title} canonicalPath={canonicalPath}>
+<DocLayout title={title} canonicalPath={canonicalPath} headings={headings}>
   <Content />
 </DocLayout>

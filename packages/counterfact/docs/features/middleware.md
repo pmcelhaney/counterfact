@@ -23,5 +23,5 @@ Counterfact generates a `_.middleware.ts` type file for every directory in the r
 
 - [Patterns: Custom Middleware](../patterns/custom-middleware.md) — authentication, headers, and logging across route groups
 - [Routes](./routes.md)
-- [Reference](../reference.md)
-- [Usage](../usage.md)
+- [Reference](../api.md)
+- [Usage](../manual.md)

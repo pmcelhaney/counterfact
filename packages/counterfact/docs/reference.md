@@ -1,5 +1,7 @@
 # Reference
 
+For the reorganized documentation, use the [API reference](./api.md) for contracts and the [user manual](./manual.md) for feature explanations. This comprehensive page remains available for existing links.
+
 Complete reference for Counterfact's architecture, route handlers, and CLI.
 
 Generated types preserve literal property, parameter, response header, media type,

@@ -9,6 +9,14 @@ See the [FAQ](../faq.md) for common questions about source control, editing, and
 
 No OpenAPI document? See [using Counterfact without OpenAPI](./without-openapi.md).
 
+## Update a specification
+
+With specification watching enabled, save the OpenAPI document to regenerate the enabled artifacts. Types reflect the updated contract; existing route implementations retain your edits. Use your editor or TypeScript checks to find handlers whose assumptions no longer match the specification.
+
+New operations receive route scaffolding. If you want to remove obsolete route files, use `--prune` deliberately and review the resulting diff. Commit your specification and authored behavior so changes to the simulation can be reviewed together.
+
+The `watch` generation options control responses to specification changes. Runtime hot reload of route files is separate. See [CLI configuration](../api/cli.md) and [hot reload](./hot-reload.md).
+
 ## Multi-version APIs
 
 When two or more versioned specs share the same operation path (e.g. `GET /pets`), Counterfact emits a **version-mapped handler type** in the shared `types/paths/` file instead of a flat type.
@@ -45,4 +53,4 @@ from the flat-type format.
 
 - [Routes](./routes.md) — writing route handlers, reading request data, building responses
 - [State](./state.md) — sharing state across routes with context objects
-- [Usage](../usage.md)
+- [Usage](../manual.md)

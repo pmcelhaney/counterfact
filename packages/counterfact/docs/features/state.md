@@ -130,4 +130,4 @@ a complete multi-group example and reload guidance.
 - [Patterns: Model the Workflow, Not the Backend](../patterns/model-the-workflow.md) — deciding how much state to simulate
 - [Patterns: Share State Across API Groups](../patterns/shared-store.md) — sharing domain state between independently generated groups
 - [Patterns: Test the Context, Not the Handlers](../patterns/test-context-not-handlers.md) — unit-testing context logic
-- [Usage](../usage.md)
+- [Usage](../manual.md)

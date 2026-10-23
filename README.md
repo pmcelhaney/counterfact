@@ -7,7 +7,6 @@ People and agents can build and test against an API contract instead of a live
 API, simulating new functionality, error responses, and edge cases. Selectively
 proxy requests to real services when they are useful.
 
-
 ### The backend isn’t ready
 
 Frontend work shouldn’t have to wait for the backend. When an API is unavailable or a feature hasn’t been built yet, developers still need a way to build and test the clients that depend on it.
@@ -53,7 +52,7 @@ and commit the lockfile.
 
 ## Keep going
 
-- [Documentation](https://counterfact.dev/docs/getting-started) · [guides by task](./packages/counterfact/docs/usage.md) · [CLI and API reference](./packages/counterfact/docs/reference.md)
+- [Documentation](https://counterfact.dev/docs/getting-started) · [user manual](./packages/counterfact/docs/manual.md) · [CLI and API reference](./packages/counterfact/docs/api.md)
 - [Custom responses](./packages/counterfact/docs/features/routes.md) · [errors and edge cases](./packages/counterfact/docs/patterns/simulate-failures.md) · [selective proxying](./packages/counterfact/docs/features/proxy.md)
 - [Contributing](./CONTRIBUTING.md) · [issues](https://github.com/counterfact/api-simulator/issues) · [security](./SECURITY.md)
 - [Website](https://counterfact.dev) · [npm package](https://www.npmjs.com/package/counterfact) · [changelog](./packages/counterfact/CHANGELOG.md) · [architecture decisions](./docs/adr/)

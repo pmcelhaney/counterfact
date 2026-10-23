@@ -34,7 +34,7 @@ When your project involves multiple versions or multiple specs, [Multiple API Ve
 ## See also
 
 - [Getting started](../getting-started.md)
-- [Reference](../reference.md)
+- [Reference](../api.md)
 - [FAQ](../faq.md)
 - [How it compares](../comparison.md)
-- [Usage](../usage.md)
+- [Usage](../manual.md)

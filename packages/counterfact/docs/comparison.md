@@ -107,6 +107,6 @@ npx counterfact@latest https://petstore3.swagger.io/api/v3/openapi.json api
 
 - [Getting started](./getting-started.md)
 - [Patterns](./patterns/index.md)
-- [Reference](./reference.md)
+- [Reference](./api.md)
 - [FAQ](./faq.md)
-- [Usage](./usage.md)
+- [Usage](./manual.md)

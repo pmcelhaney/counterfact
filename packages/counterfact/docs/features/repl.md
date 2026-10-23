@@ -1,4 +1,4 @@
-# REPL ⬣
+# Interactive REPL
 
 The REPL is a JavaScript prompt connected directly to the running server — like the browser DevTools console, but for your mock API. For a default OpenAPI-backed session, startup output includes:
 
@@ -197,4 +197,4 @@ If `startup` is not exported from `scenarios/index.ts`, it is silently skipped �
 - [Patterns: Scenario Scripts](../patterns/scenario-scripts.md)
 - [Patterns: Live Server Inspection with the REPL](../patterns/repl-inspection.md)
 - [Patterns: Share State Across API Groups](../patterns/shared-store.md)
-- [Usage](../usage.md)
+- [Usage](../manual.md)
