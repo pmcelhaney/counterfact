@@ -239,7 +239,7 @@ For worker-scoped Playwright startup, use `createCounterfactTest({ basePath: "./
 from the separate `@counterfact/playwright` package. It provides automatic per-test
 reset, optional `test.use({ scenarioName })`, simulator access, and OS-assigned
 ports without adding Playwright to Counterfact core. See the runnable
-[Playwright example](https://github.com/counterfact/api-simulator/blob/0e4f31b8ccb827036085b452d8e18a76236a029a/examples/playwright-reset/README.md) and
+[Playwright example](https://github.com/counterfact/api-simulator/blob/7ab6e6a0ceb2bc2ffd2cb3eebf9107f1def8e05f/examples/playwright-reset/README.md) and
 [Automated Integration Tests](../patterns/automated-integration-tests.md).
 
 ## Multiple specs / versioned APIs
