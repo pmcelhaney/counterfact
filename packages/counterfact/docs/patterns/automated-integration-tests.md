@@ -34,7 +34,7 @@ if (scenarioName) await workerSimulator.scenario(scenarioName);
 await use(workerSimulator);
 ```
 
-The complete [runnable Playwright example](https://github.com/counterfact/api-simulator/tree/main/examples/playwright-reset)
+The complete [runnable Playwright example](https://github.com/counterfact/api-simulator/blob/0e4f31b8ccb827036085b452d8e18a76236a029a/examples/playwright-reset/README.md)
 includes configuration, routes, startup, fixture teardown, a per-test scenario
 option, and assertions that deleted baseline data returns before the next test.
 It uses Playwright's HTTP request fixture, so no browser installation is required.
