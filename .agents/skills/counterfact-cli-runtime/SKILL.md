@@ -23,7 +23,7 @@ Use this skill for CLI flags, option precedence, config file loading, startup di
 - `packages/counterfact/src/cli/telemetry.ts`
 - `packages/counterfact/src/util/load-config-file.ts`
 - `packages/counterfact/test/cli/run.test.ts`
-- `packages/counterfact/docs/reference.md` (CLI reference)
+- `packages/counterfact/docs/api/cli.md` (CLI reference)
 
 ## Existing conventions to follow
 

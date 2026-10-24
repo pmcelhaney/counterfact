@@ -195,8 +195,8 @@ growing too large, split it along domain lines.
 > **Docs:**
 >
 > - [State: Context Objects](https://counterfact.dev/docs/features/state.html)
-> - [Pattern: Mock APIs with Dummy Data](https://counterfact.dev/docs/patterns/mock-with-dummy-data.html)
-> - [Pattern: Federated Context Files](https://counterfact.dev/docs/patterns/federated-context.html)
+> - [Pattern: Mock APIs with Dummy Data](https://counterfact.dev/docs/manual/sample-responses)
+> - [Pattern: Federated Context Files](https://counterfact.dev/docs/manual/nested-contexts)
 
 ---
 
@@ -379,7 +379,7 @@ Too many requests
 the request and response. The transcript above omits headers and formatting;
 it is not a parsed `{ status, body }` object.
 
-> **Docs:** [Pattern: Simulate Failures and Edge Cases](https://counterfact.dev/docs/patterns/simulate-failures.html)
+> **Docs:** [Pattern: Simulate Failures and Edge Cases](https://counterfact.dev/docs/manual/edge-cases)
 
 ---
 
@@ -389,14 +389,14 @@ it is not a parsed `{ status, body }` object.
 | ------------------------------------------- | --------------------------------------------------------------------- |
 | Getting started                             | https://counterfact.dev/docs/getting-started.html                     |
 | Full usage guide                            | https://counterfact.dev/docs/usage.html                               |
-| Reference (`$` param, CLI flags)            | https://counterfact.dev/docs/reference.html                           |
+| Reference (`$` param, CLI flags)            | https://counterfact.dev/docs/api                           |
 | State / context objects                     | https://counterfact.dev/docs/features/state.html                      |
 | REPL                                        | https://counterfact.dev/docs/features/repl.html                       |
-| Pattern: Mock with Dummy Data               | https://counterfact.dev/docs/patterns/mock-with-dummy-data.html       |
-| Pattern: Federated Context Files            | https://counterfact.dev/docs/patterns/federated-context.html          |
+| Pattern: Mock with Dummy Data               | https://counterfact.dev/docs/manual/sample-responses       |
+| Pattern: Federated Context Files            | https://counterfact.dev/docs/manual/nested-contexts          |
 | Pattern: Test the Context, Not the Handlers | https://counterfact.dev/docs/patterns/test-context-not-handlers.html  |
 | Pattern: Scenario Scripts                   | https://counterfact.dev/docs/patterns/scenario-scripts.html           |
-| Pattern: Simulate Failures and Edge Cases   | https://counterfact.dev/docs/patterns/simulate-failures.html          |
+| Pattern: Simulate Failures and Edge Cases   | https://counterfact.dev/docs/manual/edge-cases          |
 | Pattern: AI-Assisted Implementation         | https://counterfact.dev/docs/patterns/ai-assisted-implementation.html |
 | Petstore example                            | https://github.com/counterfact/example-petstore                       |
 

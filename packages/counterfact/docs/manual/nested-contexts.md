@@ -1,18 +1,12 @@
-# Federated Context Files
+# Nested and connected contexts
 
-Keep state for users, orders, payments, and other domains close to the routes that use it, without turning the whole mock into one unmanageable class.
+Use nested contexts when separate route areas need their own state or behavior. A route uses the nearest `_.context.ts` in its directory or a parent directory.
 
-## Why teams use this
+## Divide state by route subtree
 
-Placing one `_.context.ts` at the root of the routes tree is convenient at first, but it accumulates all state for all domains in one object. Unrelated concerns become entangled: the `UserContext` knows about payment flags, the payment logic reaches into user fields, and the class grows until it is hard to understand or test in isolation.
+For example, put pet behavior in `routes/pets/_.context.ts` and user behavior in `routes/users/_.context.ts`. A handler in `routes/pets/{petId}.ts` sees the pet context as `$.context`.
 
-## How it works
-
-Place a `_.context.ts` file at each domain boundary. Each subtree owns its context and is responsible only for its own state and logic. When one domain needs data from another, inject `Context$` into its context constructor and use `$.loadContext(path)` there to reach across the boundary — without merging the two contexts into one.
-
-This keeps each context class small, focused, and independently testable. The `_.context.ts` file nearest to a handler wins; a handler under `/payments` uses the payments context, not the root context.
-
-## Example
+## Connect contexts explicitly
 
 Give each domain its own context:
 
@@ -88,16 +82,8 @@ This example assumes `Payment` has string `id` and numeric `userId`, and the GET
 
 The helper returns the live context nearest to the requested path. It is available to context constructors and scenarios; the REPL exposes it as `loadContext(path)`. Handler arguments do not expose `loadContext`, so cross-domain logic belongs in an authored context method. The two contexts remain independent classes.
 
-## What you get
+## Choose a shared store for API groups
 
-- Each context class has a single responsibility and a clear boundary; it is easier to understand and unit-test in isolation.
-- `loadContext()` makes cross-domain dependencies explicit inside the context method, keeping the route adapter small.
-- Generated overloads infer the context type for known literal paths; arbitrary string paths use the `Record<string, unknown>` fallback.
-- Contexts are still shared within a subtree: all routes under `/payments` share the same payments context instance.
+Contexts in separate API groups have separate registries. Use the [shared application store](../patterns/shared-store.md) when those groups represent one product and need the same domain data.
 
-## Keep exploring
-
-- [Share State Across API Groups](./shared-store.md) — use an application-level store when collaborating routes belong to different API groups
-- [Test the Context, Not the Handlers](./test-context-not-handlers.md) — unit-test each context class independently
-- [Mock APIs with Dummy Data](./mock-with-dummy-data.md) — the pattern that introduces the single-context approach this one extends
-- [Live Server Inspection with the REPL](./repl-inspection.md) — inspect each domain's context live from the REPL
+Context references survive ordinary hot reload. After an explicit simulator reset, reacquire them with `api.loadContext()`; previously held references belong to the old state. See [stateful contexts](../features/state.md) and [lifecycle reference](../api/simulator.md).

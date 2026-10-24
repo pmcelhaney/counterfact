@@ -182,14 +182,16 @@ You can toggle individual paths from the REPL at runtime:
 ```
 ⬣> .proxy on /payments      # forward /payments/* to the real API
 ⬣> .proxy off /payments     # mock /payments/* again
-⬣> .proxy off               # mock everything
+⬣> .proxy off               # disable the root proxy default
 ```
+
+The root `.proxy off` command leaves explicit path overrides in place. Disable any remaining path-specific `on` settings separately. For a setup that survives restarts, use the [checked-in hybrid recipe](./patterns/hybrid-proxy.md#check-in-a-hybrid-setup).
 
 ---
 
 ## How does type safety work?
 
-Every route handler type is generated from the spec. When you call `.json(...)` on a response builder, TypeScript checks that the object you pass matches the schema defined in the spec. When the spec changes and you regenerate, TypeScript surfaces every handler that no longer matches — before any request fails.
+Every route handler type is generated from the spec. When you call `.json(...)` on a response builder, TypeScript checks that the object you pass matches the schema defined in the spec. When the spec changes and you regenerate, an editor or explicit TypeScript check can report mismatches in checked, typed handlers. Serving and hot-reloading TypeScript does not itself run a full project typecheck; untyped code and `$.x` can bypass these authoring checks. See the [contract-change check](./patterns/contract-change.md).
 
 OpenAPI descriptions are preserved as JSDoc comments on the generated types, so they appear inline in your editor as you type.
 
@@ -238,50 +240,17 @@ handler's type import receives an alias if its name is already in use.
 
 ## Can I use it programmatically (not via the CLI)?
 
-Yes. Point `counterfact` at your API directory:
+Yes. Import `counterfact` to start a local API from your application or test runner, control its state, and await shutdown when the work finishes.
 
-```ts
-import { counterfact } from "counterfact";
-
-const api = await counterfact({ basePath: "api" });
-const { stop } = await api.start();
-
-// When finished:
-await stop();
-```
-
-The server listens on port 8100 by default and creates missing API, route, and
-cache directories. An empty API returns 404. Add `openApiPath` to generate routes
-and types from a spec and watch for changes. Generation, watching, and cache
-building are enabled by default; you can explicitly disable them.
-
-Use `await api.start({ port: 8111 })` to override the port while preserving other
-options. Startup waits for the HTTP listener and rejects if binding fails.
-`api.status()` reports the absolute API directory, resolved configuration, and
-live listening address. After `stop()`, it reports `listening: false`.
-
-This makes Counterfact easy to embed in test setups — start a server in `beforeAll`, stop it in `afterAll`, and run real HTTP requests against it in your tests. See the [Programmatic API guide](./features/programmatic-api.md) for a complete example.
+Follow the [Programmatic API guide](./features/programmatic-api.md) for startup examples, defaults, reset behavior, and teardown. Use the [simulator lifecycle reference](./api/simulator.md) for exact options and methods, or [automated integration tests](./patterns/automated-integration-tests.md) for test-runner integration.
 
 ---
 
 ## Can I add custom middleware?
 
-Yes. Drop a `_.middleware.ts` file anywhere in the routes tree. It receives a standard Koa middleware function and applies to all routes in that subtree:
+Yes. Export a named `middleware` function from a route subtree's `_.middleware.ts`. It receives Counterfact's typed request argument and a `respondTo($)` callback. Use the generated middleware type for that directory.
 
-```ts
-// routes/_.middleware.ts
-import type { Middleware } from "koa";
-
-const middleware: Middleware = async (ctx, next) => {
-  if (!ctx.headers.authorization) {
-    ctx.status = 401;
-    return;
-  }
-  await next();
-};
-
-export default middleware;
-```
+See [middleware](./features/middleware.md) for authentication, response headers, logging, and directory scoping.
 
 ---
 
@@ -324,7 +293,6 @@ Wherever you tell it. The second argument to the CLI is the output directory. Us
 ## See also
 
 - [Getting started](./getting-started.md)
-- [Patterns](./patterns/index.md)
-- [Reference](./reference.md)
+- [API reference](./api.md)
 - [How it compares](./comparison.md)
-- [Usage](./usage.md)
+- [Find your workflow](./usage.md)

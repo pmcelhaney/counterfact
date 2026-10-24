@@ -28,7 +28,7 @@ Use this skill when changing runtime orchestration, server dispatch flow, module
 - `packages/runtime/src/server/dispatcher.ts`
 - `packages/runtime/src/server/module-loader.ts`
 - `packages/runtime/src/server/web-server/create-koa-app.ts`
-- `packages/counterfact/docs/reference.md` (architecture + runtime behavior)
+- `packages/counterfact/docs/api/simulator.md` (architecture + runtime behavior)
 
 ## Existing conventions to follow
 
@@ -37,6 +37,7 @@ Use this skill when changing runtime orchestration, server dispatch flow, module
 - Keep programmatic defaults in `counterfact()` separate from CLI action defaults. Embedding an API needs only `basePath`; generation, watching, and cache building default to enabled regardless of whether a spec is supplied. Explicit options override those defaults, and `start()` merges partial startup overrides into the resolved configuration. Use the effective port for binding, startup scenarios, REPL requests, and status reporting. `watch` flags govern code regeneration, while server startup also enables runtime module/spec/store watching.
 - Initialize route and compiled-output directories even when the API is missing or empty; cache creation must not depend on a source file being compiled.
 - Resolve HTTP startup only after the listener is ready and reject bind errors through the startup promise. Report listener status from the actual server, including the allocated port when configured with port 0.
+- Distinguish configuration-selected proxying from handler-level `$.proxy(url)`: the former bypasses local dispatch checks, while the latter runs inside dispatch. In the standard HTTP server, pass an explicit operation URL to the helper; do not assume the incoming path/query is appended. Verify forwarding with real HTTP because dispatcher mocks can attach a `req.path` that ordinary Node requests do not provide.
 - Preserve hot-reload expectations: route/module changes should apply without restart and context should survive reloads.
 - Prefer graceful degradation with actionable errors (see `docs/development/design-principles.md`).
 

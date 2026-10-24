@@ -172,12 +172,12 @@ ECMAScript `#private` fields are not compatible with prototype replacement.
 
 - [Model the Workflow, Not the Backend](./model-the-workflow.md) — decide
   whether cross-group state is necessary before introducing a store
-- [Federated Context Files](./federated-context.md) — keep state local when the
+- [Federated Context Files](../manual/nested-contexts.md) — keep state local when the
   collaborating routes are in one API group
 - [Test the Context, Not the Handlers](./test-context-not-handlers.md) — unit-test
   the context methods that wrap store behavior
 - [Automated Integration Tests](./automated-integration-tests.md) — verify
   cross-group workflows through real HTTP requests
-- [Live Server Inspection with the REPL](./repl-inspection.md) — inspect and
+- [Live Server Inspection with the REPL](../features/repl.md) — inspect and
   mutate live simulator state interactively
 - [State](../features/state.md) — context and store lifecycle reference
