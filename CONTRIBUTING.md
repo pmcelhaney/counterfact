@@ -29,14 +29,17 @@ The [code generator](./packages/generator/README.md) and [server runtime](./pack
 
 ### Try the guided tour from a checkout
 
-Build the checkout with `yarn build`, then launch its CLI from a separate empty
-directory. For example, with this repository cloned as `api-simulator`:
+From the repository root, run:
 
 ```sh
-mkdir ../counterfact-tour
-cd ../counterfact-tour
-node ../api-simulator/packages/counterfact/bin/counterfact.js
+yarn go:first-run
 ```
+
+The command builds this checkout and launches its CLI with no arguments in a
+new empty temporary directory. It prints the directory and keeps any generated
+tutorial files after you quit. Each run starts with a fresh directory so a
+previous config or example cannot bypass the intro. Use an interactive terminal
+with `CI` unset to see the menu.
 
 Choose **Try a guided example**. Running the built CLI exercises this checkout;
 `npx counterfact@latest` uses the published release. Keep the checkout available
