@@ -26,7 +26,7 @@ Read those flags in the route handler:
 
 ```ts
 // api/routes/payments/{paymentId}.ts
-export function GET($: Parameters<HTTP_GET>[0]) {
+export function GET($) {
   if ($.context.isRateLimited) return $.response[429].text("Too Many Requests");
   if ($.context.isBroken) return $.response[500].text("Internal Server Error");
   return $.response[200].json({ id: $.path.paymentId, amount: 42.0 });
@@ -49,7 +49,7 @@ Toggle failures from the REPL or from a test without restarting the server:
 To simulate intermittent failures, use a counter or a random function:
 
 ```ts
-export function GET($: Parameters<HTTP_GET>[0]) {
+export function GET($) {
   $.context.callCount = ($.context.callCount ?? 0) + 1;
   if ($.context.callCount % 3 === 0) {
     return $.response[503].text("Flaky error");
@@ -61,7 +61,7 @@ export function GET($: Parameters<HTTP_GET>[0]) {
 Or vary the response probabilistically:
 
 ```ts
-export function GET($: Parameters<HTTP_GET>[0]) {
+export function GET($) {
   if (Math.random() < 0.2) {
     return $.response[503].text("Flaky error");
   }

@@ -23,7 +23,7 @@ The agent sees the fully typed `$` parameter, the spec-derived response types, a
 
 ```ts
 // api/routes/pet/{petId}.ts
-export function GET($: Parameters<HTTP_GET>[0]) {
+export function GET($) {
   const pet = $.context.get($.path.petId);
   return pet ? $.response[200].json(pet) : $.response[404].text("Not found");
 }

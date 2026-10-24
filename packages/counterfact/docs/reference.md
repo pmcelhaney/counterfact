@@ -80,9 +80,7 @@ For OpenAPI 3.2 specs, operations under `paths[*].additionalOperations` are also
 
 ```ts
 // routes/pet/{petId}.ts
-import type { HTTP_GET } from "../../types/paths/pet/{petId}.types.js";
-
-export function GET($: Parameters<HTTP_GET>[0]) {
+export function GET($) {
   return $.response[200].random();
 }
 ```
@@ -90,7 +88,7 @@ export function GET($: Parameters<HTTP_GET>[0]) {
 ### Custom response
 
 ```ts
-export function GET($: Parameters<HTTP_GET>[0]) {
+export function GET($) {
   const pet = db.find($.path.petId);
   if (!pet) return $.response[404].text(`Pet ${$.path.petId} not found`);
   return $.response[200].json(pet);
@@ -102,9 +100,9 @@ Counterfact handles content negotiation automatically. Calling `.json(content)` 
 ### Named OpenAPI example
 
 ```ts
-export function GET($: Parameters<HTTP_GET>[0]) {
+export function GET($) {
   return $.response[200].example("fullPet");
-  //                              ^ autocompleted from your spec
+  // Use an example name defined in your spec.
 }
 ```
 
@@ -236,7 +234,7 @@ Route handlers can reach into a _different_ subtree's context using the `loadCon
 
 ```ts
 // routes/payments/{id}.ts
-export function GET($: Parameters<HTTP_GET>[0]) {
+export function GET($) {
   // Load the context that owns /users, even though this route lives under /payments
   const usersContext = $.loadContext(
     "/users",
@@ -330,7 +328,7 @@ Route handler types are generated directly from the OpenAPI spec. When you regen
 ```ts
 // This will fail to compile if status 200 no longer exists
 // or if the response body shape changes.
-export function GET($: Parameters<HTTP_GET>[0]) {
+export function GET($) {
   return $.response[200].json({ id: $.path.petId, name: "Fluffy" });
 }
 ```

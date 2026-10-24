@@ -126,9 +126,7 @@ Both properties are only present when `version` is set in the config. For a sing
 
 ```ts
 // catalog/routes/items/{itemId}.ts
-import type { HTTP_GET } from "../../types/paths/items/{itemId}.types.js";
-
-export function GET($: Parameters<HTTP_GET>[0]) {
+export function GET($) {
   const item = $.context.findById($.path.itemId);
   if (!item) return $.response[404].text("Item not found");
 
@@ -181,7 +179,7 @@ route.catalog("/items/{itemId}");
 `$.minVersion()` is a TypeScript type predicate. After a successful check, TypeScript narrows `$` to the intersection of only the versions that satisfy the minimum:
 
 ```ts
-export function GET($: Parameters<HTTP_GET>[0]) {
+export function GET($) {
   if ($.minVersion("v2")) {
     // $ is typed as the v2 (and later) $ arg — v2-only fields are available here
     return $.response[200].json({

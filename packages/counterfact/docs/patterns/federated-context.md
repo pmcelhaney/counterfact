@@ -62,9 +62,7 @@ When a payment route needs to enrich a response with user data, it loads the use
 
 ```ts
 // api/routes/payments/{paymentId}.ts
-import type { Context as UsersContext } from "../../users/_.context.js";
-
-export function GET($: Parameters<HTTP_GET>[0]) {
+export function GET($) {
   const payment = $.context.getById($.path.paymentId);
   if (!payment) return $.response[404].text("Payment not found");
 

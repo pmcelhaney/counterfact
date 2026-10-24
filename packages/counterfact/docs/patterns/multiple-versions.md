@@ -43,9 +43,7 @@ spec:
 
 ```ts
 // pets/routes/pets/{petId}.ts
-import type { HTTP_GET } from "../../types/paths/pets/{petId}.types.js";
-
-export function GET($: Parameters<HTTP_GET>[0]) {
+export function GET($) {
   const pet = $.context.getById($.path.petId);
   if (!pet) return $.response[404].text("Pet not found");
 
@@ -75,7 +73,7 @@ export function GET($: Parameters<HTTP_GET>[0]) {
 `$.minVersion()` is a type predicate. After a passing check, TypeScript narrows `$` to the intersection of only the versions that satisfy the minimum, giving you accurate autocompletion and type errors for version-specific fields:
 
 ```ts
-export function GET($: Parameters<HTTP_GET>[0]) {
+export function GET($) {
   if ($.minVersion("v2")) {
     // $ is now typed as the v2 (or v3, v4, …) $ type
     // v2-only fields are available here

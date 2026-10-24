@@ -102,7 +102,7 @@ route is just a function, so it can return a deterministic response or use a
 small shared context:
 
 ```ts
-export function POST($: Parameters<HTTP_POST>[0]) {
+export function POST($) {
   if (!$.body.name) return $.response[400].text("name is required");
   const pet = $.context.add($.body);
   return $.response[200].json(pet);

@@ -6,7 +6,7 @@ To proxy a single endpoint from within a route file:
 
 ```ts
 // routes/pet/{petId}.ts
-export function GET($: Parameters<HTTP_GET>[0]) {
+export function GET($) {
   return $.proxy("https://uat.petstore.example.com/pet");
 }
 ```

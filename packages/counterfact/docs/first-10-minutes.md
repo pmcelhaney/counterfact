@@ -50,18 +50,14 @@ Then use it in the generated `POST /pet` and `GET /pet/{petId}` handlers:
 
 ```ts
 // api/routes/pet.ts
-import type { addPet } from "../types/paths/pet.types.js";
-
-export function POST($: Parameters<addPet>[0]) {
+export function POST($) {
   return $.response[200].json($.context.add($.body));
 }
 ```
 
 ```ts
 // api/routes/pet/{petId}.ts
-import type { getPetById } from "../../types/paths/pet/{petId}.types.js";
-
-export function GET($: Parameters<getPetById>[0]) {
+export function GET($) {
   const pet = $.context.get($.path.petId);
   return pet ? $.response[200].json(pet) : $.response[404].empty();
 }

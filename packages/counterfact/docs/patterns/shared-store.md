@@ -110,7 +110,7 @@ Handlers stay small and do not receive the store directly:
 
 ```ts
 // api/orders/routes/orders.ts
-export function POST($: Parameters<HTTP_POST>[0]) {
+export function POST($) {
   return $.response[201].json($.context.createOrder($.body));
 }
 ```

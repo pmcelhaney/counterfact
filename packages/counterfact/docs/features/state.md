@@ -4,12 +4,12 @@ The `$.context` object is how routes share in-memory state. It's an instance of 
 
 ```ts
 // routes/pet.ts
-export function POST($: Parameters<HTTP_POST>[0]) {
+export function POST($) {
   return $.response[200].json($.context.addPet($.body));
 }
 
 // routes/pet/{petId}.ts
-export function GET($: Parameters<HTTP_GET>[0]) {
+export function GET($) {
   const pet = $.context.getPetById($.path.petId);
   if (pet === undefined)
     return $.response[404].text(`Pet ${$.path.petId} not found.`);

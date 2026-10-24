@@ -82,7 +82,7 @@ export class Context {
 
 ```ts
 // api/routes/pet/{petId}.ts
-export function GET($: Parameters<HTTP_GET>[0]) {
+export function GET($) {
   if ($.context.simulatePetNotFound) {
     return $.response[404].text("Not found");
   }

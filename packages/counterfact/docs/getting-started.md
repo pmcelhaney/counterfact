@@ -73,9 +73,7 @@ corresponding handler:
 
 ```ts
 // api/routes/pet/{petId}.ts
-import type { HTTP_GET } from "../../types/paths/pet/{petId}.types.js";
-
-export function GET($: Parameters<HTTP_GET>[0]) {
+export function GET($) {
   return $.response[200].json({
     id: $.path.petId,
     name: "Fluffy",

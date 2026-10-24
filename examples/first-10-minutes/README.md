@@ -57,4 +57,4 @@ For parallel test workers, copy the pattern with a separate Counterfact process,
 
 ## Contract boundary
 
-Passing this example proves that the authored simulator behaves as asserted and that its handlers type-check against this OpenAPI document. It does not prove authentication, authorization, production side effects, performance, or the real service's business behavior. Retain targeted real-backend and end-to-end tests.
+Passing this example proves that the authored simulator behaves as asserted and that the generated contracts, context, and representative client compile. Route handlers use unannotated `$` parameters, so `tsconfig.counterfact.json` sets `noImplicitAny: false`; their request and response usage is exercised by the HTTP tests. It does not prove authentication, authorization, production side effects, performance, or the real service's business behavior. Retain targeted real-backend and end-to-end tests.

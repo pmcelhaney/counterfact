@@ -120,25 +120,25 @@ Then wire the context into each handler:
 
 ```ts
 // api/routes/pet.ts
-export function GET($: Parameters<HTTP_GET>[0]) {
+export function GET($) {
   return $.response[200].json($.context.list($.query.status));
 }
 
-export function POST($: Parameters<HTTP_POST>[0]) {
+export function POST($) {
   return $.response[200].json($.context.add($.body));
 }
 ```
 
 ```ts
 // api/routes/pet/{petId}.ts
-export function GET($: Parameters<HTTP_GET>[0]) {
+export function GET($) {
   const pet = $.context.get($.path.petId);
   return pet
     ? $.response[200].json(pet)
     : $.response[404].text(`Pet ${$.path.petId} not found`);
 }
 
-export function DELETE($: Parameters<HTTP_DELETE>[0]) {
+export function DELETE($) {
   $.context.remove($.path.petId);
   return $.response[200];
 }
@@ -153,9 +153,7 @@ from another:
 
 ```ts
 // api/routes/payments/{paymentId}.ts
-import type { Context as UsersContext } from "../../users/_.context.js";
-
-export function GET($: Parameters<HTTP_GET>[0]) {
+export function GET($) {
   const payment = $.context.getById($.path.paymentId);
   if (!payment) return $.response[404].text("Payment not found");
 
@@ -322,7 +320,7 @@ export class Context {
 
 ```ts
 // api/routes/pet/{petId}.ts
-export function GET($: Parameters<HTTP_GET>[0]) {
+export function GET($) {
   if ($.context.isDown) return $.response[500].text("Service unavailable");
   if ($.context.isRateLimited) return $.response[429].text("Too many requests");
   const pet = $.context.get($.path.petId);

@@ -20,7 +20,7 @@ Choose the approach that fits how much control you need:
 ### Random data (zero effort)
 
 ```ts
-export function GET($: Parameters<HTTP_GET>[0]) {
+export function GET($) {
   return $.response[200].random();
 }
 ```
@@ -28,16 +28,16 @@ export function GET($: Parameters<HTTP_GET>[0]) {
 ### Named OpenAPI example
 
 ```ts
-export function GET($: Parameters<HTTP_GET>[0]) {
+export function GET($) {
   return $.response[200].example("fullPet");
-  //                              ^ name is autocompleted from the spec
+  // Use an example name defined in your spec.
 }
 ```
 
 ### Fixed data
 
 ```ts
-export function GET($: Parameters<HTTP_GET>[0]) {
+export function GET($) {
   return $.response[200].json({
     id: $.path.petId,
     name: "Fluffy",
@@ -79,19 +79,19 @@ export class Context {
 
 ```ts
 // api/routes/pet.ts
-export function GET($: Parameters<HTTP_GET>[0]) {
+export function GET($) {
   return $.response[200].json($.context.list());
 }
-export function POST($: Parameters<HTTP_POST>[0]) {
+export function POST($) {
   return $.response[200].json($.context.add($.body));
 }
 
 // api/routes/pet/{petId}.ts
-export function GET($: Parameters<HTTP_GET>[0]) {
+export function GET($) {
   const pet = $.context.get($.path.petId);
   return pet ? $.response[200].json(pet) : $.response[404].text("Not found");
 }
-export function DELETE($: Parameters<HTTP_DELETE>[0]) {
+export function DELETE($) {
   $.context.remove($.path.petId);
   return $.response[200];
 }

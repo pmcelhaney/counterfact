@@ -63,7 +63,7 @@ Given this route handler:
 
 ```ts
 // routes/auth/login.ts
-export function POST($: Parameters<HTTP_POST>[0]) {
+export function POST($) {
   if ($.context.passwordResponse === "ok") return $.response[200];
   if ($.context.passwordResponse === "expired")
     return $.response[403].header("reason", "expired-password");

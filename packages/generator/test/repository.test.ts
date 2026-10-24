@@ -236,9 +236,7 @@ describe("a Repository", () => {
       async (asyncPrefix) => {
         await usingTemporaryFiles(async ($) => {
           await $.add("openapi.json", JSON.stringify(specWithGet));
-          const customRoute = `import type { getPets } from "../types/paths/pet.types.js";
-
-export ${asyncPrefix}function GET($: Parameters<getPets>[0]) {
+          const customRoute = `export ${asyncPrefix}function GET($) {
   // Keep this custom behavior.
   return $.response[200].empty();
 }

@@ -31,7 +31,7 @@ Implement each handler with the intended behavior:
 
 ```ts
 // api/routes/pet.ts
-export function POST($: Parameters<HTTP_POST>[0]) {
+export function POST($) {
   if (!$.body.name) return $.response[400].text("name is required");
   const pet = $.context.add($.body);
   return $.response[200].json(pet);
