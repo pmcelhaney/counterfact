@@ -1,3 +1,4 @@
+import type { HarLookup } from "./har.js";
 import type { COUNTERFACT_RESPONSE } from "./counterfact-response.js";
 import type { HttpStatusCode } from "./http-status-code.js";
 import type { MaybePromise } from "./maybe-promise.js";
@@ -36,6 +37,7 @@ export type MiddlewareResponseBuilderFactory = {
  * autocomplete and checking for `$.context`.
  */
 export interface MiddlewareRequest<Context = unknown> {
+  har: HarLookup;
   auth?: { apiKey?: string; password?: string; username?: string };
   body?: unknown;
   context: Context;

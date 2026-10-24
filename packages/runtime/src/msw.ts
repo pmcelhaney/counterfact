@@ -6,6 +6,7 @@ import { ContextRegistry } from "./server/context-registry.js";
 import { Dispatcher, type DispatcherRequest } from "./server/dispatcher.js";
 import { loadOpenApiDocument } from "./server/load-openapi-document.js";
 import { ModuleLoader } from "./server/module-loader.js";
+import { HarCollection } from "./server/har-collection.js";
 import { Registry } from "./server/registry.js";
 import { pathJoin } from "./util/forward-slash-path.js";
 
@@ -79,11 +80,16 @@ export async function createMswHandlers(
 
   const registry = new Registry();
   const contextRegistry = new ContextRegistry();
+  const harCollection = new HarCollection(config.basePath);
+  await harCollection.load();
   const dispatcher = new Dispatcher(
     registry,
     contextRegistry,
     openApiDocument,
     config,
+    "",
+    [],
+    harCollection,
   );
   const moduleLoader = new ModuleLoaderClass(
     compiledPathsDirectory,
@@ -105,7 +111,19 @@ export async function createMswHandlers(
         const lowerMethod = method.toLowerCase();
         const apiPath = `${openApiDocument.basePath ?? ""}${path.replaceAll("{", ":").replaceAll("}", "")}`;
         const handler = async (request: MockRequest) => {
-          return await dispatcher.request(request);
+          const query = new URLSearchParams();
+          for (const [name, value] of Object.entries(request.query ?? {})) {
+            for (const item of Array.isArray(value) ? value : [value])
+              query.append(name, item);
+          }
+          return await dispatcher.request({
+            ...request,
+            originalUrl:
+              request.originalUrl ??
+              (request.rawPath.includes("?")
+                ? request.rawPath
+                : `${request.rawPath}?${query}`),
+          });
         };
         mswHandlers[`${method}:${apiPath}`] = handler;
         return { method: lowerMethod, path: apiPath };

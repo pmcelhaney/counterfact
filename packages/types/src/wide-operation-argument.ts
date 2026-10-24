@@ -1,3 +1,4 @@
+import type { HarLookup } from "./har.js";
 import type { HttpStatusCode } from "./http-status-code.js";
 import type { WideResponseBuilder } from "./wide-response-builder.js";
 
@@ -8,6 +9,7 @@ import type { WideResponseBuilder } from "./wide-response-builder.js";
  * should accept any request without compile-time schema enforcement.
  */
 export interface WideOperationArgument {
+  har: HarLookup;
   body: unknown;
   context: unknown;
   headers: { [key: string]: string };

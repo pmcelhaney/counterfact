@@ -22,6 +22,7 @@ import type { MaybePromise } from "../../counterfact-types/index.ts";
 import type { COUNTERFACT_RESPONSE } from "../../counterfact-types/index.ts";
 import type { Context } from "../../routes/_.context.ts";
 import type { ResponseBuilderFactory } from "../../counterfact-types/index.ts";
+import type { HarLookup } from "../../counterfact-types/index.ts";
 import type { Pet } from "../components/schemas/Pet.js";
 /**
  * Add a new pet to the store
@@ -35,6 +36,7 @@ export type addPet = (
     cookie: never;
     body: Pet;
     context: Context;
+    har: HarLookup;
     response: ResponseBuilderFactory<{
       200: {
         headers: never;
@@ -76,6 +78,7 @@ export type updatePet = (
     cookie: never;
     body: Pet;
     context: Context;
+    har: HarLookup;
     response: ResponseBuilderFactory<{
       200: {
         headers: never;
@@ -140,6 +143,7 @@ import type { MaybePromise } from "../../../counterfact-types/index.ts";
 import type { COUNTERFACT_RESPONSE } from "../../../counterfact-types/index.ts";
 import type { Context } from "../../../routes/_.context.ts";
 import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts";
+import type { HarLookup } from "../../../counterfact-types/index.ts";
 import type { Pet } from "../../components/schemas/Pet.js";
 /**
  * Multiple status values can be provided with comma separated strings
@@ -153,6 +157,7 @@ export type findPetsByStatus = (
     cookie: never;
     body: never;
     context: Context;
+    har: HarLookup;
     response: ResponseBuilderFactory<{
       200: {
         headers: never;
@@ -210,6 +215,7 @@ import type { MaybePromise } from "../../../counterfact-types/index.ts";
 import type { COUNTERFACT_RESPONSE } from "../../../counterfact-types/index.ts";
 import type { Context } from "../../../routes/_.context.ts";
 import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts";
+import type { HarLookup } from "../../../counterfact-types/index.ts";
 import type { Pet } from "../../components/schemas/Pet.js";
 /**
  * Multiple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.
@@ -223,6 +229,7 @@ export type findPetsByTags = (
     cookie: never;
     body: never;
     context: Context;
+    har: HarLookup;
     response: ResponseBuilderFactory<{
       200: {
         headers: never;
@@ -288,6 +295,7 @@ import type { MaybePromise } from "../../../counterfact-types/index.ts";
 import type { COUNTERFACT_RESPONSE } from "../../../counterfact-types/index.ts";
 import type { Context } from "../../../routes/_.context.ts";
 import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts";
+import type { HarLookup } from "../../../counterfact-types/index.ts";
 import type { Pet } from "../../components/schemas/Pet.js";
 /**
  * Returns a single pet
@@ -301,6 +309,7 @@ export type getPetById = (
     cookie: never;
     body: never;
     context: Context;
+    har: HarLookup;
     response: ResponseBuilderFactory<{
       200: {
         headers: never;
@@ -345,6 +354,7 @@ export type updatePetWithForm = (
     cookie: never;
     body: never;
     context: Context;
+    har: HarLookup;
     response: ResponseBuilderFactory<{
       405: {
         headers: never;
@@ -370,6 +380,7 @@ export type deletePet = (
     cookie: never;
     body: never;
     context: Context;
+    har: HarLookup;
     response: ResponseBuilderFactory<{
       400: {
         headers: never;
@@ -438,6 +449,7 @@ import type { MaybePromise } from "../../../../counterfact-types/index.ts";
 import type { COUNTERFACT_RESPONSE } from "../../../../counterfact-types/index.ts";
 import type { Context } from "../../../../routes/_.context.ts";
 import type { ResponseBuilderFactory } from "../../../../counterfact-types/index.ts";
+import type { HarLookup } from "../../../../counterfact-types/index.ts";
 import type { ApiResponse } from "../../../components/schemas/ApiResponse.js";
 export type uploadFile = (
   $: OmitValueWhenNever<{
@@ -448,6 +460,7 @@ export type uploadFile = (
     cookie: never;
     body: never;
     context: Context;
+    har: HarLookup;
     response: ResponseBuilderFactory<{
       200: {
         headers: never;
@@ -502,6 +515,7 @@ import type { MaybePromise } from "../../../counterfact-types/index.ts";
 import type { COUNTERFACT_RESPONSE } from "../../../counterfact-types/index.ts";
 import type { Context } from "../../../routes/_.context.ts";
 import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts";
+import type { HarLookup } from "../../../counterfact-types/index.ts";
 /**
  * Returns a map of status codes to quantities
  */
@@ -514,6 +528,7 @@ export type getInventory = (
     cookie: never;
     body: never;
     context: Context;
+    har: HarLookup;
     response: ResponseBuilderFactory<{
       200: {
         headers: never;
@@ -556,6 +571,7 @@ import type { MaybePromise } from "../../../counterfact-types/index.ts";
 import type { COUNTERFACT_RESPONSE } from "../../../counterfact-types/index.ts";
 import type { Context } from "../../../routes/_.context.ts";
 import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts";
+import type { HarLookup } from "../../../counterfact-types/index.ts";
 import type { Order } from "../../components/schemas/Order.js";
 /**
  * Place a new order in the store
@@ -569,6 +585,7 @@ export type placeOrder = (
     cookie: never;
     body: Order;
     context: Context;
+    har: HarLookup;
     response: ResponseBuilderFactory<{
       200: {
         headers: never;
@@ -621,6 +638,7 @@ import type { MaybePromise } from "../../../../counterfact-types/index.ts";
 import type { COUNTERFACT_RESPONSE } from "../../../../counterfact-types/index.ts";
 import type { Context } from "../../../../routes/_.context.ts";
 import type { ResponseBuilderFactory } from "../../../../counterfact-types/index.ts";
+import type { HarLookup } from "../../../../counterfact-types/index.ts";
 import type { Order } from "../../../components/schemas/Order.js";
 /**
  * For valid response try integer IDs with value <= 5 or > 10. Other values will generate exceptions.
@@ -634,6 +652,7 @@ export type getOrderById = (
     cookie: never;
     body: never;
     context: Context;
+    har: HarLookup;
     response: ResponseBuilderFactory<{
       200: {
         headers: never;
@@ -681,6 +700,7 @@ export type deleteOrder = (
     cookie: never;
     body: never;
     context: Context;
+    har: HarLookup;
     response: ResponseBuilderFactory<{
       400: {
         headers: never;
@@ -739,6 +759,7 @@ import type { COUNTERFACT_RESPONSE } from "../../counterfact-types/index.ts";
 import type { Context } from "../../routes/_.context.ts";
 import type { ResponseBuilderFactory } from "../../counterfact-types/index.ts";
 import type { HttpStatusCode } from "../../counterfact-types/index.ts";
+import type { HarLookup } from "../../counterfact-types/index.ts";
 import type { User } from "../components/schemas/User.js";
 /**
  * This can only be done by the logged in user.
@@ -752,6 +773,7 @@ export type createUser = (
     cookie: never;
     body: User;
     context: Context;
+    har: HarLookup;
     response: ResponseBuilderFactory<{
       [statusCode in HttpStatusCode]: {
         headers: never;
@@ -798,6 +820,7 @@ import type { COUNTERFACT_RESPONSE } from "../../../counterfact-types/index.ts";
 import type { Context } from "../../../routes/_.context.ts";
 import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts";
 import type { HttpStatusCode } from "../../../counterfact-types/index.ts";
+import type { HarLookup } from "../../../counterfact-types/index.ts";
 import type { User } from "../../components/schemas/User.js";
 /**
  * Creates list of users with given input array
@@ -811,6 +834,7 @@ export type createUsersWithListInput = (
     cookie: never;
     body: Array<User>;
     context: Context;
+    har: HarLookup;
     response: ResponseBuilderFactory<
       {
         200: {
@@ -865,6 +889,7 @@ import type { MaybePromise } from "../../../counterfact-types/index.ts";
 import type { COUNTERFACT_RESPONSE } from "../../../counterfact-types/index.ts";
 import type { Context } from "../../../routes/_.context.ts";
 import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts";
+import type { HarLookup } from "../../../counterfact-types/index.ts";
 export type loginUser = (
   $: OmitValueWhenNever<{
     query: loginUser_Query;
@@ -874,6 +899,7 @@ export type loginUser = (
     cookie: never;
     body: never;
     context: Context;
+    har: HarLookup;
     response: ResponseBuilderFactory<{
       200: {
         headers: {
@@ -939,6 +965,7 @@ import type { COUNTERFACT_RESPONSE } from "../../../counterfact-types/index.ts";
 import type { Context } from "../../../routes/_.context.ts";
 import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts";
 import type { HttpStatusCode } from "../../../counterfact-types/index.ts";
+import type { HarLookup } from "../../../counterfact-types/index.ts";
 export type logoutUser = (
   $: OmitValueWhenNever<{
     query: never;
@@ -948,6 +975,7 @@ export type logoutUser = (
     cookie: never;
     body: never;
     context: Context;
+    har: HarLookup;
     response: ResponseBuilderFactory<{
       [statusCode in HttpStatusCode]: {
         headers: never;
@@ -994,6 +1022,7 @@ import type { MaybePromise } from "../../../counterfact-types/index.ts";
 import type { COUNTERFACT_RESPONSE } from "../../../counterfact-types/index.ts";
 import type { Context } from "../../../routes/_.context.ts";
 import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts";
+import type { HarLookup } from "../../../counterfact-types/index.ts";
 import type { HttpStatusCode } from "../../../counterfact-types/index.ts";
 import type { User } from "../../components/schemas/User.js";
 export type getUserByName = (
@@ -1005,6 +1034,7 @@ export type getUserByName = (
     cookie: never;
     body: never;
     context: Context;
+    har: HarLookup;
     response: ResponseBuilderFactory<{
       200: {
         headers: never;
@@ -1052,6 +1082,7 @@ export type updateUser = (
     cookie: never;
     body: User;
     context: Context;
+    har: HarLookup;
     response: ResponseBuilderFactory<{
       [statusCode in HttpStatusCode]: {
         headers: never;
@@ -1080,6 +1111,7 @@ export type deleteUser = (
     cookie: never;
     body: never;
     context: Context;
+    har: HarLookup;
     response: ResponseBuilderFactory<{
       400: {
         headers: never;
@@ -1289,6 +1321,7 @@ import type { COUNTERFACT_RESPONSE } from "../../counterfact-types/index.ts";
 import type { Context } from "../../routes/_.context.ts";
 import type { ResponseBuilderFactory } from "../../counterfact-types/index.ts";
 import type { HttpStatusCode } from "../../counterfact-types/index.ts";
+import type { HarLookup } from "../../counterfact-types/index.ts";
 /**
  * the root
  */
@@ -1301,6 +1334,7 @@ export type getRoot = (
     cookie: never;
     body: never;
     context: Context;
+    har: HarLookup;
     response: ResponseBuilderFactory<{
       [statusCode in HttpStatusCode]: {
         headers: never;
@@ -1345,6 +1379,7 @@ import type { MaybePromise } from "../../counterfact-types/index.ts";
 import type { COUNTERFACT_RESPONSE } from "../../counterfact-types/index.ts";
 import type { Context } from "../../routes/_.context.ts";
 import type { ResponseBuilderFactory } from "../../counterfact-types/index.ts";
+import type { HarLookup } from "../../counterfact-types/index.ts";
 import type { InternalServerError } from "../#/components/responses/InternalServerError.js";
 /**
  * outputs the number of times each URL was visited
@@ -1358,6 +1393,7 @@ export type getCount = (
     cookie: never;
     body: never;
     context: Context;
+    har: HarLookup;
     response: ResponseBuilderFactory<{
       200: {
         headers: never;
@@ -1402,6 +1438,7 @@ import type { COUNTERFACT_RESPONSE } from "../../../counterfact-types/index.ts";
 import type { Context } from "../../../routes/_.context.ts";
 import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts";
 import type { HttpStatusCode } from "../../../counterfact-types/index.ts";
+import type { HarLookup } from "../../../counterfact-types/index.ts";
 /**
  * HTML with a hello kitty image
  */
@@ -1414,6 +1451,7 @@ export type helloKitty = (
     cookie: never;
     body: never;
     context: Context;
+    har: HarLookup;
     response: ResponseBuilderFactory<{
       [statusCode in HttpStatusCode]: {
         headers: never;
@@ -1458,6 +1496,7 @@ import type { MaybePromise } from "../../../counterfact-types/index.ts";
 import type { COUNTERFACT_RESPONSE } from "../../../counterfact-types/index.ts";
 import type { Context } from "../../../routes/_.context.ts";
 import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts";
+import type { HarLookup } from "../../../counterfact-types/index.ts";
 import type { BadRequest } from "../../#/components/responses/BadRequest.js";
 /**
  * says hello to someone
@@ -1471,6 +1510,7 @@ export type sayHello = (
     cookie: never;
     body: never;
     context: Context;
+    har: HarLookup;
     response: ResponseBuilderFactory<{
       200: {
         headers: {
@@ -1538,6 +1578,7 @@ import type { MaybePromise } from "../../counterfact-types/index.ts";
 import type { COUNTERFACT_RESPONSE } from "../../counterfact-types/index.ts";
 import type { Context } from "../../routes/_.context.ts";
 import type { ResponseBuilderFactory } from "../../counterfact-types/index.ts";
+import type { HarLookup } from "../../counterfact-types/index.ts";
 import type { Recursive } from "../components/schemas/Recursive.js";
 import type { BadRequest } from "../#/components/responses/BadRequest.js";
 export type getPathOne = (
@@ -1549,6 +1590,7 @@ export type getPathOne = (
     cookie: never;
     body: never;
     context: Context;
+    har: HarLookup;
     response: ResponseBuilderFactory<{
       200: {
         headers: never;
@@ -1592,6 +1634,7 @@ import type { MaybePromise } from "../../../../counterfact-types/index.ts";
 import type { COUNTERFACT_RESPONSE } from "../../../../counterfact-types/index.ts";
 import type { Context } from "../../../../routes/_.context.ts";
 import type { ResponseBuilderFactory } from "../../../../counterfact-types/index.ts";
+import type { HarLookup } from "../../../../counterfact-types/index.ts";
 export type weirdColonPath = (
   $: OmitValueWhenNever<{
     query: never;
@@ -1601,6 +1644,7 @@ export type weirdColonPath = (
     cookie: never;
     body: never;
     context: Context;
+    har: HarLookup;
     response: ResponseBuilderFactory<{
       200: {
         headers: never;
@@ -1647,6 +1691,7 @@ import type { MaybePromise } from "../../counterfact-types/index.ts";
 import type { COUNTERFACT_RESPONSE } from "../../counterfact-types/index.ts";
 import type { Context } from "../../routes/_.context.ts";
 import type { ResponseBuilderFactory } from "../../counterfact-types/index.ts";
+import type { HarLookup } from "../../counterfact-types/index.ts";
 import type { UserList } from "../components/schemas/UserList.js";
 import type { BadRequest } from "../#/components/responses/BadRequest.js";
 import type { Unauthorized } from "../#/components/responses/Unauthorized.js";
@@ -1666,6 +1711,7 @@ export type listUsers = (
     cookie: never;
     body: never;
     context: Context;
+    har: HarLookup;
     response: ResponseBuilderFactory<{
       200: {
         headers: {
@@ -1707,6 +1753,7 @@ export type createUser = (
     cookie: never;
     body: CreateUserRequest;
     context: Context;
+    har: HarLookup;
     response: ResponseBuilderFactory<{
       201: {
         headers: {
@@ -1785,6 +1832,7 @@ import type { MaybePromise } from "../../../counterfact-types/index.ts";
 import type { COUNTERFACT_RESPONSE } from "../../../counterfact-types/index.ts";
 import type { Context } from "../../../routes/_.context.ts";
 import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts";
+import type { HarLookup } from "../../../counterfact-types/index.ts";
 import type { User } from "../../components/schemas/User.js";
 import type { NotFound } from "../../#/components/responses/NotFound.js";
 import type { InternalServerError } from "../../#/components/responses/InternalServerError.js";
@@ -1803,6 +1851,7 @@ export type getUser = (
     cookie: never;
     body: never;
     context: Context;
+    har: HarLookup;
     response: ResponseBuilderFactory<{
       200: {
         headers: never;
@@ -1837,6 +1886,7 @@ export type replaceUser = (
     cookie: never;
     body: CreateUserRequest;
     context: Context;
+    har: HarLookup;
     response: ResponseBuilderFactory<{
       200: {
         headers: never;
@@ -1871,6 +1921,7 @@ export type patchUser = (
     cookie: never;
     body: PatchUserRequest;
     context: Context;
+    har: HarLookup;
     response: ResponseBuilderFactory<{
       200: {
         headers: never;
@@ -1905,6 +1956,7 @@ export type deleteUser = (
     cookie: never;
     body: never;
     context: Context;
+    har: HarLookup;
     response: ResponseBuilderFactory<{
       204: {
         headers: never;
@@ -1971,6 +2023,7 @@ import type { MaybePromise } from "../../counterfact-types/index.ts";
 import type { COUNTERFACT_RESPONSE } from "../../counterfact-types/index.ts";
 import type { Context } from "../../routes/_.context.ts";
 import type { ResponseBuilderFactory } from "../../counterfact-types/index.ts";
+import type { HarLookup } from "../../counterfact-types/index.ts";
 import type { ClickEvent } from "../components/schemas/ClickEvent.js";
 import type { PurchaseEvent } from "../components/schemas/PurchaseEvent.js";
 import type { SignUpEvent } from "../components/schemas/SignUpEvent.js";
@@ -1989,6 +2042,7 @@ export type createEvent = (
     cookie: never;
     body: ClickEvent | PurchaseEvent | SignUpEvent | BaseEvent;
     context: Context;
+    har: HarLookup;
     response: ResponseBuilderFactory<{
       202: {
         headers: never;
@@ -2028,6 +2082,7 @@ import type { MaybePromise } from "../../../counterfact-types/index.ts";
 import type { COUNTERFACT_RESPONSE } from "../../../counterfact-types/index.ts";
 import type { Context } from "../../../routes/_.context.ts";
 import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts";
+import type { HarLookup } from "../../../counterfact-types/index.ts";
 import type { Product } from "../../components/schemas/Product.js";
 import type { NotFound } from "../../#/components/responses/NotFound.js";
 export type getProduct = (
@@ -2039,6 +2094,7 @@ export type getProduct = (
     cookie: never;
     body: never;
     context: Context;
+    har: HarLookup;
     response: ResponseBuilderFactory<{
       200: {
         headers: never;
@@ -2083,6 +2139,7 @@ import type { MaybePromise } from "../../counterfact-types/index.ts";
 import type { COUNTERFACT_RESPONSE } from "../../counterfact-types/index.ts";
 import type { Context } from "../../routes/_.context.ts";
 import type { ResponseBuilderFactory } from "../../counterfact-types/index.ts";
+import type { HarLookup } from "../../counterfact-types/index.ts";
 import type { Error } from "../components/schemas/Error.js";
 /**
  * Upload a binary file with metadata
@@ -2096,6 +2153,7 @@ export type uploadFile = (
     cookie: never;
     body: never;
     context: Context;
+    har: HarLookup;
     response: ResponseBuilderFactory<{
       201: {
         headers: never;
@@ -2154,6 +2212,7 @@ import type { MaybePromise } from "../../../counterfact-types/index.ts";
 import type { COUNTERFACT_RESPONSE } from "../../../counterfact-types/index.ts";
 import type { Context } from "../../../routes/_.context.ts";
 import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts";
+import type { HarLookup } from "../../../counterfact-types/index.ts";
 /**
  * Deprecated – use /users instead
  * @deprecated
@@ -2167,6 +2226,7 @@ export type listItemsLegacy = (
     cookie: listItemsLegacy_Cookie;
     body: never;
     context: Context;
+    har: HarLookup;
     response: ResponseBuilderFactory<{
       200: {
         headers: never;
@@ -2210,6 +2270,7 @@ import type { MaybePromise } from "../../../counterfact-types/index.ts";
 import type { COUNTERFACT_RESPONSE } from "../../../counterfact-types/index.ts";
 import type { Context } from "../../../routes/_.context.ts";
 import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts";
+import type { HarLookup } from "../../../counterfact-types/index.ts";
 import type { NotFound } from "../../#/components/responses/NotFound.js";
 /**
  * Download a report in the requested format
@@ -2223,6 +2284,7 @@ export type getReport = (
     cookie: never;
     body: never;
     context: Context;
+    har: HarLookup;
     response: ResponseBuilderFactory<{
       200: {
         headers: never;
@@ -2276,6 +2338,7 @@ import type { MaybePromise } from "../../counterfact-types/index.ts";
 import type { COUNTERFACT_RESPONSE } from "../../counterfact-types/index.ts";
 import type { Context } from "../../routes/_.context.ts";
 import type { ResponseBuilderFactory } from "../../counterfact-types/index.ts";
+import type { HarLookup } from "../../counterfact-types/index.ts";
 /**
  * Health-check – returns 204 with no body
  */
@@ -2288,6 +2351,7 @@ export type ping = (
     cookie: never;
     body: never;
     context: Context;
+    har: HarLookup;
     response: ResponseBuilderFactory<{
       204: {
         headers: never;
@@ -2326,6 +2390,7 @@ import type { MaybePromise } from "../../counterfact-types/index.ts";
 import type { COUNTERFACT_RESPONSE } from "../../counterfact-types/index.ts";
 import type { Context } from "../../routes/_.context.ts";
 import type { ResponseBuilderFactory } from "../../counterfact-types/index.ts";
+import type { HarLookup } from "../../counterfact-types/index.ts";
 /**
  * Replace the free-form metadata store
  */
@@ -2338,6 +2403,7 @@ export type setMetadata = (
     cookie: never;
     body: { [key: string]: unknown };
     context: Context;
+    har: HarLookup;
     response: ResponseBuilderFactory<{
       200: {
         headers: never;
@@ -2380,6 +2446,7 @@ import type { MaybePromise } from "../../../counterfact-types/index.ts";
 import type { COUNTERFACT_RESPONSE } from "../../../counterfact-types/index.ts";
 import type { Context } from "../../../routes/_.context.ts";
 import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts";
+import type { HarLookup } from "../../../counterfact-types/index.ts";
 import type { XmlBook } from "../../components/schemas/XmlBook.js";
 /**
  * Returns a book as XML; the id field uses nodeType attribute
@@ -2393,6 +2460,7 @@ export type getXmlBook = (
     cookie: never;
     body: never;
     context: Context;
+    har: HarLookup;
     response: ResponseBuilderFactory<{
       200: {
         headers: never;
@@ -2437,6 +2505,7 @@ import type { MaybePromise } from "../../../counterfact-types/index.ts";
 import type { COUNTERFACT_RESPONSE } from "../../../counterfact-types/index.ts";
 import type { Context } from "../../../routes/_.context.ts";
 import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts";
+import type { HarLookup } from "../../../counterfact-types/index.ts";
 import type { XmlNote } from "../../components/schemas/XmlNote.js";
 /**
  * Returns a note whose body is serialised as a text node
@@ -2450,6 +2519,7 @@ export type getXmlNote = (
     cookie: never;
     body: never;
     context: Context;
+    har: HarLookup;
     response: ResponseBuilderFactory<{
       200: {
         headers: never;
@@ -2494,6 +2564,7 @@ import type { MaybePromise } from "../../../counterfact-types/index.ts";
 import type { COUNTERFACT_RESPONSE } from "../../../counterfact-types/index.ts";
 import type { Context } from "../../../routes/_.context.ts";
 import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts";
+import type { HarLookup } from "../../../counterfact-types/index.ts";
 import type { XmlSnippet } from "../../components/schemas/XmlSnippet.js";
 /**
  * Returns a code snippet inside a CDATA section
@@ -2507,6 +2578,7 @@ export type getXmlSnippet = (
     cookie: never;
     body: never;
     context: Context;
+    har: HarLookup;
     response: ResponseBuilderFactory<{
       200: {
         headers: never;
@@ -2551,6 +2623,7 @@ import type { MaybePromise } from "../../../counterfact-types/index.ts";
 import type { COUNTERFACT_RESPONSE } from "../../../counterfact-types/index.ts";
 import type { Context } from "../../../routes/_.context.ts";
 import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts";
+import type { HarLookup } from "../../../counterfact-types/index.ts";
 import type { XmlSecret } from "../../components/schemas/XmlSecret.js";
 /**
  * Returns a record where the password field is omitted from XML
@@ -2564,6 +2637,7 @@ export type getXmlSecret = (
     cookie: never;
     body: never;
     context: Context;
+    har: HarLookup;
     response: ResponseBuilderFactory<{
       200: {
         headers: never;
@@ -2608,6 +2682,7 @@ import type { MaybePromise } from "../../../counterfact-types/index.ts";
 import type { COUNTERFACT_RESPONSE } from "../../../counterfact-types/index.ts";
 import type { Context } from "../../../routes/_.context.ts";
 import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts";
+import type { HarLookup } from "../../../counterfact-types/index.ts";
 import type { XmlPlaylist } from "../../components/schemas/XmlPlaylist.js";
 /**
  * Returns a playlist whose tracks array is wrapped with nodeType element
@@ -2621,6 +2696,7 @@ export type getXmlPlaylist = (
     cookie: never;
     body: never;
     context: Context;
+    har: HarLookup;
     response: ResponseBuilderFactory<{
       200: {
         headers: never;
@@ -2673,6 +2749,7 @@ import type { MaybePromise } from "../../../counterfact-types/index.ts";
 import type { COUNTERFACT_RESPONSE } from "../../../counterfact-types/index.ts";
 import type { Context } from "../../../routes/_.context.ts";
 import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts";
+import type { HarLookup } from "../../../counterfact-types/index.ts";
 export type getRelationship = (
   $: OmitValueWhenNever<{
     query: never;
@@ -2682,6 +2759,7 @@ export type getRelationship = (
     cookie: never;
     body: never;
     context: Context;
+    har: HarLookup;
     response: ResponseBuilderFactory<{
       200: {
         headers: never;
@@ -2719,6 +2797,7 @@ import type { MaybePromise } from "../../counterfact-types/index.ts";
 import type { COUNTERFACT_RESPONSE } from "../../counterfact-types/index.ts";
 import type { Context } from "../../routes/_.context.ts";
 import type { ResponseBuilderFactory } from "../../counterfact-types/index.ts";
+import type { HarLookup } from "../../counterfact-types/index.ts";
 export type linkRelationship = (
   $: OmitValueWhenNever<{
     query: never;
@@ -2728,6 +2807,7 @@ export type linkRelationship = (
     cookie: never;
     body: never;
     context: Context;
+    har: HarLookup;
     response: ResponseBuilderFactory<{
       200: {
         headers: never;
@@ -2759,6 +2839,7 @@ export type unlinkRelationship = (
     cookie: never;
     body: never;
     context: Context;
+    har: HarLookup;
     response: ResponseBuilderFactory<{
       200: {
         headers: never;
@@ -2806,6 +2887,7 @@ import type { MaybePromise } from "../../counterfact-types/index.ts";
 import type { COUNTERFACT_RESPONSE } from "../../counterfact-types/index.ts";
 import type { Context } from "../../routes/_.context.ts";
 import type { ResponseBuilderFactory } from "../../counterfact-types/index.ts";
+import type { HarLookup } from "../../counterfact-types/index.ts";
 import type { Pageable } from "../components/schemas/Pageable.js";
 /**
  * Demonstrate explodable query parameters (https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.2.md#fixed-fields-for-use-with-schema)
@@ -2819,6 +2901,7 @@ export type HTTP_GET = (
     cookie: never;
     body: never;
     context: Context;
+    har: HarLookup;
     response: ResponseBuilderFactory<{
       200: {
         headers: never;
@@ -2868,6 +2951,7 @@ import type { MaybePromise } from "../../../counterfact-types/index.ts";
 import type { COUNTERFACT_RESPONSE } from "../../../counterfact-types/index.ts";
 import type { Context } from "../../../routes/_.context.ts";
 import type { ResponseBuilderFactory } from "../../../counterfact-types/index.ts";
+import type { HarLookup } from "../../../counterfact-types/index.ts";
 import type { LogEntry } from "../../components/schemas/LogEntry.js";
 /**
  * Stream a series of server-sent events. Each event conforms to the LogEntry schema. Demonstrates OpenAPI 3.2 itemSchema support for sequential media types.
@@ -2882,6 +2966,7 @@ export type streamEvents = (
     cookie: never;
     body: never;
     context: Context;
+    har: HarLookup;
     response: ResponseBuilderFactory<{
       200: {
         headers: never;
@@ -2924,6 +3009,7 @@ import type { MaybePromise } from "../../counterfact-types/index.ts";
 import type { COUNTERFACT_RESPONSE } from "../../counterfact-types/index.ts";
 import type { Context } from "../../routes/_.context.ts";
 import type { ResponseBuilderFactory } from "../../counterfact-types/index.ts";
+import type { HarLookup } from "../../counterfact-types/index.ts";
 import type { BadRequest } from "../#/components/responses/BadRequest.js";
 /**
  * Search with the entire query string treated as a typed object (OpenAPI 3.2 querystring parameter)
@@ -2937,6 +3023,7 @@ export type search = (
     cookie: never;
     body: never;
     context: Context;
+    har: HarLookup;
     response: ResponseBuilderFactory<{
       200: {
         headers: never;
@@ -2993,6 +3080,7 @@ import type { MaybePromise } from "../../counterfact-types/index.ts";
 import type { COUNTERFACT_RESPONSE } from "../../counterfact-types/index.ts";
 import type { Context } from "../../routes/_.context.ts";
 import type { ResponseBuilderFactory } from "../../counterfact-types/index.ts";
+import type { HarLookup } from "../../counterfact-types/index.ts";
 import type { TypeEdgeCases } from "../components/schemas/TypeEdgeCases.js";
 /**
  * Demonstrates TypeScript literal escaping and composition grouping
@@ -3006,6 +3094,7 @@ export type getTypeEdgeCases = (
     cookie: never;
     body: never;
     context: Context;
+    har: HarLookup;
     response: ResponseBuilderFactory<{
       200: {
         headers: never;

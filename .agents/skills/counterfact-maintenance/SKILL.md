@@ -82,6 +82,7 @@ Use this skill when finalizing contributor-facing changes that affect tests, dia
 - Package-boundary export checks validate public subpaths across conditions;
   they do not replace installed-consumer tests for runtime resolution. Keep
   regression coverage for null exclusions and overlapping export patterns.
+- Finish workspace builds before running tests that resolve package exports. Do not overlap Jest or CLI journeys with `npm pack` prepack builds: prepack rebuilds remove and recreate workspace `dist/` directories, causing transient module-not-found failures.
 - Keep tests focused by subsystem (`packages/counterfact/test/cli`, `packages/counterfact/test/server`, `packages/counterfact/test/typescript-generator`, `packages/counterfact/test/util`).
 - Preserve documented behavior promises (e.g., regen preserves route edits; types are regenerated).
 - When terminal output displays an HTTP message, split its head and body at the first `\r\n\r\n` separator only: multipart bodies contain additional separators that must remain visible.
