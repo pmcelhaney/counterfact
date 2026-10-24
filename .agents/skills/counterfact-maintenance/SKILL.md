@@ -71,6 +71,10 @@ Use this skill when finalizing contributor-facing changes that affect tests, dia
 
 - Keep maintained examples eligible for Renovate updates; do not exclude `**/examples/**` in `ignorePaths`. Preserve the other dependency, vendor, test, and fixture exclusions when editing that array.
 - Validate `examples/first-10-minutes` with its own `npm ci` and `npm run verify`; its npm lockfile is independent of the root Yarn lockfile. Prefer a disposable copy for this check: generation writes routes, types, and caches into the example, and those outputs can cause unrelated root lint failures if left in the worktree.
+- When relocating API source for framework adapters, preserve the ordered ancestor
+  `node_modules` lookup chain and enclosing package module scopes. Exercise local
+  and hoisted imports, nearest dependency precedence, JavaScript ESM scenarios
+  with top-level await, and nested CommonJS/default package scopes in real consumers.
 - Use `usingTemporaryFiles()` for filesystem-heavy tests.
 - Astro static-build tests must keep temporary output on the checkout filesystem: Astro stages assets under the working directory and renames them into the output, so system temporary directories on a different volume cause `EXDEV`. Continue using `usingTemporaryFiles()` and restore any temporary-directory environment override in `finally`.
 - The Astro site uses `compressHTML: true` to preserve HTML whitespace around inline prose across source line breaks. Keep that setting explicit when upgrading Astro, and run `cd site && npm run test:whitespace` for rendering or formatting changes. Check generated text before applying CSS spacing: punctuation and intentional in-word links must remain adjacent.
@@ -159,6 +163,20 @@ Before adding or approving a black-box test:
 For interactive CLI behavior, use a real pseudo-terminal and send the literal keystrokes a user would type.
 If the required terminal facility is unavailable on an operating system, skip explicitly and ensure another CI operating system executes the test; do not replace the test with a direct function call.
 Keep that operating-system skip scoped to the real-terminal scenario so non-interactive journeys continue to run cross-platform.
+
+## Test-framework adapter packages
+
+- Keep framework dependencies in their adapter workspace, never in the facade
+  or foundational packages. Use a peer dependency for the host test runner.
+- Test fixture behavior through the real runner, and compile consumer fixture
+  declarations: transpilation alone does not verify preserved composition types.
+- Keep scenario options at test scope so changing them does not rebuild worker
+  resources. Derive ephemeral listener URLs from `status()` after startup.
+- When copying API sources, isolate compiled caches and preserve runtime package
+  resolution. Verify worker reuse, multiple-worker isolation, and teardown after
+  startup, reset, scenario, and test failures.
+- Include new adapter workspaces in the build, typecheck, boundary policy, CI,
+  and isolated packed-consumer checks. ESM-only adapters need ESM test projects.
 
 ## Common mistakes to avoid
 
