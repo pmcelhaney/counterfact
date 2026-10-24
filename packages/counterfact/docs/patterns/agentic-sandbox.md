@@ -2,6 +2,147 @@
 
 Give a coding agent a bounded local API and a reproducible verification task. Pin the API world and make the expected behavior explicit so the agent and a human reviewer can run the same checks.
 
+## Point a third-party SDK at a local API
+
+An SDK can keep its normal calls while its base URL points at Counterfact. This
+small example uses the **server-side Stripe Node SDK** with published packages;
+it does not require the source-only lifecycle setup below. It models only a
+customer lookup and a rate-limit response. The contract is an authored subset,
+not Stripe's complete schema, and the example does not prove Stripe compatibility.
+
+In a new directory, run:
+
+```sh
+npm init -y
+npm install --save-dev --save-exact counterfact@2.16.6 stripe@23.0.1
+```
+
+Commit the resulting lockfile. Save this local contract as `customers.yaml`:
+
+```yaml
+openapi: 3.0.3
+info: { title: Local customer lookup, version: 1.0.0 }
+paths:
+  /v1/customers/{customerId}:
+    get:
+      operationId: getCustomer
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Customer found
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [id, object, email]
+                properties:
+                  id: { type: string }
+                  object: { type: string, enum: [customer] }
+                  email: { type: string }
+        "429":
+          description: Rate limited
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [error]
+                properties:
+                  error:
+                    type: object
+                    required: [type, message]
+                    properties:
+                      type: { type: string }
+                      message: { type: string }
+```
+
+Generate editable routes, then add the two files below:
+
+```sh
+npx counterfact customers.yaml api --generate --no-update-check
+```
+
+```ts
+// api/routes/_.context.ts
+export class Context {
+  rateLimited = false;
+}
+```
+
+```ts
+// api/routes/v1/customers/{customerId}.ts
+import type { getCustomer } from "../../../types/paths/v1/customers/{customerId}.types.js";
+
+export const GET: getCustomer = ($) => {
+  if ($.context.rateLimited) {
+    return $.response[429].json({
+      error: { type: "rate_limit_error", message: "Try again shortly" },
+    });
+  }
+  return $.response[200].json({
+    id: $.path.customerId,
+    object: "customer",
+    email: "juniper@example.test",
+  });
+};
+```
+
+Start the local server and REPL in the same directory:
+
+```sh
+npx counterfact customers.yaml api --serve --repl --no-update-check
+```
+
+Save this as `sdk-client.mjs`. The SDK's [host, port, and protocol options](https://github.com/stripe/stripe-node#configuration)
+select the local server. This script uses a placeholder key, disables SDK
+telemetry, sets a five-second timeout, and disables automatic network retries so
+one SDK call exercises one response.
+
+```js
+import assert from "node:assert/strict";
+import Stripe from "stripe";
+
+const local = new URL(process.env.API_BASE_URL ?? "http://127.0.0.1:3100");
+assert.equal(local.hostname, "127.0.0.1");
+assert.equal(local.protocol, "http:");
+const stripe = new Stripe("sk_test_local_placeholder", {
+  host: local.hostname,
+  port: Number(local.port),
+  protocol: "http",
+  maxNetworkRetries: 0,
+  timeout: 5_000,
+  telemetry: false,
+});
+
+if (process.argv.includes("--rate-limited")) {
+  await assert.rejects(stripe.customers.retrieve("cus_local"), (error) => {
+    assert.equal(error.statusCode, 429);
+    assert.equal(error.message, "Try again shortly");
+    return true;
+  });
+  console.log("SDK observed the authored rate limit");
+} else {
+  const customer = await stripe.customers.retrieve("cus_local");
+  assert.equal(customer.id, "cus_local");
+  assert.equal(customer.email, "juniper@example.test");
+  console.log("SDK read the local customer");
+}
+```
+
+In a second terminal, run `node sdk-client.mjs` and expect
+`SDK read the local customer`. At the Counterfact REPL, set
+`context.rateLimited = true`. Run `node sdk-client.mjs --rate-limited` and expect
+`SDK observed the authored rate limit`. Set `context.rateLimited = false` and
+rerun the first command to confirm recovery.
+
+These checks show SDK traffic reaching the local handler and the SDK surfacing
+an authored error. They do not validate production authentication, Stripe's full
+customer object, or SDK retry timing. Keep separate real-service checks for the
+parts of the integration your client relies on.
+
 ## Prepare a repeatable API world
 
 1. Follow the [commit-pinned lifecycle setup](./lifecycle-setup.md). Its methods are not yet available in the published 2.16.6 package.

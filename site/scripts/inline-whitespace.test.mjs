@@ -199,7 +199,7 @@ test("the site build preserves authored inline whitespace", async (t) => {
         );
         assert.ok(
           text.includes(
-            "Node.js 22+. Swagger 2.0 and OpenAPI 3.0–3.2. Install a pinned version for a repeatable project.",
+            "Node.js 22+. Swagger 2.0 and OpenAPI 3.0–3.2. Install a pinned version for a repeatable project, and commit the lockfile.",
           ),
         );
       },

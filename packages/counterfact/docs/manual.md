@@ -4,6 +4,8 @@ Build a useful local API, then add the behavior your client needs. Each chapter 
 
 New to Counterfact? Start with [Generate an API from OpenAPI](./getting-started.md), then follow the [first ten minutes](./first-10-minutes.md). For exact signatures and options, use the [API reference](./api.md).
 
+Choose guides by task in [Find your workflow](./usage.md). Additional resources: [all patterns](./patterns/index.md), [FAQ](./faq.md), [comparison](./comparison.md), [TypeScript native mode](./features/typescript-native-mode.md), and [telemetry and privacy](./usage.md#telemetry-and-privacy).
+
 ## Start a working API
 
 - [Generate an API from OpenAPI](./getting-started.md) — Start a local HTTP API from a specification.
