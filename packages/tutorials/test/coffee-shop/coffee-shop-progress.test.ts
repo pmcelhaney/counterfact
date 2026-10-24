@@ -1,6 +1,6 @@
 import { expect, it } from "@jest/globals";
 
-import { CoffeeShopProgress } from "../../src/cli/coffee-shop-progress.js";
+import { CoffeeShopProgress } from "../../src/coffee-shop/coffee-shop-progress.js";
 
 it("uses successful shopping responses, not instruction views, to advance", () => {
   const lesson = new CoffeeShopProgress();

@@ -3,9 +3,9 @@ import vm from "node:vm";
 import { describe, expect, it } from "@jest/globals";
 import ts from "typescript";
 
-import { coffeeShopPage } from "../../src/cli/coffee-shop-page.js";
+import { coffeeShopPage } from "../../src/coffee-shop/coffee-shop-page.js";
 
-import { SHOP_CONTEXT } from "../../src/cli/coffee-shop.js";
+import { SHOP_CONTEXT } from "../../src/coffee-shop/coffee-shop.js";
 
 function context() {
   const exports = {} as {

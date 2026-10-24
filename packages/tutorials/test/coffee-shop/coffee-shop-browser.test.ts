@@ -1,6 +1,6 @@
 import vm from "node:vm";
 import { expect, it } from "@jest/globals";
-import { coffeeShopPage } from "../../src/cli/coffee-shop-page.js";
+import { coffeeShopPage } from "../../src/coffee-shop/coffee-shop-page.js";
 
 // A small DOM and controlled HTTP responses exercise the shipped browser script,
 // including async refreshes. Real-browser layout is checked separately.

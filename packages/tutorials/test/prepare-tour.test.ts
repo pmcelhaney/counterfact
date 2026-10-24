@@ -1,15 +1,19 @@
 import { expect, it } from "@jest/globals";
 import { usingTemporaryFiles } from "using-temporary-files";
 
-import { findDemoDirectory, prepareDemo } from "../../src/cli/tutorial.js";
+import { findTourDirectory, prepareTour } from "../src/index.js";
 
 it("creates a restartable offline shop without touching an existing project", async () => {
   await usingTemporaryFiles(async ($) => {
     await $.add("counterfact-demo/keep.txt", "user edits");
     await $.add("counterfact-demo-2", "an existing file");
-    const directory = await findDemoDirectory($.path("."));
+    const directory = await findTourDirectory($.path("."));
     expect(directory).toBe("counterfact-demo-3");
-    await prepareDemo($.path("."), directory);
+    expect(await prepareTour($.path("."), directory)).toEqual({
+      source: $.path(`${directory}/openapi.json`),
+      destination: $.path(directory),
+      walkthroughPath: "/walkthrough",
+    });
     expect(await $.read("counterfact-demo/keep.txt")).toBe("user edits");
     const spec = JSON.parse(await $.read(`${directory}/openapi.json`));
     expect(spec.paths["/products"].get.responses["200"]).toBeDefined();
@@ -23,8 +27,20 @@ it("creates a restartable offline shop without touching an existing project", as
     expect(await $.read(`${directory}/routes/walkthrough.ts`)).toContain(
       "Counterfact Coffee",
     );
-    await expect(prepareDemo($.path("."), directory)).rejects.toMatchObject({
+    await expect(prepareTour($.path("."), directory)).rejects.toMatchObject({
       code: "EEXIST",
     });
+  });
+});
+
+it("rejects an unknown tour before creating its directory", async () => {
+  await usingTemporaryFiles(async ($) => {
+    await expect(
+      prepareTour($.path("."), "example", "missing"),
+    ).rejects.toThrow("Unknown tour: missing");
+    // A rejected request must leave this name available for a valid tour.
+    await expect(
+      prepareTour($.path("."), "example", "coffee-shop"),
+    ).resolves.toHaveProperty("walkthroughPath", "/walkthrough");
   });
 });

@@ -1,7 +1,7 @@
 import { coffeeShopAction } from "./coffee-shop-action.js";
 import { CoffeeShopProgress } from "./coffee-shop-progress.js";
 
-import { COUNTERFACT_LOGO } from "./counterfact-logo.js";
+import { COUNTERFACT_LOGO } from "../counterfact-logo.js";
 
 import { basename } from "node:path";
 

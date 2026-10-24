@@ -4,7 +4,8 @@ import { createInterface } from "node:readline/promises";
 import open from "open";
 
 import { discoverOpenApiSpecs } from "./discover-openapi.js";
-import { findDemoDirectory, isPortAvailable, prepareDemo } from "./tutorial.js";
+import { findTourDirectory, prepareTour } from "@counterfact/tutorials";
+import { isPortAvailable } from "./is-port-available.js";
 
 const DOCS_URL = "https://counterfact.dev/docs/getting-started/";
 const PETSTORE_URL = "https://petstore3.swagger.io/api/v3/openapi.json";
@@ -23,7 +24,7 @@ export type IntroSelection = {
   source: string;
   destination: string;
   port: number;
-  tutorial?: boolean;
+  walkthroughPath?: string;
 };
 
 export async function runIntro(): Promise<IntroSelection | undefined> {
@@ -93,7 +94,7 @@ export async function runIntro(): Promise<IntroSelection | undefined> {
         return undefined;
       }
       if (answer === "" || answer === "1") {
-        const destination = await findDemoDirectory(process.cwd());
+        const destination = await findTourDirectory(process.cwd());
         write(
           `\nShop for coffee, change the API in your editor, and restock through the REPL.`,
         );
@@ -132,7 +133,8 @@ export async function runIntro(): Promise<IntroSelection | undefined> {
           }
           if (cancellation.signal.aborted) return undefined;
           try {
-            await prepareDemo(process.cwd(), destination);
+            const prepared = await prepareTour(process.cwd(), destination);
+            return { ...prepared, port };
           } catch (error) {
             if ((error as NodeJS.ErrnoException).code === "EEXIST") {
               write(
@@ -142,12 +144,6 @@ export async function runIntro(): Promise<IntroSelection | undefined> {
             }
             throw error;
           }
-          return {
-            source: `./${destination}/openapi.json`,
-            destination,
-            port,
-            tutorial: true,
-          };
         }
         continue;
       }

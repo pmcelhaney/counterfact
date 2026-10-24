@@ -25,7 +25,7 @@ yarn lint
 yarn test
 ```
 
-The [code generator](./packages/generator/README.md) and [server runtime](./packages/runtime/README.md) are separate workspace packages. The `counterfact` package composes them with the CLI, client, and REPL. Root scripts coordinate builds and checks, so contributors do not need to change directories for the standard workflow.
+The [code generator](./packages/generator/README.md) and [server runtime](./packages/runtime/README.md) are separate workspace packages. The `counterfact` package composes them with the CLI, client, and REPL. Guided tours live in [`packages/tutorials`](./packages/tutorials/README.md); add future chapter tours there. Root scripts coordinate builds and checks, so contributors do not need to change directories for the standard workflow.
 
 ### Build feedback
 

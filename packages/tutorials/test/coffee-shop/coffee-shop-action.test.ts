@@ -1,5 +1,5 @@
 import { expect, it } from "@jest/globals";
-import { coffeeShopAction } from "../../src/cli/coffee-shop-action.js";
+import { coffeeShopAction } from "../../src/coffee-shop/coffee-shop-action.js";
 
 const state = {
   step: 8,

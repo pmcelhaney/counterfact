@@ -4,11 +4,11 @@ import {
   SHOP_CONTEXT,
   SHOP_ORDERS,
   SHOP_PRODUCTS,
-} from "../../src/cli/coffee-shop.js";
+} from "../../src/coffee-shop/coffee-shop.js";
 import {
   checkShopSave,
   shopRevision,
-} from "../../src/cli/coffee-shop-validation.js";
+} from "../../src/coffee-shop/coffee-shop-validation.js";
 
 it("checks saved functions using separate inventory and fresh modules after each edit", async () => {
   await usingTemporaryFiles(async ($) => {
