@@ -16,16 +16,18 @@ async function updateRouteFile(
   methodToTypeName: Map<string, string>,
 ): Promise<boolean> {
   const content = await fs.readFile(filePath, "utf8");
+  // TypeScript normalizes requested filenames to forward slashes on Windows.
+  const sourcePath = toForwardSlashPath(filePath);
   const source = ts.createSourceFile(
-    filePath,
+    sourcePath,
     content,
     ts.ScriptTarget.Latest,
     true,
   );
   const host = ts.createCompilerHost({ noLib: true });
-  host.getSourceFile = (name) => (name === filePath ? source : undefined);
+  host.getSourceFile = (name) => (name === sourcePath ? source : undefined);
   const program = ts.createProgram(
-    [filePath],
+    [sourcePath],
     { noLib: true, noResolve: true },
     host,
   );
