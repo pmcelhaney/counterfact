@@ -10,6 +10,7 @@ exports[`an OperationTypeCoder falls back to root level produces (OpenAPI 2) 1`]
     cookie: never;
     body: never;
     context: ExternalType;
+    har: SharedType;
     response: ResponseBuilderFactory<{
       [statusCode in HttpStatusCode]: {
         headers: never;
@@ -43,6 +44,7 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2 wit
     cookie: never;
     body: Type;
     context: ExternalType;
+    har: SharedType;
     response: ResponseBuilderFactory<
       {
         200: {
@@ -99,6 +101,7 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2) 1`
     cookie: never;
     body: Type;
     context: ExternalType;
+    har: SharedType;
     response: ResponseBuilderFactory<
       {
         200: {
@@ -155,6 +158,7 @@ exports[`an OperationTypeCoder generates a complex post operation (OpenAPI 2, co
     cookie: never;
     body: Type;
     context: ExternalType;
+    har: SharedType;
     response: ResponseBuilderFactory<
       {
         200: {
@@ -211,6 +215,7 @@ exports[`an OperationTypeCoder generates a complex post operation 1`] = `
     cookie: never;
     body: Type;
     context: ExternalType;
+    har: SharedType;
     response: ResponseBuilderFactory<
       {
         200: {
@@ -270,6 +275,7 @@ exports[`an OperationTypeCoder generates a simple get operation (OpenAPI 2) 1`] 
     cookie: never;
     body: never;
     context: ExternalType;
+    har: SharedType;
     response: ResponseBuilderFactory<{
       [statusCode in HttpStatusCode]: {
         headers: never;
@@ -303,6 +309,7 @@ exports[`an OperationTypeCoder generates a simple get operation 1`] = `
     cookie: never;
     body: never;
     context: ExternalType;
+    har: SharedType;
     response: ResponseBuilderFactory<{
       [statusCode in HttpStatusCode]: {
         headers: never;
@@ -336,6 +343,7 @@ exports[`an OperationTypeCoder generates an auth object for basic authentication
     cookie: never;
     body: never;
     context: ExternalType;
+    har: SharedType;
     response: ResponseBuilderFactory<{
       [statusCode in HttpStatusCode]: {
         headers: never;
@@ -369,6 +377,7 @@ exports[`an OperationTypeCoder generates required api key auth and cookie for ap
     cookie: HTTP_GET_Cookie;
     body: never;
     context: ExternalType;
+    har: SharedType;
     response: ResponseBuilderFactory<{
       [statusCode in HttpStatusCode]: {
         headers: never;
@@ -402,6 +411,7 @@ exports[`an OperationTypeCoder generates required api key auth and headers for a
     cookie: never;
     body: never;
     context: ExternalType;
+    har: SharedType;
     response: ResponseBuilderFactory<{
       [statusCode in HttpStatusCode]: {
         headers: never;
