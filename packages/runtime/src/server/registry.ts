@@ -85,8 +85,10 @@ type CounterfactResponseObject = {
   content?: {
     body: unknown;
     type: MediaType;
+    streamFormat?: "sse";
   }[];
   contentType?: string;
+  streamFormat?: "sse";
   headers?: { [key: string]: number | string | string[] };
   status?: number;
 };
