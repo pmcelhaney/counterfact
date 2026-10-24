@@ -18,7 +18,9 @@ Implement or update route behavior in generated route files.
 - Always prefer function expressions with a block body and explicit `return`
   for route handlers: `export const GET: HTTP_GET = function ($) { ... };`.
 - Annotate the exported constant with the generated handler type so TypeScript
-  infers `$`. Do not annotate `$` separately or disable `noImplicitAny`.
+  infers `$` and checks that the handler returns a completed response. Preserve
+  the full handler type, not just its parameter type. Do not annotate `$`
+  separately or disable `noImplicitAny`.
 - Preserve `async` as `async function ($)` when the handler uses `await`.
 - Convert generated arrow-function handlers to this form when editing them.
 
