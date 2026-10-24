@@ -82,19 +82,19 @@ For OpenAPI 3.2 specs, operations under `paths[*].additionalOperations` are also
 // routes/pet/{petId}.ts
 import type { HTTP_GET } from "../../types/paths/pet/{petId}.types.js";
 
-export const GET: HTTP_GET = ($) => {
+export function GET($: Parameters<HTTP_GET>[0]) {
   return $.response[200].random();
-};
+}
 ```
 
 ### Custom response
 
 ```ts
-export const GET: HTTP_GET = ($) => {
+export function GET($: Parameters<HTTP_GET>[0]) {
   const pet = db.find($.path.petId);
   if (!pet) return $.response[404].text(`Pet ${$.path.petId} not found`);
   return $.response[200].json(pet);
-};
+}
 ```
 
 Counterfact handles content negotiation automatically. Calling `.json(content)` will also serve the same data as XML when the client sends `Accept: application/xml`.
@@ -102,10 +102,10 @@ Counterfact handles content negotiation automatically. Calling `.json(content)` 
 ### Named OpenAPI example
 
 ```ts
-export const GET: HTTP_GET = ($) => {
+export function GET($: Parameters<HTTP_GET>[0]) {
   return $.response[200].example("fullPet");
   //                              ^ autocompleted from your spec
-};
+}
 ```
 
 ---
@@ -236,7 +236,7 @@ Route handlers can reach into a _different_ subtree's context using the `loadCon
 
 ```ts
 // routes/payments/{id}.ts
-export const GET: HTTP_GET = ($) => {
+export function GET($: Parameters<HTTP_GET>[0]) {
   // Load the context that owns /users, even though this route lives under /payments
   const usersContext = $.loadContext(
     "/users",
@@ -244,7 +244,7 @@ export const GET: HTTP_GET = ($) => {
   const user = usersContext.getById($.query.userId);
   if (!user) return $.response[404].text("User not found");
   return $.response[200].json({ paymentId: $.path.id, user });
-};
+}
 ```
 
 ---
@@ -330,9 +330,9 @@ Route handler types are generated directly from the OpenAPI spec. When you regen
 ```ts
 // This will fail to compile if status 200 no longer exists
 // or if the response body shape changes.
-export const GET: HTTP_GET = ($) => {
+export function GET($: Parameters<HTTP_GET>[0]) {
   return $.response[200].json({ id: $.path.petId, name: "Fluffy" });
-};
+}
 ```
 
 OpenAPI descriptions are preserved as JSDoc comments on generated types, so they appear inline in your editor as you type.

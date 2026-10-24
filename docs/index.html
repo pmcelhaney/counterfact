@@ -1314,7 +1314,7 @@
               <pre><code><span class="kw">import</span> <span class="kw">type</span> { <span class="ty">HTTP_GET</span>, <span class="ty">HTTP_DELETE</span> }
   <span class="kw">from</span> <span class="st">"../../types/paths/pet/{petId}.types.js"</span>;
 
-<span class="kw">export const</span> <span class="fn">GET</span>: <span class="ty">HTTP_GET</span> = (<span class="nm">$</span>) => {
+<span class="kw">export function</span> <span class="fn">GET</span>(<span class="nm">$</span>: <span class="ty">Parameters&lt;HTTP_GET&gt;</span>[0]) {
   <span class="kw">const</span> pet = <span class="nm">$</span>.context.<span class="fn">get</span>(<span class="nm">$</span>.path.petId);
 
   <span class="kw">if</span> (!pet) {
@@ -1324,12 +1324,12 @@
   }
 
   <span class="kw">return</span> <span class="nm">$</span>.response[<span class="nm">200</span>].<span class="fn">json</span>(pet);
-};
+}
 
-<span class="kw">export const</span> <span class="fn">DELETE</span>: <span class="ty">HTTP_DELETE</span> = (<span class="nm">$</span>) => {
+<span class="kw">export function</span> <span class="fn">DELETE</span>(<span class="nm">$</span>: <span class="ty">Parameters&lt;HTTP_DELETE&gt;</span>[0]) {
   <span class="nm">$</span>.context.<span class="fn">remove</span>(<span class="nm">$</span>.path.petId);
   <span class="kw">return</span> <span class="nm">$</span>.response[<span class="nm">200</span>];
-};</code></pre>
+}</code></pre>
             </div>
             <div class="code-file">
               <div class="code-tab">api/routes/_.context.ts</div>

@@ -82,7 +82,7 @@ export class Context {
 
 ```ts
 // api/routes/pet/{petId}.ts
-export const GET: HTTP_GET = ($) => {
+export function GET($: Parameters<HTTP_GET>[0]) {
   if ($.context.simulatePetNotFound) {
     return $.response[404].text("Not found");
   }
@@ -91,7 +91,7 @@ export const GET: HTTP_GET = ($) => {
     name: "Fluffy",
     status: "available",
   });
-};
+}
 ```
 
 Reach into the live context via the `contextRegistry` returned by `counterfact()` to toggle behavior per test:

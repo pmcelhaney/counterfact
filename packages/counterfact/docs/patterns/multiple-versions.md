@@ -45,7 +45,7 @@ spec:
 // pets/routes/pets/{petId}.ts
 import type { HTTP_GET } from "../../types/paths/pets/{petId}.types.js";
 
-export const GET: HTTP_GET = ($) => {
+export function GET($: Parameters<HTTP_GET>[0]) {
   const pet = $.context.getById($.path.petId);
   if (!pet) return $.response[404].text("Pet not found");
 
@@ -65,7 +65,7 @@ export const GET: HTTP_GET = ($) => {
 
   // v3 adds the full pet object including photoUrls
   return $.response[200].json(pet);
-};
+}
 ```
 
 `$.minVersion("v2")` returns `true` for requests handled by v2 and v3, and `false` for v1. The conditions layer naturally: the last `return` in the example only runs when v3 or later is handling the request.
@@ -75,12 +75,12 @@ export const GET: HTTP_GET = ($) => {
 `$.minVersion()` is a type predicate. After a passing check, TypeScript narrows `$` to the intersection of only the versions that satisfy the minimum, giving you accurate autocompletion and type errors for version-specific fields:
 
 ```ts
-export const GET: HTTP_GET = ($) => {
+export function GET($: Parameters<HTTP_GET>[0]) {
   if ($.minVersion("v2")) {
     // $ is now typed as the v2 (or v3, v4, …) $ type
     // v2-only fields are available here
   }
-};
+}
 ```
 
 ## What you get

@@ -64,7 +64,7 @@ When a payment route needs to enrich a response with user data, it loads the use
 // api/routes/payments/{paymentId}.ts
 import type { Context as UsersContext } from "../../users/_.context.js";
 
-export const GET: HTTP_GET = ($) => {
+export function GET($: Parameters<HTTP_GET>[0]) {
   const payment = $.context.getById($.path.paymentId);
   if (!payment) return $.response[404].text("Payment not found");
 
@@ -72,7 +72,7 @@ export const GET: HTTP_GET = ($) => {
   const user = usersContext.getById(payment.userId);
 
   return $.response[200].json({ ...payment, user });
-};
+}
 ```
 
 The `loadContext(path)` call returns the live context instance rooted at that path. The two contexts remain independent classes; neither imports from the other's module.

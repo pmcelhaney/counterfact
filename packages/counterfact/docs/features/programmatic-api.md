@@ -63,12 +63,12 @@ Given this route handler:
 
 ```ts
 // routes/auth/login.ts
-export const POST: HTTP_POST = ($) => {
+export function POST($: Parameters<HTTP_POST>[0]) {
   if ($.context.passwordResponse === "ok") return $.response[200];
   if ($.context.passwordResponse === "expired")
     return $.response[403].header("reason", "expired-password");
   return $.response[401];
-};
+}
 ```
 
 A Playwright test can flip between scenarios without hard-coded usernames:

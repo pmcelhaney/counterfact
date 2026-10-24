@@ -32,14 +32,14 @@ Customize the handler to return exactly what your agent needs to see:
 
 ```ts
 // stripe-mock/routes/v1/charges.ts
-export const POST: HTTP_POST = ($) => {
+export function POST($: Parameters<HTTP_POST>[0]) {
   return $.response[200].json({
     id: "ch_mock_001",
     status: "succeeded",
     amount: $.body.amount,
     currency: $.body.currency,
   });
-};
+}
 ```
 
 To test how the agent handles a rate limit, toggle a context flag and steer the agent from the REPL while it runs:
@@ -53,7 +53,7 @@ export class Context {
 
 ```ts
 // stripe-mock/routes/v1/charges.ts
-export const POST: HTTP_POST = ($) => {
+export function POST($: Parameters<HTTP_POST>[0]) {
   if ($.context.simulateRateLimit) {
     return $.response[429].json({ error: { message: "Too many requests" } });
   }
@@ -63,7 +63,7 @@ export const POST: HTTP_POST = ($) => {
     amount: $.body.amount,
     currency: $.body.currency,
   });
-};
+}
 ```
 
 ```

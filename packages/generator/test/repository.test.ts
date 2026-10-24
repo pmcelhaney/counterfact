@@ -231,6 +231,48 @@ describe("a Repository", () => {
       });
     });
 
+    it.each(["", "async "])(
+      "preserves an exported %sfunction handler across regeneration",
+      async (asyncPrefix) => {
+        await usingTemporaryFiles(async ($) => {
+          await $.add("openapi.json", JSON.stringify(specWithGet));
+          const customRoute = `import type { getPets } from "../types/paths/pet.types.js";
+
+export ${asyncPrefix}function GET($: Parameters<getPets>[0]) {
+  // Keep this custom behavior.
+  return $.response[200].empty();
+}
+`;
+          await $.add("routes/pet.ts", customRoute);
+
+          await new CodeGenerator($.path("openapi.json"), $.path(""), {
+            routes: true,
+            types: true,
+          }).generate();
+          expect(await $.read("routes/pet.ts")).toBe(customRoute);
+
+          await $.remove("openapi.json");
+          await $.add("openapi.json", JSON.stringify(specWithGetAndPost));
+          await new CodeGenerator($.path("openapi.json"), $.path(""), {
+            routes: true,
+            types: true,
+          }).generate();
+          const updatedRoute = await $.read("routes/pet.ts");
+          expect(updatedRoute).toContain(
+            customRoute.slice(customRoute.indexOf("export ")).trim(),
+          );
+          expect(updatedRoute).not.toContain("export const GET");
+          expect(updatedRoute).toContain("export const POST");
+
+          await new CodeGenerator($.path("openapi.json"), $.path(""), {
+            routes: true,
+            types: true,
+          }).generate();
+          expect(await $.read("routes/pet.ts")).toBe(updatedRoute);
+        });
+      },
+    );
+
     it("does not modify an existing route file when no new methods are present", async () => {
       await usingTemporaryFiles(async ($) => {
         await $.add("openapi.json", JSON.stringify(specWithGetAndPost));

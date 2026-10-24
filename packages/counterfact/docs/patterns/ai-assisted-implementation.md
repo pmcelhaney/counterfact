@@ -23,10 +23,10 @@ The agent sees the fully typed `$` parameter, the spec-derived response types, a
 
 ```ts
 // api/routes/pet/{petId}.ts
-export const GET: HTTP_GET = ($) => {
+export function GET($: Parameters<HTTP_GET>[0]) {
   const pet = $.context.get($.path.petId);
   return pet ? $.response[200].json(pet) : $.response[404].text("Not found");
-};
+}
 ```
 
 If the result does not match the spec's response schema, TypeScript flags it immediately in the IDE. The agent can correct its output without requiring you to understand the full type system.

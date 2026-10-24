@@ -1,4 +1,5 @@
 import type { createPet } from "../types/paths/pets.types.js";
 
-export const POST: createPet = ($) =>
-  $.response[201].json($.context.add($.body));
+export function POST($: Parameters<createPet>[0]) {
+  return $.response[201].json($.context.add($.body));
+}

@@ -120,26 +120,28 @@ Then wire the context into each handler:
 
 ```ts
 // api/routes/pet.ts
-export const GET: HTTP_GET = ($) =>
-  $.response[200].json($.context.list($.query.status));
+export function GET($: Parameters<HTTP_GET>[0]) {
+  return $.response[200].json($.context.list($.query.status));
+}
 
-export const POST: HTTP_POST = ($) =>
-  $.response[200].json($.context.add($.body));
+export function POST($: Parameters<HTTP_POST>[0]) {
+  return $.response[200].json($.context.add($.body));
+}
 ```
 
 ```ts
 // api/routes/pet/{petId}.ts
-export const GET: HTTP_GET = ($) => {
+export function GET($: Parameters<HTTP_GET>[0]) {
   const pet = $.context.get($.path.petId);
   return pet
     ? $.response[200].json(pet)
     : $.response[404].text(`Pet ${$.path.petId} not found`);
-};
+}
 
-export const DELETE: HTTP_DELETE = ($) => {
+export function DELETE($: Parameters<HTTP_DELETE>[0]) {
   $.context.remove($.path.petId);
   return $.response[200];
-};
+}
 ```
 
 ### Multi-domain API
@@ -153,7 +155,7 @@ from another:
 // api/routes/payments/{paymentId}.ts
 import type { Context as UsersContext } from "../../users/_.context.js";
 
-export const GET: HTTP_GET = ($) => {
+export function GET($: Parameters<HTTP_GET>[0]) {
   const payment = $.context.getById($.path.paymentId);
   if (!payment) return $.response[404].text("Payment not found");
 
@@ -161,7 +163,7 @@ export const GET: HTTP_GET = ($) => {
   const user = usersCtx.getById(payment.userId);
 
   return $.response[200].json({ ...payment, user });
-};
+}
 ```
 
 Keep each context class focused on a single responsibility. If a class is
@@ -320,12 +322,12 @@ export class Context {
 
 ```ts
 // api/routes/pet/{petId}.ts
-export const GET: HTTP_GET = ($) => {
+export function GET($: Parameters<HTTP_GET>[0]) {
   if ($.context.isDown) return $.response[500].text("Service unavailable");
   if ($.context.isRateLimited) return $.response[429].text("Too many requests");
   const pet = $.context.get($.path.petId);
   return pet ? $.response[200].json(pet) : $.response[404].text("Not found");
-};
+}
 ```
 
 Toggle from the REPL or via a scenario:

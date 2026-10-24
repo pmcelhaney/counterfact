@@ -2,17 +2,21 @@
 
 Each file in `routes/` corresponds to an API path. For example, `/users/{userId}` maps to `routes/users/{userId}.ts`. The root path `/` maps to `routes/index.ts`.
 
-A freshly generated route file looks like this:
+Use exported function declarations for route handlers:
 
 ```ts
-export const GET: HTTP_GET = ($) => {
+export function GET($: Parameters<HTTP_GET>[0]) {
   return $.response[200].random();
-};
+}
 
-export const POST: HTTP_POST = ($) => {
+export function POST($: Parameters<HTTP_POST>[0]) {
   return $.response[200].random();
-};
+}
 ```
+
+Prefer function declarations with a block body and an explicit `return` in route files. You can add logging, local variables, or other statements without restructuring the handler. If a generated handler uses an arrow function, convert it to this form when you edit it.
+
+`Parameters<HTTP_GET>[0]` gives `$` the request type from the generated handler signature. Use the corresponding type for each HTTP method, and add `async` to the declaration when you need `await`.
 
 Each exported function handles one HTTP method. The single argument `$` gives you everything you need: request data, response builders, server state, and utilities.
 
@@ -104,7 +108,7 @@ The request is exposed through four typed properties:
 | `$.body`    | Request body                                                 |
 
 ```ts
-export const GET: HTTP_GET = ($) => {
+export function GET($: Parameters<HTTP_GET>[0]) {
   if ($.headers["x-token"] !== "super-secret") {
     return $.response[401].text("Unauthorized");
   }
@@ -114,7 +118,7 @@ export const GET: HTTP_GET = ($) => {
     ` with tags: ${$.body.tags.join(", ")}`;
 
   return $.response[200].text(content);
-};
+}
 ```
 
 All four objects are typed from your OpenAPI spec, so autocomplete works for parameter names and values.
@@ -132,11 +136,11 @@ GET /items?page=0&size=100&sort=name
 Counterfact automatically assembles these individual query parameters back into the object, so you can access them as:
 
 ```ts
-export const GET: HTTP_GET = ($) => {
+export function GET($: Parameters<HTTP_GET>[0]) {
   const { page, size, sort } = $.query.pageable;
   // page = "0", size = "100", sort = "name"
   // ...
-};
+}
 ```
 
 This behaviour follows the OpenAPI 3.x defaults (`style: form`, `explode: true`) and also applies when those values are set explicitly. To opt out, set `explode: false` on the parameter in your spec.
@@ -168,7 +172,7 @@ Counterfact translates your OpenAPI spec into strict TypeScript types. If your s
 `$.x` is an alias for `$` with all types widened to `any`, giving you an escape hatch:
 
 ```ts
-export const GET: HTTP_GET = ($) => {
+export function GET($: Parameters<HTTP_GET>[0]) {
   // header not defined in OpenAPI spec
   $.headers["my-undocumented-header"]; // TypeScript error
   $.x.headers["my-undocumented-header"]; // ok
@@ -176,7 +180,7 @@ export const GET: HTTP_GET = ($) => {
   // status code not defined in OpenAPI spec
   return $.response[500].text("Error!"); // TypeScript error
   return $.x.response[500].text("Error!"); // ok
-};
+}
 ```
 
 ## Streaming responses (SSE, JSONL, JSON-seq)
@@ -186,9 +190,9 @@ Counterfact supports OpenAPI 3.2 sequential media types. When your spec uses `it
 Use `$.response[<status>].stream(iterable)` to return a stream from any route handler. The content type is inferred automatically from the OpenAPI spec (the first streaming media type defined for that response).
 
 ```ts
-export const GET: HTTP_GET = ($) => {
+export function GET($: Parameters<HTTP_GET>[0]) {
   return $.response[200].stream(events());
-};
+}
 
 async function* events() {
   yield { id: 1, message: "hello" };

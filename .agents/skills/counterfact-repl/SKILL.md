@@ -628,9 +628,9 @@ Example:
 Example route handler:
 
 ```typescript
-export const GET: HTTP_GET = ($) => {
+export function GET($: Parameters<HTTP_GET>[0]) {
   return $.response[200].json($.context.pets);
-};
+}
 ```
 
 ---

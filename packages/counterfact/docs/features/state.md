@@ -4,17 +4,17 @@ The `$.context` object is how routes share in-memory state. It's an instance of 
 
 ```ts
 // routes/pet.ts
-export const POST: HTTP_POST = ($) => {
+export function POST($: Parameters<HTTP_POST>[0]) {
   return $.response[200].json($.context.addPet($.body));
-};
+}
 
 // routes/pet/{petId}.ts
-export const GET: HTTP_GET = ($) => {
+export function GET($: Parameters<HTTP_GET>[0]) {
   const pet = $.context.getPetById($.path.petId);
   if (pet === undefined)
     return $.response[404].text(`Pet ${$.path.petId} not found.`);
   return $.response[200].json(pet);
-};
+}
 ```
 
 Customize `_.context.ts` to hold whatever state and business logic your mock needs:

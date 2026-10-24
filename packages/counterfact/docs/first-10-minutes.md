@@ -52,17 +52,19 @@ Then use it in the generated `POST /pet` and `GET /pet/{petId}` handlers:
 // api/routes/pet.ts
 import type { addPet } from "../types/paths/pet.types.js";
 
-export const POST: addPet = ($) => $.response[200].json($.context.add($.body));
+export function POST($: Parameters<addPet>[0]) {
+  return $.response[200].json($.context.add($.body));
+}
 ```
 
 ```ts
 // api/routes/pet/{petId}.ts
 import type { getPetById } from "../../types/paths/pet/{petId}.types.js";
 
-export const GET: getPetById = ($) => {
+export function GET($: Parameters<getPetById>[0]) {
   const pet = $.context.get($.path.petId);
   return pet ? $.response[200].json(pet) : $.response[404].empty();
-};
+}
 ```
 
 From the frontend, create a record and fetch it later with the same localhost

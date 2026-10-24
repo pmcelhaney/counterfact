@@ -15,6 +15,13 @@ Implement or update route behavior in generated route files.
 
 ## Required rules
 
+- Always use exported function declarations for route handlers, with an explicit
+  block body and `return`. This makes it easy to add statements as a route grows.
+- Type `$` with `Parameters<HTTP_GET>[0]` (or the corresponding generated handler
+  type for the method). Preserve `async` when the handler uses `await`.
+- When editing a generated arrow-function handler, convert it to a function
+  declaration.
+
 - Use the `$` API in every handler (`$.path`, `$.query`, `$.body`, `$.response`,
   `$.context`, `$.loadContext`).
 - Route handlers must stay thin.
@@ -35,10 +42,10 @@ Implement or update route behavior in generated route files.
 ## Pattern
 
 ```ts
-export const POST: HTTP_POST = ($) => {
+export function POST($: Parameters<HTTP_POST>[0]) {
   const created = $.context.createThing($.body);
   return $.response[201].json(created);
-};
+}
 ```
 
 ## References

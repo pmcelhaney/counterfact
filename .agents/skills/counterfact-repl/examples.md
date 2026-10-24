@@ -167,7 +167,7 @@ Here's an example of how your route handler should be updated:
 
 ```typescript
 // routes/pets.ts
-export const GET: HTTP_GET = ($) => {
+export function GET($: Parameters<HTTP_GET>[0]) {
   if (!$.context.serviceAvailable) {
     return $.response[503].json({
       error: $.context.errorMessage || "Service unavailable"
@@ -175,7 +175,7 @@ export const GET: HTTP_GET = ($) => {
   }
 
   return $.response[200].json($.context.pets);
-};
+}
 ````
 
 If your handler already checks this flag, requests to /pets will now return 503 errors.
@@ -426,7 +426,7 @@ Your pagination endpoints can use these to return:
 
 Example route handler:
 ```typescript
-export const GET: HTTP_GET = ($) => {
+export function GET($: Parameters<HTTP_GET>[0]) {
   const page = parseInt($.query.page) || 1;
   const size = $.context.pageSize || 10;
   const start = (page - 1) * size;
@@ -438,7 +438,7 @@ export const GET: HTTP_GET = ($) => {
     page,
     pageSize: size
   });
-};
+}
 ````
 
 ````
