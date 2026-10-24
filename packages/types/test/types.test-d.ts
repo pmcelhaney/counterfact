@@ -179,6 +179,38 @@ declare const generatedResponse: ResponseBuilderFactory<{
 expectError(generatedResponse[200].json("invalid json per schema"));
 expectAssignable<COUNTERFACT_RESPONSE>(generatedResponse[200].json({ id: 1 }));
 
+// Function expressions contextually type both the request and completed response.
+type SchemaCheckedRoute = ($: {
+  response: typeof generatedResponse;
+}) => MaybePromise<COUNTERFACT_RESPONSE>;
+
+const functionExpressionRoute: SchemaCheckedRoute = function ($) {
+  expectType<typeof generatedResponse>($.response);
+  return $.response[200].json({ id: 1 });
+};
+const asyncFunctionExpressionRoute: SchemaCheckedRoute = async function ($) {
+  expectType<typeof generatedResponse>($.response);
+  return $.response[200].json({ id: 1 });
+};
+expectAssignable<SchemaCheckedRoute>(functionExpressionRoute);
+expectAssignable<SchemaCheckedRoute>(asyncFunctionExpressionRoute);
+
+expectError<SchemaCheckedRoute>(function ($) {
+  $.response[200].json({ id: 1 });
+});
+expectError<SchemaCheckedRoute>(async function ($) {
+  $.response[200].json({ id: 1 });
+});
+expectError<SchemaCheckedRoute>(function ($) {
+  return $.response[200];
+});
+expectError<SchemaCheckedRoute>(async function ($) {
+  return $.response[200];
+});
+expectError<SchemaCheckedRoute>(function ($) {
+  return $.response[200].json({ id: "invalid" });
+});
+
 type WideRoute = ($: {
   x: WideOperationArgument;
 }) => MaybePromise<COUNTERFACT_RESPONSE>;
