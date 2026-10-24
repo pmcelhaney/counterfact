@@ -205,6 +205,37 @@ test("the site build preserves authored inline whitespace", async (t) => {
       },
     );
     await t.test(
+      "retired documentation URLs lead to canonical chapters",
+      async () => {
+        for (const [slug, destination] of [
+          ["reference", "/docs/api"],
+          ["reference.md", "/docs/api"],
+          ["patterns/simulate-failures", "/docs/manual/edge-cases"],
+          ["patterns", "/docs/usage"],
+        ]) {
+          const document = parse(await $.read(`site/docs/${slug}/index.html`));
+          const redirect = elements(
+            document,
+            (node) =>
+              node.tagName === "meta" &&
+              node.attrs?.some(
+                (attr) =>
+                  attr.name === "http-equiv" &&
+                  attr.value.toLowerCase() === "refresh",
+              ),
+          );
+          assert.equal(redirect.length, 1);
+          const content = redirect[0].attrs.find(
+            (attr) => attr.name === "content",
+          ).value;
+          assert.ok(
+            content.endsWith(`url=${destination}`),
+            `${slug}: ${content}`,
+          );
+        }
+      },
+    );
+    await t.test(
       "canonical Markdown docs keep inline code separated",
       async () => {
         assert.ok(

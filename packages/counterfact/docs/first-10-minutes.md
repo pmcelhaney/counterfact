@@ -104,8 +104,8 @@ The pinned Petstore operation does not declare this 503 text response. `$.x` del
 
 At the REPL, set `context.unavailable = true`, then repeat the GET above: it returns 503 for the same resource. Set `context.unavailable = false` and fetch again to recover. The flag changes behavior without reserving a magic pet ID. See [validation boundaries](./manual/validation.md).
 
-Use [Simulate failures](./patterns/simulate-failures.md) for reusable failure
-controls and [Simulate latency](./patterns/simulate-latency.md) when loading
+Use [Simulate failures](manual/edge-cases.md) for reusable failure
+controls and [Simulate latency](manual/edge-cases.md) when loading
 behavior needs a delay.
 
 ## Continue only when needed

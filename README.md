@@ -11,22 +11,22 @@ proxy requests to real services when they are useful.
 
 Frontend work shouldn’t have to wait for the backend. When an API is unavailable or a feature hasn’t been built yet, developers still need a way to build and test the clients that depend on it.
 
-<a href="./docs/images/counterfact-waiting.png">
-  <img src="./docs/images/counterfact-waiting.png" alt="Web and mobile clients send API requests to an unavailable backend and wait for responses." width="1000" height="342">
+<a href="./site/public/diagrams/counterfact-waiting.png">
+  <img src="./site/public/diagrams/counterfact-waiting.png" alt="Web and mobile clients send API requests to an unavailable backend and wait for responses." width="1000" height="342">
 </a>
 
 ### Counterfact implements the contract
 
 Give Counterfact an OpenAPI contract, and it provides a working API for your web and mobile clients. Develop against that contract, simulate new functionality, and test errors and edge cases without waiting for the live backend.
 
-<a href="./docs/images/counterfact-simulation.png">
-  <img src="./docs/images/counterfact-simulation.png" alt="Web and mobile clients build and test against Counterfact’s simulated responses. An OpenAPI contract specifies the interface; the backend remains unavailable." width="1000" height="390">
+<a href="./site/public/diagrams/counterfact-simulation.png">
+  <img src="./site/public/diagrams/counterfact-simulation.png" alt="Web and mobile clients build and test against Counterfact’s simulated responses. An OpenAPI contract specifies the interface; the backend remains unavailable." width="1000" height="390">
 </a>
 
 ### Mix simulated and real responses
 
-<a href="./docs/images/counterfact-proxy.png">
-  <img src="./docs/images/counterfact-proxy.png" alt="Web and mobile clients use the same Counterfact interface. Counterfact simulates responses and proxies selected requests to available real services. The OpenAPI contract specifies the interface." width="1000" height="389">
+<a href="./site/public/diagrams/counterfact-proxy.png">
+  <img src="./site/public/diagrams/counterfact-proxy.png" alt="Web and mobile clients use the same Counterfact interface. Counterfact simulates responses and proxies selected requests to available real services. The OpenAPI contract specifies the interface." width="1000" height="389">
 </a>
 
 The OpenAPI document describes the interface. Counterfact handles requests and
@@ -53,7 +53,7 @@ and commit the lockfile.
 ## Keep going
 
 - [Documentation](https://counterfact.dev/docs/getting-started) · [user manual](./packages/counterfact/docs/manual.md) · [CLI and API reference](./packages/counterfact/docs/api.md)
-- [Custom responses](./packages/counterfact/docs/features/routes.md) · [errors and edge cases](./packages/counterfact/docs/patterns/simulate-failures.md) · [selective proxying](./packages/counterfact/docs/features/proxy.md)
+- [Custom responses](./packages/counterfact/docs/features/routes.md) · [errors and edge cases](packages/counterfact/docs/manual/edge-cases.md) · [selective proxying](./packages/counterfact/docs/features/proxy.md)
 - [Contributing](./CONTRIBUTING.md) · [issues](https://github.com/counterfact/api-simulator/issues) · [security](./SECURITY.md)
 - [Website](https://counterfact.dev) · [npm package](https://www.npmjs.com/package/counterfact) · [changelog](./packages/counterfact/CHANGELOG.md) · [architecture decisions](./docs/adr/)
 

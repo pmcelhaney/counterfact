@@ -26,7 +26,7 @@ Use this skill when finalizing contributor-facing changes that affect tests, dia
 
 - `package.json` (canonical scripts)
 - `AGENTS.md`
-- `packages/counterfact/docs/reference.md`
+- `packages/counterfact/docs/api.md`
 - `packages/counterfact/docs/faq.md`
 - `.changeset/*.md` (format examples)
 - `packages/counterfact/test/**/*` for existing patterns/fixtures
@@ -58,7 +58,7 @@ Use this skill when finalizing contributor-facing changes that affect tests, dia
   multiple files can turn an extra path into tsd's positional working directory.
 - Execute substantial documentation recipes against the exact published version or commit they instruct readers to use. A source package version can match npm while exposing unreleased APIs; verify public method availability and mark source-only recipes with a reproducible checkout setup. Verify externally linked contracts at their pinned URL, and exercise both the failing and repaired steps of typecheck examples.
 - User documentation ships in the npm package as well as the site. Keep the package `files` allowlist and `test/package/fixtures/pack-files.json` aligned with new pages; inspect inventory changes and run the packed-consumer check after adding documentation paths.
-- The documentation has a feature-based manual and a separate API reference. Keep `site/src/data/navigation.json`, the Markdown manual/reference indexes, and the home-page feature count aligned when adding chapters. Reuse canonical Markdown pages rather than duplicating existing guides, preserve published documentation URLs, and check rendered anchors as well as page destinations after restructuring.
+- The documentation has a feature-based manual and a separate API reference. Keep `site/src/data/navigation.json`, the Markdown manual/reference indexes, and the home-page feature count aligned when adding chapters. Reuse canonical Markdown pages rather than duplicating existing guides, preserve published documentation URLs through the site redirect map when retiring redundant Markdown sources, and check rendered anchors as well as page destinations after restructuring.
 - When rebuilding documentation navigation, compare removed content with the previous site as well as checking URLs. Preserve privacy disclosures, project resources, task indexes, and externally configured client examples; verify retained guides have incoming links from the new navigation. A successful link check cannot detect removed information or orphaned pages.
 - Documentation is also rendered as site pages. Link repository-only examples
   outside the published docs tree through GitHub source URLs, and validate the

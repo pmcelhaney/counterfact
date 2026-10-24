@@ -126,7 +126,7 @@ a complete multi-group example and reload guidance.
 
 - [Hot reload](./hot-reload.md) — state is preserved across hot reloads
 - [REPL](./repl.md) — inspect and mutate state interactively at runtime
-- [Patterns: Federated Context Files](../patterns/federated-context.md) — managing state across multiple context files
+- [Patterns: Federated Context Files](../manual/nested-contexts.md) — managing state across multiple context files
 - [Patterns: Model the Workflow, Not the Backend](../patterns/model-the-workflow.md) — deciding how much state to simulate
 - [Patterns: Share State Across API Groups](../patterns/shared-store.md) — sharing domain state between independently generated groups
 - [Patterns: Test the Context, Not the Handlers](../patterns/test-context-not-handlers.md) — unit-testing context logic

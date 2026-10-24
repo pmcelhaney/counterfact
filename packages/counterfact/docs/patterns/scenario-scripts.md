@@ -143,7 +143,7 @@ export const addThreeDogs: Scenario = ($) => addPets($, 3, "dog");
 
 - [Model the Workflow, Not the Backend](./model-the-workflow.md) — keep each
   scenario focused on a client-visible state rather than a production data model
-- [Mock APIs with Dummy Data](./mock-with-dummy-data.md) — the full range of approaches for populating server responses
-- [Live Server Inspection with the REPL](./repl-inspection.md) — interactive exploration and state manipulation at runtime
-- [Federated Context Files](./federated-context.md) — organize stateful logic that scenarios can seed
-- [Simulate Failures and Edge Cases](./simulate-failures.md) — use scenarios to flip failure flags on demand
+- [Mock APIs with Dummy Data](../manual/sample-responses.md) — the full range of approaches for populating server responses
+- [Live Server Inspection with the REPL](../features/repl.md) — interactive exploration and state manipulation at runtime
+- [Federated Context Files](../manual/nested-contexts.md) — organize stateful logic that scenarios can seed
+- [Simulate Failures and Edge Cases](../manual/edge-cases.md) — use scenarios to flip failure flags on demand

@@ -216,8 +216,7 @@ It exposes:
 
 ## See also
 
-- [Patterns: Multiple API Versions](../patterns/multiple-versions.md) — cookbook pattern with a worked example
-- [Reference: `version` field and `Versioned` type](../reference.md#multiple-api-versions)
+- [Reference: `version` field and `Versioned` type](../api.md)
 - [REPL](./repl.md) — interactive terminal for runtime inspection
 - [Generated code](./generated-code.md) — how code generation works
 - [Usage](../manual.md)

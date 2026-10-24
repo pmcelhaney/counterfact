@@ -23,10 +23,110 @@ export const GET: HTTP_GET = async ($) => {
 
 The delay is in milliseconds. Supply two numbers for a random duration within that range. Use a fixed delay when comparing client behavior across runs.
 
-## Make a failure repeatable
+## Switch failures at runtime
 
-Put a condition in a context when the test must switch between success and failure without editing the handler. Change that condition through a scenario, the REPL, or test code. Model the client-visible state rather than introducing special usernames or magic request values.
+Define failure flags in the context:
 
-Hot reload applies handler edits while preserving live state. Resetting state in tests is an explicit [programmatic operation](../api/simulator.md).
+```ts
+// api/routes/_.context.ts
+export class Context {
+  isBroken = false;
+  isRateLimited = false;
+  callCount = 0;
+}
+```
 
-See [failure patterns](../patterns/simulate-failures.md), [latency patterns](../patterns/simulate-latency.md), and [validation](./validation.md).
+Read those flags in the route handler. The OpenAPI operation must declare the shown status codes and media types (including `503` for the later examples), so its generated response builders allow them:
+
+```ts
+// api/routes/payments/{paymentId}.ts
+import type { HTTP_GET } from "../../types/paths/payments/{paymentId}.types.js";
+
+export const GET: HTTP_GET = ($) => {
+  if ($.context.isRateLimited) return $.response[429].text("Too Many Requests");
+  if ($.context.isBroken) return $.response[500].text("Internal Server Error");
+  return $.response[200].json({ id: $.path.paymentId, amount: 42.0 });
+};
+```
+
+Toggle failures from the REPL or from a test without restarting the server. This abbreviated `client` output omits request logs, headers, and colors; the client returns a promise of raw HTTP text, not a `{ status, body }` object:
+
+```
+⬣> context.isRateLimited = true
+⬣> void client.get("/payments/1")
+HTTP/1.1 429 Too Many Requests
+
+Too Many Requests
+
+⬣> context.isRateLimited = false
+⬣> context.isBroken = true
+⬣> void client.get("/payments/1")
+HTTP/1.1 500 Internal Server Error
+
+Internal Server Error
+```
+
+To simulate intermittent failures, use a counter or a random function:
+
+```ts
+export const GET: HTTP_GET = ($) => {
+  $.context.callCount += 1;
+  if ($.context.callCount % 3 === 0) {
+    return $.response[503].text("Flaky error");
+  }
+  return $.response[200].json({ id: $.path.paymentId });
+};
+```
+
+Or vary the response probabilistically:
+
+```ts
+export const GET: HTTP_GET = ($) => {
+  if (Math.random() < 0.2) {
+    return $.response[503].text("Flaky error");
+  }
+  return $.response[200].json({ id: $.path.paymentId });
+};
+```
+
+Flag-based failures are repeatable when setup is controlled. Reset counters before comparing runs; random failures are intentionally nondeterministic. Use the complete [payment retry recipe](../patterns/payment-retry.md) for a contract, handlers, scenarios, and executable assertions.
+
+## Configure latency at runtime
+
+```ts
+// api/routes/_.context.ts
+export class Context {
+  latencyMs = 0;
+}
+```
+
+```ts
+// api/routes/pet/{petId}.ts
+export const GET: HTTP_GET = async ($) => {
+  await $.delay($.context.latencyMs);
+  const pet = $.context.get($.path.petId);
+  return pet ? $.response[200].json(pet) : $.response[404].text("Not found");
+};
+```
+
+Toggle latency from the REPL while the UI is running:
+
+```
+⬣> context.latencyMs = 2000
+```
+
+Every subsequent request now takes two seconds. Observe the UI's loading state, then restore fast responses:
+
+```
+⬣> context.latencyMs = 0
+```
+
+To simulate variable latency, use a random delay within a range:
+
+```ts
+await $.delay(Math.random() * 500 + 100); // 100–600ms
+```
+
+Delays run inside the handler; they do not model connection setup, packet loss, or network jitter. Use fixed values for repeatable checks and restore zero delay for fast development. Controlled state and delays do not make generated random data deterministic.
+
+Hot reload preserves live state. Resetting state in tests is an explicit [programmatic operation](../api/simulator.md). See [validation](./validation.md) for contract boundaries.

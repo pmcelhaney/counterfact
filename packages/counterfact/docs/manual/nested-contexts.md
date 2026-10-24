@@ -8,18 +8,79 @@ For example, put pet behavior in `routes/pets/_.context.ts` and user behavior in
 
 ## Connect contexts explicitly
 
-A context receives `loadContext` in its constructor:
+Give each domain its own context:
 
 ```ts
+// api/routes/users/_.context.ts
+import type { User } from "../../types/components/user.types.js";
+
 export class Context {
-  constructor({ loadContext }) {
-    this.rootContext = loadContext("/");
-    this.petsContext = loadContext("/pets");
+  private users = new Map<number, User>();
+  private nextId = 1;
+
+  add(data: Omit<User, "id">): User {
+    const user = { ...data, id: this.nextId++ };
+    this.users.set(user.id, user);
+    return user;
+  }
+
+  getById(id: number): User | undefined {
+    return this.users.get(id);
+  }
+  list(): User[] {
+    return [...this.users.values()];
   }
 }
 ```
 
-This JavaScript-compatible example omits annotations; use the corresponding generated `Context$` type for typed TypeScript constructors. Call methods on connected contexts when an operation spans route areas. Avoid copying the same mutable data into each context.
+```ts
+// api/routes/payments/_.context.ts
+import type { Payment } from "../../types/components/payment.types.js";
+import type { Context$ } from "../../types/_.context.js";
+
+export class Context {
+  private payments = new Map<string, Payment>();
+  private loadContext: Context$["loadContext"];
+
+  constructor($: Context$) {
+    this.loadContext = $.loadContext;
+  }
+
+  getWithUser(id: string) {
+    const payment = this.getById(id);
+    if (!payment) return undefined;
+    const user = this.loadContext("/users").getById(payment.userId);
+    return { ...payment, user };
+  }
+
+  record(payment: Payment): void {
+    this.payments.set(payment.id, payment);
+  }
+  getById(id: string): Payment | undefined {
+    return this.payments.get(id);
+  }
+  list(): Payment[] {
+    return [...this.payments.values()];
+  }
+}
+```
+
+The payments context uses the injected helper when a request needs user data. Looking it up inside `getWithUser` avoids depending on context initialization order. The route delegates to that method:
+
+```ts
+// api/routes/payments/{paymentId}.ts
+import type { HTTP_GET } from "../../types/paths/payments/{paymentId}.types.js";
+
+export const GET: HTTP_GET = ($) => {
+  const payment = $.context.getWithUser($.path.paymentId);
+  if (!payment) return $.response[404].text("Payment not found");
+  return $.response[200].json(payment);
+};
+```
+
+This example assumes `Payment` has string `id` and numeric `userId`, and the GET operation declares the enriched JSON response and a text `404` response. Regenerate types after adding the context files so `Context$` has a typed `loadContext("/users")` overload.
+
+The helper returns the live context nearest to the requested path. It is available to context constructors and scenarios; the REPL exposes it as `loadContext(path)`. Handler arguments do not expose `loadContext`, so cross-domain logic belongs in an authored context method. The two contexts remain independent classes.
 
 ## Choose a shared store for API groups
 

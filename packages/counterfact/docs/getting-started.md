@@ -91,5 +91,5 @@ Save the file and refresh the frontend—no server restart is needed.
 
 - [First 10 minutes](./first-10-minutes.md) — add a small create/read workflow and one frontend-relevant failure.
 - [Usage](./manual.md) — find guides by job: frontend, testing, advanced control, or troubleshooting.
-- [Custom responses](./features/routes.md), [state](./features/state.md), [failures](./patterns/simulate-failures.md), and [proxying](./features/proxy.md) — add capabilities only when the workflow needs them.
+- [Custom responses](./features/routes.md), [state](./features/state.md), [failures](manual/edge-cases.md), and [proxying](./features/proxy.md) — add capabilities only when the workflow needs them.
 - [Without OpenAPI](./features/without-openapi.md) — use the deeper alternative when no OpenAPI document exists.

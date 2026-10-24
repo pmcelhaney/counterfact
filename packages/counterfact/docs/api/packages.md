@@ -14,6 +14,26 @@ Use declared package entry points. Each package's README contains public-import 
 | `@counterfact/repl`        | Embeddable REPL.                                                                                             |
 | `@counterfact/types`       | Shared contracts for generated code and package integration.                                                 |
 
+## Architecture overview
+
+```
+OpenAPI spec (YAML or JSON, local or URL)
+        │
+        ▼
+┌──────────────────────┐
+│ TypeScript Generator │  → routes/  (one .ts per path)
+│                      │  → types/   (request/response interfaces)
+└──────────────────────┘
+        │
+        ▼
+┌──────────────────────┐
+│  Koa HTTP Server     │  → dispatches requests to route handlers
+│  + Hot Reload        │  → watches for file changes via chokidar
+│  + REPL              │  → interactive terminal attached to live state
+│  + Proxy             │  → optional passthrough to a real backend
+└──────────────────────┘
+```
+
 ## Package-level examples
 
 The [repository package directory](https://github.com/counterfact/api-simulator/tree/main/packages) contains README files and runnable examples for individual packages.

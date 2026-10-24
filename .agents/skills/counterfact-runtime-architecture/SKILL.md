@@ -28,7 +28,7 @@ Use this skill when changing runtime orchestration, server dispatch flow, module
 - `packages/runtime/src/server/dispatcher.ts`
 - `packages/runtime/src/server/module-loader.ts`
 - `packages/runtime/src/server/web-server/create-koa-app.ts`
-- `packages/counterfact/docs/reference.md` (architecture + runtime behavior)
+- `packages/counterfact/docs/api/simulator.md` (architecture + runtime behavior)
 
 ## Existing conventions to follow
 

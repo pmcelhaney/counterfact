@@ -13,13 +13,17 @@ For feature explanations, use the [user manual](./manual.md). For exact options 
 - [State](./features/state.md) — share small in-memory state across routes.
 - [Hot reload](./features/hot-reload.md) — update handlers without restarting.
 - [Generated code](./features/generated-code.md) — understand editable routes and generated types.
-- [Simulate failures](./patterns/simulate-failures.md) and [simulate latency](./patterns/simulate-latency.md) — exercise error, empty, loading, and retry states.
+- [Failures, latency, and edge cases](./manual/edge-cases.md) — exercise error, empty, loading, and retry states.
 
 ## Team and test workflows
 
 - [First 10 minutes](./first-10-minutes.md) — a small create/read workflow with one failure.
 - [Automated integration tests](./patterns/automated-integration-tests.md) — start and stop a local API in tests.
 - [Scenario scripts](./patterns/scenario-scripts.md) — create repeatable starting states.
+- [Model the workflow](./patterns/model-the-workflow.md) — keep state small and document supported behavior.
+- [Test context logic](./patterns/test-context-not-handlers.md) — verify domain behavior independently of HTTP adapters.
+- [Payment retry and reset](./patterns/payment-retry.md) — run decline, recovery, permission, and isolation assertions.
+- [Contract-change check](./patterns/contract-change.md) — regenerate, observe a type error, and repair a handler.
 - [Shared store](./patterns/shared-store.md) — coordinate state across API groups.
 - [Third-party SDK against a local API](./patterns/agentic-sandbox.md#point-a-third-party-sdk-at-a-local-api) — redirect the Stripe Node SDK, exercise a rate limit, and recover.
 - [AI-assisted implementation](./patterns/ai-assisted-implementation.md) and [agentic sandbox](./patterns/agentic-sandbox.md) — give coding agents a bounded, verifiable API task.
@@ -31,7 +35,7 @@ For feature explanations, use the [user manual](./manual.md). For exact options 
 - [Middleware](./features/middleware.md) — add cross-cutting behavior.
 - [Programmatic API](./features/programmatic-api.md) — embed Counterfact in another process.
 - [Multiple versions](./features/multiple-versions.md) — serve more than one API version.
-- [TypeScript native mode](./features/typescript-native-mode.md) — run route files directly.
+- [TypeScript native mode](./features/typescript-native-mode.md) — understand native loading and installed-CLI limitations.
 
 ## Reference and troubleshooting
 
