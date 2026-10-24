@@ -49,9 +49,10 @@ from that inventory. Instructions advance automatically within each lesson;
 other positive whole-number stock values and fulfilled purchase quantities also
 work. Inventory lessons verify that the purchased quantity is subtracted.
 
-Follow the instructions beside the real shop. Open **Show code hint** when you
-want the exact file or example edit. File names and displayed file paths in the
-instructions open the corresponding file in VSCode. The instructions bold the next action. Cart changes and successful orders move
+Follow the instructions beside the real shop. Use **Open in VSCode** or
+**Copy file path** beside an edit instruction to find the file. Open
+**Show code hint** when you want an example edit. File names and displayed
+file paths in the instructions open the corresponding file in VSCode. The instructions bold the next action. Cart changes and successful orders move
 the emphasis automatically. Saved lesson files are detected automatically and their
 handlers are called with fresh test inventory. A passing check moves the emphasis
 to trying the change in the shop; an unexpected response or broken handler shows
@@ -94,7 +95,21 @@ then restore it without a hint. The same workflow applies to your own API.
 
 The shop and REPL remain running after completion, and your files remain after
 quitting. If a browser cannot be opened, use the walkthrough URL printed in the
-terminal. The final panel prints the command to restart the project.
+terminal. The final panel prints the command to restart the project; run it from
+the directory where you started the intro. Add `--port <number>` if you need a
+port other than the default `3100`.
+
+Restarting keeps your handler edits but starts a new in-memory session. The
+startup scenario seeds the inventory again, and the browser starts a new lesson
+and cart. Reloading the browser while the same server is running preserves the
+lesson and cart instead.
+
+The generated lesson-check routes refer to helpers in the Counterfact
+installation that created the example. Keep that installation available when
+restarting. For a lasting exercise, install a pinned Counterfact version in your
+project before starting the intro; see [project installation](../patterns/lifecycle-setup.md).
+Moving only the generated directory to another machine does not include those
+helpers.
 
 ## Use your own API
 
@@ -110,5 +125,8 @@ explicitly for scripts, or `_` to start without OpenAPI.
 ## Continue learning
 
 - [Generate an API from OpenAPI](../getting-started.md) — apply the workflow to your own API.
+- [Custom route handlers](../features/routes.md) — use typed requests and explicit responses in your own routes.
+- [Stateful contexts](../features/state.md) and [scenario scripts](../patterns/scenario-scripts.md) — model shared inventory and repeatable startup state.
+- [Interactive REPL](../features/repl.md) — inspect and change a running simulation.
 - [First 10 minutes](../first-10-minutes.md) — build a small create/read workflow.
 - [CLI and configuration](../api/cli.md#first-run-intro) — setup, discovery limits, and unattended startup.

@@ -34,7 +34,7 @@ The action flags above default to false individually. When no action flag is sup
 
 Run `npx counterfact@latest --help` for the full list.
 
-### First-run intro
+## First-run intro
 
 Running with no arguments and no `counterfact.yaml` starts an interactive intro.
 Even an empty config file bypasses the intro, as does any explicit CLI argument.
@@ -70,7 +70,7 @@ An unconfigured no-argument run in those environments prints documentation and
 explicit-start examples, then exits successfully without starting a server,
 REPL, watcher, or generation. Use `npx counterfact _` to start a spec-free mock.
 
-### Startup output
+## Startup output
 
 Counterfact prints its version and a random tagline from its bundled collection.
 

@@ -27,6 +27,23 @@ yarn test
 
 The [code generator](./packages/generator/README.md) and [server runtime](./packages/runtime/README.md) are separate workspace packages. The `counterfact` package composes them with the CLI, client, and REPL. Guided tours live in [`packages/tutorials`](./packages/tutorials/README.md); add future chapter tours there. Root scripts coordinate builds and checks, so contributors do not need to change directories for the standard workflow.
 
+### Try the guided tour from a checkout
+
+Build the checkout with `yarn build`, then launch its CLI from a separate empty
+directory. For example, with this repository cloned as `api-simulator`:
+
+```sh
+mkdir ../counterfact-tour
+cd ../counterfact-tour
+node ../api-simulator/packages/counterfact/bin/counterfact.js
+```
+
+Choose **Try a guided example**. Running the built CLI exercises this checkout;
+`npx counterfact@latest` uses the published release. Keep the checkout available
+because generated lesson checks load its tutorial helpers. The [guided-example
+chapter](./packages/counterfact/docs/manual/guided-example.md) describes the
+exercise, restart behavior, and follow-up guides.
+
 ### Build feedback
 
 Run `yarn build` from the repository root to build the development workspaces.
