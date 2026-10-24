@@ -130,8 +130,33 @@ export type GenericResponseBuilderInner<
     : (name: ExampleNames<Response>) => COUNTERFACT_RESPONSE;
   text: MaybeShortcut<["text/plain"], Response>;
   xml: MaybeShortcut<["application/xml", "text/xml"], Response>;
+  sse: IfHasKey<
+    Response["content"],
+    ["text/event-stream"],
+    (
+      events: SchemasOf<
+        Pick<
+          Response["content"],
+          Extract<keyof Response["content"], `text/event-stream${string}`>
+        >
+      >,
+    ) => GenericResponseBuilder<{
+      content: NeverIfEmpty<
+        OmitAll<Response["content"], ["text/event-stream"]>
+      >;
+      headers: Response["headers"];
+      requiredHeaders: Response["requiredHeaders"];
+    }>,
+    never
+  >;
   stream: MaybeShortcut<
-    ["text/event-stream", "application/jsonl", "application/json-seq"],
+    [
+      "text/event-stream",
+      "application/jsonl",
+      "application/x-ndjson",
+      "application/ndjson",
+      "application/json-seq",
+    ],
     Response
   >;
 }>;

@@ -400,3 +400,43 @@ expectAssignable<COUNTERFACT_RESPONSE>(optionalHeadersFactory[200].empty());
 expectAssignable<(header: "x-request-id", value: string) => unknown>(
   optionalHeadersFactory[200].header,
 );
+
+// Explicit SSE envelopes retain the contract's item schema and required headers.
+type EventResponse = {
+  content: {
+    "text/event-stream": {
+      schema: AsyncIterable<{ event: "update"; data: string }>;
+    };
+    "application/json": { schema: { unrelated: number } };
+  };
+  headers: { "X-Trace": { schema: string } };
+  requiredHeaders: "X-Trace";
+};
+declare const eventBuilder: GenericResponseBuilderInner<EventResponse>;
+declare const events: AsyncIterable<{ event: "update"; data: string }>;
+declare const invalidEvents: AsyncIterable<{ event: "update"; data: number }>;
+expectError(eventBuilder.sse(invalidEvents));
+expectError(eventBuilder.sse({ unrelated: 1 }));
+expectError(noHeaderBuilder.sse(events));
+expectNotAssignable<COUNTERFACT_RESPONSE>(eventBuilder.sse(events));
+eventBuilder.sse(events).header("X-Trace", "abc");
+
+type NdjsonResponse = {
+  content: { "application/x-ndjson": { schema: AsyncIterable<unknown> } };
+  headers: never;
+  requiredHeaders: never;
+};
+declare const ndjsonBuilder: GenericResponseBuilderInner<NdjsonResponse>;
+expectAssignable<COUNTERFACT_RESPONSE>(ndjsonBuilder.stream(stream));
+
+type SseOnlyResponse = {
+  content: {
+    "text/event-stream": {
+      schema: AsyncIterable<{ event: "update"; data: string }>;
+    };
+  };
+  headers: never;
+  requiredHeaders: never;
+};
+declare const sseOnlyBuilder: GenericResponseBuilderInner<SseOnlyResponse>;
+expectAssignable<COUNTERFACT_RESPONSE>(sseOnlyBuilder.sse(events));

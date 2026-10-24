@@ -848,3 +848,24 @@ describe("a response builder", () => {
     });
   });
 });
+
+describe("sse()", () => {
+  it("selects SSE explicitly and preserves headers on either side of the call", () => {
+    async function* frames() {
+      yield { id: "1", data: "hello" };
+    }
+    const events = frames();
+    const response = createResponseBuilder({ responses: {} })[200]!
+      .header("X-Before", "before")
+      .sse(events)
+      .header("X-After", "after");
+    expect(response.content).toEqual([
+      { type: "text/event-stream", body: events, streamFormat: "sse" },
+    ]);
+    expect(response.status).toBe(200);
+    expect(response.headers).toEqual({
+      "X-Before": "before",
+      "X-After": "after",
+    });
+  });
+});

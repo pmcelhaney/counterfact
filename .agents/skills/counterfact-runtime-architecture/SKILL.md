@@ -47,6 +47,10 @@ Use this skill when changing runtime orchestration, server dispatch flow, module
 - Breaking prefix/group/version routing derivation in `app.ts`.
 - Introducing restart-only behavior for changes currently handled by watch/reload paths.
 - Changing response defaults/content negotiation semantics unintentionally in `dispatcher` or Koa middleware.
+- Inferring SSE framing from payload property names: `.stream()` preserves JSON
+  data items, while `.sse()` explicitly selects event envelopes. Carry the
+  framing choice through response normalization and verify actual incremental
+  HTTP delivery, field validation, and producer cleanup on disconnect.
 
 ## How to validate the change
 

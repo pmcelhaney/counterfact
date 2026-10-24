@@ -6,6 +6,7 @@ import type {
   CookieOptions,
   OpenApiOperation,
   ResponseBuilder,
+  SseEvent,
 } from "@counterfact/types";
 import { STREAMING_CONTENT_TYPES } from "@counterfact/types/streaming-content-types";
 import type { DispatcherConfig } from "../runtime-config.js";
@@ -355,6 +356,22 @@ export function createResponseBuilder(
             body,
             type,
           })),
+        };
+      },
+
+      sse(this: ResponseBuilder, events: AsyncIterable<SseEvent>) {
+        return {
+          ...this,
+          content: [
+            ...(this.content ?? []).filter(
+              (entry) => entry.type !== "text/event-stream",
+            ),
+            {
+              body: events,
+              type: "text/event-stream",
+              streamFormat: "sse" as const,
+            },
+          ],
         };
       },
 
