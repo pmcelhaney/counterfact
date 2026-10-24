@@ -121,10 +121,10 @@ Then wire the context into each handler:
 ```ts
 // api/routes/pet.ts
 export const GET: HTTP_GET = ($) =>
-  $.response[200].json($.context.list($.query.status));
+  $.response.status(200).json($.context.list($.query.status));
 
 export const POST: HTTP_POST = ($) =>
-  $.response[200].json($.context.add($.body));
+  $.response.status(200).json($.context.add($.body));
 ```
 
 ```ts
@@ -132,13 +132,13 @@ export const POST: HTTP_POST = ($) =>
 export const GET: HTTP_GET = ($) => {
   const pet = $.context.get($.path.petId);
   return pet
-    ? $.response[200].json(pet)
-    : $.response[404].text(`Pet ${$.path.petId} not found`);
+    ? $.response.status(200).json(pet)
+    : $.response.status(404).text(`Pet ${$.path.petId} not found`);
 };
 
 export const DELETE: HTTP_DELETE = ($) => {
   $.context.remove($.path.petId);
-  return $.response[200];
+  return $.response.status(200);
 };
 ```
 
@@ -155,12 +155,12 @@ import type { Context as UsersContext } from "../../users/_.context.js";
 
 export const GET: HTTP_GET = ($) => {
   const payment = $.context.getById($.path.paymentId);
-  if (!payment) return $.response[404].text("Payment not found");
+  if (!payment) return $.response.status(404).text("Payment not found");
 
   const usersCtx = $.loadContext("/users") as UsersContext;
   const user = usersCtx.getById(payment.userId);
 
-  return $.response[200].json({ ...payment, user });
+  return $.response.status(200).json({ ...payment, user });
 };
 ```
 
@@ -321,10 +321,10 @@ export class Context {
 ```ts
 // api/routes/pet/{petId}.ts
 export const GET: HTTP_GET = ($) => {
-  if ($.context.isDown) return $.response[500].text("Service unavailable");
-  if ($.context.isRateLimited) return $.response[429].text("Too many requests");
+  if ($.context.isDown) return $.response.status(500).text("Service unavailable");
+  if ($.context.isRateLimited) return $.response.status(429).text("Too many requests");
   const pet = $.context.get($.path.petId);
-  return pet ? $.response[200].json(pet) : $.response[404].text("Not found");
+  return pet ? $.response.status(200).json(pet) : $.response.status(404).text("Not found");
 };
 ```
 

@@ -64,10 +64,10 @@ Given this route handler:
 ```ts
 // routes/auth/login.ts
 export const POST: HTTP_POST = ($) => {
-  if ($.context.passwordResponse === "ok") return $.response[200];
+  if ($.context.passwordResponse === "ok") return $.response.status(200);
   if ($.context.passwordResponse === "expired")
-    return $.response[403].header("reason", "expired-password");
-  return $.response[401];
+    return $.response.status(403).header("reason", "expired-password");
+  return $.response.status(401);
 };
 ```
 

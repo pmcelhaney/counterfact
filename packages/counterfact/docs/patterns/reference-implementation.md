@@ -32,9 +32,9 @@ Implement each handler with the intended behavior:
 ```ts
 // api/routes/pet.ts
 export const POST: HTTP_POST = ($) => {
-  if (!$.body.name) return $.response[400].text("name is required");
+  if (!$.body.name) return $.response.status(400).text("name is required");
   const pet = $.context.add($.body);
-  return $.response[200].json(pet);
+  return $.response.status(200).json(pet);
 };
 ```
 
@@ -42,7 +42,7 @@ TypeScript highlights contract violations in the IDE and in CI:
 
 ```ts
 // Your IDE warns here if the response shape no longer matches the spec.
-return $.response[200].json(pet);
+return $.response.status(200).json(pet);
 ```
 
 When the spec changes, regenerate the types:

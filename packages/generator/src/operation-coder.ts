@@ -14,7 +14,7 @@ import type { Script } from "./script.js";
 /**
  * Generates the default route handler stub for a single OpenAPI operation.
  *
- * The generated stub calls `$.response[statusCode].random()` (or `.empty()`)
+ * The generated stub calls `$.response.status(statusCode).random()` (or `.empty()`)
  * for the first response defined in the spec.  It is only written when no
  * handler file exists yet — users are expected to replace it with real logic.
  *
@@ -60,9 +60,9 @@ export class OperationCoder extends Coder {
       !("content" in firstResponse || "schema" in firstResponse)
     ) {
       return `async ($) => {
-        return $.response[${
+        return $.response.status(${
           firstStatusCode === "default" ? 200 : firstStatusCode
-        }].empty();
+        }).empty();
       }`;
     }
 
@@ -82,16 +82,16 @@ export class OperationCoder extends Coder {
         async function* items() {
           // yield items here
         }
-        return $.response[${
+        return $.response.status(${
           firstStatusCode === "default" ? 200 : firstStatusCode
-        }].stream(items());
+        }).stream(items());
       }`;
     }
 
     return `async ($) => {
-      return $.response[${
+      return $.response.status(${
         firstStatusCode === "default" ? 200 : firstStatusCode
-      }].random();
+      }).random();
     }`;
   }
 

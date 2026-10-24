@@ -5,11 +5,11 @@ exports[`end-to-end test generates the same code for pet store that it did on th
 import type { updatePet } from "../types/paths/pet.types.js";
 
 export const POST: addPet = async ($) => {
-  return $.response[200].random();
+  return $.response.status(200).random();
 };
 
 export const PUT: updatePet = async ($) => {
-  return $.response[200].random();
+  return $.response.status(200).random();
 };
 "
 `;
@@ -133,7 +133,7 @@ exports[`end-to-end test generates the same code for pet store that it did on th
 "routes/pet/findByStatus.ts:import type { findPetsByStatus } from "../../types/paths/pet/findByStatus.types.js";
 
 export const GET: findPetsByStatus = async ($) => {
-  return $.response[200].random();
+  return $.response.status(200).random();
 };
 "
 `;
@@ -208,7 +208,7 @@ exports[`end-to-end test generates the same code for pet store that it did on th
 "routes/pet/findByTags.ts:import type { findPetsByTags } from "../../types/paths/pet/findByTags.types.js";
 
 export const GET: findPetsByTags = async ($) => {
-  return $.response[200].random();
+  return $.response.status(200).random();
 };
 "
 `;
@@ -285,15 +285,15 @@ import type { updatePetWithForm } from "../../types/paths/pet/{petId}.types.js";
 import type { deletePet } from "../../types/paths/pet/{petId}.types.js";
 
 export const GET: getPetById = async ($) => {
-  return $.response[200].random();
+  return $.response.status(200).random();
 };
 
 export const POST: updatePetWithForm = async ($) => {
-  return $.response[405].empty();
+  return $.response.status(405).empty();
 };
 
 export const DELETE: deletePet = async ($) => {
-  return $.response[400].empty();
+  return $.response.status(400).empty();
 };
 "
 `;
@@ -455,7 +455,7 @@ exports[`end-to-end test generates the same code for pet store that it did on th
 "routes/pet/{petId}/uploadImage.ts:import type { uploadFile } from "../../../types/paths/pet/{petId}/uploadImage.types.js";
 
 export const POST: uploadFile = async ($) => {
-  return $.response[200].random();
+  return $.response.status(200).random();
 };
 "
 `;
@@ -525,7 +525,7 @@ exports[`end-to-end test generates the same code for pet store that it did on th
 "routes/store/inventory.ts:import type { getInventory } from "../../types/paths/store/inventory.types.js";
 
 export const GET: getInventory = async ($) => {
-  return $.response[200].random();
+  return $.response.status(200).random();
 };
 "
 `;
@@ -583,7 +583,7 @@ exports[`end-to-end test generates the same code for pet store that it did on th
 "routes/store/order.ts:import type { placeOrder } from "../../types/paths/store/order.types.js";
 
 export const POST: placeOrder = async ($) => {
-  return $.response[200].random();
+  return $.response.status(200).random();
 };
 "
 `;
@@ -649,11 +649,11 @@ exports[`end-to-end test generates the same code for pet store that it did on th
 import type { deleteOrder } from "../../../types/paths/store/order/{orderId}.types.js";
 
 export const GET: getOrderById = async ($) => {
-  return $.response[200].random();
+  return $.response.status(200).random();
 };
 
 export const DELETE: deleteOrder = async ($) => {
-  return $.response[400].empty();
+  return $.response.status(400).empty();
 };
 "
 `;
@@ -778,7 +778,7 @@ exports[`end-to-end test generates the same code for pet store that it did on th
 "routes/user.ts:import type { createUser } from "../types/paths/user.types.js";
 
 export const POST: createUser = async ($) => {
-  return $.response[200].random();
+  return $.response.status(200).random();
 };
 "
 `;
@@ -841,7 +841,7 @@ exports[`end-to-end test generates the same code for pet store that it did on th
 "routes/user/createWithList.ts:import type { createUsersWithListInput } from "../../types/paths/user/createWithList.types.js";
 
 export const POST: createUsersWithListInput = async ($) => {
-  return $.response[200].random();
+  return $.response.status(200).random();
 };
 "
 `;
@@ -913,7 +913,7 @@ exports[`end-to-end test generates the same code for pet store that it did on th
 "routes/user/login.ts:import type { loginUser } from "../../types/paths/user/login.types.js";
 
 export const GET: loginUser = async ($) => {
-  return $.response[200].random();
+  return $.response.status(200).random();
 };
 "
 `;
@@ -991,7 +991,7 @@ exports[`end-to-end test generates the same code for pet store that it did on th
 "routes/user/logout.ts:import type { logoutUser } from "../../types/paths/user/logout.types.js";
 
 export const GET: logoutUser = async ($) => {
-  return $.response[200].empty();
+  return $.response.status(200).empty();
 };
 "
 `;
@@ -1045,15 +1045,15 @@ import type { updateUser } from "../../types/paths/user/{username}.types.js";
 import type { deleteUser } from "../../types/paths/user/{username}.types.js";
 
 export const GET: getUserByName = async ($) => {
-  return $.response[200].random();
+  return $.response.status(200).random();
 };
 
 export const PUT: updateUser = async ($) => {
-  return $.response[200].empty();
+  return $.response.status(200).empty();
 };
 
 export const DELETE: deleteUser = async ($) => {
-  return $.response[400].empty();
+  return $.response.status(400).empty();
 };
 "
 `;
@@ -1359,7 +1359,7 @@ exports[`end-to-end test generates the same code for the example that it did on 
 "routes/index.ts:import type { getRoot } from "../types/paths/index.types.js";
 
 export const GET: getRoot = async ($) => {
-  return $.response[200].random();
+  return $.response.status(200).random();
 };
 "
 `;
@@ -1420,7 +1420,7 @@ exports[`end-to-end test generates the same code for the example that it did on 
 "routes/count.ts:import type { getCount } from "../types/paths/count.types.js";
 
 export const GET: getCount = async ($) => {
-  return $.response[200].random();
+  return $.response.status(200).random();
 };
 "
 `;
@@ -1480,7 +1480,7 @@ exports[`end-to-end test generates the same code for the example that it did on 
 "routes/hello/kitty.ts:import type { helloKitty } from "../../types/paths/hello/kitty.types.js";
 
 export const GET: helloKitty = async ($) => {
-  return $.response[200].random();
+  return $.response.status(200).random();
 };
 "
 `;
@@ -1541,7 +1541,7 @@ exports[`end-to-end test generates the same code for the example that it did on 
 "routes/hello/{name}.ts:import type { sayHello } from "../../types/paths/hello/{name}.types.js";
 
 export const GET: sayHello = async ($) => {
-  return $.response[200].random();
+  return $.response.status(200).random();
 };
 "
 `;
@@ -1627,7 +1627,7 @@ exports[`end-to-end test generates the same code for the example that it did on 
 "routes/path-one.ts:import type { getPathOne } from "../types/paths/path-one.types.js";
 
 export const GET: getPathOne = async ($) => {
-  return $.response[200].random();
+  return $.response.status(200).random();
 };
 "
 `;
@@ -1685,7 +1685,7 @@ exports[`end-to-end test generates the same code for the example that it did on 
 "routes/weird/path/with:colon.ts:import type { weirdColonPath } from "../../../types/paths/weird/path/with∶colon.types.js";
 
 export const GET: weirdColonPath = async ($) => {
-  return $.response[200].random();
+  return $.response.status(200).random();
 };
 "
 `;
@@ -1741,11 +1741,11 @@ exports[`end-to-end test generates the same code for the example that it did on 
 import type { createUser } from "../types/paths/users.types.js";
 
 export const GET: listUsers = async ($) => {
-  return $.response[200].random();
+  return $.response.status(200).random();
 };
 
 export const POST: createUser = async ($) => {
-  return $.response[201].random();
+  return $.response.status(201).random();
 };
 "
 `;
@@ -1881,19 +1881,19 @@ import type { patchUser } from "../../types/paths/users/{userId}.types.js";
 import type { deleteUser } from "../../types/paths/users/{userId}.types.js";
 
 export const GET: getUser = async ($) => {
-  return $.response[200].random();
+  return $.response.status(200).random();
 };
 
 export const PUT: replaceUser = async ($) => {
-  return $.response[200].random();
+  return $.response.status(200).random();
 };
 
 export const PATCH: patchUser = async ($) => {
-  return $.response[200].random();
+  return $.response.status(200).random();
 };
 
 export const DELETE: deleteUser = async ($) => {
-  return $.response[204].empty();
+  return $.response.status(204).empty();
 };
 "
 `;
@@ -2093,7 +2093,7 @@ exports[`end-to-end test generates the same code for the example that it did on 
 "routes/events.ts:import type { createEvent } from "../types/paths/events.types.js";
 
 export const POST: createEvent = async ($) => {
-  return $.response[202].empty();
+  return $.response.status(202).empty();
 };
 "
 `;
@@ -2154,7 +2154,7 @@ exports[`end-to-end test generates the same code for the example that it did on 
 "routes/products/{productId}.ts:import type { getProduct } from "../../types/paths/products/{productId}.types.js";
 
 export const GET: getProduct = async ($) => {
-  return $.response[200].random();
+  return $.response.status(200).random();
 };
 "
 `;
@@ -2214,7 +2214,7 @@ exports[`end-to-end test generates the same code for the example that it did on 
 "routes/uploads.ts:import type { uploadFile } from "../types/paths/uploads.types.js";
 
 export const POST: uploadFile = async ($) => {
-  return $.response[201].random();
+  return $.response.status(201).random();
 };
 "
 `;
@@ -2289,7 +2289,7 @@ exports[`end-to-end test generates the same code for the example that it did on 
 "routes/legacy/items.ts:import type { listItemsLegacy } from "../../types/paths/legacy/items.types.js";
 
 export const GET: listItemsLegacy = async ($) => {
-  return $.response[200].random();
+  return $.response.status(200).random();
 };
 "
 `;
@@ -2350,7 +2350,7 @@ exports[`end-to-end test generates the same code for the example that it did on 
 "routes/reports/{reportId}.ts:import type { getReport } from "../../types/paths/reports/{reportId}.types.js";
 
 export const GET: getReport = async ($) => {
-  return $.response[200].random();
+  return $.response.status(200).random();
 };
 "
 `;
@@ -2421,7 +2421,7 @@ exports[`end-to-end test generates the same code for the example that it did on 
 "routes/ping.ts:import type { ping } from "../types/paths/ping.types.js";
 
 export const GET: ping = async ($) => {
-  return $.response[204].empty();
+  return $.response.status(204).empty();
 };
 "
 `;
@@ -2475,7 +2475,7 @@ exports[`end-to-end test generates the same code for the example that it did on 
 "routes/metadata.ts:import type { setMetadata } from "../types/paths/metadata.types.js";
 
 export const PUT: setMetadata = async ($) => {
-  return $.response[200].random();
+  return $.response.status(200).random();
 };
 "
 `;
@@ -2533,7 +2533,7 @@ exports[`end-to-end test generates the same code for the example that it did on 
 "routes/xml/book.ts:import type { getXmlBook } from "../../types/paths/xml/book.types.js";
 
 export const GET: getXmlBook = async ($) => {
-  return $.response[200].random();
+  return $.response.status(200).random();
 };
 "
 `;
@@ -2594,7 +2594,7 @@ exports[`end-to-end test generates the same code for the example that it did on 
 "routes/xml/note.ts:import type { getXmlNote } from "../../types/paths/xml/note.types.js";
 
 export const GET: getXmlNote = async ($) => {
-  return $.response[200].random();
+  return $.response.status(200).random();
 };
 "
 `;
@@ -2655,7 +2655,7 @@ exports[`end-to-end test generates the same code for the example that it did on 
 "routes/xml/snippet.ts:import type { getXmlSnippet } from "../../types/paths/xml/snippet.types.js";
 
 export const GET: getXmlSnippet = async ($) => {
-  return $.response[200].random();
+  return $.response.status(200).random();
 };
 "
 `;
@@ -2716,7 +2716,7 @@ exports[`end-to-end test generates the same code for the example that it did on 
 "routes/xml/secret.ts:import type { getXmlSecret } from "../../types/paths/xml/secret.types.js";
 
 export const GET: getXmlSecret = async ($) => {
-  return $.response[200].random();
+  return $.response.status(200).random();
 };
 "
 `;
@@ -2777,7 +2777,7 @@ exports[`end-to-end test generates the same code for the example that it did on 
 "routes/xml/playlist.ts:import type { getXmlPlaylist } from "../../types/paths/xml/playlist.types.js";
 
 export const GET: getXmlPlaylist = async ($) => {
-  return $.response[200].random();
+  return $.response.status(200).random();
 };
 "
 `;
@@ -2840,15 +2840,15 @@ import type { linkRelationship } from "../../types/paths/additionalOperations.ty
 import type { unlinkRelationship } from "../../types/paths/additionalOperations.types.js";
 
 export const GET: getRelationship = async ($) => {
-  return $.response[200].random();
+  return $.response.status(200).random();
 };
 
 export const LINK: linkRelationship = async ($) => {
-  return $.response[200].random();
+  return $.response.status(200).random();
 };
 
 export const UNLINK: unlinkRelationship = async ($) => {
-  return $.response[200].random();
+  return $.response.status(200).random();
 };
 "
 `;
@@ -2993,7 +2993,7 @@ exports[`end-to-end test generates the same code for the example that it did on 
 "routes/explodable-parameters.ts:import type { HTTP_GET } from "../types/paths/explodable-parameters.types.js";
 
 export const GET: HTTP_GET = async ($) => {
-  return $.response[200].random();
+  return $.response.status(200).random();
 };
 "
 `;
@@ -3060,7 +3060,7 @@ export const GET: streamEvents = async ($) => {
   async function* items() {
     // yield items here
   }
-  return $.response[200].stream(items());
+  return $.response.status(200).stream(items());
 };
 "
 `;
@@ -3120,7 +3120,7 @@ exports[`end-to-end test generates the same code for the example that it did on 
 "routes/search.ts:import type { search } from "../types/paths/search.types.js";
 
 export const GET: search = async ($) => {
-  return $.response[200].random();
+  return $.response.status(200).random();
 };
 "
 `;

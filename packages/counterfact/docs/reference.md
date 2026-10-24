@@ -83,7 +83,7 @@ For OpenAPI 3.2 specs, operations under `paths[*].additionalOperations` are also
 import type { HTTP_GET } from "../../types/paths/pet/{petId}.types.js";
 
 export const GET: HTTP_GET = ($) => {
-  return $.response[200].random();
+  return $.response.status(200).random();
 };
 ```
 
@@ -92,8 +92,8 @@ export const GET: HTTP_GET = ($) => {
 ```ts
 export const GET: HTTP_GET = ($) => {
   const pet = db.find($.path.petId);
-  if (!pet) return $.response[404].text(`Pet ${$.path.petId} not found`);
-  return $.response[200].json(pet);
+  if (!pet) return $.response.status(404).text(`Pet ${$.path.petId} not found`);
+  return $.response.status(200).json(pet);
 };
 ```
 
@@ -103,7 +103,7 @@ Counterfact handles content negotiation automatically. Calling `.json(content)` 
 
 ```ts
 export const GET: HTTP_GET = ($) => {
-  return $.response[200].example("fullPet");
+  return $.response.status(200).example("fullPet");
   //                              ^ autocompleted from your spec
 };
 ```
@@ -120,13 +120,28 @@ export const GET: HTTP_GET = ($) => {
 | `$.headers`     | typed object       | Request headers                                                                         |
 | `$.body`        | typed object       | Parsed request body                                                                     |
 | `$.context`     | `Context` instance | Shared state for this route subtree                                                     |
-| `$.response[N]` | response builder   | Fluent builder for HTTP status code N (e.g. `$.response[200]`, `$.response[404]`)       |
+| `$.response.status(N)` | response builder   | Fluent builder for HTTP status code N (e.g. `$.response.status(200)`, `$.response.status(404)`)       |
 
 ---
 
 ## Response builder methods
 
-`$.response[N]` (where N is the HTTP status code) returns a fluent builder. Chain one or more of these methods:
+`$.response.status(N)` (where N is the HTTP status code) returns a typed fluent builder. It narrows the available body methods, schemas, examples, and required headers to the selected response.
+
+Bracket-based status selection, `$.response[statusCode]`, is deprecated. Replace it with `$.response.status(statusCode)`; for example, `$.response[200].json(body)` becomes `$.response.status(200).json(body)`. Existing handlers using brackets remain supported.
+
+You can supply `.header(name, value)` and `.cookie(name, value, options?)` before selecting a status. In generated handlers, each header narrows the valid status codes to responses that declare that header and accept its value. It also satisfies that header's requirement. Cookies preserve the available status choices.
+
+```ts
+return $.response
+  .header("x-request-id", "abc123")
+  .status(200)
+  .json({ ok: true });
+```
+
+The example requires a response declaring `x-request-id`. If only the 200 response declares it, `.status(404)` after that header is a type error. With an OpenAPI `default` response, other status codes use the default response's schema.
+
+After selecting a status, chain one or more of these methods:
 
 | Method                           | Description                                                                     |
 | -------------------------------- | ------------------------------------------------------------------------------- |
@@ -142,7 +157,7 @@ export const GET: HTTP_GET = ($) => {
 | `.cookie(name, value, options?)` | Adds a `Set-Cookie` header                                                      |
 
 ```ts
-return $.response[200]
+return $.response.status(200)
   .header("x-request-id", "abc123")
   .cookie("session", "xyz", { httpOnly: true })
   .json({ ok: true });
@@ -242,8 +257,8 @@ export const GET: HTTP_GET = ($) => {
     "/users",
   ) as import("../users/_.context.js").Context;
   const user = usersContext.getById($.query.userId);
-  if (!user) return $.response[404].text("User not found");
-  return $.response[200].json({ paymentId: $.path.id, user });
+  if (!user) return $.response.status(404).text("User not found");
+  return $.response.status(200).json({ paymentId: $.path.id, user });
 };
 ```
 
@@ -331,7 +346,7 @@ Route handler types are generated directly from the OpenAPI spec. When you regen
 // This will fail to compile if status 200 no longer exists
 // or if the response body shape changes.
 export const GET: HTTP_GET = ($) => {
-  return $.response[200].json({ id: $.path.petId, name: "Fluffy" });
+  return $.response.status(200).json({ id: $.path.petId, name: "Fluffy" });
 };
 ```
 

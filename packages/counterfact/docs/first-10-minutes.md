@@ -52,7 +52,7 @@ Then use it in the generated `POST /pet` and `GET /pet/{petId}` handlers:
 // api/routes/pet.ts
 import type { addPet } from "../types/paths/pet.types.js";
 
-export const POST: addPet = ($) => $.response[200].json($.context.add($.body));
+export const POST: addPet = ($) => $.response.status(200).json($.context.add($.body));
 ```
 
 ```ts
@@ -61,7 +61,7 @@ import type { getPetById } from "../../types/paths/pet/{petId}.types.js";
 
 export const GET: getPetById = ($) => {
   const pet = $.context.get($.path.petId);
-  return pet ? $.response[200].json(pet) : $.response[404].empty();
+  return pet ? $.response.status(200).json(pet) : $.response.status(404).empty();
 };
 ```
 
@@ -77,7 +77,7 @@ to the handler as an explicit response. Keep it narrow and deterministic:
 
 ```ts
 if ($.path.petId === 99) {
-  return $.response[503].text("Try again shortly");
+  return $.response.status(503).text("Try again shortly");
 }
 ```
 

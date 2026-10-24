@@ -47,16 +47,16 @@ import type { HTTP_GET } from "../../types/paths/pets/{petId}.types.js";
 
 export const GET: HTTP_GET = ($) => {
   const pet = $.context.getById($.path.petId);
-  if (!pet) return $.response[404].text("Pet not found");
+  if (!pet) return $.response.status(404).text("Pet not found");
 
   // v1 returns only id and name
   if (!$.minVersion("v2")) {
-    return $.response[200].json({ id: pet.id, name: pet.name });
+    return $.response.status(200).json({ id: pet.id, name: pet.name });
   }
 
   // v2 adds the status field
   if (!$.minVersion("v3")) {
-    return $.response[200].json({
+    return $.response.status(200).json({
       id: pet.id,
       name: pet.name,
       status: pet.status,
@@ -64,7 +64,7 @@ export const GET: HTTP_GET = ($) => {
   }
 
   // v3 adds the full pet object including photoUrls
-  return $.response[200].json(pet);
+  return $.response.status(200).json(pet);
 };
 ```
 

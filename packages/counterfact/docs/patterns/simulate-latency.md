@@ -19,7 +19,7 @@ Add a delay to a single handler:
 export const GET: HTTP_GET = async ($) => {
   await $.delay(300); // simulate 300ms backend latency
   const pet = $.context.get($.path.petId);
-  return pet ? $.response[200].json(pet) : $.response[404].text("Not found");
+  return pet ? $.response.status(200).json(pet) : $.response.status(404).text("Not found");
 };
 ```
 
@@ -37,7 +37,7 @@ export class Context {
 export const GET: HTTP_GET = async ($) => {
   await $.delay($.context.latencyMs);
   const pet = $.context.get($.path.petId);
-  return pet ? $.response[200].json(pet) : $.response[404].text("Not found");
+  return pet ? $.response.status(200).json(pet) : $.response.status(404).text("Not found");
 };
 ```
 

@@ -1318,17 +1318,17 @@
   <span class="kw">const</span> pet = <span class="nm">$</span>.context.<span class="fn">get</span>(<span class="nm">$</span>.path.petId);
 
   <span class="kw">if</span> (!pet) {
-    <span class="kw">return</span> <span class="nm">$</span>.response[<span class="nm">404</span>].<span class="fn">text</span>(
+    <span class="kw">return</span> <span class="nm">$</span>.response.<span class="fn">status</span>(<span class="nm">404</span>).<span class="fn">text</span>(
       <span class="st">`Pet </span><span class="nm">${$</span>.path.petId<span class="nm">}</span><span class="st"> not found`</span>
     );
   }
 
-  <span class="kw">return</span> <span class="nm">$</span>.response[<span class="nm">200</span>].<span class="fn">json</span>(pet);
+  <span class="kw">return</span> <span class="nm">$</span>.response.<span class="fn">status</span>(<span class="nm">200</span>).<span class="fn">json</span>(pet);
 };
 
 <span class="kw">export const</span> <span class="fn">DELETE</span>: <span class="ty">HTTP_DELETE</span> = (<span class="nm">$</span>) => {
   <span class="nm">$</span>.context.<span class="fn">remove</span>(<span class="nm">$</span>.path.petId);
-  <span class="kw">return</span> <span class="nm">$</span>.response[<span class="nm">200</span>];
+  <span class="kw">return</span> <span class="nm">$</span>.response.<span class="fn">status</span>(<span class="nm">200</span>);
 };</code></pre>
             </div>
             <div class="code-file">

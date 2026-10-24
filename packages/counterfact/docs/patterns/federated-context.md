@@ -66,12 +66,12 @@ import type { Context as UsersContext } from "../../users/_.context.js";
 
 export const GET: HTTP_GET = ($) => {
   const payment = $.context.getById($.path.paymentId);
-  if (!payment) return $.response[404].text("Payment not found");
+  if (!payment) return $.response.status(404).text("Payment not found");
 
   const usersContext = $.loadContext("/users") as UsersContext;
   const user = usersContext.getById(payment.userId);
 
-  return $.response[200].json({ ...payment, user });
+  return $.response.status(200).json({ ...payment, user });
 };
 ```
 

@@ -6,11 +6,11 @@ A freshly generated route file looks like this:
 
 ```ts
 export const GET: HTTP_GET = ($) => {
-  return $.response[200].random();
+  return $.response.status(200).random();
 };
 
 export const POST: HTTP_POST = ($) => {
-  return $.response[200].random();
+  return $.response.status(200).random();
 };
 ```
 
@@ -35,7 +35,7 @@ Each exported function handles one HTTP method. The single argument `$` gives yo
 | `.header(name, value)`         | Adds a response header                                                                  |
 
 ```ts
-return $.response[200].header("x-request-id", "abc123").json({ ok: true });
+return $.response.status(200).header("x-request-id", "abc123").json({ ok: true });
 ```
 
 ### Setting cookies
@@ -43,7 +43,7 @@ return $.response[200].header("x-request-id", "abc123").json({ ok: true });
 Use `.cookie(name, value, options?)` to set one or more cookies. Each call appends a new `Set-Cookie` header and returns the builder for chaining.
 
 ```ts
-return $.response[200]
+return $.response.status(200)
   .cookie("sessionId", "abc123", {
     httpOnly: true,
     secure: true,
@@ -57,7 +57,7 @@ return $.response[200]
 Multiple cookies:
 
 ```ts
-return $.response[200]
+return $.response.status(200)
   .cookie("sessionId", "abc123")
   .cookie("theme", "dark")
   .json({ ok: true });
@@ -81,10 +81,10 @@ If your OpenAPI spec defines named examples for a response, you can return a spe
 
 ```ts
 // Return a specific named example
-return $.response[200].example("successResponse");
+return $.response.status(200).example("successResponse");
 
 // Chain additional decorations after selecting an example
-return $.response[200]
+return $.response.status(200)
   .example("successResponse")
   .header("x-request-id", "abc123");
 ```
@@ -106,14 +106,14 @@ The request is exposed through four typed properties:
 ```ts
 export const GET: HTTP_GET = ($) => {
   if ($.headers["x-token"] !== "super-secret") {
-    return $.response[401].text("Unauthorized");
+    return $.response.status(401).text("Unauthorized");
   }
 
   const content =
     `Results for "${$.query.keyword}" in ${$.path.groupName}` +
     ` with tags: ${$.body.tags.join(", ")}`;
 
-  return $.response[200].text(content);
+  return $.response.status(200).text(content);
 };
 ```
 
@@ -174,8 +174,8 @@ export const GET: HTTP_GET = ($) => {
   $.x.headers["my-undocumented-header"]; // ok
 
   // status code not defined in OpenAPI spec
-  return $.response[500].text("Error!"); // TypeScript error
-  return $.x.response[500].text("Error!"); // ok
+  return $.response.status(500).text("Error!"); // TypeScript error
+  return $.x.response.status(500).text("Error!"); // ok
 };
 ```
 
@@ -183,11 +183,11 @@ export const GET: HTTP_GET = ($) => {
 
 Counterfact supports OpenAPI 3.2 sequential media types. When your spec uses `itemSchema` on a `text/event-stream`, `application/jsonl`, or `application/json-seq` content type, the generated handler type expresses the body as `AsyncIterable<T>`.
 
-Use `$.response[<status>].stream(iterable)` to return a stream from any route handler. The content type is inferred automatically from the OpenAPI spec (the first streaming media type defined for that response).
+Use `$.response.status(statusCode).stream(iterable)` to return a stream from any route handler. The content type is inferred automatically from the OpenAPI spec (the first streaming media type defined for that response).
 
 ```ts
 export const GET: HTTP_GET = ($) => {
-  return $.response[200].stream(events());
+  return $.response.status(200).stream(events());
 };
 
 async function* events() {

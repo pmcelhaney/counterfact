@@ -84,9 +84,9 @@ export class Context {
 // api/routes/pet/{petId}.ts
 export const GET: HTTP_GET = ($) => {
   if ($.context.simulatePetNotFound) {
-    return $.response[404].text("Not found");
+    return $.response.status(404).text("Not found");
   }
-  return $.response[200].json({
+  return $.response.status(200).json({
     id: $.path.petId,
     name: "Fluffy",
     status: "available",

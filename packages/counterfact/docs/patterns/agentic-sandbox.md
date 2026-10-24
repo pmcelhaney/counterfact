@@ -33,7 +33,7 @@ Customize the handler to return exactly what your agent needs to see:
 ```ts
 // stripe-mock/routes/v1/charges.ts
 export const POST: HTTP_POST = ($) => {
-  return $.response[200].json({
+  return $.response.status(200).json({
     id: "ch_mock_001",
     status: "succeeded",
     amount: $.body.amount,
@@ -55,9 +55,9 @@ export class Context {
 // stripe-mock/routes/v1/charges.ts
 export const POST: HTTP_POST = ($) => {
   if ($.context.simulateRateLimit) {
-    return $.response[429].json({ error: { message: "Too many requests" } });
+    return $.response.status(429).json({ error: { message: "Too many requests" } });
   }
-  return $.response[200].json({
+  return $.response.status(200).json({
     id: "ch_mock_001",
     status: "succeeded",
     amount: $.body.amount,

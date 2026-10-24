@@ -76,7 +76,7 @@ corresponding handler:
 import type { HTTP_GET } from "../../types/paths/pet/{petId}.types.js";
 
 export const GET: HTTP_GET = ($) =>
-  $.response[200].json({
+  $.response.status(200).json({
     id: $.path.petId,
     name: "Fluffy",
     status: "available",

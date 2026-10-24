@@ -21,7 +21,7 @@ Add a route handler for any path you want to mock:
 ```ts
 // api/routes/payments.ts
 export const POST: HTTP_POST = ($) => {
-  return $.response[200].json({ transactionId: "mock-txn-001" });
+  return $.response.status(200).json({ transactionId: "mock-txn-001" });
 };
 ```
 

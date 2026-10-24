@@ -21,7 +21,7 @@ Choose the approach that fits how much control you need:
 
 ```ts
 export const GET: HTTP_GET = ($) => {
-  return $.response[200].random();
+  return $.response.status(200).random();
 };
 ```
 
@@ -29,7 +29,7 @@ export const GET: HTTP_GET = ($) => {
 
 ```ts
 export const GET: HTTP_GET = ($) => {
-  return $.response[200].example("fullPet");
+  return $.response.status(200).example("fullPet");
   //                              ^ name is autocompleted from the spec
 };
 ```
@@ -38,7 +38,7 @@ export const GET: HTTP_GET = ($) => {
 
 ```ts
 export const GET: HTTP_GET = ($) => {
-  return $.response[200].json({
+  return $.response.status(200).json({
     id: $.path.petId,
     name: "Fluffy",
     status: "available",
@@ -79,18 +79,18 @@ export class Context {
 
 ```ts
 // api/routes/pet.ts
-export const GET: HTTP_GET = ($) => $.response[200].json($.context.list());
+export const GET: HTTP_GET = ($) => $.response.status(200).json($.context.list());
 export const POST: HTTP_POST = ($) =>
-  $.response[200].json($.context.add($.body));
+  $.response.status(200).json($.context.add($.body));
 
 // api/routes/pet/{petId}.ts
 export const GET: HTTP_GET = ($) => {
   const pet = $.context.get($.path.petId);
-  return pet ? $.response[200].json(pet) : $.response[404].text("Not found");
+  return pet ? $.response.status(200).json(pet) : $.response.status(404).text("Not found");
 };
 export const DELETE: HTTP_DELETE = ($) => {
   $.context.remove($.path.petId);
-  return $.response[200];
+  return $.response.status(200);
 };
 ```
 

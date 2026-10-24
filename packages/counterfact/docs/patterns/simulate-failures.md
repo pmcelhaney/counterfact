@@ -27,9 +27,9 @@ Read those flags in the route handler:
 ```ts
 // api/routes/payments/{paymentId}.ts
 export const GET: HTTP_GET = ($) => {
-  if ($.context.isRateLimited) return $.response[429].text("Too Many Requests");
-  if ($.context.isBroken) return $.response[500].text("Internal Server Error");
-  return $.response[200].json({ id: $.path.paymentId, amount: 42.0 });
+  if ($.context.isRateLimited) return $.response.status(429).text("Too Many Requests");
+  if ($.context.isBroken) return $.response.status(500).text("Internal Server Error");
+  return $.response.status(200).json({ id: $.path.paymentId, amount: 42.0 });
 };
 ```
 
@@ -52,9 +52,9 @@ To simulate intermittent failures, use a counter or a random function:
 export const GET: HTTP_GET = ($) => {
   $.context.callCount = ($.context.callCount ?? 0) + 1;
   if ($.context.callCount % 3 === 0) {
-    return $.response[503].text("Flaky error");
+    return $.response.status(503).text("Flaky error");
   }
-  return $.response[200].json({ id: $.path.petId });
+  return $.response.status(200).json({ id: $.path.petId });
 };
 ```
 
@@ -63,9 +63,9 @@ Or vary the response probabilistically:
 ```ts
 export const GET: HTTP_GET = ($) => {
   if (Math.random() < 0.2) {
-    return $.response[503].text("Flaky error");
+    return $.response.status(503).text("Flaky error");
   }
-  return $.response[200].json({ id: $.path.petId });
+  return $.response.status(200).json({ id: $.path.petId });
 };
 ```
 
