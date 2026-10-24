@@ -20,6 +20,7 @@ applyTo:
 Guide an AI agent through the full workflow of turning a bare OpenAPI spec into
 a realistic, stateful API simulation using Counterfact. This skill covers every
 step: generation, research, context implementation, testing, and scenario setup.
+The examples below use a single-API workspace.
 
 ---
 
@@ -45,9 +46,11 @@ This creates:
 └── types/           # generated request/response types — never edit these
 ```
 
-Every endpoint is live right away. By default each handler returns
-schema-valid random data (`.random()`). The simulation work that follows will
-replace those random responses with realistic, stateful behaviour.
+Generated nonstreaming handlers with response bodies normally return
+schema-derived random data (`.random()`). Bodyless responses use `.empty()`.
+Streaming responses use `.stream(items())` with an initially empty async
+iterator; add `yield` statements to provide streaming fixtures. The simulation
+work that follows replaces these defaults with realistic, stateful behaviour.
 
 > **Docs:** [Getting Started](https://counterfact.dev/docs/getting-started.html)
 
@@ -147,22 +150,44 @@ export const DELETE: HTTP_DELETE = function ($) {
 ### Multi-domain API
 
 For APIs with several distinct domains (users, orders, payments, …), give each
-domain its own `_.context.ts` at its subtree boundary. Use
-`$.loadContext(path)` to reach across boundaries when one domain needs data
-from another:
+domain its own `_.context.ts` at its subtree boundary. Inject the generated
+`Context$` into the context constructor to reach another domain with
+`loadContext(path)`. Put the lookup and composition in a context method, then
+have the route call it. Handler arguments do not expose `loadContext`.
+
+```ts
+// api/routes/payments/_.context.ts
+import type { Context$ } from "../../types/_.context.js";
+import type { Context as UsersContext } from "../users/_.context.js";
+
+export class Context {
+  payments: { id: string; userId: string }[] = [];
+
+  constructor(private $: Context$) {}
+
+  getWithUser(id: string) {
+    const payment = this.payments.find((p) => p.id === id);
+    if (!payment) return undefined;
+
+    const users: UsersContext = this.$.loadContext("/users");
+    return { ...payment, user: users.getById(payment.userId) };
+  }
+}
+```
+
+This example assumes the users context implements `getById(id: string)` and
+that the spec declares a string `paymentId` path parameter. Generate types
+again after adding the context files so the typed `/users` overload is present.
 
 ```ts
 // api/routes/payments/{paymentId}.ts
-import type { Context as UsersContext } from "../../users/_.context.js";
+import type { HTTP_GET } from "../../types/paths/payments/{paymentId}.types.js";
 
 export const GET: HTTP_GET = function ($) {
-  const payment = $.context.getById($.path.paymentId);
-  if (!payment) return $.response[404].text("Payment not found");
-
-  const usersCtx = $.loadContext("/users") as UsersContext;
-  const user = usersCtx.getById(payment.userId);
-
-  return $.response[200].json({ ...payment, user });
+  const payment = $.context.getWithUser($.path.paymentId);
+  return payment
+    ? $.response[200].json(payment)
+    : $.response[404].text("Payment not found");
 };
 ```
 
@@ -170,9 +195,10 @@ Keep each context class focused on a single responsibility. If a class is
 growing too large, split it along domain lines.
 
 > **Docs:**
+>
 > - [State: Context Objects](https://counterfact.dev/docs/features/state.html)
-> - [Pattern: Mock APIs with Dummy Data](https://counterfact.dev/docs/patterns/mock-with-dummy-data.html)
-> - [Pattern: Federated Context Files](https://counterfact.dev/docs/patterns/federated-context.html)
+> - [Pattern: Mock APIs with Dummy Data](https://counterfact.dev/docs/manual/sample-responses)
+> - [Pattern: Federated Context Files](https://counterfact.dev/docs/manual/nested-contexts)
 
 ---
 
@@ -194,8 +220,12 @@ describe("Context", () => {
   });
 
   it("assigns sequential ids", () => {
-    const a = context.add({ name: "Fluffy", status: "available", photoUrls: [] });
-    const b = context.add({ name: "Rex",    status: "available", photoUrls: [] });
+    const a = context.add({
+      name: "Fluffy",
+      status: "available",
+      photoUrls: [],
+    });
+    const b = context.add({ name: "Rex", status: "available", photoUrls: [] });
     expect(a.id).toBe(1);
     expect(b.id).toBe(2);
   });
@@ -206,12 +236,16 @@ describe("Context", () => {
 
   it("filters by status", () => {
     context.add({ name: "Fluffy", status: "available", photoUrls: [] });
-    context.add({ name: "Rex",    status: "sold",      photoUrls: [] });
+    context.add({ name: "Rex", status: "sold", photoUrls: [] });
     expect(context.list("sold")).toHaveLength(1);
   });
 
   it("removes a pet", () => {
-    const pet = context.add({ name: "Fluffy", status: "available", photoUrls: [] });
+    const pet = context.add({
+      name: "Fluffy",
+      status: "available",
+      photoUrls: [],
+    });
     context.remove(pet.id);
     expect(context.get(pet.id)).toBeUndefined();
   });
@@ -246,7 +280,7 @@ import type { Scenario } from "../types/_.context.js";
 
 export const startup: Scenario = ($) => {
   $.context.add({ name: "Fluffy", status: "available", photoUrls: [] });
-  $.context.add({ name: "Rex",    status: "sold",      photoUrls: [] });
+  $.context.add({ name: "Rex", status: "sold", photoUrls: [] });
 };
 ```
 
@@ -256,7 +290,7 @@ file stays focused and the helpers can also be called from the REPL:
 ```ts
 // api/scenarios/index.ts
 import type { Scenario } from "../types/_.context.js";
-import { addPets }   from "./pets.js";
+import { addPets } from "./pets.js";
 import { addOrders } from "./orders.js";
 
 export const startup: Scenario = ($) => {
@@ -300,6 +334,7 @@ Applied soldOut
 ```
 
 > **Docs:**
+>
 > - [Pattern: Scenario Scripts](https://counterfact.dev/docs/patterns/scenario-scripts.html)
 > - [Feature: REPL](https://counterfact.dev/docs/features/repl.html)
 
@@ -334,30 +369,38 @@ Toggle from the REPL or via a scenario:
 
 ```
 ⬣> context.isRateLimited = true
-⬣> client.get("/pet/1")
-{ status: 429, body: 'Too many requests' }
+⬣> await client.get("/pet/1")
+GET /pet/1 HTTP/1.1
+…
+HTTP/1.1 429 Too Many Requests
+…
+Too many requests
 ```
 
-> **Docs:** [Pattern: Simulate Failures and Edge Cases](https://counterfact.dev/docs/patterns/simulate-failures.html)
+`client.get` returns a promise for the raw HTTP response string and prints
+the request and response. The transcript above omits headers and formatting;
+it is not a parsed `{ status, body }` object.
+
+> **Docs:** [Pattern: Simulate Failures and Edge Cases](https://counterfact.dev/docs/manual/edge-cases)
 
 ---
 
 ## Quick-reference: key documentation
 
-| Topic | URL |
-|---|---|
-| Getting started | https://counterfact.dev/docs/getting-started.html |
-| Full usage guide | https://counterfact.dev/docs/usage.html |
-| Reference (`$` param, CLI flags) | https://counterfact.dev/docs/reference.html |
-| State / context objects | https://counterfact.dev/docs/features/state.html |
-| REPL | https://counterfact.dev/docs/features/repl.html |
-| Pattern: Mock with Dummy Data | https://counterfact.dev/docs/patterns/mock-with-dummy-data.html |
-| Pattern: Federated Context Files | https://counterfact.dev/docs/patterns/federated-context.html |
-| Pattern: Test the Context, Not the Handlers | https://counterfact.dev/docs/patterns/test-context-not-handlers.html |
-| Pattern: Scenario Scripts | https://counterfact.dev/docs/patterns/scenario-scripts.html |
-| Pattern: Simulate Failures and Edge Cases | https://counterfact.dev/docs/patterns/simulate-failures.html |
-| Pattern: AI-Assisted Implementation | https://counterfact.dev/docs/patterns/ai-assisted-implementation.html |
-| Petstore example | https://github.com/counterfact/example-petstore |
+| Topic                                       | URL                                                                   |
+| ------------------------------------------- | --------------------------------------------------------------------- |
+| Getting started                             | https://counterfact.dev/docs/getting-started.html                     |
+| Full usage guide                            | https://counterfact.dev/docs/usage.html                               |
+| Reference (`$` param, CLI flags)            | https://counterfact.dev/docs/api                           |
+| State / context objects                     | https://counterfact.dev/docs/features/state.html                      |
+| REPL                                        | https://counterfact.dev/docs/features/repl.html                       |
+| Pattern: Mock with Dummy Data               | https://counterfact.dev/docs/manual/sample-responses       |
+| Pattern: Federated Context Files            | https://counterfact.dev/docs/manual/nested-contexts          |
+| Pattern: Test the Context, Not the Handlers | https://counterfact.dev/docs/patterns/test-context-not-handlers.html  |
+| Pattern: Scenario Scripts                   | https://counterfact.dev/docs/patterns/scenario-scripts.html           |
+| Pattern: Simulate Failures and Edge Cases   | https://counterfact.dev/docs/manual/edge-cases          |
+| Pattern: AI-Assisted Implementation         | https://counterfact.dev/docs/patterns/ai-assisted-implementation.html |
+| Petstore example                            | https://github.com/counterfact/example-petstore                       |
 
 ---
 

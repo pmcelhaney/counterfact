@@ -25,7 +25,10 @@ Implement or update route behavior in generated route files.
 - Convert generated arrow-function handlers to this form when editing them.
 
 - Use the `$` API in every handler (`$.path`, `$.query`, `$.body`, `$.response`,
-  `$.context`, `$.loadContext`).
+  `$.context`).
+- Cross-context access belongs in context methods: inject the generated
+  `Context$` into the context constructor and use its `loadContext` helper.
+  Route handler arguments do not expose `loadContext`.
 - Route handlers must stay thin.
 - Business logic must be delegated to a context class in an appropriate
   `_.context.ts` file.
@@ -53,4 +56,4 @@ export const POST: HTTP_POST = function ($) {
 ## References
 
 - https://counterfact.dev/docs/features/state.html
-- `packages/counterfact/src/server/dispatcher.ts` for runtime handler behavior
+- `packages/runtime/src/server/dispatcher.ts` for runtime handler behavior

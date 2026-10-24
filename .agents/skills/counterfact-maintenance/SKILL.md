@@ -26,16 +26,53 @@ Use this skill when finalizing contributor-facing changes that affect tests, dia
 
 - `package.json` (canonical scripts)
 - `AGENTS.md`
-- `packages/counterfact/docs/reference.md`
+- `packages/counterfact/docs/api.md`
 - `packages/counterfact/docs/faq.md`
 - `.changeset/*.md` (format examples)
 - `packages/counterfact/test/**/*` for existing patterns/fixtures
 
 ## Existing conventions to follow
 
-- Keep historical study environments under `site/study/2026/experiments/environments/` excluded from Renovate; their manifests and lockfiles are reproducibility evidence, not maintained application dependencies. When changing `ignorePaths`, preserve the exclusions inherited from `config:recommended` because the array replaces inherited values.
+- When spawning Yarn from a package script, use the Yarn command on PATH with Windows command-shim handling. Yarn 4 can set `npm_execpath` to a shell wrapper; passing that path to Node treats shell code as JavaScript. Validate the runner with `yarn test:build` on both CI operating systems.
+- Keep the root development build stages aligned with `packages/counterfact/package.json` build order and commands. Preserve the self-contained workspace build for packaging; repository-only progress scripts must not become required files in published packages.
 
+- Preserve historical experiment inputs in `counterfact/historical-experiments` rather than the maintained product tree. Pin external evidence to a full commit and retain its hash manifest and result snapshot locally so site builds stay offline. Verify the archive bytes against that pin with `cd site && npm run verify:experiment-archive -- /path/to/archive` when migrating or changing evidence; `verify:audit` checks local integrity and pin consistency, not external bytes. Keep historical dependency upgrades separate from preserved runs.
+
+- Keep `catchmydrift.config.json` document-specific: connect each selected document
+  to the implementation, configuration, and tests it describes; use package-wide
+  groups only for package or product overviews. Navigation and agent-guidance
+  documents may relate to their referenced Markdown rather than unrelated code.
+  After changing mappings, validate the installed schema, check for unmatched
+  patterns or overlapping watches, and audit both missing relevant files and
+  unrelated associations. Run `yarn check:drift`; exit 1 requests document review,
+  while exit 2 indicates a configuration or operational failure. Never mark
+  documents reviewed solely to silence drift or add CI enforcement without
+  assessing the existing document-review backlog.
+  When watched documents move, retarget their watch rules and related groups,
+  compare their contents and related tracked files with the recorded assessment,
+  and use the official review command for verified moved documents. Remove only
+  their obsolete state keys; a rename alone does not establish a new review.
+
+- `catchmydrift@0.1.0` review state is an unversioned map of watched paths to reachable full commit SHAs. When migrating legacy snapshot records, recover the historical commit that established each record and verify its recorded related-file blobs before retaining that baseline. Do not substitute tokens, blob hashes, or the current HEAD for an unverified review. Run the checker after migration and report outstanding drift separately from state/configuration failures.
+
+- Quote glob arguments in package scripts when the receiving tool accepts the pattern.
+  In particular, keep the `test:tsd` file pattern quoted: shell expansion of
+  multiple files can turn an extra path into tsd's positional working directory.
+- Execute substantial documentation recipes against the exact published version or commit they instruct readers to use. A source package version can match npm while exposing unreleased APIs; verify public method availability and mark source-only recipes with a reproducible checkout setup. Verify externally linked contracts at their pinned URL, and exercise both the failing and repaired steps of typecheck examples.
+- User documentation ships in the npm package as well as the site. Keep the package `files` allowlist and `test/package/fixtures/pack-files.json` aligned with new pages; inspect inventory changes and run the packed-consumer check after adding documentation paths.
+- The documentation has a feature-based manual and a separate API reference. Keep `site/src/data/navigation.json`, the Markdown manual/reference indexes, and the home-page feature count aligned when adding chapters. Reuse canonical Markdown pages rather than duplicating existing guides, preserve published documentation URLs through the site redirect map when retiring redundant Markdown sources, and check rendered anchors as well as page destinations after restructuring.
+- When rebuilding documentation navigation, compare removed content with the previous site as well as checking URLs. Preserve privacy disclosures, project resources, task indexes, and externally configured client examples; verify retained guides have incoming links from the new navigation. A successful link check cannot detect removed information or orphaned pages.
+- Documentation is also rendered as site pages. Link repository-only examples
+  outside the published docs tree through GitHub source URLs, and validate the
+  rendered site with `npm run check-links` instead of relying on filesystem paths.
+  For examples introduced by an unmerged PR, use a verified commit-pinned source
+  URL; a `main` URL returns 404 until merge. Check external example destinations
+  separately because the site link checker skips external URLs.
+
+- Keep maintained examples eligible for Renovate updates; do not exclude `**/examples/**` in `ignorePaths`. Preserve the other dependency, vendor, test, and fixture exclusions when editing that array.
+- Validate `examples/first-10-minutes` with its own `npm ci` and `npm run verify`; its npm lockfile is independent of the root Yarn lockfile. Prefer a disposable copy for this check: generation writes routes, types, and caches into the example, and those outputs can cause unrelated root lint failures if left in the worktree.
 - Use `usingTemporaryFiles()` for filesystem-heavy tests.
+- Astro static-build tests must keep temporary output on the checkout filesystem: Astro stages assets under the working directory and renames them into the output, so system temporary directories on a different volume cause `EXDEV`. Continue using `usingTemporaryFiles()` and restore any temporary-directory environment override in `finally`.
 - The Astro site uses `compressHTML: true` to preserve HTML whitespace around inline prose across source line breaks. Keep that setting explicit when upgrading Astro, and run `cd site && npm run test:whitespace` for rendering or formatting changes. Check generated text before applying CSS spacing: punctuation and intentional in-word links must remain adjacent.
 - Keep single-line command snippets in a focusable horizontal scroll region, with copy controls outside that region. A scrolling flex item needs `min-width: 0` so long text cannot widen the whole page. Emitted CSS/HTML checks establish this contract; they do not replace browser checks of scrolling, keyboard access, or viewport overflow.
 - In file-watching tests, register the expected event listener before writing the file, then await the saved promise. Close watchers in test teardown so Jest timeouts cannot skip cleanup; restore any changed working directory there as well.
