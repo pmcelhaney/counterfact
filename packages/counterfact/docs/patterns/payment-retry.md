@@ -4,7 +4,7 @@ This recipe gives a test runner a complete local workflow: an empty order collec
 
 ## Install and generate
 
-First follow the [commit-pinned lifecycle setup](./lifecycle-setup.md) and work inside its `workflow-trial/` directory. The released 2.16.6 package lacks the lifecycle methods used below. The setup pins the implementation and dependencies; keep the contract, authored code, and verification script together for review.
+Follow the [project installation setup](./lifecycle-setup.md), then keep the contract, authored code, and verification script together in that project for review.
 
 Save this as `orders.yaml`:
 
@@ -60,7 +60,7 @@ paths:
 Generate the project once:
 
 ```sh
-../node_modules/.bin/counterfact orders.yaml api --generate --no-update-check
+npx --no-install counterfact orders.yaml api --generate --no-update-check
 ```
 
 ## Define the state and HTTP behavior

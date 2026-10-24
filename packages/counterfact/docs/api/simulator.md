@@ -1,7 +1,5 @@
 # Simulator lifecycle
 
-The minimal-options startup, `reset()`, and `scenario()` examples describe the current repository API and are not included in published 2.16.6. Use the [commit-pinned lifecycle setup](../patterns/lifecycle-setup.md) to run them until a release includes these methods.
-
 ```ts
 import { counterfact } from "counterfact";
 const api = await counterfact({ basePath: "api", port: 0 });

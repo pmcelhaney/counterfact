@@ -7,10 +7,10 @@ Use generated handler types to surface changed assumptions before clients and se
 In a project with `"type": "module"`, install exact versions and commit the lockfile:
 
 ```sh
-npm install --save-dev --save-exact counterfact@2.16.6 typescript@6.0.3
+npm install --save-dev --save-exact counterfact typescript@6.0.3
 ```
 
-This recipe uses the released generation/typechecking workflow and does not require the upcoming reset API. Save `status.yaml`:
+Save `status.yaml`:
 
 ```yaml
 openapi: 3.0.3

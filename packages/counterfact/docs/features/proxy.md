@@ -43,4 +43,4 @@ Type `.proxy help` in the REPL for the full list of proxy commands.
 - [Patterns: Hybrid Proxy](../patterns/hybrid-proxy.md) — when to mix real and mocked endpoints
 - [REPL](./repl.md) — toggle proxying at runtime
 - [Reference](../api.md) — CLI flags
-- [Usage](../manual.md)
+- [Find your workflow](../usage.md)

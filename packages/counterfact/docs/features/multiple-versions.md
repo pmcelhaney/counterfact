@@ -219,4 +219,4 @@ It exposes:
 - [Reference: `version` field and `Versioned` type](../api.md)
 - [REPL](./repl.md) — interactive terminal for runtime inspection
 - [Generated code](./generated-code.md) — how code generation works
-- [Usage](../manual.md)
+- [Find your workflow](../usage.md)

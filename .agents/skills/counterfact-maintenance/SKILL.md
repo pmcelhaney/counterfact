@@ -53,6 +53,8 @@ Use this skill when finalizing contributor-facing changes that affect tests, dia
   and use the official review command for verified moved documents. Remove only
   their obsolete state keys; a rename alone does not establish a new review.
 
+- `catchmydrift@0.1.0` review state is an unversioned map of watched paths to reachable full commit SHAs. When migrating legacy snapshot records, recover the historical commit that established each record and verify its recorded related-file blobs before retaining that baseline. Do not substitute tokens, blob hashes, or the current HEAD for an unverified review. Run the checker after migration and report outstanding drift separately from state/configuration failures.
+
 - Quote glob arguments in package scripts when the receiving tool accepts the pattern.
   In particular, keep the `test:tsd` file pattern quoted: shell expansion of
   multiple files can turn an extra path into tsd's positional working directory.

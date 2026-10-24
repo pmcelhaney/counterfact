@@ -212,4 +212,4 @@ For `text/event-stream` responses, Counterfact also sets `Cache-Control: no-cach
 - [State](./state.md) — sharing state across routes with context objects
 - [Middleware](./middleware.md) — cross-cutting request/response logic
 - [Reference](../api.md) — complete `$` parameter and response builder API reference
-- [Usage](../manual.md)
+- [Find your workflow](../usage.md)

@@ -85,4 +85,4 @@ from the flat-type format.
 
 - [Routes](./routes.md) — writing route handlers, reading request data, building responses
 - [State](./state.md) — sharing state across routes with context objects
-- [Usage](../manual.md)
+- [Find your workflow](../usage.md)

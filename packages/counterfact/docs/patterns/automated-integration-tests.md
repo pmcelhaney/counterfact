@@ -1,7 +1,5 @@
 # Automated Integration Tests
 
-The minimal-options startup, `reset()`, and `scenario()` examples describe the current repository API and are not included in published 2.16.6. Use the [commit-pinned lifecycle setup](./lifecycle-setup.md) to run them until a release includes these methods.
-
 Run integration tests against a real local HTTP server that your test suite can start, shape, and tear down on demand.
 
 ## Why teams use this
@@ -12,9 +10,7 @@ Unit tests that mock HTTP calls at the library boundary (using `jest.mock()`, `v
 
 Use Counterfact's programmatic API to embed the mock server directly in your test suite. Start it in a `beforeAll` hook, run every test against it, and stop it in `afterAll`. Local execution removes dependence on a remote environment. Repeatable tests additionally need fixed responses or named examples, controlled delays, isolated simulator instances, and awaited reset/scenario setup. Generated `.random()` responses can still vary after reset. See [sample responses](../manual/sample-responses.md) and [edge cases](../manual/edge-cases.md).
 
-Complete the [commit-pinned lifecycle setup](./lifecycle-setup.md) before using the examples below, and create the example files inside its `workflow-trial/` directory. That setup builds the API from the pinned source commit and resolves `counterfact` from the parent workspace. Installing published `2.16.6` as a development dependency does not provide the lifecycle helpers used here.
-
-When a published release includes these methods, verify that release, install its exact version as a development dependency, and commit the lockfile. Until then, use the documented source setup.
+Follow the [project installation setup](./lifecycle-setup.md), install Counterfact as an exact development dependency, and commit the lockfile. Keep the contract, handlers, and test files in that project.
 
 Supplying `openApiPath` generates routes and types at startup, then watches the
 spec for changes. Missing API directories are created automatically. To use

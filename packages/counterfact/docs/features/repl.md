@@ -181,4 +181,4 @@ Use `.scenario name` (or `.scenario group name` for multiple API groups) to appl
 - [Patterns: Scenario Scripts](../patterns/scenario-scripts.md)
 - [Patterns: Live Server Inspection with the REPL](repl.md)
 - [Patterns: Share State Across API Groups](../patterns/shared-store.md)
-- [Usage](../manual.md)
+- [Find your workflow](../usage.md)

@@ -10,7 +10,7 @@ For a repeatable project, pin Counterfact and keep the OpenAPI document in the
 repository:
 
 ```sh
-npm install --save-dev counterfact@2.16.6
+npm install --save-dev --save-exact counterfact
 curl --fail --location \
   --output openapi.yaml \
   https://raw.githubusercontent.com/counterfact/api-simulator/3b9f65fe94af0efc8ef4ce4d666a6f7126f7a28c/packages/counterfact/petstore.yaml
@@ -116,5 +116,5 @@ behavior needs a delay.
 - [Generated code](./features/generated-code.md) explains regeneration and the boundary between `routes/` and `types/`.
 - The [verified first-10-minutes example](https://github.com/counterfact/api-simulator/tree/main/examples/first-10-minutes) is a checked-in, CI-verified variant with a minimal contract.
 
-For a complete map of the deeper documentation, see [Usage](./manual.md) and
+For a complete map of the deeper documentation, see [Find your workflow](./usage.md) and
 [Reference](./api.md).

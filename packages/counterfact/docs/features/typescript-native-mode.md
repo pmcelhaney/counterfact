@@ -71,4 +71,4 @@ installed CLI distribution contains its chosen entry point.
 
 - [Hot reload](./hot-reload.md)
 - [Reference](../api.md) — CLI flags
-- [Usage](../manual.md)
+- [Find your workflow](../usage.md)

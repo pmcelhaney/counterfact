@@ -24,4 +24,4 @@ for the supported store-authoring model.
 - [State](./state.md) — in-memory state that survives reloads
 - [Patterns: Share State Across API Groups](../patterns/shared-store.md) — store-specific reload behavior across API groups
 - [REPL](./repl.md) — make changes without touching files at all
-- [Usage](../manual.md)
+- [Find your workflow](../usage.md)

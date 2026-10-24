@@ -1,6 +1,6 @@
 # Programmatic API
 
-The minimal-options startup, `reset()`, and `scenario()` examples describe the current repository API and are not included in published 2.16.6. Use the [commit-pinned lifecycle setup](../patterns/lifecycle-setup.md) to run them until a release includes these methods.
+Follow the [project installation setup](../patterns/lifecycle-setup.md) to install a pinned dependency and verify the lifecycle API.
 
 Counterfact can be used as a library — for example, from [Playwright](https://playwright.dev/) or [Cypress](https://www.cypress.io/) tests. This lets you manipulate context state directly in test code without relying on special magic values in mock logic.
 
@@ -336,4 +336,4 @@ const { start } = await counterfact(config, [
 - [Patterns: Share State Across API Groups](../patterns/shared-store.md) — typed shared state for multi-API simulations
 - [Patterns: Automated Integration Tests](../patterns/automated-integration-tests.md) — using the programmatic API in a CI-friendly test suite
 - [Reference](../api.md) — CLI flags, architecture
-- [Usage](../manual.md)
+- [Find your workflow](../usage.md)

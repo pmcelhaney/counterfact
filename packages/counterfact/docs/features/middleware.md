@@ -85,4 +85,4 @@ export const middleware: Middleware = async ($, respondTo) => {
 
 - [Routes](./routes.md)
 - [Reference](../api.md)
-- [Usage](../manual.md)
+- [Find your workflow](../usage.md)

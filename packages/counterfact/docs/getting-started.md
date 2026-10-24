@@ -23,7 +23,7 @@ Counterfact writes editable route files and generated TypeScript types to
 For a project or CI workflow, install a pinned version and commit the lockfile:
 
 ```sh
-npm install --save-dev counterfact@2.16.6
+npm install --save-dev --save-exact counterfact
 npx counterfact ./openapi.yaml api
 ```
 
@@ -90,6 +90,6 @@ Save the file and refresh the frontend—no server restart is needed.
 ## Next steps
 
 - [First 10 minutes](./first-10-minutes.md) — add a small create/read workflow and one frontend-relevant failure.
-- [Usage](./manual.md) — find guides by job: frontend, testing, advanced control, or troubleshooting.
+- [Find your workflow](./usage.md) — find guides by job: frontend, testing, advanced control, or troubleshooting.
 - [Custom responses](./features/routes.md), [state](./features/state.md), [failures](manual/edge-cases.md), and [proxying](./features/proxy.md) — add capabilities only when the workflow needs them.
 - [Without OpenAPI](./features/without-openapi.md) — use the deeper alternative when no OpenAPI document exists.

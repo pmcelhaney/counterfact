@@ -58,7 +58,7 @@ before starting the process. For example, in a POSIX shell:
 
 ```sh
 export COUNTERFACT_TELEMETRY_DISABLED=true
-npx counterfact@2.16.6 ./openapi.yaml api
+npx counterfact@latest ./openapi.yaml api
 ```
 
 In PowerShell, use `$env:COUNTERFACT_TELEMETRY_DISABLED = "true"` before the

@@ -5,8 +5,7 @@ Give a coding agent a bounded local API and a reproducible verification task. Pi
 ## Point a third-party SDK at a local API
 
 An SDK can keep its normal calls while its base URL points at Counterfact. This
-small example uses the **server-side Stripe Node SDK** with published packages;
-it does not require the source-only lifecycle setup below. It models only a
+small example uses the **server-side Stripe Node SDK**. It models only a
 customer lookup and a rate-limit response. The contract is an authored subset,
 not Stripe's complete schema, and the example does not prove Stripe compatibility.
 
@@ -14,7 +13,7 @@ In a new directory, run:
 
 ```sh
 npm init -y
-npm install --save-dev --save-exact counterfact@2.16.6 stripe@23.0.1
+npm install --save-dev --save-exact counterfact stripe@23.0.1
 ```
 
 Commit the resulting lockfile. Save this local contract as `customers.yaml`:
@@ -145,9 +144,9 @@ parts of the integration your client relies on.
 
 ## Prepare a repeatable API world
 
-1. Follow the [commit-pinned lifecycle setup](./lifecycle-setup.md). Its methods are not yet available in the published 2.16.6 package.
+1. Follow the [project installation setup](./lifecycle-setup.md) and commit the dependency lockfile.
 2. Complete the [payment retry recipe](./payment-retry.md) in that setup. It supplies a checked-in contract, small context, typed HTTP handlers, named scenarios, and an executable verification script.
-3. Record the checkout commit and dependency lockfile. For a third-party API, keep a reviewed specification snapshot rather than loading a mutable remote branch on each run.
+3. Record the implementation commit and dependency lockfile. For a third-party API, keep a reviewed specification snapshot rather than loading a mutable remote branch on each run.
 4. Replace generated random responses on the exercised operations with fixed or deterministic behavior. Reset and locality do not make `.random()` repeatable.
 
 This example uses a deliberately small order/payment model. Adapt it to the client workflow; do not ask an agent to infer a production payment system from the contract.
