@@ -50,6 +50,16 @@ Generated `Scenario$` currently types `route(...)` and entries in `routes` as `u
 ⬣> routes.findSold.send()
 ```
 
+### Running scenarios from test code
+
+After starting a simulator, call `await simulator.scenario("soldPets")` or
+`await simulator.scenario("pets/orders/pending", "pets")` for an explicit group.
+Counterfact supplies the same argument as the REPL and awaits async work.
+Use `await simulator.reset()` before each test to reconstruct the baseline;
+re-running a seed scenario alone can retain mutations or duplicate records.
+See [Programmatic API](../features/programmatic-api.md) for concurrency,
+error handling, and reference-lifetime rules.
+
 ### Automatic startup
 
 Export a function named `startup` from `scenarios/index.ts` and Counterfact calls it automatically when the server initializes, before the HTTP server starts listening — no manual command required:
@@ -64,7 +74,7 @@ export const startup: Scenario = ($) => {
 };
 ```
 
-If `startup` is not exported, the server starts normally with no error. Startup is awaited once per API group. Seed context directly there; requests to this same server cannot complete before it starts listening. Startup receives a separate `routes` object, so aliases created there are not retained in the later REPL. Create reusable aliases after startup, at the prompt or in an on-demand scenario with an explicitly narrowed builder type.
+If `startup` is not exported, the server starts normally with no error. Startup is awaited once per API group. Seed context directly there; requests to this same server cannot complete before it starts listening. Startup receives the API group’s shared `routes` collection. Named builders saved there are available in the later REPL and on-demand scenarios. Reset replaces the collection, then reruns startup so it can recreate those builders; reacquire references after reset. Builders created before an ephemeral port is bound resolve the actual port when sent. Construct builders during startup, but do not send requests to this server until startup completes and the listener is ready. The generated scenario types expose builders as `unknown`; narrow them explicitly when using their methods.
 
 ### Delegating to helpers with extra arguments
 
@@ -125,7 +135,7 @@ export const addThreeDogs: Scenario = ($) => addPets($, 3, "dog");
 
 - Scenario functions are plain TypeScript — no special framework, fully type-checked, easy to test in isolation.
 - `.scenario` provides on-demand state changes without editing handler files or restarting the server.
-- `startup` gives the server a deterministic initial state on every restart, eliminating manual seeding steps.
+- `startup` applies your authored initialization on every restart. Fixed seed data and controlled inputs make that initial state repeatable; the hook does not make random or time-dependent initialization deterministic.
 - Helper functions accepting extra arguments let the same logic create a repeatable baseline at startup and smaller targeted variants during debugging.
 - Scenarios live alongside your handler code, making them easy to discover and keep in sync with the API.
 
@@ -133,7 +143,7 @@ export const addThreeDogs: Scenario = ($) => addPets($, 3, "dog");
 
 - [Model the Workflow, Not the Backend](./model-the-workflow.md) — keep each
   scenario focused on a client-visible state rather than a production data model
-- [Mock APIs with Dummy Data](./mock-with-dummy-data.md) — the full range of approaches for populating server responses
-- [Live Server Inspection with the REPL](./repl-inspection.md) — interactive exploration and state manipulation at runtime
-- [Federated Context Files](./federated-context.md) — organize stateful logic that scenarios can seed
-- [Simulate Failures and Edge Cases](./simulate-failures.md) — use scenarios to flip failure flags on demand
+- [Mock APIs with Dummy Data](../manual/sample-responses.md) — the full range of approaches for populating server responses
+- [Live Server Inspection with the REPL](../features/repl.md) — interactive exploration and state manipulation at runtime
+- [Federated Context Files](../manual/nested-contexts.md) — organize stateful logic that scenarios can seed
+- [Simulate Failures and Edge Cases](../manual/edge-cases.md) — use scenarios to flip failure flags on demand

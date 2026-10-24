@@ -180,6 +180,14 @@ export class ContextRegistry extends EventTarget {
     this.cache.set(path, cloneForCache(updatedContext) as Context);
   }
 
+  /** Discards live contexts and hot-reload snapshots before reconstruction. */
+  public clear(): void {
+    this.entries.clear();
+    this.cache.clear();
+    this.seen.clear();
+    this.add("/", {});
+  }
+
   /** Returns all registered route paths as an array. */
   public getAllPaths(): string[] {
     return Array.from(this.entries.keys());

@@ -282,7 +282,9 @@ try {
     "llms.txt",
     "docs/features/route-builder.md",
     "docs/patterns/scenario-scripts.md",
-    "docs/reference.md",
+    "docs/manual.md",
+    "docs/api.md",
+    "docs/api/cli.md",
   ]) {
     assert(
       packFiles.includes(requiredPath),
