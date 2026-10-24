@@ -1,6 +1,6 @@
 {
   "name": "@counterfact/generator",
-  "version": "0.1.6",
+  "version": "1.0.0",
   "description": "Generate Counterfact route scaffolds and OpenAPI-derived TypeScript contracts.",
   "type": "module",
   "main": "./dist/index.js",
