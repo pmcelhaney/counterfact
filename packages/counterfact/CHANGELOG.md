@@ -1,5 +1,21 @@
 # counterfact
 
+## 3.0.0
+
+### Major Changes
+
+- 442afd2: Generate operation and parameter types with stable HTTP method names such as
+  `HTTP_GET` and `HTTP_GET_Query`, independent of OpenAPI operationId. On CLI
+  startup, automatically migrate legacy operationId-based route imports and their
+  references while preserving route logic, explicit aliases, comments, and strings.
+  References outside route files must be updated manually.
+
+### Patch Changes
+
+- f57ac24: Include the complete user manual, API reference, and verified workflow recipes in the published package.
+- Updated dependencies [442afd2]
+  - @counterfact/generator@1.0.0
+
 ## 2.17.0
 
 ### Minor Changes
