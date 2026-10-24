@@ -8,13 +8,9 @@ Unit tests that mock HTTP calls at the library boundary (using `jest.mock()`, `v
 
 ## How it works
 
-Use Counterfact's programmatic API to embed the mock server directly in your test suite. Start it in a `beforeAll` hook, run every test against it, and stop it in `afterAll`. The server is entirely local, so tests are fast and deterministic. Handler files control exactly what the mock returns for each test scenario.
+Use Counterfact's programmatic API to embed the mock server directly in your test suite. Start it in a `beforeAll` hook, run every test against it, and stop it in `afterAll`. Local execution removes dependence on a remote environment. Repeatable tests additionally need fixed responses or named examples, controlled delays, isolated simulator instances, and awaited reset/scenario setup. Generated `.random()` responses can still vary after reset. See [sample responses](../manual/sample-responses.md) and [edge cases](../manual/edge-cases.md).
 
-Install Counterfact as a dev dependency:
-
-```sh
-npm install --save-dev counterfact
-```
+Follow the [project installation setup](./lifecycle-setup.md), install Counterfact as an exact development dependency, and commit the lockfile. Keep the contract, handlers, and test files in that project.
 
 Supplying `openApiPath` generates routes and types at startup, then watches the
 spec for changes. Missing API directories are created automatically. To use
@@ -46,7 +42,9 @@ option, and assertions that deleted baseline data returns before the next test.
 It uses Playwright's HTTP request fixture, so no browser installation is required.
 
 The adapter gives each worker an isolated API source copy and compiled caches,
-plus an OS-assigned port reported by `simulatorURL`. Tests on one worker share a
+plus an OS-assigned port reported by `simulatorURL`. The copy preserves ancestor
+`node_modules` lookup order and package module scopes, so local and hoisted
+dependencies and JavaScript ESM scenarios remain available. Tests on one worker share a
 listener but reset before every test. Pass an existing extended Playwright test
 as the factory's second argument to compose its fixtures. Use the `simulator`
 fixture for direct store and context access. Await outstanding requests before reset;
@@ -84,6 +82,8 @@ afterAll(async () => {
 See the [configuration options](../features/programmatic-api.md), apply named
 scenarios with `await simulator.scenario(name)`, then send HTTP requests to the
 configured port. Keep independently running tests on separate simulators.
+
+Follow [the complete payment test](./payment-retry.md) to connect lifecycle setup to an empty account, decline, successful retry, permission outcome, and restored baseline.
 
 ## Keep exploring
 

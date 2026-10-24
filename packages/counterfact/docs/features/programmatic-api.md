@@ -1,5 +1,7 @@
 # Programmatic API
 
+Follow the [project installation setup](../patterns/lifecycle-setup.md) to install a pinned dependency and verify the lifecycle API.
+
 Counterfact can be used as a library — for example, from [Playwright](https://playwright.dev/) or [Cypress](https://www.cypress.io/) tests. This lets you manipulate context state directly in test code without relying on special magic values in mock logic.
 
 Point Counterfact at an API directory, then start it:
@@ -335,5 +337,5 @@ const { start } = await counterfact(config, [
 - [State](./state.md) — the context objects you manipulate from test code
 - [Patterns: Share State Across API Groups](../patterns/shared-store.md) — typed shared state for multi-API simulations
 - [Patterns: Automated Integration Tests](../patterns/automated-integration-tests.md) — using the programmatic API in a CI-friendly test suite
-- [Reference](../reference.md) — CLI flags, architecture
-- [Usage](../usage.md)
+- [Reference](../api.md) — CLI flags, architecture
+- [Find your workflow](../usage.md)

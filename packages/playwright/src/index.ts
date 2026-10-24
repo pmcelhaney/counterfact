@@ -1,4 +1,13 @@
-import { cp, mkdtemp, rm, stat, symlink } from "node:fs/promises";
+import {
+  cp,
+  mkdir,
+  mkdtemp,
+  readFile,
+  rm,
+  stat,
+  symlink,
+  writeFile,
+} from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 
@@ -32,28 +41,57 @@ export interface CounterfactWorkerFixtures {
   simulatorURL: string;
 }
 
-// Keep installed runtime imports resolvable after relocating API source. The
-// dependency tree is shared; application state belongs in stores and contexts.
-async function linkDependencies(sourcePath: string, temporaryPath: string) {
-  let directory = sourcePath;
-  while (true) {
+// Mirror ancestor lookup levels so local dependencies still shadow hoisted ones.
+// Share installed code, while keeping source files and caches worker-owned.
+async function copySource(sourcePath: string, temporaryPath: string) {
+  const ancestors = [sourcePath];
+  let ancestor = sourcePath;
+  while (path.dirname(ancestor) !== ancestor) {
+    ancestor = path.dirname(ancestor);
+    ancestors.unshift(ancestor);
+  }
+  let isolatedPath = temporaryPath;
+  for (const [index, directory] of ancestors.entries()) {
+    isolatedPath = path.join(
+      isolatedPath,
+      index === ancestors.length - 1 ? "api" : "ancestor",
+    );
+    await mkdir(isolatedPath);
+    if (directory === sourcePath) {
+      await cp(sourcePath, isolatedPath, {
+        recursive: true,
+        dereference: true,
+        filter: (source) =>
+          ![".cache", "node_modules"].includes(path.basename(source)),
+      });
+    } else {
+      try {
+        const { type } = JSON.parse(
+          await readFile(path.join(directory, "package.json"), "utf8"),
+        ) as { type?: string };
+        // Preserve package boundaries even when the nearest scope has no type.
+        await writeFile(
+          path.join(isolatedPath, "package.json"),
+          JSON.stringify({ type }),
+        );
+      } catch (error) {
+        if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
+      }
+    }
     const dependencies = path.join(directory, "node_modules");
     try {
       if ((await stat(dependencies)).isDirectory()) {
         await symlink(
           dependencies,
-          path.join(temporaryPath, "node_modules"),
+          path.join(isolatedPath, "node_modules"),
           "junction",
         );
-        return;
       }
     } catch (error) {
       if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
     }
-    const parent = path.dirname(directory);
-    if (parent === directory) return;
-    directory = parent;
   }
+  return isolatedPath;
 }
 
 type CounterfactTest = TestType<
@@ -84,15 +122,7 @@ export function createCounterfactTest<T extends object, W extends object>(
           path.join(tmpdir(), "counterfact-playwright-"),
         );
         try {
-          const isolatedPath = path.join(temporaryPath, "api");
-          await cp(sourcePath, isolatedPath, {
-            recursive: true,
-            dereference: true,
-            // Never inherit stale generated caches or a dependency tree.
-            filter: (source) =>
-              ![".cache", "node_modules"].includes(path.basename(source)),
-          });
-          await linkDependencies(sourcePath, temporaryPath);
+          const isolatedPath = await copySource(sourcePath, temporaryPath);
           const simulator = await counterfact({
             basePath: isolatedPath,
             port: 0,

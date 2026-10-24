@@ -39,10 +39,11 @@ for (const failure of ["none", "test", "scenario", "reset", "startup"]) {
       await $.add(
         "api/scenarios/index.ts",
         `
+import { fileURLToPath } from "node:url";
 let starts = 0;
 export function startup() {
   starts += 1;
-  ${failure === "startup" ? 'throw new Error("startup failure: " + __filename);' : ""}
+  ${failure === "startup" ? 'throw new Error("startup failure: " + fileURLToPath(import.meta.url));' : ""}
   ${failure === "reset" ? 'if (starts > 1) throw new Error("reset failure");' : ""}
 }
 `,
@@ -196,3 +197,90 @@ test("${name}", async ({ simulator, simulatorURL, request }, info) => {
       'exports.GET = () => ({ status: 200, body: "stale" });',
     );
   }));
+
+for (const scope of ["inherited", "nested-commonjs", "nested-default"]) {
+  test(`preserves dependency lookup and ${scope} JavaScript scenario scope`, () =>
+    usingTemporaryFiles(async ($) => {
+      await $.add("package.json", JSON.stringify({ type: "module" }));
+      for (const [directory, name, value] of [
+        ["node_modules", "hoisted-value", "hoisted"],
+        ["node_modules", "shadowed-value", "root"],
+        ["workspace/node_modules", "local-value", "local"],
+        ["workspace/node_modules", "shadowed-value", "nearest"],
+        ["workspace/api/node_modules", "api-value", "api"],
+      ]) {
+        await $.add(
+          `${directory}/${name}/package.json`,
+          JSON.stringify({ name, main: "index.js" }),
+        );
+        await $.add(
+          `${directory}/${name}/index.js`,
+          `module.exports = ${JSON.stringify(value)};`,
+        );
+      }
+      await $.add(
+        "workspace/api/routes/ready.ts",
+        `
+import local from "local-value";
+import hoisted from "hoisted-value";
+import shadowed from "shadowed-value";
+import api from "api-value";
+export const GET = () => ({ status: 200, body: { local, hoisted, shadowed, api } });
+`,
+      );
+      await $.add(
+        "workspace/api/routes/_.context.ts",
+        'export class Context { marker = "baseline"; }',
+      );
+      if (scope !== "inherited") {
+        await $.add(
+          "workspace/api/scenarios/package.json",
+          JSON.stringify(
+            scope === "nested-commonjs" ? { type: "commonjs" } : {},
+          ),
+        );
+      }
+      await $.add(
+        "workspace/api/scenarios/index.js",
+        scope === "inherited"
+          ? `
+import hoisted from "hoisted-value";
+await Promise.resolve();
+export function startup({ context }) { context.marker = hoisted; }
+export function selected({ context }) { context.marker = "selected"; }
+`
+          : `
+const local = require("local-value");
+exports.startup = ({ context }) => { context.marker = local; };
+exports.selected = ({ context }) => { context.marker = "selected"; };
+`,
+      );
+      await $.add(
+        "fixture.spec.ts",
+        `
+import { createCounterfactTest, expect } from ${JSON.stringify(packageEntry)};
+const test = createCounterfactTest({ basePath: ${JSON.stringify($.path("workspace/api"))} });
+test("startup and dependencies", async ({ simulator, request, simulatorURL }) => {
+  expect(simulator.loadContext("/").marker).toBe(${JSON.stringify(scope === "inherited" ? "hoisted" : "local")});
+  expect(await (await request.get(simulatorURL + "/ready")).json()).toEqual({ local: "local", hoisted: "hoisted", shadowed: "nearest", api: "api" });
+});
+test.describe("named scenario", () => {
+  test.use({ scenarioName: "selected" });
+  test("loads JavaScript scenario", async ({ simulator }) => {
+    expect(simulator.loadContext("/").marker).toBe("selected");
+  });
+});
+`,
+      );
+      await $.add(
+        "playwright.config.ts",
+        'export default { testDir: ".", workers: 1, retries: 0, reporter: "line", outputDir: "./results" };',
+      );
+      const result = await run([
+        "test",
+        "--config",
+        $.path("playwright.config.ts"),
+      ]);
+      assert.equal(result.code, 0, result.output);
+    }));
+}
