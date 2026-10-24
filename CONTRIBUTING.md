@@ -25,7 +25,27 @@ yarn lint
 yarn test
 ```
 
-The [code generator](./packages/generator/README.md) and [server runtime](./packages/runtime/README.md) are separate workspace packages. The `counterfact` package composes them with the CLI, client, and REPL. Root scripts coordinate builds and checks, so contributors do not need to change directories for the standard workflow.
+The [code generator](./packages/generator/README.md) and [server runtime](./packages/runtime/README.md) are separate workspace packages. The `counterfact` package composes them with the CLI, client, and REPL. Guided tours live in [`packages/tutorials`](./packages/tutorials/README.md); add future chapter tours there. Root scripts coordinate builds and checks, so contributors do not need to change directories for the standard workflow.
+
+### Try the guided tour from a checkout
+
+From the repository root, run:
+
+```sh
+yarn go:first-run
+```
+
+The command builds this checkout and launches its CLI with no arguments in a
+new empty temporary directory. It prints the directory and keeps any generated
+tutorial files after you quit. Each run starts with a fresh directory so a
+previous config or example cannot bypass the intro. Use an interactive terminal
+with `CI` unset to see the menu.
+
+Choose **Try a guided example**. Running the built CLI exercises this checkout;
+`npx counterfact@latest` uses the published release. Keep the checkout available
+because generated lesson checks load its tutorial helpers. The [guided-example
+chapter](./packages/counterfact/docs/manual/guided-example.md) describes the
+exercise, restart behavior, and follow-up guides.
 
 ### Build feedback
 
