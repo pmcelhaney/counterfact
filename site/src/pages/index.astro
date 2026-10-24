@@ -70,7 +70,7 @@ const installCommand =
           localhost
         </div>
         <pre><code>{`// api/routes/pets.ts
-export const GET: HTTP_GET = ($) => {
+export const GET: HTTP_GET = function ($) {
   return $.response[200].json(
     $.context.pets
   );

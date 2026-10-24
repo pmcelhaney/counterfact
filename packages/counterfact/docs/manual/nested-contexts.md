@@ -71,7 +71,7 @@ The payments context uses the injected helper when a request needs user data. Lo
 // api/routes/payments/{paymentId}.ts
 import type { HTTP_GET } from "../../types/paths/payments/{paymentId}.types.js";
 
-export const GET: HTTP_GET = ($) => {
+export const GET: HTTP_GET = function ($) {
   const payment = $.context.getWithUser($.path.paymentId);
   if (!payment) return $.response[404].text("Payment not found");
   return $.response[200].json(payment);

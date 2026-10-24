@@ -7,7 +7,9 @@ Use controlled responses to see what the client does when an API is slow, return
 Change the relevant handler to return a deterministic body. For a collection operation, an empty collection can exercise an empty screen:
 
 ```ts
-export const GET: HTTP_GET = ($) => $.response[200].json([]);
+export const GET: HTTP_GET = function ($) {
+  return $.response[200].json([]);
+};
 ```
 
 Choose a body that matches your operation's schema. For an error, choose a status and body declared by your specification. If the test intentionally violates the contract, use `$.x.response` and check the validation settings explicitly.
@@ -15,7 +17,7 @@ Choose a body that matches your operation's schema. For an error, choose a statu
 ## Add a delay
 
 ```ts
-export const GET: HTTP_GET = async ($) => {
+export const GET: HTTP_GET = async function ($) {
   await $.delay(1500);
   return $.response[200].random();
 };
@@ -42,7 +44,7 @@ Read those flags in the route handler. The OpenAPI operation must declare the sh
 // api/routes/payments/{paymentId}.ts
 import type { HTTP_GET } from "../../types/paths/payments/{paymentId}.types.js";
 
-export const GET: HTTP_GET = ($) => {
+export const GET: HTTP_GET = function ($) {
   if ($.context.isRateLimited) return $.response[429].text("Too Many Requests");
   if ($.context.isBroken) return $.response[500].text("Internal Server Error");
   return $.response[200].json({ id: $.path.paymentId, amount: 42.0 });
@@ -69,7 +71,7 @@ Internal Server Error
 To simulate intermittent failures, use a counter or a random function:
 
 ```ts
-export const GET: HTTP_GET = ($) => {
+export const GET: HTTP_GET = function ($) {
   $.context.callCount += 1;
   if ($.context.callCount % 3 === 0) {
     return $.response[503].text("Flaky error");
@@ -81,7 +83,7 @@ export const GET: HTTP_GET = ($) => {
 Or vary the response probabilistically:
 
 ```ts
-export const GET: HTTP_GET = ($) => {
+export const GET: HTTP_GET = function ($) {
   if (Math.random() < 0.2) {
     return $.response[503].text("Flaky error");
   }
@@ -102,7 +104,7 @@ export class Context {
 
 ```ts
 // api/routes/pet/{petId}.ts
-export const GET: HTTP_GET = async ($) => {
+export const GET: HTTP_GET = async function ($) {
   await $.delay($.context.latencyMs);
   const pet = $.context.get($.path.petId);
   return pet ? $.response[200].json(pet) : $.response[404].text("Not found");

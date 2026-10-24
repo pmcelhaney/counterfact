@@ -7,7 +7,9 @@ Counterfact generates handlers that return sample data from the response schema.
 Start Counterfact with your specification and inspect an operation's route file:
 
 ```ts
-export const GET: HTTP_GET = ($) => $.response[200].random();
+export const GET: HTTP_GET = function ($) {
+  return $.response[200].random();
+};
 ```
 
 Send a request to that operation. The response uses the selected status's OpenAPI definition, including examples where available. Values may vary between requests.
@@ -17,7 +19,9 @@ Send a request to that operation. The response uses the selected status's OpenAP
 For a predictable screen state, define a named example on the response media type in OpenAPI, regenerate the types, then select it:
 
 ```ts
-export const GET: HTTP_GET = ($) => $.response[200].example("successResponse");
+export const GET: HTTP_GET = function ($) {
+  return $.response[200].example("successResponse");
+};
 ```
 
 The name must exist for that operation and status. For a literal, deterministic body, use `.json(value)` instead.

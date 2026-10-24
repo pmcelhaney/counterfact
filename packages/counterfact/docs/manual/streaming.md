@@ -7,7 +7,7 @@ Counterfact supports OpenAPI 3.2 sequential media types. When your spec uses `it
 Use `$.response[<status>].stream(iterable)` to return a stream from any route handler. The content type is inferred automatically from the OpenAPI spec (the first streaming media type defined for that response).
 
 ```ts
-export const GET: HTTP_GET = ($) => {
+export const GET: HTTP_GET = function ($) {
   return $.response[200].stream(events());
 };
 

@@ -123,23 +123,25 @@ Then wire the context into each handler:
 
 ```ts
 // api/routes/pet.ts
-export const GET: HTTP_GET = ($) =>
-  $.response[200].json($.context.list($.query.status));
+export const GET: HTTP_GET = function ($) {
+  return $.response[200].json($.context.list($.query.status));
+};
 
-export const POST: HTTP_POST = ($) =>
-  $.response[200].json($.context.add($.body));
+export const POST: HTTP_POST = function ($) {
+  return $.response[200].json($.context.add($.body));
+};
 ```
 
 ```ts
 // api/routes/pet/{petId}.ts
-export const GET: HTTP_GET = ($) => {
+export const GET: HTTP_GET = function ($) {
   const pet = $.context.get($.path.petId);
   return pet
     ? $.response[200].json(pet)
     : $.response[404].text(`Pet ${$.path.petId} not found`);
 };
 
-export const DELETE: HTTP_DELETE = ($) => {
+export const DELETE: HTTP_DELETE = function ($) {
   $.context.remove($.path.petId);
   return $.response[200];
 };
@@ -181,7 +183,7 @@ again after adding the context files so the typed `/users` overload is present.
 // api/routes/payments/{paymentId}.ts
 import type { HTTP_GET } from "../../types/paths/payments/{paymentId}.types.js";
 
-export const GET: HTTP_GET = ($) => {
+export const GET: HTTP_GET = function ($) {
   const payment = $.context.getWithUser($.path.paymentId);
   return payment
     ? $.response[200].json(payment)
@@ -355,7 +357,7 @@ export class Context {
 
 ```ts
 // api/routes/pet/{petId}.ts
-export const GET: HTTP_GET = ($) => {
+export const GET: HTTP_GET = function ($) {
   if ($.context.isDown) return $.response[500].text("Service unavailable");
   if ($.context.isRateLimited) return $.response[429].text("Too many requests");
   const pet = $.context.get($.path.petId);

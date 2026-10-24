@@ -40,7 +40,9 @@ npx counterfact status.yaml api --generate --no-update-check
 ```ts
 // api/routes/status.ts
 import type { getStatus } from "../types/paths/status.types.js";
-export const GET: getStatus = ($) => $.response[200].json({ status: "ready" });
+export const GET: getStatus = function ($) {
+  return $.response[200].json({ status: "ready" });
+};
 ```
 
 Save `tsconfig.counterfact.json`:
@@ -75,8 +77,9 @@ The edited handler stays intact while its generated type changes. TypeScript sho
 Update the handler:
 
 ```ts
-export const GET: getStatus = ($) =>
-  $.response[200].json({ status: "ready", message: "Accepting requests" });
+export const GET: getStatus = function ($) {
+  return $.response[200].json({ status: "ready", message: "Accepting requests" });
+};
 ```
 
 Run the same typecheck again; it should pass. In CI, run generation and this explicit check with pinned dependencies before the client tests. Commit the specification and authored changes together; generated types are derived artifacts, so follow your project's source-control convention for them.

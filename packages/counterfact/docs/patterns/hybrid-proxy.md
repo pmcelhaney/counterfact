@@ -20,7 +20,7 @@ Add a route handler for any path you want to mock:
 
 ```ts
 // api/routes/payments.ts
-export const POST: HTTP_POST = ($) => {
+export const POST: HTTP_POST = function ($) {
   return $.response[200].json({ transactionId: "mock-txn-001" });
 };
 ```
@@ -50,14 +50,17 @@ Install and pin Counterfact as a development dependency and commit its lockfile.
 ```ts
 // api/routes/users.ts
 import type { HTTP_GET } from "../types/paths/users.types.js";
-export const GET: HTTP_GET = ($) => $.proxy("http://127.0.0.1:9000/users");
+export const GET: HTTP_GET = function ($) {
+  return $.proxy("http://127.0.0.1:9000/users");
+};
 ```
 
 ```ts
 // api/routes/payments.ts
 import type { HTTP_POST } from "../types/paths/payments.types.js";
-export const POST: HTTP_POST = ($) =>
-  $.response[200].json({ transactionId: "mock-txn-001" });
+export const POST: HTTP_POST = function ($) {
+  return $.response[200].json({ transactionId: "mock-txn-001" });
+};
 ```
 
 This example assumes the specification declares the shown operations and the payment's 200 JSON response. Choose your upstream URL, including the operation path, in the authored forwarding handler. The helper does not automatically append an incoming path or query string; construct those explicitly if the operation needs them. Start with **no global proxy default**:

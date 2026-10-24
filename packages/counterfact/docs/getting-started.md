@@ -76,13 +76,14 @@ corresponding handler:
 // api/routes/pet/{petId}.ts
 import type { getPetById } from "../../types/paths/pet/{petId}.types.js";
 
-export const GET: getPetById = ($) =>
-  $.response[200].json({
+export const GET: getPetById = function ($) {
+  return $.response[200].json({
     id: $.path.petId,
     name: "Fluffy",
     photoUrls: [],
     status: "available",
   });
+};
 ```
 
 Save the file and refresh the frontend—no server restart is needed.
