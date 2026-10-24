@@ -15,13 +15,12 @@ Implement or update route behavior in generated route files.
 
 ## Required rules
 
-- Always use exported function declarations for route handlers, with an explicit
-  block body and `return`. This makes it easy to add statements as a route grows.
-- Leave `$` unannotated in route handlers: `export function GET($) { ... }`.
-  Do not add handler-type imports just for `$`. Preserve `async` when the
-  handler uses `await`.
-- When editing a generated arrow-function handler, convert it to a function
-  declaration.
+- Always prefer function expressions with a block body and explicit `return`
+  for route handlers: `export const GET: HTTP_GET = function ($) { ... };`.
+- Annotate the exported constant with the generated handler type so TypeScript
+  infers `$`. Do not annotate `$` separately or disable `noImplicitAny`.
+- Preserve `async` as `async function ($)` when the handler uses `await`.
+- Convert generated arrow-function handlers to this form when editing them.
 
 - Use the `$` API in every handler (`$.path`, `$.query`, `$.body`, `$.response`,
   `$.context`, `$.loadContext`).
@@ -43,10 +42,10 @@ Implement or update route behavior in generated route files.
 ## Pattern
 
 ```ts
-export function POST($) {
+export const POST: HTTP_POST = function ($) {
   const created = $.context.createThing($.body);
   return $.response[201].json(created);
-}
+};
 ```
 
 ## References

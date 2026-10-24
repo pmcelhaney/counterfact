@@ -110,9 +110,9 @@ Handlers stay small and do not receive the store directly:
 
 ```ts
 // api/orders/routes/orders.ts
-export function POST($) {
+export const POST: HTTP_POST = function ($) {
   return $.response[201].json($.context.createOrder($.body));
-}
+};
 ```
 
 ## Inspect and seed the shared state

@@ -298,10 +298,8 @@ export class Context {
     // RegExp match groups are typed as optional strings, so narrow defensively.
     const existingExportNames = new Set<string>(
       Array.from(
-        existingContent.matchAll(
-          /^export\s+(?:const|function|async\s+function)\s+(?<name>\w+)/gmu,
-        ),
-        (m) => m.groups?.name,
+        existingContent.matchAll(/^export\s+const\s+(\w+)/gmu),
+        (m) => m[1],
       ).filter((name): name is string => name !== undefined),
     );
 

@@ -73,13 +73,15 @@ corresponding handler:
 
 ```ts
 // api/routes/pet/{petId}.ts
-export function GET($) {
+import type { HTTP_GET } from "../../types/paths/pet/{petId}.types.js";
+
+export const GET: HTTP_GET = function ($) {
   return $.response[200].json({
     id: $.path.petId,
     name: "Fluffy",
     status: "available",
   });
-}
+};
 ```
 
 Save the file and refresh the frontend—no server restart is needed.

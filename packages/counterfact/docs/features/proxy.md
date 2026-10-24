@@ -6,9 +6,9 @@ To proxy a single endpoint from within a route file:
 
 ```ts
 // routes/pet/{petId}.ts
-export function GET($) {
+export const GET: HTTP_GET = function ($) {
   return $.proxy("https://uat.petstore.example.com/pet");
-}
+};
 ```
 
 To set a proxy for the entire API at startup, pass `--proxy-url` on the CLI:

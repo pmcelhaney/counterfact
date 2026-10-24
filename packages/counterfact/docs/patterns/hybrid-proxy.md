@@ -20,9 +20,9 @@ Add a route handler for any path you want to mock:
 
 ```ts
 // api/routes/payments.ts
-export function POST($) {
+export const POST: HTTP_POST = function ($) {
   return $.response[200].json({ transactionId: "mock-txn-001" });
-}
+};
 ```
 
 Turn proxying off for that path so the local handler receives it:

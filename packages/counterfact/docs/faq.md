@@ -102,11 +102,11 @@ route is just a function, so it can return a deterministic response or use a
 small shared context:
 
 ```ts
-export function POST($) {
+export const POST: HTTP_POST = function ($) {
   if (!$.body.name) return $.response[400].text("name is required");
   const pet = $.context.add($.body);
   return $.response[200].json(pet);
-}
+};
 ```
 
 POST data and GET it back. Select a validation outcome. Simulate the state

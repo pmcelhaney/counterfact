@@ -16,11 +16,11 @@ Add a delay to a single handler:
 
 ```ts
 // api/routes/pet/{petId}.ts
-export async function GET($) {
+export const GET: HTTP_GET = async function ($) {
   await $.delay(300); // simulate 300ms backend latency
   const pet = $.context.get($.path.petId);
   return pet ? $.response[200].json(pet) : $.response[404].text("Not found");
-}
+};
 ```
 
 To make the delay configurable at runtime, read it from context:
@@ -34,11 +34,11 @@ export class Context {
 
 ```ts
 // api/routes/pet/{petId}.ts
-export async function GET($) {
+export const GET: HTTP_GET = async function ($) {
   await $.delay($.context.latencyMs);
   const pet = $.context.get($.path.petId);
   return pet ? $.response[200].json(pet) : $.response[404].text("Not found");
-}
+};
 ```
 
 Toggle latency from the REPL while the UI is running:

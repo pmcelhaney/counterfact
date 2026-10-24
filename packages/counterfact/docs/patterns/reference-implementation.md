@@ -31,11 +31,11 @@ Implement each handler with the intended behavior:
 
 ```ts
 // api/routes/pet.ts
-export function POST($) {
+export const POST: HTTP_POST = function ($) {
   if (!$.body.name) return $.response[400].text("name is required");
   const pet = $.context.add($.body);
   return $.response[200].json(pet);
-}
+};
 ```
 
 TypeScript highlights contract violations in the IDE and in CI:

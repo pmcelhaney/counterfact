@@ -120,28 +120,28 @@ Then wire the context into each handler:
 
 ```ts
 // api/routes/pet.ts
-export function GET($) {
+export const GET: HTTP_GET = function ($) {
   return $.response[200].json($.context.list($.query.status));
-}
+};
 
-export function POST($) {
+export const POST: HTTP_POST = function ($) {
   return $.response[200].json($.context.add($.body));
-}
+};
 ```
 
 ```ts
 // api/routes/pet/{petId}.ts
-export function GET($) {
+export const GET: HTTP_GET = function ($) {
   const pet = $.context.get($.path.petId);
   return pet
     ? $.response[200].json(pet)
     : $.response[404].text(`Pet ${$.path.petId} not found`);
-}
+};
 
-export function DELETE($) {
+export const DELETE: HTTP_DELETE = function ($) {
   $.context.remove($.path.petId);
   return $.response[200];
-}
+};
 ```
 
 ### Multi-domain API
@@ -153,7 +153,9 @@ from another:
 
 ```ts
 // api/routes/payments/{paymentId}.ts
-export function GET($) {
+import type { Context as UsersContext } from "../../users/_.context.js";
+
+export const GET: HTTP_GET = function ($) {
   const payment = $.context.getById($.path.paymentId);
   if (!payment) return $.response[404].text("Payment not found");
 
@@ -161,7 +163,7 @@ export function GET($) {
   const user = usersCtx.getById(payment.userId);
 
   return $.response[200].json({ ...payment, user });
-}
+};
 ```
 
 Keep each context class focused on a single responsibility. If a class is
@@ -320,12 +322,12 @@ export class Context {
 
 ```ts
 // api/routes/pet/{petId}.ts
-export function GET($) {
+export const GET: HTTP_GET = function ($) {
   if ($.context.isDown) return $.response[500].text("Service unavailable");
   if ($.context.isRateLimited) return $.response[429].text("Too many requests");
   const pet = $.context.get($.path.petId);
   return pet ? $.response[200].json(pet) : $.response[404].text("Not found");
-}
+};
 ```
 
 Toggle from the REPL or via a scenario:

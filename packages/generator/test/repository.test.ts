@@ -232,14 +232,16 @@ describe("a Repository", () => {
     });
 
     it.each(["", "async "])(
-      "preserves an exported %sfunction handler across regeneration",
+      "preserves an exported %sfunction expression across regeneration",
       async (asyncPrefix) => {
         await usingTemporaryFiles(async ($) => {
           await $.add("openapi.json", JSON.stringify(specWithGet));
-          const customRoute = `export ${asyncPrefix}function GET($) {
+          const customRoute = `import type { getPets } from "../types/paths/pet.types.js";
+
+export const GET: getPets = ${asyncPrefix}function ($) {
   // Keep this custom behavior.
   return $.response[200].empty();
-}
+};
 `;
           await $.add("routes/pet.ts", customRoute);
 
@@ -259,7 +261,7 @@ describe("a Repository", () => {
           expect(updatedRoute).toContain(
             customRoute.slice(customRoute.indexOf("export ")).trim(),
           );
-          expect(updatedRoute).not.toContain("export const GET");
+          expect(updatedRoute.match(/export const GET/gu)).toHaveLength(1);
           expect(updatedRoute).toContain("export const POST");
 
           await new CodeGenerator($.path("openapi.json"), $.path(""), {

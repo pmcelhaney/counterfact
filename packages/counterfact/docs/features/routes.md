@@ -2,23 +2,21 @@
 
 Each file in `routes/` corresponds to an API path. For example, `/users/{userId}` maps to `routes/users/{userId}.ts`. The root path `/` maps to `routes/index.ts`.
 
-Use exported function declarations for route handlers:
+Use typed function expressions for route handlers:
 
 ```ts
-export function GET($) {
+export const GET: HTTP_GET = function ($) {
   return $.response[200].random();
-}
+};
 
-export function POST($) {
+export const POST: HTTP_POST = function ($) {
   return $.response[200].random();
-}
+};
 ```
 
-Prefer function declarations with a block body and an explicit `return` in route files. You can add logging, local variables, or other statements without restructuring the handler. If a generated handler uses an arrow function, convert it to this form when you edit it.
+Prefer function expressions with a block body and an explicit `return` in route files. You can add logging, local variables, or other statements without restructuring the handler. Convert generated arrow-function handlers to this form when editing them.
 
-Leave `$` unannotated in route examples. Add `async` to the declaration when you need `await`.
-
-Counterfact runs these handlers without requiring type annotations. Standalone TypeScript checking does not infer the type of an unannotated function parameter; projects using this style can set `noImplicitAny: false`. The generated handler types remain available when you want explicit request typing.
+The generated handler type on the exported constant (for example, `GET: HTTP_GET`) gives `$` its request type automatically. Leave `$` unannotated, and use `async function ($)` when you need `await`.
 
 Each exported function handles one HTTP method. The single argument `$` gives you everything you need: request data, response builders, server state, and utilities.
 
@@ -83,7 +81,7 @@ Supported options:
 
 ### Using named examples
 
-If your OpenAPI spec defines named examples for a response, you can return a specific one by name using `.example()`. With an explicitly typed handler parameter, the name is autocompleted and type-checked — passing an unknown name is a compile error.
+If your OpenAPI spec defines named examples for a response, you can return a specific one by name using `.example()`. The name is autocompleted and type-checked — passing an unknown name is a compile error.
 
 ```ts
 // Return a specific named example
@@ -96,11 +94,11 @@ return $.response[200]
 ```
 
 > [!TIP]
-> With an explicitly typed handler parameter, your IDE's autocomplete knows which status codes, headers, and response shapes are valid for each endpoint — based directly on your OpenAPI spec. If you omit a required header, TypeScript will tell you. When the spec changes and types are regenerated, TypeScript will surface any mismatches.
+> Your IDE's autocomplete knows which status codes, headers, and response shapes are valid for each endpoint — based directly on your OpenAPI spec. If you omit a required header, TypeScript will tell you. When the spec changes and types are regenerated, TypeScript will surface any mismatches.
 
 ## Reading request data
 
-The request is exposed through four properties:
+The request is exposed through four typed properties:
 
 | Property    | Contents                                                     |
 | ----------- | ------------------------------------------------------------ |
@@ -110,7 +108,7 @@ The request is exposed through four properties:
 | `$.body`    | Request body                                                 |
 
 ```ts
-export function GET($) {
+export const GET: HTTP_GET = function ($) {
   if ($.headers["x-token"] !== "super-secret") {
     return $.response[401].text("Unauthorized");
   }
@@ -120,10 +118,10 @@ export function GET($) {
     ` with tags: ${$.body.tags.join(", ")}`;
 
   return $.response[200].text(content);
-}
+};
 ```
 
-The generated handler types describe all four objects from your OpenAPI spec. Explicit request typing enables autocomplete for parameter names and values.
+All four objects are typed from your OpenAPI spec, so autocomplete works for parameter names and values.
 
 ### Object query parameters (exploded form style)
 
@@ -138,11 +136,11 @@ GET /items?page=0&size=100&sort=name
 Counterfact automatically assembles these individual query parameters back into the object, so you can access them as:
 
 ```ts
-export function GET($) {
+export const GET: HTTP_GET = function ($) {
   const { page, size, sort } = $.query.pageable;
   // page = "0", size = "100", sort = "name"
   // ...
-}
+};
 ```
 
 This behaviour follows the OpenAPI 3.x defaults (`style: form`, `explode: true`) and also applies when those values are set explicitly. To opt out, set `explode: false` on the parameter in your spec.
@@ -171,18 +169,18 @@ await $.delay(1000, 5000);
 
 Counterfact translates your OpenAPI spec into strict TypeScript types. If your spec is incomplete, or you need to return something outside the spec (like a `500` error that isn't documented), the strict types can get in the way.
 
-`$.x` is an alias for `$` with all types widened to `any`, giving explicitly typed handlers an escape hatch. Unannotated handlers can access these properties directly:
+`$.x` is an alias for `$` with all types widened to `any`, giving you an escape hatch:
 
 ```ts
-export function GET($) {
+export const GET: HTTP_GET = function ($) {
   // header not defined in OpenAPI spec
-  $.headers["my-undocumented-header"]; // outside the generated schema
-  $.x.headers["my-undocumented-header"]; // escape hatch for explicitly typed handlers
+  $.headers["my-undocumented-header"]; // TypeScript error
+  $.x.headers["my-undocumented-header"]; // ok
 
   // status code not defined in OpenAPI spec
-  return $.response[500].text("Error!"); // outside the generated schema
-  return $.x.response[500].text("Error!"); // escape hatch for explicitly typed handlers
-}
+  return $.response[500].text("Error!"); // TypeScript error
+  return $.x.response[500].text("Error!"); // ok
+};
 ```
 
 ## Streaming responses (SSE, JSONL, JSON-seq)
@@ -192,9 +190,9 @@ Counterfact supports OpenAPI 3.2 sequential media types. When your spec uses `it
 Use `$.response[<status>].stream(iterable)` to return a stream from any route handler. The content type is inferred automatically from the OpenAPI spec (the first streaming media type defined for that response).
 
 ```ts
-export function GET($) {
+export const GET: HTTP_GET = function ($) {
   return $.response[200].stream(events());
-}
+};
 
 async function* events() {
   yield { id: 1, message: "hello" };
