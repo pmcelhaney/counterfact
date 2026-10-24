@@ -77,7 +77,7 @@ corresponding handler:
 import type { getPetById } from "../../types/paths/pet/{petId}.types.js";
 
 export const GET: getPetById = function ($) {
-  return $.response[200].json({
+  return $.response.status(200).json({
     id: $.path.petId,
     name: "Fluffy",
     photoUrls: [],

@@ -10,7 +10,7 @@ Export one function per HTTP method from a file under `routes/`. The generated `
 | `$.headers`     | typed object       | Request headers                                                                         |
 | `$.body`        | typed object       | Parsed request body                                                                     |
 | `$.context`     | `Context` instance | Shared state for this route subtree                                                     |
-| `$.response[N]` | response builder   | Fluent builder for HTTP status code N (e.g. `$.response[200]`, `$.response[404]`)       |
+| `$.response.status(N)` | response builder   | Fluent builder for HTTP status code N (e.g. `$.response.status(200)`, `$.response.status(404)`)       |
 
 | Member                | Contract                                                                                                                               |
 | --------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
