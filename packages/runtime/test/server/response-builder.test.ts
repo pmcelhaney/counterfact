@@ -814,7 +814,7 @@ describe("a response builder", () => {
         iterable,
       );
 
-      expect(response?.body).toBe(iterable);
+      expect(response?.content?.[0]?.body).toBe(iterable);
     });
 
     it("defaults content type to text/event-stream when spec has no streaming content type", () => {
@@ -822,7 +822,7 @@ describe("a response builder", () => {
         makeStream([]),
       );
 
-      expect(response?.contentType).toBe("text/event-stream");
+      expect(response?.content?.[0]?.type).toBe("text/event-stream");
     });
 
     it("infers the content type from the spec", () => {
@@ -836,7 +836,7 @@ describe("a response builder", () => {
         },
       })[200]?.stream(makeStream([]));
 
-      expect(response?.contentType).toBe("application/jsonl");
+      expect(response?.content?.[0]?.type).toBe("application/jsonl");
     });
 
     it("preserves the status code", () => {

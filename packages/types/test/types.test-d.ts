@@ -440,3 +440,66 @@ type SseOnlyResponse = {
 };
 declare const sseOnlyBuilder: GenericResponseBuilderInner<SseOnlyResponse>;
 expectAssignable<COUNTERFACT_RESPONSE>(sseOnlyBuilder.sse(events));
+
+// SSE always requires serializable envelopes, including loose or non-item schemas.
+type SseSchemaResponse<Schema> = {
+  content: { "text/event-stream": { schema: Schema } };
+  headers: never;
+  requiredHeaders: never;
+};
+declare const stringItemsBuilder: GenericResponseBuilderInner<
+  SseSchemaResponse<AsyncIterable<string>>
+>;
+declare const stringBodyBuilder: GenericResponseBuilderInner<
+  SseSchemaResponse<string>
+>;
+declare const unknownBodyBuilder: GenericResponseBuilderInner<
+  SseSchemaResponse<unknown>
+>;
+declare const unknownItemsBuilder: GenericResponseBuilderInner<
+  SseSchemaResponse<AsyncIterable<unknown>>
+>;
+declare const unknownItems: AsyncIterable<unknown>;
+expectError(unknownItemsBuilder.sse(unknownItems));
+expectAssignable<COUNTERFACT_RESPONSE>(unknownItemsBuilder.sse(events));
+declare const stringItems: AsyncIterable<string>;
+expectError(stringItemsBuilder.sse(stringItems));
+expectError(stringBodyBuilder.sse("plain body"));
+expectError(unknownBodyBuilder.sse("plain body"));
+expectError(unknownBodyBuilder.sse(stringItems));
+expectAssignable<COUNTERFACT_RESPONSE>(unknownBodyBuilder.sse(events));
+
+type MixedStreamResponse = {
+  content: SseOnlyResponse["content"] & NdjsonResponse["content"];
+  headers: never;
+  requiredHeaders: never;
+};
+declare const mixedStreamBuilder: GenericResponseBuilderInner<MixedStreamResponse>;
+expectAssignable<COUNTERFACT_RESPONSE>(
+  mixedStreamBuilder.sse(events).stream(stream),
+);
+expectAssignable<COUNTERFACT_RESPONSE>(
+  mixedStreamBuilder.sse(events).match("application/x-ndjson", stream),
+);
+expectError(
+  eventBuilder.sse(events).match("application/json", { unrelated: "wrong" }),
+);
+expectError(
+  eventBuilder
+    .sse(events)
+    .match("application/json", { unrelated: 1 })
+    .header("X-Trace", 123),
+);
+expectAssignable<COUNTERFACT_RESPONSE>(
+  eventBuilder
+    .sse(events)
+    .match("application/json", { unrelated: 1 })
+    .header("X-Trace", "abc"),
+);
+
+const wideSseRoute: WideRoute = ($) =>
+  $.x.response[200].sse(events).header("X-Trace", "abc");
+const wideMixedRoute: WideRoute = ($) =>
+  $.x.response[200].sse(events).match("application/jsonl", stream);
+expectAssignable<WideRoute>(wideSseRoute);
+expectAssignable<WideRoute>(wideMixedRoute);

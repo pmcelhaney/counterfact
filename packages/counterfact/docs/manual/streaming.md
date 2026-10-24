@@ -4,7 +4,10 @@ Use a stream when the client needs to render events or records as they arrive. T
 
 Counterfact supports OpenAPI 3.2 sequential media types. When your spec uses `itemSchema` on a `text/event-stream`, `application/jsonl`, or `application/json-seq` content type, the generated handler type expresses the body as `AsyncIterable<T>`.
 
-Use `$.response[<status>].stream(iterable)` to return a stream from any route handler. The content type is inferred automatically from the OpenAPI spec (the first streaming media type defined for that response).
+Use `$.response[<status>].stream(iterable)` to return a stream from any route handler. The content type is inferred automatically from the OpenAPI spec (the first streaming media type defined for that response that has not already
+been supplied). Chaining `.sse(events).stream(records)` preserves both
+representations for content negotiation; use `.match(contentType, records)`
+to select an alternative media type explicitly.
 
 ```ts
 export const GET: HTTP_GET = ($) => {
@@ -49,8 +52,10 @@ text/event-stream:
       retry: { type: integer, minimum: 0 }
 ```
 
-Declare an optional `Last-Event-ID` header parameter on the operation if the
-route should resume a feed. For an operation with `operationId: updates`:
+Declare an optional header parameter with `name: last-event-id` on the operation
+if the route should resume a feed. The generator preserves parameter-name casing,
+so use lowercase to match Node’s incoming header keys. Clients can send
+`Last-Event-ID` because HTTP header names are case-insensitive. For an operation with `operationId: updates`:
 
 ```ts
 export const GET: updates = ($) => {

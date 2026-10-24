@@ -26,7 +26,7 @@ def generate_streaming_project(journey):
             "/events": {
                 "get": {
                     "operationId": "feed",
-                    "parameters": [{"name": "Last-Event-ID", "in": "header", "schema": {"type": "string"}}],
+                    "parameters": [{"name": "last-event-id", "in": "header", "schema": {"type": "string"}}],
                     "responses": {"200": {"description": "events", "content": event_content}},
                 },
                 "post": {"responses": {"200": {"description": "release", "content": {"text/plain": {"schema": {"type": "string"}}}}}},

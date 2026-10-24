@@ -6,6 +6,7 @@ import type { MediaType } from "./media-type.js";
 import type { OmitAll } from "./omit-all.js";
 import type { OmitValueWhenNever } from "./omit-value-when-never.js";
 import type { OpenApiResponse } from "./open-api-response.js";
+import type { SseEvent } from "./sse-event.js";
 import type { RandomFunction } from "./random-function.js";
 
 /**
@@ -21,6 +22,12 @@ type NeverIfEmpty<Record> = object extends Record ? never : Record;
 type SchemasOf<T extends { [key: string]: { schema: unknown } }> = {
   [K in keyof T]: T[K]["schema"];
 }[keyof T];
+
+/** Constrain both the stream and each schema-derived item to SSE envelopes. */
+type SseEvents<Schema> =
+  Schema extends AsyncIterable<infer Event>
+    ? AsyncIterable<Event & SseEvent & object>
+    : AsyncIterable<SseEvent> & Schema;
 
 /**
  * Produces a builder method for a shortcut (e.g. `.json()`, `.html()`) when
@@ -134,10 +141,12 @@ export type GenericResponseBuilderInner<
     Response["content"],
     ["text/event-stream"],
     (
-      events: SchemasOf<
-        Pick<
-          Response["content"],
-          Extract<keyof Response["content"], `text/event-stream${string}`>
+      events: SseEvents<
+        SchemasOf<
+          Pick<
+            Response["content"],
+            Extract<keyof Response["content"], `text/event-stream${string}`>
+          >
         >
       >,
     ) => GenericResponseBuilder<{

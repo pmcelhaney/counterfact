@@ -25,6 +25,6 @@ export type WideResponseBuilder = COUNTERFACT_RESPONSE & {
   random: () => MaybePromise<WideResponseBuilder>;
   text: (body: unknown) => WideResponseBuilder;
   xml: (body: unknown) => WideResponseBuilder;
-  sse: (events: AsyncIterable<SseEvent>) => COUNTERFACT_RESPONSE;
+  sse: (events: AsyncIterable<SseEvent>) => WideResponseBuilder;
   stream: (body: AsyncIterable<unknown>) => COUNTERFACT_RESPONSE;
 };

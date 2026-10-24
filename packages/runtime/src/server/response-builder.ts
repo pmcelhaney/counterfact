@@ -381,16 +381,17 @@ export function createResponseBuilder(
           operation.responses.default;
 
         const contentTypes = Object.keys(response?.content ?? {});
+        const streamingTypes = contentTypes.filter((ct) =>
+          STREAMING_CONTENT_TYPES.has(ct),
+        );
         const contentType =
-          contentTypes.find((ct) => STREAMING_CONTENT_TYPES.has(ct)) ??
+          streamingTypes.find(
+            (ct) => !this.content?.some((entry) => entry.type === ct),
+          ) ??
+          streamingTypes[0] ??
           "text/event-stream";
 
-        return {
-          body: iterable,
-          contentType,
-          headers: this.headers,
-          status: this.status,
-        };
+        return this.match(contentType, iterable);
       },
 
       status: Number.parseInt(statusCode, 10),

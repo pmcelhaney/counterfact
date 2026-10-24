@@ -28,11 +28,7 @@ export interface ResponseBuilder {
   randomLegacy: () => MaybePromise<ResponseBuilder>;
   status?: number;
   sse: (events: AsyncIterable<SseEvent>) => ResponseBuilder;
-  stream: (iterable: AsyncIterable<unknown>) => {
-    body: AsyncIterable<unknown>;
-    contentType: string;
-    status?: number;
-  };
+  stream: (iterable: AsyncIterable<unknown>) => ResponseBuilder;
   text: (body: unknown) => ResponseBuilder;
   xml: (body: unknown) => ResponseBuilder;
 }
